@@ -1,0 +1,105 @@
+{
+  "path": "../../src/modules/gallery/controllers/gallery.controller.js",
+  "relativePath": "modules/gallery/controllers/gallery.controller.js",
+  "type": "source",
+  "name": "gallery.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a factory function that produces CRUD HTTP handlers for the Photo model, supporting filtered reads with aggregation, creation of photo records (including thumbnail path computation), updates, and deletions.",
+    "Purpose": "Serve as the gallery controller in the project, handling API requests related to photo management (listing, creating, updating, deleting) using the 'martyrs' framework conventions.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "function",
+        "responsibility": "Accepts a database object and returns an object with methods to handle read, create, update, and delete operations for Photo documents."
+      },
+      {
+        "name": "read",
+        "type": "async function",
+        "responsibility": "Handles GET requests: builds an aggregation pipeline from query parameters (filters, date ranges, tags, creator/owner lookups, pagination, sorting) and returns matching photos."
+      },
+      {
+        "name": "create",
+        "type": "async function",
+        "responsibility": "Handles POST requests: validates required fields, iterates over provided image paths, computes thumbnail paths, creates photo documents, populates references, and returns the created records."
+      },
+      {
+        "name": "update",
+        "type": "async function",
+        "responsibility": "Handles PUT/PATCH requests: updates a Photo document by ID, populates creator and owner references, and returns the updated document."
+      },
+      {
+        "name": "deletePhoto",
+        "type": "async function",
+        "responsibility": "Handles DELETE requests: removes a Photo document by ID, populates references on the deleted document, and returns it."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "controllerFactory",
+        "params": [
+          "db"
+        ],
+        "returns": "Object with methods: read, create, update, delete",
+        "description": "Entry point to instantiate the gallery controller with a given database context."
+      },
+      {
+        "name": "read",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Aggregates Photo documents per query params; supports basic filtering, date range, tagging, creator/owner lookups, field cleanup, sorting, and pagination."
+      },
+      {
+        "name": "create",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Validates payload, constructs photo entries with thumbnail paths, inserts into the database, populates relations, and returns created items."
+      },
+      {
+        "name": "update",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Updates an existing Photo by ID and returns the new document with populated creator/owner."
+      },
+      {
+        "name": "deletePhoto",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Deletes a Photo by ID and returns the deleted document with populated creator/owner."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+        "importedAs": "queryProcessorGlobals",
+        "purpose": "Provides reusable aggregation stages for filtering, sorting, pagination, tag handling, and lookups."
+      },
+      {
+        "module": "path",
+        "importedAs": "path",
+        "purpose": "Used for filesystem path parsing and thumbnail path construction."
+      },
+      {
+        "module": "db.photo",
+        "importedAs": "Photo",
+        "purpose": "Mongoose model for Photo documents accessed via the injected database object."
+      }
+    ],
+    "Usage": "Imported via `import galleryController from '.../modules/gallery/controllers/gallery.controller.js'`, instantiated with a database context: `const ctrl = galleryController(db);` and then used in route definitions: `router.get('/', ctrl.read); router.post('/', ctrl.create);` etc.",
+    "Importance": 4,
+    "Notes": [
+      "Uses Mongoose aggregate pipelines for efficient querying and flexible filtering.",
+      "Thumbnail path is derived by prefixing filenames with `thumbnail_` in the same directory.",
+      "Sequential processing of images in `create` could be optimized via parallel operations if needed.",
+      "Error responses use consistent status codes and simple JSON structures; console logs errors for debugging."
+    ]
+  }
+}

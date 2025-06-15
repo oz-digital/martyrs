@@ -1,0 +1,97 @@
+{
+  "path": "../../src/modules/products/components/pages/ProductEdit.vue",
+  "relativePath": "modules/products/components/pages/ProductEdit.vue",
+  "type": "source",
+  "name": "ProductEdit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент для создания и редактирования товара, включающий вкладки с деталями, вариантами, скидками и локализацией, а также работу с изображениями, категориями и атрибутами.",
+    "Purpose": "Обеспечить интерфейс для создания и редактирования товаров в административной части приложения, позволяя управлять всеми основными свойствами товара (детали, варианты, скидки, локализации, изображения, категории, атрибуты).",
+    "Components": [
+      {
+        "name": "ProductEdit (default export)",
+        "responsibility": "Главный компонент страницы редактирования/создания товара. Управляет состоянием формы, вкладками, обработкой событий сохранения и удаления."
+      },
+      {
+        "name": "Block",
+        "responsibility": "Контейнер для секций с визуальным оформлением и опциональным заголовком/placeholder."
+      },
+      {
+        "name": "Tab",
+        "responsibility": "Навигация по вкладкам (детали, варианты, скидки, локализация)."
+      },
+      {
+        "name": "Field, Select, Button",
+        "responsibility": "Базовые элементы формы для ввода и управления данными."
+      },
+      {
+        "name": "EditImages",
+        "responsibility": "Редактирование и загрузка изображений товара."
+      },
+      {
+        "name": "BlockMultiselect",
+        "responsibility": "Выбор и отображение категорий товара с поддержкой поиска и кастомных слотов."
+      },
+      {
+        "name": "EditVariants",
+        "responsibility": "Редактирование вариантов товара (SKU, цена, количество и т.д.)."
+      },
+      {
+        "name": "EditAttributes",
+        "responsibility": "Редактирование пользовательских атрибутов товара."
+      },
+      {
+        "name": "EditDiscounts",
+        "responsibility": "Редактирование скидок, применяемых к товару."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "purpose": "Инициализация состояния страницы: сброс текущего товара, загрузка данных (товар, категории), установка дефолтных значений для новых товаров, обработка событий загрузки страницы.",
+        "parameters": "none"
+      },
+      {
+        "name": "onSubmit",
+        "purpose": "Сохранение изменений товара: создание нового или обновление существующего, валидация наличия хотя бы одного варианта, обработка ошибок.",
+        "parameters": "none"
+      },
+      {
+        "name": "onDelete",
+        "purpose": "Удаление текущего товара через store.",
+        "parameters": "none"
+      },
+      {
+        "name": "redirectTo",
+        "purpose": "Перенаправление пользователя после сохранения или удаления товара на страницу организации или список товаров.",
+        "parameters": "none"
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, computed, onMounted, ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Checkbox/Checkbox.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Tree/Tree.vue",
+      "@martyrs/src/components/EditImages/EditImages.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue",
+      "@martyrs/src/modules/icons/navigation/IconCross.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+      "@martyrs/src/modules/products/components/sections/EditVariants.vue",
+      "@martyrs/src/modules/products/components/sections/EditAttributes.vue",
+      "@martyrs/src/modules/products/components/sections/EditDiscounts.vue",
+      "@martyrs/src/modules/products/components/sections/EditCategories.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/products/store/products.js",
+      "@martyrs/src/modules/products/store/categories.js"
+    ],
+    "Usage": "Этот компонент используется как страница для создания или редактирования товара. Обычно импортируется и регистрируется в маршрутах (router) как отдельная страница (например, route: /products/:product?/edit). Может использоваться в административной панели или в интерфейсе управления каталогом.",
+    "Importance": 5,
+    "Notes": "Компонент реализует сложную форму с несколькими вкладками и глубокой интеграцией с состоянием Vuex-like store. Использует множество кастомных компонентов из фреймворка martyrs. Важен для управления товарами, поддерживает как создание, так и редактирование, с обработкой ошибок и асинхронной загрузкой данных. В шаблоне активно используются слоты для кастомизации отображения категорий. В коде предусмотрена поддержка мобильного приложения (MOBILE_APP), хотя детали не раскрыты. В компоненте нет секции style, стилизация осуществляется через классы."
+  }
+}

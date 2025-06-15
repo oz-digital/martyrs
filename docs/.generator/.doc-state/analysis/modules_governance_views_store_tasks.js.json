@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/governance/views/store/tasks.js",
+  "relativePath": "modules/governance/views/store/tasks.js",
+  "type": "source",
+  "name": "tasks.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует реактивное состояние и набор действий (CRUD + вспомогательные операции) для работы с задачами через HTTP-интерфейс проекта на базе Vue и фреймворка Martyrs.",
+    "Purpose": "Предоставить централизованный store-модуль для управления коллекцией задач: загрузка, создание, обновление, удаление, назначение и завершение задач с автоматической обработкой ошибок и хранением истории изменений состояния.",
+    "Components": [
+      {
+        "name": "tasksState",
+        "role": "Реактивный объект Vue, содержит текущее состояние: список всех задач (`all`) и подробности текущей задачи (`current`)."
+      },
+      {
+        "name": "tasksActions",
+        "role": "Набор асинхронных методов для выполнения HTTP-запросов к API задач и обновления `tasksState`. Включает методы CRUD, назначение и завершение задач."
+      },
+      {
+        "name": "tasksHistory (internal)",
+        "role": "Локальный массив для хранения снимков состояния `tasksState` при каждом изменении (отладочная история)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getAllTasks",
+        "description": "Загружает все задачи из API и сохраняет их в `tasksState.all`.",
+        "params": []
+      },
+      {
+        "name": "getTaskById",
+        "description": "Загружает одну задачу по ID и сохраняет её в `tasksState.current`.",
+        "params": [
+          "id (string|number)"
+        ]
+      },
+      {
+        "name": "createTask",
+        "description": "Создаёт новую задачу на сервере и добавляет её в массив `tasksState.all`.",
+        "params": [
+          "task (object)"
+        ]
+      },
+      {
+        "name": "updateTask",
+        "description": "Обновляет существующую задачу на сервере и обновляет её в `tasksState.all`.",
+        "params": [
+          "task (object, должен содержать поле id)"
+        ]
+      },
+      {
+        "name": "deleteTask",
+        "description": "Удаляет задачу по ID на сервере и убирает её из `tasksState.all`.",
+        "params": [
+          "id (string|number)"
+        ]
+      },
+      {
+        "name": "assignTask",
+        "description": "Назначает задачу пользователю через специальный endpoint.",
+        "params": [
+          "id (string|number)",
+          "userId (string|number)"
+        ]
+      },
+      {
+        "name": "completeTask",
+        "description": "Отмечает задачу как завершённую через соответствующий endpoint.",
+        "params": [
+          "id (string|number)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js ($axios)"
+    ],
+    "Usage": "Импортируется в Vue-компонентах или других модулях store для вызова действий `tasksActions` и доступа к состоянию `tasksState`.",
+    "Importance": 4,
+    "Notes": "При каждом изменении `tasksState` с помощью Vue watch создаётся копия состояния и сохраняется в `tasksHistory` для отладки. Все методы централизованно обрабатывают ошибки через глобальную функцию setError и пробрасывают их дальше."
+  }
+}

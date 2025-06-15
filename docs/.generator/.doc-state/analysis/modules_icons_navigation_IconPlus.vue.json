@@ -1,0 +1,40 @@
+{
+  "path": "../../src/modules/icons/navigation/IconPlus.vue",
+  "relativePath": "modules/icons/navigation/IconPlus.vue",
+  "type": "source",
+  "name": "IconPlus.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a scalable SVG ‘plus’ icon with a customizable stroke color.",
+    "Purpose": "Provides a reusable ‘plus’ icon for navigation or UI actions, allowing consumers to override the stroke color via a prop.",
+    "Components": [
+      {
+        "name": "IconPlus",
+        "role": "Root component that encapsulates the SVG markup for a plus sign and exposes a `fill` prop to control stroke color."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Vue Composition API helper used to declare and validate the component’s props.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API – defineProps)",
+      "CSS custom property `--black` for default stroke color"
+    ],
+    "Usage": "Import and register in a parent component or layout:\n\nimport IconPlus from 'modules/icons/navigation/IconPlus.vue';\n\nThen in the template:\n<IconPlus fill=\"red\" />",
+    "Importance": 2,
+    "Notes": [
+      "No `<style>` block – relies on global CSS variables for default color.",
+      "SVG attributes include rounded line caps and joins for a polished look.",
+      "Purely presentational; has no internal state or events."
+    ]
+  }
+}

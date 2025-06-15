@@ -1,0 +1,100 @@
+{
+  "path": "../../src/components/Map/LoaderGMaps.js",
+  "relativePath": "components/Map/LoaderGMaps.js",
+  "type": "source",
+  "name": "LoaderGMaps.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует утилитный загрузчик Google Maps JavaScript API через динамическую вставку <script> и предоставляет API для асинхронной инициализации, обновления опций и подписки на событие загрузки.",
+    "Purpose": "Обеспечить единый экземпляр загрузки Google Maps API, избежать многократных вставок скрипта, управлять настройками (версия, библиотеки, язык) и оповещать подписчиков о готовности API.",
+    "Components": [
+      {
+        "name": "GoogleMapsLoader",
+        "type": "class",
+        "responsibilities": [
+          "Создавать и хранить Promise загрузки скрипта Google Maps API",
+          "Вставлять <script> с корректными query-параметрами (ключ, библиотеки, версия, язык)",
+          "Хранить ссылку на window.google.maps после загрузки",
+          "Управлять опциями и переводом языка",
+          "Пересылать события инициализации подписчикам"
+        ]
+      },
+      {
+        "name": "googleMapsLoader",
+        "type": "instance",
+        "class": "GoogleMapsLoader",
+        "responsibilities": "Глобальный синглтон для загрузки и работы с Google Maps API"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "load",
+        "params": [
+          {
+            "name": "apiKey",
+            "type": "string",
+            "description": "API-ключ Google Maps"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "description": "Дополнительные параметры: version, libraries, language"
+          }
+        ],
+        "description": "Инициализирует загрузку скрипта при первом вызове, возвращает Promise с объектом google.maps. Применяет опции после загрузки."
+      },
+      {
+        "name": "_applyOptions",
+        "params": [
+          {
+            "name": "options",
+            "type": "object",
+            "description": "Набор опций для применения (в основном language)"
+          }
+        ],
+        "description": "Если изменился язык, вызывает метод setLanguage на google.maps и триггерит переинициализацию."
+      },
+      {
+        "name": "reinitialize",
+        "params": [],
+        "description": "Повторно вызывает все зарегистрированные колбэки инициализации с текущим google.maps."
+      },
+      {
+        "name": "onInit",
+        "params": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Функция, вызываемая после загрузки или переинициализации API"
+          }
+        ],
+        "description": "Регистрирует колбэк и возвращает функцию для отписки."
+      },
+      {
+        "name": "updateOptions",
+        "params": [
+          {
+            "name": "newOptions",
+            "type": "object",
+            "description": "Набор новых опций для merge с текущими"
+          }
+        ],
+        "description": "Обновляет текущие опции и применяет их (_applyOptions)."
+      }
+    ],
+    "Dependencies": [
+      "window.google (после загрузки скрипта)",
+      "document.head",
+      "Глобальный namespace window и DOM API"
+    ],
+    "Usage": "Импортировать синглтон и вызывать метод load с API-ключом и опциями. Опционально регистрировать колбэки через onInit. Пример:\n\nimport { googleMapsLoader } from 'components/Map/LoaderGMaps';\n\ngoogleMapsLoader.load(API_KEY, { language: 'ru' }).then(google => { /* работа с google.maps */ });",
+    "Importance": 4,
+    "Notes": [
+      "Скрипт загружается только один раз – последующие вызовы load вернут тот же Promise.",
+      "При смене языка перезагружающий скрипт не пересоздаётся, вызывается только google.setLanguage и повторная инициализация.",
+      "Нет встроенного механизма удаления скрипта или полной перезагрузки API.",
+      "Не проверяются ошибки при повторной инициализации.",
+      "Ключ API передаётся каждый раз в URL, что может быть проблемой при смене одновременно ключа и опций."
+    ]
+  }
+}

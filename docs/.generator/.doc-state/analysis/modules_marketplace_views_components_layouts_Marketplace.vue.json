@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/marketplace/views/components/layouts/Marketplace.vue",
+  "relativePath": "modules/marketplace/views/components/layouts/Marketplace.vue",
+  "type": "source",
+  "name": "Marketplace.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "A Vue layout component for the marketplace section that renders a two-column view: a filter sidebar and a dynamic content area. It displays the current user location in the header and synchronizes URL params/query with component state (filters, sorting, location).",
+    "purpose": "Serves as the main wrapper view for all marketplace pages, handling UI layout, initializing filter options, reacting to route changes, and keeping URL and application state in sync.",
+    "components": [
+      {
+        "name": "BlockFilter",
+        "role": "Renders the sidebar filter UI; bound via v-model to marketplace.state.filter and displays filtering options."
+      },
+      {
+        "name": "router-view / dynamic child",
+        "role": "Placeholder for nested marketplace pages/components. Loaded via <component :is=\"Component\" :localPosition=\"localPosition\"/>"
+      }
+    ],
+    "functions": [
+      {
+        "name": "denormalizeUrlParam",
+        "purpose": "Convert URL slugs (dash-separated, lowercase) into human-readable strings with spaces and capitalized words.",
+        "parameters": [
+          "param (String)"
+        ]
+      },
+      {
+        "name": "normalizeUrlParam",
+        "purpose": "Convert human-readable strings into URL-safe slugs: lowercase, spaces to dashes, remove invalid chars.",
+        "parameters": [
+          "param (String)"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (computed, ref, onMounted, watch)",
+      "vue-router (useRoute, useRouter, onBeforeRouteLeave)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/products/store/categories.js",
+      "../../store/marketplace"
+    ],
+    "usage": "Registered as the route component for marketplace routes (e.g. /marketplace/:country?/:state?/:city?). Other components nest inside via <router-view>. Imported implicitly by the router definition in the marketplace module.",
+    "importance": 4,
+    "notes": [
+      "onMounted hook fetches category list and injects it into the marketplace filter options.",
+      "Watches synchronize filter and sort state with URL query parameters, and global location state with route params.",
+      "I18n setup provides localized meta titles/descriptions for SEO.",
+      "The <style> block is empty but uses lang=\"scss\", indicating future styling or global style injection."
+    ]
+  }
+}

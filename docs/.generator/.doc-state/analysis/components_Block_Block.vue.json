@@ -1,0 +1,53 @@
+{
+  "path": "../../src/components/Block/Block.vue",
+  "relativePath": "components/Block/Block.vue",
+  "type": "source",
+  "name": "Block.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент Block предоставляет контейнер с опциональным заголовком, действующими кнопками, подсказкой (tooltip) и областью для слота контента с отображением placeholder при отсутствии содержимого.",
+    "Purpose": "Используется как универсальный блок-контейнер для группировки и оформления содержимого с заголовком, набором действий и информационной подсказкой в проекте на фреймворке martyrs.",
+    "Components": [
+      {
+        "name": "Block",
+        "role": "Основной компонент, оборачивает содержимое, отображает заголовок, действия и подсказку."
+      },
+      {
+        "name": "Tooltip",
+        "importPath": "@martyrs/src/components/Tooltip/Tooltip.vue",
+        "role": "Внутренний дочерний компонент для отображения информационной подсказки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "hasSlotContent",
+        "description": "Проверяет, есть ли содержимое в переданном слоте (по умолчанию default).",
+        "parameters": [
+          {
+            "name": "slot",
+            "type": "Function|undefined",
+            "description": "Функция-слот, возвращающая VNode-дерево."
+          },
+          {
+            "name": "slotProps",
+            "type": "Object",
+            "description": "Необязательный объект свойств для слота."
+          }
+        ],
+        "returns": "Boolean — true, если слот содержит хотя бы один невидимый Comment-узел или непустые дочерние элементы."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, useSlots, Comment)",
+      "@martyrs/src/components/Tooltip/Tooltip.vue"
+    ],
+    "Usage": "Импортируется как стандартный Vue-компонент: import Block from 'components/Block/Block.vue' и затем используется в шаблонах: <Block title=\"...\" :actions=\"[...]\" tooltip=\"...\">…</Block>.",
+    "Importance": 3,
+    "Notes": [
+      "Реализован в составе <script setup> API Vue 3.",
+      "Проп options.theme объявлен, но не используется в текущей разметке.",
+      "Если слот пуст, показывается placeholder из props.placeholder.",
+      "Кнопки действий передаются через props.actions как объекты с полями label, function и опционально class."
+    ]
+  }
+}

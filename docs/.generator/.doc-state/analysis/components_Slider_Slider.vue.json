@@ -1,0 +1,67 @@
+{
+  "path": "../../src/components/Slider/Slider.vue",
+  "relativePath": "components/Slider/Slider.vue",
+  "type": "source",
+  "name": "Slider.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент Slider отображает карусель элементов с состояниями загрузки и пустого списка. Использует embla-carousel-vue с плагином Autoplay и показывает Loader во время загрузки.",
+    "Purpose": "Обеспечить переиспользуемый UI-слайдер, который получает данные из переданного store и опций, локализует сообщение и рендерит произвольный шаблон для каждого элемента через слот.",
+    "Components": [
+      {
+        "Loader": "Компонент индикатора загрузки из @martyrs/src/components/Loader/Loader.vue"
+      },
+      {
+        "EmblaCarousel": "Логика карусели через embla-carousel-vue и плагин Autoplay"
+      },
+      {
+        "slot": "Слот для пользовательского шаблона каждого слайда, принимает параметры item и user"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "scrollTo",
+        "description": "Прокрутить карусель к слайду с указанным индексом",
+        "params": [
+          "index (Number)"
+        ]
+      },
+      {
+        "name": "onInit",
+        "description": "Инициировать параметры карусели и получить список snap-точек (scrollSnapList)",
+        "params": []
+      },
+      {
+        "name": "onSelect",
+        "description": "Обновить selectedIndex на основании текущего выбранного слайда",
+        "params": []
+      },
+      {
+        "name": "onMounted (lifecycle)",
+        "description": "Загрузить данные через props.store.read, переключить isLoading, инициализировать карусель и навесить слушатели событий",
+        "params": []
+      },
+      {
+        "name": "onUnmounted (lifecycle)",
+        "description": "Снять слушатели событий emblaApi при размонтировании компонента",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, onUnmounted)",
+      "vue-router (useRouter)",
+      "vue-i18n (useI18n)",
+      "embla-carousel-vue",
+      "embla-carousel-autoplay",
+      "@martyrs/src/components/Loader/Loader.vue"
+    ],
+    "Usage": "Импортировать Slider.vue и использовать в шаблоне: <Slider :store=\"myStore\" :options=\"opts\" :text=\"i18nMessages\" :user=\"currentUser\"> <template #default=\"{ item, user }\">…</template> </Slider>.",
+    "Importance": 3,
+    "Notes": [
+      "Используется scoped CSS для плавного fade-перехода между слайдами.",
+      "В коде есть ссылка на scrollSnaps.value, но scrollSnaps не объявлен — возможная опечатка или упущенный ref.",
+      "Импорт useRouter есть, но router в компоненте не используется.",
+      "Плагин Autoplay настраивается через rootNode, что позволяет управлять автопроигрыванием в зависимости от видимости."
+    ]
+  }
+}

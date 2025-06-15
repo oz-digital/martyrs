@@ -1,0 +1,11 @@
+{
+  "path": "../../src/styles/config.scss",
+  "relativePath": "styles/config.scss",
+  "type": "source",
+  "name": "config.scss",
+  "extension": ".scss",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

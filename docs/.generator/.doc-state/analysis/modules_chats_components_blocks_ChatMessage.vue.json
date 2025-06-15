@@ -1,0 +1,49 @@
+{
+  "path": "../../src/modules/chats/components/blocks/ChatMessage.vue",
+  "relativePath": "modules/chats/components/blocks/ChatMessage.vue",
+  "type": "source",
+  "name": "ChatMessage.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент ChatMessage отображает одну текстовую запись чата: имя пользователя, время создания сообщения и его содержимое.",
+    "Purpose": "Обеспечить отображение одиночного сообщения в ленте чата с базовым форматированием и выделением сообщений от службы поддержки.",
+    "Components": [
+      {
+        "name": "ChatMessage",
+        "type": "Vue Component",
+        "responsibilities": [
+          "Принимать объект сообщения через prop",
+          "Отображать имя пользователя, время и текст сообщения",
+          "Выделять фоновым цветом сообщения от пользователя 'Support'"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatDate",
+        "location": "глобально или в миксине/фильтре (не определена в этом файле)",
+        "description": "Форматирует временную метку createdAt в человекочитаемый вид",
+        "parameters": [
+          {
+            "name": "timestamp",
+            "type": "String | Number | Date",
+            "description": "Временная метка создания сообщения"
+          }
+        ],
+        "returns": "String"
+      }
+    ],
+    "Dependencies": [
+      "Параметр prop: message (Object с полями username, createdAt, text)",
+      "Глобальная функция или миксин formatDate",
+      "Глобальные CSS-классы: pd-small, bg-main-nano, flex-v-center, gap-thin и др."
+    ],
+    "Usage": "Импортируется и используется в родительских компонентах, отображающих список сообщений (например, ChatList или ChatWindow). Пример: <ChatMessage :message=\"msg\" />.",
+    "Importance": 3,
+    "Notes": [
+      "Внутренний <style> пустой — все стили берутся из глобальных классов.",
+      "Метод formatDate не объявлен локально, ожидается его глобальная регистрация.",
+      "Поддерживается базовое выделение сообщений от 'Support'."
+    ]
+  }
+}

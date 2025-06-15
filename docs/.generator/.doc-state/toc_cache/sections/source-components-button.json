@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-button",
+    "title": "Проект: Компоненты / Button",
+    "description": "Модуль содержит компонент Button для пользовательского интерфейса.",
+    "subsections": [
+      {
+        "id": "button-vue",
+        "title": "Button.vue",
+        "description": "Основной Vue-компонент кнопки. Используется для отображения и обработки нажатий кнопок в интерфейсе."
+      }
+    ]
+  },
+  "fileHashes": [
+    "e01d5dcd419517bc002f474e04e6953c"
+  ],
+  "groupHash": "b41d7ed320007cfa8896b024ed3d33a1",
+  "generated": "2025-06-05T09:16:23.947Z"
+}

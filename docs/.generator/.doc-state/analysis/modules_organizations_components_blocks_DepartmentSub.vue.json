@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/DepartmentSub.vue",
+  "relativePath": "modules/organizations/components/blocks/DepartmentSub.vue",
+  "type": "source",
+  "name": "DepartmentSub.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a small card for a department, displaying its name and the number of members.",
+    "Purpose": "Serve as a reusable sub-component in the organizations module to visually present basic information about a department.",
+    "Components": [
+      {
+        "name": "DepartmentSub",
+        "type": "Vue component (script setup syntax)",
+        "responsibility": "Render department.name (or fallback) and department.members.length (or 0) inside a styled container."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare and validate incoming props for the component.",
+        "parameters": {
+          "department": {
+            "type": "Object",
+            "required": true,
+            "description": "Object with at least a `name` field and a `members` array to display."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "entities": [
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Imported into parent views or components under modules/organizations to render each department in a list or grid. Example: `import DepartmentSub from './components/blocks/DepartmentSub.vue';`",
+    "Importance": 2,
+    "Notes": [
+      "The avatar `<img>` element is currently commented out — can be re-enabled when an avatar URL prop is available.",
+      "Scoped `<style>` block is empty; styling should be added here if customization is needed.",
+      "Fallbacks are in place: name → 'Безымянный', member count → '0 человек'.",
+      "No dynamic methods or watchers are defined beyond simple interpolation."
+    ]
+  }
+}

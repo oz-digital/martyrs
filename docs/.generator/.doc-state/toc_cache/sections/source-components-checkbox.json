@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-checkbox",
+    "title": "Проект: Компоненты / Checkbox",
+    "description": "Модуль содержит компонент Checkbox для выбора одного или нескольких вариантов пользователем.",
+    "subsections": [
+      {
+        "id": "checkbox-osnovnoy-komponent",
+        "title": "Основной компонент Checkbox",
+        "description": "Файл Checkbox.vue реализует визуальный элемент флажка с поддержкой пользовательских событий и состояния выбора."
+      }
+    ]
+  },
+  "fileHashes": [
+    "d3a80593e0a50cd3aa124401663f99ad"
+  ],
+  "groupHash": "f7ee4a153810a89d468ac9b3c5e4775e",
+  "generated": "2025-06-05T09:16:26.981Z"
+}

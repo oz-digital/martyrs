@@ -1,0 +1,67 @@
+{
+  "path": "../../src/modules/gallery/gallery.client.js",
+  "relativePath": "modules/gallery/gallery.client.js",
+  "type": "source",
+  "name": "gallery.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет клиентский модуль галереи для фреймворка martyrs: импортирует стор, роутер и Vue-компоненты, предоставляет функцию инициализации и экспортирует объект ModuleGallery с набором views и методом initialize.",
+    "Purpose": "Главная задача файла — зарегистрировать в приложении соответствующие маршруты и стор для модуля «Галерея», а также предоставить доступ к Vue-компонентам этого модуля.",
+    "Components": [
+      {
+        "name": "ModuleGallery",
+        "responsibility": "Конфигурация модуля галереи: содержит функцию инициализации и ссылки на стор, роутер и компоненты"
+      },
+      {
+        "name": "Gallery",
+        "responsibility": "Vue-компонент страницы для отображения публичной галереи"
+      },
+      {
+        "name": "BackofficeGallery",
+        "responsibility": "Vue-компонент секции для бэкофисного интерфейса галереи"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeGallery",
+        "description": "Инициализирует модуль галереи: регистрирует маршрут и стор в глобальных роутере и сторе приложения",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "Экземпляр приложения (не используется внутри, но может быть передан для расширений)"
+          },
+          {
+            "name": "store",
+            "type": "Object",
+            "description": "Глобальный стор-менеджер, в который добавляется под store.gallery"
+          },
+          {
+            "name": "router",
+            "type": "Object",
+            "description": "Глобальный роутер, в который добавляется маршрут для галереи"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Дополнительные опции (например, переопределение родительского маршрута)",
+            "default": "{}"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./store/gallery.js",
+      "./router/gallery.router.js",
+      "./components/pages/Gallery.vue",
+      "./components/sections/BackofficeGallery.vue"
+    ],
+    "Usage": "Импортируется как основной клиентский модуль: `import ModuleGallery from 'modules/gallery/gallery.client.js';` далее вызывается `ModuleGallery.initialize(app, store, router, { route: 'Home' });` и при необходимости обращаются к ModuleGallery.views для доступа к store, router или компонентам.",
+    "Importance": 4,
+    "Notes": [
+      "В коде оставлены закомментированные вызовы для создания backoffice-маршрутов — модуль можно расширить подключением `gallery.backoffice.router.js`.",
+      "Опция `route` позволяет гибко указывать родительский маршрут при регистрации.",
+      "Vue-компоненты подключаются статически, без lazy-loading; можно улучшить производительность через динамический импорт."
+    ]
+  }
+}

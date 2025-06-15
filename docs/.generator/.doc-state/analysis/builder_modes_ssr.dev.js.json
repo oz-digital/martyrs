@@ -1,0 +1,83 @@
+{
+  "path": "../../src/builder/modes/ssr.dev.js",
+  "relativePath": "builder/modes/ssr.dev.js",
+  "type": "source",
+  "name": "ssr.dev.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику createSsrDevServer, которая настраивает и запускает сервер разработки для SSR-приложения с HMR (горячая замена модулей) на основе Rspack. Он компилирует клиентскую и серверную части, следит за изменениями, динамически подгружает новый серверный бандл и возвращает HTML-ответ на каждый запрос.",
+    "Purpose": "Организовать среду разработки для SSR-приложения: настроить клиентский HMR, серверную сборку с переподгрузкой модуля рендеринга, интеграцию с Express-подобным сервером и генерацию итогового HTML по запросу.",
+    "Components": [
+      {
+        "name": "createSsrDevServer",
+        "description": "Главная функция-фабрика, принимающая корень проекта и набор конфигураций, возвращает функцию startServer."
+      },
+      {
+        "name": "addHmrToClientConfig",
+        "description": "Утилита, добавляющая HMR-плагин и точки входа hot-middleware в клиентскую конфигурацию Rspack."
+      },
+      {
+        "name": "createDevRenderer",
+        "description": "Генерирует функцию-рендерер, объединяющую серверный HMR-рендеринг и HTML-шаблонизатор."
+      },
+      {
+        "name": "createHotReloadingServerRenderer",
+        "description": "Настраивает слежение за серверной сборкой через rspack.watch, динамически импортирует новый render-метод по готовности."
+      },
+      {
+        "name": "startServer",
+        "description": "Инициализирует Express-подобный сервер, настраивает devMiddleware, hotMiddleware и обрабатывает все запросы через SSR-рендерер."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createSsrDevServer",
+        "description": "Фабрика настроек dev-сервера для SSR.",
+        "parameters": [
+          "projectRoot: string",
+          "{ clientConfig, apiConfig, ssrConfig, createServer }: object"
+        ]
+      },
+      {
+        "name": "addHmrToClientConfig",
+        "description": "Мутирует копию клиентской конфигурации, добавляя HMR-плагины и entry.",
+        "parameters": [
+          "config: object"
+        ]
+      },
+      {
+        "name": "createDevRenderer",
+        "description": "Собирает функцию renderHtml + функцию горячей перезагрузки SSR.",
+        "parameters": []
+      },
+      {
+        "name": "createHotReloadingServerRenderer",
+        "description": "Организует watch-сборку SSR-бандла и динамический импорт функции render.",
+        "parameters": [
+          "config: object"
+        ]
+      },
+      {
+        "name": "startServer",
+        "description": "Запускает сервер разработки на заданном порту, монтирует middlewares и SSR-обработчик.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "path",
+      "chalk",
+      "@rspack/core (rspack, ProgressPlugin)",
+      "../ssr/ssr-render-html.js (createHtmlRenderer)",
+      "../ssr/ssr-transform-webpack-stats.js (transformDevStats)"
+    ],
+    "Usage": "Импортируется из скрипта сборки/CLI: const startDev = require('builder/modes/ssr.dev.js').default; затем startDev(projectRoot, configs)(). Обычно вызывается единожды при запуске dev-сервера.",
+    "Importance": 4,
+    "Notes": [
+      "Используется dynamic import для ESM-совместимости при загрузке скомпилированного SSR-бандла.",
+      "transformDevStats импортирован, но фактически в коде не используется (вместо него вызывается extractAssets, который не импортирован).",
+      "Это ключевой файл для разработки SSR, без него невозможно горячее обновление серверного кода.",
+      "Встроенный ProgressPlugin выводит прогресс сборки в консоль.",
+      "Ожидается, что createServer передаётся объектом с методом createServer(), возвращающим { app, server }."
+    ]
+  }
+}

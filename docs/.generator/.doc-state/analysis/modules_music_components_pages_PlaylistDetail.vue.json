@@ -1,0 +1,137 @@
+{
+  "path": "../../src/modules/music/components/pages/PlaylistDetail.vue",
+  "relativePath": "modules/music/components/pages/PlaylistDetail.vue",
+  "type": "source",
+  "name": "PlaylistDetail.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 single‐file component that renders the detail page for a music playlist. It handles loading state, displays playlist metadata and tracks, provides playback and favorite toggles, offers a dropdown for additional actions (edit, delete, add to queue, toggle collaborative, copy link), and includes modals for editing and deleting the playlist.",
+    "Purpose": "To serve as the main UI for users to view and interact with a single playlist: play it, manage its contents and settings, and perform CRUD operations if the user is the owner or a collaborator.",
+    "Components": [
+      {
+        "name": "TrackList",
+        "role": "Displays the list of tracks in the playlist with optional album and cover columns."
+      },
+      {
+        "name": "Button",
+        "role": "Reusable button component that supports loading, success states, and custom styling."
+      },
+      {
+        "name": "Loader",
+        "role": "Shows a loading spinner while data is being fetched."
+      },
+      {
+        "name": "Media",
+        "role": "Renders images or media assets by URL, with fallback placeholder."
+      },
+      {
+        "name": "Dropdown",
+        "role": "Provides a dropdown container for contextual actions."
+      },
+      {
+        "name": "Popup",
+        "role": "Modal dialog component used for editing or confirming deletion."
+      },
+      {
+        "name": "Field",
+        "role": "Form input component with built-in validation messages."
+      },
+      {
+        "name": "Radio",
+        "role": "Form radio button component for selecting privacy options."
+      },
+      {
+        "name": "UploadImage",
+        "role": "Image upload component for changing playlist cover."
+      },
+      {
+        "name": "IconPlay / IconHeart / IconEllipsis / IconMusic",
+        "role": "SVG icon components used throughout the UI."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getPlaylistOwnerName",
+        "purpose": "Returns the display name of the playlist owner.",
+        "params": [
+          "playlist"
+        ]
+      },
+      {
+        "name": "getOwnerProfileLink",
+        "purpose": "Generates a router-link object to the owner’s profile page based on owner type.",
+        "params": [
+          "owner"
+        ]
+      },
+      {
+        "name": "playPlaylist",
+        "purpose": "Sets the current player queue to this playlist’s tracks if any.",
+        "params": []
+      },
+      {
+        "name": "toggleFavorite",
+        "purpose": "Toggles the local favorite state for this playlist (stub for future logic).",
+        "params": []
+      },
+      {
+        "name": "addToQueue",
+        "purpose": "Appends all playlist tracks to the player queue and closes the dropdown.",
+        "params": []
+      },
+      {
+        "name": "editPlaylist",
+        "purpose": "Populates the edit form with current playlist data and opens the edit modal.",
+        "params": []
+      },
+      {
+        "name": "updatePlaylist",
+        "purpose": "Validates the form, then dispatches an action to update playlist details via store.",
+        "params": []
+      },
+      {
+        "name": "toggleCollaborative",
+        "purpose": "Toggles the playlist’s collaborative flag through a store action.",
+        "params": []
+      },
+      {
+        "name": "deletePlaylist",
+        "purpose": "Opens the delete confirmation modal and closes the dropdown.",
+        "params": []
+      },
+      {
+        "name": "confirmDelete",
+        "purpose": "Dispatches a store action to delete the playlist and navigates back to library.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, reactive, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Media/Media.vue",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Radio/Radio.vue",
+      "@martyrs/src/components/UploadImage/UploadImage.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlay.vue",
+      "@martyrs/src/modules/icons/navigation/IconHeart.vue",
+      "@martyrs/src/modules/icons/navigation/IconEllipsis.vue",
+      "@martyrs/src/modules/icons/entities/IconMusic.vue",
+      "store/auth (authState)",
+      "store/playlists (playlistsState, playlistsActions)",
+      "store/player (playerActions)"
+    ],
+    "Usage": "Registered as a route component (e.g. name: 'playlist-detail') and rendered when the user navigates to /playlist/:id. Other components and pages import it via router configuration.",
+    "Importance": 4,
+    "Notes": [
+      "No dedicated <style> section in the snippet—styles are applied via utility classes.",
+      "Relies heavily on global store modules for fetching/updating playlist data and player control.",
+      "Validation for the edit form is minimal and only checks for non-empty title.",
+      "The favorite toggle is currently a UI-only stub—persistence logic to be implemented.",
+      "The component is truncated at the confirmDelete implementation but core logic is present."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/auth/controllers/utils/verifyAppleIdToken.js",
+  "relativePath": "modules/auth/controllers/utils/verifyAppleIdToken.js",
+  "type": "source",
+  "name": "verifyAppleIdToken.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Provides a utility to verify and decode Apple ID JSON Web Tokens (JWTs) by fetching Apple public keys, checking claims, and validating the signature.",
+    "Purpose": "Ensures that an incoming Apple ID token is valid, unexpired, issued by Apple, intended for this app, and correctly signed before accepting it for authentication in the project.",
+    "Components": [
+      {
+        "name": "verifyAppleIdToken",
+        "type": "function",
+        "responsibility": "Performs decoding, claim checks (issuer, audience, expiration), fetches Apple public keys, converts JWK to PEM, and verifies token signature."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "verifyAppleIdToken",
+        "parameters": [
+          {
+            "name": "id_token",
+            "type": "string",
+            "description": "The raw Apple ID JSON Web Token to be verified."
+          }
+        ],
+        "returns": {
+          "type": "Promise<object>",
+          "description": "Resolves with the decoded JWT payload if verification passes."
+        },
+        "description": "1. Decodes token structure without verification. 2. Validates 'iss', 'aud', and 'exp' claims. 3. Fetches Apple's JWK set. 4. Selects matching key by 'kid'. 5. Converts JWK to PEM. 6. Verifies the token signature using RS256. 7. Throws descriptive errors on any failure."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "jsonwebtoken",
+        "purpose": "Decoding and verifying JWTs."
+      },
+      {
+        "module": "jwk-to-pem",
+        "purpose": "Converting JSON Web Keys (JWK) from Apple into PEM format for signature verification."
+      },
+      {
+        "module": "node-fetch or built-in fetch",
+        "purpose": "Fetching Apple's public keys from https://appleid.apple.com/auth/keys."
+      },
+      {
+        "module": "process.env",
+        "purpose": "Reading APPLE_CLIENTID environment variable for audience validation."
+      }
+    ],
+    "Usage": "Import and call the async function wherever Apple ID tokens need validation, for example:\n\n  import verifyAppleIdToken from 'modules/auth/controllers/utils/verifyAppleIdToken';\n  \n  const payload = await verifyAppleIdToken(idToken);\n\nOr via named export:\n\n  import { verifyAppleIdToken } from '.../verifyAppleIdToken';",
+    "Importance": 4,
+    "Notes": [
+      "Relies on a global or polyfilled fetch API; ensure fetch is available in the runtime.",
+      "Throws generic Error instances; consider replacing with custom error classes for finer-grained error handling.",
+      "The audience check uses process.env.APPLE_CLIENTID — ensure this env var is set correctly.",
+      "Token decoding uses jwt.decode without verifying signature first; preliminary checks guard against malformed tokens.",
+      "In high-load scenarios, caching Apple's JWK set can reduce fetch overhead."
+    ]
+  }
+}

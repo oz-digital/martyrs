@@ -1,0 +1,153 @@
+{
+  "path": "../../src/modules/spots/components/sections/WorktimeEdit.vue",
+  "relativePath": "modules/spots/components/sections/WorktimeEdit.vue",
+  "type": "source",
+  "name": "WorktimeEdit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "WorktimeEdit.vue is a Vue 3 component that renders and manages a user interface for viewing, adding, editing and removing regular working‐hour schedules and special‐day schedules. It displays the current schedules in tables, provides buttons to open modals for editing, and validates period overlaps and duplicate dates.",
+    "Purpose": "To provide a reusable UI section within the ‘spots’ module where administrators or users can configure a business’s regular weekly hours and special (holiday/event) hours in a form‐based interface.",
+    "Components": [
+      {
+        "name": "WorktimeEdit",
+        "role": "Parent component coordinating state and rendering templates"
+      },
+      {
+        "name": "Button",
+        "role": "Reusable button component for actions (add/edit/remove/save/cancel)"
+      },
+      {
+        "name": "Field",
+        "role": "Form field component for time, date, and text inputs"
+      },
+      {
+        "name": "Select",
+        "role": "Dropdown component for selecting weekdays"
+      },
+      {
+        "name": "Checkbox",
+        "role": "Toggle component to mark day as open/closed"
+      },
+      {
+        "name": "Popup",
+        "role": "Modal dialog wrapper for add/edit forms"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatDate",
+        "purpose": "Formats a date string into a localized long format (weekday, month, day, year)",
+        "params": [
+          "date: string or Date"
+        ]
+      },
+      {
+        "name": "getWeekdayName",
+        "purpose": "Returns the localized weekday name for a numeric dayOfWeek (0–6)",
+        "params": [
+          "dayNumber: number"
+        ]
+      },
+      {
+        "name": "addRegularDay",
+        "purpose": "Clears and opens the regular‐day modal to add a new entry",
+        "params": []
+      },
+      {
+        "name": "editRegularDay",
+        "purpose": "Loads a specific regular‐day entry into the modal for editing",
+        "params": [
+          "index: number"
+        ]
+      },
+      {
+        "name": "removeRegularDay",
+        "purpose": "Removes a regular‐day entry from the worktime data",
+        "params": [
+          "index: number"
+        ]
+      },
+      {
+        "name": "addSpecialDay",
+        "purpose": "Clears and opens the special‐day modal to add a new entry",
+        "params": []
+      },
+      {
+        "name": "editSpecialDay",
+        "purpose": "Loads a specific special‐day entry into the modal for editing",
+        "params": [
+          "index: number"
+        ]
+      },
+      {
+        "name": "removeSpecialDay",
+        "purpose": "Removes a special‐day entry from the worktime data",
+        "params": [
+          "index: number"
+        ]
+      },
+      {
+        "name": "addPeriodToRegular",
+        "purpose": "Appends a new empty time period to the current regular‐day periods",
+        "params": []
+      },
+      {
+        "name": "removeRegularPeriod",
+        "purpose": "Deletes a time period from the current regular‐day modal",
+        "params": [
+          "periodIndex: number"
+        ]
+      },
+      {
+        "name": "addPeriodToSpecial",
+        "purpose": "Appends a new empty time period to the current special‐day periods",
+        "params": []
+      },
+      {
+        "name": "removeSpecialPeriod",
+        "purpose": "Deletes a time period from the current special‐day modal",
+        "params": [
+          "periodIndex: number"
+        ]
+      },
+      {
+        "name": "validatePeriods",
+        "purpose": "Checks that open/close times in the current modal do not overlap and sets validationErrors.overlappingPeriods",
+        "params": []
+      },
+      {
+        "name": "validateSpecialDate",
+        "purpose": "Ensures the selected special date is not empty and not already in the list, sets validationErrors.duplicateDate",
+        "params": []
+      },
+      {
+        "name": "saveRegularDay",
+        "purpose": "Validates and commits the regular‐day data back into the worktime model, then closes the modal",
+        "params": []
+      },
+      {
+        "name": "saveSpecialDay",
+        "purpose": "Validates and commits the special‐day data back into the worktime model, then closes the modal",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch, onMounted, defineModel, defineEmits)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Checkbox/Checkbox.vue",
+      "@martyrs/src/components/Popup/Popup.vue"
+    ],
+    "Usage": "Imported into parent views or pages where a worktime object is provided via v-model (defineModel) or prop. Typical syntax: <WorktimeEdit v-model:worktime=\"spotData.worktime\" />",
+    "Importance": 4,
+    "Notes": [
+      "Uses Composition API and script setup syntax",
+      "Internationalized strings defined locally for English and Russian",
+      "Manages two parallel data sets: worktime.regular and worktime.special",
+      "Handles complex validation (duplicate dates, overlapping periods)",
+      "No <style> section—styles likely come from global or component CSS in Martyrs"
+    ]
+  }
+}

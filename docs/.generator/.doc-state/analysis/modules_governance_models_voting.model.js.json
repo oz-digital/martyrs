@@ -1,0 +1,61 @@
+{
+  "path": "../../src/modules/governance/models/voting.model.js",
+  "relativePath": "modules/governance/models/voting.model.js",
+  "type": "source",
+  "name": "voting.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет Mongoose-схему и модель Voting для хранения и управления сущностями голосования в приложении.",
+    "Purpose": "Обеспечить единый объектно-документный интерфейс для CRUD операций с коллекцией голосований (Voting) в модуле governance.",
+    "Components": [
+      {
+        "name": "VotingSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Описание структуры документа Voting: поля title, description, startDate, endDate, status и массив votes."
+      },
+      {
+        "name": "Voting",
+        "type": "Mongoose.Model",
+        "responsibility": "Модель MongoDB на основе VotingSchema для выполнения операций выборки, создания, обновления и удаления голосований."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "function(db) => Model",
+        "description": "Фабричная функция, принимающая объект db (ссылка на подключение к базе и mongoose) и возвращающая модель Voting.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контекст базы данных, содержащий mongoose и его типы."
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель Voting"
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "db.mongoose",
+        "description": "Основная библиотека mongoose для определения схем и моделей."
+      },
+      {
+        "module": "Vote",
+        "description": "Другой модельный документ, на который ссылаются элементы массива votes через ObjectId."
+      }
+    ],
+    "Usage": [
+      "Импортируется и вызывается при инициализации модуля базы данных в рамках фреймворка martyrs (обычно из общего loader-файла).",
+      "Далее модель используется в сервисах и контроллерах для работы с сущностями голосования."
+    ],
+    "Importance": 3,
+    "Notes": [
+      "Поле status ограничено enum ['pending', 'active', 'closed'] со значением по умолчанию 'pending'.",
+      "Включены автоматические метки времени createdAt и updatedAt с кастомной функцией currentTime.",
+      "Модель создаётся динамически через фабрику, что позволяет абстрагироваться от конкретного подключения к БД."
+    ]
+  }
+}

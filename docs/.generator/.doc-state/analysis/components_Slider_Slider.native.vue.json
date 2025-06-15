@@ -1,0 +1,89 @@
+{
+  "path": "../../src/components/Slider/Slider.native.vue",
+  "relativePath": "components/Slider/Slider.native.vue",
+  "type": "source",
+  "name": "Slider.native.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue native slider/carousel component that fetches a list of entities from a store, shows a loader or empty state as needed, and renders slides with optional navigation dots, autoplay and scroll-snap behavior.",
+    "Purpose": "To provide a reusable, customizable horizontal carousel for displaying a list of items (entities) with support for loading state, empty state, autoplay, manual scrolling, and pagination dots.",
+    "Components": [
+      {
+        "name": "Loader",
+        "responsibility": "Shows a loading spinner while data is being fetched."
+      },
+      {
+        "name": "Carousel",
+        "responsibility": "Root wrapper that contains the loading state, empty state, and the native carousel."
+      },
+      {
+        "name": "CarouselContainer",
+        "responsibility": "Flex container with scroll-snap, listens to scroll events and user interactions."
+      },
+      {
+        "name": "CarouselSlide",
+        "responsibility": "Individual slide wrapper that hosts the user-provided slot content."
+      },
+      {
+        "name": "CarouselDots",
+        "responsibility": "Optional pagination controls that allow jumping to specific slides."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "scrollTo",
+        "description": "Scrolls the carousel container smoothly to the slide at the given index and updates selectedIndex.",
+        "parameters": [
+          "index: Number"
+        ]
+      },
+      {
+        "name": "handleScroll",
+        "description": "Debounced handler for the container's scroll event; waits briefly then calls updateSelectedIndex.",
+        "parameters": []
+      },
+      {
+        "name": "updateSelectedIndex",
+        "description": "Calculates the currently visible slide based on scrollLeft and slide width, then updates selectedIndex.",
+        "parameters": []
+      },
+      {
+        "name": "setupAutoplay",
+        "description": "Initializes or resets an interval that automatically advances the slide every 2 seconds.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted (lifecycle hook)",
+        "description": "Fetches entities from props.store, initializes IntersectionObserver, event listeners, and autoplay after data is loaded.",
+        "parameters": []
+      },
+      {
+        "name": "onBeforeUnmount (lifecycle hook)",
+        "description": "Cleans up IntersectionObserver, event listeners, and clears timeouts/intervals to avoid leaks.",
+        "parameters": []
+      },
+      {
+        "name": "watch(entitiesState)",
+        "description": "Resets the carousel to the first slide and restarts autoplay whenever the list of entities changes.",
+        "parameters": [
+          "newValue: Array"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, onBeforeUnmount, watch)",
+      "vue-router (useRouter)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Loader/Loader.vue"
+    ],
+    "Usage": "Imported as a Vue component (e.g. import Slider from 'components/Slider/Slider.native.vue') and used in templates with props: showDots, store, options, text (i18n messages), user; content is passed via default slot per item.",
+    "Importance": 3,
+    "Notes": [
+      "Uses IntersectionObserver with 70% threshold to track visible slide and update selectedIndex more efficiently than scroll events alone.",
+      "Pauses autoplay on focus, touchstart, mousedown and resumes on focusout, touchend, mouseup.",
+      "Cleanup in onBeforeUnmount currently removes listeners via anonymous callbacks, which may not properly unregister the original handlers—storing references to handlers for removal is recommended.",
+      "Scroll snapping and smooth behavior are handled via CSS (scroll-snap-type, scroll-behavior).",
+      "Supports translations via vue-i18n using props.text."
+    ]
+  }
+}

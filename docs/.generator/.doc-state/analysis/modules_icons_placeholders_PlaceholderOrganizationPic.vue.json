@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/icons/placeholders/PlaceholderOrganizationPic.vue",
+  "relativePath": "modules/icons/placeholders/PlaceholderOrganizationPic.vue",
+  "type": "source",
+  "name": "PlaceholderOrganizationPic.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue single-file component that renders a static SVG icon used as a placeholder for an organization picture.",
+    "purpose": "Предоставить в приложении стандартный SVG-плейсхолдер для изображения организации в тех местах, где нет загруженной фотографии.",
+    "components": [
+      {
+        "name": "PlaceholderOrganizationPic",
+        "type": "Vue SFC (functional/stateless)",
+        "responsibility": "Отображает SVG-иконку размером 24×24 пикселя с фоновым прямоугольником и полупрозрачным белым узором."
+      }
+    ],
+    "functions": [],
+    "dependencies": [
+      "vue (для рендеринга .vue компонентов)"
+    ],
+    "usage": "Импортируется и регистрируется в родительских компонентах или в глобальном реестре и используется как <PlaceholderOrganizationPic /> там, где нужен плейсхолдер для аватара организации.",
+    "importance": 2,
+    "notes": [
+      "В файле отсутствуют секции <script> и <style>, компонент полностью определяется в разделе <template>.",
+      "SVG использует CSS-переменные (--black, --white) и атрибут fill-opacity для управления цветом.",
+      "Не содержит реактивной логики или пропсов — исключительно статический визуальный элемент."
+    ]
+  }
+}

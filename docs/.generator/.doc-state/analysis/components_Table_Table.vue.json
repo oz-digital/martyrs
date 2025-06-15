@@ -1,0 +1,71 @@
+{
+  "path": "../../src/components/Table/Table.vue",
+  "relativePath": "components/Table/Table.vue",
+  "type": "source",
+  "name": "Table.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a scrollable, customizable table given an array of items and column definitions. Supports nested property access and named slots for custom cell rendering.",
+    "Purpose": "To provide a reusable table UI component for displaying tabular data with flexible column definitions and optional slot-based cell templates.",
+    "Components": [
+      {
+        "name": "Table",
+        "type": "Vue SFC",
+        "responsibilities": [
+          "Accepts `items` (array of data objects) and `columns` (array of {key, label} definitions).",
+          "Renders an HTML table with headers based on `columns`.",
+          "Renders table rows by iterating over `items` and columns.",
+          "Provides a default cell renderer using nested property lookup.",
+          "Exposes named slots `cell-<columnKey>` for custom cell templates."
+        ]
+      },
+      {
+        "name": ".custom-table",
+        "type": "CSS class",
+        "responsibilities": [
+          "Applies border-collapse styling to the table.",
+          "Ensures vertical alignment of table cell contents."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getNestedValue",
+        "purpose": "Safely retrieve a nested property from an object using a dot-separated path string.",
+        "parameters": [
+          {
+            "name": "obj",
+            "type": "Object",
+            "description": "The source object to query."
+          },
+          {
+            "name": "path",
+            "type": "String",
+            "description": "Dot-delimited string representing the nested property path (e.g. 'user.address.street')."
+          }
+        ],
+        "returns": "Any - the value at the given path, or `undefined` if any intermediate is missing."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps",
+          "computed"
+        ],
+        "notes": "Only `defineProps` is actively used; `computed` is imported but not used in this file."
+      }
+    ],
+    "Usage": "Import and register the component in parent views or components: `import Table from '@/components/Table/Table.vue'`, then include `<Table :items=\"dataList\" :columns=\"columnDefs\">` in the template. Optionally provide `<template #cell-<key>=\"{ value, row }\">` slots for per-cell customization.",
+    "Importance": 4,
+    "Notes": [
+      "The component uses the `<script setup>` syntax introduced in Vue 3.",
+      "Slots are dynamically named per column via `cell-${col.key}`, enabling flexible overrides.",
+      "The fallback content for each cell duplicates the default nested-value output.",
+      "The `computed` import is not utilized—can be removed to clean up.",
+      "Scoped SCSS ensures table styles do not bleed into other parts of the app.",
+      "The horizontal scroll container (`.o-x-scroll`) guarantees table accessibility on smaller viewports."
+    ]
+  }
+}

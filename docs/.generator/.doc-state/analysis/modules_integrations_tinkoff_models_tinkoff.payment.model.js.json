@@ -1,0 +1,37 @@
+{
+  "path": "../../src/modules/integrations/tinkoff/models/tinkoff.payment.model.js",
+  "relativePath": "modules/integrations/tinkoff/models/tinkoff.payment.model.js",
+  "type": "source",
+  "name": "tinkoff.payment.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports a Mongoose model (Payment) for storing Tinkoff payment records in MongoDB.",
+    "Purpose": "Provide a schema and model to persist and query payment information returned by the Tinkoff integration.",
+    "Components": [
+      {
+        "name": "PaymentSchema",
+        "description": "A Mongoose schema that describes the structure of a payment document, including fields like OrderId, Success, Status, PaymentId, PaymentURL, ErrorCode, Message, Details, and automatic timestamps."
+      },
+      {
+        "name": "Payment",
+        "description": "The Mongoose model compiled from PaymentSchema, used to perform CRUD operations on the 'payments' collection."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "timestamps.currentTime",
+        "description": "A custom function passed to the schema's timestamps option so that createdAt and updatedAt fields are generated using Date.now().",
+        "parameters": "none"
+      }
+    ],
+    "Dependencies": [
+      "mongoose"
+    ],
+    "Usage": "Imported elsewhere in the Tinkoff integration to create, read, update or delete payment entries, e.g.: `import Payment from 'modules/integrations/tinkoff/models/tinkoff.payment.model';`",
+    "Importance": 3,
+    "Notes": [
+      "The timestamps option uses Date.now(), which returns milliseconds since epoch, not seconds. If true Unix seconds are needed, this function may need adjustment.",
+      "Collection name is inferred as 'payments' (lowercased + pluralized)."
+    ]
+  }
+}

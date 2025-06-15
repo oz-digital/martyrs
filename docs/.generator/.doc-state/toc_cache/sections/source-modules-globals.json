@@ -1,0 +1,183 @@
+{
+  "section": {
+    "id": "source-modules-globals",
+    "title": "Проект: Модули / Глобальные",
+    "description": "Модуль содержит глобальные классы и утилиты для поддержки инфраструктуры приложения, включая работу с WebSocket, кешированием, логированием, политиками и валидацией.",
+    "subsections": [
+      {
+        "id": "globals-core",
+        "title": "Глобальные классы",
+        "description": "Базовые классы для реализации кэширования, логирования, CRUD-операций, валидации, верификации, наблюдения и работы с вебхуками.",
+        "files": [
+          "classes/globals.cache.js",
+          "classes/globals.logger.js",
+          "classes/globals.crud.js",
+          "classes/globals.validator.js",
+          "classes/globals.verifier.js",
+          "classes/globals.observer.js",
+          "classes/globals.webhook.js"
+        ]
+      },
+      {
+        "id": "globals-abac-policies",
+        "title": "Политики и ABAC",
+        "description": "Файлы, связанные с политиками доступа и атрибутным контролем.",
+        "files": [
+          "classes/globals.abac.js",
+          "policies/globals.policies.js"
+        ]
+      },
+      {
+        "id": "globals-websocket",
+        "title": "WebSocket",
+        "description": "Классы для работы с WebSocket и их расширения.",
+        "files": [
+          "classes/globals.websocket.js",
+          "classes/globals.websocket.ws.js"
+        ]
+      },
+      {
+        "id": "globals-client-server",
+        "title": "Клиент и сервер",
+        "description": "Глобальные файлы инициализации для клиентской и серверной части.",
+        "files": [
+          "globals/globals.client.js",
+          "globals/globals.server.js"
+        ]
+      },
+      {
+        "id": "globals-utils",
+        "title": "Утилиты",
+        "description": "Вспомогательные функции для обработки запросов, генерации SEO-URL и создания sitemap.",
+        "files": [
+          "utils/queryProcessor.js",
+          "utils/seo-friendly-url.js",
+          "utils/sitemap.js"
+        ]
+      },
+      {
+        "id": "globals-schemas",
+        "title": "Схемы данных",
+        "description": "Набор схем для описания структуры данных: общие, учетные данные, вовлеченность, метаданные, владение, профиль, социальные сети.",
+        "files": [
+          "schemas/common.schema.js",
+          "schemas/credentials.schema.js",
+          "schemas/engagement.schema.js",
+          "schemas/metadata.schema.js",
+          "schemas/ownership.schema.js",
+          "schemas/profile.schema.js",
+          "schemas/socials.schema.js"
+        ]
+      },
+      {
+        "id": "globals-store",
+        "title": "Хранилище данных",
+        "description": "Классы для работы с глобальным и локальным хранилищем данных.",
+        "files": [
+          "classes/globals.store.js",
+          "classes/store.js"
+        ]
+      },
+      {
+        "id": "globals-middleware-localization",
+        "title": "Локализация",
+        "description": "Мидлвар для поддержки мультиязычности и локализации интерфейса.",
+        "files": [
+          "middlewares/localization.js"
+        ]
+      },
+      {
+        "id": "globals-mixins",
+        "title": "Миксины",
+        "description": "Общие миксины для повторного использования логики в компонентах.",
+        "files": [
+          "mixins/mixins.js"
+        ]
+      },
+      {
+        "id": "globals-plugins",
+        "title": "Плагины",
+        "description": "Плагины для расширения функциональности приложения (уведомления, выбор даты, отладка хранилища).",
+        "files": [
+          "plugins/alert.plugin.js",
+          "plugins/date-picker.plugin.js",
+          "store-debugger/store-debugger.plugin.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "006a806fe9749fe33709aceaf888c710",
+    "04bd085b1559f51cb28785b347330e7c",
+    "0d1e8cff52d83c38d8a938a789c11c0e",
+    "103f23e9583406afd05d02d87ec7b091",
+    "13dd2f7251364fd23dfb7271ebf09e4f",
+    "140f37ed7f9dbb80f71da685f2aa9627",
+    "1608c071e1bf7d57d0e5a0c38b1769bb",
+    "164f7e3490008fffd2384917db8cecb9",
+    "1a593512e601c7db8a08d259df75736d",
+    "1bca43041a9f177e22ccdfee6af9488e",
+    "1e572cf37e3d3eb3fb51042c541e0c77",
+    "21bdab03b9764cd4f83be6a33386ac7a",
+    "245c563e384ffe74f84ca7fb4df778f4",
+    "2594ebb74665cf4caa2bc2af8473fbc6",
+    "2c686ce83e35971baa2a9c6a6f4fa284",
+    "321d3e864215a4b4f9e10510cd4122d1",
+    "36f1cd1c28e775eb859cceff4c9f7dee",
+    "393a1da528ef7987fc68e118e6104b4a",
+    "3b33d259e1edb2bc4aa5a575e764320c",
+    "3f9ba0e0ef6fb239e8fe8e1ba83891a6",
+    "4106cdeb184d961c2b8386a9986f6ccd",
+    "45d23da2b6dffba7cab1d69f96cabb07",
+    "4635d2442092590961307410b3ede109",
+    "47294202056c096cb255fe7815c55563",
+    "4b91ea2b19f1838e70b614c930d0a1e9",
+    "4c5064636ba73424ce71041fa96a6f34",
+    "54ddc09e1e0ec6cb222f37f52744b278",
+    "55c79386774cdf57ba33c6fbc8e9368a",
+    "5eaac07ac58bbe9ac2dba56bf6a06f37",
+    "5fac93ca9dada884c4e79da694e64790",
+    "60589dd99f3a8401f805241c6cf2370f",
+    "641c7535a64dc368c4c4f5b6f91d683f",
+    "6942455a1f4f7d78140db359fa7edbda",
+    "7c1766f059245ddadc440b9adc80a2fe",
+    "7d48377aa5c7cca31ba386a8aecfda56",
+    "81ee7d10db83b6e62b90ccb3779900d3",
+    "844c5dc262a99f223b5f8e8a1658d4c2",
+    "875999b66fc1dabed911cb71708efb43",
+    "8950e799a1220401d17b00913edae7a8",
+    "8a72774abc7ba70d2c94282a6b3dcc82",
+    "916865bb54dc1f096f0ca31030fc5096",
+    "930a58e20018b17a0f6f4874bfde4fb4",
+    "98e93edf6ab84fe518bdf227cd4fa10b",
+    "9a7d8d235f7e6bb43f0ec4fd893b5f57",
+    "9d61f54dcb220688dae61c67b27d4de2",
+    "9d955cae313f53346be4517685586976",
+    "9ecfdb2b241ba0958445001ba8b711c9",
+    "a19f79a042ed650c7f1b432753b523ca",
+    "a2b250550357bd9592dd779b236f357d",
+    "ab360d210a894598cbf3abbe8ecc187d",
+    "ae797378a4f332b803498dc668dfe2e1",
+    "af076fe28edf181c0e46032112a1ec34",
+    "b45a8f45b00c6522c9b32b86881a9135",
+    "b78a618ec02ed6e48f9e26e87039fe12",
+    "bb06787cc7ea6d87a67a571711c45fea",
+    "bb413d6e31ce38d3b116a32f5107f650",
+    "be75145569045a2ad6ebd2ba2e447544",
+    "c0e4840faa50e167d64a645c2b642e3d",
+    "c4dcdab7d6fa9e6fba377ac78d5ac54e",
+    "c5c4fced8d2295476c9ce6ddd5740ca5",
+    "c66137cd01621dcfa06a119941eec6bb",
+    "c6a275f500d278c2fde28274b83fe9b3",
+    "ccf17ad070f9d76128335663b040859e",
+    "d420cee4620309426079c36998c6b193",
+    "d85af2047df665621f0d828c228ad49a",
+    "d8ae68d2a2e4b67e92afacbe34f49194",
+    "defecdfee9e8cbce289bd5890a0e3908",
+    "ebebeaedff02631c5295afaffad82caa",
+    "f8c70f6fc9de9537efc7826076e8c4ea",
+    "fe4e7f41ba47e0bd656517f4318b4950"
+  ],
+  "groupHash": "f4a4d8c2dd477162b0f3788ee5467f93",
+  "generated": "2025-06-05T09:19:35.803Z"
+}

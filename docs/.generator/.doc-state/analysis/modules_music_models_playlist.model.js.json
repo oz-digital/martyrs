@@ -1,0 +1,50 @@
+{
+  "path": "../../src/modules/music/models/playlist.model.js",
+  "relativePath": "modules/music/models/playlist.model.js",
+  "type": "source",
+  "name": "playlist.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет схему Mongoose для сущности «Playlist», применяет к ней общие, метаданные, владение и метрики взаимодействия, создаёт индексы и экспортирует фабрику модели.",
+    "Purpose": "Обеспечить ORM-слой для работы с плейлистами: хранение заголовка, описания, обложки, списка треков, флагов публичности и совместной работы, а также статистики и метаданных.",
+    "Components": [
+      {
+        "name": "PlaylistSchema",
+        "type": "Mongoose.Schema",
+        "description": "Определяет поля плейлиста (title, description, coverUrl, tracks, isPublic, followers, isCollaborative, collaborators) и опции (timestamps, versionKey=false)."
+      },
+      {
+        "name": "default export (PlaylistModelFactory)",
+        "type": "Function",
+        "description": "Фабрика модели: принимает объект db с mongoose, создаёт схему, применяет плагины/схемы, создаёт индексы и возвращает модель Playlist."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "PlaylistModelFactory",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект подключения к базе: содержит mongoose."
+          }
+        ],
+        "description": "Создаёт или возвращает уже существующую модель 'Playlist' на основе определённой схемы."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/metadata.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "db.mongoose (Mongoose ORM)"
+    ],
+    "Usage": "Импортируется как фабрика модели: const createPlaylistModel = require('modules/music/models/playlist.model.js'); затем const Playlist = createPlaylistModel(db);",
+    "Importance": 4,
+    "Notes": [
+      "Применяются четыре общие схемы: common, metadata, ownership и engagement для добавления дополнительных полей/методов.",
+      "Версия документа не хранится (versionKey: false), но включены timestamps.",
+      "Создаются текстовый индекс по title и description, а также индексы для фильтрации по isPublic, followers и времени добавления треков."
+    ]
+  }
+}

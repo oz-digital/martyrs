@@ -1,0 +1,89 @@
+{
+  "path": "../../src/modules/organizations/store/organizations.js",
+  "relativePath": "modules/organizations/store/organizations.js",
+  "type": "source",
+  "name": "organizations.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует реактивный хранилище (store) для работы с организациями: содержит исходное состояние и набор CRUD-действий (create, read, update, remove, reset), которые взаимодействуют с бекендом через Axios и обрабатывают ошибки через глобальный метод setError.",
+    "Purpose": "Предоставить единую точку управления данными организаций в приложении на Vue (без использования Vuex), обеспечивая реактивность состояния и унифицированные запросы к API.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibility": "хранит список организаций (all) и текущую организацию (current) с её профилем, структурой, контактами, соцсетями и рейтингом"
+      },
+      {
+        "name": "actions",
+        "type": "plain object",
+        "responsibility": "содержит методы для создания, чтения, обновления, удаления и сброса данных организации"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "create",
+        "signature": "async create(organization, owner)",
+        "purpose": "создает новую организацию на сервере, сохраняет результат в state.current",
+        "parameters": {
+          "organization": "объект организации (без поля owner)",
+          "owner": "идентификатор или объект владельца"
+        }
+      },
+      {
+        "name": "read",
+        "signature": "async read(options = {})",
+        "purpose": "получает список организаций или одну организацию по _id, и при необходимости обновляет state.current или state.all",
+        "parameters": {
+          "options": "фильтры для запроса (например, _id, pagination и т. д.)"
+        }
+      },
+      {
+        "name": "update",
+        "signature": "async update(_id, updatedData)",
+        "purpose": "отправляет на сервер обновленные данные организации и возвращает ответ",
+        "parameters": {
+          "_id": "идентификатор организации",
+          "updatedData": "объект с изменениями"
+        }
+      },
+      {
+        "name": "remove",
+        "signature": "async remove(organizationId)",
+        "purpose": "удаляет организацию на сервере и очищает ошибки в состоянии",
+        "parameters": {
+          "organizationId": "идентификатор удаляемой организации"
+        }
+      },
+      {
+        "name": "reset",
+        "signature": "async reset()",
+        "purpose": "сбрасывает state.current к начальному пустому состоянию"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "import": "{ reactive }",
+        "purpose": "создание реактивного состояния"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/store/globals.js",
+        "import": "{ setError }",
+        "purpose": "глобальная функция установки и отображения ошибок"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/utils/axios-instance.js",
+        "import": "default $axios",
+        "purpose": "преднастроенный экземпляр Axios для HTTP-запросов"
+      }
+    ],
+    "Usage": "В других компонентах и модулях Vue импортируется через `import { state, actions } from 'modules/organizations/store/organizations.js'`, после чего вызываются методы `actions.create(...)`, `actions.read(...)` и т. д., а данные берутся из `state`.",
+    "Importance": 3,
+    "Notes": [
+      "В методе read закомментированы две альтернативные стратегии обновления state.all.",
+      "В начальном состоянии и в reset() поле profile.tags называется по-разному (tags vs categories) — возможная опечатка.",
+      "Метод remove не возвращает явно значение из catch-блока и может завершаться без reject.",
+      "Везде присутствуют console.log, которые стоит убрать или заменить на logger в продакшене."
+    ]
+  }
+}

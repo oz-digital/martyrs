@@ -1,0 +1,65 @@
+{
+  "path": "../../src/modules/organizations/components/pages/OrganizationDetails.vue",
+  "relativePath": "modules/organizations/components/pages/OrganizationDetails.vue",
+  "type": "source",
+  "name": "OrganizationDetails.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a form for viewing or creating an organization. It displays the current organization state, allows selecting a type, editing profile name and description, and submitting the data to create a new organization.",
+    "Purpose": "Serves as the Organization Details page in the application, enabling users to configure or create an organization record within the Organizations module.",
+    "Components": [
+      {
+        "name": "Select",
+        "responsibility": "Dropdown component for selecting the organization type."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Input field component used for entering the organization name and description."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Button component that triggers the form submission."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Imported but not currently used; potentially for showing modal dialogs or alerts."
+      },
+      {
+        "name": "Places",
+        "responsibility": "Imported section component for managing organization location(s), not currently rendered in the template."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onSubmit",
+        "purpose": "Asynchronously dispatches the create action to the organization store with the current organization data and the authenticated user ID.",
+        "parameters": []
+      },
+      {
+        "name": "redirectTo",
+        "purpose": "Intended callback to navigate the user after successful submission (currently commented out).",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/organizations/components/sections/Places.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/auth/views/validations/inputs.validation"
+    ],
+    "Usage": "Likely registered as a route component in the organizations module router. Other parts of the app import it by path (`modules/organizations/components/pages/OrganizationDetails.vue`) to display the organization details/create page.",
+    "Importance": 3,
+    "Notes": [
+      "The `Popup`, `Places` and `inputsValidation` imports are not used in the template or script logic and may be remnants or placeholders for future features.",
+      "The `redirectTo` function's navigation call is commented out, so after submission the user is not automatically redirected.",
+      "The `<style>` block is empty except for a placeholder selector `#header`.",
+      "The template directly binds to `organization.state.current`, indicating reliance on a global or module-scoped reactive state."
+    ]
+  }
+}

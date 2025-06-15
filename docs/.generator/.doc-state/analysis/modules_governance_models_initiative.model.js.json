@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/governance/models/initiative.model.js",
+  "relativePath": "modules/governance/models/initiative.model.js",
+  "type": "source",
+  "name": "initiative.model.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Этот файл экспортирует фабрику модели Mongoose для сущности «Initiative» (инициатива) с полями title, description, status, createdBy и tasks, а также включает автоматические временные метки.",
+    "purpose": "Определить и зарегистрировать в Mongoose схему и модель данных для управленческих инициатив в рамках проекта.",
+    "components": [
+      {
+        "name": "InitiativeSchema",
+        "type": "Mongoose.Schema",
+        "responsibilities": [
+          "Описание структуры документа инициативы",
+          "Валидация полей title, description и status",
+          "Указание ссылок на связанные коллекции User и Task",
+          "Включение временных меток с использованием текущего времени"
+        ]
+      },
+      {
+        "name": "Initiative",
+        "type": "Mongoose.Model",
+        "responsibilities": [
+          "Предоставление интерфейса для CRUD-операций над коллекцией initiatives в MongoDB"
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "default export",
+        "signature": "db => Model",
+        "description": "Фабрика, принимающая объект db (включающий mongoose) и возвращающая модель Initiative.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер с подключением mongoose и его свойствами"
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель Initiative для работы с коллекцией инициатив"
+        }
+      }
+    ],
+    "dependencies": [
+      "db.mongoose — основной модуль mongoose из контейнера db",
+      "db.mongoose.Schema — класс для описания схемы",
+      "db.mongoose.Schema.Types.ObjectId — тип для ссылок на другие документы",
+      "User — модель (через ref) для поля createdBy",
+      "Task — модель (через ref) для элементов массива tasks"
+    ],
+    "usage": "Импортируется как функция: const Initiative = require('modules/governance/models/initiative.model')(db); затем используется в сервисах и контроллерах для операций с инициаторами.",
+    "importance": 4,
+    "notes": [
+      "Поля status ограничены enum ['draft', 'active', 'completed', 'cancelled'] с дефолтом 'draft'.",
+      "Включены timestamps с кастомным currentTime, возвращающим Date.now().",
+      "Используется фабричный подход для гибкости подключения разных инстансов mongoose."
+    ]
+  }
+}

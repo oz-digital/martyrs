@@ -1,0 +1,65 @@
+{
+  "path": "../../src/modules/backoffice/components/admin/Users.vue",
+  "relativePath": "modules/backoffice/components/admin/Users.vue",
+  "type": "source",
+  "name": "Users.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент административной панели, отображающий список пользователей с возможностью фильтрации по ролям и перехода к редактированию каждого пользователя.",
+    "Purpose": "Организовать интерфейс управления пользователями в бэкофисе: загрузить данные пользователей из Vuex, отфильтровать их по вкладкам и предоставить ссылки на страницу редактирования.",
+    "Components": [
+      {
+        "name": "Users.vue",
+        "role": "Корневой компонент страницы «Пользователи» в админке."
+      },
+      {
+        "name": "TestButton",
+        "role": "Кастомная кнопка (например, для запуска тестовых действий) в шапке списка; используется в шаблоне."
+      },
+      {
+        "name": "router-link",
+        "role": "Встроенный компонент vue-router для перехода на страницу редактирования конкретного пользователя."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "changeTab",
+        "description": "Сменить активную вкладку фильтрации пользователей.",
+        "parameters": [
+          {
+            "name": "tab",
+            "type": "String",
+            "description": "Идентификатор вкладки (all, user, moderator, admin)."
+          }
+        ]
+      },
+      {
+        "name": "DateToFormattedString",
+        "description": "Преобразовать дату/время регистрации пользователя в строку вида YYYY.MM.DD в HH:MM.",
+        "parameters": [
+          {
+            "name": "d",
+            "type": "Date | String",
+            "description": "Дата или строка, которую нужно отформатировать."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, computed, toRefs, onMounted)",
+      "vue-router (useRoute, router-link)",
+      "vuex (useStore, store.dispatch, store.state.users)",
+      "@martyrs/src/components/HeaderAdmin/HeaderAdmin.vue (не используется в шаблоне)",
+      "@/components/sections/ProductsSection.vue (не используется в шаблоне)"
+    ],
+    "Usage": "Подключается как компонент страницы в конфигурации маршрутов бекофиса (например, в файле router/index.js: { path: '/admin/users', component: Users }). Также может быть импортирован в родительские админские макеты для вставки на страницу.",
+    "Importance": 4,
+    "Notes": [
+      "В шаблоне используется компонент TestButton, но он не импортирован в скрипте — возможно, он глобально зарегистрирован или пропущен импорт.",
+      "Импорт HeaderAdmin и ProductsSection в скрипте не используется в шаблоне; стоит убрать или задействовать.",
+      "Хранение текущей вкладки вынесено в реактивный объект data.currentTab.",
+      "При монтировании компонента сразу диспатчится экшн 'users/fetchUsers' для загрузки данных.",
+      "Фильтрация пользователей по роли осуществляется через computed-свойство users."
+    ]
+  }
+}

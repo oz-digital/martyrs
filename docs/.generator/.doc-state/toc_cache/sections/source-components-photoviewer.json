@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-photoviewer",
+    "title": "Проект: Компоненты / Photo Viewer",
+    "description": "Модуль PhotoViewer предоставляет компонент для просмотра фотографий в приложении. Используется для отображения изображений с возможностью навигации и взаимодействия.",
+    "subsections": [
+      {
+        "id": "photoviewer-component",
+        "title": "PhotoViewer.vue",
+        "description": "Основной Vue-компонент для просмотра фотографий. Реализует пользовательский интерфейс и логику отображения изображений."
+      }
+    ]
+  },
+  "fileHashes": [
+    "2a7b4a21cf1c98a65a2d6073098383c9"
+  ],
+  "groupHash": "3e3cc5c52c22e58bcc2b477bec0f01f0",
+  "generated": "2025-06-05T09:17:01.479Z"
+}

@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-selectmulti",
+    "title": "Проект: Компоненты / Select Multi",
+    "description": "Модуль предоставляет компонент для выбора нескольких значений из списка.",
+    "subsections": [
+      {
+        "id": "selectmulti-osnovnoi-komponent",
+        "title": "SelectMulti.vue",
+        "description": "Основной Vue-компонент для мультивыбора. Позволяет пользователю выбрать несколько элементов из выпадающего списка."
+      }
+    ]
+  },
+  "fileHashes": [
+    "209fb197c23b76cd3e8824b6c45d5760"
+  ],
+  "groupHash": "f08ef86f71165ce701dcab84ecf30995",
+  "generated": "2025-06-05T09:17:09.366Z"
+}

@@ -1,0 +1,67 @@
+{
+  "section": {
+    "id": "source-modules-files",
+    "title": "Проект: Модули / Файлы",
+    "description": "Модуль предназначен для работы с файлами, включает клиентские и серверные компоненты, маршрутизацию и обработку файлов.",
+    "subsections": [
+      {
+        "id": "client-files",
+        "title": "Клиентские файлы",
+        "description": "Содержит логику для работы с файлами на стороне клиента.",
+        "files": [
+          "files/files.client.js"
+        ]
+      },
+      {
+        "id": "server-files",
+        "title": "Серверные файлы",
+        "description": "Реализует серверную обработку файлов.",
+        "files": [
+          "files/files.server.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Обрабатывает бизнес-логику, связанную с файлами.",
+        "files": [
+          "controllers/files.controller.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Определяет маршруты для работы с файлами.",
+        "files": [
+          "routes/files.routes.js"
+        ]
+      },
+      {
+        "id": "middleware",
+        "title": "Промежуточное ПО",
+        "description": "Обеспечивает обработку файловых данных на сервере.",
+        "files": [
+          "server/middlewareBusboy.js"
+        ]
+      },
+      {
+        "id": "server-index",
+        "title": "Инициализация сервера",
+        "description": "Точка входа для серверной части модуля.",
+        "files": [
+          "server/index.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "228bc269d3e377435a6adfbace607483",
+    "3d8b9654143a050b34742ea87a72019c",
+    "4d17f45ffd58a26a551dfe757d9bcd5f",
+    "71f22e5c7f9ccc7b98ba8ad990379f0a",
+    "8bca683b5fa9033a11a0937f21b505d5",
+    "d4555cbded871bc524ca92ac9d41ef86"
+  ],
+  "groupHash": "493dd2b5f803bb5718a85e31f9fb5bd1",
+  "generated": "2025-06-05T09:18:55.152Z"
+}

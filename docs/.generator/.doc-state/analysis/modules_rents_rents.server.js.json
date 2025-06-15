@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/rents/rents.server.js",
+  "relativePath": "modules/rents/rents.server.js",
+  "type": "source",
+  "name": "rents.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует модуль аренды: регистрирует модель, настраивает CRUD-сервисы и маршруты для работы с сущностью Rent.",
+    "Purpose": "Обеспечить «точку входа» для подключения функциональности аренды к основному приложению: регистрации модели данных в хранилище и настройки HTTP-маршрутов.",
+    "Components": [
+      {
+        "name": "RentModel",
+        "description": "Функция-фабрика для создания модели ‘rent’ в переданном объекте db с опциональными полями."
+      },
+      {
+        "name": "RentServices",
+        "description": "Набор бизнес-логики и CRUD-методов для работы с сущностью аренды."
+      },
+      {
+        "name": "RentRoutes",
+        "description": "Функция для регистрации HTTP-маршрутов (REST API) аренды в объекте express-приложения."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeRenting",
+        "description": "Инициализирует в базе модель аренды и настраивает маршруты в приложении Express.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express app | null",
+            "description": "Инстанс Express-приложения, в котором нужно зарегистрировать маршруты."
+          },
+          {
+            "name": "db",
+            "type": "object",
+            "description": "Объект для хранения моделей, куда будет добавлен db.rent."
+          },
+          {
+            "name": "origins",
+            "type": "array|string",
+            "description": "Cписок разрешённых CORS-источников для маршрутов."
+          },
+          {
+            "name": "publicPath",
+            "type": "string",
+            "description": "Публичный базовый путь для маршрутов аренды."
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "description": "Дополнительные опции (например, rentFields) для расширения схемы модели."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/routes/rents.routes.js",
+      "./controllers/services/rents.services.js",
+      "./models/rent.model.js"
+    ],
+    "Usage": "Импортировать функцию initialize (или default-экспорт) и вызвать её сразу после создания Express-app и подключения БД: \n\n  import rents from 'modules/rents/rents.server.js';\n  rents.initialize(app, db, ['https://my.app'], '/api/rents', { rentFields: { custom: String } });",
+    "Importance": 4,
+    "Notes": [
+      "Экспортируется и default-объект, и именованные коллекции models и controllers.",
+      "Позволяет расширять дефолтную модель дополнительными полями через опцию rentFields.",
+      "Не сразу выполняет регистрацию маршрутов, если app === null, что позволяет использовать только модельную часть."
+    ]
+  }
+}

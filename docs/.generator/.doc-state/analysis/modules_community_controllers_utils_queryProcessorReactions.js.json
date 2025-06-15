@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/community/controllers/utils/queryProcessorReactions.js",
+  "relativePath": "modules/community/controllers/utils/queryProcessorReactions.js",
+  "type": "source",
+  "name": "queryProcessorReactions.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит утилиты для построения стадий агрегации MongoDB, которые добавляют к документу связанные комментарии и реакции, а также вычисляют дополнительные поля, такие как количество комментариев, количество реакций, статус реакции пользователя и идентификатор его реакции.",
+    "Purpose": "Обеспечить централизованное создание стадий $lookup и $addFields для обработки коллекций \"comments\" и \"reactions\" в рамках агрегационных запросов, чтобы контроллеры проекта могли легко подключать эти стадии при выборке данных.",
+    "Components": [
+      {
+        "name": "getCommentsLookupStage",
+        "responsibility": "Генерирует стадию $lookup для подгрузки всех комментариев по полю target."
+      },
+      {
+        "name": "getReactionsLookupStage",
+        "responsibility": "Генерирует стадию $lookup для подгрузки всех реакций по полю target."
+      },
+      {
+        "name": "getReactionsCommentsFields",
+        "responsibility": "Генерирует стадию $addFields для вычисления метрик (число комментариев, число реакций) и состояния реакции конкретного пользователя."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getCommentsLookupStage",
+        "description": "Возвращает объект стадии агрегации $lookup для коллекции comments.",
+        "parameters": []
+      },
+      {
+        "name": "getReactionsLookupStage",
+        "description": "Возвращает объект стадии агрегации $lookup для коллекции reactions.",
+        "parameters": []
+      },
+      {
+        "name": "getReactionsCommentsFields",
+        "description": "Возвращает объект стадии агрегации $addFields, в котором добавляются следующие поля: numberOfComments, numberOfReactions, isReacted, reactionId для данного пользователя.",
+        "parameters": [
+          {
+            "name": "user",
+            "type": "String|ObjectId",
+            "description": "Идентификатор пользователя, по которому проверяется, поставлена ли реакция."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "mongoose",
+        "import": "Types.ObjectId",
+        "purpose": "Конвертация строкового идентификатора пользователя в ObjectId для агрегации."
+      }
+    ],
+    "Usage": "Импортируется в контроллерах или сервисах для построения массива стадий агрегации. Например:\n\nimport qpReactions from 'modules/community/controllers/utils/queryProcessorReactions';\n\nModel.aggregate([\n  ...,\n  qpReactions.getCommentsLookupStage(),\n  qpReactions.getReactionsLookupStage(),\n  qpReactions.getReactionsCommentsFields(currentUserId),\n  ...\n]);",
+    "Importance": 3,
+    "Notes": [
+      "Поле 'from' в $lookup должно совпадать с фактическим именем коллекции в базе данных ('comments' и 'reactions').",
+      "ObjectId создается через mongoose.Types.ObjectId — входной параметр user должен быть либо валидной строкой, либо ObjectId.",
+      "Файл экспортирует функции как именованные и по умолчанию единым объектом для удобства импорта.",
+      "Стадия getReactionsCommentsFields может быть тяжеловесной при большом числе реакций, т.к. использует $size, $in и $indexOfArray в массиве."
+    ]
+  }
+}

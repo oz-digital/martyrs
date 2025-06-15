@@ -1,0 +1,72 @@
+{
+  "path": "../../src/modules/constructor/components/elements/ImageUpload.vue",
+  "relativePath": "modules/constructor/components/elements/ImageUpload.vue",
+  "type": "source",
+  "name": "ImageUpload.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue компонент ImageUpload предоставляет область для загрузки изображения через клик или drag-and-drop. При выборе файла происходит отправка multipart/form-data запроса на сервер, после чего компонент эмиттит новое значение URL изображения.",
+    "Purpose": "Обеспечить пользователю интерфейс для загрузки и привязки изображения к блочному элементу конструктора страниц.",
+    "Components": [
+      {
+        "name": "ImageUpload",
+        "type": "Vue Component",
+        "description": "Основной компонент, рендерит зону загрузки, обрабатывает события клика, drag&drop и загрузку файла на сервер."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onComponentClick",
+        "description": "Вызывает клик по скрытому <input type=\"file\"/>, чтобы открыть диалог выбора файла.",
+        "params": []
+      },
+      {
+        "name": "onFileChange",
+        "description": "Обрабатывает выбранный файл: собирает FormData, делает POST-запрос на API, получает URL загруженного изображения, сохраняет его в локальном состоянии и эмиттит события 'input' и 'updateBlock'.",
+        "params": [
+          {
+            "name": "e",
+            "type": "Event",
+            "description": "Событие изменения файла, содержит e.target.files"
+          }
+        ]
+      },
+      {
+        "name": "onDrop",
+        "description": "Обрабатывает событие перетаскивания файла в область компонента и делегирует его в onFileChange.",
+        "params": [
+          {
+            "name": "e",
+            "type": "DragEvent",
+            "description": "Содержит e.dataTransfer.files"
+          }
+        ]
+      },
+      {
+        "name": "updateBlock",
+        "description": "Пытается обновить блок в глобальном массиве post.value.content. Не используется внутри компонента и содержит ссылку на несуществующую переменную post.",
+        "params": [
+          {
+            "name": "updatedBlock",
+            "type": "Object",
+            "description": "Новый блок для замены"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, defineEmits)",
+      "axios",
+      "process.env.API_URL",
+      "FILE_SERVER_URL (глобальная константа или переменная окружения)"
+    ],
+    "Usage": "Импортируется и регистрируется как элемент конструктора страниц. При монтировании получает props.prop.content (URL изображения) и в дальнейшем эмиттит изменения наружу через события 'input' и 'updateBlock'.",
+    "Importance": 3,
+    "Notes": [
+      "В шаблоне используется глобальная переменная FILE_SERVER_URL для пред- и пост-фикса пути к файлу.",
+      "Функция updateBlock ссылается на несуществующую переменную post и фактически не применяется — вероятно, артефакт старой реализации.",
+      "Emits 'input' и 'updateBlock' с разными наборами аргументов, потребителю компонента нужно обрабатывать оба события.",
+      "Стили и классы (flex-center, radius-big и т.п.) предполагают наличие глобального CSS фреймворка проекта."
+    ]
+  }
+}

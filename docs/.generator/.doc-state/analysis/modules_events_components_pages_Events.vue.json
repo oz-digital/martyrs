@@ -1,0 +1,110 @@
+{
+  "path": "../../src/modules/events/components/pages/Events.vue",
+  "relativePath": "modules/events/components/pages/Events.vue",
+  "type": "source",
+  "name": "Events.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders an events page with date filtering, city selection, featured/hot events sections, organizer feed and general events feed.",
+    "Purpose": "Provides the user interface for browsing and filtering events by date or city, viewing featured and hot events, and listing organizers and all events in the application.",
+    "Components": [
+      {
+        "name": "DatePicker",
+        "responsibility": "Allows user to pick a single date and emits update:date events to trigger date-based search."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Displays a modal popup for selecting a city."
+      },
+      {
+        "name": "CitySelection",
+        "responsibility": "UI for choosing a city; rendered inside Popup."
+      },
+      {
+        "name": "EventsHot",
+        "responsibility": "Displays a curated list of hot/upcoming events."
+      },
+      {
+        "name": "FeaturedEvents",
+        "responsibility": "Renders a section of featured events."
+      },
+      {
+        "name": "SelectDate",
+        "responsibility": "Provides an alternative date-range selector and emits date-selected events."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Generic listing component; used here for organizers and events feeds with pagination, search, empty states."
+      },
+      {
+        "name": "CardOrganization",
+        "responsibility": "Card component displaying organization details and allowing membership updates."
+      },
+      {
+        "name": "CardEvent",
+        "responsibility": "Card component displaying an individual event; clickable to navigate to event detail."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleMembershipUpdate",
+        "purpose": "Calls the memberships store mutation to update an organization membership state.",
+        "parameters": [
+          "{ membership, status, target }",
+          "statusName",
+          "statusNumber"
+        ]
+      },
+      {
+        "name": "openCitySelectionPopup",
+        "purpose": "Sets the reactive flag to open the city selection popup.",
+        "parameters": []
+      },
+      {
+        "name": "closeCitySelectionPopup",
+        "purpose": "Sets the reactive flag to close the city selection popup.",
+        "parameters": []
+      },
+      {
+        "name": "handleDatePickerChange",
+        "purpose": "Converts a picked date into start/end ISO strings and navigates to the events-search route.",
+        "parameters": [
+          "date (string or Date)"
+        ]
+      },
+      {
+        "name": "handleDateSelection",
+        "purpose": "Handles a date-range selection and navigates to the events-search route with periodStart and periodEnd.",
+        "parameters": [
+          "dateData { startDate: Date, endDate: Date }"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, onMounted, watch, ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/DatePicker/DatePicker.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/globals/views/components/partials/CitySelection.vue",
+      "@martyrs/src/modules/events/components/sections/EventsHot.vue",
+      "@martyrs/src/modules/events/components/sections/FeaturedEvents.vue",
+      "@martyrs/src/modules/events/components/sections/SelectDate.vue",
+      "@martyrs/src/modules/events/components/blocks/CardEvent.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/organizations/store/memberships.js",
+      "@martyrs/src/modules/events/store/events.js"
+    ],
+    "Usage": "Registered as a page component under the events route; imported by router configuration and mounted when user navigates to '/events' or performs an events search.",
+    "Importance": 4,
+    "Notes": [
+      "Contains legacy commented-out logic for syncing route.query with events.state.filter.",
+      "Uses two different date selection components: DatePicker for single day and SelectDate for range.",
+      "Console.log left in handleDateSelection; may need removal in production.",
+      "Breadcrumbs is imported but not used in the template.",
+      "Empty <style> block – styles are applied via utility classes (Tailwind/BEM-like)."
+    ]
+  }
+}

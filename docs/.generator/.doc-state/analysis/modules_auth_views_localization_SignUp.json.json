@@ -1,0 +1,36 @@
+{
+  "path": "../../src/modules/auth/views/localization/SignUp.json",
+  "relativePath": "modules/auth/views/localization/SignUp.json",
+  "type": "source",
+  "name": "SignUp.json",
+  "extension": ".json",
+  "analysis": {
+    "Summary": "JSON resource containing localization strings for the Sign Up view in English and Russian.",
+    "Purpose": "Provides internationalized text for the user registration (Sign Up) interface, allowing the UI to display appropriate titles, descriptions, placeholders, notices, and button labels per locale.",
+    "Components": [
+      {
+        "name": "messages",
+        "type": "object",
+        "responsibility": "Root container grouping all locale-specific dictionaries."
+      },
+      {
+        "name": "en-default",
+        "type": "object",
+        "responsibility": "Locale dictionary for English (default) with all required UI text keys."
+      },
+      {
+        "name": "ru-default",
+        "type": "object",
+        "responsibility": "Locale dictionary for Russian (default) with all required UI text keys translated."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "Framework localization/i18n module (e.g., 'martyrs' localization loader)",
+      "SignUp view or component that imports this JSON for rendering text"
+    ],
+    "Usage": "Imported into the SignUp view or a localization service. The UI layer will request strings by key (e.g., messages['en-default'].title) based on the current user locale and render them accordingly.",
+    "Importance": 3,
+    "Notes": "• Key naming follows a consistent pattern matching UI elements (title, description, placeholders, notices).  \n• Easily extendable to additional locales by adding new top-level locale objects under 'messages'.  \n• No dynamic logic; purely a static resource file."
+  }
+}

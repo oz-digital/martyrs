@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/constructor/components/elements/Video.vue",
+  "relativePath": "modules/constructor/components/elements/Video.vue",
+  "type": "source",
+  "name": "Video.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders either an HTML audio player when a media URL is already provided, or an Upload input to let the user supply an embed URL/file. When a new URL is selected, it emits events to update the parent block and v-model binding.",
+    "Purpose": "Acts as a media (audio/video) block in a page or post constructor. Allows users to view existing media content or upload/embed new media into a content block.",
+    "Components": [
+      {
+        "name": "Video.vue",
+        "role": "This component itself – handles display of existing media or an upload field and emits changes."
+      },
+      {
+        "name": "Upload",
+        "import": "@martyrs/src/components/Upload/Upload.vue",
+        "role": "Reusable file/embed input component that produces a URL or embed code and emits a file-change event."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onComponentSave",
+        "purpose": "Called when the Upload component reports a new URL; updates local state and emits 'input' and 'updateBlock' events upstream.",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "String",
+            "description": "The new media URL or embed code provided by the Upload component."
+          }
+        ]
+      },
+      {
+        "name": "updateBlock",
+        "purpose": "Intended to locate and replace an updated block inside a post object, though not currently invoked in this file.",
+        "parameters": [
+          {
+            "name": "updatedBlock",
+            "type": "Object",
+            "description": "Block to find and replace in the parent post content array."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, defineEmits)",
+      "@martyrs/src/components/Upload/Upload.vue"
+    ],
+    "Usage": "Imported into a constructor or editor view via `import Video from 'modules/constructor/components/elements/Video.vue'`. Registered as a block component; parent passes in `prop` (block data) and listens to `input` and `updateBlock` events to synchronize state.",
+    "Importance": 3,
+    "Notes": [
+      "Despite the name 'Video', the template uses an <audio> tag; video support may need extension or rename for clarity.",
+      "The updateBlock() helper references `post.value` which is not defined in this scope – likely vestigial or intended for future use.",
+      "No <style> section is present; styling relies entirely on utility CSS classes.",
+      "The `Emit('updateBlock')` call includes two arguments (props.prop, payload) – parent components must handle this signature."
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/icons/socials/telegram.vue",
+  "relativePath": "modules/icons/socials/telegram.vue",
+  "type": "source",
+  "name": "telegram.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders a Telegram social icon as an inline SVG.",
+    "Purpose": "Provide a reusable Telegram icon throughout the application UI.",
+    "Components": [
+      {
+        "name": "TelegramIcon",
+        "role": "Stateless presentational component rendering an SVG graphic of the Telegram logo."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue"
+    ],
+    "Usage": "Импортируется и регистрируется в других Vue-компонентах или шаблонах, например: import TelegramIcon from 'modules/icons/socials/telegram.vue'; затем используется как <TelegramIcon/>.",
+    "Importance": 2,
+    "Notes": [
+      "Компонент не содержит блока <script> и <style>, он полностью статичен.",
+      "Цвет внутреннего пути задаётся через CSS-переменную --white.",
+      "Ширина и высота SVG фиксированы (40×33).",
+      "Не принимает props для изменения размера или цвета — при необходимости требуется обёртка."
+    ]
+  }
+}

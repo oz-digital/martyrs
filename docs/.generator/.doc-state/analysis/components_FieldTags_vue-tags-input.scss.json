@@ -1,0 +1,83 @@
+{
+  "path": "../../src/components/FieldTags/vue-tags-input.scss",
+  "relativePath": "components/FieldTags/vue-tags-input.scss",
+  "type": "source",
+  "name": "vue-tags-input.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "Этот файл содержит SCSS-стили для компонента ввода тегов (vue-tags-input). Он определяет цветовые переменные, иконки через псевдоэлементы, базовую верстку ul, input, а также стили для тегов, поля ввода нового тега и выпадающего автодополнения.",
+    "Purpose": "Обеспечить оформление и поведение визуальных элементов компонента FieldTags (vue-tags-input) в рамках проекта, задавая единую цветовую схему, отступы, размеры и состояния (disabled, invalid, selected).",
+    "Components": [
+      {
+        "class": "ti-icon-check, ti-icon-close, ti-icon-undo",
+        "responsibility": "Отображают иконки для подтверждения, удаления и отмены через псевдоэлементы :before."
+      },
+      {
+        "selector": "ul",
+        "responsibility": "Убирает отступы и маркеры списка для контейнеров тегов."
+      },
+      {
+        "selector": "*, *:before, *:after",
+        "responsibility": "Устанавливает box-sizing: border-box во всех элементах."
+      },
+      {
+        "selector": "input:focus",
+        "responsibility": "Убирает стандартную обводку браузера при фокусе."
+      },
+      {
+        "selector": "input[disabled]",
+        "responsibility": "Делает фон disabled-поля прозрачным."
+      },
+      {
+        "class": "vue-tags-input.disabled",
+        "responsibility": "Снижает прозрачность всего компонента и блокирует изменения курсора."
+      },
+      {
+        "class": "ti-input",
+        "responsibility": "Flex-контейнер для области ввода тегов."
+      },
+      {
+        "class": "ti-tags",
+        "responsibility": "Flex-контейнер, оборачивающий все существующие теги, с переносом строк."
+      },
+      {
+        "class": "ti-tag",
+        "responsibility": "Стили для каждого тега: фон, цвет, радиус, отступы, шрифт, состояние invalid/deletion-mark и вложенные элементы (.ti-content, .ti-actions, span)."
+      },
+      {
+        "class": "ti-new-tag-input-wrapper",
+        "responsibility": "Обертка для поля ввода нового тега, задающая padding, margin и flex-поведение."
+      },
+      {
+        "class": "ti-new-tag-input",
+        "responsibility": "Дополнительный линейный стиль для input нового тега."
+      },
+      {
+        "class": "ti-autocomplete",
+        "responsibility": "Позиционирование и оформление выпадающего списка автодополнения."
+      },
+      {
+        "selector": "ti-item > div",
+        "responsibility": "Пункт в списке автодополнения: курсор pointer и внутренние отступы."
+      },
+      {
+        "class": "ti-selected-item",
+        "responsibility": "Стили для выделенного пункта автодополнения."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "CSS-переменные: --main, --black (должны быть заданы глобально или в :root)",
+      "Шрифтовые иконки (код \\e902), используемые в ti-icon-check"
+    ],
+    "Usage": "Импортируется в компоненте FieldTags.vue (или глобальном SCSS-файле проекта) через @import или @use для применения стилей к vue-tags-input.",
+    "Importance": 3,
+    "Notes": [
+      "Используются SCSS-переменные для основных цветов (error, success, warn).",
+      "Нет собственных миксинов или функций SCSS.",
+      "Активно применяются вложенные селекторы и псевдоклассы (&).",
+      "Иконки определены через content в псевдоэлементах.",
+      "Поддерживаются состояния disabled, invalid и выделенный элемент автодополнения."
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "path": "../../src/modules/core/classes/event.js",
+  "relativePath": "modules/core/classes/event.js",
+  "type": "source",
+  "name": "event.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию createEventBus, которая создает простой шиной событий (pub/sub) на основе Map и Set для регистрации, удаления и вызова слушателей событий.",
+    "Purpose": "Обеспечить централизованную систему публикации/подписки внутри приложения, позволяя различным частям кода общаться через события без жестких зависимостей.",
+    "Components": [
+      {
+        "name": "createEventBus",
+        "responsibility": "Фабрика, возвращающая объект с методами управления событиями (emit, on, off, destroy)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createEventBus",
+        "description": "Создает и инициализирует новую шину событий.",
+        "parameters": []
+      },
+      {
+        "name": "emit",
+        "description": "Испускает событие с заданным именем и данными, вызывает все зарегистрированные слушатели.",
+        "parameters": [
+          {
+            "name": "eventName",
+            "type": "string",
+            "description": "Имя события."
+          },
+          {
+            "name": "data",
+            "type": "any",
+            "description": "Данные, передаваемые слушателям."
+          }
+        ]
+      },
+      {
+        "name": "on",
+        "description": "Регистрирует слушатель callback на событие eventName. Возвращает функцию-отписку.",
+        "parameters": [
+          {
+            "name": "eventName",
+            "type": "string",
+            "description": "Имя события."
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Функция-обработчик, вызываемая при эмиссии события."
+          }
+        ]
+      },
+      {
+        "name": "off",
+        "description": "Удаляет слушатель callback для указанного eventName, либо очищает все слушатели если callback не передан.",
+        "parameters": [
+          {
+            "name": "eventName",
+            "type": "string",
+            "description": "Имя события."
+          },
+          {
+            "name": "callback",
+            "type": "function?",
+            "description": "Опциональный конкретный обработчик для удаления."
+          }
+        ]
+      },
+      {
+        "name": "destroy",
+        "description": "Полностью очищает шину событий, удаляя все зарегистрированные события и слушатели.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Импортируется через `import { createEventBus } from 'modules/core/classes/event';`, затем создается экземпляр: `const bus = createEventBus();`, после чего используются методы bus.on(), bus.emit(), bus.off(), bus.destroy().",
+    "Importance": 4,
+    "Notes": [
+      "Внутренне используется Map для хранения множеств слушателей (Set) по ключу eventName.",
+      "Метод emit обертывает колбэки в try/catch, чтобы одна ошибка не прервала выполнение остальных слушателей.",
+      "В on возвращается отписчик, использующий this.off — в данном контексте `this` корректно указывает на объект шины событий.",
+      "Не требует внешних зависимостей, работает на чистом ES6+."
+    ]
+  }
+}

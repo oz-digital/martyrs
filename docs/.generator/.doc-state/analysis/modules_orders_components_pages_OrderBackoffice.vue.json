@@ -1,0 +1,168 @@
+{
+  "path": "../../src/modules/orders/components/pages/OrderBackoffice.vue",
+  "relativePath": "modules/orders/components/pages/OrderBackoffice.vue",
+  "type": "source",
+  "name": "OrderBackoffice.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "OrderBackoffice.vue is a Vue component that displays detailed information about a single order in a back-office context. It shows order status steps, allows authorized users to change payment and order status via popups, presents organization and customer details, renders a live chat, and summarizes order items and costs.",
+    "Purpose": "This file serves as the administrative interface for viewing and managing individual orders. It enforces role-based access, fetches order and organization data on mount, and provides UI controls for updating payment status, order status, and viewing order history.",
+    "Components": [
+      {
+        "name": "Button",
+        "responsibility": "Reusable button component with submit action binding."
+      },
+      {
+        "name": "Select",
+        "responsibility": "Dropdown selector for choosing payment type and status."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal dialog wrapper for payment and status change forms."
+      },
+      {
+        "name": "IconTime",
+        "responsibility": "SVG icon to indicate estimated reaction/delivery time."
+      },
+      {
+        "name": "CardOrderItem",
+        "responsibility": "Displays a single order position, editable or read-only."
+      },
+      {
+        "name": "CardOrganization",
+        "responsibility": "Shows organization details and rating."
+      },
+      {
+        "name": "ChatPage",
+        "responsibility": "Embeds a chat interface scoped to the order."
+      },
+      {
+        "name": "StatusHistory",
+        "responsibility": "(Imported but commented) would display past status changes."
+      },
+      {
+        "name": "PriceTotal",
+        "responsibility": "Calculates and displays total price, fees, VAT, and delivery."
+      },
+      {
+        "name": "FormPayment",
+        "responsibility": "(Imported but not used) payment input form section."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openStatusPopup",
+        "description": "Opens the order status change popup and optionally selects a member index.",
+        "params": [
+          "member (number|string)"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "closeStatusPopup",
+        "description": "Closes the order status change popup and clears any selected member.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "openPaymentPopup",
+        "description": "Initializes selectedPayments from current order and opens the payment change popup.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "closePaymentPopup",
+        "description": "Closes the payment change popup.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "getNextStatus",
+        "description": "Determines the next status option after a given current status.",
+        "params": [
+          "currentStatus (string)"
+        ],
+        "returns": "{ value:string, label?:string }|null"
+      },
+      {
+        "name": "isActiveStatus",
+        "description": "Checks if a given status index or later matches the order's current status for UI highlighting.",
+        "params": [
+          "index (number)"
+        ],
+        "returns": "boolean"
+      },
+      {
+        "name": "changePaymentStatus",
+        "description": "Updates the order.payment object in store and closes payment popup.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "setNextStatus",
+        "description": "Fetches next status, updates store, and closes status popup.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "setStatus",
+        "description": "Updates order to an arbitrary new status and persists to store.",
+        "params": [
+          "newStatus (string)"
+        ],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "cancelOrder",
+        "description": "Sets status to 'canceled' and updates the order.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "confirmOrder",
+        "description": "Sets status to 'confirmed' and updates the order.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "calculateDeliveryTime",
+        "description": "Estimates delivery start time based on distance and a date, using a fixed prep and travel formula.",
+        "params": [
+          "distance (number)",
+          "date (Date|string)"
+        ],
+        "returns": "Date|null"
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, ref, onMounted)",
+      "vue-router (useRouter, useRoute)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/icons/entities/IconTime.vue",
+      "@martyrs/src/modules/orders/components/blocks/CardOrderItem.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue",
+      "@martyrs/src/modules/chats/components/pages/ChatPage.vue",
+      "@martyrs/src/modules/orders/components/blocks/StatusHistory.vue",
+      "@martyrs/src/modules/orders/components/elements/PriceTotal.vue",
+      "@martyrs/src/modules/orders/components/sections/FormPayment.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/orders/store/orders.js",
+      "@martyrs/src/modules/products/store/products.js",
+      "@martyrs/src/modules/organizations/store/organizations.js"
+    ],
+    "Usage": "This component is registered as a route page (likely under '/backoffice/orders/:order') and is imported by the router configuration. Other modules may invoke its public actions (orders.actions.update) indirectly via user interactions.",
+    "Importance": 4,
+    "Notes": [
+      "Enforces role-based redirect to 401 if unauthorized.",
+      "Uses scoped SCSS for blink animation on active status.",
+      "On mount fetches both order and organization data.",
+      "Select and popups are used to handle in-place editing.",
+      "ChatPage adapts title based on route context and order user.",
+      "Certain imports like StatusHistory and FormPayment are present but not rendered in template."
+    ]
+  }
+}

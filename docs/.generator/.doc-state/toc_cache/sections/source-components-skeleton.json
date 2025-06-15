@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-skeleton",
+    "title": "Проект: Компоненты / Skeleton",
+    "description": "Модуль содержит компонент Skeleton для отображения загрузочных плейсхолдеров в интерфейсе.",
+    "subsections": [
+      {
+        "id": "skeleton-component",
+        "title": "Компонент Skeleton",
+        "description": "Основной Vue-компонент для отображения скелетон-элементов во время загрузки данных."
+      }
+    ]
+  },
+  "fileHashes": [
+    "9b82c4f5f12720f8c176701f0ceed26f"
+  ],
+  "groupHash": "ef42556e6ae8359e5f10d415302f2ece",
+  "generated": "2025-06-05T09:17:13.373Z"
+}

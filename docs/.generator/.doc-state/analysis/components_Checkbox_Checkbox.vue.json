@@ -1,0 +1,40 @@
+{
+  "path": "../../src/components/Checkbox/Checkbox.vue",
+  "relativePath": "components/Checkbox/Checkbox.vue",
+  "type": "source",
+  "name": "Checkbox.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент Checkbox.vue предоставляет настраиваемый чекбокс, который поддерживает как булевы значения (toggle), так и массивы (множественный выбор). Он динамически меняет своё визуальное состояние и класс в зависимости от флага checked и темы (light или dark).",
+    "Purpose": "Реализовать единый, переиспользуемый элемент управления типа «чекбокс» в проекте, который работает с одно- и многовыборными данными и интегрируется через событие update:radio.",
+    "Components": [
+      {
+        "name": "Checkbox (Vue component)",
+        "responsibility": "Рендерит кастомный чекбокс, принимает параметры label, name, value, radio и theme, отслеживает изменения и эмитит событие обновления."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updateInputText",
+        "description": "Обработчик события change на input. В зависимости от типа props.radio (массив или boolean) обновляет состояние и эмитит событие 'update:radio'.",
+        "parameters": [
+          {
+            "name": "event",
+            "type": "Event",
+            "description": "Событие изменения состояния чекбокса, содержит target.checked и target.value."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watch, computed, defineProps, defineEmits)"
+    ],
+    "Usage": "Импортируется и регистрируется в родительском компоненте. Данные передаются через проп radio (или v-model:radio) и слушается событие @update:radio для синхронизации выбранных значений.",
+    "Importance": 3,
+    "Notes": [
+      "Поддерживает иммутабельное обновление массива: при добавлении/удалении значений создает новую копию.",
+      "Динамическая привязка CSS-классов управляет дизайном в зависимости от theme и состояния checked.",
+      "Не содержит отдельного блока <style> — стили предполагаются глобальными или определенными в проекте."
+    ]
+  }
+}

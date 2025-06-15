@@ -1,0 +1,124 @@
+{
+  "path": "../../src/modules/organizations/routes/organizations.routes.js",
+  "relativePath": "modules/organizations/routes/organizations.routes.js",
+  "type": "source",
+  "name": "organizations.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл регистрирует REST-маршруты для работы с сущностью «organizations» в приложении на базе Express и фреймворка Martyrs.",
+    "Purpose": "Определить и подключить HTTP-эндпоинты (/api/organizations, /api/organizations/create, /api/organizations/:_id/update, /api/organizations/:_id/delete, /api/auth/check-accesses) с соответствующими middleware аутентификации и контроллерами для CRUD-операций над организациями.",
+    "Components": [
+      {
+        "name": "default export (function)",
+        "responsibility": "Принимает экземпляры Express (app) и базы данных (db), создает контроллер и middleware, регистрирует маршруты."
+      },
+      {
+        "name": "controllerFactory",
+        "responsibility": "Фабрика, возвращающая объект controller с методами read, create, update, delete, checkAccesses."
+      },
+      {
+        "name": "middlewareFactoryAuth",
+        "responsibility": "Фабрика middleware для проверки JWT токена (authJwt.verifyToken)."
+      },
+      {
+        "name": "globalsabac.getInstance",
+        "responsibility": "Возвращает экземпляр ABAC middleware для управления доступом по политике."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "exported function(app, db)",
+        "description": "Главная функция маршрутизации. Регистрирует end-point'ы для организаций.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express.Application",
+            "description": "Экземпляр Express для регистрации маршрутов."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект подключения/контекста базы данных."
+          }
+        ]
+      },
+      {
+        "name": "controller.read",
+        "description": "Обрабатывает GET /api/organizations — возвращает список организаций.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.create",
+        "description": "Обрабатывает POST /api/organizations/create — создает новую организацию.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "description": "Обрабатывает POST /api/organizations/:_id/update — обновляет организацию по ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.delete",
+        "description": "Обрабатывает DELETE /api/organizations/:_id/delete — удаляет организацию по ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.checkAccesses",
+        "description": "Обрабатывает GET /api/auth/check-accesses — возвращает информацию о правах текущего пользователя.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "authJwt.verifyToken",
+        "description": "Middleware для проверки JWT токена. При parameter=true разрешает доступ только аутентифицированным.",
+        "parameters": [
+          "requireAuth (boolean)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+        "import": "middlewareFactoryAuth"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/controllers/classes/globals.abac.js",
+        "import": "globalsabac.getInstance"
+      },
+      {
+        "module": "../controllers/organizations.controller.js",
+        "import": "controllerFactory"
+      },
+      {
+        "module": "express",
+        "import": "app (injected)"
+      }
+    ],
+    "Usage": "Обычно импортируется и вызывается в модуле инициализации маршрутов (например, в app.js или routes/index.js) так: `require('.../organizations.routes.js')(app, db);`",
+    "Importance": 3,
+    "Notes": [
+      "ABAC-middleware для маршрута GET /api/organizations пока закомментирован.",
+      "Использует JWT-проверку для всех маршрутов, кроме create/update/delete (по умолчанию).",
+      "Файл не создает Express-приложение, а только расширяет уже существующее."
+    ]
+  }
+}

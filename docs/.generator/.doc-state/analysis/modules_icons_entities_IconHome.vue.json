@@ -1,0 +1,28 @@
+{
+  "path": "../../src/modules/icons/entities/IconHome.vue",
+  "relativePath": "modules/icons/entities/IconHome.vue",
+  "type": "source",
+  "name": "IconHome.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a scalable SVG home icon with customizable fill color via props.",
+    "Purpose": "Provides a reusable \"home\" icon across the application, allowing other components to import and display it with a specified fill color or theme.",
+    "Components": [
+      {
+        "name": "IconHome",
+        "type": "Vue SFC",
+        "responsibility": "Renders <svg> markup for a home icon, accepts props `fill` and `theme` to control its appearance"
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (defineProps)"
+    ],
+    "Usage": "Import the component where needed: `import IconHome from 'modules/icons/entities/IconHome.vue';` then use in templates: `<IconHome fill=\"#f00\" theme=\"dark\"/>`.",
+    "Importance": 2,
+    "Notes": [
+      "No <style> section—styling is controlled via the `fill` prop and CSS variables.",
+      "The `theme` prop is defined but not currently used in the template; reserved for future theme-based logic."
+    ]
+  }
+}

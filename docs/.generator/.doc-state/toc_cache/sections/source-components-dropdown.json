@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-dropdown",
+    "title": "Проект: Компоненты / Dropdown",
+    "description": "Модуль содержит компонент Dropdown для отображения выпадающих списков в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "dropdown-vue",
+        "title": "Dropdown.vue",
+        "description": "Основной Vue-компонент для создания выпадающего списка."
+      }
+    ]
+  },
+  "fileHashes": [
+    "c1373aaca6bb8a7b21bab96532815ea7"
+  ],
+  "groupHash": "ce06cb932f7fc6685e8c92f49c1a23af",
+  "generated": "2025-06-05T09:16:40.897Z"
+}

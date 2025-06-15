@@ -1,0 +1,75 @@
+{
+  "path": "../../src/modules/backoffice/backoffice.client.js",
+  "relativePath": "modules/backoffice/backoffice.client.js",
+  "type": "source",
+  "name": "backoffice.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет и экспортирует модуль «Backoffice» для клиентской части приложения на базе фреймворка martyrs. Он подключает маршруты и Vue-компоненты бэкофисной части и предоставляет функцию инициализации для регистрации роутера.",
+    "Purpose": "Инкапсулировать конфигурацию маршрутов и набор основных Vue-компонентов бэкофисной панели, чтобы основной файл приложения мог легко интегрировать этот модуль.",
+    "Components": [
+      {
+        "name": "ModuleBackoffice",
+        "type": "Object",
+        "responsibilities": "Контейнер модуля с функцией инициализацией и реестром представлений"
+      },
+      {
+        "name": "initializeBackoffice",
+        "type": "Function",
+        "responsibilities": "Регистрирует маршруты бэкофисного модуля в переданном роутере"
+      },
+      {
+        "name": "views.router.routerBackoffice",
+        "type": "Imported Router",
+        "responsibilities": "Набор маршрутов (route definitions) для раздела Backoffice"
+      },
+      {
+        "name": "views.components.Dashboard",
+        "type": "Vue Component",
+        "responsibilities": "Главная страница дашборда бэкофиса"
+      },
+      {
+        "name": "views.components.Sidebar",
+        "type": "Vue Component",
+        "responsibilities": "Боковая навигационная панель модуля Backoffice"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeBackoffice",
+        "description": "Инициализирует модуль Backoffice: добавляет маршрут к приложению",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "Экземпляр основного приложения (не используется прямо)“"
+          },
+          {
+            "name": "store",
+            "type": "Object",
+            "description": "Vuex-стор (не используется прямо)“"
+          },
+          {
+            "name": "router",
+            "type": "VueRouter",
+            "description": "Экземпляр роутера, в который будут добавлены маршруты модуля"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Дополнительные опции. Поле route задаёт имя корневого маршрута, по умолчанию ‘Home’"
+          }
+        ],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "./router/backoffice.js",
+      "./components/pages/Dashboard.vue",
+      "./components/partials/Sidebar.vue"
+    ],
+    "Usage": "В основном файле приложения или при регистрации модулей: импортировать ModuleBackoffice и вызвать ModuleBackoffice.initialize(app, store, router, { route: 'CustomRoot' }); Далее использовать ModuleBackoffice.views для динамического подключения компонентов.",
+    "Importance": 3,
+    "Notes": "1. Закомментированы дополнительные админ-компоненты и их маршруты — архитектура готова к расширению. 2. Параметры app и store передаются в initialize, но пока не используются. 3. По умолчанию маршрут добавляется под именем ‘Home’, это можно переопределить через options.route."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "path": "../../src/components/index.js",
+  "relativePath": "components/index.js",
+  "type": "source",
+  "name": "index.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

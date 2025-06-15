@@ -1,0 +1,45 @@
+{
+  "section": {
+    "id": "source-modules-integrations",
+    "title": "Проект: Модули / Интеграции",
+    "description": "Модуль интеграций обеспечивает взаимодействие с внешними сервисами и платёжными системами через сервисы и вебхуки.",
+    "subsections": [
+      {
+        "id": "service-integrations-base",
+        "title": "Базовый сервис интеграций",
+        "description": "Файл integrations.service.js определяет абстрактный класс для обработки событий интеграции. Используется как контракт для реализации конкретных интеграций."
+      },
+      {
+        "id": "stripe-integration",
+        "title": "Интеграция Stripe",
+        "description": "Файлы stripe.service.js и stripe.webhook.js реализуют взаимодействие с платёжной системой Stripe, включая обработку событий через вебхуки."
+      },
+      {
+        "id": "tinkoff-integration",
+        "title": "Интеграция Tinkoff",
+        "description": "Файлы tinkoff.service.js и tinkoff.payment.model.js обеспечивают работу с платёжной системой Tinkoff, включая модели и сервисы для обработки платежей."
+      },
+      {
+        "id": "paypal-integration",
+        "title": "Интеграция PayPal",
+        "description": "Файл paypal.webhook.js предназначен для обработки событий PayPal через вебхуки."
+      },
+      {
+        "id": "openai-integration",
+        "title": "Интеграция OpenAI",
+        "description": "Файл openai.globals.js связан с глобальными настройками или переменными для интеграции OpenAI."
+      }
+    ]
+  },
+  "fileHashes": [
+    "187a81a3d27484b2c809e16ec1fecc6b",
+    "1ea86dd747690fd3db444cb477abcde0",
+    "2d037ffab330008f137dbe6609b5af80",
+    "361f53c962f29a40f0e3a915f5d998ad",
+    "a029038e01f0b08b4b018def2f6e4709",
+    "d80bcd80c5dfd3c4f093bb1a64d8202f",
+    "df1e5590664b4fe334ce33a1e02853d3"
+  ],
+  "groupHash": "588c48af29592e14b2bb32f637f3746e",
+  "generated": "2025-06-05T09:20:45.539Z"
+}

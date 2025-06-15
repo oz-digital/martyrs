@@ -1,0 +1,44 @@
+{
+  "section": {
+    "id": "source-builder-vite",
+    "title": "Проект: Конструктор / Vite",
+    "description": "Модуль отвечает за интеграцию и настройку сборки проекта с помощью Vite. Содержит базовые и специфические конфигурации для различных сценариев (клиент, сервер, SPA, SSR).",
+    "subsections": [
+      {
+        "id": "vite-index",
+        "title": "Главный модуль",
+        "description": "Точка входа для работы с настройками Vite в проекте."
+      },
+      {
+        "id": "vite-config-base",
+        "title": "Базовая конфигурация Vite",
+        "description": "Содержит общие настройки Vite, используемые всеми остальными конфигурациями."
+      },
+      {
+        "id": "vite-config-client",
+        "title": "Конфигурация для клиента",
+        "description": "Настройки сборки клиентской части приложения."
+      },
+      {
+        "id": "vite-config-server",
+        "title": "Конфигурация для сервера",
+        "description": "Настройки сборки серверной части приложения."
+      },
+      {
+        "id": "vite-config-spa-ssr",
+        "title": "Конфигурации SPA и SSR",
+        "description": "Отдельные конфигурации для сборки SPA и SSR приложений."
+      }
+    ]
+  },
+  "fileHashes": [
+    "12b161c786fad228325355c8af1d8f63",
+    "3a60a19f0018a49e76bf3c72c2a41286",
+    "4a5a75c056e614f88ebf3cd7d4079458",
+    "c9a599c08963e26aec8fb95f99b01d77",
+    "ce7be958d6bebaae29320ba35b20af6a",
+    "e45e8ae68b5b439eff16bfea71c7cd2c"
+  ],
+  "groupHash": "1a13d41fc4dd5c47441f469b592ea76a",
+  "generated": "2025-06-05T09:15:54.512Z"
+}

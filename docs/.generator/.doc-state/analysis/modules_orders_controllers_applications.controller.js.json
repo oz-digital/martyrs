@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/orders/controllers/applications.controller.js",
+  "relativePath": "modules/orders/controllers/applications.controller.js",
+  "type": "source",
+  "name": "applications.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику middleware-функций для работы с моделью Application в базе данных и обработки Telegram-вебхуков.",
+    "Purpose": "Организация CRUD-операций над сущностью Application и интеграция с Telegram-ботом для уведомлений и обработки inline-кнопок.",
+    "Components": [
+      {
+        "name": "middlewareFactory",
+        "type": "function",
+        "responsibility": "Принимает объект db (с подключёнными моделями) и возвращает набор HTTP-обработчиков для маршрутов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "read",
+        "description": "Получает все документы Application из БД и отправляет их в ответе.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "create",
+        "description": "Создаёт новый документ Application из тела запроса, отправляет Telegram-уведомление и возвращает созданный объект.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "update",
+        "description": "Обновляет существующий документ Application по _id из параметров маршрута и возвращает обновлённый объект.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "deleteMethod",
+        "description": "Удаляет документ Application по _id и возвращает удалённый объект.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "get",
+        "description": "Ищет документ Application по полю url и возвращает его.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "handleTelegramWebhook",
+        "description": "Обрабатывает входящие запросы от Telegram-вебхука, разбирает callback_query, изменяет статус Application в БД и отправляет ответ на callback_query.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/utils/mailing.js",
+      "axios",
+      "db.application (модель Mongoose или аналог)",
+      "process.env.TELEGRAM_BOT_USERS (для адресов при отправке уведомления)",
+      "жёстко закодированный telegramToken в handleTelegramWebhook"
+    ],
+    "Usage": "Импортировать фабрику в маршрутизаторе: const appsCtrl = middlewareFactory(db); затем подключить её методы как обработчики HTTP-маршрутов (GET, POST, PUT, DELETE) и webhook URL.",
+    "Importance": 4,
+    "Notes": [
+      "sendChatMessageTelegram вызывается после успешного CREATE, список пользователей берётся из переменной окружения.",
+      "В handleTelegramWebhook telegramToken прописан в коде — это потенциальный риск безопасности.",
+      "Ошибки в CRUD-методах возвращают 500 или 404.",
+      "delete зарезервировано в JS, поэтому метод экспортируется под именем deleteMethod и переименовывается в delete при возврате."
+    ]
+  }
+}

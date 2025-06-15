@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-select",
+    "title": "Проект: Компоненты / Select",
+    "description": "Модуль содержит компонент выбора значения из списка. Используется для создания выпадающих списков и форм.",
+    "subsections": [
+      {
+        "id": "select-vue",
+        "title": "Select.vue",
+        "description": "Основной Vue-компонент для отображения и управления выпадающим списком выбора."
+      }
+    ]
+  },
+  "fileHashes": [
+    "3407e6c6621c4f86a8055b8b81d7c2f0"
+  ],
+  "groupHash": "928abf747bee3b631c7af6f299666186",
+  "generated": "2025-06-05T09:17:07.624Z"
+}

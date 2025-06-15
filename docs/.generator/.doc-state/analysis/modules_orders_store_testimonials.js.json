@@ -1,0 +1,61 @@
+{
+  "path": "../../src/modules/orders/store/testimonials.js",
+  "relativePath": "modules/orders/store/testimonials.js",
+  "type": "source",
+  "name": "testimonials.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует хранилище (store) для работы с отзывами (testimonials) в приложении на Vue: хранит состояние списка отзывов и предоставляет асинхронные CRUD-действия для получения, создания, обновления и удаления отзывов через HTTP-запросы.",
+    "Purpose": "Организовать централизованное состояние и бизнес-логику по управлению отзывами пользователей в модуле заказов, облегчая доступ к данным отзывов из компонентов Vue.",
+    "Components": [
+      {
+        "name": "state",
+        "role": "Реактивный объект Vue (reactive) со свойством testimonials — массив отзывов."
+      },
+      {
+        "name": "actions",
+        "role": "Набор асинхронных функций для выполнения CRUD-операций над отзывами через HTTP-запросы."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "fetchTestimonials",
+        "description": "Загружает список всех отзывов с сервера и обновляет state.testimonials.",
+        "params": []
+      },
+      {
+        "name": "createTestimonial",
+        "description": "Создаёт новый отзыв с аватаром пользователя. Формирует FormData, отправляет POST-запрос и добавляет полученный отзыв в state.",
+        "params": [
+          "testimonial (объект с profile.photo, rating, name, position, description)"
+        ]
+      },
+      {
+        "name": "updateTestimonial",
+        "description": "Обновляет существующий отзыв. Отправляет POST-запрос с данными отзыва, затем заменяет элемент в state по _id.",
+        "params": [
+          "testimonial (объект с _id и полями для обновления)"
+        ]
+      },
+      {
+        "name": "deleteTestimonial",
+        "description": "Удаляет отзыв по идентификатору. Отправляет DELETE-запрос и удаляет элемент из state при успехе.",
+        "params": [
+          "testimonialId (строка или число)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "axios",
+      "vue (reactive)"
+    ],
+    "Usage": "Импортируется в компонентах или других модулях как: import { state, actions } from 'modules/orders/store/testimonials'; Затем вызывают actions.fetchTestimonials(), actions.createTestimonial(data) и т.п., а в шаблонах используют reactive-свойство state.testimonials.",
+    "Importance": 3,
+    "Notes": [
+      "Создаётся собственный инстанс $axios с базовым URL из process.env.API_URL, но часть запросов всё ещё идёт через глобальный axios — возможно, стоит унифицировать.",
+      "При создании отзыва используется multipart/form-data и FormData для загрузки аватара.",
+      "Ошибки обрабатываются простым console.error, нет пользовательских уведомлений об ошибках.",
+      "Файл не содержит Vuex, используется Composition API (reactive) для управления состоянием вне Vuex."
+    ]
+  }
+}

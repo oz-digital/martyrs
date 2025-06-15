@@ -1,0 +1,175 @@
+{
+  "path": "../../src/modules/globals/controllers/classes/globals.abac.js",
+  "relativePath": "modules/globals/controllers/classes/globals.abac.js",
+  "type": "source",
+  "name": "globals.abac.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a GlobalABAC class that implements attribute-based access control (ABAC) for the application. It allows registration of global, resource-specific and extension policies, normalizes policy results, checks access against a given context, validates service keys, and provides an Express middleware for use in routes.",
+    "Purpose": "To centralize and enforce access control logic across the application by providing a policy engine and middleware that can be plugged into Express routes, ensuring consistent authorization decisions based on user, resource, action and optional service keys.",
+    "Components": [
+      {
+        "name": "GlobalABAC",
+        "responsibilities": [
+          "Store and manage global, resource, and extension policies",
+          "Normalize policy execution results into a common format",
+          "Load resource models from the injected database",
+          "Evaluate access by running global, resource and extension policies in sequence",
+          "Provide utility to validate a service key",
+          "Expose an Express middleware factory for route-level protection"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "description": "Initializes the policy containers, merges default options with provided ones, and saves a reference to the database object.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Database/models container"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Override default settings (strictMode, defaultDeny, serviceKey)"
+          }
+        ]
+      },
+      {
+        "name": "registerGlobalPolicy",
+        "description": "Registers a named global policy function to be executed on every access check.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "String",
+            "description": "Identifier for the policy"
+          },
+          {
+            "name": "policyFn",
+            "type": "Function",
+            "description": "Async function(context) returning allow/deny"
+          }
+        ]
+      },
+      {
+        "name": "registerResourcePolicy",
+        "description": "Registers a policy for a specific resource type.",
+        "parameters": [
+          {
+            "name": "resourceName",
+            "type": "String",
+            "description": "Name of the resource"
+          },
+          {
+            "name": "policyFn",
+            "type": "Function",
+            "description": "Async function(context) for resource"
+          }
+        ]
+      },
+      {
+        "name": "registerExtension",
+        "description": "Registers or composes an extension policy provided by an external module.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "String",
+            "description": "External module identifier"
+          },
+          {
+            "name": "extensionFn",
+            "type": "Function",
+            "description": "Async policy function(context)"
+          }
+        ]
+      },
+      {
+        "name": "getResourceModel",
+        "description": "Resolves a model from the DB container by resource name, applying singularization rules and special mapping for 'posts'.",
+        "parameters": [
+          {
+            "name": "resourceName",
+            "type": "String",
+            "description": "Plural resource name"
+          }
+        ]
+      },
+      {
+        "name": "_normalizeResult",
+        "description": "Converts raw policy results (boolean, object, undefined) into a standardized {allow, force, reason} object.",
+        "parameters": [
+          {
+            "name": "result",
+            "type": "any",
+            "description": "Raw output of a policy function"
+          },
+          {
+            "name": "policyName",
+            "type": "String",
+            "description": "Name used to generate a reason code"
+          }
+        ]
+      },
+      {
+        "name": "checkAccess",
+        "description": "Core method that runs authentication checks, loads resources, executes global/resource/extension policies and returns a final allow/deny decision.",
+        "parameters": [
+          {
+            "name": "context",
+            "type": "Object",
+            "description": "Contains user, resource, action, data, options, request flags"
+          }
+        ]
+      },
+      {
+        "name": "validateServiceKey",
+        "description": "Verifies a provided service key against the configured key.",
+        "parameters": [
+          {
+            "name": "providedKey",
+            "type": "String",
+            "description": "Key from request headers"
+          }
+        ]
+      },
+      {
+        "name": "middleware",
+        "description": "Factory that returns an Express middleware enforcing ABAC for the given resource and action.",
+        "parameters": [
+          {
+            "name": "resource",
+            "type": "String",
+            "description": "Resource type for the route"
+          },
+          {
+            "name": "action",
+            "type": "String",
+            "description": "Operation being performed"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Additional flags (e.g. allowUnauthenticated)"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "process.env.SERVICE_KEY (environment variable)",
+      "Injected db object containing models (e.g. Mongoose or Sequelize)",
+      "Express req, res, next objects for middleware",
+      "console (for error logging)"
+    ],
+    "Usage": "Import the default export or getInstance function, initialize with the application's DB object and optional settings, register required policies, then apply the returned middleware in Express routes: \nconst abac = getInstance(db, options);\nabac.registerGlobalPolicy(...);\napp.post('/posts', abac.middleware('posts','create'), handler);",
+    "Importance": 5,
+    "Notes": [
+      "Singleton pattern ensures a single ABAC instance across the app",
+      "Policies are executed in sequence: global → resource → extensions → default",
+      "normalizeResult handles both boolean and object returns, and special admin override",
+      "Default deny or allow behavior controlled via options.defaultDeny",
+      "Strict mode flag is reserved but not implemented in this version"
+    ]
+  }
+}

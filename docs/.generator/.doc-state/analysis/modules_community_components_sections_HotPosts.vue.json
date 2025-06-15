@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/community/components/sections/HotPosts.vue",
+  "relativePath": "modules/community/components/sections/HotPosts.vue",
+  "type": "source",
+  "name": "HotPosts.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a horizontal slider of “hot” blog posts, fetching data from the community blog store and displaying each post via a CardBlogpost component.",
+    "Purpose": "Provide a reusable UI section in the community module for displaying a customizable, paginated slider of featured or recent blog posts.",
+    "Components": [
+      {
+        "name": "Slider",
+        "responsibility": "Wrapper that handles list fetching, pagination and carousel behavior; exposes a default slot for rendering each item."
+      },
+      {
+        "name": "CardBlogpost",
+        "responsibility": "Presentation component that displays individual blog post metadata (title, author, preview) in a card format."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "store.read",
+        "description": "Asynchronous loader passed to the Slider component to fetch a page of blog posts from the community store.",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Additional paging or filter options (currently unused in the implementation)."
+          }
+        ],
+        "implementation": "blog.read({ skip, limit, user: userId, period, category })"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps)",
+      "@martyrs/src/components/Feed/Feed.vue (imported but unused)",
+      "@martyrs/src/components/Slider/Slider.native.vue",
+      "@martyrs/src/modules/community/components/blocks/CardBlogpost.vue",
+      "@martyrs/src/modules/community/store/blogposts.js",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Imported into parent views or pages (e.g. Community homepage) via `import HotPosts from '.../HotPosts.vue'` and used as `<HotPosts :skip=\"0\" :limit=\"8\" :userId=\"someUserId\" period=\"week\" category=\"featured\" />` to render the slider.",
+    "Importance": 3,
+    "Notes": [
+      "The component uses the `<script setup>` syntax for concise setup of props and imports.",
+      "The Feed import is included but not referenced in template—likely a leftover and can be removed.",
+      "Default `userId` prop reads from the auth store at import time; changes in auth.state.user._id after mount will not update this default.",
+      "Styles define a responsive slide width: 25% on large screens and 75% on narrower viewports (≤1025px).",
+      "Only English locale is provided in the `text` prop for the no-data message."
+    ]
+  }
+}

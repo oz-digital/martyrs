@@ -1,0 +1,40 @@
+{
+  "path": "../../src/modules/icons/entities/IconFile.vue",
+  "relativePath": "modules/icons/entities/IconFile.vue",
+  "type": "source",
+  "name": "IconFile.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Это Vue 3 single-file компонент, который отрисовывает SVG-иконку \"файла\" с возможностью задания цвета заливки через пропс и динамического применения CSS-класса.",
+    "purpose": "Предоставить в проекте переиспользуемый компонент для отображения иконки файла с настраиваемым цветом и классами.",
+    "components": [
+      {
+        "name": "IconFile",
+        "role": "Основной компонент, отвечающий за рендер SVG-иконки файла"
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Определяет входные параметры компонента в скрипт-секции setup",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "dependencies": [
+      "vue (script setup, defineProps, $attrs)"
+    ],
+    "usage": "Импортировать и использовать в других компонентах: import IconFile from 'modules/icons/entities/IconFile.vue'; затем <IconFile fill=\"#ff0000\" class=\"my-icon\"/>.",
+    "importance": 2,
+    "notes": [
+      "Используется <script setup> без явного имени компонента.",
+      "SVG задаётся непосредственно в шаблоне, без внешних файлов.",
+      "Через $attrs.class передаётся CSS-класс на элемент <path>.",
+      "Не содержит своей style-секции, стили задаются глобально или через передаваемые классы."
+    ]
+  }
+}

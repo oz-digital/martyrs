@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/gallery/router/gallery.backoffice.router.js",
+  "relativePath": "modules/gallery/router/gallery.backoffice.router.js",
+  "type": "source",
+  "name": "gallery.backoffice.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл описывает конфигурацию маршрута (router) для раздела Backoffice Gallery в административной части приложения.",
+    "Purpose": "Предоставить набор маршрутов для управления галереями в бэкофисе: путь, название, метаданные, проверка прав доступа и ленивую загрузку Vue-компонента.",
+    "Components": [
+      {
+        "name": "routeConfig",
+        "type": "Object",
+        "responsibility": "Конфигурация одного маршрута для Backoffice Gallery с полями path, name, meta, beforeEnter и component."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "validationOwnership.requiresAccess",
+        "source": "@martyrs/src/modules/auth/views/middlewares/ownership.validation.js",
+        "purpose": "Middleware для проверки прав пользователя на чтение ('read') ресурса 'gallery'.",
+        "parameters": [
+          {
+            "name": "resource",
+            "type": "string",
+            "description": "Имя ресурса, доступ к которому проверяется ('gallery')."
+          },
+          {
+            "name": "action",
+            "type": "string",
+            "description": "Тип действия, на которое проверяется право ('read')."
+          }
+        ]
+      },
+      {
+        "name": "componentLoader",
+        "purpose": "Ленивая (async) загрузка Vue-компонента",
+        "parameters": [],
+        "notes": "Используется динамический импорт с вебпак-чанком 'BackofficeGallery'."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/views/middlewares/ownership.validation.js",
+        "imported": [
+          "requiresAccess"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/gallery/components/sections/BackofficeGallery.vue",
+        "imported": [
+          "default (компонент)"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в главный роутер бэкофиса (например, в index файла роутера) и объединяется с другими разделами для формирования окончательного массива маршрутов.",
+    "Importance": 3,
+    "Notes": [
+      "Экспортируется по умолчанию массив gallery, что позволяет легко расширять и добавлять новые маршруты.",
+      "Используется динамическая загрузка компонента для уменьшения размера начального бандла.",
+      "Перед входом в маршрут применяется middleware проверки прав доступа."
+    ]
+  }
+}

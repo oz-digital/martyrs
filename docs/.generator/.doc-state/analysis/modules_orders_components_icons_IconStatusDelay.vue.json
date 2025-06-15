@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/orders/components/icons/IconStatusDelay.vue",
+  "relativePath": "modules/orders/components/icons/IconStatusDelay.vue",
+  "type": "source",
+  "name": "IconStatusDelay.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders an inline SVG icon representing a \"delay\" status. It exposes a \"fill\" prop to control the SVG path color.",
+    "Purpose": "Provide a reusable, customizable icon for \"delay\" order status in the orders module of the application.",
+    "Components": [
+      {
+        "name": "IconStatusDelay",
+        "role": "Primary and only component in this file. Responsible for rendering the SVG graphic and accepting a fill color via props."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "module": "vue",
+        "purpose": "Declare and type-check the props accepted by the component.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color used to fill the SVG path. Defaults to a CSS variable for black."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (script setup syntax, defineProps)"
+    ],
+    "Usage": "Import the component where an \"order delay\" icon is needed, e.g.:\n\n  import IconStatusDelay from 'modules/orders/components/icons/IconStatusDelay.vue'\n\nThen use it in the template:\n\n  <IconStatusDelay fill=\"#FF0000\"/>",
+    "Importance": 2,
+    "Notes": [
+      "No <style> section — styling is driven entirely by the SVG and its \"fill\" prop.",
+      "Uses Vue 3 <script setup> syntax for concise component definition.",
+      "The SVG is inline, so no external asset loading is required.",
+      "Default fill uses a CSS custom property (--black), ensuring theme consistency."
+    ]
+  }
+}

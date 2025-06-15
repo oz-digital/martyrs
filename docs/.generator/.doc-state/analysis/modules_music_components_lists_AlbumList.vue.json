@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/music/components/lists/AlbumList.vue",
+  "relativePath": "modules/music/components/lists/AlbumList.vue",
+  "type": "source",
+  "name": "AlbumList.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент для отображения списка альбомов. При отсутствии альбомов показывает сообщение «No albums found», в противном случае выводит грид карточек AlbumCard.",
+    "Purpose": "Представление данных: рендерит набор переданных в пропсах объектов альбомов в виде сетки карточек.",
+    "Components": [
+      {
+        "name": "AlbumList",
+        "type": "Functional Vue component",
+        "responsibilities": [
+          "Принимает массив альбомов через пропс",
+          "Показывает сообщение об отсутствии элементов, если массив пуст",
+          "Итеративно рендерит дочерний компонент AlbumCard для каждого альбома"
+        ]
+      },
+      {
+        "name": "AlbumCard",
+        "type": "Imported child component",
+        "responsibilities": [
+          "Отображение данных об одном альбоме (обложка, название и т. д.)",
+          "Анимация/эффекты при наведении и клике"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Определяет входные props компонента",
+        "parameters": {
+          "albums": {
+            "type": "Array",
+            "required": true
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps"
+        ]
+      },
+      {
+        "module": "../cards/AlbumCard.vue",
+        "imports": [
+          "default (AlbumCard)"
+        ]
+      }
+    ],
+    "Usage": "Импортируется и используется в родительских компонентах или страницах, которые получают из API или стора массив альбомов и передают его через проп `:albums`.",
+    "Importance": 3,
+    "Notes": [
+      "Не содержит собственной секции <style>; стили задаются через CSS-утилиты (утверждается, что в проекте используется некая утилитарная система классов).",
+      "Адаптивная сетка: desktop – 5 колонок, mobile – 2 колонки.",
+      "Вариант оформления пустого списка показывает централизованный текст с классом `t-grey`."
+    ]
+  }
+}

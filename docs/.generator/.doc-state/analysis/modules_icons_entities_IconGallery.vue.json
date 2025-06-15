@@ -1,0 +1,44 @@
+{
+  "path": "../../src/modules/icons/entities/IconGallery.vue",
+  "relativePath": "modules/icons/entities/IconGallery.vue",
+  "type": "source",
+  "name": "IconGallery.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue SFC that renders a scalable SVG ‘gallery’ icon with a customizable fill color.",
+    "purpose": "Provides a reusable IconGallery component in the project's icon library, allowing other parts of the app to display a uniform gallery icon with optional styling overrides.",
+    "components": [
+      {
+        "name": "IconGallery",
+        "type": "functional Vue component (script setup)",
+        "responsibilities": [
+          "Accept a `fill` prop to control the SVG fill color",
+          "Expose all standard SVG attributes and classes via `$attrs`",
+          "Render the SVG markup for a gallery icon"
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "signature": "defineProps({ fill: { type: String, default: 'rgb(var(--black))' } })",
+        "description": "Defines a single `fill` prop, defaulting to a CSS variable-driven black color."
+      }
+    ],
+    "dependencies": [
+      "vue (for `defineProps` and `$attrs` support)"
+    ],
+    "usage": [
+      "Import and register locally or globally:",
+      "  import IconGallery from 'modules/icons/entities/IconGallery.vue'",
+      "  <IconGallery fill=\"red\" class=\"my-icon\" />",
+      "Any additional SVG attributes or classes can be passed through via component attributes."
+    ],
+    "importance": 3,
+    "notes": [
+      "No `<style>` block—styling is driven entirely by SVG attributes and inherited CSS variables.",
+      "Built with `<script setup>` for a lean, functionally stateless component.",
+      "Accepts arbitrary SVG attributes (e.g. width/height overrides) through `$attrs`."
+    ]
+  }
+}

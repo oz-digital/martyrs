@@ -1,0 +1,213 @@
+{
+  "path": "../../src/modules/globals/controllers/classes/globals.websocket.js",
+  "relativePath": "modules/globals/controllers/classes/globals.websocket.js",
+  "type": "source",
+  "name": "globals.websocket.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует класс WebSocketManager, который на базе uWebSockets.js управляет жизненным циклом WebSocket-соединений: аутентификацией через JWT, подписками на модули, маршрутизацией сообщений, механизмом RPC и широковещательной рассылкой.",
+    "Purpose": "Обеспечить централизованное создание и управление WebSocket-сервером, позволить модулям регистрировать свои хендлеры и RPC-методы, а также рассылать сообщения конкретным пользователям или группам подписчиков.",
+    "Components": [
+      {
+        "name": "WebSocketManager",
+        "description": "Главный класс для конфигурации WebSocket-сервера: установка маршрутов, аутентификация, хранение подключений и реализация RPC."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "description": "Инициализирует uWebSockets.js приложение, структуры для модулей, RPC-методов и пользовательских подключений.",
+        "parameters": [],
+        "returns": "WebSocketManager instance"
+      },
+      {
+        "name": "listen",
+        "description": "Запускает WebSocket-сервер на указанном порту.",
+        "parameters": [
+          {
+            "name": "port",
+            "type": "number"
+          },
+          {
+            "name": "callback",
+            "type": "function(error: Error|null, app: uWS.App|null)?"
+          }
+        ],
+        "returns": "this"
+      },
+      {
+        "name": "_trackUserConnection",
+        "description": "Добавляет WebSocket-соединение в карту по userId для последующих рассылок.",
+        "parameters": [
+          {
+            "name": "userId",
+            "type": "string"
+          },
+          {
+            "name": "ws",
+            "type": "WebSocket"
+          }
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "registerModule",
+        "description": "Регистрирует модульный обработчик обычных сообщений.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "handler",
+            "type": "function(ws, msg)"
+          }
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "registerRpcMethod",
+        "description": "Регистрирует одиночный RPC-метод под именем moduleName.methodName с опциями.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "methodName",
+            "type": "string"
+          },
+          {
+            "name": "handler",
+            "type": "function(params, context)"
+          },
+          {
+            "name": "options",
+            "type": "object"
+          }
+        ],
+        "returns": "this"
+      },
+      {
+        "name": "registerRpcMethods",
+        "description": "Групповая регистрация RPC-методов из переданной мапы.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "methodsMap",
+            "type": "Record<string, function|{handler: function, options?: object}>"
+          }
+        ],
+        "returns": "this"
+      },
+      {
+        "name": "_handleRpcCall",
+        "description": "Обрабатывает входящий RPC-запрос: проверяет регистрацию, авторизацию, валидацию, выполняет и отправляет ответ.",
+        "parameters": [
+          {
+            "name": "ws",
+            "type": "WebSocket"
+          },
+          {
+            "name": "message",
+            "type": "object with module, method, params, id"
+          }
+        ],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "_sendRpcResponse",
+        "description": "Формирует и отправляет RPC-ответ или ошибку.",
+        "parameters": [
+          {
+            "name": "ws",
+            "type": "WebSocket"
+          },
+          {
+            "name": "id",
+            "type": "string|number"
+          },
+          {
+            "name": "result",
+            "type": "any"
+          },
+          {
+            "name": "error",
+            "type": "object|null"
+          }
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "sendToUserInModule",
+        "description": "Отправляет JSON-данные конкретному пользователю, если он подписан на указанный модуль.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "type": "string|number"
+          },
+          {
+            "name": "data",
+            "type": "any"
+          }
+        ],
+        "returns": "boolean"
+      },
+      {
+        "name": "broadcastToModule",
+        "description": "Широковещательная отправка данных всем подписчикам модуля.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "type": "any"
+          }
+        ],
+        "returns": "boolean"
+      },
+      {
+        "name": "broadcastToModuleWithFilter",
+        "description": "Широковещательная отправка с дополнительным фильтром соединений.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "filterFn",
+            "type": "function(ws): boolean"
+          },
+          {
+            "name": "data",
+            "type": "any"
+          }
+        ],
+        "returns": "boolean"
+      },
+      {
+        "name": "getServer",
+        "description": "Возвращает внутренний экземпляр uWebSockets.js приложения.",
+        "parameters": [],
+        "returns": "uWS.App"
+      }
+    ],
+    "Dependencies": [
+      "cookie",
+      "jsonwebtoken (jwt)",
+      "uWebSockets.js"
+    ],
+    "Usage": "import WebSocketManager from 'modules/globals/controllers/classes/globals.websocket';\nconst wsManager = new WebSocketManager();\nwsManager.registerModule('chat', chatHandler);\nwsManager.registerRpcMethods('user', { login: loginHandler, logout: logoutHandler });\nwsManager.listen(3000, (err, app) => { if (err) console.error(err); });",
+    "Importance": 5,
+    "Notes": "- Использует переменные окружения SECRET_KEY для верификации JWT и REQUIRE_AUTH для обязательной авторизации.\n- Поддерживает backpressure и компрессию uWS.SHARED_COMPRESSOR.\n- Сообщения разделяются на подписочные, RPC и обычные модульные.\n- Контекст RPC-методов включает userId и методы для отправки ответа.\n- Очистка подписок и слежение за соединениями предотвращают утечки памяти."
+  }
+}

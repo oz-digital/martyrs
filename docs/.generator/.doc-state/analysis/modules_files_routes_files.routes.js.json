@@ -1,0 +1,112 @@
+{
+  "path": "../../src/modules/files/routes/files.routes.js",
+  "relativePath": "modules/files/routes/files.routes.js",
+  "type": "source",
+  "name": "files.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет маршруты Express для загрузки различных типов файлов (изображений, аудио, прочих) с набором middleware для обработки и контроллером для сохранения.",
+    "Purpose": "Инициализировать и зарегистрировать HTTP-эндпоинты для загрузки файлов в модуле файлов проекта.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "function",
+        "responsibility": "Принимает app, db, origins, publicPath и настраивает маршруты"
+      },
+      {
+        "name": "controllerFactory",
+        "type": "factory function",
+        "responsibility": "Создаёт контроллер с методами загрузки файлов, используя db и publicPath"
+      },
+      {
+        "name": "middlewareFactoryAuth",
+        "type": "factory function",
+        "responsibility": "Предоставляет authJwt middleware для защиты маршрутов (импортируется, но не применяется)"
+      },
+      {
+        "name": "middlewareFactoryFiles",
+        "type": "factory function",
+        "responsibility": "Создаёт busboy-middleware для загрузки, конвертации и генерации превью файлов"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "<default>",
+        "purpose": "Регистрация маршрутов загрузки",
+        "parameters": [
+          "app: Express",
+          "db: Database connection",
+          "origins: Array<string>",
+          "publicPath: string"
+        ]
+      },
+      {
+        "name": "uploadMultipleFileController",
+        "purpose": "Обработка и сохранение пришедших файлов",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "middlewareBusboy.uploadImagesMiddleware",
+        "purpose": "Парсинг multipart-запроса с изображениями",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "middlewareBusboy.convertImagesMiddleware",
+        "purpose": "Конвертация/изменение размеров изображений",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "middlewareBusboy.generatePreviewMiddleware",
+        "purpose": "Генерация превью изображений",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "middlewareBusboy.uploadAudioMiddleware",
+        "purpose": "Парсинг multipart-запроса с аудиофайлами",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "middlewareBusboy.uploadFilesMiddleware",
+        "purpose": "Парсинг multipart-запроса с общими файлами",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "../controllers/files.controller.js",
+      "../middlewares/server/index.js"
+    ],
+    "Usage": "Импортируется в точке инициализации роутов (например, в main router), вызывается с объектом Express app, соединением с базой, списком origins и путём publicPath для регистрации маршрутов.",
+    "Importance": 4,
+    "Notes": [
+      "Импорт authJwt middleware не используется в текущих маршрутах — возможно, упущение или настройка на будущее",
+      "Маршрут для загрузки видео закомментирован — планируется поддержка",
+      "Параметр origins не используется внутри функции",
+      "Используется busboy-основанный middleware для потоковой обработки загрузок"
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "section": {
+    "id": "source-modules-notifications",
+    "title": "Проект: Модули / Уведомления",
+    "description": "Модуль уведомлений отвечает за отправку, хранение и отображение уведомлений пользователям через различные каналы (email, push, SMS, мессенджеры).",
+    "subsections": [
+      {
+        "id": "controllers",
+        "title": "Контроллеры и маршрутизация",
+        "description": "Файлы, отвечающие за обработку HTTP-запросов, маршрутизацию и интеграцию с внешними слоями приложения.",
+        "files": [
+          "controllers/notifications.controller.js",
+          "router/notifications.router.js",
+          "routes/notifications.routes.js"
+        ]
+      },
+      {
+        "id": "models",
+        "title": "Модели данных",
+        "description": "Определяют структуру данных для уведомлений, логов, предпочтений и устройств пользователей.",
+        "files": [
+          "models/notification-log.model.js",
+          "models/notification-preference.model.js",
+          "models/notification.model.js",
+          "models/user-device.model.js"
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Сервисы отправки уведомлений",
+        "description": "Реализуют отправку уведомлений по различным каналам: email, push, SMS, мессенджеры.",
+        "files": [
+          "services/apns.service.js",
+          "services/email.service.js",
+          "services/fcm.service.js",
+          "services/notification.service.js",
+          "services/sms.service.js",
+          "services/telegram.service.js",
+          "services/web-push.service.js",
+          "services/whatsapp.service.js"
+        ]
+      },
+      {
+        "id": "client-server",
+        "title": "Клиентская и серверная логика",
+        "description": "Файлы, реализующие клиентскую и серверную обработку уведомлений.",
+        "files": [
+          "notifications/notifications.client.js",
+          "notifications/notifications.server.js"
+        ]
+      },
+      {
+        "id": "middlewares",
+        "title": "Промежуточные слои (middlewares)",
+        "description": "Файл для проверки прав доступа и бизнес-логики при работе с уведомлениями.",
+        "files": [
+          "middlewares/notifications.abac.js"
+        ]
+      },
+      {
+        "id": "store-ui",
+        "title": "Хранилище и пользовательский интерфейс",
+        "description": "Файлы для хранения состояния уведомлений и отображения их в интерфейсе.",
+        "files": [
+          "store/notifications.store.js",
+          "blocks/NotificationItem.vue"
+        ]
+      },
+      {
+        "id": "notifications-pages",
+        "title": "Страницы уведомлений",
+        "description": "Основные страницы для отображения и управления уведомлениями.",
+        "files": [
+          {
+            "name": "Notifications.vue",
+            "path": "pages/Notifications.vue",
+            "summary": "Компонент страницы Vue с двумя вкладками для просмотра всех уведомлений и управления ими.",
+            "purpose": "Основная страница уведомлений для пользователей."
+          }
+        ]
+      },
+      {
+        "id": "notifications-layouts",
+        "title": "Макеты уведомлений",
+        "description": "Макеты для организации структуры интерфейса уведомлений.",
+        "files": [
+          {
+            "name": "NotificationsLayout.vue",
+            "path": "layouts/NotificationsLayout.vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно"
+          }
+        ]
+      },
+      {
+        "id": "notifications-elements",
+        "title": "Элементы интерфейса уведомлений",
+        "description": "Мелкие компоненты для отображения статуса и отдельных уведомлений.",
+        "files": [
+          {
+            "name": "NotificationBadge.vue",
+            "path": "elements/NotificationBadge.vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно"
+          },
+          {
+            "name": "NotificationItem.vue",
+            "path": "partials/NotificationItem.vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно"
+          }
+        ]
+      },
+      {
+        "id": "notifications-sections",
+        "title": "Секции уведомлений",
+        "description": "Секции для отображения списка уведомлений и управления настройками.",
+        "files": [
+          {
+            "name": "NotificationPreferences.vue",
+            "path": "sections/NotificationPreferences.vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно"
+          },
+          {
+            "name": "NotificationsList.vue",
+            "path": "sections/NotificationsList.vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно"
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "06d0cf8efa93cef51ef2370c0bc3c254",
+    "0817663fc094c5a798cde5a23c292b5c",
+    "0bb3cf04681bbfe7eac959859770d124",
+    "1890b8d7f152cd59cbe9328408bdd9b8",
+    "1e77d9381efa45365cb05fdf2e3a476f",
+    "25142dd62727649c51737c214330660a",
+    "33d51616b04b1a8f3e4db539c9968297",
+    "5b2c37dd3883bf4e4e41366a7615f6d6",
+    "6ced4091534280706b28eef9d07d1a16",
+    "6d2aede4b7e64f1e51f6ad92325eed70",
+    "74e0d99d3047562bb2e8ee5dbecad373",
+    "7bb87ce9719a415bb158cc301bd29159",
+    "86aa172b823bf3357269f9d6fa2b22fa",
+    "8cc835b98de267018800ef8e78381850",
+    "8d25ebaebe9525c28ee948db5fae7437",
+    "91b4e8c3bcf8aa2cbb8c666f3a684fcb",
+    "b1ea43cefb914b0912d7bf57e4783809",
+    "c15cf7b4f8510c599676bf315f9e1e1d",
+    "d87a0ddcf528cdb250b978e1894b2839",
+    "dee0aa49c101831e6233568a7e953156",
+    "e03a47f407de4fa9cea2123bb58e6130",
+    "e2020682ef63f69fff5ad932c6ac6f8a",
+    "e8f137f5624dfdc5cac867220100f819",
+    "e988bb3e95800b4fde873233937ef52a",
+    "f0ce3d9f91f2df8d50a7fd09e104302f",
+    "f790d89238bfc74ed744c48c5668baee"
+  ],
+  "groupHash": "99c6a13f27077246539795f73427a45f",
+  "generated": "2025-06-05T09:21:45.682Z"
+}

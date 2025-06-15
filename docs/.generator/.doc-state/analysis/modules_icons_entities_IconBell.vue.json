@@ -1,0 +1,44 @@
+{
+  "path": "../../src/modules/icons/entities/IconBell.vue",
+  "relativePath": "modules/icons/entities/IconBell.vue",
+  "type": "source",
+  "name": "IconBell.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component rendering a bell icon using inline SVG. It exposes customizable props for fill color and theme.",
+    "Purpose": "Provides a reusable notification/bell icon in the UI with configurable color and theme.",
+    "Components": [
+      {
+        "name": "IconBell",
+        "role": "Functional Vue component that outputs a bell-shaped SVG and accepts props for fill color and theme."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declares component props in the <script setup> context",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          },
+          "theme": {
+            "type": "String",
+            "default": "light"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "Vue (defineProps macro)",
+      "Built-in SVG support in browsers"
+    ],
+    "Usage": "Import with `import IconBell from 'modules/icons/entities/IconBell.vue'` and use in templates as `<IconBell fill=\"#ff0000\" theme=\"dark\" />`.",
+    "Importance": 2,
+    "Notes": [
+      "No <style> block is defined; styling relies on the SVG and CSS variables",
+      "`theme` prop is declared but not currently used in the template",
+      "The SVG path is complex and defines the bell shape; altering `fill` updates the icon color"
+    ]
+  }
+}

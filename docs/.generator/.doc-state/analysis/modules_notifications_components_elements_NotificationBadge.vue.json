@@ -1,0 +1,78 @@
+{
+  "path": "../../src/modules/notifications/components/elements/NotificationBadge.vue",
+  "relativePath": "modules/notifications/components/elements/NotificationBadge.vue",
+  "type": "source",
+  "name": "NotificationBadge.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Defines a notification badge component that shows a bell icon with an unread count, toggles a dropdown list of recent notifications, and allows marking all as read or navigating to a full notifications page.",
+    "Purpose": "Provide a UI element for users to see, open, and interact with their notifications within the application.",
+    "Components": [
+      {
+        "name": "NotificationBadge",
+        "responsibility": "Main wrapper component handling display of the notification icon, unread count, dropdown state, and interaction logic."
+      },
+      {
+        "name": "NotificationItem",
+        "responsibility": "Child component used to render each individual notification entry in the dropdown list."
+      },
+      {
+        "name": "IconBell",
+        "responsibility": "Icon component rendering the bell SVG, used as the visible badge trigger."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "toggleNotifications",
+        "description": "Toggles the visibility of the notifications dropdown.",
+        "parameters": []
+      },
+      {
+        "name": "handleNotificationClick",
+        "description": "Handles click on a specific notification: closes the dropdown and dispatches an action with notification metadata.",
+        "parameters": [
+          "notification"
+        ]
+      },
+      {
+        "name": "handleClickOutside",
+        "description": "Listens for document clicks and closes the dropdown if the click occurred outside the component container.",
+        "parameters": [
+          "event"
+        ]
+      },
+      {
+        "name": "recentNotifications",
+        "description": "Computed property that sorts the notifications by creation date (descending) and limits them to the maxNotifications prop.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted",
+        "description": "Lifecycle hook: registers the outside-click listener and loads notifications from the store when the component mounts.",
+        "parameters": []
+      },
+      {
+        "name": "onUnmounted",
+        "description": "Lifecycle hook: unregisters the outside-click listener when the component unmounts.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, onUnmounted, inject)",
+      "vue-router (useRouter, <router-link>)",
+      "@martyrs/src/modules/auth/views/store/auth.js (auth state for user ID)",
+      "@martyrs/src/modules/icons/entities/IconBell.vue",
+      "../blocks/NotificationItem.vue",
+      "Injected 'useNotifications' composable providing notifications, unreadCount, loading, markAllAsRead, getNotifications"
+    ],
+    "Usage": "Import and register <NotificationBadge> in parent components (e.g. header or navbar). The component relies on a provided 'useNotifications' context and presents a dropdown of recent notifications when clicked.",
+    "Importance": 3,
+    "Notes": [
+      "Accessibility: the notification button uses an aria-label that announces the unread count.",
+      "Scoped styles ensure no leakage into global CSS.",
+      "Potential bug: handleNotificationClick references an undefined 'actions' object; likely needs to import or destructure actions from the notifications store.",
+      "Click-outside logic is implemented via a document-level event listener.",
+      "The component fetches notifications on mount using the current user's ID from the auth store."
+    ]
+  }
+}

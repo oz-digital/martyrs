@@ -1,0 +1,130 @@
+{
+  "path": "../../src/modules/products/products.client.js",
+  "relativePath": "modules/products/products.client.js",
+  "type": "source",
+  "name": "products.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет клиентскую часть модуля продуктов: настраивает маршруты, подключает хранилища и экспортирует Vue-компоненты, связанные с каталогом, остатками и карточками продуктов.",
+    "Purpose": "Обеспечить интеграцию модуля «Products» в основное приложение: зарегистрировать маршруты, добавить разделы состояния (stores) и предоставить переиспользуемые компоненты для отображения продуктов.",
+    "Components": [
+      {
+        "name": "initializeProducts",
+        "responsibility": "Функция инициализации модуля: регистрирует маршруты продуктов и подключает сторы (categories, leftovers, products) к приложению."
+      },
+      {
+        "name": "ModuleProducts",
+        "responsibility": "Главный экспорт модуля: содержит метод initialize и сборник всех компонент, сторов и маршрутизатора для продуктов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeProducts",
+        "parameters": [
+          "app",
+          "store",
+          "router",
+          "options = {}"
+        ],
+        "description": "Добавляет роуты продуктов в заданный маршрут приложения и регистрирует три стор-модуля (categories, leftovers, products) в глобальном сторе."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./router/products.router.js",
+        "import": "createProductRoutes"
+      },
+      {
+        "module": "./store/categories.js",
+        "import": "storeCategories"
+      },
+      {
+        "module": "./store/leftovers.js",
+        "import": "storeLeftovers"
+      },
+      {
+        "module": "./store/products.js",
+        "import": "storeProducts"
+      },
+      {
+        "module": "./components/blocks/CardCategory.vue",
+        "import": "CardCategory"
+      },
+      {
+        "module": "./components/blocks/CardLeftover.vue",
+        "import": "CardLeftover"
+      },
+      {
+        "module": "./components/blocks/CardPosition.vue",
+        "import": "CardPosition"
+      },
+      {
+        "module": "./components/blocks/CardProduct.vue",
+        "import": "CardProduct"
+      },
+      {
+        "module": "./components/elements/Image360.vue",
+        "import": "Image360"
+      },
+      {
+        "module": "./components/blocks/ProductImages.vue",
+        "import": "ProductImages"
+      },
+      {
+        "module": "./components/sections/EditVariants.vue",
+        "import": "EditVariants"
+      },
+      {
+        "module": "./components/sections/FilterProducts.vue",
+        "import": "FilterProducts"
+      },
+      {
+        "module": "./components/sections/HeroRecommendation.vue",
+        "import": "HeroRecommendation"
+      },
+      {
+        "module": "./components/sections/PopularProducts.vue",
+        "import": "PopularProducts"
+      },
+      {
+        "module": "./components/sections/SectionProduct.vue",
+        "import": "SectionProduct"
+      },
+      {
+        "module": "./components/elements/Price.vue",
+        "import": "Price"
+      },
+      {
+        "module": "./components/pages/LeftoverEdit.vue",
+        "import": "LeftoverEdit"
+      },
+      {
+        "module": "./components/pages/Leftovers.vue",
+        "import": "Leftovers"
+      },
+      {
+        "module": "./components/pages/Product.vue",
+        "import": "Product"
+      },
+      {
+        "module": "./components/pages/ProductEdit.vue",
+        "import": "ProductEdit"
+      },
+      {
+        "module": "./components/pages/ProductRecommmendation.vue",
+        "import": "ProductRecommendation"
+      },
+      {
+        "module": "./components/pages/Products.vue",
+        "import": "Products"
+      }
+    ],
+    "Usage": "Импортируется как default-экспорт (ModuleProducts) для инициализации в основном файле приложения: ModuleProducts.initialize(app, store, router, { route: '...' }). Также предоставляет набор именованных экспортов Vue-компонентов для их непосредственного использования в других модулях.",
+    "Importance": 4,
+    "Notes": [
+      "Следует передавать корректное имя корневого маршрута через опцию options.route (по умолчанию 'Home').",
+      "Все стор-модули регистрируются через store.addStore, что соответствует архитектуре фреймворка.",
+      "Экспорт компонентов сгруппирован по типам (elements, blocks, sections, pages) для удобства."
+    ]
+  }
+}

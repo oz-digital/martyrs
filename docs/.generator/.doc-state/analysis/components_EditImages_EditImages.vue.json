@@ -1,0 +1,69 @@
+{
+  "path": "../../src/components/EditImages/EditImages.vue",
+  "relativePath": "components/EditImages/EditImages.vue",
+  "type": "source",
+  "name": "EditImages.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент для редактирования списка изображений: отображает превью, позволяет перетаскивать, удалять и добавлять новые файлы.",
+    "Purpose": "Предоставить UI для управления набором изображений — просмотр, перетаскивание для изменения порядка, удаление и загрузка дополнительных файлов.",
+    "Components": [
+      {
+        "name": "VueDraggableNext",
+        "responsibility": "Обеспечивает drag-and-drop интерфейс для упорядочивания массива изображений."
+      },
+      {
+        "name": "UploadImageMultiple",
+        "responsibility": "Компонент загрузки нескольких изображений, генерирует события при обновлении списка загруженных файлов."
+      },
+      {
+        "name": "IconCross",
+        "responsibility": "Иконка-кнопка для удаления одного изображения из списка."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "emitChanges",
+        "description": "Эмитит во внешний компонент текущее состояние массива localImages.",
+        "parameters": []
+      },
+      {
+        "name": "onImagesUpdate",
+        "description": "Добавляет в localImages новые изображения и триггерит emitChanges.",
+        "parameters": [
+          {
+            "name": "newImages",
+            "type": "Array",
+            "description": "Новый массив путей/идентификаторов загруженных изображений."
+          }
+        ]
+      },
+      {
+        "name": "deleteImage",
+        "description": "Удаляет изображение из localImages по индексу и триггерит emitChanges.",
+        "parameters": [
+          {
+            "name": "index",
+            "type": "Number",
+            "description": "Индекс удаляемого изображения в массиве localImages."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, defineEmits, watchEffect)",
+      "vue-draggable-next (VueDraggableNext)",
+      "@martyrs/src/components/UploadImageMultiple/UploadImageMultiple.vue",
+      "@martyrs/src/modules/icons/navigation/IconCross.vue"
+    ],
+    "Usage": "Импортируется в родительском компоненте как <EditImages :images=\"imagesArray\" :text=\"...\" :options=\"...\" :uploadPath=\"...\" @update:images=\"onUpdateImages\"/>. Родитель получает обновлённый массив изображений через событие update:images.",
+    "Importance": 3,
+    "Notes": [
+      "Использует script setup и Composition API.",
+      "Локальное состояние localImages синхронизируется с внешним props.images через watchEffect.",
+      "FILE_SERVER_URL используется из глобальной переменной окружения для формирования src изображения.",
+      "В defineProps тип uploadPath объявлен как Object, но по умолчанию передаётся строка — возможное несоответствие типов.",
+      "Секция <style> пуста; стили подтягиваются через утилитарные CSS-классы и SCSS-переменные."
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "path": "../../src/styles/base/borders.scss",
+  "relativePath": "styles/base/borders.scss",
+  "type": "source",
+  "name": "borders.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "Этот файл содержит набор стилей и утилитарных классов для управления рамками (border) и линиями (hr) в проекте. В нём определены базовые правила для горизонтальных и вертикальных линий, множество CSS-классов для толщины, цвета и стилей рамок, а также несколько анимаций через @keyframes.",
+    "Purpose": "Предоставить централизованный набор CSS-утилит для быстрой и унифицированной настройки рамок и разделительных линий по всему приложению.",
+    "Components": [
+      {
+        "name": "hr",
+        "description": "Горизонтальная линия шириной 100%, высотой 1px, без границ, с фоном rgba(0,0,0,0.1)."
+      },
+      {
+        "name": "hr.absolute",
+        "description": "Абсолютно позиционированная горизонтальная линия, растянутая на весь контейнер, привязана к левому верхнему углу."
+      },
+      {
+        "name": "hr.vertical",
+        "description": "Вертикальная линия шириной 1px, высотой 100%, без границ, с фоном rgba(0,0,0,0.1)."
+      },
+      {
+        "name": ".br-{size}px",
+        "description": "Утилитарные классы для установки толщины рамки (0, 1px, 2px и т.д.). Префикс br-0.. br-2px, br-b-3px и т.д."
+      },
+      {
+        "name": ".br-{style}",
+        "description": "Установки стиля границы: solid (.br-solid), dashed (.br-dash)."
+      },
+      {
+        "name": ".br-t, .br-r, .br-b, .br-l",
+        "description": "Установка толщины рамки только на указанной стороне (top, right, bottom, left)."
+      },
+      {
+        "name": ".br-{color}",
+        "description": "Установка цвета рамки на основе CSS-переменных: black, dark, main, second, grey, light, white, red и социальные сети (youtube, telegram, twitter, reddit, instagram)."
+      },
+      {
+        "name": ".br-{color}-transp-{percent}",
+        "description": "Установка полупрозрачного варианта цвета рамки (grey, black, white) с разными уровнями прозрачности от 5% до 100%. Классы .br-grey-transp-50, .br-black-transp-10, .br-white-transp-25 и т.д."
+      },
+      {
+        "name": ".br-inset-2px-black",
+        "description": "Внутренняя рамка (box-shadow inset) толщиной 2px чёрного цвета."
+      },
+      {
+        "name": ".br-anim",
+        "description": "Анимированная пунктирная рамка с бесконечной анимацией dash-animation."
+      },
+      {
+        "name": ".br-neon, .br-glow, .br-glow-animation, .br-double-line, .br-inset, .br-outset, .br-inner-soft, .br-outer-soft, .br-glass, .br-glass-inset, .br-neumorphic, .br-border-flip, .br-pulse, .br-spin",
+        "description": "Набор декоративных рамок и эффектов: неоновые, светящиеся, двойные, inset/outset, эмбоссированные (neumorphic), а также анимации смены цвета, пульсации, вращения."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "@keyframes dash-animation",
+        "parameters": null,
+        "description": "Анимация для класса .br-anim, смещение пунктирного бордера вдоль линии."
+      },
+      {
+        "name": "@keyframes glow-animation",
+        "parameters": null,
+        "description": "Плавная анимация интенсивности свечения для .br-glow-animation."
+      },
+      {
+        "name": "@keyframes border-flip",
+        "parameters": null,
+        "description": "Смена цвета рамки между белым и зелёным для .br-border-flip."
+      },
+      {
+        "name": "@keyframes pulse",
+        "parameters": null,
+        "description": "Анимация пульсации: масштабирование и изменение теней для .br-pulse."
+      },
+      {
+        "name": "@keyframes spin",
+        "parameters": null,
+        "description": "Анимация вращения 360° для .br-spin."
+      }
+    ],
+    "Dependencies": [
+      "CSS-переменные: --black, --dark, --main, --second, --grey, --light, --white, --youtube, --telegram, --twitter, --reddit, --instagram"
+    ],
+    "Usage": "Как правило, импортируется в главный SCSS-файл (например, styles/base/_index.scss или styles/main.scss) после определения CSS-переменных и до компонентов, чтобы утилиты были доступны в любом месте приложения.",
+    "Importance": 4,
+    "Notes": [
+      "Все утилиты лежат внутри селектора body, что гарантирует их глобальную область применения.",
+      "Нет собственных SCSS-переменных или миксинов — все цвета берутся из внешних CSS-переменных.",
+      "Большое количество однотипных классов можно было бы сократить через циклы @for в SCSS.",
+      "Анимации и декоративные рамки дополняют базовый набор, но могут влиять на производительность при массовом применении.",
+      "Файл не зависит от других SCSS-модулей кроме глобальных CSS-переменных."
+    ]
+  }
+}

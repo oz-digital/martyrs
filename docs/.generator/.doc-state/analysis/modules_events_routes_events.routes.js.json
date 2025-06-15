@@ -1,0 +1,98 @@
+{
+  "path": "../../src/modules/events/routes/events.routes.js",
+  "relativePath": "modules/events/routes/events.routes.js",
+  "type": "source",
+  "name": "events.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This module defines and registers Express.js routes for CRUD operations on \"events\" with JWT authentication and ABAC (Attribute-Based Access Control) middlewares.",
+    "Purpose": "To centralize and expose HTTP endpoints for reading, creating, updating and deleting events in the application, applying security and validation layers.",
+    "Components": [
+      {
+        "name": "controller",
+        "type": "object",
+        "responsibility": "Holds the event-handling methods (read, create, update, delete) returned by controllerFactory."
+      },
+      {
+        "name": "abac",
+        "type": "object",
+        "responsibility": "Instance of the globals ABAC engine, used to enforce fine-grained permissions on each route."
+      },
+      {
+        "name": "authJwt",
+        "type": "object",
+        "responsibility": "Provides JWT-based authentication middlewares (e.g. verifyToken())."
+      },
+      {
+        "name": "verifyEvent",
+        "type": "object",
+        "responsibility": "Middleware batch for validating event payloads (e.g. checking name presence and existence)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defaultExport",
+        "type": "function",
+        "parameters": [
+          "app",
+          "db",
+          "origins"
+        ],
+        "description": "Registers GET and POST routes under `/api/events/*` on the provided Express `app`, wiring up authentication, ABAC and validation middlewares, and binding controller methods."
+      },
+      {
+        "name": "controller.read",
+        "type": "function",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles reading/listing of events. Signature assumed from controllerFactory."
+      },
+      {
+        "name": "controller.create",
+        "type": "function",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles creation of a new event after validation."
+      },
+      {
+        "name": "controller.update",
+        "type": "function",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles updating an existing event after validation."
+      },
+      {
+        "name": "controller.delete",
+        "type": "function",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles deletion of an event."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "@martyrs/src/modules/globals/controllers/classes/globals.abac.js",
+      "../controllers/events.controller.js",
+      "../middlewares/server/index.js"
+    ],
+    "Usage": "Imported and invoked in the main application setup (e.g. `require('./routes/events.routes.js')(app, db, origins)`) to register the events-related endpoints.",
+    "Importance": 4,
+    "Notes": [
+      "Uses ABAC middleware with custom options: `allowPublished` and `allowUnauthenticated` for the read endpoint.",
+      "JWT verification is conditionally applied (public read vs. protected create/update/delete).",
+      "Validation middleware `verifyEvent` checks both non-empty names and event existence or non-existence before create/update."
+    ]
+  }
+}

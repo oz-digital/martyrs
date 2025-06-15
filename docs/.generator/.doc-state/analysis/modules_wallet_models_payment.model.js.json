@@ -1,0 +1,50 @@
+{
+  "path": "../../src/modules/wallet/models/payment.model.js",
+  "relativePath": "modules/wallet/models/payment.model.js",
+  "type": "source",
+  "name": "payment.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Exports a factory function that defines and returns a Mongoose model for payment records, including fields for arbitrary data, currency, status, customer and creator references, and automatic timestamps.",
+    "Purpose": "Provide a persistent representation of payment operations in the wallet module, enabling creation, querying and modification of payment records in MongoDB.",
+    "Components": [
+      {
+        "name": "ExportedFunction",
+        "type": "Function",
+        "responsibility": "Accepts a db object (with mongoose) and registers the Payment schema and model."
+      },
+      {
+        "name": "PaymentSchema",
+        "type": "mongoose.Schema",
+        "responsibility": "Describes the shape of a payment document, its fields and types, and attaches timestamp behavior."
+      },
+      {
+        "name": "Payment",
+        "type": "mongoose.Model",
+        "responsibility": "Provides the API for CRUD operations on the 'payments' collection."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "parameters": [
+          "db"
+        ],
+        "description": "Initializes the Payment schema and model using db.mongoose, then returns the model."
+      },
+      {
+        "name": "currentTime",
+        "parameters": [],
+        "description": "Overrides mongoose's default timestamp generator to return Date.now()."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose: the mongoose instance supplied by the application",
+      "mongoose.Schema.Types.ObjectId: for customer and creator references",
+      "User model: referenced by customer and creator fields via 'ref: \"User\"'"
+    ],
+    "Usage": "Imported wherever the Payment model is needed by calling the factory with the app's db object, e.g. `const Payment = require('./payment.model.js')(db);`",
+    "Importance": 4,
+    "Notes": "• The `data` field is stored as a generic Object without a nested schema—validation may be required elsewhere.\n• `currency` and `status` are plain strings; no enum or format enforcement in the schema.\n• Timestamps use a custom `currentTime`, but otherwise rely on mongoose defaults.\n• The model depends on the User model being registered under the name 'User' beforehand."
+  }
+}

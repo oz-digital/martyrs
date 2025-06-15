@@ -1,0 +1,90 @@
+{
+  "path": "../../src/modules/integrations/openai/openai.globals.js",
+  "relativePath": "modules/integrations/openai/openai.globals.js",
+  "type": "source",
+  "name": "openai.globals.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a singleton wrapper around the OpenAI API client, providing default model configurations and a robust chat-completion method with retry and JSON-parsing logic.",
+    "Purpose": "Centralize and manage a single OpenAI client instance across the application, standardize default models, and offer utility methods for generating chat completions with built-in error handling.",
+    "Components": [
+      {
+        "name": "OpenAIGlobal",
+        "type": "class",
+        "responsibilities": [
+          "Instantiate and cache a single OpenAI client using environment credentials",
+          "Maintain default model identifiers for various APIs (chat, vision, embedding)",
+          "Provide methods for chat completions, client access, and updating default models"
+        ]
+      },
+      {
+        "name": "openaiGlobal",
+        "type": "object",
+        "responsibilities": [
+          "Singleton instance exported for use throughout the codebase"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createChatCompletion",
+        "signature": "async createChatCompletion(prompt: string, options?: { model?, maxRetries?, temperature?, parseJSON?, systemPrompt? })",
+        "description": "Generate a chat completion with the OpenAI API, retrying on errors (especially JSON parse failures and rate limits), optionally returning parsed JSON or raw text.",
+        "parameters": [
+          {
+            "prompt": "string — user prompt text"
+          },
+          {
+            "options": "object — overrides and flags",
+            "properties": [
+              {
+                "model": "string — which model to use (defaults to chat model)"
+              },
+              {
+                "maxRetries": "number — how many times to retry on failure"
+              },
+              {
+                "temperature": "number — sampling temperature"
+              },
+              {
+                "parseJSON": "boolean — whether to JSON.parse the output"
+              },
+              {
+                "systemPrompt": "string — optional system-level prompt to prepend"
+              }
+            ]
+          }
+        ],
+        "returns": "Promise<Object|string> — either parsed JSON or raw response content"
+      },
+      {
+        "name": "getClient",
+        "signature": "getClient(): OpenAI",
+        "description": "Return direct access to the underlying OpenAI client instance."
+      },
+      {
+        "name": "setDefaultModel",
+        "signature": "setDefaultModel(type: string, modelId: string): void",
+        "description": "Override the default model identifier for a given API type ('chat', 'vision', 'embedding')."
+      }
+    ],
+    "Dependencies": [
+      "openai (npm package)",
+      "process.env.OPENAI_ORG_KEY",
+      "process.env.OPENAI_API_KEY"
+    ],
+    "Usage": [
+      "import openaiGlobal from 'modules/integrations/openai/openai.globals';",
+      "await openaiGlobal.createChatCompletion('Hello', { parseJSON: false });",
+      "const client = openaiGlobal.getClient();",
+      "openaiGlobal.setDefaultModel('chat', 'gpt-4');"
+    ],
+    "Importance": 4,
+    "Notes": [
+      "Implements exponential backoff on HTTP 429 (rate limit) errors.",
+      "Retries up to `maxRetries` on JSON parsing failures and API errors.",
+      "Default models can be customized at runtime.",
+      "Follows classic singleton pattern to avoid multiple client instantiations."
+    ]
+  }
+}

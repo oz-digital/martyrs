@@ -1,0 +1,50 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionHeroVideo.vue",
+  "relativePath": "modules/landing/components/sections/SectionHeroVideo.vue",
+  "type": "source",
+  "name": "SectionHeroVideo.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component rendering a hero section with localized title, description, contact information and an autoplaying background video.",
+    "Purpose": "Acts as the main hero block on the landing page, providing an engaging video backdrop plus dynamically translated text and contact details.",
+    "Components": [
+      {
+        "name": "SectionHeroVideo",
+        "role": "Container component for the hero section combining text and video"
+      },
+      {
+        "name": "videoElement (ref)",
+        "role": "Reference to the HTML5 video element for programmatic control"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "checkAndPlayVideo",
+        "description": "Registers event handlers on the video element to track play/pause state.",
+        "parameters": []
+      },
+      {
+        "name": "playVid",
+        "description": "Attempts to play the video if it is paused and not already playing.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted callback",
+        "description": "Lifecycle hook that initializes video event listeners and triggers playback on mount.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-i18n (useI18n)"
+    ],
+    "Usage": "Imported into the landing page or parent layout and rendered as `<SectionHeroVideo/>`. It relies on the project's i18n setup to supply the translation function.",
+    "Importance": 4,
+    "Notes": [
+      "Component uses inline i18n messages; English and Russian locales are defined but Russian lacks some contact keys.",
+      "The `<video>` tag has a typo: `playsinlineclass` should probably be `playsinline`.",
+      "SCSS includes a mobile breakpoint that reorders columns and applies a gradient overlay on the video.",
+      "Video is set to `autoplay muted loop playsinline` for mobile compatibility."
+    ]
+  }
+}

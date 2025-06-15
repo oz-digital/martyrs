@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-address",
+    "title": "Проект: Компоненты / Address",
+    "description": "Модуль содержит компонент Address для отображения или ввода адресной информации.",
+    "subsections": [
+      {
+        "id": "address-vue",
+        "title": "Address.vue",
+        "description": "Основной Vue-компонент для работы с адресами. Используется для отображения или редактирования адресных данных."
+      }
+    ]
+  },
+  "fileHashes": [
+    "a599f23a9f423c345f95be43f2c08e56"
+  ],
+  "groupHash": "8ce98481e8f6d0612a8ffb48e021efab",
+  "generated": "2025-06-05T09:16:14.611Z"
+}

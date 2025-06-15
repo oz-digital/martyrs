@@ -1,0 +1,151 @@
+{
+  "path": "../../src/components/DatePicker/Calendar.vue",
+  "relativePath": "components/DatePicker/Calendar.vue",
+  "type": "source",
+  "name": "Calendar.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue component renders an interactive calendar widget with optional date-range selection and availability indicators. It supports disabling past dates, quick-range buttons (Today, Last Week, Last Month, All Time), month navigation, single-date or range selection, and custom availability data.",
+    "Purpose": "Provides a reusable date-picker calendar UI within the project, exposing a v-model for either a single selected date or a start/end date range.",
+    "Components": [
+      {
+        "name": "Calendar.vue",
+        "role": "Main component rendering calendar structure, navigation controls, weekday headers, date cells, and quick-range buttons."
+      },
+      {
+        "name": "availability-indicator (CSS class)",
+        "role": "Visual badge inside a date cell showing available quantity when showAvailability is true."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "toUTC",
+        "params": [
+          "date"
+        ],
+        "description": "Returns a Date normalized to UTC midnight of the given date."
+      },
+      {
+        "name": "toEndOfDayUTC",
+        "params": [
+          "date"
+        ],
+        "description": "Returns a Date at 23:59:59 UTC of the given date."
+      },
+      {
+        "name": "dateToString",
+        "params": [
+          "date"
+        ],
+        "description": "Formats a Date to ISO YYYY-MM-DD string."
+      },
+      {
+        "name": "isToday",
+        "params": [
+          "date"
+        ],
+        "description": "Checks if the given date matches today’s date in UTC."
+      },
+      {
+        "name": "isSameMonth",
+        "params": [
+          "date"
+        ],
+        "description": "Checks if the given date falls in the currently viewed month."
+      },
+      {
+        "name": "isPastDate",
+        "params": [
+          "date"
+        ],
+        "description": "Determines if a date is before today, honoring disablePastDates prop."
+      },
+      {
+        "name": "getAvailabilityInfo",
+        "params": [
+          "date"
+        ],
+        "description": "Retrieves availabilityData entry for a given date string, or null if none."
+      },
+      {
+        "name": "isAvailable",
+        "params": [
+          "date"
+        ],
+        "description": "Returns false if availabilityData marks zero quantity for the date."
+      },
+      {
+        "name": "isLowAvailability",
+        "params": [
+          "date"
+        ],
+        "description": "Returns true if availabilityData quantity is >0 and ≤ lowAvailabilityThreshold."
+      },
+      {
+        "name": "getAvailability",
+        "params": [
+          "date"
+        ],
+        "description": "Returns numeric availability for a date when showAvailability is true."
+      },
+      {
+        "name": "isSelected",
+        "params": [
+          "date"
+        ],
+        "description": "Determines if a date cell is selected, either as single date or within the start/end range."
+      },
+      {
+        "name": "isInRange",
+        "params": [
+          "date"
+        ],
+        "description": "Checks if a date falls strictly between startDate and endDate."
+      },
+      {
+        "name": "selectDate",
+        "params": [
+          "date"
+        ],
+        "description": "Handles clicking a date: enforces disablePastDates/availability, updates selectedDate or start/end range and emits via model binding."
+      },
+      {
+        "name": "prevMonth",
+        "params": [],
+        "description": "Navigates calendar view to the previous month, blocking past-month navigation if disablePastDates is true."
+      },
+      {
+        "name": "nextMonth",
+        "params": [],
+        "description": "Navigates calendar view to the next month."
+      },
+      {
+        "name": "selectToday",
+        "params": [],
+        "description": "Sets the model to today’s date or today’s full range if allowRange is true and past dates aren’t disabled."
+      },
+      {
+        "name": "selectLastWeek",
+        "params": [],
+        "description": "Sets the model to the date range from 7 days ago until today, unless disablePastDates is true."
+      },
+      {
+        "name": "selectLastMonth",
+        "params": [],
+        "description": "Sets the model to the range from one month ago until today, unless disablePastDates is true."
+      },
+      {
+        "name": "selectLastYear",
+        "params": [],
+        "description": "Clears any date restrictions, resetting model to an open-ended range."
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, ref, watch, defineProps, defineEmits)",
+      "defineModel (framework binding for v-model, likely from 'martyrs')"
+    ],
+    "Usage": "Imported into a parent or DatePicker component and bound with v-model (modelValue). Parent passes allowRange, disabled, disablePastDates, availabilityData, showAvailability, lowAvailabilityThreshold as props.",
+    "Importance": 4,
+    "Notes": "- All date calculations use UTC to avoid timezone issues.  \n- Quick-range buttons are only shown when allowRange && !disablePastDates.  \n- The component enforces availability constraints across entire selected ranges.  \n- Scoped SCSS handles disabled state and grid layout for responsive date cells."
+  }
+}

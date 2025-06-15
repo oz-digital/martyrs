@@ -1,0 +1,35 @@
+{
+  "section": {
+    "id": "source-components-datepicker",
+    "title": "Проект: Компоненты / Date Picker",
+    "description": "Модуль DatePicker предоставляет компоненты для выбора даты в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "datepicker-overview",
+        "title": "Обзор",
+        "description": "Модуль включает основные компоненты для отображения и выбора даты."
+      },
+      {
+        "id": "datepicker-components",
+        "title": "Компоненты",
+        "description": "В состав модуля входят два основных компонента: DatePicker.vue и Calendar.vue."
+      },
+      {
+        "id": "datepicker-datepicker-vue",
+        "title": "DatePicker.vue",
+        "description": "Главный компонент для выбора даты. Используется для интеграции выбора даты в формы и интерфейсы."
+      },
+      {
+        "id": "datepicker-calendar-vue",
+        "title": "Calendar.vue",
+        "description": "Вспомогательный компонент, отображающий календарь для выбора даты."
+      }
+    ]
+  },
+  "fileHashes": [
+    "3ccdf494d8efea880da468f1cf312ecf",
+    "8f7ed17cf416650a7b14a20ad47bb860"
+  ],
+  "groupHash": "9904cd99d0caa7ebeb90b9476faaa738",
+  "generated": "2025-06-05T09:16:36.698Z"
+}

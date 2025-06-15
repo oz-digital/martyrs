@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-uploadimagemultiple",
+    "title": "Проект: Компоненты / Upload Image Multiple",
+    "description": "Модуль предоставляет компонент для загрузки нескольких изображений пользователем.",
+    "subsections": [
+      {
+        "id": "uploadimagemultiple-vue",
+        "title": "UploadImageMultiple.vue",
+        "description": "Основной Vue-компонент для загрузки нескольких изображений."
+      }
+    ]
+  },
+  "fileHashes": [
+    "8f5b29bf3bcce22ba8bf3031be6a3211"
+  ],
+  "groupHash": "6ce69f1e077147aca5019d301593dc27",
+  "generated": "2025-06-05T09:17:36.716Z"
+}

@@ -1,0 +1,48 @@
+{
+  "path": "../../src/modules/chats/models/chat.model.js",
+  "relativePath": "modules/chats/models/chat.model.js",
+  "type": "source",
+  "name": "chat.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Файл экспортирует фабричную функцию для создания и регистрации модели ChatMessage на основе mongoose.",
+    "Purpose": "Определить схему и модель сообщений чата для взаимодействия с базой данных через mongoose.",
+    "Components": [
+      {
+        "name": "ChatMessageSchema",
+        "type": "mongoose.Schema",
+        "responsibility": "Описывает структуру документа сообщения чата (username, chatId, text, createdAt)."
+      },
+      {
+        "name": "ChatMessage",
+        "type": "mongoose.Model",
+        "responsibility": "Модель для CRUD-операций с коллекцией сообщений чата."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (factory)",
+        "description": "Фабричная функция, принимающая объект db и возвращающая mongoose-модель ChatMessage.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект, содержащий подключение к mongoose (db.mongoose)."
+          }
+        ],
+        "returns": "Модель mongoose (ChatMessage)."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose.Schema",
+      "db.mongoose.model"
+    ],
+    "Usage": "Импортируется и вызывается с переданным объектом db для получения модели: const ChatMessage = require('.../chat.model.js')(db);",
+    "Importance": 3,
+    "Notes": [
+      "Поле createdAt получает текущее время по умолчанию через Date.now().",
+      "Является частью модуля chats и используется при сохранении и извлечении сообщений.",
+      "Фабричная функция даёт возможность инъецировать разные подключения к mongoose (например, тестовое/продакшн)."
+    ]
+  }
+}

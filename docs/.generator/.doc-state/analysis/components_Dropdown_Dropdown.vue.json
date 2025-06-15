@@ -1,0 +1,49 @@
+{
+  "path": "../../src/components/Dropdown/Dropdown.vue",
+  "relativePath": "components/Dropdown/Dropdown.vue",
+  "type": "source",
+  "name": "Dropdown.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 dropdown component that toggles a content panel on click, supports custom component or text labels, and closes when clicking outside.",
+    "Purpose": "Provides a reusable dropdown UI element in the application for showing contextual menus or any arbitrary slot content.",
+    "Components": [
+      {
+        "name": "Dropdown",
+        "role": "Main component wrapper. Renders a label (string or custom component) and toggles visibility of the dropdown content."
+      },
+      {
+        "name": "TransitionTranslateY",
+        "role": "Vue <transition> wrapper that animates the dropdown panel on show/hide using a translateY effect."
+      },
+      {
+        "name": "v-click-outside (clickOutside)",
+        "role": "Custom directive that listens for clicks outside the dropdown element and invokes a handler to close it."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "clickedOutside",
+        "purpose": "Sets the dropdown's open state to false when a click outside the component is detected.",
+        "params": "none"
+      },
+      {
+        "name": "isComponentLabel",
+        "purpose": "Computed property that returns true if the `label` prop is an object (i.e., a custom component config), false if it’s a simple string.",
+        "params": "none"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, defineProps)",
+      "../FieldPhone/click-outside.js (provides the v-click-outside directive)"
+    ],
+    "Usage": "Import the component and use in templates:<br><code>import Dropdown from 'components/Dropdown/Dropdown.vue';</code><br><code>&lt;Dropdown label=\"Options\" align=\"right\"&gt;...&lt;/Dropdown&gt;</code>",
+    "Importance": 3,
+    "Notes": [
+      "The `label` prop accepts either a string or an object with `{ component, props, class }` to render a custom component as the label.",
+      "Default alignment is `left`; pass `align=\"right\"` to align the dropdown panel on the right edge.",
+      "Click handler on the root div uses `.stop` modifier to prevent event propagation.",
+      "The CSS for `.dropdown-content` positions the panel absolutely and applies a box-shadow; hover-based display rules are commented out."
+    ]
+  }
+}

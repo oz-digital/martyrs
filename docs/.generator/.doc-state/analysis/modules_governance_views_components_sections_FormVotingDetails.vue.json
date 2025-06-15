@@ -1,0 +1,41 @@
+{
+  "path": "../../src/modules/governance/views/components/sections/FormVotingDetails.vue",
+  "relativePath": "modules/governance/views/components/sections/FormVotingDetails.vue",
+  "type": "source",
+  "name": "FormVotingDetails.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders a form for editing voting details (title, description, start and end dates) and keeps its parent in sync via v-model binding.",
+    "Purpose": "Provides a reusable form UI to capture and update voting metadata in a parent component or page using the Composition API and v-model pattern.",
+    "Components": [
+      {
+        "name": "FormVotingDetails",
+        "responsibility": "Renders input fields for title, description, startDate and endDate, and emits updates to its parent component."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updateField",
+        "description": "Helper function that merges a single field update into the existing modelValue object and emits an \"update:modelValue\" event.",
+        "parameters": [
+          {
+            "name": "field",
+            "type": "String",
+            "description": "The key of the modelValue object to update (e.g. 'title', 'description')."
+          },
+          {
+            "name": "value",
+            "type": "Any",
+            "description": "The new value to assign to the specified field."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, defineEmits, Composition API)"
+    ],
+    "Usage": "Imported into parent components (e.g. a proposal or governance form) and used with v-model: <FormVotingDetails v-model=\"votingDetails\"/> to keep parent state in sync.",
+    "Importance": 3,
+    "Notes": "• No <style> block present – styling must be applied externally or via global CSS.  \n• Expects `modelValue` to be an object containing keys: title, description, startDate, endDate.  \n• Uses <script setup> syntax for concise Composition API usage."
+  }
+}

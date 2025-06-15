@@ -1,0 +1,41 @@
+{
+  "path": "../../src/modules/icons/navigation/IconInfo.vue",
+  "relativePath": "modules/icons/navigation/IconInfo.vue",
+  "type": "source",
+  "name": "IconInfo.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "IconInfo.vue is a Vue 3 single-file component that renders an SVG “info” icon. It accepts a fill color prop to customize the icon’s color.",
+    "Purpose": "To provide a reusable, configurable “info” icon for navigation or other UI areas within the martyrs-based application.",
+    "Components": [
+      {
+        "name": "IconInfo",
+        "role": "Root Vue component rendering an SVG with three <path> elements forming an info symbol"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declares component props in <script setup>",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color applied to the SVG paths via the :fill binding"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Vue 3, <script setup> syntax)",
+      "Global CSS variable --black (used for default fill color)"
+    ],
+    "Usage": "Imported where needed, e.g.: import IconInfo from 'modules/icons/navigation/IconInfo.vue'; then used in templates as <IconInfo fill=\"#f00\"/> or relying on the default.",
+    "Importance": 2,
+    "Notes": [
+      "No dedicated <style> block—presentation relies on SVG attributes and CSS variables",
+      "Purely presentational; no state, computed properties or event handling",
+      "Part of the navigation icon set located at modules/icons/navigation"
+    ]
+  }
+}

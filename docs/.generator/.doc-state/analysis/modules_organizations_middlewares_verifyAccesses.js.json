@@ -1,0 +1,71 @@
+{
+  "path": "../../src/modules/organizations/middlewares/verifyAccesses.js",
+  "relativePath": "modules/organizations/middlewares/verifyAccesses.js",
+  "type": "source",
+  "name": "verifyAccesses.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику middleware-функций для проверки прав доступа пользователей к ресурсам организации или личным ресурсам, а также обработчик результатов проверки.",
+    "Purpose": "Обеспечить централизованную логику аутентификации и авторизации запросов, проверяя: является ли пользователь владельцем организации, членом с нужными правами или владельцем личного ресурса, и корректно обрабатывать результат проверки.",
+    "Components": [
+      {
+        "name": "middlewareFactory",
+        "role": "Фабричный метод, принимающий объект db и возвращающий два middleware: verifyAccess и handleAccessResult."
+      },
+      {
+        "name": "verifyAccess",
+        "role": "Генератор middleware для проверки прав доступа к конкретному ресурсу и типу доступа (read/write/etc.)."
+      },
+      {
+        "name": "handleAccessResult",
+        "role": "Middleware для обработки результатов проверки: пропускает, перенаправляет к статусу published, выполняет пользовательские проверки или отказывает."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "verifyAccess",
+        "description": "Создаёт async-express middleware, которое сверяет текущего пользователя с владельцем ресурса (организации или личного) и проверяет права в департаменте.",
+        "parameters": [
+          {
+            "name": "resource",
+            "type": "string",
+            "description": "Название ресурса, подлежащего проверке (ключ в объекте accesses)."
+          },
+          {
+            "name": "accessType",
+            "type": "string",
+            "description": "Тип доступа (например, 'read', 'write')."
+          }
+        ],
+        "returns": "function(req, res, next)"
+      },
+      {
+        "name": "handleAccessResult",
+        "description": "Создаёт express middleware для обработки построенного ранее accessResult, переводя его в HTTP-ответ или пропуская запрос дальше.",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "object",
+            "description": "Настройки поведения: allowUnauthenticated, allowPublished, customCheck."
+          }
+        ],
+        "returns": "function(req, res, next)"
+      }
+    ],
+    "Dependencies": [
+      "db.user (модель User)",
+      "db.organization (модель Organization)",
+      "db.department (модель Department)",
+      "db.mongoose.Types.ObjectId",
+      "Express objects: req, res, next"
+    ],
+    "Usage": "Импортировать фабрику и передать ей объект db из контекста приложения: \nconst verifyAccesses = require('./middlewares/verifyAccesses').default;\nconst { verifyAccess, handleAccessResult } = verifyAccesses(db);\napp.get('/api/resource', verifyAccess('resourceName', 'read'), handleAccessResult({ allowPublished: true }), controllerAction);",
+    "Importance": 4,
+    "Notes": [
+      "Логируются промежуточные данные (ownerData, accessResult) для отладки.",
+      "Обрабатываются оба варианта передачи owner — в теле и в query.",
+      "Использует mongoose.exists и Department.find для асинхронных DB-запросов.",
+      "При ошибках возвращает 403 с кодом ACCESS_DENIED, при отсутствии accessResult — 500 INTERNAL_ERROR."
+    ]
+  }
+}

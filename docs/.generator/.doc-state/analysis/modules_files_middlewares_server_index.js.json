@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/files/middlewares/server/index.js",
+  "relativePath": "modules/files/middlewares/server/index.js",
+  "type": "source",
+  "name": "index.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику серверных middleware, которая инициализирует и возвращает объект с middlewareBusboy.",
+    "Purpose": "Собрать и настроить все серверные middleware модуля files, предоставив им необходимые зависимости (db и publicPath).",
+    "Components": [
+      {
+        "name": "middlewareIndexFactory",
+        "type": "function",
+        "description": "Фабричная функция, принимающая в качестве аргументов объект базы данных и публичный путь, и возвращающая набор инициализированных middleware."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middlewareIndexFactory",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Экземпляр или интерфейс для работы с базой данных."
+          },
+          {
+            "name": "publicPath",
+            "type": "string",
+            "description": "Путь к публичной директории для хранения/чтения загружаемых файлов."
+          }
+        ],
+        "returns": {
+          "type": "object",
+          "description": "Объект, в котором ключи — имена middleware, а значения — функции middleware."
+        },
+        "description": "Инициализирует подмодуль middlewareBusboy и возвращает его в составе объекта."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./middlewareBusboy.js",
+        "importedAs": "middlewareBusboyModule",
+        "description": "Модуль, реализующий логику обработки multipart/form-data (загрузка файлов через Busboy)."
+      }
+    ],
+    "Usage": "Импортируется в коде настройки сервера, вызывается с экземпляром базы данных и путём к публичной папке. Например:\n\nimport createMiddlewares from 'modules/files/middlewares/server';\nconst middlewares = createMiddlewares(db, '/public');\napp.use(middlewares.middlewareBusboy());",
+    "Importance": 2,
+    "Notes": [
+      "По сути — простая точка входа для всех server-side middleware данного модуля.",
+      "Легко расширяется добавлением новых полей в возвращаемый объект (новых middleware).",
+      "Следует учитывать порядок инициализации при добавлении дополнительных зависимостей."
+    ]
+  }
+}

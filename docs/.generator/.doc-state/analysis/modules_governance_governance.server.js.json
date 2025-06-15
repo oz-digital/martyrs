@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/governance/governance.server.js",
+  "relativePath": "modules/governance/governance.server.js",
+  "type": "source",
+  "name": "governance.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This module bootstraps the governance feature set by registering data models with the database layer and wiring up HTTP routes (initiatives, tasks, votings, votes) into an Express-like application.",
+    "Purpose": "Provide a single entry point to initialize governance-related models, controllers and routes in the hosting application and database context.",
+    "Components": [
+      {
+        "name": "initializeGovernance",
+        "type": "function",
+        "responsibility": "Sets up model definitions on the provided `db` object and registers route handlers on the `app` if supplied."
+      },
+      {
+        "name": "models",
+        "type": "object",
+        "responsibility": "Aggregates all model factory functions (Initiative, Task, Voting, Vote) for external use or testing."
+      },
+      {
+        "name": "routes",
+        "type": "object",
+        "responsibility": "Groups all route-registration functions (initiatives, tasks, votings, votes) to be mounted on an HTTP server."
+      },
+      {
+        "name": "controllers",
+        "type": "object",
+        "responsibility": "Exposes factory functions for controllers (Initiative, Task, Voting, Vote), used internally by the routes."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeGovernance",
+        "description": "Primary initialization function. Attaches model constructors to `db` and, if an `app` is provided, registers all governance-related routes.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "An Express-style application instance. If null/undefined, only models are registered."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "A database context object where model factories will be attached (db.initiative, db.task, etc.)."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "CORS origin(s) allowed for the governance routes."
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "A base URL path prefix under which governance assets are served."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/factories/initiatives.controller.js",
+      "./controllers/factories/tasks.controller.js",
+      "./controllers/factories/votes.controller.js",
+      "./controllers/factories/votings.controller.js",
+      "./controllers/routes/initiatives.routes.js",
+      "./controllers/routes/tasks.routes.js",
+      "./controllers/routes/votes.routes.js",
+      "./controllers/routes/votings.routes.js",
+      "./models/initiative.model.js",
+      "./models/task.model.js",
+      "./models/vote.model.js",
+      "./models/voting.model.js"
+    ],
+    "Usage": "Import the default export or named `initialize` to bootstrap. Example:\n\n```js\nimport governance from 'modules/governance/governance.server.js';\nconst { initialize } = governance;\n\n// attach to express app and database\ninitialize(app, db, allowedOrigins, '/api/governance');\n```",
+    "Importance": 4,
+    "Notes": [
+      "The module can register models without an application instance (useful for background jobs or migrations).",
+      "Exports both named and default objects for flexible import patterns.",
+      "Controllers are provided as factory functions; actual instantiation occurs in route modules.",
+      "Routes are organized per entity (initiative, task, voting, vote) for clear separation of concerns."
+    ]
+  }
+}

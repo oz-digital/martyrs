@@ -1,0 +1,74 @@
+{
+  "path": "../../src/builder/ssr/ssr-transform-webpack-stats.js",
+  "relativePath": "builder/ssr/ssr-transform-webpack-stats.js",
+  "type": "source",
+  "name": "ssr-transform-webpack-stats.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл предоставляет утилиты для преобразования статистики Webpack (stats) в HTML-теги для включения JS и CSS активов на стороне сервера (SSR). Он поддерживает как режим разработки (вывод CSS inline, чтение из memory-fs), так и продакшен (вывод ссылок на файлы).",
+    "Purpose": "Генерировать корректные &lt;script&gt; и &lt;link&gt;/&lt;style&gt; теги на основе итоговых сборок Webpack для вставки в HTML-шаблоны при серверном рендеринге.",
+    "Components": [
+      {
+        "name": "normalizeAssets",
+        "role": "Унификация формата assets: превращает объект, массив или строку в массив путей."
+      },
+      {
+        "name": "extractAssets",
+        "role": "Простая функция для извлечения CSS- и JS-файлов из stats.assets и генерации тегов."
+      },
+      {
+        "name": "transformDevStats",
+        "role": "Генерирует теги для dev-сборки: CSS собирается inline из memory-fs, JS подключается через &lt;script src&gt;."
+      },
+      {
+        "name": "transformProdStats",
+        "role": "Генерирует теги для продакшен-сборки: CSS и JS подключаются через ссылочные теги (&lt;link&gt; и &lt;script&gt;)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "normalizeAssets",
+        "params": [
+          "assets"
+        ],
+        "description": "Если assets — массив, возвращает его. Если объект — возвращает его значения. Иначе упаковывает в массив."
+      },
+      {
+        "name": "extractAssets",
+        "params": [
+          "stats",
+          "publicPath"
+        ],
+        "description": "Берет stats.assets, фильтрует по расширениям .js/.css и возвращает объект с полями head (link-теги) и body (script-теги)."
+      },
+      {
+        "name": "transformDevStats",
+        "params": [
+          "stats",
+          "outputFileSystem"
+        ],
+        "description": "Для режима разработки читает CSS-файлы из указанной file system, инлайнит их в &lt;style&gt;, и генерирует &lt;script src&gt; для JS."
+      },
+      {
+        "name": "transformProdStats",
+        "params": [
+          "{ stats, publicPath }"
+        ],
+        "description": "Для продакшена генерирует &lt;link rel=\"stylesheet\"&gt; и &lt;script src&gt; на основе assetsByChunkName.main."
+      }
+    ],
+    "Dependencies": [
+      "webpack stats object (stats.assets, stats.assetsByChunkName)",
+      "outputFileSystem (для чтения файлов в dev-режиме)",
+      "publicPath (для формирования URL активов)"
+    ],
+    "Usage": "Импортируется в модуле SSR-билдера. Вызывает transformDevStats или transformProdStats в зависимости от окружения, вставляя полученные head/body строки в HTML-шаблон.",
+    "Importance": 4,
+    "Notes": [
+      "normalizeAssets упрощает работу с множественными форматами output-данных Webpack.",
+      "transformDevStats требует доступ к memory-fs или аналогичной файловой системе Webpack в dev-режиме.",
+      "extractAssets может использоваться отдельно, если нужно парсить stats.assets напрямую.",
+      "Default export содержит только transformDevStats и transformProdStats для удобного массового импорта."
+    ]
+  }
+}

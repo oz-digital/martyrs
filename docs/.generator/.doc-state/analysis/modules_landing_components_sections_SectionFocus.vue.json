@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionFocus.vue",
+  "relativePath": "modules/landing/components/sections/SectionFocus.vue",
+  "type": "source",
+  "name": "SectionFocus.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component rendering a “Our Focus” section with introductory text and a set of metric cards (farms, strains, monthly yield, dispensaries, tokens). It defines layout, minimal styling, and lifecycle hooks skeleton.",
+    "Purpose": "Provide a dedicated landing-page section showcasing key company metrics and a brief introduction to Weeder Farms’ cannabis cultivation expertise.",
+    "Components": [
+      {
+        "name": "SectionFocus",
+        "type": "Vue SFC",
+        "responsibilities": [
+          "Render section wrapper with id “our-focus” and two columns",
+          "Display heading, subheading and descriptive paragraph",
+          "Render a grid of metric “cards” with counts and labels"
+        ]
+      },
+      {
+        "name": "industry card",
+        "type": "DOM element (div.card)",
+        "responsibilities": [
+          "Display a numeric metric (h3) and label (p)",
+          "Receive a ref via setItemRef for potential animations or measurements"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "purpose": "Vue lifecycle hook placeholder for code to run after component mounts",
+        "parameters": "callback (currently empty)"
+      },
+      {
+        "name": "setItemRef",
+        "purpose": "Intended to collect references to each .industry card for later use (e.g., animation)",
+        "parameters": "el (DOM element)",
+        "notes": "Not implemented in the script; needs definition"
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, computed, toRefs, ref, onMounted, onUpdated, inject)"
+    ],
+    "Usage": "Imported into a parent layout or landing-page module, e.g.:\n\nimport SectionFocus from 'modules/landing/components/sections/SectionFocus.vue'\n\nand used in template as <SectionFocus />.",
+    "Importance": 3,
+    "Notes": [
+      "The setItemRef function is referenced in template but missing in the script block – likely an oversight.",
+      "Imports of computed, reactive, toRefs, ref, onUpdated, inject are unused and can be cleaned up or implemented.",
+      "Scoped SCSS applies minimal styling to .industry elements; further styles may be defined globally or via utility classes.",
+      "This component appears generic and reusable for any metric-display section but is currently hardcoded with specific values."
+    ]
+  }
+}

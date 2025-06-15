@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/community/models/blogpost.model.js",
+  "relativePath": "modules/community/models/blogpost.model.js",
+  "type": "source",
+  "name": "blogpost.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Файл определяет Mongoose-модель Blogpost с базовыми полями (name, content, source, createdAt) и подключает к ней общие, engagement-, ownership- и metadata-схемы через функции-миксины.",
+    "Purpose": "Обеспечить создание и регистрацию в приложении модели Blogpost для работы с коллекцией «blogposts» в MongoDB с единым набором общих и дополнительных полей.",
+    "Components": [
+      {
+        "name": "BlogpostSchema",
+        "type": "mongoose.Schema",
+        "responsibility": "Описание структуры документа блога: поля name, content, source, createdAt с включённым режимом strict"
+      },
+      {
+        "name": "Blogpost",
+        "type": "mongoose.Model",
+        "responsibility": "Экспортируемая модель для CRUD-операций над коллекцией blogposts"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Функция-фабрика, принимающая объект db и возвращающая модель Blogpost",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контекст базы данных с подключённым mongoose"
+          }
+        ],
+        "returns": "mongoose.Model – модель Blogpost"
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/metadata.schema.js",
+      "db.mongoose (Mongoose из контекста db)"
+    ],
+    "Usage": "Импортируется как функция-фабрика: const Blogpost = require('modules/community/models/blogpost.model.js')(db); Далее используется для создания, чтения, обновления и удаления записей блога.",
+    "Importance": 4,
+    "Notes": [
+      "Опция strict: true гарантирует, что в документ не попадут поля, не описанные в схеме.",
+      "Поля common, engagement, ownership и metadata добавляются миксинами, обеспечивая единообразие со всеми моделями проекта.",
+      "Поле createdAt устанавливается автоматически при создании записи.",
+      "Поле content определено как Array, что позволяет хранить структурированный контент (блоки, параграфы и т.п.)."
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "path": "../../src/modules/auth/views/middlewares/auth.validation.js",
+  "relativePath": "modules/auth/views/middlewares/auth.validation.js",
+  "type": "source",
+  "name": "auth.validation.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит набор middleware-функций для маршрутизатора, управляющих состоянием и доступом пользователя в приложении на основе фреймворка Martyrs.",
+    "Purpose": "Обеспечить проверку и инициализацию пользовательского состояния и прав (гостей, аутентифицированных пользователей и администраторов) перед переходом на определенные маршруты.",
+    "Components": [
+      {
+        "name": "resetUser",
+        "responsibility": "Сброс полей пользователя в хранилище перед открытием маршрута."
+      },
+      {
+        "name": "initUser",
+        "responsibility": "Асинхронная инициализация состояния пользователя перед открытием маршрута."
+      },
+      {
+        "name": "checkUser",
+        "responsibility": "Проверка наличия минимальных данных пользователя (phone/email) перед разрешением доступа."
+      },
+      {
+        "name": "requiresNoAuth",
+        "responsibility": "Перенаправление аутентифицированных пользователей с публичных (гостевых) страниц."
+      },
+      {
+        "name": "requiresAuth",
+        "responsibility": "Блокировка доступа неавторизованных пользователей к защищенным маршрутам."
+      },
+      {
+        "name": "requiresAdmin",
+        "responsibility": "Блокировка доступа пользователей без роли ADMIN."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "resetUser",
+        "description": "Сбрасывает поля user в state на пустые строки и продолжает навигацию.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "initUser",
+        "description": "Вызывает асинхронный action initialize, дожидается его выполнения и продолжает навигацию.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "checkUser",
+        "description": "Если в state нет ни телефона, ни email, перенаправляет на страницу входа, иначе продолжает.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "requiresNoAuth",
+        "description": "Если пользователь уже залогинен, перенаправляет на профиль, иначе продолжает как гость.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "requiresAuth",
+        "description": "Если пользователь не залогинен, перенаправляет на страницу signin, иначе продолжает.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "requiresAdmin",
+        "description": "Проверяет наличие роли ROLE_ADMIN в access.roles; при отсутствии перенаправляет на 401.",
+        "parameters": [
+          "to",
+          "from",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Импортируется в файле конфигурации маршрутов (router config) и указывается в качестве middleware (beforeEnter) для отдельных путей.",
+    "Importance": 4,
+    "Notes": [
+      "В resetUser вызов next() происходит до сброса полей — потенциальный источник гонок.",
+      "В requiresNoAuth и requiresAuth используются console.log для отладки; в продакшене их можно убрать.",
+      "requiresAdmin защищает исключительно по роли в client-side state, серверная проверка остается обязательной."
+    ]
+  }
+}

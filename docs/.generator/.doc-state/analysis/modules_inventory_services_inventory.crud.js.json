@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/inventory/services/inventory.crud.js",
+  "relativePath": "modules/inventory/services/inventory.crud.js",
+  "type": "source",
+  "name": "inventory.crud.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

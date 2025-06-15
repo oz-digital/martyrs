@@ -1,0 +1,61 @@
+{
+  "path": "../../src/modules/constructor/components/elements/VideoPlayer.vue",
+  "relativePath": "modules/constructor/components/elements/VideoPlayer.vue",
+  "type": "source",
+  "name": "VideoPlayer.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders an MP4 video player when given a video URL in its block properties.",
+    "Purpose": "Provides a constructor element for embedding and previewing videos in the Martyrs-based page builder/editor.",
+    "Components": [
+      {
+        "name": "Upload",
+        "source": "@martyrs/src/components/Upload/Upload.vue",
+        "responsibility": "Intended for handling file uploads (imported but not used in template)."
+      },
+      {
+        "name": "video (native HTML)",
+        "responsibility": "Displays the MP4 video using the URL passed in via props.prop.content."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "isValidEmbedCode",
+        "params": [
+          "code"
+        ],
+        "returns": "boolean",
+        "description": "Checks whether a given embed code URL matches one of the allowed domains (YouTube, SoundCloud, Vimeo)."
+      },
+      {
+        "name": "updateBlock",
+        "params": [
+          "updatedBlock"
+        ],
+        "returns": "void",
+        "description": "Finds and replaces a block in post.value.content array with the updatedBlock; relies on a reactive post store."
+      },
+      {
+        "name": "onComponentSave",
+        "params": [
+          "url"
+        ],
+        "returns": "void",
+        "description": "Assigns the uploaded URL to imageUrl.ref, emits 'input' and 'updateBlock' events if valid, otherwise shows an alert."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, defineEmits)",
+      "@martyrs/src/components/Upload/Upload.vue"
+    ],
+    "Usage": "Imported as a dynamic constructor element in the page-builder; accepts props { label, value, prop } and emits 'input' and 'updateBlock' to parent components or stores.",
+    "Importance": 3,
+    "Notes": [
+      "The imported Upload component and fileInput ref are not used in the template — potential dead code.",
+      "The isValidEmbedCode function is defined but never invoked.",
+      "updateBlock refers to a 'post' store that isn't imported in this file (likely a bug or missing injection).",
+      "The component does not include a <style> section; styling is applied via utility classes.",
+      "Emitted 'updateBlock' call signature ('props.prop', payload) differs from the local updateBlock function signature."
+    ]
+  }
+}

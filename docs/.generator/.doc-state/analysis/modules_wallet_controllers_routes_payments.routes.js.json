@@ -1,0 +1,87 @@
+{
+  "path": "../../src/modules/wallet/controllers/routes/payments.routes.js",
+  "relativePath": "modules/wallet/controllers/routes/payments.routes.js",
+  "type": "source",
+  "name": "payments.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует маршруты для CRUD операций с платежами, настраивает вебхук Stripe и подписывается на событие завершения сессии оплаты для автоматической выдачи билетов.",
+    "Purpose": "Определить REST-эндпоинты для работы с платежами и связать Stripe Webhook с логикой обработки платежных событий и отправкой билетов клиентам.",
+    "Components": [
+      {
+        "name": "Observer",
+        "responsibility": "Внутренняя шина событий для подписки на кастомные события (в данном случае 'checkout.session.completed')."
+      },
+      {
+        "name": "WebhookStripe",
+        "responsibility": "Класс-обёртка для интеграции Stripe Webhook в Express-приложение и форварда событий в Observer."
+      },
+      {
+        "name": "controller (payments)",
+        "responsibility": "CRUD-контроллер для модели платежей (read, create, update, delete)."
+      },
+      {
+        "name": "controllerTickets",
+        "responsibility": "Контроллер для сохранения и отправки билетов после успешной оплаты."
+      },
+      {
+        "name": "middlewareFactoryAuth",
+        "responsibility": "Фабрика middleware для верификации пользователя и проверки регистрационных данных."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (initPaymentsRoutes)",
+        "description": "Основная функция инициализации: создаёт экземпляры Observer, WebhookStripe и контроллеров, подписывается на события и регистрирует HTTP-маршруты.",
+        "parameters": [
+          "app (Express)",
+          "db (Database client / ORM)",
+          "origins (CORS origins array)",
+          "publicPath (строка пути к публичным ресурсам)"
+        ]
+      },
+      {
+        "name": "observer.subscribe('checkout.session.completed')",
+        "description": "Обработчик события успешной сессии оплаты. Ищет событие, рассчитывает количество билетов, формирует данные и вызывает controllerTickets.saveAndSendTicket().",
+        "parameters": [
+          "paymentIntent (объект Stripe Checkout Session)"
+        ]
+      },
+      {
+        "name": "app.get('/api/payments/read')",
+        "description": "Маршрут для чтения записей платежей.",
+        "parameters": []
+      },
+      {
+        "name": "app.post('/api/payments/create')",
+        "description": "Маршрут для создания новой записи платежа.",
+        "parameters": []
+      },
+      {
+        "name": "app.post('/api/payments/update')",
+        "description": "Маршрут для обновления существующей записи платежа.",
+        "parameters": []
+      },
+      {
+        "name": "app.delete('/api/payments/delete')",
+        "description": "Маршрут для удаления записи платежа.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "@martyrs/src/modules/events/controllers/tickets.controller.js",
+      "@martyrs/src/modules/globals/controllers/classes/globals.observer.js",
+      "@martyrs/src/modules/integrations/stripe/controllers/webhooks/stripe.webhook.js",
+      "../factories/payments.factory.js"
+    ],
+    "Usage": "Импортируется и вызывается из точки входа в приложение (или модуля маршрутизации) с передачей экземпляров Express `app`, базы данных `db`, списка допустимых `origins` и пути к публичным ресурсам `publicPath`.",
+    "Importance": 4,
+    "Notes": [
+      "Логирование через console.log() и console.error() поможет при отладке, но в production лучше использовать централизованный logging.",
+      "Событие подписано на ключ 'checkout.session.completed' – важно, чтобы WebhookStripe правильно перехватывал и передавал эту нотификацию в Observer.",
+      "Метаданные платежа (paymentIntent.metadata) используются для поиска события и типа билета – необходимо соблюдать совпадение полей `product` и `ticketType` в metadata.",
+      "Расчёт количества билетов делается через `amount_total / (price * 100)`, что предполагает ценовую модель в центах."
+    ]
+  }
+}

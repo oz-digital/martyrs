@@ -1,0 +1,51 @@
+{
+  "path": "../../src/modules/events/controllers/utils/templateTicket.js",
+  "relativePath": "modules/events/controllers/utils/templateTicket.js",
+  "type": "source",
+  "name": "templateTicket.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл предоставляет HTML/CSS-шаблон посадочного талона (ticket) с использованием Mustache.js и функцию генерации готового к отправке или отображению HTML-блока, подставляя реальные данные пассажира, станции посадки/высадки, времени, платформы и логотипа.",
+    "Purpose": "Основная задача модуля – централизованно хранить и рендерить единообразный визуальный шаблон электронного билета для отправки клиентам (например, в письмах или отображения на веб-странице).",
+    "Components": [
+      {
+        "name": "template",
+        "type": "String",
+        "responsibility": "Большой многострочный литерал, объединяющий в себе разметку HTML и встроенные стили CSS, а также Mustache-плейсхолдеры для динамических данных."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "renderTicket",
+        "description": "Компилирует шаблон Mustache и подставляет в него поля из объекта данных, возвращая итоговый HTML-строку.",
+        "parameters": [
+          {
+            "name": "data",
+            "type": "Object",
+            "description": "Набор ключей/значений, совпадающих с плейсхолдерами в шаблоне (например, passengerName, sourceCity, sourceStation, destinationCity, destinationStation, departureDate, departureTime, arrivalDate, arrivalTime, platform, logo и т.п.)."
+          }
+        ],
+        "returns": {
+          "type": "String",
+          "description": "Сформированный HTML код билета"
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "mustache",
+        "importedAs": "Mustache",
+        "purpose": "Шаблонизатор Mustache.js для рендеринга плейсхолдеров в HTML-шаблоне."
+      }
+    ],
+    "Usage": "В другом месте проекта импортируется функция renderTicket и вызывается с объектом данных. Например:\n\n   import { renderTicket } from 'modules/events/controllers/utils/templateTicket';\n   const html = renderTicket({\n     logo: '<img src=\"...\"/>',\n     passengerName: 'Иван Иванов',\n     sourceCity: 'Москва', sourceStation: 'Казанский вокзал',\n     destinationCity: 'Санкт-Петербург', destinationStation: 'Московский вокзал',\n     departureDate: '01.07.2024', departureTime: '10:00',\n     arrivalDate: '01.07.2024', arrivalTime: '14:30',\n     platform: '5'\n   });\n   // use html for email body or вставки в DOM",
+    "Importance": 3,
+    "Notes": [
+      "Шаблон содержит всю CSS-стилизацию inline – удобно для печати и отправки по e-mail без внешних зависимостей CSS.",
+      "Поддерживается @media print, чтобы корректно распечатывать билеты.",
+      "Из-за объёма CSS/HTML модуль выглядит тяжёлым: при необходимости можно вынести стили в отдельный файл или разбить шаблон на частичные Mustache-шаблоны.",
+      "В шаблоне предполагается использование Mustache-тегов с двойными и тройными фигурными скобками (для неблокированного HTML у логотипа).",
+      "Модуль не содержит классов – только строковый шаблон и утилитарную функцию."
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "path": "../../src/modules/products/controllers/products.controller.js",
+  "relativePath": "modules/products/controllers/products.controller.js",
+  "type": "source",
+  "name": "products.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует factory-функцию для контроллера продуктов. Контроллер предоставляет CRUD-операции (Create, Read, Update, Delete), а также два дополнительных метода: получение популярных продуктов и рекомендаций с помощью интеграции ChatGPT.",
+    "Purpose": "Обрабатывать HTTP-запросы, связанные с ресурсом \"Product\": создавать, читать, обновлять, удалять; формировать сложные агрегационные запросы для чтения; выдавать популярные товары и давать рекомендацию на основе настроения пользователя.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "FactoryFunction",
+        "description": "Принимает объект базы данных (db) и возвращает объект контроллера с методами для работы с моделями продуктов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "Create",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Создает новый документ Product в базе данных на основе req.body и возвращает его или ошибку."
+      },
+      {
+        "name": "Read",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Формирует aggregation pipeline на основе query-параметров (фильтры, поиск, сортировка, пагинация, lookup), выполняет его и возвращает найденные продукты или их количество."
+      },
+      {
+        "name": "Update",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Обновляет поля существующего продукта по _id из req.params и возвращает обновленный документ или ошибку."
+      },
+      {
+        "name": "Delete",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Удаляет продукт по _id из req.params и возвращает удаленный документ или ошибку."
+      },
+      {
+        "name": "getProductRecommendation",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Собирает до 40 опубликованных продуктов, формирует текстовый prompt с их атрибутами и заданным \"mood\", отправляет его в ChatGPT, получает рекомендацию и возвращает найденный продукт с объяснением."
+      },
+      {
+        "name": "getProductsPopular",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Возвращает до 10 опубликованных продуктов с количеством просмотров более 10."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/integrations/openai/openai.globals.js",
+        "import": "ChatGPT",
+        "purpose": "Интеграция с OpenAI для генерации рекомендаций"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+        "import": "queryProcessorGlobals",
+        "purpose": "Утилиты для разбора query-параметров, генерации stages aggregation pipeline"
+      },
+      {
+        "module": "@martyrs/src/modules/products/controllers/queries/products.queries.js",
+        "import": "queryProcessorProducts",
+        "purpose": "Специфичные для продуктов фильтры и стадии агрегации"
+      },
+      {
+        "module": "@martyrs/src/modules/products/controllers/configs/products.lookup.config.js",
+        "import": "productLookupConfigs",
+        "purpose": "Конфигурации для lookup-операций при агрегации"
+      }
+    ],
+    "Usage": "Импортируется как default export: `import productsControllerFactory from '.../products.controller.js'`. В точке инициализации роутинга вызывается `productsControllerFactory(db)` и оболочка возвращенных методов подключается к маршрутам Express.",
+    "Importance": 4,
+    "Notes": [
+      "Метод Read строит сложную aggregation pipeline с динамическими lookup-операциями и возможностью запроса только количества записей.",
+      "getProductRecommendation зависит от корректного формата ответа ChatGPT (строгий JSON-ответ без лишнего текста).",
+      "Используется модель GPT-4 с temperature 0.8 и systemPrompt для настройки поведения.",
+      "Логи ошибок выводятся в консоль, но нет централизованной обработки ошибок.",
+      "В некоторых методах (getProductsPopular) используется callback-стиль `.exec`, в остальных – async/await."
+    ]
+  }
+}

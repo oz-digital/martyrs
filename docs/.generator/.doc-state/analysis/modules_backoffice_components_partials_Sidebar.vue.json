@@ -1,0 +1,87 @@
+{
+  "path": "../../src/modules/backoffice/components/partials/Sidebar.vue",
+  "relativePath": "modules/backoffice/components/partials/Sidebar.vue",
+  "type": "source",
+  "name": "Sidebar.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 sidebar component for the Backoffice area, rendering two sets of navigation items (menuItems and generalItems) with icons and click behavior to navigate via vue-router.",
+    "Purpose": "Provides a scrollable, fixed sidebar navigation panel in the Backoffice section of the application, allowing users to switch between different views (Organizations, Community, Products, etc.).",
+    "Components": [
+      {
+        "name": "SelectMulti",
+        "responsibility": "Imported but not currently used: intended for multi-select UI in mobile contexts."
+      },
+      {
+        "name": "IconGroups",
+        "responsibility": "Visual icon for the \"Organizations\" menu item."
+      },
+      {
+        "name": "IconCommunity",
+        "responsibility": "Visual icon for the \"Community\" menu item."
+      },
+      {
+        "name": "IconProducts",
+        "responsibility": "Visual icon for the \"Products\" menu item."
+      },
+      {
+        "name": "IconLeftovers",
+        "responsibility": "Visual icon for the \"Leftovers\" menu item."
+      },
+      {
+        "name": "IconOrders",
+        "responsibility": "Visual icon for the \"Orders\" menu item."
+      },
+      {
+        "name": "IconGallery",
+        "responsibility": "Visual icon for the \"Gallery\" menu item."
+      },
+      {
+        "name": "IconEvents",
+        "responsibility": "Visual icon for the \"Events\" menu item."
+      },
+      {
+        "name": "IconPayments",
+        "responsibility": "Visual icon for the \"Payments\" general item."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "description": "Vue lifecycle hook invoked when component is mounted. Currently defined as an async stub with no operations.",
+        "parameters": []
+      },
+      {
+        "name": "router.push",
+        "description": "Invoked on click of each menu/general item to perform programmatic navigation to the named route.",
+        "parameters": [
+          "{ name: string }"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/SelectMulti/SelectMulti.vue",
+      "@martyrs/src/modules/icons/entities/IconProducts.vue",
+      "@martyrs/src/modules/icons/entities/IconPayments.vue",
+      "@martyrs/src/modules/icons/entities/IconEvents.vue",
+      "@martyrs/src/modules/icons/entities/IconGroups.vue",
+      "@martyrs/src/modules/icons/entities/IconCommunity.vue",
+      "@martyrs/src/modules/icons/entities/IconGallery.vue",
+      "@martyrs/src/modules/icons/entities/IconOrders.vue",
+      "@martyrs/src/modules/icons/entities/IconLeftovers.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js"
+    ],
+    "Usage": "Imported into a Backoffice layout or parent component to render the sidebar; other components do not directly import it but rely on its router navigation for view switching.",
+    "Importance": 3,
+    "Notes": [
+      "Props.favorites is defined but not utilized in the template or script logic.",
+      "The sidebar style block is empty; styling is inherited from global utility classes (e.g., flex, pd-semi).",
+      "menuItems and generalItems are static arrays; dynamic control (e.g., permissions filtering) would need to be added if required.",
+      "Icons are rendered with <component :is=\"...\"> to allow conditional inclusion and consistent styling.",
+      "No error handling or loading state is implemented in onMounted – currently a placeholder."
+    ]
+  }
+}

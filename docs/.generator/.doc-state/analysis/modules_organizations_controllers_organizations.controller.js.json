@@ -1,0 +1,84 @@
+{
+  "path": "../../src/modules/organizations/controllers/organizations.controller.js",
+  "relativePath": "modules/organizations/controllers/organizations.controller.js",
+  "type": "source",
+  "name": "organizations.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику контроллера для работы с сущностью «Organization». Контроллер предоставляет методы CRUD (создать, прочитать, обновить, удалить), а также метод для проверки прав доступа. Для чтения списка организаций используется агрегирование MongoDB с динамической сборкой конвейера на основе query-параметров, плюс кеширование результатов.",
+    "Purpose": "Основная задача — инкапсулировать логику взаимодействия HTTP-запросов с моделями Organization, Department и Membership: чтение через сложные агрегаты, создание новых организаций с автоматическим созданием владельческого членства, обновление, удаление и получение прав доступа пользователя.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "function",
+        "description": "Фабрика контроллера, принимает объект db с моделями и возвращает набор методов-обработчиков."
+      },
+      {
+        "name": "cache",
+        "type": "Cache instance",
+        "description": "Экземпляр класса Cache с TTL 5 минут, используется для кеширования результатов запросов и инвалидации по тегам."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "read",
+        "description": "Читает список организаций. Составляет динамический aggregation pipeline на основе query-параметров, поддерживает поиск, фильтрацию, сортировку и пагинацию. Плюс — кеширует результат с тегами.",
+        "parameters": [
+          "req (Express request)",
+          "res (Express response)"
+        ]
+      },
+      {
+        "name": "create",
+        "description": "Создаёт новую организацию и автоматически создаёт запись Membership для владельца. Инвалидирует кеш, добавляет в кеш новую организацию.",
+        "parameters": [
+          "req (Express request)",
+          "res (Express response)"
+        ]
+      },
+      {
+        "name": "update",
+        "description": "Обновляет существующую организацию по ID, инвалидирует кеш и обновляет кешированную запись.",
+        "parameters": [
+          "req (Express request)",
+          "res (Express response)"
+        ]
+      },
+      {
+        "name": "deleteOrganization",
+        "description": "Удаляет организацию и все связанные Membership. Инвалидирует кеш, выдаёт новый JWT с очищенным полем organization.",
+        "parameters": [
+          "req (Express request)",
+          "res (Express response)"
+        ]
+      },
+      {
+        "name": "checkAccesses",
+        "description": "Собирает и возвращает права доступа пользователя по организациям, кеширует результат по userId и тэгу \"accesses\".",
+        "parameters": [
+          "req (Express request)",
+          "res (Express response)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/classes/globals.cache.js",
+      "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+      "@martyrs/src/modules/organizations/controllers/utils/addMembersQuantity.js",
+      "@martyrs/src/modules/organizations/controllers/utils/addUserStatusFields.js",
+      "jsonwebtoken",
+      "./utils/lookupConfigs.js",
+      "./utils/queryProcessorOrganizations.js",
+      "Mongoose модели: organization, department, membership"
+    ],
+    "Usage": "Импортируется и вызывается при инициализации маршрутов, например:\n\nconst orgController = controllerFactory(db);\nrouter.get('/organizations', orgController.read);\nrouter.post('/organizations', orgController.create);\n…",
+    "Importance": 5,
+    "Notes": [
+      "В возвращаемом объекте стоит свойство fetch, но соответствующая функция в коде не определена — возможно, опечатка (имелось в виду read).",
+      "Кеширование построено по ключам JSON.stringify(query) и тегам вида organization_{id}, что облегчает инвалидацию.",
+      "При удалении организации также генерируется новый JWT для пользователя с очищенным полем organization.",
+      "Конвейер aggregation собирается модульно: lookup, фильтры, поиск, ценовые условия, геолокация, membership-поля.",
+      "Метод checkAccesses объединяет права из отделов и права владельца, используя схему accesses из Department()."
+    ]
+  }
+}

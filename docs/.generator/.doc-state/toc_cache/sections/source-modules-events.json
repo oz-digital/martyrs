@@ -1,0 +1,147 @@
+{
+  "section": {
+    "id": "source-modules-events",
+    "title": "Проект: Модули / События",
+    "description": "Модуль управления событиями и билетами. Включает серверную и клиентскую логику, модели, роутинг, компоненты интерфейса и утилиты для работы с мероприятиями и билетами.",
+    "subsections": [
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Обработка бизнес-логики для событий и билетов.",
+        "files": [
+          "controllers/events.controller.js",
+          "controllers/tickets.controller.js"
+        ]
+      },
+      {
+        "id": "models",
+        "title": "Модели",
+        "description": "Определение структуры данных для событий и билетов.",
+        "files": [
+          "models/event.model.js",
+          "models/ticket.model.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты и роутинг",
+        "description": "Определение HTTP-маршрутов для API событий и билетов.",
+        "files": [
+          "routes/events.routes.js",
+          "routes/tickets.routes.js",
+          "router/events.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище данных",
+        "description": "Локальное управление состоянием событий и билетов.",
+        "files": [
+          "store/events.js",
+          "store/tickets.js"
+        ]
+      },
+      {
+        "id": "utils",
+        "title": "Утилиты",
+        "description": "Вспомогательные функции для обработки запросов, шаблонов писем и билетов.",
+        "files": [
+          "utils/queryProcessor.js",
+          "utils/templateEmail.js",
+          "utils/templateTicket.js"
+        ]
+      },
+      {
+        "id": "components",
+        "title": "Компоненты интерфейса",
+        "description": "Vue-компоненты для отображения событий, билетов и взаимодействия с пользователем.",
+        "files": [
+          "blocks/CardEvent.vue",
+          "elements/ButtonCheck.vue",
+          "elements/ButtonJoin.vue",
+          "layouts/layoutEvents.vue"
+        ]
+      },
+      {
+        "id": "server",
+        "title": "Серверная и клиентская логика",
+        "description": "Основные серверные и клиентские файлы, обработка событий, верификация.",
+        "files": [
+          "events/events.client.js",
+          "events/events.server.js",
+          "server/index.js",
+          "server/verifyEvent.js"
+        ]
+      },
+      {
+        "id": "event-pages",
+        "title": "Страницы событий",
+        "description": "Основные страницы для просмотра, редактирования и управления событиями.",
+        "files": [
+          "pages/EditEvent.vue",
+          "pages/EditEventTickets.vue",
+          "pages/Event.vue",
+          "pages/Events.vue",
+          "pages/EventsBackoffice.vue"
+        ]
+      },
+      {
+        "id": "events-search",
+        "title": "Поиск и фильтрация",
+        "description": "Страница поиска и фильтрации событий для пользователей.",
+        "files": [
+          "pages/EventsSearch.vue"
+        ]
+      },
+      {
+        "id": "event-sections",
+        "title": "Секции отображения событий",
+        "description": "Модули для отображения списков, избранных и популярных событий, а также вспомогательные секции.",
+        "files": [
+          "sections/EventsHot.vue",
+          "sections/FeaturedEvents.vue",
+          "sections/Feed.vue",
+          "sections/HeroEvent.vue",
+          "sections/List.vue",
+          "sections/SelectDate.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "0a9a9d97aae0017c1d9f62a50543a3af",
+    "229a8cc9c61f6f94ee813aa96a7a6a65",
+    "299d8aa23e42c9dd05b498047d41a264",
+    "2e1162c151f54956696f3f5d8a441fb4",
+    "2f7af3e59a4305bcc1f1fdc5754dee83",
+    "2fa8657e55c11f4170bc159aa2107c06",
+    "33957a124c089b3d608224d8f3031cb5",
+    "35c7dfe6b6d8374485ec2087b4a5fb97",
+    "3b81b5182e0468e07bfb503fb0acd8d1",
+    "3bfcd93b4e7f12ba6376ed5b4588c87f",
+    "4267ab2eb12af036927140992e221760",
+    "4a7a6ba55ac982dc8bf81261db9f2c75",
+    "4e79342dd1b56299bc2ecca8b702d776",
+    "527bfb0fe71863ed53d1bec2e7bccb29",
+    "5602f777a21dcf43793935c615d9e695",
+    "580683af83712b1d31a34c7559aad3b3",
+    "59b418411ef6c8592af80fce28a665a1",
+    "6637ed88ae4dc37fb23e08c37a119e27",
+    "6649a466e516c326fc8e0b3ac9401040",
+    "70d4f38140fcc4e6e2cdbb49c95d2b60",
+    "768db1e0ee2ad624fb1ade75eecd9d0e",
+    "7b1ec20c233ba67dcb2d4d8df5ee52d1",
+    "81cd3b4a1ee6e4bdfa015ee058c9c1e8",
+    "8527e9fe225abce6195aac36b98f60af",
+    "8659e4162739de185562ac3b2a23e9d7",
+    "9db3d508d5ad36e3ce3c5246b4489d92",
+    "c82a45ca7cc6884d03d7471772a1b49d",
+    "e1fed4ecc0592ea7890f1588b7c82d5a",
+    "e689c193049bc0edbe12662cf5783feb",
+    "e9c1fac6a4c0a9f84c6a8f6f5ff37786",
+    "eba3a97f0dcd4fc066ef7c03e69fb1ef",
+    "f154208c8e299c4ed8c90659cdf843dd"
+  ],
+  "groupHash": "b92796bba133c6e90ad08b00f23a5b1a",
+  "generated": "2025-06-05T09:18:51.007Z"
+}

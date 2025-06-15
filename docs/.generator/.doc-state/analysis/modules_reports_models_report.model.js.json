@@ -1,0 +1,53 @@
+{
+  "path": "../../src/modules/reports/models/report.model.js",
+  "relativePath": "modules/reports/models/report.model.js",
+  "type": "source",
+  "name": "report.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая принимает объект db, определяет Mongoose-схему для сущности Report (с полями status, user, type, reason, target и автоматическими временными метками) и возвращает модель Report.",
+    "Purpose": "Определить и зарегистрировать в Mongoose модель Report для хранения жалоб/репортов на разные типы сущностей (пользователи, организации, публикации и т.п.) в проекте.",
+    "Components": [
+      {
+        "name": "ReportSchema",
+        "responsibility": "Описание структуры документа Report в БД: поля status, user, type, reason, target и опции timestamps."
+      },
+      {
+        "name": "Report",
+        "responsibility": "Mongoose-модель, созданная на основе ReportSchema для работы с коллекцией reports."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "parameters": [
+          "db"
+        ],
+        "description": "Главная функция-модуль, получает объект db (с подключённым mongoose), создает схему ReportSchema и модель Report, возвращает модель."
+      },
+      {
+        "name": "ref callback",
+        "parameters": [
+          "value"
+        ],
+        "description": "Функция-рефер для поля target: в зависимости от значения this.type возвращает имя связанной модели ('User' или 'Organization')."
+      },
+      {
+        "name": "timestamps.currentTime",
+        "parameters": [],
+        "description": "Коллбэк для установки текущего времени в поля createdAt и updatedAt через Date.now()."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose (mongoose.Schema, mongoose.model)",
+      "Модели User и Organization (для ссылочного поля target)"
+    ],
+    "Usage": "В точке инициализации БД вызывается require('modules/reports/models/report.model')(db), чтобы зарегистрировать модель Report в mongoose. В дальнейшем модель импортируется через mongoose.model('Report').",
+    "Importance": 3,
+    "Notes": [
+      "Поле type имеет enum из типов сущностей, но дефолтное значение 'spam' не входит в этот список — вероятная опечатка.",
+      "ref callback обрабатывает только 'user' и 'organization', для других типов ('blogpost', 'event', 'comment') связь не определена.",
+      "Используется опция timestamps с кастомным currentTime, чтобы хранить время в миллисекундах."
+    ]
+  }
+}

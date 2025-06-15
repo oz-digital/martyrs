@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/icons/logos/Logotype.vue",
+  "relativePath": "modules/icons/logos/Logotype.vue",
+  "type": "source",
+  "name": "Logotype.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue Single File Component that renders an SVG logotype with continuously rotating “eye” (and optionally “mouth”) elements via CSS animations.",
+    "Purpose": "Предоставить вёрстку и стили брендового логотипа проекта как переиспользуемый компонент иконки.",
+    "Components": [
+      {
+        "name": "Logotype.vue",
+        "role": "Главный компонент, рендерит SVG-структуру логотипа"
+      },
+      {
+        "name": "<g class=\"eye\">",
+        "role": "Группа SVG-элементов, к которой применяются CSS-анимации вращения"
+      },
+      {
+        "name": "<defs> / <clipPath id=\"clip0\">",
+        "role": "Ограничивает отрисовку частей SVG по заданному прямоугольнику"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "rotateEye",
+        "type": "CSS @keyframes",
+        "description": "Плавная линейная анимация вращения элементов с классом .eye от 0° до 360° за 10s",
+        "parameters": []
+      },
+      {
+        "name": "rotateMouth",
+        "type": "CSS @keyframes",
+        "description": "Плавная анимация вращения элементов с классом .mouth от 0° до 360° (с остановкой в 180° на середине) за 20s",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "Vue.js (SFC)",
+      "SCSS (preprocessor)",
+      "martyrs (фреймворк проекта)"
+    ],
+    "Usage": "Импортировать компонент в родительский Vue-файл: import Logotype from 'modules/icons/logos/Logotype.vue'; далее добавить в шаблон: <Logotype/>.",
+    "Importance": 3,
+    "Notes": [
+      "В <script setup> отсутствует логика — компонент чисто презентационный",
+      "Класс .mouth объявлен в стилях, но не используется в шаблоне",
+      "Можно добавить ARIA-атрибуты для доступности",
+      "Размер SVG задаётся через жестко прописанные атрибуты width/height и может быть адаптирован под responsive"
+    ]
+  }
+}

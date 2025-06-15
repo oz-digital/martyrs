@@ -1,0 +1,61 @@
+{
+  "path": "../../src/modules/gallery/components/pages/Gallery.vue",
+  "relativePath": "modules/gallery/components/pages/Gallery.vue",
+  "type": "source",
+  "name": "Gallery.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент страницы галереи, отображающий фото-ленту с фильтрацией по категориям и возможностью просмотра изображения в полноэкранном попапе.",
+    "Purpose": "Рендерить галерею изображений с табами категорий, сортировкой и датой, загружать данные через store.gallery и показывать предпросмотр выбранной фотографии.",
+    "Components": [
+      {
+        "name": "SectionPageTitle",
+        "responsibility": "Отображает заголовок страницы и табы категорий, эмитит изменение активного таба."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Универсальный компонент ленты, принимает items, сортировку, дату, параметры запроса к хранилищу и рендерит слот для каждой записи."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Обёртка для модальных окон, показывает или скрывает попап по флагу isPopupOpen."
+      },
+      {
+        "name": "PhotoViewer",
+        "responsibility": "Отображает переданное фото в режиме просмотра."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openPreviewPopup",
+        "description": "Открывает окно предпросмотра и устанавливает выбранное фото.",
+        "parameters": [
+          "photo"
+        ]
+      },
+      {
+        "name": "closePreviewPopup",
+        "description": "Закрывает окно предпросмотра и сбрасывает выбранное фото.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, computed, onMounted)",
+      "@martyrs/src/modules/globals/views/components/sections/Title.vue",
+      "@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/PhotoViewer/PhotoViewer.vue",
+      "@martyrs/src/modules/gallery/store/gallery.js",
+      "FILE_SERVER_URL (env)"
+    ],
+    "Usage": "Используется как страничный компонент маршрутизатора (router-view), импортируется и регистрируется в маршрутах проекта для пути /gallery.",
+    "Importance": 4,
+    "Notes": [
+      "В компоненте нет явного загрузчика данных: Feed сам вызывает gallery.read с переданными опциями.",
+      "Табы фильтруют изображения по тегу через опцию tags; для 'all' фильтрация не применяется.",
+      "Используется i18n ($t) для перевода заголовка.",
+      "Параметры сортировки и диапазона дат передаются в Feed через v-model."
+    ]
+  }
+}

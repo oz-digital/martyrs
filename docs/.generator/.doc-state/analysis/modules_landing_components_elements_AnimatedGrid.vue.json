@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/landing/components/elements/AnimatedGrid.vue",
+  "relativePath": "modules/landing/components/elements/AnimatedGrid.vue",
+  "type": "source",
+  "name": "AnimatedGrid.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders a full-page perspective grid background with continuously animated grid lines using purely CSS/SCSS.",
+    "Purpose": "Provides a decorative animated grid effect for landing pages or any section that needs a dynamic background in the Martyrs project.",
+    "Components": [
+      {
+        "name": "AnimatedGrid",
+        "type": "Vue component",
+        "responsibility": "Renders the grid container and the animated grid lines."
+      },
+      {
+        "name": "grid (CSS class)",
+        "type": "SCSS class",
+        "responsibility": "Sets up 3D perspective and a cover-sized background area for the grid."
+      },
+      {
+        "name": "grid-lines (CSS class)",
+        "type": "SCSS class",
+        "responsibility": "Draws the repeating linear-gradient grid pattern and animates it along the Y axis with a perspective transform."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (for .vue SFC support)",
+      "sass-loader / scss (for <style lang='scss'>)",
+      "vue-loader (for parsing template and scoped styles)"
+    ],
+    "Usage": "Import the component in another Vue file: `import AnimatedGrid from 'modules/landing/components/elements/AnimatedGrid.vue'`, register it, then embed `<AnimatedGrid/>` in the template to display the animated background.",
+    "Importance": 2,
+    "Notes": [
+      "No <script> block—component has no reactive data or methods.",
+      "Styles are scoped to avoid leaking into other components.",
+      "Keyframes animation named 'play' handles continuous translateY + rotateX transforms.",
+      "Perspective is set on the wrapper to produce 3D grid effect.",
+      "Background grid size and speed can be tuned via SCSS variables or props if extended."
+    ]
+  }
+}

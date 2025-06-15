@@ -1,0 +1,49 @@
+{
+  "path": "../../src/components/Upload/Upload.vue",
+  "relativePath": "components/Upload/Upload.vue",
+  "type": "source",
+  "name": "Upload.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 component that renders a file input, uploads the selected file via Axios to a configured server endpoint, displays the uploaded file URL, and allows removing the file. It also shows validation feedback when provided.",
+    "Purpose": "Provides reusable file upload functionality within forms, handling the entire flow from file selection and upload to display and removal of the uploaded file URL.",
+    "Components": [
+      {
+        "name": "Upload",
+        "description": "Main component that encapsulates file input, upload logic, display of the uploaded file link, removal action, and validation messages."
+      },
+      {
+        "name": "IconCross",
+        "description": "Presentational icon component imported from @martyrs, used as a clickable control to remove the uploaded file."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onFileChange",
+        "description": "Triggered when the user selects a file. Packages the first file into FormData, posts it to `/api/upload/{type}` using an Axios instance, updates the internal `fileURL`, and emits a `file-change` event with the new URL.",
+        "params": [
+          "e: Event – the input change event carrying the selected file(s)"
+        ]
+      },
+      {
+        "name": "removeFile",
+        "description": "Clears the current `fileURL`, emits `update:field` with null to reset the v-model bound field, and emits `file-change` with null to notify parent components.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch, defineProps, defineEmits)",
+      "axios",
+      "@martyrs/src/modules/icons/navigation/IconCross.vue"
+    ],
+    "Usage": "Import the `Upload` component into parent Vue components or pages. Bind a model via `v-model:field`, optionally pass `label`, `placeholder`, `type`, `uploadPath`, `multiple`, and listen for `file-change` events to react to new or removed file URLs.",
+    "Importance": 3,
+    "Notes": [
+      "Uses a scoped SCSS block to enforce consistent line-height and inherit text color in inputs and spans.",
+      "Dynamic classes apply a validation style when `validation` prop is truthy.",
+      "The component watches the `field` prop to keep its `fileURL` in sync with external changes.",
+      "Axios instance is created on each upload; consider reusing a shared instance for performance.",
+      "Error handling is minimal (console.error); production code might require user-facing error feedback."
+    ]
+  }
+}

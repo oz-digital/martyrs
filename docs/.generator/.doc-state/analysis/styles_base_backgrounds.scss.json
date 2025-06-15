@@ -1,0 +1,152 @@
+{
+  "path": "../../src/styles/base/backgrounds.scss",
+  "relativePath": "styles/base/backgrounds.scss",
+  "type": "source",
+  "name": "backgrounds.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "This SCSS file defines a comprehensive set of utility classes for setting background colors, transparent overlays, blur effects, gradients, video backgrounds, and SVG fills using CSS custom properties and standard CSS functions.",
+    "Purpose": "To centralize and standardize all background- and fill-related utility classes across the application, leveraging CSS variables for theming and consistency.",
+    "Components": [
+      {
+        "name": "Background Color Utilities",
+        "classes": [
+          ".bg-red",
+          ".bg-red-nice",
+          ".bg-green",
+          ".bg-green-nice",
+          ".bg-orange",
+          ".bg-orange-nice",
+          ".bg-yellow",
+          ".bg-yellow-nice"
+        ],
+        "description": "Solid background colors based on CSS custom properties."
+      },
+      {
+        "name": "Background Social Color Utilities",
+        "classes": [
+          ".bg-youtube",
+          ".bg-telegram",
+          ".bg-twitter",
+          ".bg-reddit",
+          ".bg-instagram"
+        ],
+        "description": "Solid backgrounds for social brand colors via CSS variables."
+      },
+      {
+        "name": "BG Blur Utilities",
+        "classes": [
+          ".bg-blur-extra",
+          ".bg-blur-big",
+          ".bg-blur-semi",
+          ".bg-blur-medium",
+          ".bg-blur-regular",
+          ".bg-blur-small",
+          ".bg-blur-thin"
+        ],
+        "description": "Backdrop-filter blur effects with variable blur radii."
+      },
+      {
+        "name": "Other Backgrounds",
+        "classes": [
+          ".bg-grad-main"
+        ],
+        "description": "Radial gradient background combining CSS variables and hardcoded stops."
+      },
+      {
+        "name": "Transparent Backgrounds",
+        "classes": [
+          ".bg-t-white",
+          ".bg-t-grey",
+          "..bg-t-darkgrey",
+          ".bg-transp"
+        ],
+        "description": "Semi-transparent or fully transparent overlays using rgba and CSS variables."
+      },
+      {
+        "name": "Video Background",
+        "classes": [
+          ".bg-video"
+        ],
+        "description": "Full-screen, absolutely positioned video container with object-fit: cover."
+      },
+      {
+        "name": "Fill Utilities",
+        "classes": [
+          ".fill-l-main",
+          ".fill-main",
+          ".fill-black",
+          ".fill-dark",
+          ".fill-grey",
+          ".fill-light",
+          ".fill-card",
+          ".fill-card-blue",
+          ".fill-white",
+          ".fill-t-white",
+          ".fill-t-grey",
+          ".fill-t-darkgrey",
+          ".fill-transp"
+        ],
+        "description": "SVG/currentColor fill utility classes referencing CSS variables or hardcoded hex values."
+      },
+      {
+        "name": "Color Fills",
+        "classes": [
+          ".fill-blue",
+          ".fill-light-blue",
+          ".fill-lightblue",
+          ".fill-green",
+          ".fill-light-red"
+        ],
+        "description": "Static color fill utilities (including a linear-gradient entry)."
+      },
+      {
+        "name": "Brand Fills",
+        "classes": [
+          ".fill-youtube",
+          ".fill-telegram",
+          ".fill-twitter",
+          ".fill-reddit",
+          ".fill-instagram"
+        ],
+        "description": "SVG fill utilities for social brand colors via CSS variables."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "rgb()",
+        "description": "Applies RGB color from CSS variable triplets (e.g. var(--red))."
+      },
+      {
+        "name": "rgba()",
+        "description": "Applies RGBA color with opacity from CSS variables and numeric alpha parameter."
+      },
+      {
+        "name": "radial-gradient()",
+        "description": "Generates a radial gradient for .bg-grad-main combining variable and hardcoded color stops."
+      },
+      {
+        "name": "linear-gradient()",
+        "description": "Used in .fill-lightblue to produce a layered gradient fill."
+      },
+      {
+        "name": "backdrop-filter: blur()",
+        "description": "Applies blur effect to element backgrounds with variable radii."
+      }
+    ],
+    "Dependencies": [
+      "A variables or theme file that defines CSS custom properties (--red, --green, --orange, --youtube, --blur sizes, etc.)",
+      "Global reset/base styles that include this file",
+      "Browser support for CSS variables and backdrop-filter"
+    ],
+    "Usage": "Imported into the global or base SCSS entrypoint (e.g. main.scss) via @import or @use. Makes background/fill utilities available project-wide.",
+    "Importance": 3,
+    "Notes": [
+      "No SCSS mixins or functions are declared here; it relies entirely on CSS variables and native CSS functions.",
+      "The nested body { … } wrapper scopes selectors under the body element, but classes remain universally reusable.",
+      "Two semicolons appear on .fill-white declaration—harmless but could be cleaned up.",
+      ".fill-lightblue uses a linear-gradient in a fill property which may not be supported in all SVG contexts.",
+      "Variable names for orange were corrected in comments, suggesting an earlier naming inconsistency."
+    ]
+  }
+}

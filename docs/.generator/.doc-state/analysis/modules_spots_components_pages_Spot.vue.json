@@ -1,0 +1,76 @@
+{
+  "path": "../../src/modules/spots/components/pages/Spot.vue",
+  "relativePath": "modules/spots/components/pages/Spot.vue",
+  "type": "source",
+  "name": "Spot.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue.js компонент для отображения подробной информации о конкретной локации (spot) внутри организации: карта, название, адрес, список участников и подотделов с возможностью редактирования.",
+    "purpose": "Предоставить страницу (или часть страницы) с визуализацией и базовым CRUD-интерфейсом для объекта «spot» в рамках интерфейса административного приложения.",
+    "components": [
+      {
+        "name": "Map",
+        "responsibility": "Отображает карту с маркером на основании переданных координат spot.location.coordinates."
+      },
+      {
+        "name": "Spoiler",
+        "responsibility": "Управляет разворачиванием/сворачиванием секций «Contacts» и «Working Hours»."
+      },
+      {
+        "name": "SpotSub",
+        "responsibility": "Выводит отдельный элемент списка подотдела (subspot) и обрабатывает клик по нему."
+      },
+      {
+        "name": "User",
+        "responsibility": "Отображает карточку пользователя с именем и позицией и обрабатывает переход на профиль."
+      }
+    ],
+    "functions": [
+      {
+        "name": "onEditClick",
+        "description": "Переходит к странице редактирования текущего spot.",
+        "params": []
+      },
+      {
+        "name": "onViewSpotClick",
+        "description": "Переходит на страницу просмотра текущего spot.",
+        "params": []
+      },
+      {
+        "name": "onProfileClick",
+        "description": "Переходит на страницу профиля выбранного пользователя.",
+        "params": [
+          {
+            "name": "member.user._id",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "onSubspotClick",
+        "description": "Переходит на страницу просмотра выбранного подотдела.",
+        "params": [
+          {
+            "name": "subspotsartment._id",
+            "type": "String"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (ref, defineProps)",
+      "@martyrs/src/components/Spoiler/Spoiler.vue",
+      "@martyrs/src/components/Map/Map.vue",
+      "@martyrs/src/modules/spots/components/blocks/SpotSub.vue",
+      "@martyrs/src/modules/auth/views/components/blocks/CardUser.vue",
+      "vue-router (this.$router)"
+    ],
+    "usage": "Импортируется и используется в разделе маршрутов организации для отображения детальной страницы спота. Пример: import Spot from '.../modules/spots/components/pages/Spot.vue';",
+    "importance": 3,
+    "notes": [
+      "Стиль scoped содержит правило для класса .subspotsartment, но в шаблоне этот класс не применяется – возможная опечатка.",
+      "Используется v-html для вывода имени и адреса — убедитесь в отсутствии XSS-рисков.",
+      "В шаблоне классы и разметка построены в утилитарном стиле (flex, pd-*, mn-*, br-*, o-hidden и т.д.)."
+    ]
+  }
+}

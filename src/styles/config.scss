@@ -1,0 +1,362 @@
+@use "sass:map";
+// Generate Variants for Colors Variables
+@mixin generate-vars-color($base-var-name) {
+  --#{$base-var-name}-extra: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 10%, black 80%);
+	--#{$base-var-name}-big: 			color-mix(in srgb, rgb(var(--#{$base-var-name})) 25%, black 70%);
+	--#{$base-var-name}-semi: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 50%, black 60%);
+	--#{$base-var-name}-medium: 	color-mix(in srgb, rgb(var(--#{$base-var-name})) 90%, black 50%);
+	--#{$base-var-name}-regular: 	rgb(var(--#{$base-var-name}));
+	--#{$base-var-name}-small: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 90%, white 50%);
+	--#{$base-var-name}-thin: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 50%, white 60%);
+	--#{$base-var-name}-micro: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 25%, white 70%);
+	--#{$base-var-name}-nano: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 10%, white 80%);
+}
+
+@mixin generate-bg-classes($base-class-name, $base-var-name) {
+	.#{$base-class-name} 				{ background: rgb(var(--#{$base-var-name})); 	}
+	.#{$base-class-name}-extra	{ background: var(--#{$base-var-name}-extra); 	}
+	.#{$base-class-name}-big 		{ background: var(--#{$base-var-name}-big); 	}
+	.#{$base-class-name}-semi 	{ background: var(--#{$base-var-name}-semi); 	}
+	.#{$base-class-name}-medium { background: var(--#{$base-var-name}-medium); 	} 
+	.#{$base-class-name}-regular{ background: var(--#{$base-var-name}-regular);} 
+	.#{$base-class-name}-small 	{ background: var(--#{$base-var-name}-small); 	} 
+	.#{$base-class-name}-thin 	{ background: var(--#{$base-var-name}-thin); 	} 
+	.#{$base-class-name}-micro 	{ background: var(--#{$base-var-name}-micro); 	} 
+	.#{$base-class-name}-nano 	{ background: var(--#{$base-var-name}-nano); 	} 
+
+ 	@for $i from 1 through 20 {
+        $percentage: $i * 5;
+
+        .#{$base-class-name}-transp-#{$percentage} {
+            background: rgba(var(--#{$base-var-name}), $percentage * 0.01);
+        }
+    }
+}
+
+@mixin generate-base-classes($class-name, $css-property, $values) {
+  @each $value-key, $value in $values {
+    .#{$class-name}-#{$value-key} {
+      #{$css-property}: $value;
+    }
+    .#{$class-name}-#{$value-key}-negative {
+      #{$css-property}: calc(#{$value} * -1);
+    }
+  }
+}
+
+@mixin generate-modifier-classes($class-name, $css-property, $modifiers, $values) {
+  @each $value-key, $value in $values {
+    @each $modifier, $css-modifier in $modifiers {
+      .#{$class-name}-#{$modifier}-#{$value-key} {
+        #{$css-property}-#{$css-modifier}: $value;
+      }
+      .#{$class-name}-#{$modifier}-#{$value-key}-negative {
+        #{$css-property}-#{$css-modifier}: calc(#{$value} * -1);
+      }
+    }
+  }
+}
+
+@mixin generate-breakpoint-classes($class-name, $css-property, $values, $modifiers, $breakpoints) {
+  @each $breakpoint-key, $breakpoint-query in $breakpoints {
+    @media #{$breakpoint-query} {
+      @each $value-key, $value in $values {
+        .#{$breakpoint-key}\:#{$class-name}-#{$value-key} {
+          #{$css-property}: $value;
+        }
+        .#{$breakpoint-key}\:#{$class-name}-#{$value-key}-negative {
+          #{$css-property}: calc(#{$value} * -1);
+        }
+      }
+      @if $modifiers {
+        @each $value-key, $value in $values {
+          @each $modifier, $css-modifier in $modifiers {
+            .#{$breakpoint-key}\:#{$class-name}-#{$modifier}-#{$value-key} {
+              #{$css-property}-#{$css-modifier}: $value;
+            }
+            .#{$breakpoint-key}\:#{$class-name}-#{$modifier}-#{$value-key}-negative {
+              #{$css-property}-#{$css-modifier}: calc(#{$value} * -1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin generate-utility-classes($class-name, $css-property, $modifiers, $values, $breakpoints: null) {
+  // Генерация базовых классов без модификаторов и медиа-запросов
+  @include generate-base-classes($class-name, $css-property, $values);
+
+  // Генерация классов с модификаторами
+  @if $modifiers {
+    @include generate-modifier-classes($class-name, $css-property, $modifiers, $values);
+  }
+
+  // Генерация классов с медиа-запросами
+  @if $breakpoints {
+    @include generate-breakpoint-classes($class-name, $css-property, $values, $modifiers, $breakpoints);
+  }
+}
+
+:root {
+	// THEME
+	color-scheme: light dark;
+	////////////////////////////////////////
+	// 1.COLORS VARIABLES 
+	///////////////////////////////////////
+	--main: 	10,250,125;;
+	@include 	generate-vars-color('main');
+	--second:	34,102,255;
+	@include 	generate-vars-color('second');
+	--third:	162,10,255;
+	@include 	generate-vars-color('third');
+	--fourth:	255,10,84;
+	@include 	generate-vars-color('fourth');
+	--fifth:	255,216,10;
+	@include 	generate-vars-color('fifth');
+	// Black and white colors
+	--black:  0,0,0;
+	@include 	generate-vars-color('black');
+	--dark:   36,36,36; 	
+	@include 	generate-vars-color('dark');
+	--grey:   180,180,180; 
+	@include 	generate-vars-color('grey');
+	--light:  245,249,247; 
+	@include 	generate-vars-color('light');
+	--white:  255,255,255;
+	@include 	generate-vars-color('white');
+	// Tones
+	--red: 					360, 70, 90;
+	--red-nice: 		354, 80, 100;
+	--green: 				88,	 207,	57;
+	--green-nice: 	35,	226,	0;
+	--orange: 			8, 72, 94;
+	--orange-nice:	13, 70, 100;
+	--yellow: 			38, 100, 100;
+	--yellow-nice: 	45, 97, 100;
+	// For brands
+	--youtube:			252,13,27;
+	--telegram:			linear-gradient(0deg, #1D93D2 0%, #38B0E3 100%), #000000;
+	--twitter:			29,155,240;
+	--instagram:		233,89,80;
+	--reddit:				255,69,0;
+	// Special
+	--transparent:  0,0,0,0;
+	/////////////////////////////////////////
+	// 2.SIZE VARIABLES //
+	///////////////////////////////////////
+	--extra:   	4.00rem;
+	--big:   		2.50rem; 
+	--semi:    	1.50rem;
+	--medium:  	1.25rem;
+	--regular:	1.00rem;
+	--small:   	0.75rem;
+	--thin:    	0.50rem;
+	--micro: 		0.25rem;
+	--nano: 		0.10rem;
+	////////////////////////////////////////
+	// 3. TEXT VARIABLES
+	///////////////////////////////////////
+	--font: 'Avenir Next World';
+	--font-main: 'Avenir Next World';
+	--font-second: 'Avenir Next World';
+	////////////////////////////////////////
+	// 4. BREAKPOINTS
+	///////////////////////////////////////
+	--flip-phone-max:				320px;
+	--phone-landscape-max: 	640px;
+	--tablet-portrait-min: 	641px;
+	--tablet-portrait-max: 	768px;
+	--tablet-landscape-min:	769px;
+	--tablet-landscape-max:	1024px;
+	--desktop-min: 					1025px;
+	--desktop-max: 					1440px;
+	--xl-desktop-min: 			1441px;
+	--xl-desktop-max: 			1920px;
+	--xxl-desktop-min: 			1921px;
+}
+$modifiers: (
+  't': 'top',
+  'r': 'right',
+  'b': 'bottom',
+  'l': 'left'
+);
+
+$variables: (
+  'extra': var(--extra),
+  'big': var(--big),
+  'semi': var(--semi),
+  'medium': var(--medium),
+  'regular': var(--regular),
+  'small': var(--small),
+  'thin': var(--thin),
+  'micro': var(--micro),
+  'nano': var(--nano),
+);
+
+$rem: (
+  '50r': 50rem,
+  '45r': 45rem,
+  '40r': 40rem,
+  '35r': 35rem,
+  '32r': 32rem,
+  '30r': 30rem,
+  '25r': 25rem,
+  '24r': 24rem,
+  '20r': 20rem,
+  '16r': 16rem,
+  '15r': 15rem,
+  '12r': 12rem,
+  '10r': 10rem,
+  '8r': 8rem,
+  '6r': 5rem,
+  '5r': 5rem,
+  '4r': 4rem,
+  '3r': 3rem,
+  '2r': 2rem,
+  '1r': 1rem,
+);
+
+$vh: (
+  '100vh': 100vh,
+  '80vh': 80vh,
+  '75vh': 75vh,
+  '66vh': 66vh,
+  '50vh': 50vh,
+  '40vh': 40vh,
+  '33vh': 33vh,
+  '25vh': 25vh,
+  '20vh': 20vh,
+  '15vh': 15vh,
+  '10vh': 10vh,
+);
+
+$percent: (
+  '100': 100%,
+  '80': 80%,
+  '75': 75%,
+  '70': 70%,
+  '66': 66%,
+  '50': 50%,
+  '45': 45%,
+  '40': 40%,
+  '33': 33%,
+  '25': 25%,
+  '20': 20%,
+  '15': 15%,
+  '10': 10%,
+  '5': 5%,
+  '0': 0%,
+);
+
+$breakpoints: (
+  'mobile': "(max-width: 640px)",
+  'tablet': "(min-width: 641px) and (max-width: 1024px)",
+  'desktop': "(min-width: 1025px) and (max-width: 1440px)",
+  'widescreen': "(min-width: 1441px)"
+);
+
+$base: (
+  'auto': auto,
+  'zero': 0,
+);
+
+$combined: map.merge($vh, $rem);
+$combined: map.merge($combined, $percent);
+$combined: map.merge($combined, $variables);
+$combined: map.merge($combined, $base);
+
+/* -------------------------- */
+/* FLEX */
+/* ------------------------- */
+$justify-content: (
+  'h-center': center,
+  'justify-start': flex-start,
+  'justify-center': center,
+  'justify-end': flex-end,
+  'justify-between': space-between,
+  'justify-around': space-around,
+);
+
+$align-items: (
+  'v-center': center,
+  'align-start': flex-start,
+  'align-center': center,
+  'align-end': flex-end,
+  'align-stretch': stretch,
+  'align-baseline': baseline,
+);
+
+$flex-direction: (
+  'row': row,
+  'column': column
+);
+
+$order: (
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '10': 10
+);
+
+$cols: (
+	'1': 1fr,
+	'2': 1fr 1fr,
+	'3': 1fr 1fr 1fr,
+	'4': 1fr 1fr 1fr 1fr,
+	'5': 1fr 1fr 1fr 1fr 1fr,
+	'6': 1fr 1fr 1fr 1fr 1fr 1fr,
+);
+
+body {
+	@include generate-utility-classes('pd',	'padding', $modifiers, $combined, $breakpoints);
+	@include generate-utility-classes('mn', 'margin', $modifiers, $combined, $breakpoints);
+
+	@include generate-utility-classes('w', 'width', null, $combined, $breakpoints);
+	@include generate-utility-classes('h', 'height', null, $combined, $breakpoints);
+
+	@include generate-utility-classes('pos-t', 'top', null, $combined, $breakpoints);
+	@include generate-utility-classes('pos-r', 'right', null, $combined, $breakpoints);
+	@include generate-utility-classes('pos-b', 'bottom', null, $combined, $breakpoints);
+	@include generate-utility-classes('pos-l', 'left', null, $combined, $breakpoints);
+
+	@include generate-utility-classes('h-max', 'max-height', null, $combined, $breakpoints);
+	@include generate-utility-classes('h-min', 'min-height', null, $combined, $breakpoints);
+
+	@include generate-utility-classes('w-max', 'max-width',	null, $combined, $breakpoints);
+	@include generate-utility-classes('w-min', 'min-width',	null, $combined, $breakpoints);
+
+	@include generate-utility-classes('radius', 'border-radius', null, $combined, $breakpoints);
+
+	@include generate-utility-classes('radius-tl', 'border-top-left-radius', null, $combined, $breakpoints);
+	@include generate-utility-classes('radius-tr', 'border-top-right-radius', null, $combined, $breakpoints);
+	@include generate-utility-classes('radius-br', 'border-bottom-right-radius', null, $combined, $breakpoints);
+	@include generate-utility-classes('radius-bl', 'border-bottom-left-radius', null, $combined, $breakpoints);
+
+	@include generate-utility-classes('gap', 'gap', null, $combined, $breakpoints);
+	@include generate-utility-classes('flex', 'justify-content', null, $justify-content, $breakpoints);
+	@include generate-utility-classes('flex', 'align-items', null, $align-items, $breakpoints);
+	@include generate-utility-classes('flex', 'flex-direction', null, $flex-direction, $breakpoints);
+	@include generate-utility-classes('order', 'order', null, $order, $breakpoints);
+
+	@include generate-utility-classes('cols', 'grid-template-columns', null, $cols, $breakpoints);
+	
+	@include generate-bg-classes('bg-main', 	'main');
+	@include generate-bg-classes('bg-second',	'second');
+	@include generate-bg-classes('bg-third', 	'third');
+	@include generate-bg-classes('bg-fourth', 'fourth');
+	@include generate-bg-classes('bg-fifth', 	'fifth');
+
+	@include generate-bg-classes('bg-black', 	'black');
+	@include generate-bg-classes('bg-dark', 	'dark');
+	@include generate-bg-classes('bg-grey', 	'grey');
+	@include generate-bg-classes('bg-light', 	'light');
+	@include generate-bg-classes('bg-white', 	'white');
+}

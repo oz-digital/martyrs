@@ -1,0 +1,65 @@
+{
+  "path": "../../src/builder/webpack/webpack.config.base.js",
+  "relativePath": "builder/webpack/webpack.config.base.js",
+  "type": "source",
+  "name": "webpack.config.base.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, принимающую путь к корню проекта (projectRoot) и возвращающую базовую конфигурацию Webpack для сборки приложения на базе Vue и фреймворка martyrs.",
+    "Purpose": "Обеспечить единый, настраиваемый базовый набор правил, плагинов и алиасов для всех окружений (development, production) в сборочном процессе Webpack.",
+    "Components": [
+      {
+        "name": "resolve",
+        "responsibility": "Настраивает алиасы путей, расширения файлов и fallback для модулей."
+      },
+      {
+        "name": "module.rules",
+        "responsibility": "Определяет правила обработки различных типов файлов: JS/JSX (babel), Vue Single-File Components, CSS/SCSS/SASS, а также статических ресурсов (картинки, шрифты и т.д.)."
+      },
+      {
+        "name": "plugins",
+        "responsibility": "Подключает и конфигурирует плагины Webpack: для чистки сборки, извлечения CSS в отдельные файлы, работы с .env, загрузки Vue-компонентов, анализа бандла и определения глобальных констант."
+      },
+      {
+        "name": "infrastructureLogging",
+        "responsibility": "Устанавливает уровень логирования инфраструктуры Webpack (verbose)."
+      },
+      {
+        "name": "stats",
+        "responsibility": "Конфигурирует подробность и формат вывода статистики сборки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (anonymous)",
+        "purpose": "Генерирует конфигурационный объект Webpack на основе переданного projectRoot.",
+        "parameters": [
+          {
+            "name": "projectRoot",
+            "type": "String",
+            "description": "Абсолютный путь к корню проекта, используется для вычисления абсолютных путей в алиасах и конфигурации Babel."
+          }
+        ],
+        "returns": "Object — валидный Webpack configuration object."
+      }
+    ],
+    "Dependencies": [
+      "path",
+      "webpack",
+      "dotenv-webpack",
+      "mini-css-extract-plugin",
+      "clean-webpack-plugin",
+      "vue-loader",
+      "webpack-bundle-analyzer"
+    ],
+    "Usage": "Импортируется и вызывается из скриптов сборки (например, из webpack.config.js или через webpack-merge) с передачей абсолютного пути projectRoot. Например:\n\nconst baseConfig = require('./builder/webpack/webpack.config.base.js')(__dirname);\n\nЗатем этот baseConfig может быть слит с окружными конфигами для development/production.",
+    "Importance": 5,
+    "Notes": [
+      "Babel настроен на ESM (modules: false) и использование ESM-версии runtime-хелперов (useESModules: true).",
+      "URL-loader отключает эмиссию файлов (emitFile: false) — предполагается, что статика будет обслуживаться отдельно.",
+      "CSS-лoader фильтрует URL начинающиеся с '/fonts/' чтобы не реинжектить шрифты в CSS.",
+      "Поддерживается условное подключение BundleAnalyzerPlugin при установке переменной окружения BUNDLE_ANALYZER.",
+      "DefinePlugin задает ряд глобальных флагов для Vue, Vue-i18n и маркера __MOBILE_APP__."
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-tab",
+    "title": "Проект: Компоненты / Tab",
+    "description": "Модуль Tab предоставляет компонент для отображения вкладок в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "tab-component",
+        "title": "Tab.vue",
+        "description": "Основной Vue-компонент для создания и управления вкладками."
+      }
+    ]
+  },
+  "fileHashes": [
+    "ed9f2c504efcaa785d510982bbd4328a"
+  ],
+  "groupHash": "bfafc41ddf201c31bafdd59d1d8e8395",
+  "generated": "2025-06-05T09:17:21.883Z"
+}

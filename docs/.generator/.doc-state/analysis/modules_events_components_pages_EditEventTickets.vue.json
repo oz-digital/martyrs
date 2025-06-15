@@ -1,0 +1,109 @@
+{
+  "path": "../../src/modules/events/components/pages/EditEventTickets.vue",
+  "relativePath": "modules/events/components/pages/EditEventTickets.vue",
+  "type": "source",
+  "name": "EditEventTickets.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue component provides an interface for viewing, creating, and managing tickets for a specific event. It renders a list of existing tickets via a Feed, allows adding new tickets in a popup form, and enables changing ticket statuses (activate/deactivate).",
+    "Purpose": "Serve as the Edit Tickets page in the events module, giving event owners or organization admins the ability to manage event ticketing.",
+    "Components": [
+      {
+        "name": "Feed",
+        "responsibility": "Displays a searchable, paginated list of tickets with empty-state messaging and triggers data fetches."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Encapsulates the modal dialog for adding new tickets."
+      },
+      {
+        "name": "Block",
+        "responsibility": "Provides a titled container and layout for form fields inside the popup."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Renders input fields (text, number) bound to new ticket data."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Renders action buttons for submitting forms and changing ticket status."
+      },
+      {
+        "name": "ButtonCheck",
+        "responsibility": "Toggles the `fetchTickets` flag when scanning QR codes to refresh the feed."
+      },
+      {
+        "name": "IconAdd",
+        "responsibility": "Visual icon used to add additional ticket form rows."
+      },
+      {
+        "name": "IconDelete",
+        "responsibility": "Visual icon used to remove ticket form rows."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openTicketsPopup",
+        "description": "Opens the add-tickets popup and initializes `newTickets` with a blank ticket template.",
+        "params": []
+      },
+      {
+        "name": "closeTicketsPopup",
+        "description": "Closes the add-tickets popup.",
+        "params": []
+      },
+      {
+        "name": "onSubmit",
+        "description": "Calls the tickets store action to create new tickets, then toggles `fetchTickets` to refresh the ticket list.",
+        "params": []
+      },
+      {
+        "name": "changeStatus",
+        "description": "Prompts confirmation and updates a ticket's status via the tickets store action, then toggles `fetchTickets`.",
+        "params": [
+          {
+            "name": "ticket",
+            "type": "Object",
+            "description": "The ticket object to update."
+          },
+          {
+            "name": "status",
+            "type": "String",
+            "description": "The new status value ('deactivated', 'unused', etc.)."
+          }
+        ]
+      },
+      {
+        "name": "onMounted (lifecycle)",
+        "description": "Fetches the event by URL, sets `event`, checks authorization via `hasAccess` or ownership, and redirects if not found or unauthorized.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue",
+      "vue-router",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/events/components/elements/ButtonCheck.vue",
+      "@martyrs/src/modules/icons/navigation/IconAdd.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+      "@martyrs/src/modules/events/store/events.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/events/store/tickets.js",
+      "@martyrs/src/modules/globals/views/mixins/mixins.js"
+    ],
+    "Usage": "Registered as a page component in the events module router (e.g. `/events/:url/edit/tickets`), imported where event ticket management UI is required.",
+    "Importance": 4,
+    "Notes": [
+      "Uses a boolean `fetchTickets` toggle to force Feed to reload data on changes.",
+      "Relies on `hasAccess` global mixin to enforce organization-based permissions.",
+      "Potential bug: `userId` is referenced but not defined; should derive from `auth.state.user._id`.",
+      "CSS class `.dp__input` is defined but not used within this component.",
+      "Employs `v-slot` on Feed to render a custom ticket item template."
+    ]
+  }
+}

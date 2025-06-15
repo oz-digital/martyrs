@@ -1,0 +1,49 @@
+{
+  "path": "../../src/modules/gallery/store/gallery.js",
+  "relativePath": "modules/gallery/store/gallery.js",
+  "type": "source",
+  "name": "gallery.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл создаёт и экспортирует единственный экземпляр класса Store, настроенный для работы с API галереи.",
+    "Purpose": "Обеспечить централизованное взаимодействие с серверным API раздела «галерея» через готовый класс Store из фреймворка martyrs.",
+    "Components": [
+      {
+        "name": "gallery",
+        "type": "Store (instance)",
+        "responsibility": "Работа с ресурсом /api/gallery на сервере: отправка запросов на получение, создание, обновление и удаление данных галереи."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "Store",
+        "origin": "@martyrs/src/modules/globals/views/classes/globals.store.js",
+        "purpose": "Базовый класс для организации взаимодействия с REST-API. Предоставляет методы CRUD (fetchAll, fetchById, create, update, delete и т. д.).",
+        "parameters": [
+          {
+            "name": "baseUrl",
+            "type": "string",
+            "description": "Базовый URL для API-эндпоинтов."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/views/classes/globals.store.js",
+        "import": "Store"
+      },
+      {
+        "module": "process.env.API_URL",
+        "description": "Переменная окружения с базовым URL бекэнда."
+      }
+    ],
+    "Usage": "Другие части приложения импортируют экземпляр gallery и вызывают его методы, например:\n\nimport gallery from 'modules/gallery/store/gallery';\n\ngallery.fetchAll().then(...);\n\nили\n\ngallery.create(payload).then(...);\n",
+    "Importance": 3,
+    "Notes": [
+      "В файле нет своего бизнес-логики — весь функционал наследуется из базового Store.",
+      "URL берётся из переменной окружения process.env.API_URL, что позволяет легко менять среду (dev/prod).",
+      "Экспорт по умолчанию делает gallery singleton-экземпляром во всём приложении."
+    ]
+  }
+}

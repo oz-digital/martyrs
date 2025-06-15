@@ -1,0 +1,96 @@
+{
+  "path": "../../src/modules/organizations/routes/departments.routes.js",
+  "relativePath": "modules/organizations/routes/departments.routes.js",
+  "type": "source",
+  "name": "departments.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл объявляет и регистрирует HTTP-маршруты (endpoints) для операций CRUD с отделами организаций. Он связывает URL-пути и HTTP-методы с соответствующими методами контроллера.",
+    "Purpose": "Централизовать конфигурацию маршрутов для работы с ресурсом «отделы» (departments) в модуле организаций, подключая их к экземпляру приложения и базе данных.",
+    "Components": [
+      {
+        "name": "default-exported function",
+        "responsibilities": [
+          "Принимать на вход экземпляр приложения (app) и объект базы данных (db)",
+          "Инициализировать контроллер через controllerFactory",
+          "Регистрировать маршруты для read, readOne, create, update и delete операций"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "anonymous (app, db)",
+        "description": "Инициализирует и регистрирует маршруты на переданном приложении",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express application (или аналогичное API)",
+            "description": "Экземпляр сервера, на котором регистрируются маршруты"
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Экземпляр базы данных или объект доступа к данным"
+          }
+        ]
+      },
+      {
+        "name": "controller.read",
+        "description": "Обрабатывает GET-запрос /api/departments/read и возвращает список отделов организации",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.readOne",
+        "description": "Обрабатывает GET-запрос /api/departments/get/:_id и возвращает один отдел по его _id",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.create",
+        "description": "Обрабатывает POST-запрос /api/departments/:_id/create и создает новый отдел в организации с указанным _id",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "description": "Обрабатывает POST-запрос /api/departments/:_id/update и обновляет данные отдела",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.delete",
+        "description": "Обрабатывает DELETE-запрос /api/departments/:_id/delete и удаляет указанный отдел",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "modules/organizations/controllers/departments.controller.js (controllerFactory)",
+      "Express (или схожий фреймворк для app.get, app.post, app.delete)"
+    ],
+    "Usage": "Импортируется и вызывается во время инициализации маршрутов основного сервера:\n\nimport departmentsRoutes from './modules/organizations/routes/departments.routes.js';\ndepartmentsRoutes(app, db);",
+    "Importance": 3,
+    "Notes": [
+      "Используется фабрика контроллера для связывания с объектом базы данных.",
+      "Маршруты не полностью соответствуют классическому REST (create/update через POST, а не POST/PUT).",
+      "Можно унифицировать URL-структуру для более строгого REST-подхода.",
+      "Необходиом предусмотреть middleware для авторизации/валидации параметров `_id`."
+    ]
+  }
+}

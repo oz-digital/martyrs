@@ -1,0 +1,76 @@
+{
+  "path": "../../src/modules/auth/views/components/layouts/Auth.vue",
+  "relativePath": "modules/auth/views/components/layouts/Auth.vue",
+  "type": "source",
+  "name": "Auth.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue layout component for authentication pages. It provides a two-column structure: the left column renders the active auth page via <router-view> with a transition; the right column shows a slider section (desktop only) for feature highlights.",
+    "Purpose": "Serve as the overall layout wrapper for all authentication‐related routes in the app. Ensures a consistent page structure (form + promotional/feature slider) across login, signup, password reset, etc.",
+    "Components": [
+      {
+        "name": "router-view",
+        "responsibility": "Renders the matched child auth page component and exposes the current Component and route via a scoped slot."
+      },
+      {
+        "name": "transition",
+        "responsibility": "Applies a 'scaleIn' enter/leave animation when the auth page component changes."
+      },
+      {
+        "name": "component",
+        "responsibility": "Dynamically renders the active page (login, signup) with props (localPosition) and key based on route.path."
+      },
+      {
+        "name": "SliderFeatures",
+        "responsibility": "Displays a desktop‐only promotional slider; currently commented in template but intended for feature highlights."
+      },
+      {
+        "name": "Tab",
+        "responsibility": "Imported for potential tabbed navigation between auth methods (email/phone) but not directly used in this file."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Imported input component, likely used inside child auth pages for form fields."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Imported button component, likely used inside child auth pages to trigger submission."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onSubmit",
+        "purpose": "Validate user inputs (email and password) using inputsValidation utilities, then dispatch the login action via auth store.",
+        "parameters": [],
+        "flow": [
+          "validateInputs for email",
+          "validateInputs for password",
+          "auth.actions.login(state.user, selectedTab)"
+        ]
+      },
+      {
+        "name": "redirectTo",
+        "purpose": "Navigate programmatically to the 'Account' route after successful authentication or when needed.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, onMounted, ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/auth/views/components/sections/SliderFeatures.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/auth/views/validations/inputs.validation"
+    ],
+    "Usage": "Imported into the router configuration as the layout component for all '/auth/*' routes. Child auth pages are rendered inside its <router-view> slot. The onSubmit and redirectTo methods are exposed to child pages via provide/inject or prop drilling (through localPosition binding or event emitters).",
+    "Importance": 3,
+    "Notes": [
+      "No <style> section in this file; styling is applied via utility classes.",
+      "SliderFeatures is currently commented out in the template; may be enabled later.",
+      "Tab, Field, Button are imported but not used directly—likely used inside child components rendered by <router-view>.",
+      "localPosition prop is passed to child components; implementation details of this prop live in the child pages."
+    ]
+  }
+}

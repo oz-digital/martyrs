@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/organizations/components/pages/OrganizationDocuments.vue",
+  "relativePath": "modules/organizations/components/pages/OrganizationDocuments.vue",
+  "type": "source",
+  "name": "OrganizationDocuments.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Этот Vue-компонент отображает список обязательных документов организации и предоставляет интерфейс для добавления данных по каждому документу через всплывающее окно и отправки их на верификацию.",
+    "Purpose": "Обеспечить пользователю возможность загрузить и отправить на проверку ключевые документы (паспорт, ИНН, СНИЛС, военный билет) при создании или редактировании информации об организации.",
+    "Components": [
+      {
+        "name": "Field",
+        "purpose": "Компонент текстового поля для ввода параметров документа"
+      },
+      {
+        "name": "Button",
+        "purpose": "Кнопка для перехода и подтверждения действий"
+      },
+      {
+        "name": "Popup",
+        "purpose": "Всплывающее окно для отображения формы ввода данных документа"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openPopup",
+        "description": "Открывает попап для введения данных выбранного документа.",
+        "parameters": [
+          "index"
+        ]
+      },
+      {
+        "name": "closePopup",
+        "description": "Закрывает попап.",
+        "parameters": []
+      },
+      {
+        "name": "handleFileUpload",
+        "description": "Обработчик загрузки файлов (заглушка).",
+        "parameters": [
+          "e"
+        ]
+      },
+      {
+        "name": "submitData",
+        "description": "Отправляет введённые данные документа на верификацию и закрывает попап.",
+        "parameters": []
+      },
+      {
+        "name": "onSubmit",
+        "description": "Колбэк для внешней отправки (заглушка, например, для авторизации).",
+        "parameters": []
+      },
+      {
+        "name": "redirectTo",
+        "description": "Перенаправляет пользователя на страницу создания сотрудников организации.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watchEffect)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Popup/Popup.vue"
+    ],
+    "Usage": "Подключается как страница в маршрутизации модуля организаций (например, '/organizations/documents'). Вызывается через router.push или используется в родительском layout для сбора документов.",
+    "Importance": 3,
+    "Notes": [
+      "Используется синтаксис <script setup> и Composition API.",
+      "Массив documents сейчас захардкожен — рекомендуется вынести в props или загружать через API.",
+      "Поле Field связывается через v-model:field.",
+      "Стили scoped ограничивают область применения CSS внутри компонента.",
+      "watchEffect заготовлен для реактивного отслеживания изменений в данных документов."
+    ]
+  }
+}

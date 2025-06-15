@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/events/store/events.js",
+  "relativePath": "modules/events/store/events.js",
+  "type": "source",
+  "name": "events.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует Vue-реактивный store для работы с ресурсом «events»: хранит список событий, текущие параметры фильтрации, пагинации и сортировки, а также текущий выбранный объект события. Предоставляет CRUD-функции для взаимодействия с бэкендом через Axios и методы для управления состоянием.",
+    "Purpose": "Обеспечить централизованное хранилище и логику загрузки, создания, обновления и удаления событий (events) в приложении на базе фреймворка Martyrs и Vue 3.",
+    "Components": [
+      {
+        "name": "state",
+        "responsibility": "Vue-reactive объект, содержащий поля all, filter, pagination, sort и current для управления данными событий и их отображением"
+      },
+      {
+        "name": "history",
+        "responsibility": "Массив для хранения версии state при каждом изменении (слежение через watch)"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "read",
+        "description": "Запрашивает список событий или одно событие по url-параметру; сохраняет результат в state.all или state.current",
+        "parameters": [
+          "options (Object) — опции запроса, например { url, tags, period, page, perPage }"
+        ]
+      },
+      {
+        "name": "create",
+        "description": "Создаёт новое событие на сервере, затем сохраняет полученные данные в state.current",
+        "parameters": [
+          "eventData (Object) — данные создаваемого события"
+        ]
+      },
+      {
+        "name": "update",
+        "description": "Обновляет существующее событие на сервере, затем обновляет state.current",
+        "parameters": [
+          "eventData (Object) — данные обновляемого события"
+        ]
+      },
+      {
+        "name": "remove",
+        "description": "Удаляет событие по идентификатору на сервере и удаляет его из state.all",
+        "parameters": [
+          "_id (String) — идентификатор события"
+        ]
+      },
+      {
+        "name": "set",
+        "description": "Устанавливает переданные данные в указанное свойство state (all или current)",
+        "parameters": [
+          "eventData (Any) — данные для сохранения",
+          "property (String) — ключ в state"
+        ]
+      },
+      {
+        "name": "clean",
+        "description": "Сбрасывает state.current в дефолтную пустую структуру события",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js — настроенный Axios-инстанс",
+      "@martyrs/src/modules/globals/views/store/globals.js — функция setError для обработки ошибок"
+    ],
+    "Usage": "Импортируется в компонентах или других модулях приложения следующим образом:\nimport { state, read, create, update, remove, clean } from 'modules/events/store/events.js';\nЗатем вызываются методы (read, create и т.п.) для синхронизации с сервером, а reactive state используется для привязки к UI.",
+    "Importance": 4,
+    "Notes": [
+      "Использует Vue 3 Composition API (reactive, watch) для слежения за изменениями state",
+      "В history накапливаются ссылки на state при каждом изменении — потенциально может вырасти память",
+      "Ошибки сетевых запросов обрабатываются глобальным setError",
+      "Метод set обобщённо перезаписывает целое свойство state, без глубокого мержа"
+    ]
+  }
+}

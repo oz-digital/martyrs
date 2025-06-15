@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/gallery/models/photo.model.js",
+  "relativePath": "modules/gallery/models/photo.model.js",
+  "type": "source",
+  "name": "photo.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая создаёт и настраивает Mongoose-модель Photo с полями cover, tags, image, метками времени и дополнительными схемами (common, engagement, ownership). После создания модели сбрасываются все индексы коллекции Photo.",
+    "Purpose": "Определить и зарегистрировать в переданной БД (объекте db) схему и модель Photo для работы с коллекцией фотографий в MongoDB.",
+    "Components": [
+      {
+        "name": "PhotoSchema",
+        "responsibilities": "Описание структуры документа Photo: поля cover, tags, image и автоматические метки времени."
+      },
+      {
+        "name": "Photo",
+        "responsibilities": "Mongoose-модель для CRUD-операций над коллекцией Photo."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Основная функция-фабрика, принимающая объект db, создающая схему Photo, применяющая к ней общие плагины/схемы и возвращающая готовую модель.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект с подключённой Mongoose-инстанцией и конфигурацией БД."
+          }
+        ]
+      },
+      {
+        "name": "dropIndexes callback",
+        "description": "Коллбэк для сброса индексов коллекции Photo после определения модели.",
+        "parameters": [
+          {
+            "name": "err",
+            "type": "Error|null",
+            "description": "Ошибка при удалении индексов, если возникла."
+          },
+          {
+            "name": "results",
+            "type": "Object|null",
+            "description": "Результат выполнения dropIndexes."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "db.mongoose.Schema",
+      "db.mongoose.model"
+    ],
+    "Usage": "import createPhotoModel from 'modules/gallery/models/photo.model.js';\nconst Photo = createPhotoModel(db);\n// далее Photo.find()/create()/update() и т.д.",
+    "Importance": 4,
+    "Notes": [
+      "applyCommonSchema, applyEngagementSchema и applyOwnershipSchema добавляют в схему поля для глобальной логики (метки времени, статистика, права владения).",
+      "dropIndexes вызывается при каждом подключении модели: возможен нежелательный overhead в рабочей среде.",
+      "Используется опция timestamps.currentTime для точного указания времени создания/обновления."
+    ]
+  }
+}

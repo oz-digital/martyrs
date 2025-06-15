@@ -1,0 +1,115 @@
+{
+  "path": "../../src/modules/music/store/search.js",
+  "relativePath": "modules/music/store/search.js",
+  "type": "source",
+  "name": "search.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует хранилище (store) для поиска музыкального контента (треков, альбомов, артистов, плейлистов и жанров) с помощью Vue 3 Reactive API. Он хранит состояние поиска, выполняет запросы к API, обрабатывает результаты и предоставляет вычисляемые свойства для работы с ними.",
+    "Purpose": "Организация логики поиска: хранение и обновление состояния (query, результаты, статус загрузки, ошибки и фильтр), выполнение асинхронного запроса к бекенду и предоставление готовых к использованию данных для компонентов UI.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibility": "Хранит текущее состояние поиска: строку запроса, результаты по категориям, флаг загрузки, ошибку и активный фильтр."
+      },
+      {
+        "name": "actions",
+        "type": "object",
+        "responsibility": "Набор методов для управления состоянием: выполнение поиска, установка фильтра, очистка результатов."
+      },
+      {
+        "name": "computed",
+        "type": "object",
+        "responsibility": "Вычисляемые свойства для агрегирования и фильтрации результатов поиска."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "search",
+        "in": "actions",
+        "description": "Выполняет асинхронный HTTP-запрос к API поиска, обновляет state.results, state.isLoading и state.error.",
+        "parameters": [
+          {
+            "name": "query",
+            "type": "string",
+            "required": true,
+            "description": "Строка поиска, минимум 2 символа."
+          },
+          {
+            "name": "type",
+            "type": "string|null",
+            "required": false,
+            "description": "Категория для фильтрации (tracks, albums, artists, playlists, genres)."
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "default": 10,
+            "description": "Максимальное количество результатов на категорию."
+          }
+        ]
+      },
+      {
+        "name": "setFilter",
+        "in": "actions",
+        "description": "Устанавливает активный фильтр для отображения результатов.",
+        "parameters": [
+          {
+            "name": "filter",
+            "type": "string",
+            "required": true,
+            "description": "Одна из категорий или 'all'."
+          }
+        ]
+      },
+      {
+        "name": "clearSearch",
+        "in": "actions",
+        "description": "Сбрасывает строку запроса, результаты, флаг загрузки и ошибку в первоначальное состояние.",
+        "parameters": []
+      },
+      {
+        "name": "hasResults",
+        "in": "computed",
+        "description": "Проверяет, есть ли хоть один результат в любом из массивов.",
+        "parameters": []
+      },
+      {
+        "name": "filteredResults",
+        "in": "computed",
+        "description": "Возвращает результаты согласно активному фильтру: либо все сразу, либо только выбранную категорию.",
+        "parameters": []
+      },
+      {
+        "name": "totalResultsCount",
+        "in": "computed",
+        "description": "Суммирует общее количество элементов во всех категориях результатов.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "import": "reactive",
+        "description": "Для создания реактивного state."
+      },
+      {
+        "module": "process.env.API_URL",
+        "description": "Базовый URL для запросов к бекенду."
+      },
+      {
+        "module": "fetch / URLSearchParams",
+        "description": "Стандартные веб-API для отправки запросов и формирования query-string."
+      }
+    ],
+    "Usage": "Импортируется в компоненты Vue или другие модули через `import { state, actions, computed } from 'modules/music/store/search'`. Компоненты подписываются на state и вызывают actions.search/setFilter/clearSearch для управления поиском.",
+    "Importance": 3,
+    "Notes": [
+      "Минимальная длина query — 2 символа, иначе происходит сброс результатов и установка ошибки.",
+      "При ошибках запросов state.results обнуляются.",
+      "Использует Vue 3 Reactive API, а не Vuex.",
+      "Фильтрация результатов реализована на клиенте через computed-свойство filteredResults."
+    ]
+  }
+}

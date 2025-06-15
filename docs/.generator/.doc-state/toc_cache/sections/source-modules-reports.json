@@ -1,0 +1,51 @@
+{
+  "section": {
+    "id": "source-modules-reports",
+    "title": "Проект: Модули / Отчеты",
+    "description": "Модуль 'Отчеты' предназначен для управления отчетами, их отображения, создания и обработки на стороне клиента и сервера.",
+    "subsections": [
+      {
+        "id": "client-server-logic",
+        "title": "Клиентская и серверная логика",
+        "description": "Файлы reports.client.js и reports.server.js реализуют логику работы с отчетами на клиенте и сервере."
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Файл reports.controller.js содержит обработчики запросов, связанных с отчетами."
+      },
+      {
+        "id": "models",
+        "title": "Модели",
+        "description": "Файл report.model.js определяет структуру данных для отчетов."
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Файл reports.routes.js описывает API-маршруты для работы с отчетами."
+      },
+      {
+        "id": "store",
+        "title": "Хранилище",
+        "description": "Файл reports.js реализует управление состоянием отчетов."
+      },
+      {
+        "id": "ui-pages",
+        "title": "Страницы и компоненты интерфейса",
+        "description": "Файлы BackofficeReports.vue и FormReport.vue отвечают за отображение и ввод данных отчетов в пользовательском интерфейсе."
+      }
+    ]
+  },
+  "fileHashes": [
+    "0985ff9c6794c55f08aaaa9abcb1ce2b",
+    "117547cb226a4e7e3890f7163b7e0b62",
+    "170a30b5058b8813b04b99e330e7e5db",
+    "37f9043b6be9c5224904c4afa1e3a08b",
+    "4d024d00dddba57e6495041edfa2f85c",
+    "5b75375f451e8cc89ddfab1abdded148",
+    "7f3f3c94c7e86517bd8ef36c29745c54",
+    "8fdf109b2db7559ef8e52229736e1591"
+  ],
+  "groupHash": "8b52ad1439c55fa22a206aeb03b8691b",
+  "generated": "2025-06-05T09:23:20.574Z"
+}

@@ -1,0 +1,76 @@
+{
+  "path": "../../src/modules/inventory/models/stock.balance.model.js",
+  "relativePath": "modules/inventory/models/stock.balance.model.js",
+  "type": "source",
+  "name": "stock.balance.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports a factory function that creates a Mongoose schema and model for tracking stock balances of products (and their variants) in storage locations, with built-in ownership metadata, timestamps, and indexes for fast lookups.",
+    "Purpose": "Provide a persistent representation of inventory stock levels in the database, enabling CRUD operations and queries on product quantities in various storage spots, while enforcing ownership and uniqueness constraints.",
+    "Components": [
+      {
+        "name": "StockBalanceSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Defines the data structure for stock balances, including fields (product, variant, storage, quantity), timestamps, and ownership metadata."
+      },
+      {
+        "name": "StockBalance",
+        "type": "Mongoose.Model",
+        "responsibility": "The compiled Mongoose model used to query and manipulate stock balance documents in MongoDB."
+      },
+      {
+        "name": "applyOwnershipSchema",
+        "type": "Function (imported)",
+        "responsibility": "Augments the StockBalanceSchema with ownership fields and logic (e.g., createdBy, updatedBy, tenantId) to enforce data partitioning and access control."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (model factory)",
+        "signature": "db => Model",
+        "description": "Accepts a database object containing Mongoose, constructs the StockBalanceSchema, applies indexes and ownership schema, compiles the model, and returns it.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "details": "An application-level database container exposing `mongoose` and other utilities."
+          }
+        ],
+        "returns": "Mongoose Model named 'StockBalance'"
+      },
+      {
+        "name": "applyOwnershipSchema",
+        "signature": "(schema, db) => void",
+        "description": "Augments the given schema with standard ownership fields.",
+        "parameters": [
+          {
+            "name": "schema",
+            "type": "mongoose.Schema",
+            "details": "The schema to be extended with ownership metadata."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "details": "Provides access to any globals or configuration needed by the ownership plugin."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "db.mongoose.Schema",
+      "db.mongoose.model",
+      "Product (ref)",
+      "Variant (ref)",
+      "Spot (ref)"
+    ],
+    "Usage": "Imported in the inventory module’s model registration code; called with the application `db` object to register the `StockBalance` model before using it in services, controllers, or resolvers.",
+    "Importance": 4,
+    "Notes": [
+      "Defines a composite unique index on {product, variant, storage} to prevent duplicate balance records.",
+      "Adds individual indexes on updatedAt, quantity, and combinations of storage with product or variant to optimize common queries and sorting.",
+      "Uses a custom timestamp function (Date.now) to ensure consistency.",
+      "Ownership schema enforces multi-tenant or user-specific data separation."
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "path": "../../src/modules/gallery/routes/gallery.routes.js",
+  "relativePath": "modules/gallery/routes/gallery.routes.js",
+  "type": "source",
+  "name": "gallery.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines Express.js routes for gallery CRUD operations, applying authentication and access-control middlewares before delegating to controller methods.",
+    "Purpose": "Registers the HTTP endpoints for the gallery module on the main application, enforcing security policies for reading, creating, updating, and deleting gallery entries.",
+    "Components": [
+      {
+        "name": "Route Registrar (default export)",
+        "responsibility": "Accepts (app, db, origins), wires up gallery endpoints with middlewares and controller handlers."
+      },
+      {
+        "name": "Gallery Controller",
+        "responsibility": "Implements the business logic for read, create, update, delete operations on gallery resources."
+      },
+      {
+        "name": "Auth Middleware Factory",
+        "responsibility": "Produces JWT authentication middleware (verifyToken) based on DB context."
+      },
+      {
+        "name": "Access Middleware Factory",
+        "responsibility": "Produces resource-based access-control middlewares (verifyAccess, handleAccessResult) based on DB context."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "parameters": [
+          "app",
+          "db",
+          "origins"
+        ],
+        "description": "Main function that binds gallery routes (/read, /create, /update, /delete) to the Express app."
+      },
+      {
+        "name": "authJwt.verifyToken",
+        "parameters": [
+          "required (boolean)"
+        ],
+        "description": "Express middleware to verify JWT; if `required` is false or `true` it toggles optional vs mandatory authentication."
+      },
+      {
+        "name": "verifyAccess",
+        "parameters": [
+          "resource (string)",
+          "action (string)"
+        ],
+        "description": "Express middleware to check if the current user has permission to perform the specified action on the named resource."
+      },
+      {
+        "name": "handleAccessResult",
+        "parameters": [
+          "options (object)"
+        ],
+        "description": "Express middleware that finalizes access control decisions and optionally allows unauthenticated or published-only reads based on options."
+      },
+      {
+        "name": "controller.read",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles GET /api/gallery/read."
+      },
+      {
+        "name": "controller.create",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles POST /api/gallery/create."
+      },
+      {
+        "name": "controller.update",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles PUT /api/gallery/update."
+      },
+      {
+        "name": "controller.delete",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handles DELETE /api/gallery/delete."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "@martyrs/src/modules/organizations/middlewares/verifyAccesses.js",
+      "../controllers/gallery.controller.js"
+    ],
+    "Usage": "Imported in the main server or router setup and invoked as `require('modules/gallery/routes/gallery.routes.js')(app, db, origins)` to register the gallery API endpoints.",
+    "Importance": 4,
+    "Notes": [
+      "The `origins` parameter is accepted but not used in the current implementation.",
+      "The read route allows unauthenticated access to published resources via `allowPublished` and `allowUnauthenticated` flags.",
+      "All non-read operations require a valid JWT and proper resource permissions."
+    ]
+  }
+}

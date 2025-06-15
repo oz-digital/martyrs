@@ -1,0 +1,58 @@
+{
+  "path": "../../src/builder/rspack/rspack.config.ssr.client.js",
+  "relativePath": "builder/rspack/rspack.config.ssr.client.js",
+  "type": "source",
+  "name": "rspack.config.ssr.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая генерирует и возвращает конфигурацию сборки RSPack (аналог Webpack) для клиентской части SSR-приложения.",
+    "Purpose": "Предоставить настраиваемый RSPack-конфиг для сборки клиентского бандла: настроить точки входа, выходные файлы, плагины (PurgeCSS, StatsWriter и т. д.) и оптимизацию.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "Function",
+        "description": "Принимает путь к корню проекта (projectRoot) и возвращает объединённый базовый + специфичный для клиента RSPack-конфиг."
+      },
+      {
+        "name": "config",
+        "type": "Object",
+        "description": "Основной объект конфигурации RSPack: mode, devtool, entry, output, plugins, optimization и т. д."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default",
+        "params": [
+          "projectRoot"
+        ],
+        "description": "Формирует и возвращает клиентский RSPack-config, мерджит его с базовым через webpack-merge."
+      },
+      {
+        "name": "extractor (PurgeCSSPlugin)",
+        "params": [
+          "content"
+        ],
+        "description": "Собирает из контента все классы и Vue-scoped атрибуты для корректной работы PurgeCSS."
+      }
+    ],
+    "Dependencies": [
+      "path",
+      "glob-all",
+      "@rspack/core",
+      "webpack-merge",
+      "webpack-stats-plugin",
+      "@aaroon/workbox-rspack-plugin",
+      "purgecss-webpack-plugin",
+      "./rspack.config.base.js"
+    ],
+    "Usage": "Импортируется в скриптах сборки (например, через CLI или node-скрипт), где вызывается с передачей projectRoot, результат передаётся в вызов rspack()/webpack API.",
+    "Importance": 4,
+    "Notes": [
+      "Импорт GenerateSW и InjectManifest из '@aaroon/workbox-rspack-plugin' в коде не используется.",
+      "Закомментирован вызов HotModuleReplacementPlugin для dev-режима.",
+      "PurgeCSSPlugin настроен с кастомным extractor: учитываются классы Tailwind и Vue data-v атрибуты.",
+      "merge(baseConfig, config) гарантирует общие настройки SSR и специфичные для клиента.",
+      "RSPack-специфичные минимайзеры (SwcJsMinimizerRspackPlugin, LightningCssMinimizerRspackPlugin) используются в production."
+    ]
+  }
+}

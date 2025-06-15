@@ -1,0 +1,93 @@
+{
+  "path": "../../src/modules/globals/views/plugins/store-debugger/StoreDebugger.vue",
+  "relativePath": "modules/globals/views/plugins/store-debugger/StoreDebugger.vue",
+  "type": "source",
+  "name": "StoreDebugger.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that provides an interactive debug panel for inspecting, filtering, exporting and timestamping the state of store modules at runtime.",
+    "Purpose": "Acts as an on-screen developer tool allowing users to open/close a panel, view current Vuex‐style store modules, filter by name, expand/collapse per‐module state, copy or download JSON snapshots, and switch between light/dark themes.",
+    "Components": [
+      {
+        "name": "StoreDebugger (root component)",
+        "responsibility": "Renders the debug button, the slide‐in panel, handles theme, open/close state, and orchestrates module list UI."
+      },
+      {
+        "name": "Module Section (inside v-for)",
+        "responsibility": "Displays an individual module header, expand/collapse toggle, module actions (copy/download), and pretty‐printed JSON state."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "toggleOpen",
+        "params": [],
+        "description": "Toggles the visibility of the debug panel."
+      },
+      {
+        "name": "toggleTheme",
+        "params": [],
+        "description": "Switches between 'light' and 'dark' UI themes."
+      },
+      {
+        "name": "updateTimestamp",
+        "params": [],
+        "description": "Updates the lastUpdated ref with a formatted current date/time."
+      },
+      {
+        "name": "updateModules",
+        "params": [],
+        "description": "Rebuilds the reactive `modules` array from props.store.modules, preserving expand/collapse state and deep‐cloning module state."
+      },
+      {
+        "name": "refreshState",
+        "params": [],
+        "description": "Calls updateTimestamp and updateModules to refresh the panel contents."
+      },
+      {
+        "name": "expandAll",
+        "params": [],
+        "description": "Sets `expanded=true` on every module in the filtered list."
+      },
+      {
+        "name": "collapseAll",
+        "params": [],
+        "description": "Sets `expanded=false` on every module in the filtered list."
+      },
+      {
+        "name": "prettyJSON",
+        "params": [
+          "obj"
+        ],
+        "description": "Returns a pretty‐printed JSON string of the given object."
+      },
+      {
+        "name": "copyJSON",
+        "params": [
+          "name"
+        ],
+        "description": "Copies the pretty-printed JSON of the named module to the clipboard."
+      },
+      {
+        "name": "downloadJSON",
+        "params": [
+          "name"
+        ],
+        "description": "Triggers a download of the named module's state as a .json file."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, computed, watch, defineProps)",
+      "date-fns (format)",
+      "props.store (injected store object with `.modules` array and each module state)"
+    ],
+    "Usage": "Imported as a component in the globals plugin registry (e.g. within Martyrs framework setup). It must be passed a `store` prop that provides an Array of module names and their states. Typically toggled via a global keybinding or always-present debug icon.",
+    "Importance": 3,
+    "Notes": [
+      "Uses `<script setup>` syntax and scoped styles.",
+      "Deep‐watches store state changes and auto-refreshes only when panel is open.",
+      "Clones state snapshots via JSON parse/stringify to avoid mutating original store.",
+      "May be performance-intensive for very large store trees.",
+      "CSS variables control theme colors; additional customization possible via overriding vars."
+    ]
+  }
+}

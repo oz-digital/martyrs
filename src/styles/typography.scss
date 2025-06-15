@@ -1,0 +1,136 @@
+// Global Font Family
+body {
+	font-family: var(--font); 
+}
+
+.font-main {
+	font-family: var(--font-main); 
+}
+
+.font-second {
+	font-family: var(--font-second); 
+}
+
+h1,h2,h3,h4,h5,span,p {
+  text-box: trim-both cap alphabetic;
+/*  text-box-trim: trim-both;*/
+/*  text-box-edge: cap alphabetic;*/
+} 
+
+.text-box-none {
+  text-box: none;
+}
+
+.text-box-auto {
+  text-box: auto;
+}
+
+.text-box-trim-none {
+  text-box-trim: none;
+}
+
+
+
+.text-box-trim {
+  text-box: trim-both cap alphabetic;
+}
+
+.trimmed > * {
+  text-box: trim-both cap alphabetic;
+  overflow: visible;
+}
+
+.text-box-trim-end {
+  text-box: trim-end cap alphabetic;
+}
+
+span.text-box-trim-end {
+  text-box: trim-end cap alphabetic;
+}
+
+
+// Font Styles
+h1,.h1  { font-family: var(--font-main); font-weight: 500; font-size: 3.250rem; 	line-height: 1.000; letter-spacing: -0.05rem; 	text-transform: none; }
+h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: 2.500rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
+h3,.h3  { font-family: var(--font-main); font-weight: 500; font-size: 1.750rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
+h4,.h4  { font-family: var(--font-main); font-weight: 500; font-size: 1.500rem; 	line-height: 1.000; letter-spacing: +0.0rem; 	text-transform: none; }
+h5,.h5 	{ font-family: var(--font-main); font-weight: 500; font-size: 1.375rem; 	line-height: 1.000;	letter-spacing: -0.0rem; 	text-transform: none; }
+
+// Typogragy Styles
+.p-nano        { font-family: var(--font-second); font-weight: 400; font-size: 0.50rem; line-height: 1.250; }
+.p-micro       { font-family: var(--font-second); font-weight: 400; font-size: 0.625rem; line-height: 1.250; }
+.p-small       { font-family: var(--font-second); font-weight: 400; font-size: 0.75rem; line-height: 1.250; }
+p,.p-regular   { font-family: var(--font-second); font-weight: 400; font-size: 1.0rem; line-height: 1.250 }
+.p-medium   	 { font-family: var(--font-second); font-weight: 400; font-size: 1.0rem; line-height: 1.250 }
+.p-semi        { font-family: var(--font-second); font-weight: 400; font-size: 1.125rem; line-height: 1.250; letter-spacing: 0.0rem; }
+.p-big         { font-family: var(--font-second); font-weight: 400; font-size: 1.25rem; line-height: 1.250; }
+.p-extra       { font-family: var(--font-second); font-weight: 400; font-size: 2.00rem; line-height: 1.250; }
+
+b  { font-weight: 600}
+
+a, button { font-family: var(--font-main); }
+
+a  				{	transition: all 0.233s ease; }
+a:hover   { cursor: pointer;} 
+/*a:active  { opacity: 0.75 }*/
+// Text align
+.t-left   	{ text-align: left; 	}
+.t-center   { text-align: center; }
+.t-right  	{ text-align: right; 	}
+// Font weights
+.t-bold   	{ font-weight: 900;}
+.t-demi   	{ font-weight: 700;}
+.t-semi   	{ font-weight: 600;}
+.t-medium 	{ font-weight: 500;}
+.t-regular 	{ font-weight: 400;}
+.t-light  	{ font-weight: 300;}
+// Linehegiht
+.t-lh-05		{ line-height: 0.5 }
+.t-lh-075		{ line-height: 0.75 }
+.t-lh-1 		{ line-height: 1}
+.t-lh-15 		{ line-height: 1.5}
+.t-lh-2 		{ line-height: 2}
+
+.lh-bold   	{ line-height: 3.000; }
+.lh-demi   	{ line-height: 2.000; }
+.lh-semi   	{ line-height: 1.500; }
+.lh-medium 	{ line-height: 1.250; }
+.lh-regular { line-height: 1.125; }
+.lh-light  	{ line-height: 1.000; }
+
+.t-trim {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/*Text trim*/
+.t-trim-1 {
+	display: -webkit-box;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+}
+
+.t-trim-2 {
+	display: -webkit-box;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.t-trim-3 {
+	display: -webkit-box;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+}
+
+
+
+// Text decoration
+.uppercase 				{ text-transform: uppercase;			}
+.capitalize 				{ text-transform: capitalize;			}
+.underline 				{ text-decoration: underline; 		}
+.line-through 		{ text-decoration: line-through; }
+
+

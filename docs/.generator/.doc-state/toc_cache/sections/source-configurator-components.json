@@ -1,0 +1,39 @@
+{
+  "section": {
+    "id": "source-configurator-components",
+    "title": "Проект: Конфигуратор / Компоненты",
+    "description": "Модуль содержит компоненты для настройки и стилизации интерфейса конфигуратора.",
+    "subsections": [
+      {
+        "id": "layout-components",
+        "title": "Компоненты макета",
+        "description": "Включает компоненты для управления макетом конфигуратора.",
+        "files": [
+          {
+            "name": "layoutConfigurator.vue",
+            "path": "layouts/layoutConfigurator.vue",
+            "summary": "Нет описания"
+          }
+        ]
+      },
+      {
+        "id": "style-components",
+        "title": "Компоненты стилей",
+        "description": "Содержит компоненты для настройки внешнего вида и стилей.",
+        "files": [
+          {
+            "name": "Styles.vue",
+            "path": "pages/Styles.vue",
+            "summary": "Нет описания"
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "b3b6c4ac2205e337a0fdca53791784fc",
+    "d18bc4ba3e865bf0b46c84f693119f92"
+  ],
+  "groupHash": "42e2f1e6d0a3d1f8648a731d89efd9f2",
+  "generated": "2025-06-05T09:17:41.121Z"
+}

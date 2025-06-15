@@ -1,0 +1,33 @@
+{
+  "path": "../../src/modules/orders/components/sections/EmptyState.vue",
+  "relativePath": "modules/orders/components/sections/EmptyState.vue",
+  "type": "source",
+  "name": "EmptyState.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A minimalist Vue component that renders a message stating the user has no positions in their order.",
+    "Purpose": "Serves as an empty-state placeholder in the orders UI when an order has zero line items.",
+    "Components": [
+      {
+        "name": "EmptyState",
+        "type": "Vue SFC (script setup)",
+        "responsibilities": [
+          "Accepts an `order` prop (not directly used in template)",
+          "Renders a static message when there are no order positions"
+        ]
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (defineProps API)"
+    ],
+    "Usage": "Imported into a parent orders component or section. Typically used as:\n\n  ```html\n  <EmptyState :order=\"currentOrder\" />\n  ```\n\nRendered conditionally when `currentOrder.positions.length === 0`.",
+    "Importance": 2,
+    "Notes": [
+      "No internal logic or styling defined; purely presentational.",
+      "The `order` prop is declared but not yet used in the template—potential extension point.",
+      "Empty `<style>` block indicates styling is handled elsewhere or not required.",
+      "Minor text typo: \"You dont\" should be \"You don’t\" or \"You don’t have any positions in your order.\""
+    ]
+  }
+}

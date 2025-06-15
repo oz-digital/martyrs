@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/auth/views/components/blocks/CardUser.vue",
+  "relativePath": "modules/auth/views/components/blocks/CardUser.vue",
+  "type": "source",
+  "name": "CardUser.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue компонент отображает карточку пользователя: аватар (фото или плейсхолдер), имя, контакт (телефон или email), а также опционально роль или кнопку действия.",
+    "purpose": "Универсальный блок для показа краткой информации о пользователе или организации в интерфейсе модуля аутентификации.",
+    "components": [
+      {
+        "name": "PlaceholderUserpic",
+        "path": "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue",
+        "responsibility": "Рендерит дефолтный аватар, когда у пользователя нет фото."
+      }
+    ],
+    "functions": [
+      {
+        "name": "handleImageClick",
+        "description": "Навигация при клике на фото — ведёт на страницу профиля пользователя или организации.",
+        "parameters": [
+          "event (MouseEvent)"
+        ]
+      },
+      {
+        "name": "handlePlaceholderClick",
+        "description": "Навигация при клике на плейсхолдер аватара — ведёт на страницу профиля пользователя.",
+        "parameters": [
+          "event (MouseEvent)"
+        ]
+      },
+      {
+        "name": "handleActionClick",
+        "description": "Вызывает метод action.method при клике на кнопку действия.",
+        "parameters": [
+          "event (MouseEvent)"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (defineProps, reactive template bindings)",
+      "vue-router ($router.push для навигации)",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue",
+      "Глобальная константа FILE_SERVER_URL (для формирования URL фотографии)"
+    ],
+    "usage": "Импортируется и используется в других вью или компонентах как <CardUser :user=\"user\" :photo=\"photoUrl\" :action=\"actionObj\" .../> для отображения информации о пользователе.",
+    "importance": 3,
+    "notes": [
+      "Неявно полагается на глобальную переменную FILE_SERVER_URL для префикса URL фотографий.",
+      "Секция <style> отсутствует — все стили передаются через utility-классы.",
+      "Динамическое отображение метки action.label позволяет вставлять как текст, так и Vue-компонент."
+    ]
+  }
+}

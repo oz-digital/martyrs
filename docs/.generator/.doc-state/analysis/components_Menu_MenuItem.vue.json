@@ -1,0 +1,43 @@
+{
+  "path": "../../src/components/Menu/MenuItem.vue",
+  "relativePath": "components/Menu/MenuItem.vue",
+  "type": "source",
+  "name": "MenuItem.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "MenuItem.vue defines a functional Vue component that takes default slot content, separates any VNodes marked with an `icon` prop into an icon wrapper, renders the remaining content as text, and appends a right-pointing chevron icon.",
+    "Purpose": "Provides a standardized menu item UI element for lists or sidebars, combining optional leading icons, textual content, and a consistent chevron affordance.",
+    "Components": [
+      {
+        "name": "MenuItem",
+        "responsibility": "Main exported component that organizes slot content into icon and text regions and renders a chevron."
+      },
+      {
+        "name": "IconChevronRight",
+        "responsibility": "Renders the right-pointing chevron icon at the end of the menu item."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "setup",
+        "purpose": "Composition API setup function that retrieves slot content, partitions it into iconSlot and textSlot arrays based on vnode.props.icon, and returns a render function.",
+        "parameters": [
+          "props (object) – component props (none defined here)",
+          "{ slots } – slots object to access default slot content"
+        ]
+      },
+      {
+        "name": "render function (returned from setup)",
+        "purpose": "Builds and returns the VNode tree: a root DIV with layout classes, optional icon container, text container, and a trailing chevron component.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue: h, ref, inject, defineComponent",
+      "@martyrs/src/modules/icons/navigation/IconChevronRight.vue"
+    ],
+    "Usage": "Import with `import MenuItem from 'components/Menu/MenuItem.vue'` and use in templates or render functions as `<MenuItem><SomeIcon icon />Label text</MenuItem>`.",
+    "Importance": 3,
+    "Notes": "• No explicit props are defined; all content is passed via default slot.  \n• Slot partitioning relies on presence of `vnode.props.icon`.  \n• Always appends a chevron icon regardless of slot content.  \n• Styling is driven entirely by utility CSS classes; no local `<style>` block is present."
+  }
+}

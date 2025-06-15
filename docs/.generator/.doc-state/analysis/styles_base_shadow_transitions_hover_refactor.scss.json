@@ -1,0 +1,55 @@
+{
+  "path": "../../src/styles/base/shadow_transitions_hover_refactor.scss",
+  "relativePath": "styles/base/shadow_transitions_hover_refactor.scss",
+  "type": "source",
+  "name": "shadow_transitions_hover_refactor.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "Этот SCSS-файл определяет набор утилитарных CSS-классов для hover-эффектов (масштабирование, трансформация, смена фона, цвета текста и заполнения) и для теней (box-shadow) разной степени сложности и стилистики.",
+    "Purpose": "Обеспечить единообразные переиспользуемые стили hover-интеракций и тени по всему проекту через набор утилитарных классов.",
+    "Components": [
+      {
+        "name": "hover‐scale-X",
+        "responsibility": "Применение масштабирования (scale) при наведении (X = 0..3)"
+      },
+      {
+        "name": "hover-bg-*",
+        "responsibility": "Смена фона на цвета из CSS-переменных при hover (main, second, third, …, black, white и т. д.)"
+      },
+      {
+        "name": "hover-fill-*",
+        "responsibility": "Смена SVG-fill на заданные цвета при hover"
+      },
+      {
+        "name": "hover-t-*",
+        "responsibility": "Смена цвета текста при hover (white, black)"
+      },
+      {
+        "name": "hover-br-*",
+        "responsibility": "Смена фоновой прозрачности или границы при hover"
+      },
+      {
+        "name": "hover-translate/rotate/combined/arc/timing/exaggeration/…",
+        "responsibility": "Различные transform-эффекты (translateX/Y, rotate, комбинированные, с timing-функциями) при наведении"
+      },
+      {
+        "name": "bs-*",
+        "responsibility": "Утилитарные классы теней box-shadow разной сложности (прямые, двойные, cutout, depth, bubble, blur-варианты, cross, button, emboss, whirl, perspective, ripple)"
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "SCSS-некстинг (используется вложенный &-селектор)",
+      "CSS-переменные: --main, --second, --third, --fifth, --white, --black, --light, --dark",
+      "Глобальный селектор body (все классы объявлены внутри body { … })"
+    ],
+    "Usage": "Импортируется в главный файл стилей (например, styles.scss или index.scss) через @import или @use для подключения набора утилитарных hover-и shadow-классов. После этого в разметке можно применять эти классы напрямую.",
+    "Importance": 4,
+    "Notes": [
+      "Нет определения миксинов или функций, всё реализовано простыми классами и вложенным &-hover.",
+      "Дублирование класса .bs-gradient: сначала как только box-shadow, а в конце — с градиентным фоном и box-shadow.",
+      "Возможна рефакторинг через SCSS-циклы (@for/@each) чтобы сократить дублирование hover-классов.",
+      "Класс .bs-ripple реализует эффект «волны» через псевдоэлемент ::after и transition."
+    ]
+  }
+}

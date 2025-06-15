@@ -1,0 +1,87 @@
+{
+  "path": "../../src/modules/products/components/sections/EditDiscounts.vue",
+  "relativePath": "modules/products/components/sections/EditDiscounts.vue",
+  "type": "source",
+  "name": "EditDiscounts.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue component provides a user interface for listing, adding, editing, and deleting product discounts. It displays existing discounts in a block with edit/delete controls, and uses a popup form to create or modify discount details (name, description, type, value, quantity, date/time range).",
+    "Purpose": "To manage the CRUD operations for a set of discounts within a product editing flow in the Martyrs-based application.",
+    "Components": [
+      {
+        "name": "Block",
+        "responsibility": "Container for the discounts list, showing title, placeholder, and an add-action button"
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal dialog for editing or creating a discount"
+      },
+      {
+        "name": "Field",
+        "responsibility": "Form input wrapper for text, textarea, number, date, and time fields"
+      },
+      {
+        "name": "Select",
+        "responsibility": "Dropdown within a Field to choose discount type"
+      },
+      {
+        "name": "Button",
+        "responsibility": "Action buttons for cancel and save inside the popup"
+      },
+      {
+        "name": "IconEdit",
+        "responsibility": "Visual icon for edit action"
+      },
+      {
+        "name": "IconDelete",
+        "responsibility": "Visual icon for delete action"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatDateRange",
+        "purpose": "Convert a date range object into a localized date string range",
+        "parameters": [
+          "dateRange: { start: string|null, end: string|null }"
+        ]
+      },
+      {
+        "name": "openDiscountPopup",
+        "purpose": "Populate the form with existing discount data (if index provided) or reset the form, then open the popup",
+        "parameters": [
+          "index?: number"
+        ]
+      },
+      {
+        "name": "closeDiscountPopup",
+        "purpose": "Close the discount popup and reset the editing index",
+        "parameters": []
+      },
+      {
+        "name": "saveDiscount",
+        "purpose": "Validate current discount fields, then either update an existing discount or append a new one, and close the popup",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, defineModel, computed)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue"
+    ],
+    "Usage": "Imported into a parent component and bound via v-model:discounts to manage a reactive discounts array passed from the parent.",
+    "Importance": 3,
+    "Notes": [
+      "Uses defineModel to simplify v-model integration with the parent discounts prop",
+      "CurrentDiscount is a reactive object reset or populated on popup open",
+      "Includes basic client-side validation for discount value ranges",
+      "No dedicated <style> block—layout relies on utility classes",
+      "Implements both percentage-based and special-price discount types",
+      "Date and time ranges are optional but displayed if provided"
+    ]
+  }
+}

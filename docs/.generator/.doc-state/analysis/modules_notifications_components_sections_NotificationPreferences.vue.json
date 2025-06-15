@@ -1,0 +1,78 @@
+{
+  "path": "../../src/modules/notifications/components/sections/NotificationPreferences.vue",
+  "relativePath": "modules/notifications/components/sections/NotificationPreferences.vue",
+  "type": "source",
+  "name": "NotificationPreferences.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that displays and manages a user’s notification preferences. It fetches current settings, shows a loading state, allows toggling individual notification channels, and provides save/cancel actions.",
+    "Purpose": "Render and control the notification preferences form in the user settings area. It encapsulates the UI and logic for viewing, editing, and persisting notification channel settings.",
+    "Components": [
+      {
+        "name": "NotificationPreferences",
+        "type": "Vue SFC",
+        "responsibilities": [
+          "Fetch and display current notification preferences",
+          "Show a loading spinner while data is being loaded",
+          "Render a list of toggle switches per notification channel",
+          "Track local changes and enable save/cancel functionality",
+          "Persist updates back to the notifications store"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updatePreference",
+        "parameters": [
+          "channelType: string",
+          "value: boolean"
+        ],
+        "description": "Toggle the local reactive `preferences[channelType]` flag when the user flips a switch."
+      },
+      {
+        "name": "savePreferences",
+        "parameters": [],
+        "description": "Asynchronously calls the injected `updatePreferences` to persist all local changes, updates the original snapshot, and handles loading state/errors."
+      },
+      {
+        "name": "resetChanges",
+        "parameters": [],
+        "description": "Reverts all local `preferences` back to the `originalPreferences` snapshot."
+      },
+      {
+        "name": "getChannelIcon",
+        "parameters": [
+          "channelType: string"
+        ],
+        "description": "Returns a unicode emoji icon based on the channel type."
+      },
+      {
+        "name": "getChannelName",
+        "parameters": [
+          "channelType: string"
+        ],
+        "description": "Returns a human-readable name for each channel type."
+      },
+      {
+        "name": "getChannelDescription",
+        "parameters": [
+          "channelType: string"
+        ],
+        "description": "Returns a brief description string for each channel type."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, computed, onMounted, inject)",
+      "useNotifications (injected composable providing: preferences, loading, getPreferences, updatePreferences)"
+    ],
+    "Usage": "Imported into a parent view or router-based settings page. Rendered via `<NotificationPreferences />` to allow users to view and modify how they receive notifications.",
+    "Importance": 3,
+    "Notes": [
+      "Uses `inject('useNotifications')` to decouple from a specific store implementation.",
+      "Local `originalPreferences` snapshot enables change detection (`hasChanges`).",
+      "No user-facing error message is shown on save failure, errors are only logged to console.",
+      "Styling is scoped; toggle switch is a pure CSS implementation with emojis for icons.",
+      "On mount, it fetches fresh data and synchronizes local state with the store."
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-countdown",
+    "title": "Проект: Компоненты / Countdown",
+    "description": "Модуль содержит компонент обратного отсчета времени для использования в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "countdown-vue",
+        "title": "Countdown.vue",
+        "description": "Основной Vue-компонент для отображения и управления таймером обратного отсчета."
+      }
+    ]
+  },
+  "fileHashes": [
+    "aaebfaa86c0f9e3d5f5d450cd69706fe"
+  ],
+  "groupHash": "00e48119df492e9b60b2bc7b73d5dfdb",
+  "generated": "2025-06-05T09:16:32.922Z"
+}

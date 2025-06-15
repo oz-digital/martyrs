@@ -1,0 +1,146 @@
+{
+  "path": "../../src/modules/globals/views/store/globals.js",
+  "relativePath": "modules/globals/views/store/globals.js",
+  "type": "source",
+  "name": "globals.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a global reactive store module for a Vue application. It manages UI state flags (loading, sidebars, popups), theme toggling and persistence, error handling, and provides utility actions for list manipulation.",
+    "Purpose": "To act as the central ‘globals’ store in the application, exposing shared state and methods that can be used across multiple components and views for consistent UI behavior and error reporting.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibilities": [
+          "Hold application-wide UI flags (loading, isOpenSidebar, popups)",
+          "Store theme settings and original color values",
+          "Maintain navigation bar metadata",
+          "Track error information and display status"
+        ]
+      },
+      {
+        "name": "actions",
+        "type": "object",
+        "responsibilities": [
+          "Provide methods to mutate the reactive `state`",
+          "Handle theme toggling and persistence via Capacitor Preferences",
+          "Offer generic CRUD-like utilities for arrays in state"
+        ]
+      },
+      {
+        "name": "errorMessages",
+        "type": "plain object",
+        "responsibilities": [
+          "Define locale-specific error message templates (ru, en)",
+          "Can be merged into an i18n instance for translation (currently commented out)"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "setLoading",
+        "purpose": "Toggle the global loading flag",
+        "parameters": [
+          "status (Boolean)"
+        ]
+      },
+      {
+        "name": "setTheme",
+        "purpose": "Enable or disable dark mode, persist choice, update CSS variables",
+        "parameters": [
+          "isDarkMode (Boolean)"
+        ]
+      },
+      {
+        "name": "toggleTheme",
+        "purpose": "Invert the current theme setting by calling setTheme",
+        "parameters": []
+      },
+      {
+        "name": "add",
+        "purpose": "Add an item to an array in state or replace an existing one by _id",
+        "parameters": [
+          "array (Array)",
+          "item (Object)"
+        ]
+      },
+      {
+        "name": "update",
+        "purpose": "Update an item in an array by _id or push if not present",
+        "parameters": [
+          "array (Array)",
+          "item (Object)"
+        ]
+      },
+      {
+        "name": "delete",
+        "purpose": "Remove an item from an array by matching _id",
+        "parameters": [
+          "array (Array)",
+          "item (Object)"
+        ]
+      },
+      {
+        "name": "increment",
+        "purpose": "Increase the quantity property of an item in an array by _id",
+        "parameters": [
+          "array (Array)",
+          "item (Object)"
+        ]
+      },
+      {
+        "name": "decrement",
+        "purpose": "Decrease the quantity of an item or remove it if quantity drops below 1",
+        "parameters": [
+          "array (Array)",
+          "item (Object)"
+        ]
+      },
+      {
+        "name": "reset",
+        "purpose": "Clear an array (note: reassigns local reference)",
+        "parameters": [
+          "array (Array)"
+        ]
+      },
+      {
+        "name": "setError",
+        "purpose": "Populate the state.error object, determine message from error code or text, auto-hide after timeout",
+        "parameters": [
+          "error (Object)"
+        ]
+      },
+      {
+        "name": "invertColors",
+        "purpose": "Compute and apply inverted color values for CSS variables when dark mode is toggled",
+        "parameters": [
+          "variableNames (Array<String>)",
+          "originalColors (Object)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@capacitor/preferences",
+        "importedSymbols": [
+          "Preferences"
+        ]
+      },
+      {
+        "module": "vue",
+        "importedSymbols": [
+          "reactive"
+        ]
+      }
+    ],
+    "Usage": "Imported into Vue components or other store modules via `import { state, actions, setError } from 'modules/globals/views/store/globals.js'`. Components read from `state` and call `actions` or `setError` to mutate it.",
+    "Importance": 4,
+    "Notes": [
+      "Uses Capacitor Preferences to persist the user's theme choice across sessions.",
+      "Original CSS colors are captured once to allow proper inversion and restoration.",
+      "Error message localization via `i18n` is prepared but currently commented out.",
+      "The `reset` action reassigns the local array reference and may not clear the original array outside its scope.",
+      "The store is unscoped to any module name but assumed to be registered or used directly in the application setup."
+    ]
+  }
+}

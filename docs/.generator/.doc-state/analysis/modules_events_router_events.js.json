@@ -1,0 +1,92 @@
+{
+  "path": "../../src/modules/events/router/events.js",
+  "relativePath": "modules/events/router/events.js",
+  "type": "source",
+  "name": "events.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет фабрику для создания конфигурации маршрутов (Vue Router) раздела «События» в приложении на базе фреймворка martyrs и Vue.",
+    "Purpose": "Обеспечить централизованное определение всех маршрутов, связанных с функционалом событий (просмотр списка, поиск, управление, создание, детальный просмотр, редактирование и билеты).",
+    "Components": [
+      {
+        "name": "Events.vue",
+        "path": "../components/pages/Events.vue",
+        "role": "страница списка событий"
+      },
+      {
+        "name": "EventsSearch.vue",
+        "path": "../components/pages/EventsSearch.vue",
+        "role": "страница поиска событий"
+      },
+      {
+        "name": "EventsBackoffice.vue",
+        "path": "../components/pages/EventsBackoffice.vue",
+        "role": "административная панель управления событиями"
+      },
+      {
+        "name": "EditEvent.vue",
+        "path": "../components/pages/EditEvent.vue",
+        "role": "страница создания/редактирования события"
+      },
+      {
+        "name": "Event.vue",
+        "path": "../components/pages/Event.vue",
+        "role": "страница детального просмотра одного события"
+      },
+      {
+        "name": "EditEventTickets.vue",
+        "path": "../components/pages/EditEventTickets.vue",
+        "role": "страница управления билетами события"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createEventRoutes",
+        "description": "Генерирует объект конфигурации маршрутов для раздела событий",
+        "params": [
+          {
+            "name": "prefix",
+            "type": "string",
+            "desc": "префикс, который будет добавлен перед именем каждого маршрута"
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "desc": "дополнительные опции: basePath – свойство path, page_event и page_event_edit – пользовательские компоненты для детального просмотра и редактирования"
+          }
+        ],
+        "returns": "объект маршрута (RouteRecordRaw) с вложенными children"
+      },
+      {
+        "name": "nameWithPrefix",
+        "description": "Вспомогательная функция для формирования уникальных имён маршрутов",
+        "params": [
+          {
+            "name": "name",
+            "type": "string",
+            "desc": "исходное имя маршрута"
+          }
+        ],
+        "returns": "строка «prefix+name» или просто name, если prefix пустой"
+      }
+    ],
+    "Dependencies": [
+      "vue (defineAsyncComponent)",
+      "@martyrs/src/modules/auth/views/middlewares/auth.validation.js (requiresAuth guard)",
+      "../components/pages/Events.vue",
+      "../components/pages/EventsSearch.vue",
+      "../components/pages/EventsBackoffice.vue",
+      "../components/pages/EditEvent.vue",
+      "../components/pages/Event.vue",
+      "../components/pages/EditEventTickets.vue"
+    ],
+    "Usage": "Импортируется и вызывается при инициализации маршрутов в основном файле маршрутизации: например, `import { createEventRoutes } from './modules/events/router/events.js'; router.addRoute(createEventRoutes('/app/', { basePath: 'my-events' }));`",
+    "Importance": 4,
+    "Notes": [
+      "Используются динамические `import()` с указанием `webpackChunkName: 'Events'` для ленивой загрузки",
+      "К маршрутам создания и редактирования события применён guard `validationAuth.requiresAuth`",
+      "Опция `options.page_event` и `options.page_event_edit` позволяет переопределить компоненты по умолчанию",
+      "Префикс имен маршрутов полезен при вложенной маршрутизации или изоляции пространства имён"
+    ]
+  }
+}

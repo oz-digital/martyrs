@@ -1,0 +1,122 @@
+{
+  "path": "../../src/modules/wallet/views/store/wallet.store.js",
+  "relativePath": "modules/wallet/views/store/wallet.store.js",
+  "type": "source",
+  "name": "wallet.store.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a Vue-reactive wallet store for handling crypto deposit and reward workflows: loading config, listing and collecting rewards, managing wallet connections, initiating/canceling deposits, and real-time updates via WebSocket.",
+    "Purpose": "Provide a centralized state and actions for wallet-related operations (config loading, reward management, deposit flows, WebSocket updates) in the ‘martyrs’ project’s wallet module.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "Reactive Object",
+        "responsibility": "Holds wallet-related state: rewards list, token balances, user account, web3 instance, deposit info, config, chosen network, WebSocket reference and flags."
+      },
+      {
+        "name": "timer",
+        "type": "Reactive Object",
+        "responsibility": "Tracks countdown for deposit waiting period (remaining seconds and interval ID)."
+      },
+      {
+        "name": "actions",
+        "type": "Object of Functions",
+        "responsibility": "Defines methods to mutate state, perform API calls via axios, manage WebSocket, and handle wallet integration."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "loadConfig",
+        "params": [],
+        "purpose": "Fetch deposit configuration from server, store it in state.config, and set a default chosenNetwork."
+      },
+      {
+        "name": "connectWebSocket",
+        "params": [],
+        "purpose": "Open a WebSocket to listen for deposit updates; update state.depositInfo on new messages matching current deposit."
+      },
+      {
+        "name": "disconnectWebSocket",
+        "params": [],
+        "purpose": "Close any active WebSocket connection and clear the reference."
+      },
+      {
+        "name": "listRewards",
+        "params": [],
+        "purpose": "Fetch reward entries from server, update state.rewards, compute total tokenBalance and percentage share of supply."
+      },
+      {
+        "name": "collectRewards",
+        "params": [],
+        "purpose": "Trigger reward collection POST, then refresh reward list."
+      },
+      {
+        "name": "disconnectWallet",
+        "params": [],
+        "purpose": "Revoke Ethereum wallet permissions via window.ethereum and clear state.account."
+      },
+      {
+        "name": "connectWallet",
+        "params": [],
+        "purpose": "Request Ethereum accounts from web3.eth and set state.account to the first returned address."
+      },
+      {
+        "name": "tryReconnectWallet",
+        "params": [],
+        "purpose": "Check existing web3.eth accounts; if any exist, call connectWallet to re-establish state.account."
+      },
+      {
+        "name": "requestCryptoDeposit",
+        "params": [
+          "amount"
+        ],
+        "purpose": "Initiate a crypto deposit by POSTing amount, token and network; store depositInfo, start countdown timer and open WebSocket."
+      },
+      {
+        "name": "stopTimer",
+        "params": [],
+        "purpose": "Clear the deposit countdown interval."
+      },
+      {
+        "name": "cancelDeposit",
+        "params": [],
+        "purpose": "Cancel an ongoing deposit by POSTing its ID, then stop the timer and disconnect the WebSocket."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "axios",
+        "usage": "Creates $axios instance for HTTP calls to API_URL with credentials."
+      },
+      {
+        "module": "bignumber.js",
+        "usage": "Performs precise arithmetic on token amounts and percentage share."
+      },
+      {
+        "module": "vue",
+        "usage": "Uses reactive() to make state and timer reactive for Vue components."
+      },
+      {
+        "environment": "process.env.API_URL",
+        "usage": "Base URL for HTTP API."
+      },
+      {
+        "environment": "process.env.WSS_URL",
+        "usage": "WebSocket server URL for real-time deposit updates."
+      },
+      {
+        "global": "window.ethereum",
+        "usage": "Interacts with user’s Ethereum wallet for account permissions."
+      }
+    ],
+    "Usage": "Imported into Vue components or other parts of the wallet module via `import { state, actions, timer } from 'modules/wallet/views/store/wallet.store.js'`. Components use `state` to display data and call `actions.*` in response to user events.",
+    "Importance": 4,
+    "Notes": [
+      "Uses a fixed WDT_SUPPLY constant to compute share percentages.",
+      "BigNumber.shiftedBy(8) implies deposit amounts are handled in atomic units (e.g., satoshi-like).",
+      "Requires an external setup of state.web3 (not instantiated here).",
+      "Timer logic decrements every second; must be cleared to avoid memory leaks.",
+      "Error handling is minimal (errors are logged to console)."
+    ]
+  }
+}

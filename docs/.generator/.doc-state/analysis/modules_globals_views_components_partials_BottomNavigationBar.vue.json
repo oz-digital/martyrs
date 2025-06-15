@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/globals/views/components/partials/BottomNavigationBar.vue",
+  "relativePath": "modules/globals/views/components/partials/BottomNavigationBar.vue",
+  "type": "source",
+  "name": "BottomNavigationBar.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент нижней навигационной панели для мобильных и небольших экранов, отображающий пять пунктов меню (Home, Catalog, Rents, Community, Profile) с динамическим выделением активного раздела и переключением иконок и ссылок в зависимости от текущего маршрута и статуса аутентификации.",
+    "Purpose": "Обеспечить пользователю постоянный доступ к основным разделам приложения через фиксированную внизу экрана панель навигации.",
+    "Components": [
+      {
+        "name": "BottomNavigationBar",
+        "role": "Корневой компонент навигационной панели."
+      },
+      {
+        "name": "router-link",
+        "role": "Стандартный компонент Vue Router для навигации."
+      },
+      {
+        "name": "IconHome",
+        "role": "Иконка для ссылки \"Home\"."
+      },
+      {
+        "name": "IconCatalog",
+        "role": "Иконка для ссылки \"Catalog/Marketplace\"."
+      },
+      {
+        "name": "IconShopcart",
+        "role": "Иконка для ссылки \"Rents\"."
+      },
+      {
+        "name": "IconCommunity",
+        "role": "Иконка для ссылки \"Community\"."
+      },
+      {
+        "name": "IconProfile",
+        "role": "Иконка для ссылки \"Profile/User\"."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "useRoute",
+        "purpose": "Хук Vue Router для доступа к текущему маршруту.",
+        "parameters": "нет"
+      },
+      {
+        "name": "useI18n",
+        "purpose": "Хук vue-i18n для локализации текстов.",
+        "parameters": "объект конфигурации с сообщениями"
+      },
+      {
+        "name": "auth.state.access.status",
+        "purpose": "Используется как условие для выбора целевого маршрута по умолчанию (Sign In или User Profile).",
+        "parameters": "нет"
+      },
+      {
+        "name": "ref",
+        "purpose": "Создание реактивной ссылки на DOM-элемент footer (navRef).",
+        "parameters": "null"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed)",
+      "vue-router (useRoute, <router-link>)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/modules/icons/entities/IconHome.vue",
+      "@martyrs/src/modules/icons/entities/IconCatalog.vue",
+      "@martyrs/src/modules/icons/entities/IconShopcart.vue",
+      "@martyrs/src/modules/icons/entities/IconCommunity.vue",
+      "@martyrs/src/modules/icons/entities/IconProfile.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Обычно импортируется и вставляется в глобальный layout или страницу, чтобы отображаться во всех пользовательских представлениях как фиксированный футер.",
+    "Importance": 4,
+    "Notes": [
+      "Секции <style> в файле отсутствуют — стили задаются через глобальные CSS-классы.",
+      "В шаблоне используются инлайн-условия в :class и :fill для динамического отображения активного пункта.",
+      "Есть небольшая опечатка: проверка пути '/marketplac' vs '/catalog' во втором пункте (классы могут не совпадать).",
+      "Импорт computed и хук useRoute задействованы минимально: в шаблоне используются не реактивный route, а глобальный $route.",
+      "Используется ref=\"navRef\", но сам ref нигде программно не обрабатывается внутри компонента."
+    ]
+  }
+}

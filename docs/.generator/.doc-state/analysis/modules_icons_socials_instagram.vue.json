@@ -1,0 +1,26 @@
+{
+  "path": "../../src/modules/icons/socials/instagram.vue",
+  "relativePath": "modules/icons/socials/instagram.vue",
+  "type": "source",
+  "name": "instagram.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Этот Vue-файл определяет компонент, который рендерит иконку Instagram с помощью встроенного SVG.",
+    "Purpose": "Предоставить переиспользуемый SVG-значок Instagram для отображения в пользовательском интерфейсе проекта.",
+    "Components": [
+      {
+        "name": "InstagramIcon",
+        "type": "Vue Single-File Component",
+        "responsibility": "Выводит SVG-графику иконки Instagram."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (фреймворк для рендеринга компонента)",
+      "CSS-переменная --white (для заливки цвета SVG)"
+    ],
+    "Usage": "Импортируется в другие компоненты или страницы: `import InstagramIcon from 'modules/icons/socials/instagram.vue'` и используется в шаблоне как `<InstagramIcon />`.",
+    "Importance": 2,
+    "Notes": "В компоненте отсутствуют секции <script> и <style> — он полностью декларативен и только отображает SVG. Цвет иконки задаётся через CSS-переменную `--white`."
+  }
+}

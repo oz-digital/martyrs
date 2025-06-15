@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/spots/router/spots.js",
+  "relativePath": "modules/spots/router/spots.js",
+  "type": "source",
+  "name": "spots.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines the route configuration for the \"spots\" section of a Vue.js application using the Martyrs framework. It sets up nested routes for listing spots by country, state, and city, as well as routes for creating, viewing, and editing individual spots.",
+    "Purpose": "To centralize and export the Vue Router definition for all \"spots\"-related paths, including layout components, metadata (titles, themes, breadcrumbs), dynamic imports of page components, and authentication guards.",
+    "Components": [
+      {
+        "name": "layoutEmpty",
+        "importPath": "@martyrs/src/modules/globals/views/components/layouts/Empty.vue",
+        "role": "Top-level layout wrapper for the spots module"
+      },
+      {
+        "name": "layoutSpots",
+        "importPath": "../components/layouts/Spots.vue",
+        "role": "Secondary layout for spots listing pages"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "() => import(/* webpackChunkName: 'Deliveries' */ '../components/pages/Map.vue')",
+        "purpose": "Lazy-load the Map page component for state and city views",
+        "parameters": null
+      },
+      {
+        "name": "() => import(/* webpackChunkName: \"spot\" */ '@martyrs/src/modules/spots/components/pages/SpotEdit.vue')",
+        "purpose": "Lazy-load the Spot creation/editing page",
+        "parameters": null
+      },
+      {
+        "name": "() => import(/* webpackChunkName: \"spot\" */ '@martyrs/src/modules/spots/components/pages/Spot.vue')",
+        "purpose": "Lazy-load the Spot detail page",
+        "parameters": null
+      },
+      {
+        "name": "validationAuth.requiresAuth",
+        "purpose": "Navigation guard to ensure the user is authenticated before entering certain routes",
+        "parameters": null
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/views/components/layouts/Empty.vue",
+      "../components/layouts/Spots.vue",
+      "@martyrs/src/modules/auth/views/middlewares/auth.validation.js",
+      "../components/pages/Map.vue",
+      "@martyrs/src/modules/spots/components/pages/SpotEdit.vue",
+      "@martyrs/src/modules/spots/components/pages/Spot.vue"
+    ],
+    "Usage": "Imported into the main router index (e.g., in src/router/index.js or a modules aggregator) and added to the routes array to enable navigation to all spots-related pages.",
+    "Importance": 4,
+    "Notes": [
+      "Uses optional route parameters (country, state, city) to build a nested drill-down UI in a single route tree.",
+      "Metadata fields define multilingual titles and theming for headers/footers.",
+      "Breadcrumbs are hidden at the top level to streamline the navigation experience.",
+      "Webpack chunk names are provided for code-splitting and grouping spot-related resources.",
+      "Authentication guard is applied only to creation, detail, and edit routes, not to the public listing."
+    ]
+  }
+}

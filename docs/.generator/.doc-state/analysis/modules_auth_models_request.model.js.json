@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/auth/models/request.model.js",
+  "relativePath": "modules/auth/models/request.model.js",
+  "type": "source",
+  "name": "request.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабричную функцию, принимающую объект подключения к БД (db) и создающую Mongoose-модель «Request» для хранения и индексирования HTTP-запросов посетителей.",
+    "Purpose": "Определить и зарегистрировать в Mongoose схему и модель Request для последующего логирования и анализа запросов пользователей/посетителей.",
+    "Components": [
+      {
+        "name": "RequestSchema",
+        "type": "Mongoose.Schema",
+        "responsibilities": [
+          "Содержит поля visitor (ссылка на модель Visitor), path, method, timestamp",
+          "Устанавливает дефолтное значение для timestamp",
+          "Создаёт индекс по полю visitor"
+        ]
+      },
+      {
+        "name": "default export",
+        "type": "Function (Factory)",
+        "responsibilities": [
+          "Принимает объект db с подключённым mongoose",
+          "Создаёт RequestSchema и модель Request",
+          "Возвращает созданную модель"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "(db) => Model<Request>",
+        "description": "Фабричный метод, регистрирует и возвращает модель Request на основе переданного экземпляра mongoose.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Должен содержать поле mongoose с подключением к БД и класс Schema"
+          }
+        ],
+        "returns": "Mongoose Model для работы с коллекцией requests"
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose.Schema",
+      "db.mongoose.Schema.Types.ObjectId",
+      "db.mongoose.model",
+      "Visitor (реferenced model)"
+    ],
+    "Usage": "import RequestModel from 'modules/auth/models/request.model';\nconst Request = RequestModel(db);\n// затем в коде: await Request.create({ visitor: id, path: '/api', method: 'GET' });",
+    "Importance": 3,
+    "Notes": [
+      "Добавлен индекс по полю visitor для ускорения выборок по посетителям.",
+      "Поле timestamp получает текущее время по умолчанию.",
+      "Ссылается на модель 'Visitor', поэтому Visitor.js должен быть зарегистрирован до этого.",
+      "Файл сам по себе не открывает подключения к БД — ожидает внешний объект db."
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "path": "../../src/modules/notifications/router/notifications.router.js",
+  "relativePath": "modules/notifications/router/notifications.router.js",
+  "type": "source",
+  "name": "notifications.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines the Vue Router route configuration for the \"Notifications\" section of the application, including layout, main page and preferences page routes.",
+    "Purpose": "Provide a self-contained route object that can be imported into the root router to handle all `/notifications`-related paths and nested views.",
+    "Components": [
+      {
+        "name": "NotificationsLayout",
+        "file": "../components/layouts/NotificationsLayout.vue",
+        "responsibility": "Acts as the parent/layout wrapper for all notifications-related child routes."
+      },
+      {
+        "name": "Notifications",
+        "file": "../components/pages/Notifications.vue",
+        "responsibility": "Renders the main notifications page (list or overview of notifications)."
+      },
+      {
+        "name": "NotificationPreferences",
+        "file": "../components/sections/NotificationPreferences.vue",
+        "responsibility": "Renders the user interface for configuring notification preferences."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "../components/layouts/NotificationsLayout.vue",
+      "../components/pages/Notifications.vue",
+      "../components/sections/NotificationPreferences.vue"
+    ],
+    "Usage": "Imported into the application's central router configuration (e.g. `router/index.js`) and merged into the `routes` array so that `/notifications` and its children become active routes.",
+    "Importance": 3,
+    "Notes": [
+      "The exported constant is misspelled as `nofitications` (typo) but used as the route definition for `/notifications`.",
+      "Both child routes have commented-out `requiresAuth` flags—authentication guards may be enabled in the future.",
+      "Each route defines a `meta.title` to drive dynamic document titles or breadcrumb labels."
+    ]
+  }
+}

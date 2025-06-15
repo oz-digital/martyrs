@@ -1,0 +1,68 @@
+{
+  "path": "../../src/modules/organizations/models/organization.model.js",
+  "relativePath": "modules/organizations/models/organization.model.js",
+  "type": "source",
+  "name": "organization.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет и экспортирует модель Mongoose для сущности Organization, включая схему с полями владельца, типов, доступа, профиля, контактов, социальных сетей и рейтинга, а также подключает к ней механизмы подсчёта вовлечённости.",
+    "Purpose": "Основная цель — описать структуру документа \"Organization\" в базе данных MongoDB и зарегистрировать модель в экземпляре mongoose, переданном из контекста приложения.",
+    "Components": [
+      {
+        "name": "OrganizationSchema",
+        "type": "Mongoose.Schema",
+        "responsibilities": [
+          "Описывает структуру документа организации с набором полей (owner, types, accesses, profile, contacts, socials, rating)",
+          "Устанавливает опцию timestamps для автоматического ведения createdAt/updatedAt",
+          "Создаёт составной индекс по полям _id и owner"
+        ]
+      },
+      {
+        "name": "Organization",
+        "type": "Mongoose.Model",
+        "responsibilities": [
+          "Предоставляет интерфейс для CRUD-операций с коллекцией organizations в MongoDB"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "(db) => Model",
+        "purpose": "Инициализирует схему Organization, подключает к ней engagement-поля через applyEngagementSchema, регистрирует модель в mongoose и возвращает её",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Экземпляр подключения к БД с полем mongoose"
+          }
+        ],
+        "returns": "Mongoose.Model — модель Organization"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+        "importedAs": "applyEngagementSchema",
+        "purpose": "Функция для добавления полей вовлечённости в схему"
+      },
+      {
+        "module": "./schemas/accesses.schema.js",
+        "importedAs": "accessesSchema",
+        "purpose": "Подсхема для описания прав доступа к организации"
+      },
+      {
+        "module": "mongoose (через db.mongoose)",
+        "purpose": "ORM для определения схем и моделей MongoDB"
+      }
+    ],
+    "Usage": "В точке инициализации модуля приложение вызывает импортированную функцию, передавая ей объект db (свойство mongoose). Возвращённую модель Organization затем используют в сервисах и контроллерах для работы с данными организаций.",
+    "Importance": 4,
+    "Notes": [
+      "В схеме есть закомментированный метод calculateRating, который планирует вычислять рейтинг организации на основе отзывов из Testimonial-модели.",
+      "После определения полей вызывается applyEngagementSchema для добавления стандартных полей вовлечённости (views, likes и т.п.).",
+      "Индекс { _id: 1, owner: 1 } улучшает поиск организаций по владельцу.",
+      "Поле phone в контактах имеет заготовку для валидации регулярным выражением, но оно закомментировано."
+    ]
+  }
+}

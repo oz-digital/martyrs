@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/inventory/routes/inventory.routes.js",
+  "relativePath": "modules/inventory/routes/inventory.routes.js",
+  "type": "source",
+  "name": "inventory.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

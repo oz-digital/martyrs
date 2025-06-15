@@ -1,0 +1,68 @@
+{
+  "path": "../../src/modules/spots/spots.server.js",
+  "relativePath": "modules/spots/spots.server.js",
+  "type": "source",
+  "name": "spots.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует модуль \"spots\": регистрирует модель в объекте базы данных и настраивает HTTP-маршруты для работы с ресурсом \"spot\". Также экспортирует фабрику контроллеров, модель и маршруты для внешнего использования.",
+    "Purpose": "Обеспечить централизованную точку инициализации и экспорта всех основных частей модуля \"spots\" (модели, контроллеров, маршрутов) внутри приложения.",
+    "Components": [
+      {
+        "name": "FactorySpot",
+        "source": "./controllers/spots.controller.js",
+        "responsibility": "Фабрика контроллеров для работы с ресурсом \"spot\": содержит логику обработки запросов и взаимодействия с моделью."
+      },
+      {
+        "name": "ModelSpot",
+        "source": "./models/spot.model.js",
+        "responsibility": "Определение схемы и методов модели \"spot\" для ORM/БД."
+      },
+      {
+        "name": "RoutesSpot",
+        "source": "./routes/spots.routes.js",
+        "responsibility": "Настройка HTTP-маршрутов (endpoints) для операций CRUD над сущностью \"spot\"."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeSpots",
+        "purpose": "Регистрирует модель в объекте БД и подключает маршруты к приложению, если передан экземпляр `app`.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express|Koa|Fastify instance",
+            "description": "Серверный объект фреймворка для регистрации маршрутов."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер для моделей БД; получаемый из глобального или локального подключения."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "Список допустимых CORS-источников для маршрутов."
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "Путь к статическому контенту для маршрутов."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/spots.controller.js",
+      "./models/spot.model.js",
+      "./routes/spots.routes.js"
+    ],
+    "Usage": "В основном файл импортируется в точке инициализации сервера:  \n```js\nimport spotsModule from 'modules/spots/spots.server.js';\n// регистрируем модель и маршруты\nspotsModule.initialize(app, db, origins, publicPath);\n// при необходимости используем spotsModule.controllers.FactorySpot, spotsModule.models.ModelSpot и т.д.\n```",
+    "Importance": 3,
+    "Notes": [
+      "Инициализация маршрутов происходит только при наличии объекта `app`, что позволяет использовать модуль без HTTP-части, например, в CLI или Worker.",
+      "Экспорт по умолчанию собирает все части модуля в единый объект для удобного импорта.",
+      "Файл не сам создаёт подключения к БД и не запускает сервер — он лишь регистрирует части модуля внутри переданных объектов."
+    ]
+  }
+}

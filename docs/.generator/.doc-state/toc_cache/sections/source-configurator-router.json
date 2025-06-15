@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-configurator-router",
+    "title": "Проект: Конфигуратор / Router",
+    "description": "Модуль отвечает за маршрутизацию внутри конфигуратора, обеспечивая обработку и направление запросов к соответствующим компонентам.",
+    "subsections": [
+      {
+        "id": "configurator-router-js",
+        "title": "configurator.router.js",
+        "description": "Основной файл маршрутизатора, реализующий логику обработки маршрутов и перенаправления в модуле конфигуратора."
+      }
+    ]
+  },
+  "fileHashes": [
+    "68be2f3c70b2b8a47026e5cae36c1db6"
+  ],
+  "groupHash": "5bd2ddd430f06f6da27e8c73891385d7",
+  "generated": "2025-06-05T09:17:38.550Z"
+}

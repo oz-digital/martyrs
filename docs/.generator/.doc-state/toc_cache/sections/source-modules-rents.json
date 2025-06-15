@@ -1,0 +1,49 @@
+{
+  "section": {
+    "id": "source-modules-rents",
+    "title": "Проект: Модули / Аренда",
+    "description": "Модуль управления арендой. Содержит серверные и клиентские компоненты, маршруты, сервисы, модели данных и пользовательские интерфейсы для работы с арендой.",
+    "subsections": [
+      {
+        "id": "server-client",
+        "title": "Серверная и клиентская логика",
+        "description": "Файлы rents.client.js и rents.server.js реализуют клиентскую и серверную части логики работы с арендой."
+      },
+      {
+        "id": "routes-router",
+        "title": "Маршруты и роутинг",
+        "description": "Файлы rents.routes.js и rents.router.js отвечают за маршрутизацию запросов, связанных с арендой."
+      },
+      {
+        "id": "services-store",
+        "title": "Сервисы и хранилище",
+        "description": "Файлы rents.services.js и rents.store.js предоставляют бизнес-логику и управление состоянием аренды."
+      },
+      {
+        "id": "models",
+        "title": "Модели данных",
+        "description": "Файл rent.model.js описывает структуру данных для сущности аренды."
+      },
+      {
+        "id": "ui-blocks",
+        "title": "Пользовательские интерфейсы и компоненты",
+        "description": "Файлы CardRent.vue, GanttChart.vue, Rents.vue, RentsEdit.vue реализуют визуальные компоненты для отображения и редактирования аренды."
+      }
+    ]
+  },
+  "fileHashes": [
+    "1196c976e03efbbbaf072357e2bf17f5",
+    "55265457d3c66b7cbf4120e0a3ebeea1",
+    "5b5eafbfae372251fae7f85a8c67d8c4",
+    "8abec2606b27c3279454fe24d391a560",
+    "8b1bd5dc629224dd862e4a0e332d5d9d",
+    "a0ae2291420bedc423eec1330ea59c1b",
+    "ab3945a2a560f47313b9e29bd1c6d438",
+    "d8a2a14d90a5316c47e8fcbcb60b9b45",
+    "dd5e651ef84f2e76a2eee08689e686b3",
+    "e20171eb7e83740d043f804b32605563",
+    "fca1ddaaec4c4010abc376287ae36c3b"
+  ],
+  "groupHash": "516ab33e9fd8b4bc87e67f1bdc31d82c",
+  "generated": "2025-06-05T09:23:15.250Z"
+}

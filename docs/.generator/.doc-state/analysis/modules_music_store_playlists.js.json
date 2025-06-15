@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/music/store/playlists.js",
+  "relativePath": "modules/music/store/playlists.js",
+  "type": "source",
+  "name": "playlists.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "This file defines a reactive playlist store for a Vue application using the Martyrs framework. It maintains playlist-related state and exposes a set of asynchronous actions to perform CRUD operations and specialized fetches (e.g., featured playlists, user playlists), interacting with a backend API.",
+    "purpose": "Manage client-side state and API communication for playlists across the music module—centralizing data fetching, creation, updates, deletions, and playlist-specific operations (tracks, collaborators).",
+    "components": [
+      {
+        "name": "playlistStore",
+        "type": "Store",
+        "responsibility": "Encapsulates HTTP CRUD methods against the `/api/playlists` endpoint via Martyrs’ global Store class."
+      },
+      {
+        "name": "state",
+        "type": "Reactive Object",
+        "responsibility": "Holds in-memory playlist data: lists of all playlists, featured playlists, user playlists, the currently selected playlist and its tracks, and loading flags."
+      },
+      {
+        "name": "actions",
+        "type": "Object",
+        "responsibility": "Collection of async methods that call `playlistStore` or native `fetch`, update `state`, and handle errors."
+      }
+    ],
+    "functions": [
+      {
+        "name": "fetchPlaylists",
+        "params": "options: Object = {}",
+        "description": "Loads all playlists with optional query parameters; sets `state.isLoading` flag."
+      },
+      {
+        "name": "fetchFeaturedPlaylists",
+        "params": "limit: Number = 10",
+        "description": "Fetches a list of featured, public playlists up to the given limit; toggles `state.loadingFeatured`."
+      },
+      {
+        "name": "fetchPlaylistByUrl",
+        "params": "url: String",
+        "description": "Retrieves a playlist by its URL slug; populates `state.currentPlaylist` and extracts its tracks into `state.currentPlaylistTracks`."
+      },
+      {
+        "name": "createPlaylist",
+        "params": "playlistData: Object",
+        "description": "Creates a new playlist via POST; prepends the result into `state.playlists` and `state.userPlaylists`."
+      },
+      {
+        "name": "updatePlaylist",
+        "params": "playlistData: Object",
+        "description": "Updates an existing playlist; synchronizes changes across `state.playlists`, `state.userPlaylists`, and `state.currentPlaylist` if active."
+      },
+      {
+        "name": "deletePlaylist",
+        "params": "playlistId: String",
+        "description": "Deletes a playlist by ID; removes it from all relevant state arrays and resets current playlist data if necessary."
+      },
+      {
+        "name": "fetchUserPlaylists",
+        "params": "userId: String",
+        "description": "Fetches playlists belonging to a specific user; stores the result in `state.userPlaylists`."
+      },
+      {
+        "name": "addTrackToPlaylist",
+        "params": "playlistId: String, trackId: String",
+        "description": "Adds a track to a playlist via POST; updates `state.currentPlaylist` and appends the track to `state.currentPlaylistTracks` if viewing that playlist."
+      },
+      {
+        "name": "removeTrackFromPlaylist",
+        "params": "playlistId: String, trackId: String",
+        "description": "Removes a track from a playlist via DELETE; updates `state.currentPlaylist` and filters out the track from `state.currentPlaylistTracks`."
+      },
+      {
+        "name": "addCollaborator",
+        "params": "playlistId: String, userId: String",
+        "description": "Adds a collaborator to a playlist via POST; updates `state.currentPlaylist` if active."
+      }
+    ],
+    "dependencies": [
+      "@martyrs/src/modules/globals/views/classes/globals.store.js",
+      "vue (reactive)",
+      "process.env.API_URL (environment variable)",
+      "global fetch API"
+    ],
+    "usage": "Imported wherever playlist data is needed in Vue components or composables: e.g. `import { state, actions } from 'modules/music/store/playlists.js'`. Components can read from `state` and dispatch methods on `actions`.",
+    "importance": 4,
+    "notes": [
+      "Mixes Martyrs’ `Store` wrapper for generic CRUD with direct `fetch` calls for specialized endpoints.",
+      "Uses Vue’s `reactive` to track state changes, enabling reactivity in components.",
+      "Error handling logs to console; some methods rethrow errors, others swallow and return defaults.",
+      "Relies on `process.env.API_URL` being defined at build/runtime.",
+      "Tracks for a playlist are stored separately in `state.currentPlaylistTracks` for convenience."
+    ]
+  }
+}

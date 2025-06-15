@@ -1,0 +1,35 @@
+{
+  "path": "../../src/components/Table/StatusBadge.vue",
+  "relativePath": "components/Table/StatusBadge.vue",
+  "type": "source",
+  "name": "StatusBadge.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Небольшой Vue 3 компонент StatusBadge, который по переданному объекту value отображает цветной badge с фоновым цветом и текстом.",
+    "Purpose": "Обеспечить в интерфейсе повторно используемый визуальный элемент — метку (badge) со согласно заданному цвету и тексту.",
+    "Components": [
+      {
+        "name": "StatusBadge",
+        "responsibilities": "Принимать один обязательный проп value (объект), задавать фон в соответствии с value.color и отображать его как текст."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Определяет входящий проп value с типом Object и required=true.",
+        "parameters": {
+          "value": {
+            "type": "Object",
+            "required": true
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps)"
+    ],
+    "Usage": "<StatusBadge :value=\"{ color: '#4caf50', label: 'Active' }\" /> — импортируется и регистрируется в родительском компоненте как обычный Vue-компонент.",
+    "Importance": 3,
+    "Notes": "1. В шаблоне выводится {{ value }}, что в случае сложного объекта может не дать ожидаемого текста (обычно выводят value.label).\n2. CSS scoped гарантирует, что стили не «протекут» наружу.\n3. В фоне по умолчанию используется #ddd, если у объекта нет поля color."
+  }
+}

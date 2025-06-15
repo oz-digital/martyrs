@@ -1,0 +1,52 @@
+{
+  "section": {
+    "id": "source-modules-chats",
+    "title": "Проект: Модули / Чаты",
+    "description": "Модуль чатов реализует функциональность обмена сообщениями между пользователями, включая клиентскую и серверную логику, маршрутизацию, модели данных и пользовательские компоненты интерфейса.",
+    "subsections": [
+      {
+        "id": "client-module",
+        "title": "Клиентский модуль",
+        "description": "chats.client.js — основной модуль, объединяющий логику, состояние и UI-компоненты чата на стороне клиента."
+      },
+      {
+        "id": "server-logic",
+        "title": "Серверная логика",
+        "description": "chats.server.js и chats.controller.js — файлы, отвечающие за серверную обработку чатов и контроллеры."
+      },
+      {
+        "id": "data-models",
+        "title": "Модели данных",
+        "description": "chat.model.js — определяет структуру и свойства сущности чата."
+      },
+      {
+        "id": "routes",
+        "title": "Маршрутизация",
+        "description": "chats.routes.js — содержит маршруты для работы с чатами."
+      },
+      {
+        "id": "store",
+        "title": "Хранилище состояния",
+        "description": "chat.store.js — реализует хранение и управление состоянием чатов."
+      },
+      {
+        "id": "ui-components",
+        "title": "UI-компоненты",
+        "description": "ChatMessage.vue, ChatPage.vue, ChatWindow.vue — компоненты интерфейса для отображения сообщений, страниц и окон чата."
+      }
+    ]
+  },
+  "fileHashes": [
+    "4273faba2c94b56984f54b6256d050e1",
+    "6427163a85da8944fe45cac87fe64a78",
+    "72ff1a3661f1e019b727cde773b8365d",
+    "779ce5a6a437fdd922ada022322f4e39",
+    "7fe8472ef106fcce4506adaed6f0ec63",
+    "872839a55599cf0e11e5fa65a23bcfc0",
+    "8a6677af97905a0feef26c31430d2ac3",
+    "b4bd5e185f15bde546bb433384782a7e",
+    "f3caad6f8bdbfc9d481d2b0b35a396d4"
+  ],
+  "groupHash": "e1ff15acccecd0709b25db8142bfc45c",
+  "generated": "2025-06-05T09:18:27.833Z"
+}

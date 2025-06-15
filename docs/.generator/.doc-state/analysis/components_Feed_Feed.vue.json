@@ -1,0 +1,107 @@
+{
+  "path": "../../src/components/Feed/Feed.vue",
+  "relativePath": "components/Feed/Feed.vue",
+  "type": "source",
+  "name": "Feed.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент Feed.vue реализует универсальный список (фид) с поддержкой поиска, фильтрации, сортировки, пагинации (в том числе через infinite scroll), отображения skeleton-загрузчиков, состояния пустого списка и пользовательских действий. Используется для отображения коллекций данных с возможностью гибкой настройки поведения и внешнего вида.",
+    "Purpose": "Feed.vue служит базовым компонентом для отображения и управления списками данных в приложении. Он инкапсулирует логику загрузки, фильтрации, поиска, сортировки и постраничной подгрузки элементов, предоставляя гибкий интерфейс для интеграции с различными источниками данных и пользовательскими сценариями.",
+    "Components": [
+      {
+        "name": "Feed (default export)",
+        "responsibility": "Главный компонент, управляющий состоянием списка, обработкой пользовательских действий (поиск, фильтр, сортировка), загрузкой данных и отображением различных состояний (загрузка, пусто, есть данные)."
+      },
+      {
+        "name": "BlockSearch",
+        "responsibility": "Компонент поиска по списку."
+      },
+      {
+        "name": "Dropdown",
+        "responsibility": "Выпадающее меню для выбора даты или сортировки."
+      },
+      {
+        "name": "Calendar",
+        "responsibility": "Выбор диапазона дат для фильтрации."
+      },
+      {
+        "name": "BottomSheet",
+        "responsibility": "Модальное окно для фильтрации."
+      },
+      {
+        "name": "BlockFilter",
+        "responsibility": "Форма фильтрации списка."
+      },
+      {
+        "name": "BlockSorting",
+        "responsibility": "Форма сортировки списка."
+      },
+      {
+        "name": "ButtonSort, ButtonDate",
+        "responsibility": "Кнопки для сортировки и выбора даты."
+      },
+      {
+        "name": "IconFilter",
+        "responsibility": "Иконка фильтра."
+      },
+      {
+        "name": "Skeleton",
+        "responsibility": "Скелетон-загрузчик для списка."
+      },
+      {
+        "name": "Loader",
+        "responsibility": "Индикатор загрузки."
+      },
+      {
+        "name": "EmptyState",
+        "responsibility": "Компонент отображения пустого состояния."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "debounce(fn, delay)",
+        "purpose": "Возвращает функцию, которая вызывает fn с задержкой delay. Используется для оптимизации поиска.",
+        "params": [
+          "fn: функция для дебаунса",
+          "delay: задержка в мс"
+        ]
+      },
+      {
+        "name": "updateSearch(search)",
+        "purpose": "Обновляет поисковый запрос с использованием debounce.",
+        "params": [
+          "search: строка поиска"
+        ]
+      },
+      {
+        "name": "loadMoreItems()",
+        "purpose": "Загружает следующую порцию данных (пагинация/infinite scroll).",
+        "params": []
+      },
+      {
+        "name": "fetchItems()",
+        "purpose": "Загружает данные с учетом текущих фильтров, поиска, сортировки и опций.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, onUnmounted, shallowRef, watch)",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Skeleton/Skeleton.vue",
+      "@martyrs/src/components/EmptyState/EmptyState.vue",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/components/DatePicker/Calendar.vue",
+      "@martyrs/src/components/BottomSheet/BottomSheet.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue",
+      "@martyrs/src/modules/globals/views/components/elements/ButtonSort.vue",
+      "@martyrs/src/modules/globals/views/components/elements/ButtonDate.vue",
+      "@martyrs/src/modules/icons/navigation/IconFilter.vue",
+      "@martyrs/src/modules/icons/entities/IconEvents.vue"
+    ],
+    "Usage": "Feed.vue импортируется и используется в других компонентах или страницах для отображения списков с поддержкой поиска, фильтрации, сортировки и пагинации. Обычно его используют как универсальный компонент, передавая через props store (с методами чтения данных), параметры фильтрации, сортировки, поиска и опции отображения.",
+    "Importance": 5,
+    "Notes": "Компонент реализует сложную логику управления состоянием списка, включая защиту от гонок запросов (requestId), поддержку как кнопки 'Load More', так и infinite scroll через IntersectionObserver, а также глубокую реактивность на изменения фильтров, сортировки и внешних опций. Использует defineModel для двусторонней связи с родительским состоянием. Стилизация TransitionGroup обеспечивает плавную анимацию появления/ухода элементов. Компонент высоко переиспользуемый и критичен для отображения любых коллекций данных в проекте."
+  }
+}

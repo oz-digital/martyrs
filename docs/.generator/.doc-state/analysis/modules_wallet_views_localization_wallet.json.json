@@ -1,0 +1,20 @@
+{
+  "path": "../../src/modules/wallet/views/localization/wallet.json",
+  "relativePath": "modules/wallet/views/localization/wallet.json",
+  "type": "source",
+  "name": "wallet.json",
+  "extension": ".json",
+  "analysis": {
+    "Summary": "Этот файл содержит текстовые строки для интерфейса «Кошелек» на двух языках (английском и русском).",
+    "Purpose": "Обеспечивает механизм локализации (i18n) для модуля Wallet: подставляет пользователю тексты в зависимости от выбранного языка.",
+    "Components": [],
+    "Functions": [],
+    "Dependencies": [
+      "Модуль локализации i18n фреймворка martyrs",
+      "Механизм загрузки JSON-файлов в runtime"
+    ],
+    "Usage": "Файл импортируется или подгружается через системный локализатор (например, i18n.load or require) по пути modules/wallet/views/localization/wallet.json и используется в компонентах UI Wallet для вывода текстов.",
+    "Importance": 3,
+    "Notes": "Все ключи под узлом `wallet` должны точно совпадать с обращениями из кода UI. При добавлении новых полей нужно вносить переводы сразу в оба языка. Нет динамических значений или плейсхолдеров — только статические строки."
+  }
+}

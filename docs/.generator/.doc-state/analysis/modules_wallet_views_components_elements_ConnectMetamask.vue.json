@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/wallet/views/components/elements/ConnectMetamask.vue",
+  "relativePath": "modules/wallet/views/components/elements/ConnectMetamask.vue",
+  "type": "source",
+  "name": "ConnectMetamask.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that guides the user through MetaMask integration: detecting installation, requesting account connection, switching to the Polygon network, and adding a custom ERC-20 token to MetaMask.",
+    "Purpose": "Provide a reusable UI element in the wallet module to handle all common MetaMask interactions (connect, switch chain, add token) with built-in i18n support.",
+    "Components": [
+      {
+        "name": "ConnectMetamask",
+        "responsibility": "Parent component encapsulating UI and logic for MetaMask connection, chain switching, and token addition."
+      },
+      {
+        "name": "IconAdd",
+        "responsibility": "Reusable SVG icon component used as a visual affordance on each action button."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "connectMetaMask",
+        "description": "Prompt the user to connect their MetaMask wallet. If MetaMask is unavailable, opens the MetaMask website in a new tab.",
+        "params": []
+      },
+      {
+        "name": "checkMetaMask",
+        "description": "Check whether MetaMask is installed and whether the user is on the target chain, updating `isMetaMaskInstalled` and `isPolygon` reactive flags.",
+        "params": []
+      },
+      {
+        "name": "switchToPolygon",
+        "description": "Request MetaMask to switch the user's current network to the configured Polygon chain ID, then re‐check installation and chain status.",
+        "params": []
+      },
+      {
+        "name": "addToken",
+        "description": "Use the `wallet_watchAsset` RPC method to prompt the user to add a custom ERC-20 token to MetaMask. Manages loading, error state, and success styling.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, computed, defineProps, reactive API)",
+      "vue-i18n (useI18n for translations)",
+      "@martyrs/src/modules/icons/navigation/IconAdd.vue",
+      "window.ethereum (global MetaMask provider)"
+    ],
+    "Usage": "Imported into parent views or pages within the wallet module (e.g. `import ConnectMetamask from './components/elements/ConnectMetamask.vue'`) and invoked in a template to render the connect/switch/add-token UI. Configure via props for token and chain parameters.",
+    "Importance": 4,
+    "Notes": [
+      "There is no dedicated `<style>` block; styling relies on utility classes and inline `buttonStyle` changes.",
+      "All user‐visible text is localizable via the `content` prop and `vue-i18n`.",
+      "Error messages surface to the user via a `<p>` below the buttons.",
+      "Default chain ID is Polygon Mainnet (`0x89`) and default token decimals 18.",
+      "No event listeners for external chain/account changes (could be improved with `ethereum.on`)."
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/orders/store/orders.js",
+  "relativePath": "modules/orders/store/orders.js",
+  "type": "source",
+  "name": "orders.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

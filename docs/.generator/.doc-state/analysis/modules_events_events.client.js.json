@@ -1,0 +1,142 @@
+{
+  "path": "../../src/modules/events/events.client.js",
+  "relativePath": "modules/events/events.client.js",
+  "type": "source",
+  "name": "events.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл собирает и экспортирует функциональность модуля «События»: подключает Vue-компоненты, хранилище и маршруты, а также предоставляет функцию инициализации для интеграции в основное приложение.",
+    "Purpose": "Организовать и зарегистрировать в приложении все необходимые части модуля «События»: стор, роуты и компоненты.",
+    "Components": [
+      {
+        "name": "CardEvent",
+        "type": "block",
+        "role": "компонент для отображения карточки события"
+      },
+      {
+        "name": "Feed",
+        "type": "section",
+        "role": "компонент для ленты событий"
+      },
+      {
+        "name": "List",
+        "type": "section",
+        "role": "компонент для списка событий"
+      },
+      {
+        "name": "FeaturedEvents",
+        "type": "section",
+        "role": "компонент для избранных событий"
+      },
+      {
+        "name": "EventsLayout",
+        "type": "layout",
+        "role": "основной лэйаут для страниц модуля «События»"
+      },
+      {
+        "name": "EventsPage",
+        "type": "page",
+        "role": "компонент-страница для отображения всех событий"
+      },
+      {
+        "name": "Event",
+        "type": "page",
+        "role": "компонент-страница для просмотра одного события"
+      },
+      {
+        "name": "EditEvent",
+        "type": "page",
+        "role": "компонент-страница для редактирования события"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeEvents",
+        "description": "Регистрирует в переданных экземплярах router и store маршруты и стор для работы с событиями.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "корневой Vue/Vuex/VueRouter-экземпляр или аналогичный контейнер"
+          },
+          {
+            "name": "store",
+            "type": "Object",
+            "description": "менеджер состояний (Vuex или кастомный)"
+          },
+          {
+            "name": "router",
+            "type": "Object",
+            "description": "экземпляр маршрутизатора"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "настройки модуля, может содержать поле route для базового имени маршрута"
+          }
+        ]
+      },
+      {
+        "name": "createEventRoutes",
+        "description": "Импортированная функция-генератор маршрутов для модуля «События». Создаёт конфигурацию роутов на основе переданного префикса и опций.",
+        "parameters": [
+          {
+            "name": "prefix",
+            "type": "string",
+            "description": "префикс пути (например, '', 'Backoffice')"
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "дополнительные настройки генерации маршрутов"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./store/events.js",
+        "importAs": "storeEvents"
+      },
+      {
+        "module": "./router/events.js",
+        "importAs": "createEventRoutes"
+      },
+      {
+        "module": "./components/blocks/CardEvent.vue",
+        "importAs": "CardEvent"
+      },
+      {
+        "module": "./components/sections/Feed.vue",
+        "importAs": "Feed"
+      },
+      {
+        "module": "./components/sections/List.vue",
+        "importAs": "List"
+      },
+      {
+        "module": "./components/sections/FeaturedEvents.vue",
+        "importAs": "FeaturedEvents"
+      },
+      {
+        "module": "./components/layouts/layoutEvents.vue",
+        "importAs": "EventsLayout"
+      },
+      {
+        "module": "./components/pages/Events.vue",
+        "importAs": "EventsPage"
+      },
+      {
+        "module": "./components/pages/Event.vue",
+        "importAs": "Event"
+      },
+      {
+        "module": "./components/pages/EditEvent.vue",
+        "importAs": "EditEvent"
+      }
+    ],
+    "Usage": "По умолчанию импортируется объект ModuleEvents, у которого вызывают метод initialize(app, store, router, options). Помимо этого, файлы могут импортировать конкретные компоненты или утилиты (createEventRoutes, storeEvents) для ручной настройки.",
+    "Importance": 3,
+    "Notes": "– По умолчанию два набора роутов: основной (route или 'Home') и 'Backoffice'.\n– Стор добавляется под неймспейсом 'events'.\n– Нет классических ES6-классов: модуль организован через объект и функцию инициализации."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionJoinUs.vue",
+  "relativePath": "modules/landing/components/sections/SectionJoinUs.vue",
+  "type": "source",
+  "name": "SectionJoinUs.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for the landing page's \"Join Us\" section. It displays a dynamic user count, a localized description, a call-to-action button linking to the sign-in page, and a floating avatars animation.",
+    "Purpose": "To encourage visitors to join the service by showing a continually increasing user count and engaging floating images, serving as a visual and interactive section on the landing page.",
+    "Components": [
+      {
+        "name": "SectionJoinUs",
+        "responsibility": "Renders the user count, localized text, sign-in button, and includes the floating images animation."
+      },
+      {
+        "name": "FloatingImages",
+        "responsibility": "Handles rendering and animating a set of images (avatars) floating within a container according to provided configuration."
+      },
+      {
+        "name": "router-link",
+        "responsibility": "Vue Router component used for navigation to the \"Sign In\" route."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "increaseUserCount",
+        "purpose": "Starts a timer that increments the displayed user count by 1–2 every 1.33 seconds to simulate a growing user base.",
+        "parameters": "none"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-i18n (useI18n)",
+      "vue-router (router-link)",
+      "@martyrs/src/modules/landing/components/elements/FloatingImages.vue"
+    ],
+    "Usage": "Imported into a parent landing page component or layout. Typically used as <SectionJoinUs :content=\"...\" :options=\"...\"/> within a page to render the join-us section.",
+    "Importance": 3,
+    "Notes": [
+      "Uses <script setup> syntax and Composition API.",
+      "Localization is provided via vue-i18n using messages from props.content.",
+      "The interval in increaseUserCount is never cleared, but the component life cycle ends when the page is left.",
+      "FloatingImages configuration is passed inline; can be overridden via props.options.images.",
+      "Styles are scoped to the .container-joinus and its child .content."
+    ]
+  }
+}

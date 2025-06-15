@@ -1,0 +1,97 @@
+{
+  "path": "../../src/modules/auth/views/components/pages/SignIn.vue",
+  "relativePath": "modules/auth/views/components/pages/SignIn.vue",
+  "type": "source",
+  "name": "SignIn.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for user sign-in page that renders a form allowing users to authenticate via phone or email, enter password, and submit credentials (or Apple sign-in). It handles localization, input validation, and redirects after successful login.",
+    "Purpose": "Provides the UI and logic for the Sign In view in the auth module, integrating with the project’s auth store, router, and validation services to authenticate users.",
+    "Components": [
+      {
+        "name": "Tab",
+        "responsibility": "Displays selectable tabs for choosing authentication method (phone or email)."
+      },
+      {
+        "name": "FieldPhone",
+        "responsibility": "Renders and validates a phone-number input with country code dropdown."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Renders and validates generic text inputs (email, password)."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Wraps submit buttons, binding submit handlers and post-submit callbacks."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "loadExternalScript",
+        "purpose": "Dynamically injects an external JS script tag and returns a Promise when loaded or errored.",
+        "parameters": [
+          "src (String) – URL of the script to load."
+        ]
+      },
+      {
+        "name": "onSubmit",
+        "purpose": "Validates the phone or email input based on current tab, then dispatches auth.actions.login with user data.",
+        "parameters": []
+      },
+      {
+        "name": "onSubmitApple",
+        "purpose": "Initializes AppleID JS SDK, performs popup sign-in, and on success dispatches auth.actions.login with Apple response.",
+        "parameters": []
+      },
+      {
+        "name": "redirectTo",
+        "purpose": "After authentication, navigates to either the returnUrl query param or the User Profile route.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/components/Tab/Tab.vue"
+      },
+      {
+        "module": "@martyrs/src/components/Field/Field.vue"
+      },
+      {
+        "module": "@martyrs/src/components/FieldPhone/FieldPhone.vue"
+      },
+      {
+        "module": "@martyrs/src/components/Button/Button.vue"
+      },
+      {
+        "module": "vue"
+      },
+      {
+        "module": "vue-router"
+      },
+      {
+        "module": "vue-i18n"
+      },
+      {
+        "module": "@martyrs/src/modules/auth/views/localization/SignIn.json"
+      },
+      {
+        "module": "@martyrs/src/modules/auth/views/store/auth.js"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/store/globals.js"
+      },
+      {
+        "module": "@martyrs/src/modules/auth/views/validations/inputs.validation"
+      }
+    ],
+    "Usage": "Registered as a route component (e.g. name 'Sign In') under auth module; rendered inside <router-view/> when user navigates to sign-in page. Other modules import it implicitly via router config.",
+    "Importance": 4,
+    "Notes": [
+      "Loads AppleID SDK on mount for potential Apple sign-in flow.",
+      "Uses computed availableTabs to filter out excluded auth methods from global settings.",
+      "Contains temporary workarounds for input component returning wrong data type.",
+      "Error styling is declared globally via .input-error but not scoped.",
+      "onSubmitApple method is currently unused/commented out in template."
+    ]
+  }
+}

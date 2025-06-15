@@ -1,0 +1,27 @@
+{
+  "path": "../../src/modules/orders/store/models/customer.js",
+  "relativePath": "modules/orders/store/models/customer.js",
+  "type": "source",
+  "name": "customer.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит константу customerInitState — исходное состояние (initial state) модели \"customer\".",
+    "Purpose": "Определить шаблон (initial state) для данных клиента в хранилище (store) модуля orders.",
+    "Components": [
+      {
+        "name": "customerInitState",
+        "type": "Object",
+        "responsibility": "Хранит начальные значения полей модели клиента: идентичность, владельца, создателя, профиль, мессенджер и социальные сети."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [],
+    "Usage": "Импортируется другими частями модуля orders (например, в reducer или при инициализации стора) как стартовое состояние для customer. Пример:\nimport customerInitState from 'modules/orders/store/models/customer';",
+    "Importance": 3,
+    "Notes": [
+      "Файл не содержит логики и функций — исключительно структура данных.",
+      "Поле identity, owner и creator имеют вложенную структуру с type и target для дальнейшей привязки к другим сущностям.",
+      "Расширяемость: при необходимости можно добавлять новые поля профиля, мессенджеров и соцсетей."
+    ]
+  }
+}

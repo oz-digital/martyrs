@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/events/controllers/tickets.controller.js",
+  "relativePath": "modules/events/controllers/tickets.controller.js",
+  "type": "source",
+  "name": "tickets.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует фабрику контроллера для работы с билетами: создание (с генерацией QR-кодов и PDF), отправка по email, а также стандартные CRUD-эндпоинты (read, create, update, delete).",
+    "Purpose": "Обеспечить логику генерации и доставки электронных билетов и предоставить HTTP-контроллеры для управления билетами в рамках модуля `events` фреймворка Martyrs.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "function",
+        "responsibility": "Принимает объект `db` и `publicPath`, инстанцирует модели Ticket и Event и возвращает набор методов-обработчиков HTTP-запросов и функцию saveAndSendTicket."
+      },
+      {
+        "name": "saveAndSendTicket",
+        "type": "async function",
+        "responsibility": "Создаёт один или несколько билетов в БД, генерирует QR-код, рендерит HTML-шаблон билета, конвертирует в PDF через puppeteer, сохраняет на диск и отправляет всё одним письмом клиенту."
+      },
+      {
+        "name": "read",
+        "type": "async function",
+        "responsibility": "Читает список билетов с фильтрацией, пагинацией, поиском по имени клиента и отдаёт JSON-массив."
+      },
+      {
+        "name": "create",
+        "type": "async function",
+        "responsibility": "Обрабатывает POST-запрос(ы), вызывает saveAndSendTicket и возвращает результаты."
+      },
+      {
+        "name": "update",
+        "type": "async function",
+        "responsibility": "Обновляет поля существующего билета, проверяя статус (не used/deactivated) перед изменением при проверке."
+      },
+      {
+        "name": "deleteTicket",
+        "type": "async function",
+        "responsibility": "Удаляет билет по комбинации type, target и user, возвращая удалённый документ."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatDate",
+        "params": [
+          "dateString"
+        ],
+        "description": "Форматирует дату в строку вида 'число месяц' (например, '5 July')."
+      },
+      {
+        "name": "formatTime",
+        "params": [
+          "dateString"
+        ],
+        "description": "Форматирует время в 24-часовом формате 'HH:MM' (например, '16:30')."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/utils/mailing.js (sendEmail)",
+      "path",
+      "puppeteer",
+      "qrcode",
+      "./utils/templateEmail.js (renderEmailTemplate)",
+      "./utils/templateTicket.js (renderTicketTemplate)",
+      "db.ticket (Ticket модель)",
+      "db.event (Event модель)"
+    ],
+    "Usage": "Импортируется и инициализируется вызовом `controllerFactory(db, publicPath)`. Полученный объект с методами `create`, `read`, `update`, `delete` подключается к маршрутам Express/Koa для работы с билетами.",
+    "Importance": 4,
+    "Notes": [
+      "В коде есть закомментированный эксперимент с очередью Bull для повторных попыток — потенциально пригодится при масштабировании.",
+      "PublicPath обязателен для рендеринга PDF; если он не передан, выбрасывается ошибка.",
+      "При массовой покупке генерируется один email с несколькими PDF-вложениями.",
+      "Не обрабатывается закрытие puppeteer браузера в блоке ошибки, что может привести к утечкам процессов."
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "path": "../../src/modules/organizations/store/memberships.js",
+  "relativePath": "modules/organizations/store/memberships.js",
+  "type": "source",
+  "name": "memberships.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a reactive state, CRUD actions and a mutation handler for organization memberships. It wraps axios calls to a REST API, manages error handling via a global setter, and tracks state history.",
+    "Purpose": "Manage membership data within the organizations module: fetch, create, update, delete memberships from the backend, update related entities in-place, and maintain a reactive state for UI components.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibilities": [
+          "Holds current list of memberships",
+          "Stores the last error",
+          "Reactive so Vue components can respond to changes"
+        ]
+      },
+      {
+        "name": "actions",
+        "type": "object",
+        "responsibilities": [
+          "Provide async CRUD methods (read, create, update, delete)",
+          "Call the API via axios",
+          "Reset error on success and propagate data",
+          "On failure, delegate to global setError and reject"
+        ]
+      },
+      {
+        "name": "mutations",
+        "type": "object",
+        "responsibilities": [
+          "handleMembershipUpdate: merge single or array payload into an entity",
+          "Toggle membership inclusion and update counters in the target entity"
+        ]
+      },
+      {
+        "name": "history",
+        "type": "array",
+        "responsibilities": [
+          "Store snapshots of the state over time",
+          "Used for debugging or undo/redo flows"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "actions.read",
+        "parameters": [
+          "options = {}"
+        ],
+        "description": "Fetches memberships list from `/api/memberships` with optional query params."
+      },
+      {
+        "name": "actions.create",
+        "parameters": [
+          "membership"
+        ],
+        "description": "Sends a POST to `/api/memberships/create` to create a new membership."
+      },
+      {
+        "name": "actions.update",
+        "parameters": [
+          "membership"
+        ],
+        "description": "Sends a POST to `/api/memberships/update` to modify an existing membership."
+      },
+      {
+        "name": "actions.delete",
+        "parameters": [
+          "membership"
+        ],
+        "description": "Sends a POST to `/api/memberships/delete` to remove a membership."
+      },
+      {
+        "name": "mutations.handleMembershipUpdate",
+        "parameters": [
+          "data",
+          "membership",
+          "status",
+          "target",
+          "statusName",
+          "statusNumber"
+        ],
+        "description": "Finds the target entity in an array or object payload, toggles a boolean status, adjusts membership arrays and counters accordingly."
+      }
+    ],
+    "Dependencies": [
+      "axios (for HTTP requests)",
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/store/globals.js#setError (global error handler)"
+    ],
+    "Usage": "Imported as a store module: `import { state, actions, mutations } from 'modules/organizations/store/memberships.js'`. UI components or other modules call `actions.read()` etc. and bind to `state.memberships`.",
+    "Importance": 3,
+    "Notes": [
+      "Uses a dedicated axios instance with baseURL from env and credentials enabled.",
+      "Global error handling via setError propagates errors to a central error store or UI.",
+      "Keeps a history of state snapshots; may grow unbounded if not pruned.",
+      "Includes console.log debugging in the mutation – consider removing in production."
+    ]
+  }
+}

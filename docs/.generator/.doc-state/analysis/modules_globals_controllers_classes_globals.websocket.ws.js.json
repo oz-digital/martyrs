@@ -1,0 +1,150 @@
+{
+  "path": "../../src/modules/globals/controllers/classes/globals.websocket.ws.js",
+  "relativePath": "modules/globals/controllers/classes/globals.websocket.ws.js",
+  "type": "source",
+  "name": "globals.websocket.ws.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Defines a WebSocketManager class that wraps a ws WebSocketServer instance. It handles client authentication via JWT in cookies, tracks user connections, manages per-module subscriptions, routes incoming messages to registered module handlers, and provides methods to send or broadcast messages to clients.",
+    "purpose": "Provide centralized WebSocket infrastructure: authenticate clients, manage sockets by user and module subscriptions, register message handlers for different application modules, and enable targeted or broadcast messaging.",
+    "components": [
+      {
+        "name": "WebSocketManager",
+        "description": "Main class that encapsulates WebSocket server setup, client verification, connection tracking, subscription management, module registration, and message dispatch."
+      }
+    ],
+    "functions": [
+      {
+        "name": "constructor(server)",
+        "description": "Initializes a WebSocketServer bound to the provided HTTP(S) server, sets up verifyClient, connection, message and close handlers, and internal maps.",
+        "parameters": [
+          {
+            "name": "server",
+            "type": "HTTP/S server instance",
+            "description": "An existing HTTP or HTTPS server to attach the WebSocketServer to."
+          }
+        ]
+      },
+      {
+        "name": "verifyClient(info, done)",
+        "description": "Extracts a JWT from a 'user=' cookie, verifies it against SECRET_KEY, and attaches decoded userId to the handshake request.",
+        "parameters": [
+          {
+            "name": "info",
+            "type": "Object",
+            "description": "Handshake information containing the HTTP request object."
+          },
+          {
+            "name": "done",
+            "type": "Function",
+            "description": "Callback to accept or reject the connection."
+          }
+        ]
+      },
+      {
+        "name": "_trackUserConnection(userId, ws)",
+        "description": "Adds a WebSocket connection to the internal map keyed by userId.",
+        "parameters": [
+          {
+            "name": "userId",
+            "type": "string",
+            "description": "Identifier of the user."
+          },
+          {
+            "name": "ws",
+            "type": "WebSocket",
+            "description": "WebSocket connection to track."
+          }
+        ]
+      },
+      {
+        "name": "registerModule(moduleName, handler)",
+        "description": "Registers a message handler function for a given module name.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string",
+            "description": "Unique module identifier."
+          },
+          {
+            "name": "handler",
+            "type": "Function",
+            "description": "Async function(ws, msg) invoked on incoming messages for this module."
+          }
+        ]
+      },
+      {
+        "name": "sendToUserInModule(moduleName, userId, data)",
+        "description": "Sends a JSON-serialized payload to all active WebSocket connections of a specific user subscribed to the module.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "type": "string or ObjectId"
+          },
+          {
+            "name": "data",
+            "type": "any",
+            "description": "Payload to send."
+          }
+        ]
+      },
+      {
+        "name": "broadcastToModule(moduleName, data)",
+        "description": "Broadcasts a payload to every connected client subscribed to the specified module.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "type": "any"
+          }
+        ]
+      },
+      {
+        "name": "broadcastToModuleWithFilter(moduleName, filterFn, data)",
+        "description": "Broadcasts data to subscribed clients for which filterFn(ws) returns true.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string"
+          },
+          {
+            "name": "filterFn",
+            "type": "Function",
+            "description": "Predicate function(ws) to decide targeting."
+          },
+          {
+            "name": "data",
+            "type": "any"
+          }
+        ]
+      },
+      {
+        "name": "getServer()",
+        "description": "Returns the underlying WebSocketServer instance.",
+        "parameters": []
+      }
+    ],
+    "dependencies": [
+      "jsonwebtoken (jwt.verify)",
+      "ws (WebSocketServer)",
+      "process.env.SECRET_KEY (for JWT)",
+      "Cookie header parsing logic"
+    ],
+    "usage": "Imported and instantiated with an existing HTTP/S server. Modules register handlers via `wsManager.registerModule(name, handler)`. Other parts of the app call `sendToUserInModule`, `broadcastToModule`, etc., to push real-time updates.",
+    "importance": 5,
+    "notes": [
+      "verifyClient always calls done(true), so failed JWT decoding doesn’t reject connections (potential security concern).",
+      "Subscriptions are managed per-socket via a Set of module names.",
+      "Messages must be JSON with a `type` (subscribe or module messages) and `module` field.",
+      "Handlers are expected to be async functions of signature (ws, msg).",
+      "Keeps two Maps: modules → handler, userId → Set of sockets for targeted messaging."
+    ]
+  }
+}

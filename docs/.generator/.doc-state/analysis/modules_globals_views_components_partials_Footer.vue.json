@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/globals/views/components/partials/Footer.vue",
+  "relativePath": "modules/globals/views/components/partials/Footer.vue",
+  "type": "source",
+  "name": "Footer.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders the application footer. It applies a light or dark theme based on the current route meta, loads category data from the store, and provides localized text strings via vue-i18n.",
+    "Purpose": "To provide a site-wide footer UI with dynamic theming and internationalized copy, including copyright info, brand name, tagline, and (commented-out) additional links.",
+    "Components": [
+      {
+        "name": "Footer",
+        "type": "Vue component",
+        "responsibilities": [
+          "Render footer HTML structure",
+          "Apply dynamic CSS classes based on `route.meta.footer_theme`",
+          "Initialize and provide i18n messages",
+          "Load product categories on mount"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Define and type-check the `theme` prop with default 'light'.",
+        "parameters": {
+          "theme": "String, default 'light'"
+        }
+      },
+      {
+        "name": "onMounted",
+        "purpose": "Lifecycle hook; invokes `categories.actions.read()` to fetch category data when the component mounts.",
+        "parameters": "async callback, no parameters"
+      },
+      {
+        "name": "useI18n",
+        "purpose": "Initialize the translation function `t` with the locally defined `text` messages object.",
+        "parameters": {
+          "text": "Object containing `locale` and `messages`"
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue 3 (computed, onMounted, ref)",
+      "vue-router (useRouter, useRoute)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/modules/products/store/categories.js"
+    ],
+    "Usage": "Imported into a layout or parent component (e.g. App.vue or default layout). Usage example in template: `<Footer :theme=\"'dark'\" />`. The component reads `route.meta.footer_theme` for runtime theming.",
+    "Importance": 3,
+    "Notes": [
+      "Much of the richer footer content is currently commented out (social links, categories list, pages).",
+      "Relies on `categories.state.all` to populate localized category names into the i18n messages.",
+      "There is a reference in the template to `getMarketplaceLink` which is not defined in this file; likely provided via global mixin or parent scope.",
+      "The `<style>` block is empty, expecting global or external SCSS styles to apply."
+    ]
+  }
+}

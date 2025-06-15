@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/rents/views/store/rents.store.js",
+  "relativePath": "modules/rents/views/store/rents.store.js",
+  "type": "source",
+  "name": "rents.store.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет реактивный стор для работы с арендами: хранит состояние, предоставляет мутации и асинхронные экшены для чтения, создания, обновления и удаления записей аренды, а также загрузки доступности продукта.",
+    "Purpose": "Централизованно управлять данными модуля «rents» во Vue-приложении с использованием axios для API-запросов и хранить результат в реактивном состоянии.",
+    "Components": [
+      {
+        "name": "state",
+        "description": "Реактивный объект Vue, содержащий коллекцию аренд (all), параметры фильтрации, пагинации, сортировки и текущую аренду."
+      },
+      {
+        "name": "mutations",
+        "description": "Набор синхронных методов для изменения состояния: set (установить свойство) и clean (сбросить текущую аренду)."
+      },
+      {
+        "name": "actions",
+        "description": "Набор асинхронных функций для работы с API: read, create, update, delete и loadAvailability."
+      },
+      {
+        "name": "loadAvailability",
+        "description": "Служебная функция вне объекта actions с тем же функционалом загрузки доступности по productId."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "actions.read",
+        "params": "options (object)",
+        "description": "Загружает список аренды или одну запись по _id, сохраняет в state.all или state.current."
+      },
+      {
+        "name": "actions.create",
+        "params": "rentData (object)",
+        "description": "Создаёт новую запись аренды, проверяет обязательные поля, сохраняет результат в state.current."
+      },
+      {
+        "name": "actions.update",
+        "params": "rentData (object)",
+        "description": "Обновляет существующую запись по _id, сохраняет ответ в state.current."
+      },
+      {
+        "name": "actions.delete",
+        "params": "_id (string)",
+        "description": "Удаляет запись по ID, удаляет её из state.all."
+      },
+      {
+        "name": "actions.loadAvailability",
+        "params": "params (object) с полем productId",
+        "description": "Загружает данные о доступности продукта."
+      },
+      {
+        "name": "loadAvailability",
+        "params": "params (object) с полем productId",
+        "description": "Дублирующая функция загрузки доступности, может быть вызвана вне объекта actions."
+      },
+      {
+        "name": "mutations.set",
+        "params": "property (string), data (any)",
+        "description": "Устанавливает любое свойство state в заданное значение."
+      },
+      {
+        "name": "mutations.clean",
+        "params": "нет",
+        "description": "Сбрасывает state.current к начальным значениям."
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js ($axios)",
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)"
+    ],
+    "Usage": "В других компонентах или стор-модулях импортируется как: import { state, actions, mutations, loadAvailability } from 'modules/rents/views/store/rents.store.js'; затем dispatch экшенов и читают state для отображения данных.",
+    "Importance": 3,
+    "Notes": [
+      "В файле есть дублирование функции loadAvailability внутри actions и как отдельной функции.",
+      "Используется глобальная функция setError для централизованной обработки ошибок.",
+      "Перед отправкой запросов проверяются обязательные поля и генерируются ошибки при их отсутствии."
+    ]
+  }
+}

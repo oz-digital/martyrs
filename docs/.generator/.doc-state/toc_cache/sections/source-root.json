@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-root",
+    "title": "Корневые файлы проекта",
+    "description": "Модуль 'source-root' содержит основные файлы, необходимые для запуска и конфигурации проекта.",
+    "subsections": [
+      {
+        "id": "main-js",
+        "title": "main.js",
+        "description": "Главный исполняемый файл проекта. Назначение и структура файла требуют уточнения."
+      }
+    ]
+  },
+  "fileHashes": [
+    "ae86dc5ae0c2a0762a39c87e3a2b9c44"
+  ],
+  "groupHash": "0e059015ed932639aaa68dbfaa1a442a",
+  "generated": "2025-06-05T09:15:25.337Z"
+}

@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/icons/navigation/IconLike.vue",
+  "relativePath": "modules/icons/navigation/IconLike.vue",
+  "type": "source",
+  "name": "IconLike.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 functional component that renders a 'like' (heart) SVG icon with two layers: an outline and a filled shape that appears when the 'isLiked' prop is true.",
+    "Purpose": "Provides a reusable, customizable 'like' icon for navigation or other UI elements, allowing the fill color and liked state to be controlled via props.",
+    "Components": [
+      {
+        "name": "IconLike",
+        "role": "Renders the SVG markup for a heart icon, accepts 'fill' and 'isLiked' props to customize appearance."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Defines component props in the <script setup> block.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color value used to fill both SVG paths."
+          },
+          "isLiked": {
+            "type": "Boolean",
+            "default": false,
+            "description": "Controls visibility of the filled heart overlay."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API: defineProps)",
+      "CSS variable --black for default fill color"
+    ],
+    "Usage": "Import the component where needed: import IconLike from 'modules/icons/navigation/IconLike.vue'; then use <IconLike :isLiked=\"true\" fill=\"#ff0000\"/> in your template.",
+    "Importance": 2,
+    "Notes": "1) No <style> block—styles depend on SVG attributes and CSS variables.\n2) Uses Vue 3 <script setup> syntax.\n3) The second <path> element uses v-show to conditionally render the filled state.\n4) Purely presentational; no internal state or methods beyond props."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/wallet/views/components/pages/Payments.vue",
+  "relativePath": "modules/wallet/views/components/pages/Payments.vue",
+  "type": "source",
+  "name": "Payments.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue page component that renders a list of payments. It displays a header with filterable tabs and an action button to create a new payment, and then loads and shows payment items in a feed layout.",
+    "Purpose": "Provide a user interface to view, filter, and navigate through wallet payments in the application.",
+    "Components": [
+      {
+        "name": "SectionPageTitle",
+        "path": "@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue",
+        "responsibility": "Renders the page title, tab navigation, and action buttons; emits events when the current tab changes."
+      },
+      {
+        "name": "Feed",
+        "path": "@martyrs/src/components/Feed/Feed.vue",
+        "responsibility": "Generic data‐loading feed component that handles fetching, pagination, empty states, search, and renders items via slots."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "payments.actions.read",
+        "description": "Fetches a page of payment records from the store or API.",
+        "parameters": {
+          "options": "Object containing fetch parameters (limit, owner ID, type filter, etc.)"
+        },
+        "returns": "Promise resolving to a list of payment items."
+      },
+      {
+        "name": "updateTab",
+        "description": "Inline handler for SectionPageTitle's update:tabs_current event; updates the reactive `tab` value.",
+        "parameters": {
+          "update": "String — new tab value"
+        },
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/wallet/views/store/payments.store"
+    ],
+    "Usage": "Registered as a route view in the wallet module. Other parts of the router or parent layouts import this component by its file path (`modules/wallet/views/components/pages/Payments.vue`) to render the payments page.",
+    "Importance": 3,
+    "Notes": [
+      "Uses SCSS styles scoped to generic utility classes (`.round-stat`, `.order-card`) though some of these classes are not referenced in the template and may be shared or leftover.",
+      "The `tab` reactive variable controls filtering by payment status; when set to anything other than 'all', an extra `type` option is passed to the feed store read function.",
+      "The Feed component relies on a v-slot to expose `items` and uses a simple `v-for` block to render raw payment objects; in a production build, a dedicated PaymentCard sub‐component might replace the placeholder `{{ payment }}`.",
+      "The route parameter `route.params._id` is used as `owner` to scope payments to a specific user or entity."
+    ]
+  }
+}

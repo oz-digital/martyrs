@@ -1,0 +1,82 @@
+{
+  "path": "../../src/modules/music/components/forms/SearchForm.vue",
+  "relativePath": "modules/music/components/forms/SearchForm.vue",
+  "type": "source",
+  "name": "SearchForm.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "SearchForm.vue defines a reusable search input component with a search icon, clear icon, and event emission when the user submits or clears the search query.",
+    "Purpose": "Provide a stylized, reactive search input that syncs an initial value, emits a 'search' event on submit, and allows clearing the current query while maintaining focus.",
+    "Components": [
+      {
+        "name": "SearchForm",
+        "role": "Root component defined in this file; manages searchQuery state, handles user actions, and emits events."
+      },
+      {
+        "name": "Button",
+        "importedFrom": "@martyrs/src/components/Button/Button.vue",
+        "role": "Renders a clickable button used here for clearing the search input."
+      },
+      {
+        "name": "IconSearch",
+        "importedFrom": "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+        "role": "Displays a search icon at the start of the input."
+      },
+      {
+        "name": "IconCross",
+        "importedFrom": "@martyrs/src/modules/icons/navigation/IconCross.vue",
+        "role": "Displays a cross icon inside the clear button to reset the input."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleSearch",
+        "description": "Called when the user presses Enter in the input. Emits a 'search' event with the trimmed query if not empty.",
+        "parameters": []
+      },
+      {
+        "name": "clearSearch",
+        "description": "Clears the searchQuery state and returns focus to the input field.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "watchEffect",
+          "defineEmits",
+          "defineProps"
+        ]
+      },
+      {
+        "module": "@martyrs/src/components/Button/Button.vue",
+        "imports": [
+          "Button"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+        "imports": [
+          "IconSearch"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/icons/navigation/IconCross.vue",
+        "imports": [
+          "IconCross"
+        ]
+      }
+    ],
+    "Usage": "Import SearchForm.vue in a parent component and use it as <SearchForm :placeholder=\"'Find tracks...'\" :initialQuery=\"query\" @search=\"onSearch\"/>. Listen to the 'search' event to perform searches.",
+    "Importance": 3,
+    "Notes": [
+      "Uses watchEffect to keep internal searchQuery in sync when initialQuery prop changes.",
+      "Scoped CSS provides background transition and focus-within styles for visual feedback.",
+      "The clear button hides itself when the query is empty and disables loader/success indicators.",
+      "Input placeholder color and focus outline are customized via CSS variables and pseudo-classes.",
+      "Leverages Vue 3 <script setup> syntax for concise component definition."
+    ]
+  }
+}

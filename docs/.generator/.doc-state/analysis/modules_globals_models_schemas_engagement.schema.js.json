@@ -1,0 +1,73 @@
+{
+  "path": "../../src/modules/globals/models/schemas/engagement.schema.js",
+  "relativePath": "modules/globals/models/schemas/engagement.schema.js",
+  "type": "source",
+  "name": "engagement.schema.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию-плагин applyEngagementSchema для Mongoose-подобных схем. При подключении она добавляет в схему поле `views` и навешивает post-aggregate middleware, которое после агрегации документов автоматически инкрементирует счетчик просмотров.",
+    "Purpose": "Обеспечить автоматическое отслеживание и обновление количества просмотров документов в любой схеме, к которой подключен этот плагин.",
+    "Components": [
+      {
+        "name": "applyEngagementSchema",
+        "type": "function (plugin)",
+        "responsibility": "Добавляет в схему поле `views` и навешивает post-aggregate hook для последующего обновления просмотров."
+      },
+      {
+        "name": "updateDocumentViews",
+        "type": "async function (helper)",
+        "responsibility": "Получает массив документов и модель, выполняет параллельное инкрементирование поля `views` у каждого документа."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "applyEngagementSchema",
+        "signature": "(schema: Schema, db: any) => void",
+        "description": "Главная экспортируемая функция. Модифицирует переданную схему, добавляя поле `views` и навешивая middleware.",
+        "parameters": [
+          {
+            "name": "schema",
+            "type": "Schema",
+            "description": "Mongoose-подобная схема, к которой будут добавлены поле и хук."
+          },
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Параметр подключения к БД (не используется в текущей реализации, но резервируется для расширения)."
+          }
+        ]
+      },
+      {
+        "name": "updateDocumentViews",
+        "signature": "async (docs: Array<any>, model: Model) => Promise<void>",
+        "description": "Вспомогательная функция. Параллельно инкрементирует поле `views` в БД для каждого документа из результата агрегации.",
+        "parameters": [
+          {
+            "name": "docs",
+            "type": "Array<any>",
+            "description": "Массив документов, полученный после операции aggregate."
+          },
+          {
+            "name": "model",
+            "type": "Model",
+            "description": "Mongoose-подобная модель для выполнения обновлений."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "Mongoose-подобная библиотека для работы со схемами и моделями (через передаваемый `schema` и `model`)",
+      "Консоль (console.log, console.error) для логирования",
+      "Контекст вызова, который передает schema и db (например, система регистрации плагинов фреймворка martyrs)"
+    ],
+    "Usage": "Импортируется и применяется при определении схемы:\n\n```js\nimport applyEngagementSchema from './engagement.schema';\n\nconst MySchema = new Schema({ /* поля */ });\napplyEngagementSchema(MySchema, db);\nconst MyModel = db.model('MyModel', MySchema);\n```",
+    "Importance": 3,
+    "Notes": [
+      "Поле `views` добавляется только один раз — при подключении плагина.",
+      "Хук реагирует именно на метод `aggregate`, а не на обычные find/findOne.",
+      "db-параметр в сигнатуре сейчас не используется, но может быть задействован для доступа к другим коллекциям.",
+      "В случае отсутствия связанной модели (`this._model`) хук выводит ошибку в консоль и прекращает выполнение.",
+      "Ошибки в процессе обновления views ловятся и логируются, но не приводят к сбою агрегирующей операции."
+    ]
+  }
+}

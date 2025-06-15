@@ -1,0 +1,82 @@
+{
+  "path": "../../src/components/FieldPhone/utils.js",
+  "relativePath": "components/FieldPhone/utils.js",
+  "type": "source",
+  "name": "utils.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file provides utility functions and default configuration data for a phone input component. It includes country detection via IP, caret positioning helper, a list of component props definitions, and logic to generate a defaults object from those definitions.",
+    "Purpose": "Centralize all helper logic and default prop definitions for the FieldPhone (phone input) component so that the component can import configuration, perform country lookup, manage cursor position, and apply defaults consistently.",
+    "Components": [
+      {
+        "name": "getCountry",
+        "type": "function",
+        "responsibility": "Fetch the user's country code based on IP address using the ip2c.org service."
+      },
+      {
+        "name": "setCaretPosition",
+        "type": "function",
+        "responsibility": "Set the text caret (cursor) position in an input or textarea, with cross-browser support including legacy IE."
+      },
+      {
+        "name": "allProps",
+        "type": "constant (Array)",
+        "responsibility": "Define all possible props for the phone input component, including name, type, default value, description, and demo visibility."
+      },
+      {
+        "name": "defaultOptions",
+        "type": "constant (Object)",
+        "responsibility": "Compute a flat defaults object by reducing the `allProps` array, handling nested prop keys."
+      },
+      {
+        "name": "default export",
+        "type": "constant (Object)",
+        "responsibility": "Expose an object with `options` set to the computed defaultOptions, ready for component import."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getCountry",
+        "parameters": [],
+        "returns": "Promise<string>",
+        "description": "Performs a GET request to ip2c.org to retrieve a two-letter country code. Throws an error if the response is invalid."
+      },
+      {
+        "name": "setCaretPosition",
+        "parameters": [
+          {
+            "name": "ctrl",
+            "type": "HTMLElement",
+            "description": "The input or textarea element on which to set the caret."
+          },
+          {
+            "name": "pos",
+            "type": "number",
+            "description": "The zero-based index at which to place the caret."
+          }
+        ],
+        "returns": "void",
+        "description": "Sets the cursor position in the given control, using modern API or legacy TextRange for old IE."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./all-countries.js",
+        "importedAs": "allCountries",
+        "purpose": "Provides the list of country codes and metadata used by the component."
+      },
+      {
+        "module": "fetch (global)",
+        "purpose": "Used by `getCountry` to make HTTP requests."
+      }
+    ],
+    "Usage": "Other parts of the phone input component import individual utilities and data: e.g. `import utils, { getCountry, setCaretPosition, allProps, defaultOptions } from './utils.js'`. The default export (`options`) is typically spread into component data or props defaults.",
+    "Importance": 4,
+    "Notes": [
+      "The `allProps` array defines nested properties using dot notation; `defaultOptions` reducer parses these to build a nested defaults object.",
+      "The `getCountry` function relies on a third-party free service (ip2c.org) and will throw on non-'1' status codes.",
+      "`setCaretPosition` includes a fallback for IE8 and below using `createTextRange`.",
+      "This file is central for configuring and initializing the phone input component's behavior and appearance."
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "path": "../../src/modules/products/models/variant.model.js",
+  "relativePath": "modules/products/models/variant.model.js",
+  "type": "source",
+  "name": "variant.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports a factory function that creates a Mongoose model for product variants. It builds a VariantSchema with fields such as sku, images, name, price, cost, quantity, unit, ingredients and attributes, applies common and ownership plugins, sets up an index, and returns the Variant model.",
+    "Purpose": "To centralize the schema definition and model creation for product variants in the 'products' module, ensuring consistency in data structure and attaching shared behaviors (timestamps, ownership) via reusable schema plugins.",
+    "Components": [
+      {
+        "name": "default export (db => { ... })",
+        "responsibility": "Factory function that accepts a database object (with mongoose) and defines the Variant schema and model on it."
+      },
+      {
+        "name": "VariantSchema",
+        "responsibility": "Defines the shape of a Variant document, including fields, types, defaults, enums, and indexes."
+      },
+      {
+        "name": "Variant (mongoose model)",
+        "responsibility": "Provides the interface to interact with the 'variants' collection in MongoDB: CRUD operations, queries, etc."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Creates and returns the Variant mongoose model using the provided db instance.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "object",
+            "description": "An object exposing mongoose and other database utilities."
+          }
+        ]
+      },
+      {
+        "name": "applyCommonSchema",
+        "description": "Augments the VariantSchema with common fields and behaviors (e.g., timestamps, soft-delete flags).",
+        "parameters": [
+          {
+            "name": "VariantSchema",
+            "type": "mongoose.Schema",
+            "description": "The schema to augment."
+          },
+          {
+            "name": "db",
+            "type": "object",
+            "description": "Database context for any plugin-specific needs."
+          }
+        ]
+      },
+      {
+        "name": "applyOwnershipSchema",
+        "description": "Augments the VariantSchema with ownership metadata (e.g., createdBy, updatedBy).",
+        "parameters": [
+          {
+            "name": "VariantSchema",
+            "type": "mongoose.Schema",
+            "description": "The schema to augment."
+          },
+          {
+            "name": "db",
+            "type": "object",
+            "description": "Database context for any plugin-specific needs."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+        "importedAs": "applyCommonSchema"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+        "importedAs": "applyOwnershipSchema"
+      },
+      {
+        "module": "db.mongoose",
+        "usage": "Used to access mongoose.Schema and create the model."
+      }
+    ],
+    "Usage": "Imported by passing the application's `db` object (with mongoose) into the default factory export. Other parts of the code require this file to register and use the Variant model for database operations.",
+    "Importance": 3,
+    "Notes": [
+      "The schema references `IngredientSchema` in the `ingredients` array but `IngredientSchema` is not imported or defined in this file—likely an oversight or relies on a global declaration.",
+      "An index is created on `{ Variant: 1, name: 1 }` but the field `Variant` does not exist in the schema, which may be a typo or leftover from a copy-paste.",
+      "Timestamps are enabled with a custom `currentTime` to ensure consistent Date.now() values."
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "path": "../../src/modules/music/routes/music.routes.js",
+  "relativePath": "modules/music/routes/music.routes.js",
+  "type": "source",
+  "name": "music.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл регистрирует HTTP-маршруты для работы с музыкальными треками (CRUD, получение по URL, последние, популярные, по жанру) в Express-приложении, используя контроллер MusicController, JWT-аутентификацию и ABAC-проверки.",
+    "Purpose": "Организация и подключение всех REST-эндпоинтов модуля «music» к основному Express-приложению.",
+    "Components": [
+      {
+        "name": "MusicController",
+        "responsibility": "инкапсулирует логику CRUD-операций над сущностью треков"
+      },
+      {
+        "name": "authJwt",
+        "responsibility": "JWT-middleware для проверки и верификации токена пользователя"
+      },
+      {
+        "name": "abac",
+        "responsibility": "экземпляр ABAC-контроллера для проверки прав доступа на ресурс трека"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (routeRegistrar)",
+        "params": [
+          "app",
+          "db",
+          "origins",
+          "publicPath"
+        ],
+        "description": "главная функция, подключающая все маршруты модуля music к приложению"
+      },
+      {
+        "name": "create route handler",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "промежуточный логирующий middleware перед вызовом controller.create"
+      },
+      {
+        "name": "controller.create.bind(controller)",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "создаёт новый трек"
+      },
+      {
+        "name": "controller.read.bind(controller)",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "возвращает список или один трек (в зависимости от реализации контроллера)"
+      },
+      {
+        "name": "controller.update.bind(controller)",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "обновляет существующий трек"
+      },
+      {
+        "name": "controller.delete.bind(controller)",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "удаляет трек"
+      },
+      {
+        "name": "GET /api/tracks/url/:url",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "возвращает трек по URL, проверяя ABAC-политику доступа"
+      },
+      {
+        "name": "GET /api/tracks/recent",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "возвращает последние опубликованные публичные треки, сортируя по дате"
+      },
+      {
+        "name": "GET /api/tracks/popular",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "возвращает популярные треки, сортируя по количеству воспроизведений"
+      },
+      {
+        "name": "GET /api/tracks/genre/:genreId",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "возвращает треки по жанру, фильтруя по статусу и публичности"
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "@martyrs/src/modules/globals/controllers/classes/globals.abac.js",
+      "../controllers/music.controller.js"
+    ],
+    "Usage": "Импортируется как модуль маршрутов и вызывается из точки входа Express (например в app.js) с передачей экземпляров app, db, origins и publicPath: require('.../music.routes.js')(app, db, origins, publicPath).",
+    "Importance": 4,
+    "Notes": [
+      "Все CRUD-маршруты по умолчанию отключены и регистрируются вручную.",
+      "На маршрут создания добавлен дополнительный логирующий middleware.",
+      "ABAC-проверка применяется только при получении трека по URL.",
+      "JWT-проверка на update и delete объявлена, но в коде передана без вызова () — возможно опечатка."
+    ]
+  }
+}

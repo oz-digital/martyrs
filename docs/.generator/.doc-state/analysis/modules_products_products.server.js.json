@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/products/products.server.js",
+  "relativePath": "modules/products/products.server.js",
+  "type": "source",
+  "name": "products.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует и экспортирует все необходимые части модуля «products»: модели, контроллеры и маршруты, а также функцию инициализации для интеграции с приложением и базой данных.",
+    "Purpose": "Организовать регистрацию и настройку моделей, маршрутов и контроллеров, связанных с товарами, категориями и остатками, в основном приложении и объекте базы данных.",
+    "Components": [
+      {
+        "name": "ProductController",
+        "responsibility": "Бизнес-логика и операции над сущностью «продукт»."
+      },
+      {
+        "name": "CategoryController",
+        "responsibility": "Бизнес-логика и операции над сущностью «категория»."
+      },
+      {
+        "name": "LeftoverController",
+        "responsibility": "Бизнес-логика и операции над сущностью «остаток»."
+      },
+      {
+        "name": "ProductModel",
+        "responsibility": "Определение схемы и методов доступа к таблице/коллекции продуктов."
+      },
+      {
+        "name": "CategoryModel",
+        "responsibility": "Определение схемы и методов доступа к таблице/коллекции категорий."
+      },
+      {
+        "name": "LeftoverModel",
+        "responsibility": "Определение схемы и методов доступа к таблице/коллекции остатков."
+      },
+      {
+        "name": "productsRoutes",
+        "responsibility": "Определение HTTP-маршрутов для работы с продуктами."
+      },
+      {
+        "name": "categoriesRoutes",
+        "responsibility": "Определение HTTP-маршрутов для работы с категориями."
+      },
+      {
+        "name": "leftoversRoutes",
+        "responsibility": "Определение HTTP-маршрутов для работы с остатками."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeProduct",
+        "description": "Настраивает модели в объекте db и подключает маршруты к приложению.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express | Koa | any",
+            "description": "Экземпляр веб-приложения для регистрации маршрутов (опционально)."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер для моделей базы данных, в который будут добавлены product, category, leftover."
+          },
+          {
+            "name": "origins",
+            "type": "Array<String>",
+            "description": "Список разрешённых CORS-источников, передаётся в маршруты."
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "Путь до публичных ресурсов, используется в маршрутах."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/products.controller.js",
+      "./controllers/categories.controller.js",
+      "./controllers/leftovers.controller.js",
+      "./models/product.model.js",
+      "./models/category.model.js",
+      "./models/leftover.model.js",
+      "./routes/products.routes.js",
+      "./routes/categories.routes.js",
+      "./routes/leftovers.routes.js"
+    ],
+    "Usage": "Импортируется в точке старта модуля (или в основном серверном файле) и вызывается как initialize(app, db, origins, publicPath) для подключения моделей и роутов. Альтернативно, можно деструктуризировать нужные части через named exports: models, controllers или routes.",
+    "Importance": 4,
+    "Notes": [
+      "Передаёт в модели ссылку на объект db для настройки зависимостей между моделями.",
+      "Маршруты подключаются только если передан объект app, что позволяет использовать модуль в средах без веб-сервера.",
+      "Экспортирует как именованные, так и default-объекты для гибкости импорта."
+    ]
+  }
+}

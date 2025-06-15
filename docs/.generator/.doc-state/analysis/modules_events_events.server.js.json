@@ -1,0 +1,86 @@
+{
+  "path": "../../src/modules/events/events.server.js",
+  "relativePath": "modules/events/events.server.js",
+  "type": "source",
+  "name": "events.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file serves as the entry point for the \"events\" feature module. It wires together models, controllers and routes for events and tickets, and provides an initialize function to bootstrap them into an application.",
+    "Purpose": "To initialize and configure the event- and ticket-related database models on the shared `db` object, register HTTP routes on an Express-style `app`, and expose module components (models, controllers, routes) for external use.",
+    "Components": [
+      {
+        "name": "EventsController",
+        "description": "Business-logic controller for handling event operations (imported from './controllers/events.controller.js')."
+      },
+      {
+        "name": "TicketsController",
+        "description": "Business-logic controller for handling ticket operations (imported from './controllers/tickets.controller.js')."
+      },
+      {
+        "name": "createEventModel",
+        "description": "Factory function to create and configure the Event model on the database (imported from './models/event.model.js')."
+      },
+      {
+        "name": "createTicketModel",
+        "description": "Factory function to create and configure the Ticket model on the database (imported from './models/ticket.model.js')."
+      },
+      {
+        "name": "eventsRoutes",
+        "description": "Function that registers event-related HTTP routes on the application (imported from './routes/events.routes.js')."
+      },
+      {
+        "name": "ticketsRoutes",
+        "description": "Function that registers ticket-related HTTP routes on the application (imported from './routes/tickets.routes.js')."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeEvent",
+        "description": "Bootstraps the events module: sets up models on `db` and registers routes on `app` if provided.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express|Koa app instance or equivalent",
+            "description": "The web server application to which routes will be attached."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Shared database/context object where models will be mounted."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "CORS origin(s) allowed for these routes."
+          },
+          {
+            "name": "publicPath",
+            "type": "string",
+            "description": "Base URL or path prefix for serving static/public assets."
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Optional overrides with shape `{ eventFields: {...}, ticketFields: {...} }` to extend model schemas."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/events.controller.js",
+      "./controllers/tickets.controller.js",
+      "./models/event.model.js",
+      "./models/ticket.model.js",
+      "./routes/events.routes.js",
+      "./routes/tickets.routes.js"
+    ],
+    "Usage": "Import the `initialize` function (or default export) in the main server setup, then call `initialize(app, db, origins, publicPath, options)` to wire up the events and tickets features. You can also import `models`, `controllers` and `routes` individually for custom use.",
+    "Importance": 4,
+    "Notes": [
+      "Logs `publicPath` and any custom `eventFields`/`ticketFields` to the console for debugging.",
+      "Model factories are invoked with the shared `db` object, dynamically adding `db.event` and `db.ticket` properties.",
+      "Route registration is conditional on the presence of `app`, allowing headless or test initialization without HTTP layer.",
+      "Exports both named (`models`, `routes`, `controllers`, `initialize`) and a default aggregate object."
+    ]
+  }
+}

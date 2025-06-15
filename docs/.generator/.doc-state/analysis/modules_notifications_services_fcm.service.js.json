@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/notifications/services/fcm.service.js",
+  "relativePath": "modules/notifications/services/fcm.service.js",
+  "type": "source",
+  "name": "fcm.service.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file initializes the Firebase Admin SDK (if not already initialized) and provides a single object, FcmService, with methods to send push notifications via Firebase Cloud Messaging (FCM) to one or multiple device tokens.",
+    "Purpose": "Encapsulate and standardize the logic for sending FCM push notifications within the application, handling initialization, payload formatting, error catching, and response normalization.",
+    "Components": [
+      {
+        "name": "FcmService",
+        "type": "object",
+        "description": "An object exposing two async methods (send and sendMulticast) for dispatching single and multicast FCM messages."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "send",
+        "description": "Sends a single push notification to a specified device token.",
+        "parameters": {
+          "token": "string (recipient device FCM token)",
+          "title": "string (notification title)",
+          "body": "string (notification body)",
+          "data": "object (optional custom key/value pairs; values coerced to strings)"
+        },
+        "returns": "Promise resolving to { success: true, messageId: string } on success, or throws an error."
+      },
+      {
+        "name": "sendMulticast",
+        "description": "Sends a push notification to multiple device tokens at once.",
+        "parameters": {
+          "tokens": "array of strings (recipient device FCM tokens)",
+          "title": "string (notification title)",
+          "body": "string (notification body)",
+          "data": "object (optional custom key/value pairs; values coerced to strings)"
+        },
+        "returns": "Promise resolving to { success: true, successCount: number, failureCount: number, responses: Array<Object> } on success, or throws an error."
+      }
+    ],
+    "Dependencies": [
+      "firebase-admin",
+      "path",
+      "process.env.GOOGLE_APPLICATION_CREDENTIALS"
+    ],
+    "Usage": "Imported as the default export from 'modules/notifications/services/fcm.service.js'. Example: import FcmService from '\\<project_root\\>/modules/notifications/services/fcm.service'; await FcmService.send({ token, title, body, data });",
+    "Importance": 4,
+    "Notes": [
+      "Guards against multiple Firebase app initializations by checking admin.apps.length.",
+      "Converts all data payload values to strings as required by FCM.",
+      "Relies on the GOOGLE_APPLICATION_CREDENTIALS environment variable pointing to a valid service account JSON.",
+      "Logs errors to console and rethrows to allow upstream handling.",
+      "Can be extended with additional Firebase config options (databaseURL, storageBucket, etc.)."
+    ]
+  }
+}

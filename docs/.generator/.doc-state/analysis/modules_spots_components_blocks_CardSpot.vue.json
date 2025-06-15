@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/spots/components/blocks/CardSpot.vue",
+  "relativePath": "modules/spots/components/blocks/CardSpot.vue",
+  "type": "source",
+  "name": "CardSpot.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue-компонент CardSpot отображает карточку «точки» (spot) с мини-картой, названием, описанием, адресом, опциями доставки и оплаты, а также кнопками редактирования и отметки выбора.",
+    "purpose": "Предоставить визуальный блок для отображения ключевой информации о точке (spot) в списках или на страницах организации с поддержкой действий редактирования и выбора.",
+    "components": [
+      {
+        "name": "Map",
+        "responsibility": "Рендерит карту по переданным координатам (lat, lng) с использованием Google Maps API."
+      },
+      {
+        "name": "Chips",
+        "responsibility": "Отображает набор «чипсов» для опций доставки (delivery) или оплаты (payment)."
+      },
+      {
+        "name": "IconEdit",
+        "responsibility": "Иконка кнопки редактирования точки; показывается, если у пользователя есть доступ editAccess."
+      },
+      {
+        "name": "IconCheckmark",
+        "responsibility": "Иконка отметки выбранной точки; отображается при selected = true."
+      },
+      {
+        "name": "router-link",
+        "responsibility": "Навигационная ссылка для перехода на страницу редактирования точки."
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Объявляет входные свойства компонента.",
+        "parameters": [
+          "spot: Object",
+          "organization: Object",
+          "editAccess: Boolean",
+          "showDeliveryOptions: Boolean",
+          "showPaymentOptions: Boolean",
+          "selected: Boolean"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (defineProps, ref)",
+      "vue-router (router-link)",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/navigation/IconCheckmark.vue",
+      "@martyrs/src/components/Chips/Chips.vue",
+      "@martyrs/src/components/Map/Map.vue",
+      "i18n (this.$i18n.locale)"
+    ],
+    "usage": "Импортируется в компонентах списка или страницах организации. Пример: import CardSpot from 'modules/spots/components/blocks/CardSpot.vue'; затем <CardSpot :spot=\"item\" :organization=\"org\" :editAccess=\"canEdit\" ... />.",
+    "importance": 3,
+    "notes": [
+      "Используется v-html для вывода spot.profile.name — с потенциальным риском XSS, если данные не экранируются.",
+      "В секции <style> объявлен класс .subspotsartment, но он не применяется внутри шаблона.",
+      "Координаты в Map передаются в формате { lat: Y, lng: X } — важно не перепутать порядок.",
+      "Стили компонента минимальны, используются утилиты классов (flex, pd-small и т.п.)."
+    ]
+  }
+}

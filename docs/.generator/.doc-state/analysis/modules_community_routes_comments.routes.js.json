@@ -1,0 +1,113 @@
+{
+  "path": "../../src/modules/community/routes/comments.routes.js",
+  "relativePath": "modules/community/routes/comments.routes.js",
+  "type": "source",
+  "name": "comments.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет и регистрирует REST-маршруты для работы с комментариями (чтение, создание, обновление, удаление) в приложении на базе фреймворка martyrs, применяя аутентификацию и ABAC-контроль доступа.",
+    "Purpose": "Подключение HTTP-эндпойнтов комментариев к Express-приложению, обеспечение проверки JWT-токена и политик ABAC перед передачей управления в соответствующие методы контроллера.",
+    "Components": [
+      {
+        "name": "controller",
+        "responsibility": "Набор методов CRUD для комментариев (read, create, update, delete), генерируется через controllerFactory с переданным экземпляром БД."
+      },
+      {
+        "name": "abac",
+        "responsibility": "Инстанс ABAC-контроллера для модуля comments, предоставляющий middleware для проверки политик доступа."
+      },
+      {
+        "name": "authJwt",
+        "responsibility": "Набор middleware для верификации JWT-токена (опционально с публикацией), получаемый из factory аутентификации."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (routeRegistrar)",
+        "description": "Fункция, принимающая Express-app и объект db, регистрирует четыре маршрута для работы с комментариями.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express.Application",
+            "description": "Экземпляр Express для регистрации маршрутов"
+          },
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Объект для работы с базой данных, передаётся в фабрики контроллера и ABAC"
+          }
+        ]
+      },
+      {
+        "name": "controller.read",
+        "description": "Handler для GET /comments/read, возвращает список комментариев с учётом политики ABAC.",
+        "parameters": [
+          {
+            "name": "req",
+            "type": "Request"
+          },
+          {
+            "name": "res",
+            "type": "Response"
+          },
+          {
+            "name": "next",
+            "type": "Function"
+          }
+        ]
+      },
+      {
+        "name": "controller.create",
+        "description": "Handler для POST /comments/create, создает новый комментарий после проверки токена и ABAC.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "description": "Handler для POST /comments/update/:url, обновляет комментарий по URL-идентификатору.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.delete",
+        "description": "Handler для DELETE /comments/delete/:url, удаляет комментарий по URL-идентификатору.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+        "import": "middlewareFactoryAuth",
+        "purpose": "Фабрика middleware для проверки JWT-токенов"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/controllers/classes/globals.abac.js",
+        "import": "globalsabac",
+        "purpose": "Глобальный ABAC-контроллер с методом getInstance"
+      },
+      {
+        "module": "../controllers/comments.controller.js",
+        "import": "controllerFactory",
+        "purpose": "Фабрика создания контроллера комментариев с методами CRUD"
+      }
+    ],
+    "Usage": "Этот модуль импортируется и вызывается из основного файла конфигурации маршрутов (например, routes/index.js или app.js). Экспорт по умолчанию принимает (app, db) и регистрирует маршруты.",
+    "Importance": 3,
+    "Notes": [
+      "ABAC-middleware для чтения комментариев настроено с опциями allowPublished и allowUnauthenticated, что позволяет открытый доступ к публичным записям.",
+      "В качестве идентификатора комментария используется параметр URL ':url', а не классический id.",
+      "Используется однообразная схема POST для создания и обновления комментариев.",
+      "Файл не содержит собственных классов, а лишь связывает внешние фабрики и middleware с Express."
+    ]
+  }
+}

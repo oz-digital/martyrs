@@ -1,0 +1,53 @@
+{
+  "path": "../../src/modules/landing/components/sections/InstagramSection.vue",
+  "relativePath": "modules/landing/components/sections/InstagramSection.vue",
+  "type": "source",
+  "name": "InstagramSection.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент InstagramSection рендерит секцию отзывов покупателей в виде карусели слайдов на основе Glide.js, используя дочерние компоненты InstagramCard для каждого слайда и предоставляя навигационные кнопки.",
+    "Purpose": "Отображение отзывов/фотоприветов покупателей в виде адаптивной карусели на лендинге проекта.",
+    "Components": [
+      {
+        "name": "InstagramSection",
+        "description": "Корневой компонент секции «Отзывы наших покупателей», инициализирует и монтирует слайдер Glide.js, содержит разметку шаблона и стили."
+      },
+      {
+        "name": "InstagramCard",
+        "description": "Дочерний компонент, отвечающий за отображение одного отзыва/картинки в слайдере."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted (анонимная функция)",
+        "description": "Запускается при монтировании компонента, инициализирует экземпляр Glide.js с настройками карусели и монтирует его.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "convertRemToPixels",
+        "description": "Преобразует значение в rem в пиксели на основе текущего размера шрифта корневого документа.",
+        "params": [
+          "rem (Number)"
+        ],
+        "returns": "Number (px)"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "@glidejs/glide",
+      "@/components/blocks/InstagramCard.vue",
+      "@/assets/icons/arrow-left.svg",
+      "@/assets/icons/arrow-right.svg",
+      "@/assets/images/backgrounds/testimonials.jpg"
+    ],
+    "Usage": "Импортируется и регистрируется в родительском модуле лендинга, например: import InstagramSection from '@/modules/landing/components/sections/InstagramSection.vue'; Затем используется в шаблоне как <InstagramSection/>.",
+    "Importance": 3,
+    "Notes": [
+      "В компоненте используется смешанный API: объявлено пустое data() и одновременно setup().",
+      "Функция convertRemToPixels определена, но в коде не применяется.",
+      "SCSS-стили включают адаптивные правила для мобильных разрешений (max-width: 480px).",
+      "Кнопки навигации спрятаны на узких экранах, а количество видимых карточек меняется по breakpoints."
+    ]
+  }
+}

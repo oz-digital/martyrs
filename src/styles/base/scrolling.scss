@@ -1,0 +1,132 @@
+body { 
+	// Overflow Anchor
+	.overflow-anchor-auto { overflow-anchor: auto; }
+	.overflow-anchor-none { overflow-anchor: none; }
+	// Overscroll Behavior
+	.overscroll-behavior-auto 		{ overscroll-behavior: auto; }
+	.overscroll-behavior-contain 	{ overscroll-behavior: contain; }
+	.overscroll-behavior-none 		{ overscroll-behavior: none; }
+	.overscroll-behavior-x-auto 	{ overscroll-behavior-x: auto; }
+	.overscroll-behavior-y-auto 	{ overscroll-behavior-y: auto; }
+	.overscroll-behavior-x-none 	{ overscroll-behavior-x: none; }
+	.overscroll-behavior-y-none 	{ overscroll-behavior-y: none; }
+	// Scroll
+	.scroll-snap-type-x-mandatory { scroll-snap-type: x mandatory; } 
+	.scroll-snap-type-y-mandatory { scroll-snap-type: y mandatory; }
+	// Scroll Snap Align
+	.scroll-snap-align-start 	{ scroll-snap-align: start; }
+	.scroll-snap-align-end 		{ scroll-snap-align: end; }
+	.scroll-snap-align-center 	{ scroll-snap-align: center; }
+	// Scroll Snap Stop
+	.scroll-snap-stop-normal 	{ scroll-snap-stop: normal; }
+	.scroll-snap-stop-always 	{ scroll-snap-stop: always; }
+	// Scroll Behavior
+	.scroll-behavior-auto 	{ scroll-behavior: auto; }
+	.scroll-behavior-smooth { scroll-behavior: smooth; }
+	// Scroll mn
+	.scroll-mn-auto 		{ scroll-margin: auto; }
+	.scroll-mn-top-auto 	{ scroll-mn-top: auto; }
+	.scroll-mn-right-auto 	{ scroll-mn-right: auto; }
+	.scroll-mn-bottom-auto 	{ scroll-mn-bottom: auto; }
+	.scroll-mn-left-auto 	{ scroll-mn-left: auto; }
+	// Scroll mn Variables
+	.scroll-mn-b-extra 		{ scroll-margin: var(--extra); }
+	.scroll-mn-b-big 			{ scroll-margin: var(--big); }
+	.scroll-mn-b-semi 		{ scroll-margin: var(--semi); }
+	.scroll-mn-b-medium 		{ scroll-margin: var(--medium); }
+	.scroll-mn-b-regular 		{ scroll-margin: var(--regular); }
+	.scroll-mn-b-small 		{ scroll-margin: var(--small); }
+	.scroll-mn-b-thin 		{ scroll-margin: var(--thin); }
+	.scroll-mn-b-micro 		{ scroll-margin: var(--micro); }
+	// Scroll pd
+	.scroll-pd-auto 		{ scroll-padding: auto; }
+	.scroll-pd-top-auto 	{ scroll-pd-top: auto; }
+	.scroll-pd-right-auto 	{ scroll-pd-right: auto; }
+	.scroll-pd-bottom-auto 	{ scroll-pd-bottom: auto; }
+	.scroll-pd-left-auto 	{ scroll-pd-left: auto; }
+	// Scroll pd with Variables
+	.scroll-pd-extra 		{ scroll-padding: var(--extra); }
+	.scroll-pd-big 			{ scroll-padding: var(--big); }
+	.scroll-pd-semi 		{ scroll-padding: var(--semi); }
+	.scroll-pd-medium 		{ scroll-padding: var(--medium); }
+	.scroll-pd-regular 		{ scroll-padding: var(--regular); }
+	.scroll-pd-small 		{ scroll-padding: var(--small); }
+	.scroll-pd-thin 		{ scroll-padding: var(--thin); }
+	.scroll-pd-micro 		{ scroll-padding: var(--micro); }
+
+	.scroll-hide::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  /* Главный трек scrollbar */
+  .scroll-hide::-webkit-scrollbar-track {
+    background: red;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    display: none;
+  }
+
+  /* Ползунок scrollbar */
+  .scroll-hide::-webkit-scrollbar-thumb {
+    background-color: red;
+    outline: 1px solid slategrey;
+    display: none;
+  }
+
+  /* Горизонтальный scrollbar */
+  .scroll-hide::-webkit-scrollbar:horizontal {
+    height: 0;
+    display: none;
+  }
+
+  /* Вертикальный scrollbar */
+  .scroll-hide::-webkit-scrollbar:vertical {
+    width: 0;
+    display: none;
+  }
+
+  /* Кнопка уменьшения (decrement) */
+  .scroll-hide::-webkit-scrollbar-button:decrement {
+    display: none;
+  }
+
+  /* Кнопка увеличения (increment) */
+  .scroll-hide::-webkit-scrollbar-button:increment {
+    display: none;
+  }
+
+  /* Кнопка уменьшения (decrement) - отдельная */
+  .scroll-hide::-webkit-scrollbar-button:start {
+    display: none;
+  }
+
+  /* Кнопка увеличения (increment) - отдельная */
+  .scroll-hide::-webkit-scrollbar-button:end {
+    display: none;
+  }
+
+  /* Двойная кнопка */
+  .scroll-hide::-webkit-scrollbar-button:double-button {
+    display: none;
+  }
+
+  /* Одиночная кнопка */
+  .scroll-hide::-webkit-scrollbar-button:single-button {
+    display: none;
+  }
+
+  /* Нет кнопок */
+  .scroll-hide::-webkit-scrollbar-button:no-button {
+    display: none;
+  }
+
+  /* Угол scrollbar */
+  .scroll-hide::-webkit-scrollbar-corner:corner-present {
+    background: red;
+  }
+
+  /* scrollbar в неактивном окне */
+  .scroll-hide::-webkit-scrollbar:window-inactive {
+    background: red;
+  }
+}

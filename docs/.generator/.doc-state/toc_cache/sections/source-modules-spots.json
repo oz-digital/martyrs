@@ -1,0 +1,89 @@
+{
+  "section": {
+    "id": "source-modules-spots",
+    "title": "Проект: Модули / Точки",
+    "description": "Модуль spots реализует работу с сущностями «точка» (spot): отображение, создание, редактирование, маршрутизацию и хранение данных. Включает серверную и клиентскую логику, компоненты интерфейса и страницы.",
+    "subsections": [
+      {
+        "id": "core-logic",
+        "title": "Основная логика и модели",
+        "description": "Файлы, реализующие бизнес-логику, модели и серверную часть работы с точками.",
+        "files": [
+          "spots.client.js",
+          "spots.server.js",
+          "spot.model.js",
+          "getIsOpenNowStage.js"
+        ]
+      },
+      {
+        "id": "controllers-routes",
+        "title": "Контроллеры и маршрутизация",
+        "description": "Файлы, отвечающие за маршрутизацию, контроллеры и обработку запросов к точкам.",
+        "files": [
+          "controllers/spots.controller.js",
+          "router/spots.js",
+          "routes/spots.routes.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище состояния",
+        "description": "Файл для управления состоянием точек на клиенте.",
+        "files": [
+          "store/spots.js"
+        ]
+      },
+      {
+        "id": "ui-components",
+        "title": "UI-компоненты",
+        "description": "Визуальные компоненты для отображения информации о точках и взаимодействия с пользователем.",
+        "files": [
+          "blocks/CardSpot.vue",
+          "blocks/SpotMemberModify.vue",
+          "blocks/SpotSub.vue"
+        ]
+      },
+      {
+        "id": "pages-layouts",
+        "title": "Страницы и лэйауты",
+        "description": "Vue-страницы и лэйауты для отображения списка точек, подробной информации и редактирования.",
+        "files": [
+          "layouts/Spots.vue",
+          "pages/Map.vue",
+          "pages/Spot.vue",
+          "pages/SpotEdit.vue"
+        ]
+      },
+      {
+        "id": "sections",
+        "title": "Секции интерфейса",
+        "description": "Вспомогательные секции для отображения карты и редактирования времени работы.",
+        "files": [
+          "sections/MapSection.vue",
+          "sections/WorktimeEdit.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "0421287390c6d7a8f49849d28bf2cc41",
+    "38be845565714a4cbf5ecebdcbbc8c1b",
+    "54ed25f977bbb981249eb8cc954f0c11",
+    "6535dd03bb6af0952bf7da6fb425766b",
+    "6f4b39440e6bf4d8ba9e12c93fb465d5",
+    "77981c5090a67b5533942ad16a4269bc",
+    "79c50274e9ca7bb158cc12c149553ade",
+    "86a618f18a2775b571f4eee25392b32a",
+    "879f0c02445c4d35cd52215cb4d46484",
+    "9b60fda77ad15cf062200571787eb39e",
+    "b3b79b04b0ed76b353e7a56e5f892379",
+    "c54ec7c75973a7f0daf1fd9a7a89eb18",
+    "e4d8ec5453476b70db64ab7ac75c12e5",
+    "ec07a65c7e2cace2cfb7270c6824e21d",
+    "f1f7c1d973c98c993f151bf1697c424b",
+    "f35b378fceaacffc053e97620d5537bb",
+    "f55411b34703a10cf8ad9a617e272e51"
+  ],
+  "groupHash": "070710407c9d73359dcc6d1048b5d364",
+  "generated": "2025-06-05T09:23:32.045Z"
+}

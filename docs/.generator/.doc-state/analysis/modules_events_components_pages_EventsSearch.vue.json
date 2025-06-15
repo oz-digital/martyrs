@@ -1,0 +1,73 @@
+{
+  "path": "../../src/modules/events/components/pages/EventsSearch.vue",
+  "relativePath": "modules/events/components/pages/EventsSearch.vue",
+  "type": "source",
+  "name": "EventsSearch.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 page component that displays a searchable list of events in a feed. It builds a dynamic page title based on URL query parameters (date range or fallback), fetches events from the centralized store, and renders each event as a card.",
+    "purpose": "To provide a UI page in the application where users can browse and filter events by date. It ties together the events store, feeds the data into a generic Feed component, and handles navigation to individual event detail pages.",
+    "components": [
+      {
+        "name": "Feed",
+        "source": "@martyrs/src/components/Feed/Feed.vue",
+        "responsibility": "Generic list container that handles data fetching, empty states, load-more behavior, and slot rendering of items."
+      },
+      {
+        "name": "CardEvent",
+        "source": "@martyrs/src/modules/events/components/blocks/CardEvent.vue",
+        "responsibility": "Presentation component that displays a single event’s details in card form and emits click events for navigation."
+      }
+    ],
+    "functions": [
+      {
+        "name": "feedOptions (computed)",
+        "parameters": [],
+        "returns": "Object",
+        "description": "Builds the query options sent to the events store, including current user ID, pagination limit, and optional periodStart/periodEnd from the route."
+      },
+      {
+        "name": "formatDate",
+        "parameters": [
+          {
+            "name": "dateString",
+            "type": "string",
+            "description": "ISO date string to be formatted."
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "description": "Either 'long' or 'short', controlling the verbosity of the formatted date. Defaults to 'long'."
+          }
+        ],
+        "returns": "string",
+        "description": "Safely parses a date string and returns a localized human-readable date. Falls back to the input string on error."
+      },
+      {
+        "name": "pageTitle (computed)",
+        "parameters": [],
+        "returns": "string",
+        "description": "Generates the H3 title based on whether the route query specifies a single day, a range, or no filters ('All Events')."
+      }
+    ],
+    "dependencies": [
+      "vue (computed, ref, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/DatePicker/DatePicker.vue",
+      "@martyrs/src/modules/events/components/blocks/CardEvent.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/events/store/events.js"
+    ],
+    "usage": "Registered as a page view in the application’s router configuration (e.g. path '/events/search'). Other modules import it via standard Vue router lazy-loading or direct import to render the events search interface.",
+    "importance": 4,
+    "notes": [
+      "DatePicker import is unused in the template and can be removed or integrated if date selection UI is added.",
+      "onMounted, watch, and ref are imported but not currently used.",
+      "The Feed component is provided a custom store object ({ read, state }) rather than using built-in Vuex modules directly.",
+      "All styling is delegated to global or wrapper classes; the <style> block is empty.",
+      "Navigation to event details uses router.push with named route 'Event' and expects each event to have a unique 'url' parameter."
+    ]
+  }
+}

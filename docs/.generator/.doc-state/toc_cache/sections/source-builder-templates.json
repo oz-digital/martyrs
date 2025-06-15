@@ -1,0 +1,20 @@
+{
+  "section": {
+    "id": "source-builder-templates",
+    "title": "Проект: Конструктор / Templates",
+    "description": "Модуль содержит шаблоны для генерации различных компонентов пользовательского интерфейса.",
+    "subsections": [
+      {
+        "id": "template-files",
+        "title": "Шаблоны страниц и экранов",
+        "description": "Включает файлы шаблонов для создания страниц (page.js) и экранов (screen.js). Используются для автоматизации генерации UI-компонентов."
+      }
+    ]
+  },
+  "fileHashes": [
+    "df6910b5dc679577f3dbb46abfe54ea9",
+    "f54d68ad02fd5f3d3b0a5e9728b2b9dc"
+  ],
+  "groupHash": "24581b1932184a3b4b3713209a9876b5",
+  "generated": "2025-06-05T09:15:47.649Z"
+}

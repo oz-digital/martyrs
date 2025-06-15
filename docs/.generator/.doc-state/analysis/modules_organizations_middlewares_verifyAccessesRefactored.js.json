@@ -1,0 +1,94 @@
+{
+  "path": "../../src/modules/organizations/middlewares/verifyAccessesRefactored.js",
+  "relativePath": "modules/organizations/middlewares/verifyAccessesRefactored.js",
+  "type": "source",
+  "name": "verifyAccessesRefactored.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику Express-middleware для проверки и обработки прав доступа к ресурсам. При вызове с экземпляром базы данных он создаёт два middleware: один для верификации доступа (verifyAccess), другой для финальной обработки результата (handleAccessResult). Доступ проверяется через динамически создаваемый AccessControlManager с политиками личного владения и организационного доступа.",
+    "Purpose": "Обеспечить централизованную и расширяемую логику контроля доступа к различным ресурсам (пользовательским и организационным) в рамках HTTP-запросов Express.",
+    "Components": [
+      {
+        "name": "middlewareFactory",
+        "type": "function",
+        "responsibility": "Главная экспортируемая функция: принимает объект db и возвращает пару middleware для верификации и обработки доступа."
+      },
+      {
+        "name": "createAccessControlManager",
+        "type": "function (private)",
+        "responsibility": "Конфигурирует и возвращает новый экземпляр AccessControlManager с политиками PersonalResourceOwnerPolicy и OrganizationAccessPolicy для данного ресурса."
+      },
+      {
+        "name": "verifyAccess",
+        "type": "function",
+        "responsibility": "Express-middleware: собирает контекст (пользователь, ресурс, действие), вызывает checkAccess и сохраняет результат в req.accessResult."
+      },
+      {
+        "name": "handleAccessResult",
+        "type": "function",
+        "responsibility": "Express-middleware: на основе req.accessResult возвращает 401/403/500 или пропускает запрос дальше, обеспечивает backward compatible поведение."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middlewareFactory",
+        "parameters": [
+          "db"
+        ],
+        "description": "Инициализирует фабрику middleware, подставляя модели из db."
+      },
+      {
+        "name": "createAccessControlManager",
+        "parameters": [
+          "resourceName"
+        ],
+        "description": "Создаёт AccessControlManager с подключёнными моделями и регистрирует две политики: PersonalResourceOwnerPolicy и OrganizationAccessPolicy."
+      },
+      {
+        "name": "verifyAccess",
+        "parameters": [
+          "resource (String)",
+          "accessType (String)",
+          "options (Object, optional)"
+        ],
+        "description": "Возвращает Express middleware, которое проверяет доступ к указанному ресурсу и сохраняет результат проверки в req.accessResult."
+      },
+      {
+        "name": "handleAccessResult",
+        "parameters": [
+          "options (Object, optional)"
+        ],
+        "description": "Возвращает Express middleware, которое на основе req.accessResult решает, пропустить ли запрос или отдать ошибку (401/403/500)."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/access-control.js",
+        "imports": [
+          "AccessControlManager",
+          "PolicyRule"
+        ],
+        "purpose": "Механизм управления доступом и описание правил (политик)."
+      },
+      {
+        "module": "mongoose",
+        "imports": [
+          "default mongoose"
+        ],
+        "purpose": "Работа с ObjectId и запросами к MongoDB."
+      },
+      {
+        "module": "db (injected)",
+        "description": "Объект с моделями Mongoose: user, organization, department и пр."
+      }
+    ],
+    "Usage": "В точках маршрутизации Express импортируется фабрика и создаются middleware: const { verifyAccess, handleAccessResult } = middlewareFactory(db); Затем в роуте: router.get('/items/:id', verifyAccess('Item', 'read'), handleAccessResult(), handler);",
+    "Importance": 4,
+    "Notes": [
+      "Поддерживает backward compatibility: преобразует новый формат accessResult в старые флаги.",
+      "В организации используется поле 'allow' вместо 'allowed' в одном из кейсов — возможная опечатка.",
+      "При создании ObjectId в verifyAccess используется db.mongoose, а в политике — напрямую imported mongoose.",
+      "Фабрика создаёт отдельный AccessControlManager для каждого ресурса и каждого запроса."
+    ]
+  }
+}

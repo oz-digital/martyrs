@@ -1,0 +1,39 @@
+{
+  "path": "../../src/modules/icons/navigation/IconAttach.vue",
+  "relativePath": "modules/icons/navigation/IconAttach.vue",
+  "type": "source",
+  "name": "IconAttach.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "IconAttach.vue – легковесный Vue 3 компонент, который рендерит SVG-иконку «прикрепить» (плюс) и позволяет настраивать цвет обводки через проп fill.",
+    "Purpose": "Предоставить в рамках навигации проекта универсальную SVG-иконку для действия «прикрепить» или «добавить».",
+    "Components": [
+      {
+        "name": "IconAttach",
+        "role": "Отвечает за отрисовку SVG-иконки «плюс» размером 52×52 с настраиваемым цветом обводки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Регистрирует проп fill для передачи цвета обводки из родительского компонента.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API, defineProps)"
+    ],
+    "Usage": "Импортируется и используется в других компонентах или страницах как обычный Vue-компонент: `import IconAttach from '@/modules/icons/navigation/IconAttach.vue'` затем `<IconAttach fill=\"#FF0000\" />`.",
+    "Importance": 2,
+    "Notes": [
+      "Не содержит секции <style> — внешний стиль задаётся через CSS-переменные или глобальные стили.",
+      "Используется синтаксис <script setup> из Composition API Vue 3.",
+      "По умолчанию цвет обводки берётся из CSS-переменной --black."
+    ]
+  }
+}

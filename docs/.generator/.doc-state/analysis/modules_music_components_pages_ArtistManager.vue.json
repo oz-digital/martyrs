@@ -1,0 +1,126 @@
+{
+  "path": "../../src/modules/music/components/pages/ArtistManager.vue",
+  "relativePath": "modules/music/components/pages/ArtistManager.vue",
+  "type": "source",
+  "name": "ArtistManager.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue component that provides a user interface for listing, searching, creating, viewing, editing and deleting music artist profiles for the currently authenticated user.",
+    "purpose": "Acts as the main management page for the user’s own artists in the music module, allowing CRUD operations and search/filter functionality.",
+    "components": [
+      {
+        "name": "Field",
+        "path": "@martyrs/src/components/Field/Field.vue",
+        "responsibility": "Renders a text input for searching artists, emits updates via `update:field`."
+      },
+      {
+        "name": "Button",
+        "path": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Reusable button component used for Create, View, Edit, Delete and Confirm actions."
+      },
+      {
+        "name": "Loader",
+        "path": "@martyrs/src/components/Loader/Loader.vue",
+        "responsibility": "Displays a loading spinner while async operations are in progress."
+      },
+      {
+        "name": "Popup",
+        "path": "@martyrs/src/components/Popup/Popup.vue",
+        "responsibility": "Modal dialog used to confirm deletion of an artist."
+      },
+      {
+        "name": "IconSearch",
+        "path": "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+        "responsibility": "Renders search icon inside the search Field."
+      }
+    ],
+    "functions": [
+      {
+        "name": "loadUserArtists",
+        "purpose": "Fetches the current user's artists from the store and handles loading state and errors.",
+        "parameters": []
+      },
+      {
+        "name": "handleSearch",
+        "purpose": "Filters or searches the user's artists based on input; falls back to full list when search string is empty.",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "string",
+            "description": "The current search query."
+          }
+        ]
+      },
+      {
+        "name": "viewArtist",
+        "purpose": "Navigates to the detail view of a given artist.",
+        "parameters": [
+          {
+            "name": "artist",
+            "type": "object",
+            "description": "Artist object containing at least a `url` property."
+          }
+        ]
+      },
+      {
+        "name": "editArtist",
+        "purpose": "Navigates to the edit page for a given artist.",
+        "parameters": [
+          {
+            "name": "artist",
+            "type": "object",
+            "description": "Artist object containing at least a `url` property."
+          }
+        ]
+      },
+      {
+        "name": "confirmDelete",
+        "purpose": "Opens the delete confirmation popup and sets the selected artist.",
+        "parameters": [
+          {
+            "name": "artist",
+            "type": "object",
+            "description": "Artist object to be deleted."
+          }
+        ]
+      },
+      {
+        "name": "deleteArtist",
+        "purpose": "Calls the store action to delete the selected artist and shows success or error feedback.",
+        "parameters": []
+      },
+      {
+        "name": "getStatusLabel",
+        "purpose": "Maps an artist status string (`draft`, `published`, `archived`) to a label object with `text` and `color`.",
+        "parameters": [
+          {
+            "name": "status",
+            "type": "string",
+            "description": "Status key to be mapped."
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRouter)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+      "../../store/artists",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/store/globals.js"
+    ],
+    "usage": "Registered as the ‘Manage Artists’ page in the music module's router. Other parts of the app navigate to it by route name `artist-manager` or import it for lazy-loading in the route definition.",
+    "importance": 4,
+    "notes": [
+      "Uses Composition API (`<script setup>`) for state management and lifecycle.",
+      "Relies on a global constant `FILE_SERVER_URL` for image src construction (not imported in this file).",
+      "Imports `Status` component but does not render it directly; uses a custom `getStatusLabel` function instead.",
+      "Error and success messages are dispatched via the globals store (`globals.actions.setError`).",
+      "Empty and loading states are handled declaratively in the template."
+    ]
+  }
+}

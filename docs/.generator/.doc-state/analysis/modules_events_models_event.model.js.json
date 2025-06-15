@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/events/models/event.model.js",
+  "relativePath": "modules/events/models/event.model.js",
+  "type": "source",
+  "name": "event.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and registers a Mongoose model for 'Event' documents, combining a base schema with optional extra fields and a set of common plugins.",
+    "Purpose": "Provide a reusable factory function that, given a database connection, creates the Event model with standardized fields, indexes, timestamps and shared behaviors (common, engagement, ownership, metadata).",
+    "Components": [
+      {
+        "name": "defaultExport",
+        "type": "Factory Function",
+        "responsibilities": "Accepts a db object and optional additional schema fields, builds the Event schema, applies plugins and returns the Event model."
+      },
+      {
+        "name": "EventSchema",
+        "type": "Mongoose Schema",
+        "responsibilities": "Describes the structure, validation rules, indexes and plugin attachments for Event documents."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defaultExport",
+        "description": "Main exported function that creates and registers the Event model on the provided db.mongoose instance.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "An object containing the configured mongoose instance (db.mongoose)."
+          },
+          {
+            "name": "additionalFields",
+            "type": "Object",
+            "description": "Optional fields to merge into the base event schema."
+          }
+        ],
+        "returns": "Mongoose Model('Event')"
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/metadata.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "db.mongoose (Mongoose library via the passed-in db object)"
+    ],
+    "Usage": "Imported and invoked during application initialization or model registration phase. Example:\n\nconst registerEventModel = require('./modules/events/models/event.model.js');\nconst Event = registerEventModel(db, { customField: String });\n\nAfter this, Event can be used for queries: Event.find(...), Event.create(...), etc.",
+    "Importance": 4,
+    "Notes": [
+      "Defines a compound index on name, date.start (ascending) and date.end (descending) for efficient querying and sorting.",
+      "Applies four plugins: common, engagement, ownership and metadata to enrich the schema with shared fields/behaviors.",
+      "Merges base schema with any additionalFields to allow extension without modifying the core file.",
+      "ticketsTypes is defined as an Array but a commented-out example suggests a more detailed subdocument structure.",
+      "Timestamps are enabled with a custom currentTime function to standardize createdAt/updatedAt values."
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/icons/socials/line.vue",
+  "relativePath": "modules/icons/socials/line.vue",
+  "type": "source",
+  "name": "line.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders the Line messenger social icon as an inline SVG.",
+    "Purpose": "Provide a reusable Line social media icon within the UI, leveraging global CSS variables for theming.",
+    "Components": [
+      {
+        "name": "default export (LineIcon)",
+        "description": "A functional Vue component that injects the inline SVG markup for the Line icon."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (implicit, since it’s a .vue file)",
+      "Global CSS variable --white for fill color"
+    ],
+    "Usage": "Import this component via `import LineIcon from 'modules/icons/socials/line.vue'` and use it in templates as `<LineIcon/>` to display the icon.",
+    "Importance": 2,
+    "Notes": [
+      "This component contains only a <template> section—no <script> or <style>.",
+      "The fill color is set to `rgb(var(--white))`, so it inherits theming from a CSS variable.",
+      "Static, presentational component meant to be part of an icon library within the martyrs framework."
+    ]
+  }
+}

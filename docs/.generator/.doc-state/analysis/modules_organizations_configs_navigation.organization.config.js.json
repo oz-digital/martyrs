@@ -1,0 +1,85 @@
+{
+  "path": "../../src/modules/organizations/configs/navigation.organization.config.js",
+  "relativePath": "modules/organizations/configs/navigation.organization.config.js",
+  "type": "source",
+  "name": "navigation.organization.config.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines the navigation configuration for the Organization backoffice module. It exports a structured array of menu categories and items, each with title, icon, route-generation logic, and visibility rules based on user access.",
+    "Purpose": "Provide a centralized configuration for the sidebar (or topbar) navigation in the Organization section of the backoffice UI, including access control and dynamic routing.",
+    "Components": [
+      {
+        "name": "navigationItems",
+        "type": "Array<Object>",
+        "description": "Top-level array of navigation categories, each containing a list of menu items."
+      },
+      {
+        "name": "CategoryObject",
+        "type": "Object",
+        "description": "Represents a navigation category with fields `category` (string) and `items` (array of ItemObjects)."
+      },
+      {
+        "name": "ItemObject",
+        "type": "Object",
+        "description": "Represents a single menu entry with `title`, `iconComponent`, `route` function, and `visible` function."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "route",
+        "location": "ItemObject.route",
+        "signature": "(auth, route) => { name: string; params: { _id: string } }",
+        "description": "Computes the target route name and parameters for the menu item, based on the current auth context and current route parameters."
+      },
+      {
+        "name": "visible",
+        "location": "ItemObject.visible",
+        "signature": "(auth, route) => boolean",
+        "description": "Determines whether the menu item should be shown by calling the global `hasAccess` mixin function with organization ID, resource, action, and user roles/accesses."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconCommunity.vue",
+        "importedAs": "IconCommunity"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconEvents.vue",
+        "importedAs": "IconEvents"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconGallery.vue",
+        "importedAs": "IconGallery"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconGroups.vue",
+        "importedAs": "IconGroups"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconOrders.vue",
+        "importedAs": "IconOrders"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconProducts.vue",
+        "importedAs": "IconProducts"
+      },
+      {
+        "module": "@martyrs/src/modules/icons/entities/IconLeftovers.vue",
+        "importedAs": "IconLeftovers"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/mixins/mixins.js",
+        "importedAs": "useGlobalMixins (hasAccess)"
+      }
+    ],
+    "Usage": "Imported (as default or named export) by the backoffice layout or navigation builder to render the sidebar. Each menu item is passed the current `auth` state and Vue Router `route` to generate links and control visibility.",
+    "Importance": 4,
+    "Notes": [
+      "Menu items are grouped into 'Organization', 'Shop', 'Orders & Sales', and 'Content'.",
+      "Access control is enforced uniformly via `hasAccess` from global mixins.",
+      "Some original menu entries (Community, Payments, System) are commented out for future use or reference.",
+      "Icons are Vue components imported individually for tree-shaking.",
+      "The file exports both a named export `navigationItems` and a default export."
+    ]
+  }
+}

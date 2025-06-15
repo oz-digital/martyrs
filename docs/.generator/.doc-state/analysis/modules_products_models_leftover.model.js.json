@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/products/models/leftover.model.js",
+  "relativePath": "modules/products/models/leftover.model.js",
+  "type": "source",
+  "name": "leftover.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет Mongoose-схему и модель для хранения операций с остатками товаров (stock-in, stock-out, write-off) в базе данных.",
+    "Purpose": "Обеспечить структурированное хранение и управление записями об остатках продукции (транзакции прихода, расхода и списания) с использованием Mongoose и собственного плагина для контроля владельца записи.",
+    "Components": [
+      {
+        "name": "LeftoverSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Описание структуры документа 'Leftover', включая тип операции, ссылки на заказ и склад, массив позиций товара, комментарий и метки времени."
+      },
+      {
+        "name": "Leftover",
+        "type": "Mongoose.Model",
+        "responsibility": "Интерфейс для работы с коллекцией 'leftovers' в MongoDB: создание, чтение, обновление и удаление операций остатков."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "db => Model",
+        "purpose": "Фабрика модели: принимает объект db (с подключённым Mongoose), создаёт схему, применяет плагины, индексы и возвращает модель Leftover.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контекст базы данных, содержащий экземпляр mongoose и подключение."
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель Leftover для работы с коллекцией остатков."
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+        "import": "applyOwnershipSchema",
+        "purpose": "Плагин для добавления в схему полей контроля владения (например, createdBy, ownerId и т.п.)."
+      },
+      {
+        "module": "mongoose",
+        "via": "db.mongoose",
+        "purpose": "Библиотека для определения схемы и модели, работы с MongoDB."
+      }
+    ],
+    "Usage": "В остальных модулях импортируется и вызывается передача объекта db: `const Leftover = require('./leftover.model.js')(db);` или `import leftoverModel from './leftover.model.js'; const Leftover = leftoverModel(db);`.",
+    "Importance": 4,
+    "Notes": [
+      "Схема оснащена автоматическими метками createdAt и updatedAt с пользовательской функцией currentTime.",
+      "Добавлен индекс по полям { storage, order, type } для ускорения выборок по складам, заказам и типам операций.",
+      "Плагин ownership.schema.js гарантирует, что у каждой записи будет информация о правах доступа/владельце."
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/globals/views/components/sections/Title.vue",
+  "relativePath": "modules/globals/views/components/sections/Title.vue",
+  "type": "source",
+  "name": "Title.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 functional component that renders a stylized section title using a prop-driven text value.",
+    "Purpose": "Provide a reusable header/title section for pages or sub-sections in the martyrs-based application.",
+    "Components": [
+      {
+        "name": "Title.vue",
+        "role": "Renders an H2 headline wrapped in semantic HTML and CSS utility classes."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (ref, toRefs, defineProps)"
+    ],
+    "Usage": "Imported wherever a section title is needed. Example: import Title from '@/modules/globals/views/components/sections/Title.vue'; then used in template as <Title text=\"Your Heading\" />.",
+    "Importance": 3,
+    "Notes": [
+      "Uses the <script setup> syntax introduced in Vue 3 for concise component definitions.",
+      "No dedicated <style> block; relies on global or utility CSS classes (e.g., w-100, text-fade-in).",
+      "Default prop value is 'Dreamy Moments Captured'.",
+      "Props are converted to refs via toRefs for reactivity in the template."
+    ]
+  }
+}

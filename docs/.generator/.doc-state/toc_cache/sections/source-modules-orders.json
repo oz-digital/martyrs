@@ -1,0 +1,143 @@
+{
+  "section": {
+    "id": "source-modules-orders",
+    "title": "Проект: Модули / Заказы",
+    "description": "Модуль orders отвечает за обработку заказов, включая работу с моделями, контроллерами, маршрутами и клиентской/серверной логикой.",
+    "subsections": [
+      {
+        "id": "models",
+        "title": "Модели",
+        "description": "Содержит бизнес-логики и структуры данных для заказов и клиентов. Файлы: models/order.js, models/customer.js.",
+        "files": [
+          "models/order.model.js",
+          "models/customer.model.js",
+          "models/application.model.js",
+          "models/testimonial.model.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Реализуют бизнес-логику для заказов, заявок и отзывов.",
+        "files": [
+          "controllers/orders.controller.js",
+          "controllers/applications.controller.js",
+          "controllers/testimonials.controller.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Определяют API-маршруты для работы с заказами, заявками и отзывами.",
+        "files": [
+          "routes/orders.routes.js",
+          "routes/applications.routes.js",
+          "routes/testimonials.routes.js",
+          "router/orders.router.js"
+        ]
+      },
+      {
+        "id": "client-server",
+        "title": "Клиент и сервер",
+        "description": "Файлы, реализующие клиентскую и серверную логику для заказов.",
+        "files": [
+          "orders/orders.client.js",
+          "orders/orders.server.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище",
+        "description": "Vuex-модули для управления состоянием заказов, корзины и отзывов. Файлы: store/orders.js, store/shopcart.js, store/testimonials.js.",
+        "files": [
+          "store/applications.js",
+          "store/customers.store.js"
+        ]
+      },
+      {
+        "id": "blocks",
+        "title": "UI-блоки заказов",
+        "description": "Vue-компоненты для отображения карточек заказов, позиций, пользователей и вариантов. Файлы: blocks/CardOrder.vue, blocks/CardOrderBackoffice.vue, blocks/CardOrderItem.vue, blocks/CardOrderUser.vue, blocks/CardOrderVar1.vue."
+      },
+      {
+        "id": "status-history",
+        "title": "История статусов",
+        "description": "Компонент для визуализации истории изменений статусов заказа. Файл: blocks/StatusHistory.vue."
+      },
+      {
+        "id": "price-total",
+        "title": "Итоговая сумма заказа",
+        "description": "Компонент для расчёта и отображения итоговых сумм заказа, включая комиссии и налоги. Файл: elements/PriceTotal.vue."
+      },
+      {
+        "id": "icons-status",
+        "title": "Иконки статусов заказа",
+        "description": "SVG-компоненты для отображения различных статусов заказа. Файлы: icons/IconStatusCanceled.vue, icons/IconStatusConfirmed.vue, icons/IconStatusCreated.vue."
+      },
+      {
+        "id": "orders-pages",
+        "title": "Страницы заказов",
+        "description": "Основные страницы для работы с заказами, включая создание, просмотр, избранное и бэкофис.",
+        "files": [
+          "pages/Favorites.vue",
+          "pages/OrderBackoffice.vue",
+          "pages/OrderCreate.vue",
+          "pages/OrderCreateBackoffice.vue",
+          "pages/Orders_refact.vue",
+          "pages/Orders.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "013cc596f0c51832b349da7bd2008cc0",
+    "04aa7b026cd5a929fc37011e23474de6",
+    "0d0a883791c9054ce6683c19b83c7603",
+    "0d2b9950a1f156d791d30c167fd65c21",
+    "11daf319804b767ae964edb856a956bb",
+    "1e37c87a3295d7c026f29d68c675e770",
+    "23c1a2e16583fca3a8233ad2f40893fb",
+    "2959bff4a74948aae35be023cd66531c",
+    "29cb8db796fd839293beac247a1dde2f",
+    "29ec2929879da256c04fd505b7d9bb0d",
+    "2ada952838390b0539635b9595d0dce3",
+    "2eb831479fed4340993a31434392e982",
+    "33ba080ac3ec357bbdbc5efcd8eb43d8",
+    "380f12bcd80d1ec034d2af8fdf028983",
+    "3d7d1459318d3dd9a7cfd1dd11b0ab64",
+    "483b75d0c7d4a350b6176def4d32746c",
+    "4d8d5f5812b93914cfaf14a530449a09",
+    "4ee9f37400546674ddec9961d4830a49",
+    "5d9e2b4ccc444a115c07b7504c747e3d",
+    "5f4351da19b0d0562367fc85473ded2a",
+    "66c5695da9a5480d1f62048d82ecf5bc",
+    "6d6a9d9409be25e5741a6617cc2bf7c8",
+    "7b998d693afa06de19f001b03c2be3e7",
+    "7cd7153936421d8f90fdc1b9e6c54bba",
+    "819c2ba54e4f9a9be6f1445ba8869469",
+    "825adafef9d741faddb228077992c9a4",
+    "8fa1e4fcc1df04e5fdb7cc32dad9361d",
+    "95df901db1dc558b2eb4f50e3b74c29d",
+    "96998a482efbdcf16bbfc0a560d1d0c8",
+    "992a53d8ddc5408f97c34603ceb41d1b",
+    "a481bf1f9e0f914887034d531d4d7fd4",
+    "acb647c863c13a453531e9716070f9cd",
+    "ad331322d3a250c4d278b8f1ed7d9f6a",
+    "afe0af66ffb987ab7d14ab6634a02e6f",
+    "b49a7c1484150b85eca7989aa55e3ded",
+    "bdcac3163eac1f072a3f2964ed236325",
+    "c39efb27ce4b2e13aff32039b9525f67",
+    "c723b7578c55c58c1b78a57f12307d87",
+    "cda0b49b8034dee6d182a86a76d6857b",
+    "d0edae1558ead270441c05b1e8149cfa",
+    "d268d7fb59add3c6468dd4573147e4e4",
+    "d361df96fe5d4f6e5255ec748d215f28",
+    "d7a0ba5e20a3ac582ee23ccdd56de5c0",
+    "eae5cb292a943b9dab040b6215c4b9e9",
+    "f3f2186a15956bc55bd5266662346a5c",
+    "f5cf9a149a20e66b58acdea5b1a659b8",
+    "f7eed85773c0590a52c25b9df6073cbc"
+  ],
+  "groupHash": "a45ebcab25b7dbd49d371eda1aa11058",
+  "generated": "2025-06-05T09:22:13.173Z"
+}

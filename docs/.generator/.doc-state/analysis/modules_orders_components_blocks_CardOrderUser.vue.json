@@ -1,0 +1,113 @@
+{
+  "path": "../../src/modules/orders/components/blocks/CardOrderUser.vue",
+  "relativePath": "modules/orders/components/blocks/CardOrderUser.vue",
+  "type": "source",
+  "name": "CardOrderUser.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a user order card: grid of item images, order ID, item count, formatted total price, status icon and text, and an optional return notice when items are near or past their return date.",
+    "Purpose": "Provide a reusable UI block to display summary information about a single order in the orders module, including visual indicators for order status and return deadlines.",
+    "Components": [
+      {
+        "name": "Tooltip",
+        "path": "@martyrs/src/components/Tooltip/Tooltip.vue",
+        "responsibility": "Wraps the order ID in a hoverable tooltip showing the full ID."
+      },
+      {
+        "name": "IconStatusCreated",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusCreated.vue",
+        "responsibility": "Icon for 'created' order status."
+      },
+      {
+        "name": "IconStatusConfirmed",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusConfirmed.vue",
+        "responsibility": "Icon for 'confirmed' order status."
+      },
+      {
+        "name": "IconStatusInUse",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusInUse.vue",
+        "responsibility": "Icon for 'preparing' or 'inuse' order status."
+      },
+      {
+        "name": "IconStatusFinished",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusFinished.vue",
+        "responsibility": "Icon for 'finished' order status."
+      },
+      {
+        "name": "IconStatusCanceled",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusCanceled.vue",
+        "responsibility": "Icon for 'canceled' order status."
+      },
+      {
+        "name": "IconStatusDelay",
+        "path": "@martyrs/src/modules/orders/components/icons/IconStatusDelay.vue",
+        "responsibility": "Icon for delayed orders (past end date and not finished/canceled)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatDate",
+        "type": "utility",
+        "parameters": [
+          "date: String|Date"
+        ],
+        "returns": "string",
+        "description": "Converts a date to a localized 'day month' string in en-US format."
+      },
+      {
+        "name": "getDateWithoutTime",
+        "type": "utility",
+        "parameters": [
+          "dateString: String|Date"
+        ],
+        "returns": "Date",
+        "description": "Returns a Date object set to midnight of the given date."
+      },
+      {
+        "name": "statusText",
+        "type": "computed",
+        "description": "Generates human-readable status text based on props.status, props.createdAt, props.updatedAt, and positions' end dates.",
+        "returns": "string"
+      },
+      {
+        "name": "statusIcon",
+        "type": "computed",
+        "description": "Selects the appropriate status icon component based on props.status and overdue logic.",
+        "returns": "VueComponent"
+      },
+      {
+        "name": "showReturnNotice",
+        "type": "computed",
+        "description": "Determines whether to show the 'Need to return' notice: true if any position end date is within 3 days.",
+        "returns": "boolean"
+      },
+      {
+        "name": "hasOverdue",
+        "type": "computed",
+        "description": "Checks whether any position end date is in the past, to flag overdue returns.",
+        "returns": "boolean"
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, defineProps)",
+      "@martyrs/src/components/Tooltip/Tooltip.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusCreated.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusConfirmed.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusInUse.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusFinished.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusCanceled.vue",
+      "@martyrs/src/modules/orders/components/icons/IconStatusDelay.vue",
+      "Global constant FILE_SERVER_URL",
+      "Global helper formatPrice (expected to be injected or imported elsewhere)"
+    ],
+    "Usage": "Imported into parent views or list components to display individual order summaries. Example import: import CardOrderUser from 'modules/orders/components/blocks/CardOrderUser.vue'; then used in template as <CardOrderUser :orderId=\"...\" :status=\"...\" :positions=\"...\" :createdAt=\"...\" :updatedAt=\"...\" :total=\"...\"/>.",
+    "Importance": 4,
+    "Notes": [
+      "Relies on a global or injected formatPrice function to display the total price.",
+      "Grid shows up to 3 item images; if more, the 4th cell displays '+N'.",
+      "Status logic covers custom 'delay' state when past end date and not finished/canceled.",
+      "Uses FILE_SERVER_URL to resolve image URLs; ensure this env variable is set.",
+      "Scoped style only adds .t-red for overdue text color; other styling is via utility classes."
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "path": "../../src/modules/icons/navigation/IconEllipsis.vue",
+  "relativePath": "modules/icons/navigation/IconEllipsis.vue",
+  "type": "source",
+  "name": "IconEllipsis.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент, который рендерит SVG иконку с тремя кругами (горизонтальная «эллипсис»).",
+    "Purpose": "Предоставить переиспользуемую иконку «…» для навигационных элементов и интерфейсных кнопок в проекте.",
+    "Components": [
+      {
+        "name": "IconEllipsis",
+        "role": "Корневой компонент, выводит SVG с тремя кругами, принимает пропс fill и проксирует классы через $attrs."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Определяет входные свойства компонента.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Цвет заливки кругов."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API, defineProps)",
+      "CSS-переменные (var(--black))"
+    ],
+    "Usage": "Импортировать компонент и вставить в шаблон: `import IconEllipsis from 'modules/icons/navigation/IconEllipsis.vue';` затем `<IconEllipsis fill=\"#333\" class=\"my-icon\" />`.",
+    "Importance": 2,
+    "Notes": [
+      "Не содержит отдельного блока <style> — стили задаются через атрибуты и пропс fill.",
+      "Классы из родителя передаются в SVG через $attrs.class.",
+      "Размер иконки фиксирован (48×48), при необходимости можно переопределить через CSS."
+    ]
+  }
+}

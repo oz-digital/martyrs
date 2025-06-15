@@ -1,0 +1,31 @@
+{
+  "messages": {
+    "en-default": {
+      "wallet": {
+        "title": "Your Wallet",
+        "subtitle": "Earn WDT by purchasing our weed or contributing to the community.",
+        "token": "WDT",
+        "pay": "pay",
+        "youReceived": "you received",
+        "enterAmount": "enter amount to top up",
+        "backToWallet": "back to wallet",
+        "backToSelection": "back to selection",
+        "balanceReplenished": "balance replenished",
+        "depositWithCrypto": "deposit with crypto"
+      }
+    },
+    "ru-default": {
+      "wallet": {
+        "title": "Ваш Кошелек",
+        "subtitle": "Зарабатывайте WDT, покупая товары или внося вклад в сообщество.",
+        "pay": "купить",
+        "youReceived": "вы пополнили на сумму",
+        "enterAmount": "введите сумму для пополнения",
+        "backToWallet": "назад к кошельку",
+        "backToSelection": "назад к списку",
+        "balanceReplenished": "баланс пополнен",
+        "depositWithCrypto": "пополнение криптовалютой"
+      }
+    }
+  }
+}

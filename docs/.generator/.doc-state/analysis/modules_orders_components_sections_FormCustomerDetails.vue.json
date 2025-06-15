@@ -1,0 +1,57 @@
+{
+  "path": "../../src/modules/orders/components/sections/FormCustomerDetails.vue",
+  "relativePath": "modules/orders/components/sections/FormCustomerDetails.vue",
+  "type": "source",
+  "name": "FormCustomerDetails.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component rendering a form section for editing customer personal details including name, phone number, and social messenger username.",
+    "Purpose": "Provides a reusable UI section within an orders module to capture and bind customer profile data to a parent customer object.",
+    "Components": [
+      {
+        "Block": "Layout wrapper that displays a titled section and applies spacing/margin classes."
+      },
+      {
+        "Field": "Generic text input component used for binding simple string fields (e.g., customer.profile.name, socials)."
+      },
+      {
+        "FieldPhone": "Specialized phone input component with country selection; binds phone number and emits country code."
+      },
+      {
+        "Select": "Dropdown selector used to choose a messenger platform; updates a local `messengerSelected` state."
+      }
+    ],
+    "Functions": [
+      {
+        "setCountry": {
+          "description": "Event handler for FieldPhone `@country` event; assigns the selected country code to `customer.number`.",
+          "params": [
+            "country"
+          ]
+        }
+      },
+      {
+        "updateMessenger": {
+          "description": "Event handler for Select `@update:select` event; updates the local `messengerSelected` ref.",
+          "params": [
+            "option"
+          ]
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/FieldPhone/FieldPhone.vue",
+      "@martyrs/src/components/Select/Select.vue"
+    ],
+    "Usage": "Imported as `FormCustomerDetails.vue` and used within parent order or customer form views. Expects a `customer` object prop and optional `title` prop; binds inputs directly to the `customer` fields.",
+    "Importance": 3,
+    "Notes": [
+      "No dedicated <style> section; styling is applied via utility CSS classes.",
+      "Uses `v-model:field` on custom Field components to bind nested object properties.",
+      "Default messenger option is set to WhatsApp, and default phone country is 'TH'."
+    ]
+  }
+}

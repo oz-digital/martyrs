@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/music/routes/playlist.routes.js",
+  "relativePath": "modules/music/routes/playlist.routes.js",
+  "type": "source",
+  "name": "playlist.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл регистрирует HTTP-маршруты для работы с плейлистами — CRUD, управление треками и коллабораторами, а также получение плейлистов по URL с проверкой доступа.",
+    "Purpose": "Определить и подключить к приложению REST API эндпоинты для управления плейлистами.",
+    "Components": [
+      {
+        "name": "default export function",
+        "description": "Главная функция, принимающая app, db, origins, publicPath и регистрирующая маршруты."
+      },
+      {
+        "name": "playlist controller",
+        "description": "Контроллер с методами для создания, чтения, обновления и удаления плейлистов, а также для работы с треками и коллабораторами."
+      },
+      {
+        "name": "authJwt middleware",
+        "description": "Проверяет JWT-токен пользователя для защищённых маршрутов."
+      },
+      {
+        "name": "inline URL handler",
+        "description": "Асинхронный обработчик GET /api/playlists/url/:url для получения публичных и приватных плейлистов по URL с проверкой разрешений."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default async function(app, db, origins, publicPath)",
+        "description": "Инициализирует маршруты для работы с плейлистами.",
+        "parameters": [
+          "app — экземпляр Express",
+          "db — объект с моделями БД",
+          "origins — разрешённые источники (не используется)",
+          "publicPath — публичный путь (не используется)"
+        ]
+      },
+      {
+        "name": "inline async handler(req, res)",
+        "description": "Обработка запроса GET /api/playlists/url/:url: поиск записи, проверка статуса isPublic и прав доступа, возврат либо ошибки, либо данных плейлиста.",
+        "parameters": [
+          "req — объект запроса",
+          "res — объект ответа"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "../controllers/playlist.controller.js",
+      "Express (app)",
+      "db.playlist (Mongoose-модель)"
+    ],
+    "Usage": "Импортируется и вызывается при старте приложения (обычно в точке инициализации маршрутов) с передачей app, db и дополнительных параметров для регистрации эндпоинтов.",
+    "Importance": 4,
+    "Notes": "Параметры origins и publicPath передаются, но внутрь не используются. inline handler вручную обрабатывает логику доступа к приватным плейлистам (владелец или коллаборатор). Поддерживается опциональный :userId при получении списков пользователя."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/files/files.server.js",
+  "relativePath": "modules/files/files.server.js",
+  "type": "source",
+  "name": "files.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл объединяет и инициализирует компоненты модуля работы с файлами: контроллеры и маршруты.",
+    "Purpose": "Предоставить централизованный механизм регистрации маршрутов и контроллеров для операций с файлами в основном приложении.",
+    "Components": [
+      {
+        "name": "filesController",
+        "description": "Объект-контроллер, реализующий бизнес-логику операций с файлами (загрузка, скачивание, удаление и т.п.)."
+      },
+      {
+        "name": "filesRoutes",
+        "description": "Функция, настраивающая HTTP-маршруты (endpoints) для работы с файлами на основе переданных app, db, origins и publicPath."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeFiles",
+        "params": [
+          "app",
+          "db",
+          "origins",
+          "publicPath"
+        ],
+        "description": "При наличии экземпляра приложения (app) регистрирует маршруты файлового API, передавая им соединение с БД, список разрешённых источников и публичную директорию."
+      }
+    ],
+    "Dependencies": [
+      "./controllers/files.controller.js",
+      "./routes/files.routes.js"
+    ],
+    "Usage": "В основном приложении или модульном инициализаторе импортируется как `import filesModule from 'modules/files/files.server.js'`, затем вызывается `filesModule.initialize(app, db, origins, publicPath)` или деструктурируется `import { initialize, routes, controllers }`.",
+    "Importance": 3,
+    "Notes": [
+      "initializeFiles выполняет регистрацию маршрутов только при наличии объекта app, что позволяет тестировать контроллеры и маршруты независимо.",
+      "Экспорт и по умолчанию, и именованно (`initialize`, `routes`, `controllers`) облегчает гибкое подключение в разных частях приложения."
+    ]
+  }
+}

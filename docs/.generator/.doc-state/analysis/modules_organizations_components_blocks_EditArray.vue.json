@@ -1,0 +1,86 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/EditArray.vue",
+  "relativePath": "modules/organizations/components/blocks/EditArray.vue",
+  "type": "source",
+  "name": "EditArray.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a titled list of items with delete buttons and manages adding/removing products via a Vuex store.",
+    "Purpose": "Provides a reusable block in the organizations module for displaying an array of items (products), allowing deletion and integration with a 'leftovers' Vuex module.",
+    "Components": [
+      {
+        "name": "EditArray",
+        "role": "Main component that accepts props 'name' and 'items', displays them in a list, and emits add/remove events or directly commits to Vuex."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "test",
+        "description": "Logs the current value of techStack to the console.",
+        "parameters": []
+      },
+      {
+        "name": "addProductToLeftover",
+        "description": "Sets the quantity on the selected techStack item (or its modification), then dispatches 'leftovers/addProductToLeftover' to Vuex and toggles the add-new state.",
+        "parameters": []
+      },
+      {
+        "name": "deleteItem",
+        "description": "Commits 'leftovers/deleteItemFromLeftover' for the given item to the Vuex store.",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "Object",
+            "description": "The item to remove from leftovers."
+          }
+        ]
+      },
+      {
+        "name": "reserOrderList",
+        "description": "Fetches or resets the leftovers list based on the presence of route.params._id.",
+        "parameters": []
+      },
+      {
+        "name": "changeAdd",
+        "description": "Toggles the local boolean showAddNew to switch between add-new and list modes.",
+        "parameters": []
+      },
+      {
+        "name": "itemSizes",
+        "description": "Computes and returns size variants for a given item by querying the 'orders/getProductSizes' getter.",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "Object",
+            "description": "The source item for which to compute available sizes."
+          }
+        ]
+      },
+      {
+        "name": "itemColors",
+        "description": "Computes and returns color variants for a given item by querying the 'orders/getProductColors' getter.",
+        "parameters": [
+          {
+            "name": "item",
+            "type": "Object",
+            "description": "The source item for which to compute available colors."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, toRefs, computed)",
+      "vue-router (useRouter, useRoute)",
+      "Vuex store modules: leftovers, orders, items"
+    ],
+    "Usage": "Imported into a parent component that provides 'name' and 'items' props. Used to display and manage an array of product-like entries, hooking into the 'leftovers' Vuex module for persistent state.",
+    "Importance": 3,
+    "Notes": [
+      "The component uses `store` but does not import it explicitly; assumes global/inject.",
+      "Variable `showAddNew` is toggled but never declared or initialized in this script—likely a bug or missing code.",
+      "Computed `isProductValid` has incomplete logic and may return undefined in some branches.",
+      "Style section customizes a `.VueSelect` class, though no corresponding VueSelect component is used here.",
+      "Emits 'add' and 'remove' are defined but not actually called in the script."
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/music/music.client.js",
+  "relativePath": "modules/music/music.client.js",
+  "type": "source",
+  "name": "music.client.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

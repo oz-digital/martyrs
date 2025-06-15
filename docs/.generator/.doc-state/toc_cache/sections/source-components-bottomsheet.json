@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-bottomsheet",
+    "title": "Проект: Компоненты / Bottom Sheet",
+    "description": "Модуль содержит компонент BottomSheet, реализующий выезжающую снизу панель для отображения дополнительного контента или действий.",
+    "subsections": [
+      {
+        "id": "bottomsheet-component",
+        "title": "Компонент BottomSheet",
+        "description": "Основной Vue-компонент для отображения и управления нижней панелью (Bottom Sheet)."
+      }
+    ]
+  },
+  "fileHashes": [
+    "890bce67da11cf6f4a076dd04f093581"
+  ],
+  "groupHash": "4699a811660830fb5a1494b6176fcf05",
+  "generated": "2025-06-05T09:16:18.627Z"
+}

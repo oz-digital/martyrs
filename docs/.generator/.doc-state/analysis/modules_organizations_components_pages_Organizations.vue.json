@@ -1,0 +1,68 @@
+{
+  "path": "../../src/modules/organizations/components/pages/Organizations.vue",
+  "relativePath": "modules/organizations/components/pages/Organizations.vue",
+  "type": "source",
+  "name": "Organizations.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue component renders a list of organizations filtered by role (Owner, Member, Follower), provides a tabbed interface to switch between roles, and includes a button to navigate to the Create Organization page.",
+    "Purpose": "Acts as the main Organizations page in the application, fetching and displaying organization data via a Feed component and providing navigation controls.",
+    "Components": [
+      {
+        "name": "Tab",
+        "description": "Renders tabs for selecting the user’s role (owner, member, follower)."
+      },
+      {
+        "name": "Feed",
+        "description": "Fetches and renders a list of organizations using a scoped slot for item rendering and load-more control."
+      },
+      {
+        "name": "CardOrganization",
+        "description": "Displays individual organization details (name, rating, followers) inside the Feed slot."
+      },
+      {
+        "name": "Card",
+        "description": "Base card UI component (imported for potential reuse, not directly used here)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeTab",
+        "description": "Sets the initial tab value from the route query or defaults to 'owner'",
+        "parameters": []
+      },
+      {
+        "name": "navigateToCreateOrganization",
+        "description": "Inline click handler to push the 'Create Organization' route when the '+' button is clicked",
+        "parameters": []
+      },
+      {
+        "name": "watchTabChange",
+        "description": "Watches the tabOrganization ref and updates the router query parameter on change",
+        "parameters": [
+          "newValue"
+        ]
+      },
+      {
+        "name": "organizations.actions.read",
+        "description": "Store action passed to Feed for reading organizations from the backend",
+        "parameters": [
+          "options"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue",
+      "vue-router",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/globals/views/components/blocks/Card.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue"
+    ],
+    "Usage": "Typically registered in the Vue Router as the component for the '/organizations' route. Other parts of the app navigate to it via $router.push or link components.",
+    "Importance": 3,
+    "Notes": "There is no dedicated <style> block; styling relies on utility classes. Uses v-memo for list rendering optimization. Conditionally hides the header on a global MOBILE_APP flag. Route query 'tab' stays in sync with the selected tab via a watcher."
+  }
+}

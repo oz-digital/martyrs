@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/community/components/blocks/FooterBlogpost.vue",
+  "relativePath": "modules/community/components/blocks/FooterBlogpost.vue",
+  "type": "source",
+  "name": "FooterBlogpost.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент FooterBlogpost.vue рендерит футер поста в блоге с тремя элементами: отображение просмотров, лайков (реакций) и количества комментариев. Пользователь может кликнуть по иконке лайка, чтобы добавить или удалить свою реакцию.",
+    "Purpose": "Обеспечить интерактивный нижний блок (footer) для страницы поста: показывать метрики (просмотры, лайки, комментарии) и обрабатывать действия пользователя (добавление/удаление лайка), синхронизируя их со стором реакций.",
+    "Components": [
+      {
+        "name": "FooterBlogpost",
+        "role": "основной Vue-компонент, отвечающий за отображение и логику футера блогпоста"
+      },
+      {
+        "name": "router-link",
+        "role": "встроенный компонент vue-router для навигации к самому посту и к разделу комментариев"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "addReaction",
+        "purpose": "добавляет реакцию (лайк) к текущему посту",
+        "parameters": [
+          {
+            "name": "type",
+            "description": "тип реакции (в коде всегда 'like')"
+          }
+        ]
+      },
+      {
+        "name": "deleteReaction",
+        "purpose": "удаляет ранее добавленную реакцию (лайк) у текущего поста",
+        "parameters": [
+          {
+            "name": "type",
+            "description": "тип реакции (в коде всегда 'like')"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, defineProps)",
+      "vue-router (router-link, useRouter)",
+      "@martyrs/src/modules/community/store/reactions.js (actions.create, actions.delete)"
+    ],
+    "Usage": "Импортируется в родительских компонентах/страницах, где есть объект blogpost и информация о текущем пользователе. Пример: <FooterBlogpost :blogpost=\"post\" :user=\"currentUser\" />.",
+    "Importance": 3,
+    "Notes": [
+      "Используется script setup из Composition API.",
+      "computed и useRouter импортируются, но не применяются в коде.",
+      "В alert-ах используется простой JavaScript-алерт для ошибок и запроса логина.",
+      "Тип реакции передаётся в функции, но всегда совпадает с 'like' — можно убрать аргумент."
+    ]
+  }
+}

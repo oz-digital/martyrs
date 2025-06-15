@@ -1,0 +1,28 @@
+{
+  "messages": {
+    "en-default": {
+      "title": "Sign Up",
+      "description": "Choose a convenient way to register via phone or email:",
+      "phone": "Phone",
+      "email": "Email",
+      "phonePlaceholder": "Enter your phone",
+      "emailPlaceholder": "Enter your email",
+      "emailNotice": "We will send you an email with a confirmation code that you will need to enter in the next step.",
+      "smsNotice": "We will send you an SMS with a confirmation code that you will need to enter in the next step.",
+      "sendCode": "Send Code",
+      "haveAccount": "Already have an account?"
+    },
+    "ru-default": {
+      "title": "Новая учетная запись",
+      "description": "Выберите удобный способ регистрации через телефон или email:",
+      "phone": "Телефон",
+      "email": "Email",
+      "phonePlaceholder": "Введите ваш телефон",
+      "emailPlaceholder": "Введите ваш email",
+      "emailNotice": "Мы отправим вам электронное письмо с кодом подтверждения, который вы должны будете ввести в следующем шаге.",
+      "smsNotice": "Мы вышлем вам SMS с кодом подтверждения, который вы должны будете ввести в следующем шаге.",
+      "sendCode": "Отправить код",
+      "haveAccount": "У вас уже есть аккаунт?"
+    }
+  }
+}

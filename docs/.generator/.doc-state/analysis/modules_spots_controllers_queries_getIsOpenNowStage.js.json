@@ -1,0 +1,38 @@
+{
+  "path": "../../src/modules/spots/controllers/queries/getIsOpenNowStage.js",
+  "relativePath": "modules/spots/controllers/queries/getIsOpenNowStage.js",
+  "type": "source",
+  "name": "getIsOpenNowStage.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Функция getIsOpenNowStage возвращает MongoDB aggregation-пайплайн стадию $addFields, вычисляющую булево поле isOpenNow на основе текущей даты/времени и расписания работы (специального и регулярного).",
+    "Purpose": "Определить, открыт ли объект (spot) в текущий момент, прямо в MongoDB-запросе, без дополнительной обработки на уровне приложения.",
+    "Components": [
+      {
+        "name": "getIsOpenNowStage",
+        "type": "function",
+        "responsibility": "Генерирует объект стадии агрегации для расчета поля isOpenNow."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getIsOpenNowStage",
+        "parameters": [],
+        "returns": "Объект стадии агрегации ({ $addFields: { isOpenNow: ... } })",
+        "description": "Строит логику проверки текущего дня и времени против специальных дат (worktime.special) и регулярного графика (worktime.regular), возвращает true/false."
+      }
+    ],
+    "Dependencies": [
+      "Стандартный объект Date (JS)",
+      "MongoDB aggregation операторы: $addFields, $let, $filter, $ifNull, $dateToString, $size, $arrayElemAt, $cond, $anyElementTrue, $map, $lte, $gt",
+      "Структура документа: поле worktime.special, worktime.regular, каждый элемент содержит isOpen, date или dayOfWeek и periods с open/close"
+    ],
+    "Usage": "Импортируется как:\n  import getIsOpenNowStage from 'modules/spots/controllers/queries/getIsOpenNowStage';\nВстраивается в pipeline:\n  collection.aggregate([..., getIsOpenNowStage(), ...]);",
+    "Importance": 3,
+    "Notes": [
+      "Использует локальное время сервера без явного указания timezone — возможны расхождения в кластерах с разными настройками.",
+      "Сравнение времени происходит строково (формат HH:mm), предполагая, что open/close заданы в том же формате.",
+      "Нет внешних JS-модулей — «зависимости» относятся к структуре данных и встроенным возможностям MongoDB."
+    ]
+  }
+}

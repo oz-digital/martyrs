@@ -1,0 +1,30 @@
+{
+  "path": "../../src/modules/icons/labels/LabelAppStore.vue",
+  "relativePath": "modules/icons/labels/LabelAppStore.vue",
+  "type": "source",
+  "name": "LabelAppStore.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue single-file component that renders a static SVG graphic of the App Store label/icon.",
+    "purpose": "Provide a reusable App Store badge/icon within the project’s icon library for use in UI components.",
+    "components": [
+      {
+        "name": "LabelAppStore",
+        "role": "The root Vue component that outputs an <svg> element containing multiple <path> definitions to draw the App Store label."
+      }
+    ],
+    "functions": [],
+    "dependencies": [
+      "No JavaScript or Vue dependencies",
+      "Relies on global CSS custom properties --black and --white for fill colors"
+    ],
+    "usage": "Import the component where needed, e.g.\n\n  import LabelAppStore from 'modules/icons/labels/LabelAppStore.vue'\n\nand then use in a template as <LabelAppStore/> to display the icon.",
+    "importance": 2,
+    "notes": [
+      "No <script> or <style> sections—purely presentational.",
+      "Fixed size viewBox (205×59) and hard-coded path data; not responsive unless wrapper CSS overrides svg width/height.",
+      "SVG fill colors are driven by CSS variables, allowing theme overrides.",
+      "Could be tree-shaken if not used, since it has no side effects."
+    ]
+  }
+}

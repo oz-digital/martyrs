@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/products/components/sections/EditAttributes.vue",
+  "relativePath": "modules/products/components/sections/EditAttributes.vue",
+  "type": "source",
+  "name": "EditAttributes.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "EditAttributes.vue предоставляет интерфейс для просмотра, добавления, редактирования и удаления произвольных параметров (атрибутов) продукта с помощью блока списка и всплывающего попапа для ввода данных.",
+    "Purpose": "Обеспечить в UI редактирование списка параметров (name/value) для сущности (например, продукта) с двусторонней привязкой к родительскому компоненту через v-model.",
+    "Components": [
+      {
+        "name": "Block",
+        "responsibility": "Контейнер секции с заголовком, плейсхолдером и кнопкой действия для открытия попапа."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Текстовое поле ввода для редактирования имени и значения параметра внутри попапа."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Кнопки «Cancel» и «Save Parameter» внутри попапа."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Всплывающее окно для ввода/редактирования параметра."
+      },
+      {
+        "name": "IconEdit",
+        "responsibility": "Иконка кнопки редактирования отдельного параметра."
+      },
+      {
+        "name": "IconDelete",
+        "responsibility": "Иконка кнопки удаления отдельного параметра."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openAttributePopup",
+        "description": "Открывает попап для добавления нового или редактирования существующего параметра. Если передан index, загружает данные выбранного атрибута в локальное состояние.",
+        "parameters": [
+          {
+            "name": "index",
+            "type": "Number | undefined",
+            "description": "Индекс параметра в массиве attributes. Если undefined, создаётся новый атрибут."
+          }
+        ]
+      },
+      {
+        "name": "closeAttributePopup",
+        "description": "Закрывает попап и сбрасывает индекс редактируемого атрибута.",
+        "parameters": []
+      },
+      {
+        "name": "saveAttribute",
+        "description": "Валидирует текущее имя параметра, затем либо обновляет существующий элемент массива attributes, либо добавляет новый. Закрывает попап по завершении.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue: ref, reactive, defineModel",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue"
+    ],
+    "Usage": "Импортируется и используется в родительском компоненте, который передаёт массив attributes через v-model. Компонент автоматически синхронизирует изменения с внешним состоянием.",
+    "Importance": 3,
+    "Notes": [
+      "Использует defineModel для двусторонней привязки v-model к свойству attributes родителя.",
+      "Для минимальной валидации при отсутствии имени параметра используется alert, нет более сложной обработки ошибок.",
+      "При редактировании осуществляется замена элемента в массиве методом splice, что сохраняет реактивность.",
+      "В компоненте нет отдельных стилей (style-блока) — используется стилизация через утилитарные классы."
+    ]
+  }
+}

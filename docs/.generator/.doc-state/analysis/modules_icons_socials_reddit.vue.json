@@ -1,0 +1,34 @@
+{
+  "path": "../../src/modules/icons/socials/reddit.vue",
+  "relativePath": "modules/icons/socials/reddit.vue",
+  "type": "source",
+  "name": "reddit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue single-file component that renders a static SVG representation of the Reddit logo.",
+    "Purpose": "To provide a reusable, presentational icon component for the Reddit social logo, used wherever the project needs to display the Reddit icon.",
+    "Components": [
+      {
+        "name": "RedditIcon",
+        "type": "Vue functional component",
+        "responsibilities": [
+          "Render a 40×36 SVG element",
+          "Draw the Reddit logo path with a CSS-variable-based fill color"
+        ]
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (for component rendering)",
+      "CSS variable --white (for fill color)"
+    ],
+    "Usage": "Import the component in another Vue file (e.g. `import RedditIcon from 'modules/icons/socials/reddit.vue'`), register it locally or globally, then include `<RedditIcon/>` in the template.",
+    "Importance": 2,
+    "Notes": [
+      "No `<script>` or `<style>` blocks: purely presentational.",
+      "SVG size is hardcoded to width=40 and height=36.",
+      "Fill color is set to `rgb(var(--white))`, relying on a global CSS variable.",
+      "Could be extended with props for dynamic sizing or colour if needed."
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "path": "../../src/modules/auth/controllers/routes/twofa.routes.js",
+  "relativePath": "modules/auth/controllers/routes/twofa.routes.js",
+  "type": "source",
+  "name": "twofa.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines two Express routes for sending two-factor authentication (2FA) codes: one for new sign-ups and one for password resets.",
+    "Purpose": "Registers HTTP POST endpoints under /api/twofa that invoke middlewares to validate user state and then dispatch a 2FA code via the twofa service.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "function",
+        "role": "Accepts an Express `app` instance and a database handle `db`, wires up two 2FA routes with appropriate middleware and controller handlers."
+      },
+      {
+        "name": "middlewareFactory",
+        "type": "factory function",
+        "role": "Generates middleware object (`verifySignUp`, `verifyUser`) bound to the provided `db`."
+      },
+      {
+        "name": "controllerFactory",
+        "type": "factory function",
+        "role": "Creates a controller object with a `sendcode` method, bound to the provided `db`."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default exported function",
+        "description": "Binds two POST routes to the Express app, wiring middleware and controller handlers.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express.Application",
+            "description": "The Express application instance to register routes on."
+          },
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Database connection or context passed to middleware and controller factories."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+        "imported": "middlewareFactory",
+        "purpose": "Provides user-validation middleware for signup and existing-user checks."
+      },
+      {
+        "module": "../services/twofa.service.js",
+        "imported": "controllerFactory",
+        "purpose": "Provides the 2FA code sending logic in the form of a controller."
+      }
+    ],
+    "Usage": "Imported and invoked in the central router/bootstrapping code with `app` and `db` arguments. Example: `import twofaRoutes from './modules/auth/controllers/routes/twofa.routes.js'; twofaRoutes(app, db);`",
+    "Importance": 3,
+    "Notes": [
+      "Reuses the same controller method (`sendcode`) for both signup and password-reset flows, differing only by middleware checks.",
+      "Routes are hard-coded under `/api/twofa`; no versioning is applied here.",
+      "Relies on the middleware factory to throw or respond early if user state checks fail.",
+      "Lightweight file: no direct business logic, purely wiring middleware and controller."
+    ]
+  }
+}

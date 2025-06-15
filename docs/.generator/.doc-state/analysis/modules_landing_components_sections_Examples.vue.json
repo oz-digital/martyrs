@@ -1,0 +1,41 @@
+{
+  "path": "../../src/modules/landing/components/sections/Examples.vue",
+  "relativePath": "modules/landing/components/sections/Examples.vue",
+  "type": "source",
+  "name": "Examples.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент, отвечающий за отображение секции «Example of the Strains» на лендинге: заголовка и горизонтальной прокручиваемой галереи изображений примеров.",
+    "Purpose": "Добавить на страницу лендинга блок с примерами сигналов (strain), показывая набор заранее заданных картинок из директории /images/examples.",
+    "Components": [
+      {
+        "name": "Examples",
+        "type": "Vue Component",
+        "responsibility": "Рендерит секцию с заголовком и коллекцией изображений из массива signals."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "description": "Vue-хук, выполняющийся при монтировании компонента. В текущей реализации пуст.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imported": [
+          "onMounted"
+        ]
+      }
+    ],
+    "Usage": "Компонент импортируется и используется в секции лендинга, например:\n\nimport Examples from 'modules/landing/components/sections/Examples.vue';\n\n<Examples/>",
+    "Importance": 3,
+    "Notes": [
+      "Массив signals жестко задан в скрипте. При необходимости можно вынести источником данных или props.",
+      "В секции <style> ничего не определено — стили применяются через глобальные/утилитные классы.",
+      "Метки загрузки картинок (loading=\"lazy\") используются для оптимизации загрузки.",
+      "Классы в шаблоне (cols-4, o-scroll, gap-medium и пр.) зависят от общей утилитарной CSS/SCSS-системы проекта."
+    ]
+  }
+}

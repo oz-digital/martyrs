@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/spots/controllers/spots.controller.js",
+  "relativePath": "modules/spots/controllers/spots.controller.js",
+  "type": "source",
+  "name": "spots.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

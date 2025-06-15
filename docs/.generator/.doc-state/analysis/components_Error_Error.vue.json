@@ -1,0 +1,31 @@
+{
+  "path": "../../src/components/Error/Error.vue",
+  "relativePath": "components/Error/Error.vue",
+  "type": "source",
+  "name": "Error.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент для отображения информации об ошибке (HTTP или другие) в виде карточки.",
+    "Purpose": "Цель — предоставлять единый UI-блок для вывода статуса ошибки и (в будущем) дополнительных деталей и кнопки закрытия.",
+    "Components": [
+      {
+        "name": "Error.vue",
+        "responsibility": "Рендерит контейнер с карточкой ошибки и выводит статус. За счёт props получает объект ошибки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "closeError",
+        "description": "Заготовка функции для обработки клика по кнопке закрытия всплывающего сообщения об ошибке.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, defineProps)",
+      "@/assets/icons/cross.svg (закомментированный импорт в шаблоне)"
+    ],
+    "Usage": "Импортируется в родительских компонентах или страницах, где нужно отобразить ошибку:  \n`import Error from '@/components/Error/Error.vue'` и в шаблоне `<Error :error=\"errorObject\"/>`.",
+    "Importance": 2,
+    "Notes": "1) В секции `<script setup>` подключён `computed`, но не используется.  \n2) В шаблоне есть закомментированные элементы для отображения подробного сообщения об ошибке и кнопки закрытия.  \n3) Секция `<style lang=\"scss\">` пуста — оформление может быть вынесено в общий стиль или ещё не реализовано."
+  }
+}

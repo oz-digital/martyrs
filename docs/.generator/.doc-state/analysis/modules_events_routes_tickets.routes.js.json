@@ -1,0 +1,80 @@
+{
+  "path": "../../src/modules/events/routes/tickets.routes.js",
+  "relativePath": "modules/events/routes/tickets.routes.js",
+  "type": "source",
+  "name": "tickets.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Defines and registers REST-style HTTP routes for ticket CRUD operations under the '/api/tickets' namespace.",
+    "purpose": "Acts as the route initializer for the tickets resource, wiring HTTP endpoints to controller methods so the application can handle read, create, update and delete requests for tickets.",
+    "components": [
+      {
+        "name": "default export (route registrar)",
+        "type": "function",
+        "responsibilities": [
+          "Accept an application instance, database handle, origins list and public path",
+          "Instantiate a tickets controller via controllerFactory(db, publicPath)",
+          "Bind HTTP routes to the controller's CRUD methods"
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "exported anonymous function",
+        "purpose": "Initialize and register ticket routes on the app object",
+        "parameters": [
+          "app – the Martyrs/Express application object",
+          "db – database connection or ORM instance",
+          "origins – list of allowed CORS origins (not used here)",
+          "publicPath – filesystem path for public assets, passed to controller"
+        ]
+      },
+      {
+        "name": "controller.read",
+        "purpose": "Handle GET requests for '/api/tickets', returning all tickets",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.create",
+        "purpose": "Handle POST requests for '/api/tickets/create', creating a new ticket",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "purpose": "Handle POST requests for '/api/tickets/update', updating an existing ticket",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.delete",
+        "purpose": "Handle POST requests for '/api/tickets/delete', deleting a ticket",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "dependencies": [
+      "../controllers/tickets.controller.js"
+    ],
+    "usage": "Imported and invoked by the main application bootstrap (e.g. in an index.js or app.js), passing in the app, db instance, CORS origins, and public path. After invocation, the endpoints become active.",
+    "importance": 3,
+    "notes": [
+      "The 'origins' parameter is received but not utilized in this file.",
+      "Uses HTTP POST for update and delete operations instead of PUT/DELETE—may reflect front-end constraints or framework conventions.",
+      "Relies on an external controller factory to encapsulate business logic and data access."
+    ]
+  }
+}

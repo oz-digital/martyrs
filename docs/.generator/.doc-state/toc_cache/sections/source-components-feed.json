@@ -1,0 +1,20 @@
+{
+  "section": {
+    "id": "source-components-feed",
+    "title": "Проект: Компоненты / Feed",
+    "description": "Модуль Feed содержит компоненты для отображения ленты контента с поддержкой различных макетов.",
+    "subsections": [
+      {
+        "id": "feed-components",
+        "title": "Основные компоненты Feed",
+        "description": "Включает ключевые компоненты для отображения ленты: Feed.vue и Masonry.vue."
+      }
+    ]
+  },
+  "fileHashes": [
+    "4a37c3469712e5e627d5374975d52477",
+    "c46d0777594504937fbd00fdf422b6c1"
+  ],
+  "groupHash": "e0f3834f46d13d9f38c59d46bb5c1b47",
+  "generated": "2025-06-05T09:16:46.528Z"
+}

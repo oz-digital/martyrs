@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/icons/socials/vk.vue",
+  "relativePath": "modules/icons/socials/vk.vue",
+  "type": "source",
+  "name": "vk.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders the VK (VKontakte) social media icon as an inline SVG.",
+    "Purpose": "Provides a reusable, self-contained VK icon for use in the UI wherever the VK social link or branding is required.",
+    "Components": [
+      {
+        "name": "VkIcon",
+        "role": "Root component that encapsulates the SVG markup for the VK logo."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (implicitly, since this is a .vue SFC)"
+    ],
+    "Usage": "Import the component and include it in a template: \n\nimport VkIcon from 'modules/icons/socials/vk.vue';\n\n<template>\n  <VkIcon />\n</template>",
+    "Importance": 2,
+    "Notes": [
+      "No <script> or <style> sections — purely declarative SVG markup.",
+      "SVG size is fixed at 40×40; does not accept props to change dimensions or color.",
+      "Fill color is hardcoded to white (#fff); if theming is required, additional props or CSS overrides would be needed.",
+      "No accessibility attributes (e.g. aria-labels); consider adding title/aria-hidden if needed for screen readers."
+    ]
+  }
+}

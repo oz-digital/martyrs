@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/auth/models/user.model.js",
+  "relativePath": "modules/auth/models/user.model.js",
+  "type": "source",
+  "name": "user.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, создающую и возвращающую Mongoose-модель User с предопределёнными полями (username, password, status, birthday, roles) и подключаемыми схемами профиля, социальных связей и учётных данных.",
+    "Purpose": "Определение структуры данных пользователя и создание модели User для работы с коллекцией пользователей в MongoDB посредством Mongoose.",
+    "Components": [
+      {
+        "name": "UserSchema",
+        "type": "Mongoose Schema",
+        "responsibility": "Описывает поля пользователя (username, password, status, birthday, roles) и опции (timestamps)."
+      },
+      {
+        "name": "User",
+        "type": "Mongoose Model",
+        "responsibility": "Конкретная модель для CRUD-операций над пользователями в базе."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default (exported)",
+        "description": "Функция-фабрика, принимая объект db с подключённым mongoose, создаёт схему, применяет к ней дополнительные миксины и возвращает модель User.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер зависимостей, содержащий объект mongoose и другие настройки подключения."
+          }
+        ],
+        "returns": {
+          "type": "Model",
+          "description": "Mongoose-модель 'User'"
+        }
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/credentials.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/profile.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/socials.schema.js",
+      "db.mongoose (Mongoose из переданного объекта db)"
+    ],
+    "Usage": "import createUserModel from 'modules/auth/models/user.model.js';\nconst User = createUserModel(db);\n// Далее можно применять User.find(), User.create() и т.д.",
+    "Importance": 5,
+    "Notes": [
+      "Поле username объявлено unique и sparse — позволяет иметь документы без username и при этом не конфликтовать по индексу.",
+      "Поле status имеет enum-ограничение и дефолтное значение 'active'.",
+      "Таймстемпы включены через опцию timestamps с функцией currentTime, возвращающей Date.now().",
+      "Схемы profile, socials и credentials подключаются миксинами для расширения модели."
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/chats/controllers/chats.controller.js",
+  "relativePath": "modules/chats/controllers/chats.controller.js",
+  "type": "source",
+  "name": "chats.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a controller factory for chat messages that provides methods to save and retrieve messages in the database.",
+    "Purpose": "To encapsulate persistence logic for chat messages in a reusable controller that can be instantiated with a database connection.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "Function",
+        "description": "Accepts a `db` object, extracts the `chat` model, and returns an object with chat message operations."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "saveMessage",
+        "description": "Creates a new `ChatMessage` document from the input payload and saves it to the database.",
+        "parameters": [
+          {
+            "name": "msg",
+            "type": "Object",
+            "description": "An object containing the chat message fields (e.g. chatId, author, text, etc.)."
+          }
+        ]
+      },
+      {
+        "name": "getMessages",
+        "description": "Retrieves all chat messages matching a given `chatId`, sorted by creation timestamp ascending.",
+        "parameters": [
+          {
+            "name": "chatId",
+            "type": "String or ObjectId",
+            "description": "Identifier of the chat whose messages should be fetched."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/mailing.js",
+        "imported": [
+          "sendChatMessageTelegram"
+        ],
+        "description": "Mailing utilities (though `sendChatMessageTelegram` is imported but not currently used)."
+      },
+      {
+        "external": "db.chat",
+        "description": "A Mongoose‐style model (or similar ORM) representing the chat messages collection."
+      }
+    ],
+    "Usage": "Imported via `import controllerFactory from 'modules/chats/controllers/chats.controller.js'`, then instantiated with the app’s database object: `const chatsCtrl = controllerFactory(db);` and used as `chatsCtrl.saveMessage(...)` or `chatsCtrl.getMessages(...)`.",
+    "Importance": 3,
+    "Notes": [
+      "Error handling logs to console and does not propagate exceptions.",
+      "`sendChatMessageTelegram` is imported but currently unused — may be intended for future notifications.",
+      "Relies on the caller to supply a properly configured `db` object with a `chat` model."
+    ]
+  }
+}

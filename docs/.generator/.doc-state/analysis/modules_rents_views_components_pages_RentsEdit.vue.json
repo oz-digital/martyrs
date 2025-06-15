@@ -1,0 +1,113 @@
+{
+  "path": "../../src/modules/rents/views/components/pages/RentsEdit.vue",
+  "relativePath": "modules/rents/views/components/pages/RentsEdit.vue",
+  "type": "source",
+  "name": "RentsEdit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue 3 component renders an \"Add/Edit Rent\" page, allowing users to select a rent period, add or remove a product via a popup feed, enter comments, and submit, reset, or delete the rent record.",
+    "Purpose": "Provide the main UI for creating new rent entries or editing existing ones within the Rents module of the application.",
+    "Components": [
+      {
+        "name": "Block",
+        "responsibility": "Section wrapper with optional title, actions, and placeholder"
+      },
+      {
+        "name": "Field",
+        "responsibility": "Form input for dates and text (including textarea)"
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Fetches and lists products with search and empty-state handling"
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal container for selecting a product from the Feed"
+      },
+      {
+        "name": "CardOrderItem",
+        "responsibility": "Displays individual product cards, used both in the feed list and selected products list"
+      },
+      {
+        "name": "CardPosition",
+        "responsibility": "(Imported but not used) Likely for positioning cards in other contexts"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openProductsPopup",
+        "purpose": "Opens the product selection popup",
+        "params": []
+      },
+      {
+        "name": "closeProductsPopup",
+        "purpose": "Closes the product selection popup",
+        "params": []
+      },
+      {
+        "name": "addProduct",
+        "purpose": "Assigns the selected product to the current rent and closes the popup",
+        "params": [
+          "product"
+        ]
+      },
+      {
+        "name": "updateItem",
+        "purpose": "Updates an item in the current rent’s items array",
+        "params": [
+          "index",
+          "updatedItem"
+        ]
+      },
+      {
+        "name": "deleteItem",
+        "purpose": "Removes an item from the current rent’s items array",
+        "params": [
+          "index"
+        ]
+      },
+      {
+        "name": "onMounted (lifecycle)",
+        "purpose": "Initial data load: reads existing rent if editing, clears state if adding, and fetches products",
+        "params": []
+      },
+      {
+        "name": "onSubmit",
+        "purpose": "Sends create or update request to the rents store depending on presence of an existing rent",
+        "params": []
+      },
+      {
+        "name": "onReset",
+        "purpose": "Resets the form by reloading the rent or cleaning the state",
+        "params": []
+      },
+      {
+        "name": "onDelete",
+        "purpose": "Deletes the current rent and navigates back to the rents list",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/orders/components/blocks/CardOrderItem.vue",
+      "@martyrs/src/modules/products/components/blocks/CardPosition.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/rents/views/store/rents.store",
+      "@martyrs/src/modules/products/store/products.js"
+    ],
+    "Usage": "Registered as the route component for the rent edit/add page (e.g. in router configuration under a path like '/organizations/:_id/rents/:rent?'), and imported by the Rents module’s router setup.",
+    "Importance": 4,
+    "Notes": [
+      "The component computes totalDays by taking the absolute difference between startDate and endDate and dividing by milliseconds per day.",
+      "There is a duplicate assignment to rents.state.current.owner in onSubmit (typo/redundant).",
+      "The updateItem and deleteItem helpers are defined but not currently bound in the template.",
+      "CardPosition is imported but not used.",
+      "The <style> block is global (not scoped) and adds .round-stat but that class is not used in this template."
+    ]
+  }
+}

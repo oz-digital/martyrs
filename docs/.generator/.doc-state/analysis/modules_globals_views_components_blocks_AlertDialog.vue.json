@@ -1,0 +1,61 @@
+{
+  "path": "../../src/modules/globals/views/components/blocks/AlertDialog.vue",
+  "relativePath": "modules/globals/views/components/blocks/AlertDialog.vue",
+  "type": "source",
+  "name": "AlertDialog.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 SFC that renders a modal alert dialog using a Popup component. It displays a title, message, and a dynamic list of action buttons, and handles close and action callbacks via props.",
+    "Purpose": "Provide a reusable alert dialog block in the UI where callers can pass in state (title, message, visibility, actions) and callbacks for button clicks and closing the dialog.",
+    "Components": [
+      {
+        "name": "Popup",
+        "source": "@martyrs/src/components/Popup/Popup.vue",
+        "responsibility": "Wrapper modal component that handles overlay, positioning and emits a close event."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleAction",
+        "type": "prop",
+        "params": [
+          {
+            "name": "action",
+            "type": "object",
+            "description": "One of the entries from alertState.actions, expected to have at least a `label` and any action-specific payload."
+          }
+        ],
+        "description": "Invoked when a user clicks one of the action buttons. Delegates action handling to the parent context."
+      },
+      {
+        "name": "closeAlert",
+        "type": "prop",
+        "params": [],
+        "description": "Called when the Popup requests to close (via @close-popup). Delegates dialog closing to the parent context."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "toRefs",
+          "defineProps"
+        ]
+      },
+      {
+        "module": "@martyrs/src/components/Popup/Popup.vue",
+        "imports": [
+          "Popup"
+        ]
+      }
+    ],
+    "Usage": "Imported into higher-level views or a global alert manager. Typically used as `<AlertDialog :alertState=\"state\" :handleAction=\"onAction\" :closeAlert=\"onClose\" />` wherever an alert needs to be shown.",
+    "Importance": 3,
+    "Notes": [
+      "No local `<style>` block—relies on global utility CSS classes (widths, padding, radius).",
+      "alertState is passed by reference via `toRefs` to maintain reactivity.",
+      "Actions array is rendered with `v-for` and index as key, so ensure stable ordering or provide unique keys if order changes.",
+      "Popup component must support `title`, `isPopupOpen` props and `close-popup` event for proper behavior."
+    ]
+  }
+}

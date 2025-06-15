@@ -1,0 +1,68 @@
+body { 
+	// Colors
+	.bg-red         { background: rgb(var(--red));          }
+	.bg-red-nice    { background: rgb(var(--red-nice));     }
+	.bg-green       { background: rgb(var(--green));        }
+	.bg-green-nice  { background: rgb(var(--green-nice));   }
+	.bg-orange      { background: rgb(var(--orange));       } /* исправлено имя переменной */
+	.bg-orange-nice { background: rgb(var(--orange-nice));  } /* исправлено имя переменной */
+	.bg-yellow      { background: rgb(var(--yellow));       }
+	.bg-yellow-nice { background: rgb(var(--yellow-nice));  }
+	// Colors BG
+	.bg-youtube 	{ background: rgba(var(--youtube), 		1); }
+	.bg-telegram 	{ background: rgba(var(--telegram), 	1); }
+	.bg-twitter 	{ background: rgba(var(--twitter), 		1); }
+	.bg-reddit 		{ background: rgba(var(--reddit), 		1); }
+	.bg-instagram 	{ background: rgba(var(--instagram), 	1); }
+	// BG Blur
+	.bg-blur-extra 		{ backdrop-filter: blur(var(--extra)) 	}
+	.bg-blur-big 			{ backdrop-filter: blur(var(--big)) 		}
+	.bg-blur-semi 		{ backdrop-filter: blur(var(--semi)) 		}	
+	.bg-blur-medium 	{ backdrop-filter: blur(var(--medium)) 	}
+	.bg-blur-regular 	{ backdrop-filter: blur(var(--regular)) }
+	.bg-blur-small 		{ backdrop-filter: blur(var(--small)) 	}
+	.bg-blur-thin 		{ backdrop-filter: blur(var(--thin)) 		}
+	// Other
+	.bg-grad-main { background: radial-gradient(84.52% 84.52% at 50% 50%, rgb(var(--main)) 23.39%, #E7FFF4 100%), #E8FFF3;}
+	// Transpatrens
+	.bg-t-white 	{ background: rgba(var(--white),0.1); 		}
+	.bg-t-grey 		{ background: rgba(var(--grey),0.1); 		}
+	.bg-t-darkgrey 	{ background: rgba(var(--darkgrey),0.1); 	}
+	.bg-transp  	{ background: rgba(var(--white),0); 		}
+	// Video Bg
+	.bg-video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		object-fit: cover;
+	}
+	// Fills
+	.fill-l-main  	{ fill: var(--light-main); }
+	.fill-main  		{ fill: rgb(var(--main)); }
+	.fill-black  		{ fill: rgb(var(--black)); }
+	.fill-dark  		{ fill: var(--dark); }
+	.fill-grey  		{ fill: var(--grey); }
+	.fill-light  		{ fill: var(--light); }
+	.fill-card 			{ fill: #F7F7F7; }
+	.fill-card-blue { fill: #eef2f6; }
+	.fill-white  		{ fill: rgb(var(--white));; }
+	.fill-t-white 	{ fill: rgba(var(--white),0.1); }
+	.fill-t-grey  	{ fill: rgba(var(--grey),0.1); }
+	.fill-t-darkgrey{ fill: rgba(var(--darkgrey),0.1); }
+	.fill-transp  	{ fill: rgba(var(--white),0); }
+	// Colors Fills
+	.fill-blue 			{ fill: #0057FF; }
+	.fill-light-blue{ fill: #4E8AFF; }
+	.fill-lightblue { fill: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%), #BFD4FF; }
+	.fill-green 		{ fill: #25DA08; }
+	.fill-light-red { fill: var(--light-red); }
+	// Brand Fills
+	.fill-youtube 	{ fill: var(--youtube); }
+	.fill-telegram 	{ fill: var(--telegram); }
+	.fill-twitter 	{ fill: var(--twitter); }
+	.fill-reddit 		{ fill: var(--reddit); }
+	.fill-instagram { fill: var(--instagram); }
+}

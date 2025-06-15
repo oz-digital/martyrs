@@ -1,0 +1,11 @@
+{
+  "path": "../../src/styles/base/all.scss",
+  "relativePath": "styles/base/all.scss",
+  "type": "source",
+  "name": "all.scss",
+  "extension": ".scss",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

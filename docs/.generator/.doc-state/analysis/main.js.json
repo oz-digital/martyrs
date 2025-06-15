@@ -1,0 +1,11 @@
+{
+  "path": "../../src/main.js",
+  "relativePath": "main.js",
+  "type": "source",
+  "name": "main.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

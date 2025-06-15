@@ -1,0 +1,39 @@
+{
+  "section": {
+    "id": "source-builder-modes",
+    "title": "Проект: Конструктор / Modes",
+    "description": "Модуль содержит конфигурации режимов сборки для различных сценариев разработки и продакшена, включая SPA и SSR.",
+    "subsections": [
+      {
+        "id": "spa-modes",
+        "title": "Режимы SPA",
+        "description": "Файлы spa.dev.js и spa.prod.js определяют параметры сборки для одностраничных приложений (SPA) в режимах разработки и продакшена."
+      },
+      {
+        "id": "ssr-modes",
+        "title": "Режимы SSR",
+        "description": "Файлы ssr.dev.js и ssr.prod.js содержат настройки для серверного рендеринга (SSR) в разных окружениях."
+      },
+      {
+        "id": "ssr-rspack-mode",
+        "title": "SSR с Rspack",
+        "description": "Файл ssr.rspack.dev.js предоставляет конфигурацию SSR с использованием сборщика Rspack в режиме разработки."
+      },
+      {
+        "id": "ssr-vite-mode",
+        "title": "SSR с Vite",
+        "description": "Файл ssr.vite.dev.js содержит настройки для SSR с использованием Vite в режиме разработки."
+      }
+    ]
+  },
+  "fileHashes": [
+    "05b0abb15b53fd1cdb4c88dd616bc137",
+    "3e306bf71fb34584670f94a5f3e59bab",
+    "6af2d63b1fed3114670ab3d447c46a69",
+    "6baad1f01a55117a5b7d1beb29271ab3",
+    "966c189d55bf37461759c6c2223b8af0",
+    "fe089946eab27f13c7a4c33a2de54814"
+  ],
+  "groupHash": "c771336e66d7e65ec84dd6056ebdcbbb",
+  "generated": "2025-06-05T09:15:31.227Z"
+}

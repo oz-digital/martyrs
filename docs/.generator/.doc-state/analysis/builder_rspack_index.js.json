@@ -1,0 +1,44 @@
+{
+  "path": "../../src/builder/rspack/index.js",
+  "relativePath": "builder/rspack/index.js",
+  "type": "source",
+  "name": "index.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Файл собирает и реэкспортирует несколько конфигураций Rspack: базовую, для SSR (клиент и сервер), для SPA и для API.",
+    "Purpose": "Централизовать все отдельные конфигурационные файлы Rspack и предоставить единый объект для импорта в сборочных скриптах или CLI-инструментах.",
+    "Components": [
+      {
+        "name": "baseConfig",
+        "description": "Базовая общая конфигурация Rspack, содержащая общие настройки для всех сборок."
+      },
+      {
+        "name": "clientConfig",
+        "description": "Конфигурация для клиентской части SSR (Server-Side Rendering)."
+      },
+      {
+        "name": "ssrConfig",
+        "description": "Конфигурация для серверного рендеринга SSR (server bundle)."
+      },
+      {
+        "name": "spaConfig",
+        "description": "Конфигурация для клиентской сборки SPA (Single Page Application)."
+      },
+      {
+        "name": "apiConfig",
+        "description": "Конфигурация сборки для API-слоя (например, серверных функций или микросервисов)."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "./rspack.config.base.js",
+      "./rspack.config.ssr.client.js",
+      "./rspack.config.ssr.server.js",
+      "./rspack.config.spa.client.js",
+      "./rspack.config.api.js"
+    ],
+    "Usage": "Импортируется в скриптах сборки или точках входа CLI для выбора нужной конфигурации: например, `import configs from './builder/rspack';` и далее `configs.spaConfig` или `configs.ssrConfig`.",
+    "Importance": 4,
+    "Notes": "Небольшой «аггрегатор» конфигураций. Легко расширяется: достаточно добавить новый файл `rspack.config.*.js` и прописать импорт и экспорт здесь. Не содержит логики преобразования — только объединяет модули."
+  }
+}

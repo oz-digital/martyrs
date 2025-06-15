@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/community/models/comment.model.js",
+  "relativePath": "modules/community/models/comment.model.js",
+  "type": "source",
+  "name": "comment.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет Mongoose-схему и модель для комментариев в различных сущностях (блог-пост, другой комментарий, фото, событие), включая поддержку иерархии (родитель/дочерние комментарии), хранения глубины вложенности и управления правами владения.",
+    "Purpose": "Предоставить единую модель Comment для CRUD-операций над комментариями внутри модуля community, обеспечить хранение структуры вложенных комментариев и подключить логику ownership из общего набора схем.",
+    "Components": [
+      {
+        "name": "CommentSchema",
+        "type": "Mongoose.Schema",
+        "responsibilities": [
+          "Определение полей: type, target, parent, children, depth, content, createdAt",
+          "Настройка динамического поля ref для target в зависимости от type",
+          "Установка индекса по полям target, parent, depth",
+          "Применение схемы владения через applyOwnershipSchema"
+        ]
+      },
+      {
+        "name": "Comment",
+        "type": "Mongoose.Model",
+        "responsibilities": [
+          "Предоставление интерфейса для работы с коллекцией comments (создание, чтение, обновление, удаление)"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defaultExport",
+        "signature": "db => Model",
+        "description": "Фабричная функция, принимающая объект db (с подключённым mongoose) и возвращающая модель Comment.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Должен содержать свойство mongoose с доступом к классам Schema и model."
+          }
+        ]
+      },
+      {
+        "name": "ref resolver",
+        "signature": "function(value)",
+        "description": "Динамически возвращает название связанной модели (Blogpost, Comment, Event или Photo) в зависимости от поля type.",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "any",
+            "description": "Не используется, логика основана на this.type."
+          }
+        ]
+      },
+      {
+        "name": "applyOwnershipSchema",
+        "signature": "(schema, db) => void",
+        "description": "Импортируемая функция для добавления в CommentSchema полей и логики, связанных с правами владения."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+        "import": "applyOwnershipSchema"
+      },
+      {
+        "module": "db.mongoose",
+        "import": [
+          "Schema",
+          "Schema.Types.ObjectId",
+          "model"
+        ]
+      }
+    ],
+    "Usage": "В точке инициализации модуля community (например, index.js или при настройке db):\nconst Comment = require('modules/community/models/comment.model.js')(db);\nПосле этого Comment используется в сервисах и контроллерах для операций с комментариями.",
+    "Importance": 4,
+    "Notes": [
+      "Поле target.ref вычисляется динамически, что позволяет хранить комментарии к разным сущностям в одной коллекции.",
+      "Схема поддерживает древовидную структуру (поле parent и массив children) и хранит уровень вложенности в поле depth.",
+      "Индекс { target:1, parent:1, depth:1 } улучшает производительность запросов по получению вложенных комментариев.",
+      "applyOwnershipSchema добавляет в схему поля (например, createdBy) и методы для управления правами доступа владельца."
+    ]
+  }
+}

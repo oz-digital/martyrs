@@ -1,0 +1,129 @@
+{
+  "path": "../../src/modules/notifications/store/notifications.store.js",
+  "relativePath": "modules/notifications/store/notifications.store.js",
+  "type": "source",
+  "name": "notifications.store.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует модуль хранилища Vue для управления уведомлениями: загрузка, обновление статуса, синхронизация, управление устройствами и предпочтениями, а также вычисляемые свойства и истории изменений.",
+    "Purpose": "Обеспечить централизованное реактивное состояние и методы работы с уведомлениями (получение, отметка как прочитанное, синхронизация через WebSocket, регистрация устройства, управление пользовательскими настройками) в рамках приложения на Vue и фреймворке Martyrs.",
+    "Components": [
+      {
+        "name": "state",
+        "responsibility": "Реактивное хранилище данных: массив уведомлений, текущие уведомления, счетчики, настройки и статус загрузки."
+      },
+      {
+        "name": "actions",
+        "responsibility": "Набор асинхронных и синхронных методов для работы с API уведомлений, обновления локального состояния и обработки событий."
+      },
+      {
+        "name": "mutations",
+        "responsibility": "Сброс отдельных частей состояния к исходным значениям."
+      },
+      {
+        "name": "getters",
+        "responsibility": "Вычисляемые свойства для удобного доступа к спискам непрочитанных, прочитанных уведомлений и группировки по типу."
+      },
+      {
+        "name": "updateUnreadCount",
+        "responsibility": "Вспомогательная функция для пересчета количества непрочитанных уведомлений."
+      },
+      {
+        "name": "history + watch",
+        "responsibility": "Отслеживание изменений state для ведения истории состояний."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getNotifications",
+        "params": [
+          "userId (optional)"
+        ],
+        "purpose": "Запрос списка уведомлений пользователя с сервера, обновление state.notifications, lastSync и unreadCount."
+      },
+      {
+        "name": "markAsRead",
+        "params": [
+          "notificationId"
+        ],
+        "purpose": "Отметить конкретное уведомление как прочитанное на сервере и в локальном state."
+      },
+      {
+        "name": "syncNotificationStatus",
+        "params": [
+          "notificationId",
+          "status"
+        ],
+        "purpose": "Локально обновить статус уведомления (используется при WebSocket-обновлениях)."
+      },
+      {
+        "name": "registerDevice",
+        "params": [
+          "deviceData"
+        ],
+        "purpose": "Зарегистрировать устройство для push-уведомлений через API и отметить в state.deviceRegistered."
+      },
+      {
+        "name": "updatePreferences",
+        "params": [
+          "preferences"
+        ],
+        "purpose": "Отправить новые настройки уведомлений на сервер, получить обновленный список и сохранить в state.preferences."
+      },
+      {
+        "name": "getPreferences",
+        "params": [],
+        "purpose": "Получить с сервера текущие пользовательские настройки уведомлений и синхронизировать локальный state."
+      },
+      {
+        "name": "addLocalNotification",
+        "params": [
+          "notification"
+        ],
+        "purpose": "Добавить или обновить уведомление в локальном списке без обращения к API (для push/WebSocket)."
+      },
+      {
+        "name": "handleNotificationAction",
+        "params": [
+          "data"
+        ],
+        "purpose": "Обработать действие по уведомлению (маркировка как прочитанного, навигация по маршруту)."
+      },
+      {
+        "name": "markAllAsRead",
+        "params": [],
+        "purpose": "Отметить все уведомления пользователя как прочитанные на сервере и в локальном состоянии."
+      },
+      {
+        "name": "resetNotifications",
+        "params": [],
+        "purpose": "Очистить список уведомлений и сбросить счетчики и дату последней синхронизации."
+      },
+      {
+        "name": "resetCurrent",
+        "params": [],
+        "purpose": "Сбросить текущее уведомление к начальному состоянию."
+      },
+      {
+        "name": "resetPreferences",
+        "params": [],
+        "purpose": "Сбросить пользовательские настройки уведомлений к значениям по умолчанию."
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, reactive, watch)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Импортируется как модуль хранилища: например, import { state as notificationsState, actions as notificationsActions, getters as notificationsGetters, mutations as notificationsMutations } from 'modules/notifications/store/notifications.store.js'; далее используется внутри компонентов или в корневом сторе приложения.",
+    "Importance": 4,
+    "Notes": [
+      "Используется Composition API Vue без Vuex.",
+      "Ведется история изменений state через watch.",
+      "Навигационная логика в handleNotificationAction временно реализована через alert.",
+      "Преобразование настроек каналов перед отправкой на сервер обеспечивает совместимость с API.",
+      "Ошибка обрабатывается через setError из глобального стора."
+    ]
+  }
+}

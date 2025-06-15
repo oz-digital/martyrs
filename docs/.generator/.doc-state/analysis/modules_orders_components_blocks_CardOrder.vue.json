@@ -1,0 +1,66 @@
+{
+  "path": "../../src/modules/orders/components/blocks/CardOrder.vue",
+  "relativePath": "modules/orders/components/blocks/CardOrder.vue",
+  "type": "source",
+  "name": "CardOrder.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component CardOrder.vue renders a summary card for a customer order, displaying order status, delivery address and type, order ID, shipping dates, cost breakdown and payment status.",
+    "Purpose": "Provide a reusable UI block in the orders module to display detailed information about a single order in a card format.",
+    "Components": [
+      {
+        "name": "CardOrder",
+        "responsibility": "Main component that accepts an order object as a prop and renders its details (status, delivery info, totals, payment state)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "requestPayment",
+        "description": "Placeholder function to dispatch a new payment request for the order.",
+        "parameters": [
+          {
+            "name": "order",
+            "type": "Object",
+            "description": "The order object for which to initiate payment."
+          }
+        ]
+      },
+      {
+        "name": "DateToFormattedString",
+        "description": "Formats a given date by adding 6 days and returning it in 'DD/MM' format.",
+        "parameters": [
+          {
+            "name": "d",
+            "type": "String | Date",
+            "description": "Original date or ISO date string."
+          }
+        ]
+      },
+      {
+        "name": "DateToFormattedString2",
+        "description": "Formats a given date by adding 1 day and returning it in 'DD/MM' format.",
+        "parameters": [
+          {
+            "name": "d",
+            "type": "String | Date",
+            "description": "Original date or ISO date string."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, computed)",
+      "vue-router (useRouter)",
+      "assets/icons/status/*.svg (status icons)",
+      "assets/images/products (product images)"
+    ],
+    "Usage": "Imported into parent views or components to display individual orders. Typically used as <CardOrder :order=\"orderObject\"/> within an orders list component or page.",
+    "Importance": 3,
+    "Notes": [
+      "Some sections of the template and script (product listing, payment status retrieval via store) are commented out, indicating pending or optional features.",
+      "cartTotalPrice and payment computed properties are referenced in template but not defined in script (likely expected from global store or mixin).",
+      "Scoped SCSS only adds minimal styling for shop-cart-item; most styling comes from global utility classes.",
+      "Date formatting functions add fixed offsets (6 days or 1 day) – business logic should be verified."
+    ]
+  }
+}

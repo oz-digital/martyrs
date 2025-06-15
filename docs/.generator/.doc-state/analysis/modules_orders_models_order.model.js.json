@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/orders/models/order.model.js",
+  "relativePath": "modules/orders/models/order.model.js",
+  "type": "source",
+  "name": "order.model.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Defines and exports a Mongoose model for the Order entity, including schema fields, dynamic references, subdocuments, timestamps and ownership plugin.",
+    "purpose": "Provides the database schema and model registration for orders in the application, enabling CRUD operations and enforcing data structure.",
+    "components": [
+      {
+        "name": "OrderSchema",
+        "responsibilities": "Describes the structure of an Order document, its fields, types, defaults, subdocuments and relationships."
+      },
+      {
+        "name": "Order (Model)",
+        "responsibilities": "The Mongoose model created from OrderSchema, used to perform database operations (find, create, update, delete)."
+      }
+    ],
+    "functions": [
+      {
+        "name": "default export (factory)",
+        "description": "Accepts a database container object, applies the Order schema to Mongoose, attaches ownership, and returns the Order model.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Container with a mongoose instance (db.mongoose)"
+          }
+        ]
+      }
+    ],
+    "dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "db.mongoose (Mongoose)",
+      "User model (via ref in status_history and delivery.spot)"
+    ],
+    "usage": "Imported by the project’s module loader to register the Order model on the shared db object: const Order = require('modules/orders/models/order.model.js')(db);",
+    "importance": 4,
+    "notes": [
+      "Uses a dynamic refPath on customer.target to support polymorphic references.",
+      "Default deadline is set to 30 minutes from creation.",
+      "Applies a global ownership schema plugin to enforce access control.",
+      "Timestamps option uses a custom currentTime function for consistency."
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/globals/views/components/blocks/BlockSearch.vue",
+  "relativePath": "modules/globals/views/components/blocks/BlockSearch.vue",
+  "type": "source",
+  "name": "BlockSearch.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент BlockSearch предоставляет поле ввода для поиска магазинов или товаров с иконкой, синхронизирует своё значение с внешним состоянием и эмитит события при изменении ввода.",
+    "Purpose": "Реализовать настраиваемый и переиспользуемый UI-блок для поиска с поддержкой v-model и кастомного события поиска.",
+    "Components": [
+      {
+        "name": "IconSearch",
+        "importPath": "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+        "responsibility": "Отображает иконку лупы в начале поискового поля."
+      },
+      {
+        "name": "Field",
+        "importPath": "@martyrs/src/components/Field/Field.vue",
+        "responsibility": "Универсальный компонент текстового поля, обрабатывает ввод и эмитит события @update:field."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updateSearch",
+        "purpose": "Обрабатывать пользовательский ввод, обновлять локальное состояние и уведомлять родительский компонент.",
+        "parameters": [
+          {
+            "name": "search",
+            "type": "String",
+            "description": "Новое значение строки поиска."
+          }
+        ],
+        "emits": [
+          "update:modelValue",
+          "search"
+        ]
+      },
+      {
+        "name": "watch callback",
+        "purpose": "Слушает внешние изменения props.modelValue и синхронизирует stateSearch.",
+        "parameters": [
+          {
+            "name": "newVal",
+            "type": "String",
+            "description": "Новое значение modelValue."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watch, defineProps, defineEmits)",
+      "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+      "@martyrs/src/components/Field/Field.vue"
+    ],
+    "Usage": "Импортируется в родительских компонентах и используется с v-model: <BlockSearch v-model:modelValue=\"searchText\" placeholder=\"...\" autofocus/>. Родитель подписывается на событие search для выполнения поиска.",
+    "Importance": 3,
+    "Notes": [
+      "Используется Composition API через <script setup>.",
+      "Проп button определён, но в текущем шаблоне не используется (возможно, для расширения функционала позже).",
+      "Нет собственной секции <style>; все классы берутся из глобальных утилит CSS.",
+      "Эмитятся стандартные события для поддержки v-model и кастомного 'search'."
+    ]
+  }
+}

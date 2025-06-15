@@ -1,0 +1,57 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionGuide.vue",
+  "relativePath": "modules/landing/components/sections/SectionGuide.vue",
+  "type": "source",
+  "name": "SectionGuide.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a section with a localized title, optional subtitle, and a list of FAQ items displayed as expandable spoilers.",
+    "Purpose": "Provide a self-contained FAQ section on a landing page, driven by i18n content data passed in via props.",
+    "Components": [
+      {
+        "name": "Spoiler",
+        "responsibility": "Renders a collapsible panel for each FAQ entry with customizable header and content slots."
+      },
+      {
+        "name": "IconChevronBottom",
+        "responsibility": "Displays a chevron icon that rotates when its parent Spoiler is opened or closed."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "t",
+        "description": "Translate a single string key based on the provided messages object.",
+        "parameters": [
+          "key: string"
+        ]
+      },
+      {
+        "name": "tm",
+        "description": "Translate an array or object map for keys, used here to retrieve the list of FAQ items.",
+        "parameters": [
+          "key: string"
+        ]
+      },
+      {
+        "name": "te",
+        "description": "Check if a translation for a given key exists in the messages object.",
+        "parameters": [
+          "key: string"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/components/Spoiler/Spoiler.vue",
+      "@martyrs/src/modules/icons/navigation/IconChevronBottom.vue",
+      "vue-i18n"
+    ],
+    "Usage": "Imported into a landing page or parent section with `<SectionGuide :content=\"localeMessages\"/>`, where `localeMessages` is an object of translations including `title`, `subtitle`, and `FAQ` array.",
+    "Importance": 3,
+    "Notes": [
+      "Leverages `v-html` to render rich HTML inside FAQ descriptions; ensure content is sanitized.",
+      "No scoped or additional styles defined; styling is inherited from global or parent SCSS.",
+      "Relies entirely on runtime i18n messages passed via props—no fallback defaults inside the component.",
+      "Uses `item.title` as `key` in v-for; titles must be unique."
+    ]
+  }
+}

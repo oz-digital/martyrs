@@ -1,0 +1,85 @@
+{
+  "path": "../../src/modules/chats/store/chat.store.js",
+  "relativePath": "modules/chats/store/chat.store.js",
+  "type": "source",
+  "name": "chat.store.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет Vue-подобный store для работы с чатом: хранит состояние (сообщения, текущий чат, имя пользователя) и содержит методы для подключения к WebSocket, подписки на чат, загрузки и отправки сообщений.",
+    "Purpose": "Обеспечить централизованное управление состоянием чат-модуля: установка и обновление списка сообщений, управление соединением WebSocket и взаимодействие с сервером по HTTP/WebSocket.",
+    "Components": [
+      {
+        "name": "state",
+        "responsibility": "Реактивный объект со свойствами messages, currentChatId, username"
+      },
+      {
+        "name": "methods",
+        "responsibility": "Набор функций для управления WebSocket-соединением, изменения state и отправки/получения сообщений"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "connectWebSocket",
+        "description": "Устанавливает WebSocket-соединение для модуля «chat», очищает старые обработчики и подписывается на новые входящие сообщения",
+        "params": [
+          {
+            "name": "userId",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "setCurrentChat",
+        "description": "Устанавливает активный чат по chatId, очищает старые сообщения, посылает команду joinChat и загружает историю сообщений через HTTP",
+        "params": [
+          {
+            "name": "chatId",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "setMessages",
+        "description": "Записывает переданный массив сообщений в state.messages",
+        "params": [
+          {
+            "name": "messages",
+            "type": "Array"
+          }
+        ]
+      },
+      {
+        "name": "addMessage",
+        "description": "Отправляет через WebSocket новое сообщение в текущий чат",
+        "params": [
+          {
+            "name": "message",
+            "type": "Object"
+          }
+        ]
+      },
+      {
+        "name": "setUsername",
+        "description": "Устанавливает имя пользователя в state.username",
+        "params": [
+          {
+            "name": "username",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "disconnectChat",
+        "description": "Удаляет все слушатели модуля «chat» и подготавливает/опционально разрывает соединение WebSocket",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/views/classes/globals.websocket.js",
+      "vue"
+    ],
+    "Usage": "Импортируется в компонентах Vue или других модулях как store: например import chatStore from 'modules/chats/store/chat.store.js'; затем используют chatStore.state и chatStore.methods для управления чатом.",
+    "Importance": 4,
+    "Notes": "1. state экспортируется через readonly, чтобы внешние компоненты не меняли его напрямую. 2. По умолчанию WebSocket полностью не отключается (disconnect закомментирован). 3. Обработчик incoming-сообщений фильтрует данные по currentChatId."
+  }
+}

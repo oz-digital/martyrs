@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/icons/navigation/IconPause.vue",
+  "relativePath": "modules/icons/navigation/IconPause.vue",
+  "type": "source",
+  "name": "IconPause.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue component that renders an SVG pause/navigation icon with a customizable fill color.",
+    "purpose": "Provides a reusable, configurable pause/navigation icon for use throughout the application’s UI.",
+    "components": [
+      {
+        "name": "IconPause",
+        "description": "A single-file Vue component (script setup) that outputs an inline SVG and accepts a `fill` prop to control the icon’s color."
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "description": "Vue 3 `<script setup>` compiler macro used to declare incoming props.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "{ position: 'rgb(var(--black))' }",
+            "description": "Color used to fill the two `<path>` elements inside the SVG. Defaults to black via CSS variable."
+          }
+        }
+      }
+    ],
+    "dependencies": [
+      "vue (defineProps macro)",
+      "CSS custom property `--black` for default color"
+    ],
+    "usage": "Import the component and include it in a parent template:\n\n<script setup>\nimport IconPause from 'modules/icons/navigation/IconPause.vue'\n</script>\n\n<template>\n  <!-- Default color -->\n  <IconPause />\n  <!-- Custom color -->\n  <IconPause fill=\"#FF0000\" />\n</template>",
+    "importance": 3,
+    "notes": [
+      "The default value for `fill` is declared as an object with a `position` key, but the prop is typed as `String`. This is likely a mistake; it should be a plain string like `'rgb(var(--black))'`.",
+      "No `<style>` block is present; icon styling is driven entirely by props and external CSS variables.",
+      "All markup is inline SVG, preventing additional HTTP requests for assets.",
+      "As a standalone icon component, it has no side effects and minimal overhead."
+    ]
+  }
+}

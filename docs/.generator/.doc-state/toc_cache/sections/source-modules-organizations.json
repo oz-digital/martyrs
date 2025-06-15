@@ -1,0 +1,171 @@
+{
+  "section": {
+    "id": "source-modules-organizations",
+    "title": "Проект: Модули / Организации",
+    "description": "Модуль отвечает за управление организациями, отделами, членством, приглашениями и связанными данными. Включает серверную и клиентскую логику, контроллеры, модели, утилиты и мидлвары.",
+    "subsections": [
+      {
+        "id": "client-server",
+        "title": "Клиент и сервер",
+        "description": "Файлы для клиентской и серверной логики работы с организациями.",
+        "files": [
+          "organizations/organizations.client.js",
+          "organizations/organizations.server.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Контроллеры для управления организациями, отделами, членством и приглашениями.",
+        "files": [
+          "controllers/departments.controller.js",
+          "controllers/invites.controller.js",
+          "controllers/memberships.controller.js",
+          "controllers/organizations.controller.js"
+        ]
+      },
+      {
+        "id": "models",
+        "title": "Модели",
+        "description": "Содержит определения моделей данных для организаций, членств и приглашений.",
+        "files": [
+          "models/invite.model.js",
+          "models/membership.model.js",
+          "models/organization.model.js"
+        ]
+      },
+      {
+        "id": "utils",
+        "title": "Утилиты",
+        "description": "Вспомогательные функции для обработки запросов, конфигураций и данных пользователей.",
+        "files": [
+          "utils/addMembersQuantity.js",
+          "utils/addUserStatusFields.js",
+          "utils/lookupConfigs.js",
+          "utils/queryProcessor.js",
+          "utils/queryProcessorOrganizations.js"
+        ]
+      },
+      {
+        "id": "middlewares",
+        "title": "Мидлвары",
+        "description": "Промежуточные обработчики для проверки доступа.",
+        "files": [
+          "middlewares/verifyAccesses.js",
+          "middlewares/verifyAccessesRefactored.js"
+        ]
+      },
+      {
+        "id": "configs",
+        "title": "Конфигурации",
+        "description": "Конфигурационные файлы для навигации по организациям.",
+        "files": [
+          "configs/navigation.organization.config.js"
+        ]
+      },
+      {
+        "id": "schemas-policies",
+        "title": "Схемы и политики",
+        "description": "Включает схемы доступа и политики безопасности для работы с организациями.",
+        "files": [
+          "schemas/accesses.schema.js",
+          "policies/organizations.policies.js"
+        ]
+      },
+      {
+        "id": "routers",
+        "title": "Роутеры",
+        "description": "Определяет маршруты для работы с организациями, департаментами, членами и приглашениями.",
+        "files": [
+          "router/backoffice.router.js",
+          "router/departments.router.js",
+          "router/members.router.js",
+          "router/organizations.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Реализация маршрутов для различных сущностей модуля организаций.",
+        "files": [
+          "routes/departments.routes.js",
+          "routes/invites.routes.js",
+          "routes/memberships.routes.js",
+          "routes/organizations.routes.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилища",
+        "description": "Модули для хранения и управления состоянием департаментов и приглашений.",
+        "files": [
+          "store/departments.js",
+          "store/invites.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "08c6c5e4413b7c7958c3223ca999124f",
+    "099a260d382083f9f342682a3b01bf12",
+    "0c241c4a832b5d88834e1924e375824e",
+    "0f6dd37bcdc529714d1f02724a758e14",
+    "10140041b06393208c224e2a073c6e1b",
+    "113bcff222f0b8a7e63c0f1ed12a9d3a",
+    "11f52f2a809d6d071ee711062428f36a",
+    "15209a7399063c637061a07b0c5ae74f",
+    "1a57a45fd9933864d1c2824a9fe299bd",
+    "1afcec0e168accd454f1413e9711b2a7",
+    "1dfb78288b9b7de5638d8389c9cd9c14",
+    "1e7731bc69add072db89ed45ba1a1482",
+    "1fbe74c12d2124775b70cfb0e5f136f4",
+    "245ea7fad4ace690571ad47f734ba883",
+    "27dd79137eb34dde349047cdd55a91af",
+    "280e77c3b14b46ea2e8b36f8692fd139",
+    "2b645d13206423555809368fc952fc8f",
+    "2b8837cbea37dcc3f31a19de9f3fa06b",
+    "309da86d9dcaf65dad0d430e29499e1d",
+    "36835ed08646e2afdb025f8a0e05ccb9",
+    "3af50056b2c6b2fa1f484e791cf13389",
+    "45ebb2e85ea60e555ca3a15715fc13b7",
+    "489f6c1a37700344b74d8bb4125554df",
+    "4cafcbca3061b7ac7f70a6f935a76afb",
+    "4d9de466b4bba0a77d8cbad463909ded",
+    "4f9a279152676d9230235a2e599c70c1",
+    "55f5521d01343cec36860c6c43ac4e6f",
+    "5730a2245ec38a95869d2280eb7392ac",
+    "62e7413a716d39e3344d3ff81daf8e2c",
+    "6738f55e6cbdc2f0d8810b55d31449c1",
+    "69aca75ec9cdcc2ccd67f4064d526c5c",
+    "6b17ca73a783826d22a2e08947588612",
+    "6c081c16fbdc62b816676208b92cb879",
+    "70bce372ed4dcb5fa76cf96a4d773451",
+    "767912e0201d115f2af08e85e442cad5",
+    "929b95ee9b33073399cfdf4431df58c1",
+    "9e68e5f5048ff2d0c17c66177ebe6977",
+    "a0f4bf03ef67eed55031fef1d2b11856",
+    "a5af81245a9bb43ec24ce722e17d0585",
+    "a8fa793cf3554e3b8ae26a71c1c4cf41",
+    "a97032b208d526565b7583c8b26b4002",
+    "abeb0e4bb5545f1f1a02b55060303f2c",
+    "aee07a963ed2c3df7e24fc13d8bd0730",
+    "b2762f7b13c0d353d0c1f328547205bd",
+    "b34a80b13a7c0528861455295117ebdd",
+    "b4d1fa9fded3ad521a4da2d358d51035",
+    "b7b04f58036cbe769e515eadaa70e181",
+    "bbee896a684918bbcab0dbf696c9ea2a",
+    "c0826b32e229fcbb6ddd34e5ff953253",
+    "c3df4c8eb71cb717c878c47327bde5c2",
+    "c5093a8671c5fe415a56cac31da2ae3d",
+    "cc981710cdbffcae4720ea8fa0adc4ef",
+    "e66e052c43ea497cd24f0584a8253b27",
+    "e6d70ed0f7a60c7961e309fe771ed0c2",
+    "e9baa845cf99e0c0b305f6f9178421c2",
+    "ec07a65c7e2cace2cfb7270c6824e21d",
+    "ec9495e76a4a640cf5e8e0c807541ce5",
+    "f4069b528e723cb5d0800e03e22c5d33",
+    "fa428d93d694874e73168de83302169e"
+  ],
+  "groupHash": "01711fb227762a6a992d38416239de2f",
+  "generated": "2025-06-05T09:22:38.797Z"
+}

@@ -1,0 +1,687 @@
+{
+  "version": 1,
+  "lastUpdated": "2025-06-05T09:52:16.137Z",
+  "documents": {
+    "introduction": {
+      "id": "introduction",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/introduction-e0f88e6789f2f4b80893881ea3662366.md",
+      "hash": "e0f88e6789f2f4b80893881ea3662366",
+      "length": 1428,
+      "createdAt": "2025-06-05T09:47:58.819Z",
+      "metadata": {
+        "title": "Введение",
+        "description": "Общее описание проекта и фреймворка martyrs",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 166
+      }
+    },
+    "source-root": {
+      "id": "source-root",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-root-e8d5c4d4af53ffa40d3237bf2ec4a1cc.md",
+      "hash": "e8d5c4d4af53ffa40d3237bf2ec4a1cc",
+      "length": 1156,
+      "createdAt": "2025-06-05T09:48:05.874Z",
+      "metadata": {
+        "title": "Корневые файлы проекта",
+        "description": "Модуль 'source-root' содержит основные файлы, необходимые для запуска и конфигурации проекта.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 146
+      }
+    },
+    "main-js": {
+      "id": "main-js",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/main-js-34e66477e83f6be2f32f7fb1d427a193.md",
+      "hash": "34e66477e83f6be2f32f7fb1d427a193",
+      "length": 1062,
+      "createdAt": "2025-06-05T09:48:09.755Z",
+      "metadata": {
+        "title": "main.js",
+        "description": "Главный исполняемый файл проекта. Назначение и структура файла требуют уточнения.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 137
+      }
+    },
+    "source-builder": {
+      "id": "source-builder",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-d8d543bf9d0e720ef2bdd3a3ded44c7b.md",
+      "hash": "d8d543bf9d0e720ef2bdd3a3ded44c7b",
+      "length": 1177,
+      "createdAt": "2025-06-05T09:48:14.066Z",
+      "metadata": {
+        "title": "Модуль: builder",
+        "description": "Модуль 'builder' предназначен для реализации функций построения или генерации объектов/структур в проекте. Содержит основной файл с логикой конструктора.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 150
+      }
+    },
+    "builder-js": {
+      "id": "builder-js",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/builder-js-3f4d2d08de5c125b58b2ae7fe7130b97.md",
+      "hash": "3f4d2d08de5c125b58b2ae7fe7130b97",
+      "length": 858,
+      "createdAt": "2025-06-05T09:48:21.645Z",
+      "metadata": {
+        "title": "builder.js",
+        "description": "Основной файл модуля, содержащий реализацию функций конструктора. Подробное описание назначения и используемых методов отсутствует.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 107
+      }
+    },
+    "source-builder-modes": {
+      "id": "source-builder-modes",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-modes-cbcaaeabb9e657116e64a385b5e076f1.md",
+      "hash": "cbcaaeabb9e657116e64a385b5e076f1",
+      "length": 1605,
+      "createdAt": "2025-06-05T09:48:30.609Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Modes",
+        "description": "Модуль содержит конфигурации режимов сборки для различных сценариев разработки и продакшена, включая SPA и SSR.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 199
+      }
+    },
+    "spa-modes": {
+      "id": "spa-modes",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/spa-modes-6221823475dc2396bc43707f6e64b5df.md",
+      "hash": "6221823475dc2396bc43707f6e64b5df",
+      "length": 1287,
+      "createdAt": "2025-06-05T09:48:38.779Z",
+      "metadata": {
+        "title": "Режимы SPA",
+        "description": "Файлы spa.dev.js и spa.prod.js определяют параметры сборки для одностраничных приложений (SPA) в режимах разработки и продакшена.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 157
+      }
+    },
+    "ssr-modes": {
+      "id": "ssr-modes",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-modes-79656c51eaf8c3e7ea171fda54adfd71.md",
+      "hash": "79656c51eaf8c3e7ea171fda54adfd71",
+      "length": 1216,
+      "createdAt": "2025-06-05T09:48:45.097Z",
+      "metadata": {
+        "title": "Режимы SSR",
+        "description": "Файлы ssr.dev.js и ssr.prod.js содержат настройки для серверного рендеринга (SSR) в разных окружениях.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 152
+      }
+    },
+    "ssr-rspack-mode": {
+      "id": "ssr-rspack-mode",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-rspack-mode-90263f79842751cd818403d4590282b8.md",
+      "hash": "90263f79842751cd818403d4590282b8",
+      "length": 1283,
+      "createdAt": "2025-06-05T09:48:51.101Z",
+      "metadata": {
+        "title": "SSR с Rspack",
+        "description": "Файл ssr.rspack.dev.js предоставляет конфигурацию SSR с использованием сборщика Rspack в режиме разработки.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 166
+      }
+    },
+    "ssr-vite-mode": {
+      "id": "ssr-vite-mode",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-vite-mode-0f901b85d3130d0b4724b5083c3c1e4a.md",
+      "hash": "0f901b85d3130d0b4724b5083c3c1e4a",
+      "length": 954,
+      "createdAt": "2025-06-05T09:48:54.791Z",
+      "metadata": {
+        "title": "SSR с Vite",
+        "description": "Файл ssr.vite.dev.js содержит настройки для SSR с использованием Vite в режиме разработки.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 119
+      }
+    },
+    "source-builder-rspack": {
+      "id": "source-builder-rspack",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-rspack-19e467898ed4d266959d0d42b258fbba.md",
+      "hash": "19e467898ed4d266959d0d42b258fbba",
+      "length": 1271,
+      "createdAt": "2025-06-05T09:48:59.633Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Rspack",
+        "description": "Модуль отвечает за интеграцию и конфигурацию сборщика Rspack для различных сценариев сборки проекта.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 165
+      }
+    },
+    "rspack-entrypoint": {
+      "id": "rspack-entrypoint",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/rspack-entrypoint-beec3a3212bb73c721631c0ed1378575.md",
+      "hash": "beec3a3212bb73c721631c0ed1378575",
+      "length": 1198,
+      "createdAt": "2025-06-05T09:49:03.927Z",
+      "metadata": {
+        "title": "Точка входа",
+        "description": "Файл index.js — основной входной файл модуля, инициализирует работу с Rspack.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 157
+      }
+    },
+    "rspack-config-base": {
+      "id": "rspack-config-base",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/rspack-config-base-b874fa818e222d721b2b6ee12678ec6a.md",
+      "hash": "b874fa818e222d721b2b6ee12678ec6a",
+      "length": 912,
+      "createdAt": "2025-06-05T09:49:07.416Z",
+      "metadata": {
+        "title": "Базовая конфигурация",
+        "description": "Файл rspack.config.base.js содержит общие настройки сборщика, используемые во всех режимах.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 112
+      }
+    },
+    "rspack-config-api": {
+      "id": "rspack-config-api",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/rspack-config-api-a4bba8336b39d625308f92be7edf4d82.md",
+      "hash": "a4bba8336b39d625308f92be7edf4d82",
+      "length": 1218,
+      "createdAt": "2025-06-05T09:49:12.134Z",
+      "metadata": {
+        "title": "Конфигурация через API",
+        "description": "Файл rspack.config.api.js предоставляет интерфейс для настройки Rspack через программный API.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 150
+      }
+    },
+    "rspack-config-spa": {
+      "id": "rspack-config-spa",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/rspack-config-spa-b994e803d8d122f508ad9c23f4d90e71.md",
+      "hash": "b994e803d8d122f508ad9c23f4d90e71",
+      "length": 981,
+      "createdAt": "2025-06-05T09:49:16.564Z",
+      "metadata": {
+        "title": "Конфигурация для SPA",
+        "description": "Файл rspack.config.spa.client.js содержит настройки сборки для клиентской части одностраничных приложений (SPA).",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 117
+      }
+    },
+    "rspack-config-ssr": {
+      "id": "rspack-config-ssr",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/rspack-config-ssr-eef47acb93449b25cc0c591aba9ffead.md",
+      "hash": "eef47acb93449b25cc0c591aba9ffead",
+      "length": 1824,
+      "createdAt": "2025-06-05T09:49:24.454Z",
+      "metadata": {
+        "title": "Конфигурация для SSR",
+        "description": "Файлы rspack.config.ssr.client.js и rspack.config.ssr.server.js содержат настройки для клиентской и серверной сборки приложений с серверным рендерингом (SSR).",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 218
+      }
+    },
+    "source-builder-ssr": {
+      "id": "source-builder-ssr",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-ssr-0384ea0bf490b1a7fdc5b691098e85cd.md",
+      "hash": "0384ea0bf490b1a7fdc5b691098e85cd",
+      "length": 1315,
+      "createdAt": "2025-06-05T09:49:31.344Z",
+      "metadata": {
+        "title": "Проект: Конструктор / SSR",
+        "description": "Модуль отвечает за серверный рендеринг (SSR) и вспомогательные функции для работы с HTML и Webpack статистикой.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 169
+      }
+    },
+    "ssr-render-html": {
+      "id": "ssr-render-html",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-render-html-ca734da8cf3a03de2fd2276d3e0f2b45.md",
+      "hash": "ca734da8cf3a03de2fd2276d3e0f2b45",
+      "length": 945,
+      "createdAt": "2025-06-05T09:49:37.731Z",
+      "metadata": {
+        "title": "Рендеринг HTML",
+        "description": "Файл ssr-render-html.js реализует функции для генерации HTML на сервере.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 112
+      }
+    },
+    "ssr-transform-webpack-stats": {
+      "id": "ssr-transform-webpack-stats",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-transform-webpack-stats-944dfd12f18e08636c36c09db8bf26e8.md",
+      "hash": "944dfd12f18e08636c36c09db8bf26e8",
+      "length": 1393,
+      "createdAt": "2025-06-05T09:49:47.198Z",
+      "metadata": {
+        "title": "Обработка статистики Webpack",
+        "description": "Файл ssr-transform-webpack-stats.js содержит инструменты для преобразования статистики Webpack в процессе SSR.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 167
+      }
+    },
+    "ssr-utils": {
+      "id": "ssr-utils",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/ssr-utils-9008de2ec4f616d8c7ace17683196e9a.md",
+      "hash": "9008de2ec4f616d8c7ace17683196e9a",
+      "length": 944,
+      "createdAt": "2025-06-05T09:49:51.966Z",
+      "metadata": {
+        "title": "Вспомогательные функции",
+        "description": "Файл utils.js предоставляет утилиты, используемые в SSR-процессах.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 121
+      }
+    },
+    "source-builder-templates": {
+      "id": "source-builder-templates",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-templates-8471b932c8921ffba7288cd93bd997ea.md",
+      "hash": "8471b932c8921ffba7288cd93bd997ea",
+      "length": 1273,
+      "createdAt": "2025-06-05T09:49:59.334Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Templates",
+        "description": "Модуль содержит шаблоны для генерации различных компонентов пользовательского интерфейса.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 155
+      }
+    },
+    "template-files": {
+      "id": "template-files",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/template-files-a15f006040e00b28a9338a89b2ce58bd.md",
+      "hash": "a15f006040e00b28a9338a89b2ce58bd",
+      "length": 1833,
+      "createdAt": "2025-06-05T09:50:10.196Z",
+      "metadata": {
+        "title": "Шаблоны страниц и экранов",
+        "description": "Включает файлы шаблонов для создания страниц (page.js) и экранов (screen.js). Используются для автоматизации генерации UI-компонентов.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 213
+      }
+    },
+    "source-builder-utils": {
+      "id": "source-builder-utils",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-utils-45c08562f61b3a9430172fed0a530f59.md",
+      "hash": "45c08562f61b3a9430172fed0a530f59",
+      "length": 1218,
+      "createdAt": "2025-06-05T09:50:14.981Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Утилиты",
+        "description": "Модуль содержит вспомогательные утилиты, используемые в процессе сборки и разработки проекта.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 152
+      }
+    },
+    "hot-reload": {
+      "id": "hot-reload",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/hot-reload-5f510fb5bef6254527670aca597a03d2.md",
+      "hash": "5f510fb5bef6254527670aca597a03d2",
+      "length": 1051,
+      "createdAt": "2025-06-05T09:50:19.663Z",
+      "metadata": {
+        "title": "Горячая перезагрузка",
+        "description": "Утилита для поддержки горячей перезагрузки модулей во время разработки.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 128
+      }
+    },
+    "source-builder-vite": {
+      "id": "source-builder-vite",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-vite-b39649ba15da38a58d6e07e5fd09be1d.md",
+      "hash": "b39649ba15da38a58d6e07e5fd09be1d",
+      "length": 1348,
+      "createdAt": "2025-06-05T09:50:28.722Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Vite",
+        "description": "Модуль отвечает за интеграцию и настройку сборки проекта с помощью Vite. Содержит базовые и специфические конфигурации для различных сценариев (клиент, сервер, SPA, SSR).",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 171
+      }
+    },
+    "vite-index": {
+      "id": "vite-index",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/vite-index-629b55e800ef956dec67e6f487791482.md",
+      "hash": "629b55e800ef956dec67e6f487791482",
+      "length": 1085,
+      "createdAt": "2025-06-05T09:50:33.128Z",
+      "metadata": {
+        "title": "Главный модуль",
+        "description": "Точка входа для работы с настройками Vite в проекте.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 139
+      }
+    },
+    "vite-config-base": {
+      "id": "vite-config-base",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/vite-config-base-7278e5d4e835c340e7607a1e95349429.md",
+      "hash": "7278e5d4e835c340e7607a1e95349429",
+      "length": 1630,
+      "createdAt": "2025-06-05T09:50:40.707Z",
+      "metadata": {
+        "title": "Базовая конфигурация Vite",
+        "description": "Содержит общие настройки Vite, используемые всеми остальными конфигурациями.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 209
+      }
+    },
+    "vite-config-client": {
+      "id": "vite-config-client",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/vite-config-client-c892a832901359dff499244045931951.md",
+      "hash": "c892a832901359dff499244045931951",
+      "length": 1735,
+      "createdAt": "2025-06-05T09:50:47.061Z",
+      "metadata": {
+        "title": "Конфигурация для клиента",
+        "description": "Настройки сборки клиентской части приложения.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 200
+      }
+    },
+    "vite-config-server": {
+      "id": "vite-config-server",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/vite-config-server-07cc64f86282634dd081db9c48f342af.md",
+      "hash": "07cc64f86282634dd081db9c48f342af",
+      "length": 1009,
+      "createdAt": "2025-06-05T09:50:50.761Z",
+      "metadata": {
+        "title": "Конфигурация для сервера",
+        "description": "Настройки сборки серверной части приложения.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 128
+      }
+    },
+    "vite-config-spa-ssr": {
+      "id": "vite-config-spa-ssr",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/vite-config-spa-ssr-53bce7b072c04b0e315d5ee47d0fd818.md",
+      "hash": "53bce7b072c04b0e315d5ee47d0fd818",
+      "length": 1519,
+      "createdAt": "2025-06-05T09:50:56.887Z",
+      "metadata": {
+        "title": "Конфигурации SPA и SSR",
+        "description": "Отдельные конфигурации для сборки SPA и SSR приложений.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 192
+      }
+    },
+    "source-builder-webpack": {
+      "id": "source-builder-webpack",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-builder-webpack-65241303ac5a0e73d5c06f37a730587e.md",
+      "hash": "65241303ac5a0e73d5c06f37a730587e",
+      "length": 1379,
+      "createdAt": "2025-06-05T09:51:04.240Z",
+      "metadata": {
+        "title": "Проект: Конструктор / Webpack",
+        "description": "Модуль предназначен для конфигурации и управления сборкой проекта с помощью Webpack. Содержит базовые и специализированные конфигурационные файлы для различных сценариев сборки.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 175
+      }
+    },
+    "webpack-index": {
+      "id": "webpack-index",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/webpack-index-b51744a2f7b5a70eccd5b9a6dcc70523.md",
+      "hash": "b51744a2f7b5a70eccd5b9a6dcc70523",
+      "length": 1143,
+      "createdAt": "2025-06-05T09:51:08.968Z",
+      "metadata": {
+        "title": "Главный модуль",
+        "description": "Файл index.js служит точкой входа для работы с Webpack-конфигурациями модуля.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 145
+      }
+    },
+    "webpack-config-base": {
+      "id": "webpack-config-base",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/webpack-config-base-4aad1e151b7db71d35fb6d7b8f8655d0.md",
+      "hash": "4aad1e151b7db71d35fb6d7b8f8655d0",
+      "length": 1352,
+      "createdAt": "2025-06-05T09:51:15.214Z",
+      "metadata": {
+        "title": "Базовая конфигурация",
+        "description": "Файл webpack.config.base.js содержит общие настройки Webpack, используемые в других конфигурациях.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 165
+      }
+    },
+    "webpack-config-client-server": {
+      "id": "webpack-config-client-server",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/webpack-config-client-server-31530adc57e22cf867ea877536b098dc.md",
+      "hash": "31530adc57e22cf867ea877536b098dc",
+      "length": 1440,
+      "createdAt": "2025-06-05T09:51:20.488Z",
+      "metadata": {
+        "title": "Конфигурации для клиента и сервера",
+        "description": "Файлы webpack.config.client.js и webpack.config.server.js предоставляют отдельные конфигурации для сборки клиентской и серверной частей приложения.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 177
+      }
+    },
+    "webpack-config-spa-ssr": {
+      "id": "webpack-config-spa-ssr",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/webpack-config-spa-ssr-73d5989f6c11e0104ed29851371a0051.md",
+      "hash": "73d5989f6c11e0104ed29851371a0051",
+      "length": 1597,
+      "createdAt": "2025-06-05T09:51:29.856Z",
+      "metadata": {
+        "title": "SPA и SSR конфигурации",
+        "description": "Файлы webpack.config.spa.js и webpack.config.ssr.js предназначены для настройки сборки одностраничных приложений (SPA) и серверного рендеринга (SSR).",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 188
+      }
+    },
+    "source-components": {
+      "id": "source-components",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-components-32575047cc3a08b679cd654c7c1dbe9d.md",
+      "hash": "32575047cc3a08b679cd654c7c1dbe9d",
+      "length": 1107,
+      "createdAt": "2025-06-05T09:51:34.547Z",
+      "metadata": {
+        "title": "Проект: Компоненты",
+        "description": "Модуль содержит компоненты, используемые в проекте. Предназначен для организации и повторного использования UI-элементов.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 142
+      }
+    },
+    "components-index": {
+      "id": "components-index",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/components-index-f6f88aa83e2ec38b521d67bba333a8ad.md",
+      "hash": "f6f88aa83e2ec38b521d67bba333a8ad",
+      "length": 904,
+      "createdAt": "2025-06-05T09:51:38.286Z",
+      "metadata": {
+        "title": "Индекс компонентов",
+        "description": "Файл index.js служит точкой входа для экспорта компонентов. Подробная структура и назначение компонентов не определены.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 107
+      }
+    },
+    "source-components-fieldphone": {
+      "id": "source-components-fieldphone",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-components-fieldphone-6c96994e8f1c091ad3b71103d4f87d6f.md",
+      "hash": "6c96994e8f1c091ad3b71103d4f87d6f",
+      "length": 2149,
+      "createdAt": "2025-06-05T09:51:49.415Z",
+      "metadata": {
+        "title": "Проект: Компоненты / Field Phone",
+        "description": "Модуль FieldPhone реализует компонент ввода телефонного номера с поддержкой выбора страны и вспомогательными утилитами.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 238
+      }
+    },
+    "fieldphone-component": {
+      "id": "fieldphone-component",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/fieldphone-component-0894bc099e93a5ce85308a0239565cce.md",
+      "hash": "0894bc099e93a5ce85308a0239565cce",
+      "length": 1434,
+      "createdAt": "2025-06-05T09:51:57.603Z",
+      "metadata": {
+        "title": "FieldPhone.vue",
+        "description": "Основной Vue-компонент для ввода телефонного номера с выбором страны.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 163
+      }
+    },
+    "fieldphone-utils": {
+      "id": "fieldphone-utils",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/fieldphone-utils-7d26672be28a80f226220c46c83567f4.md",
+      "hash": "7d26672be28a80f226220c46c83567f4",
+      "length": 1132,
+      "createdAt": "2025-06-05T09:52:02.402Z",
+      "metadata": {
+        "title": "Вспомогательные утилиты",
+        "description": "Содержит вспомогательные функции для обработки телефонных номеров и взаимодействия с компонентом.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 136
+      }
+    },
+    "fieldphone-countries": {
+      "id": "fieldphone-countries",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/fieldphone-countries-6225bf875a228b6cf2b68563285946e8.md",
+      "hash": "6225bf875a228b6cf2b68563285946e8",
+      "length": 1236,
+      "createdAt": "2025-06-05T09:52:08.146Z",
+      "metadata": {
+        "title": "Справочник стран",
+        "description": "Модуль с данными по странам для выбора телефонного кода.",
+        "level": 3,
+        "generated": true,
+        "validationPassed": true,
+        "fileAnalysisUsed": 0,
+        "fileAnalysis": [],
+        "wordCount": 153
+      }
+    },
+    "source-components-fieldtags": {
+      "id": "source-components-fieldtags",
+      "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/docs/.generator/.doc-state/memory/docs/source-components-fieldtags-cc7349f967d7a1ffda1123344e7942bd.md",
+      "hash": "cc7349f967d7a1ffda1123344e7942bd",
+      "length": 1712,
+      "createdAt": "2025-06-05T09:52:16.137Z",
+      "metadata": {
+        "title": "Проект: Компоненты / Field Tags",
+        "description": "Модуль FieldTags предоставляет компоненты и утилиты для работы с тегами в пользовательском интерфейсе. Включает визуальные компоненты, обработку свойств и стилизацию.",
+        "generated": true,
+        "fileAnalysis": [],
+        "wordCount": 204
+      }
+    }
+  },
+  "sections": {},
+  "stats": {
+    "totalDocuments": 42,
+    "totalSections": 0,
+    "averageLength": 1293
+  }
+}

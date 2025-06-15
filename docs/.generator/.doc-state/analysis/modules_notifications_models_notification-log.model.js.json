@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/notifications/models/notification-log.model.js",
+  "relativePath": "modules/notifications/models/notification-log.model.js",
+  "type": "source",
+  "name": "notification-log.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет и регистрирует в mongoose модель NotificationLog для хранения информации о статусах и событиях уведомлений для пользователей.",
+    "Purpose": "Вести детальную запись (лог) по каждому отправленному уведомлению: через какой канал отправлено, был ли доставлен, прочитан и фиксировать возможные ошибки.",
+    "Components": [
+      {
+        "name": "schema",
+        "type": "mongoose.Schema",
+        "description": "Содержит поля notificationId, userId, channelType, status, error, sentAt, deliveredAt, readAt и служит для валидации и структуры документа."
+      },
+      {
+        "name": "NotificationLog model",
+        "type": "mongoose.Model",
+        "description": "Модель для взаимодействия с коллекцией 'notificationlogs' в MongoDB."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "(db, additionalFields = {}) => mongoose.Model",
+        "description": "Принимает объект db с подключенным mongoose и опциональные дополнительные поля, создаёт схему и возвращает модель NotificationLog.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контекст базы данных, содержащий подключённый mongoose."
+          },
+          {
+            "name": "additionalFields",
+            "type": "Object",
+            "description": "Набор дополнительных полей для расширения схемы (в текущей реализации не используется)."
+          }
+        ],
+        "returns": "mongoose.Model – модель NotificationLog."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose – mongoose instance из контекста приложения",
+      "Notification model (ref) – для связи по notificationId",
+      "User model (ref) – для связи по userId"
+    ],
+    "Usage": "В других модулях импортируется как функция: require('modules/notifications/models/notification-log.model')(db). После этого можно получать запись через методы модели: NotificationLog.create(), NotificationLog.find(), и т. д.",
+    "Importance": 3,
+    "Notes": [
+      "Поле additionalFields зарезервировано под расширение схемы, но в текущей версии не добавляет свойства.",
+      "Для поля status определён enum: ['sent', 'delivered', 'failed', 'read'].",
+      "Модели Notification и User должны быть зарегистрированы в mongoose до создания этой модели, иначе рефы не будут работать."
+    ]
+  }
+}

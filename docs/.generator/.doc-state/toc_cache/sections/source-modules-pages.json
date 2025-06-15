@@ -1,0 +1,76 @@
+{
+  "section": {
+    "id": "source-modules-pages",
+    "title": "Модуль: Страницы (pages)",
+    "description": "Модуль отвечает за управление страницами, их отображение, редактирование и маршрутизацию как на клиенте, так и на сервере. Включает компоненты интерфейса, модели, маршруты и хранилище данных.",
+    "subsections": [
+      {
+        "id": "client-server-logic",
+        "title": "Клиентская и серверная логика",
+        "description": "Файлы, реализующие основную бизнес-логику работы с страницами на клиенте и сервере.",
+        "files": [
+          "pages/pages.client.js",
+          "pages/pages.server.js"
+        ]
+      },
+      {
+        "id": "routes-and-routers",
+        "title": "Маршруты и роутеры",
+        "description": "Определение маршрутов и роутеров для управления страницами и их доступностью.",
+        "files": [
+          "routes/pages.routes.js",
+          "router/pages.router.js",
+          "router/pages.backoffice.router.js"
+        ]
+      },
+      {
+        "id": "models-and-factories",
+        "title": "Модели и фабрики",
+        "description": "Модели данных и фабрики для создания и управления сущностями страниц.",
+        "files": [
+          "models/page.model.js",
+          "factories/pages.factory.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище данных",
+        "description": "Файлы, реализующие хранилище и управление состоянием страниц.",
+        "files": [
+          "store/pages.js",
+          "store/pages.store.js"
+        ]
+      },
+      {
+        "id": "ui-components",
+        "title": "Компоненты интерфейса",
+        "description": "Vue-компоненты для отображения, редактирования и управления страницами в пользовательском интерфейсе.",
+        "files": [
+          "blocks/CardPage.vue",
+          "pages/Page.vue",
+          "pages/PageEdit.vue",
+          "pages/Pages.vue",
+          "partials/SidebarPages.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "12b3568db8aff5b7468363ef4c2140bf",
+    "3331e20a6fee1cfbc14b3df2453d38a5",
+    "3770d82b96b1c11552c036d918079067",
+    "3abc1bf4ab68ebbd201aa810d4f60b65",
+    "3c8dc9f8a4ffd2bd6b78f75860b1444c",
+    "73fd37a948c27d262e3bef2f5eeb7ef8",
+    "790e35a3863beedfe1fe2b855f5f40e1",
+    "a71e009ecf05db20f81e7eeb4f443342",
+    "b0a265615d69feae9d99d25bfbee1444",
+    "be8312e418257f9b894f0d0a1e5551c6",
+    "caa949f0dc0763e4699ff0d4937c4aec",
+    "d83ee244815ddf4bb6ac931e126a63dd",
+    "fbcb01cae78834c3e86310a336e30a3d",
+    "fcb4d49d7913d592da65d7547e483356"
+  ],
+  "groupHash": "a4f79560bee5836a85b127c71ffe838e",
+  "generated": "2025-06-05T09:22:44.835Z"
+}

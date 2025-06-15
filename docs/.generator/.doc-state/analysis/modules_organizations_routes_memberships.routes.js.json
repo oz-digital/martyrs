@@ -1,0 +1,101 @@
+{
+  "path": "../../src/modules/organizations/routes/memberships.routes.js",
+  "relativePath": "modules/organizations/routes/memberships.routes.js",
+  "type": "source",
+  "name": "memberships.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл объявляет и регистрирует маршруты API для работы с членствами организаций: чтение списка, создание, обновление и удаление.",
+    "Purpose": "Определить HTTP-эндпоинты (/api/memberships и связанные POST-маршруты) и связать их с методами контроллера memberships.controller.js.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "function",
+        "responsibility": "Инициализация маршрутов: принимает объект приложения (app) и соединение с БД (db), создает контроллер и регистрирует маршруты."
+      },
+      {
+        "name": "controller",
+        "type": "object",
+        "responsibility": "Набор методов для работы с membership: read, create, update, deleteMembership, полученных от controllerFactory."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default",
+        "description": "Основная функция модуля, которая регистрирует четыре маршрута на объекте app.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "object",
+            "description": "Экземпляр фреймворка (обычно Express-подобный) для регистрации HTTP-маршрутов."
+          },
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Объект соединения с базой данных, передаваемый в factory контроллера."
+          }
+        ]
+      },
+      {
+        "name": "controller.read",
+        "description": "Обработка GET-запроса для получения списка членств.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.create",
+        "description": "Обработка POST-запроса для создания нового членства.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "description": "Обработка POST-запроса для обновления существующего членства.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.deleteMembership",
+        "description": "Обработка POST-запроса для удаления членства.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../controllers/memberships.controller.js",
+        "importedAs": "controllerFactory",
+        "purpose": "Factory для создания контроллера с методами CRUD над членствами."
+      },
+      {
+        "module": "app",
+        "importedAs": "app",
+        "purpose": "Web-фреймворк (Express или Martyrs) для объявления маршрутов."
+      },
+      {
+        "module": "db",
+        "importedAs": "db",
+        "purpose": "Соединение с базой данных, передаваемое контроллеру."
+      }
+    ],
+    "Usage": "В точке входа приложения (например, в файле app.js или server.js) импортируется и вызывается передавая экземпляры app и db: import membershipsRoutes from './modules/organizations/routes/memberships.routes.js'; membershipsRoutes(app, db);",
+    "Importance": 3,
+    "Notes": [
+      "Все модифицирующие операции (create, update, delete) реализованы через POST вместо более семантических PUT/DELETE.",
+      "В комментариях опечатка 'membder' вместо 'member'.",
+      "Маршруты оформлены в едином пространстве '/api/memberships', что упрощает поддержку и расширение."
+    ]
+  }
+}

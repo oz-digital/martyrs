@@ -1,0 +1,99 @@
+{
+  "path": "../../src/modules/music/controllers/genre.controller.js",
+  "relativePath": "modules/music/controllers/genre.controller.js",
+  "type": "source",
+  "name": "genre.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a GenreController that extends generic MusicController to manage CRUD operations on music genres and provides two additional endpoints: fetching tracks by genre and listing popular genres.",
+    "Purpose": "Handles HTTP routes under `/api/genres`, including standard CRUD for genres and custom endpoints for retrieving tracks associated with a genre and listing popular genres.",
+    "Components": [
+      {
+        "name": "GenreController",
+        "type": "class",
+        "responsibility": "Extends MusicController to set up the `/api/genres` base route and implement genre-specific endpoints (getGenreTracks, getPopularGenres)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "create",
+        "source": "inherited",
+        "description": "Creates a new genre record in the database.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "read",
+        "source": "inherited",
+        "description": "Retrieves one or more genre records (list or detail).",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "update",
+        "source": "inherited",
+        "description": "Updates an existing genre record by ID.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "delete",
+        "source": "inherited",
+        "description": "Deletes a genre record by ID.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "getGenreTracks",
+        "description": "Fetches up to 50 published, public tracks for a given genre ID, sorted by releaseDate desc. Validates genre existence first.",
+        "parameters": [
+          "req.params.genreId",
+          "res"
+        ]
+      },
+      {
+        "name": "getPopularGenres",
+        "description": "Retrieves a list of published genres sorted by popularity (desc), limited by an optional `limit` query parameter (default 10).",
+        "parameters": [
+          "req.query.limit",
+          "res"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./music.controller.js",
+        "import": "music",
+        "usedFor": "Base MusicController class providing generic CRUD methods"
+      },
+      {
+        "module": "db.genre",
+        "usedFor": "Genre data model (find, findById, query, etc.)"
+      },
+      {
+        "module": "db.track",
+        "usedFor": "Track data model for querying tracks by genre"
+      },
+      {
+        "module": "Express app",
+        "usedFor": "Registering HTTP routes and handling req/res"
+      }
+    ],
+    "Usage": "Imported and invoked with (app, db) to return bound controller methods. Typically used in route definitions like `app.get('/api/genres', controllers.read)` or `app.get('/api/genres/:genreId/tracks', controllers.getGenreTracks)`.",
+    "Importance": 4,
+    "Notes": [
+      "GenreController constructor signature omits `db` parameter but captures it from outer scope; works via closure.",
+      "Inherits generic CRUD endpoints from MusicController, reducing boilerplate.",
+      "Populating `artist` and `album` fields in getGenreTracks adds cross-collection data enrichment.",
+      "Error handling logs via `this.logger` (inherited) and returns appropriate HTTP status codes."
+    ]
+  }
+}

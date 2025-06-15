@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/pages/models/page.model.js",
+  "relativePath": "modules/pages/models/page.model.js",
+  "type": "source",
+  "name": "page.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая создаёт и возвращает Mongoose-модель \"Page\" с заданной схемой для работы с документами страниц в MongoDB.",
+    "Purpose": "Определение схемы и модели данных для сущности \"Page\" в проекте: хранение структуры страницы, её содержимого и иерархических связей (родитель–дочерние страницы).",
+    "Components": [
+      {
+        "name": "PageSchema",
+        "type": "Mongoose.Schema",
+        "description": "Схема страницы с полями name, url, groups, content, parent (ObjectId, ссылается на другую страницу), children (массив ObjectId-ссылок на страницы) и автоматическими timestamp-полями."
+      },
+      {
+        "name": "Page",
+        "type": "Mongoose.Model",
+        "description": "Модель Mongoose на основе PageSchema для CRUD-операций над коллекцией \"pages\"."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "(db) => Model<Page>",
+        "description": "Принимает объект db (должен содержать mongoose). Создаёт схему PageSchema, регистрирует модель 'Page' в mongoose и возвращает её.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "details": "Должен содержать свойство mongoose с подключённым экземпляром mongoose."
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель 'Page' для работы с документами страниц."
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "db.mongoose",
+        "importStyle": "injected",
+        "description": "Экземпляр mongoose для определения схем и моделей."
+      }
+    ],
+    "Usage": "В местах инициализации БД или модулях, работающих со страницами, файл импортируется как `const Page = require('modules/pages/models/page.model.js')(db);`. После этого `Page` используется для поиска, создания и обновления документов страниц.",
+    "Importance": 4,
+    "Notes": [
+      "Поле name хранится как Object, возможно, для мультиязычности или разнородных данных.",
+      "Поле content допускает как объект, так и массив, что даёт гибкость в хранении структуры страницы.",
+      "Используется опция timestamps с кастомной функцией currentTime, возвращающей `Date.now()`.",
+      "Реализована древовидная структура через поля parent и children с ссылками на ту же модель."
+    ]
+  }
+}

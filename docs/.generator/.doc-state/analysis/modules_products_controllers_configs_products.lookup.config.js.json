@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/products/controllers/configs/products.lookup.config.js",
+  "relativePath": "modules/products/controllers/configs/products.lookup.config.js",
+  "type": "source",
+  "name": "products.lookup.config.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует конфигурации MongoDB-lookup и последующих стадий агрегации для сущности «продукт». В нём описаны два набора правил: один для получения и расчёта остатков (leftovers), другой — для подгрузки информации о категории продукта (categories).",
+    "Purpose": "Централизовать и переиспользовать в контроллерах фреймворка martyrs наборы стадий агрегации для обогащения документов продуктов данными об остатках и категориях.",
+    "Components": [
+      {
+        "name": "leftovers",
+        "type": "lookupConfig",
+        "responsibilities": [
+          "Подключение коллекции «leftovers» по полям productId и ingredients._id",
+          "Фильтрация и разворачивание позиций",
+          "Корректировка знака количества в зависимости от типа движения (stock-in / else)",
+          "Проекция только нужных полей (_id, quantity, name)",
+          "Дальнейшие стадии расчёта ingredientQuantities и вычисления общего available"
+        ]
+      },
+      {
+        "name": "categories",
+        "type": "lookupConfig",
+        "responsibilities": [
+          "Подключение коллекции «categories» по полю category → _id",
+          "Просто конвертирует поле category в массив вложенного документа",
+          "Без дополнительных стадий обработки"
+        ]
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "Коллекция MongoDB «leftovers»",
+      "Коллекция MongoDB «categories»",
+      "Набор агрегатных операторов MongoDB: $lookup, $unwind, $match, $addFields, $project, $map, $cond, $sum, $min, $floor и т.п."
+    ],
+    "Usage": "Импортируется в контроллерах модуля products и передаётся в методы агрегирования (например, в chainable API martyrs или в прямой вызов collection.aggregate). Например: `import productLookupConfigs from './products.lookup.config'; db.products.aggregate([productLookupConfigs.leftovers.lookup, ...productLookupConfigs.leftovers.additionalStages, productLookupConfigs.categories.lookup]);`",
+    "Importance": 3,
+    "Notes": [
+      "В разделе leftovers.additionalStages сначала считается массив ratios по каждому ингредиенту, затем на его основании определяется доступное количество available.",
+      "Используются $$-переменные ($$productId, $$ingredientsIds) внутри pipeline для передачи контекста документа основного запроса.",
+      "categories.lookup не содержит дополнительных стадий, но унифицирует возвращаемый формат (массив).",
+      "Файл не содержит функций или классов — экспортируется чистый JavaScript-объект с конфигурацией."
+    ]
+  }
+}

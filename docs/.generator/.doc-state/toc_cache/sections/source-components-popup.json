@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-popup",
+    "title": "Проект: Компоненты / Popup",
+    "description": "Модуль Popup предоставляет компонент для отображения всплывающих окон в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "popup-osnovnoi-komponent",
+        "title": "Popup.vue",
+        "description": "Основной Vue-компонент для создания и управления всплывающими окнами."
+      }
+    ]
+  },
+  "fileHashes": [
+    "c29b6bdb3d04bfeb8faa35b406727dcb"
+  ],
+  "groupHash": "0dc593056f412d535b90009d61174775",
+  "generated": "2025-06-05T09:17:03.076Z"
+}

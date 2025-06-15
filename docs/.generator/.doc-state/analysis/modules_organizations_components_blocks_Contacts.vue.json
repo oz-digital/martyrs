@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/Contacts.vue",
+  "relativePath": "modules/organizations/components/blocks/Contacts.vue",
+  "type": "source",
+  "name": "Contacts.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue.js компонент Contacts.vue отображает набор кликабельных блоков со ссылками на контактные данные организации: сайт, телефон, email и адрес (с переходом на Google Maps).",
+    "Purpose": "Обеспечить в интерфейсе возможность быстро перейти по основным контактным данным организации. Инкапсулирует логику форматирования ссылок и кодирования адреса.",
+    "Components": [
+      {
+        "name": "Contacts",
+        "type": "Vue Component",
+        "responsibility": "Принимает в пропсах контактные данные и рендерит соответствующие ссылки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formattedWebsite",
+        "type": "computed",
+        "description": "Форматирует URL сайта: при отсутствии префикса http(s) добавляет 'http://'.",
+        "parameters": [],
+        "returns": "Строка URL или null"
+      },
+      {
+        "name": "encodedAddress",
+        "type": "computed",
+        "description": "Кодирует строку адреса для передачи в query-параметр Google Maps.",
+        "parameters": [],
+        "returns": "URL-кодированная строка адреса или null"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "computed",
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Импортируется и используется в родительских компонентах или страницах организаций как `<Contacts :website=\"...\" :phone=\"...\" :email=\"...\" :address=\"...\"/>`.",
+    "Importance": 2,
+    "Notes": [
+      "Используется <script setup> Composition API.",
+      "Секции `img` с иконками закомментированы — возможно, планируется динамическая подстановка или подключение SVG по другому.",
+      "При отсутствии пропса соответствующий блок не рендерится (v-if).",
+      "Классы CSS указывают на использование общей утилитарной библиотеки стилей (flex, br-*, t-semi и т.д.)."
+    ]
+  }
+}

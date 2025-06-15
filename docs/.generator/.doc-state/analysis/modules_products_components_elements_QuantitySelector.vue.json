@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/products/components/elements/QuantitySelector.vue",
+  "relativePath": "modules/products/components/elements/QuantitySelector.vue",
+  "type": "source",
+  "name": "QuantitySelector.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue-компонент для выбора количества товара с помощью кнопок увеличения/уменьшения и числового инпута.",
+    "purpose": "Обеспечить единый UI-элемент для ввода и управления количеством товара (с ограничениями по минимуму и максимуму).",
+    "components": [
+      {
+        "name": "QuantitySelector",
+        "role": "Основной компонент, который отображает кнопку уменьшения, поле ввода и кнопку увеличения."
+      }
+    ],
+    "functions": [
+      {
+        "name": "incrementQuantity",
+        "purpose": "Увеличивает текущее значение quantity на единицу, если оно меньше maxValue.",
+        "parameters": []
+      },
+      {
+        "name": "decrementQuantity",
+        "purpose": "Уменьшает текущее значение quantity на единицу, если оно больше 1.",
+        "parameters": []
+      }
+    ],
+    "dependencies": [
+      "vue (Composition API: defineProps, defineModel)",
+      "Глобальные CSS-классы (tailwind-подобные утилиты и иконки через класс i-regular)"
+    ],
+    "usage": "Импортировать компонент и использовать с двусторонним связыванием v-model: <QuantitySelector v-model=\"count\" :maxValue=\"10\"/>",
+    "importance": 3,
+    "notes": [
+      "Используется defineModel() для организации двустороннего биндинга без явного props/modelValue/events.",
+      "Значение maxValue по умолчанию — Infinity, чтобы не накладывать жесткие ограничения, если не передан prop.",
+      "Кнопки автоматически дизейблятся при достижении границ (1 и maxValue).",
+      "CSS-классы заданы утилитарно, без scoped стилей.",
+      "При вводе вручную число приводится к Number с помощью v-model.number."
+    ]
+  }
+}

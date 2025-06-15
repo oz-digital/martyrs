@@ -1,0 +1,51 @@
+{
+  "path": "../../src/modules/governance/views/components/blocks/CardVotingItem.vue",
+  "relativePath": "modules/governance/views/components/blocks/CardVotingItem.vue",
+  "type": "source",
+  "name": "CardVotingItem.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент, отображающий информацию о голосе пользователя: выбор и время голосования.",
+    "Purpose": "Визуализировать данные о голосовании (выбор пользователя и метку времени) в интерфейсе модуля управления (governance).",
+    "Components": [
+      {
+        "name": "CardVotingItem",
+        "role": "Отображает блок с информацией о голосе (choice и createdAt)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Служит для объявления входного пропа \"vote\" как объекта с обязательным полем.",
+        "parameters": {
+          "vote": {
+            "type": "Object",
+            "required": true
+          }
+        }
+      },
+      {
+        "name": "toLocaleString",
+        "description": "Встроенный метод Date для форматирования метки времени голосования в локализованный строковый вид.",
+        "parameters": {
+          "none": "Метод вызывается без аргументов."
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в родительских компонентах модуля governance для визуализации данных о конкретном голосе, например:<br/><code>import CardVotingItem from './components/blocks/CardVotingItem.vue'</code><br/>и используется как <code>&lt;CardVotingItem :vote=\"voteData\"/&gt;</code>.",
+    "Importance": 2,
+    "Notes": [
+      "Не содержит собственной секции <style>; вероятно, стили задаются глобально или на уровне родителя.",
+      "Дата приводится к локализованной строке прямо в шаблоне — при более сложных требованиях к форматированию стоит вынести в computed или отдельную утилиту.",
+      "Минималистичный компонент без реактивных методов и локального состояния."
+    ]
+  }
+}

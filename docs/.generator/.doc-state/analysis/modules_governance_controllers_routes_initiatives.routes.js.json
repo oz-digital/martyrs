@@ -1,0 +1,136 @@
+{
+  "path": "../../src/modules/governance/controllers/routes/initiatives.routes.js",
+  "relativePath": "modules/governance/controllers/routes/initiatives.routes.js",
+  "type": "source",
+  "name": "initiatives.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая регистрирует RESTful маршруты для работы с инициативами (initiatives) в Express-подобном приложении. Маршруты связываются с методами контроллера, полученного через фабрику.",
+    "Purpose": "Определить и подключить HTTP-эндпоинты для создания, получения, обновления, удаления и управления статусом инициатив в модуле governance.",
+    "Components": [
+      {
+        "name": "exportedRouteInitializer",
+        "type": "Function",
+        "description": "Главная функция, принимающая app, db, origins, publicPath и регистрирующая маршруты."
+      },
+      {
+        "name": "controller",
+        "type": "Object",
+        "description": "Экземпляр контроллера инициатив, возвращаемый initiativeFactory(db), с методами-обработчиками запросов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "exportedRouteInitializer",
+        "description": "Инициализирует маршруты на переданном объекте app",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "Express-подобный приложение/роутер"
+          },
+          {
+            "name": "db",
+            "type": "Any",
+            "description": "Объект доступа к базе данных"
+          },
+          {
+            "name": "origins",
+            "type": "Array",
+            "description": "Список допустимых origins (не используется внутри функции)"
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "Путь к публичным ресурсам (не используется)"
+          }
+        ]
+      },
+      {
+        "name": "controller.getAllInitiatives",
+        "description": "Обработчик GET /api/initiatives — возвращает список всех инициатив",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.getInitiativeById",
+        "description": "Обработчик GET /api/initiatives/:id — возвращает одну инициативу по ID",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.createInitiative",
+        "description": "Обработчик POST /api/initiatives — создает новую инициативу",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.updateInitiative",
+        "description": "Обработчик PUT /api/initiatives/:id — обновляет существующую инициативу",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.deleteInitiative",
+        "description": "Обработчик DELETE /api/initiatives/:id — удаляет инициативу",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.approveInitiative",
+        "description": "Обработчик POST /api/initiatives/:id/approve — помечает инициативу как одобренную",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.rejectInitiative",
+        "description": "Обработчик POST /api/initiatives/:id/reject — помечает инициативу как отклонённую",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../factories/initiatives.controller.js",
+        "import": "initiativeFactory",
+        "description": "Фабрика для создания контроллера инициатив с доступом к БД"
+      },
+      {
+        "module": "app",
+        "description": "Express-подобный объект для регистрации маршрутов"
+      },
+      {
+        "module": "db",
+        "description": "Объект для работы с базой данных, передаётся в фабрику контроллера"
+      }
+    ],
+    "Usage": "Импортируется и вызывается в основном месте инициализации серверного приложения (например, в index.js или app.js) для подключения маршрутов модуля governance.",
+    "Importance": 3,
+    "Notes": [
+      "Параметры origins и publicPath передаются, но внутри функции не используются — возможно, зарезервированы для CORS или статических маршрутов.",
+      "Маршруты организованы по REST-конвенциям, что облегчает поддержку и расширение API.",
+      "Обработчики запросов полностью делегированы контроллеру, что упрощает тестирование и разделение ответственности."
+    ]
+  }
+}

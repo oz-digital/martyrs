@@ -1,0 +1,84 @@
+{
+  "section": {
+    "id": "source-modules-inventory",
+    "title": "Проект: Модули / Инвентарь",
+    "description": "Модуль управления инвентарём обеспечивает хранение, учёт, корректировку и проверку остатков товаров на складе. Включает модели данных, сервисы, политики, маршруты и фоновые задачи.",
+    "subsections": [
+      {
+        "id": "models",
+        "title": "Модели данных",
+        "description": "Содержит схемы и модели для хранения информации об остатках, доступности и корректировках запасов.",
+        "files": [
+          "models/stock.adjustment.model.js",
+          "models/stock.availability.model.js",
+          "models/stock.balance.model.js",
+          "models/stock.inventory.model.js"
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Сервисы",
+        "description": "Логика работы с инвентарём: CRUD-операции и верификация данных.",
+        "files": [
+          "services/inventory.crud.js",
+          "services/inventory.verifier.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Определяет API-маршруты для работы с инвентарём.",
+        "files": [
+          "routes/inventory.routes.js"
+        ]
+      },
+      {
+        "id": "policies",
+        "title": "Политики доступа",
+        "description": "Ограничения и правила доступа к операциям с инвентарём.",
+        "files": [
+          "policies/inventory.policies.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище",
+        "description": "Локальное хранилище состояния инвентаря.",
+        "files": [
+          "store/ inventory.store.js"
+        ]
+      },
+      {
+        "id": "workers",
+        "title": "Фоновые задачи",
+        "description": "Обработка и обновление данных о доступности товаров в фоне.",
+        "files": [
+          "workers/inventory.availability.worker.js"
+        ]
+      },
+      {
+        "id": "server",
+        "title": "Серверная логика",
+        "description": "Основной серверный модуль для работы с инвентарём.",
+        "files": [
+          "inventory/inventory.server.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "3be5c50302af81054e55989ec2c2bdcd",
+    "43d9498da053453735b3f656ead185f1",
+    "587415f73581ac36d88f0ea8e599bdd8",
+    "5fbccb9f51dcdd75578643b4e1e0b303",
+    "714d922bcfe561c25a01632ffc700d48",
+    "bb7e24068fcdb814c4685c6fe16a6ec0",
+    "be8636e6f6186ffcac39d044b2ebf13e",
+    "dd6b179c979d6b421bfe1361b4df36fa",
+    "e6bd1daca579357b92e8f4fa643d8979",
+    "e8eea911be12f2bbc8c263aa7e6e66cc",
+    "efd5b76430988e9293c859fbcf90d2a6"
+  ],
+  "groupHash": "1baea52615a9e22cff927a8d3a4ff460",
+  "generated": "2025-06-05T09:20:49.858Z"
+}

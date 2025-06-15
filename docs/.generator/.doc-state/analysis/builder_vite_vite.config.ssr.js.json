@@ -1,0 +1,72 @@
+{
+  "path": "../../src/builder/vite/vite.config.ssr.js",
+  "relativePath": "builder/vite/vite.config.ssr.js",
+  "type": "source",
+  "name": "vite.config.ssr.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию, которая генерирует и возвращает SSR-специфичную конфигурацию для Vite. Он объединяет базовую конфигурацию с настройками для серверного рендеринга (SSR), включая сборку, плагины и оптимизации.",
+    "Purpose": "Обеспечить корректную сборку проекта в режиме SSR: собрать серверный бандл в формате CommonJS, игнорировать стили, ограничить сборку одним чанком, а в продакшне — сгенерировать манифест.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "Function",
+        "description": "Главная фабрика конфигурации, принимает projectRoot и возвращает объединённый Vite-конфиг для SSR."
+      },
+      {
+        "name": "LimitChunksPlugin",
+        "type": "Vite plugin",
+        "description": "Плагин для принудительной генерации одного чанка (main) в сборке SSR."
+      },
+      {
+        "name": "ManifestPlugin",
+        "type": "Vite plugin (production only)",
+        "description": "Плагин, создающий manifest.json с картой сгенерированных серверных JS-файлов в продакшне."
+      },
+      {
+        "name": "IgnoreCssForSSRPlugin",
+        "type": "Vite plugin",
+        "description": "Плагин, заменяющий все импорты CSS/LESS/SASS/SCSS на пустой модуль в SSR-сборке."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "(projectRoot: string) => object",
+        "description": "Генерирует SSR-конфигурацию, объединяя базовую и специфичные настройки."
+      },
+      {
+        "name": "LimitChunksPlugin.config",
+        "signature": "(config: object) => void",
+        "description": "Модифицирует rollupOptions.output.manualChunks для создания одного чанка."
+      },
+      {
+        "name": "ManifestPlugin.closeBundle",
+        "signature": "() => void",
+        "description": "После завершения сборки считывает папку сборки, формирует манифест и записывает manifest.json."
+      },
+      {
+        "name": "IgnoreCssForSSRPlugin.transform",
+        "signature": "(code: string, id: string) => { code: string; map: null } | undefined",
+        "description": "Перехватывает импорты стилей и возвращает пустой экспорт."
+      }
+    ],
+    "Dependencies": [
+      "fs (Node.js file system)",
+      "path (Node.js path utilities)",
+      "lodash.merge",
+      "./vite.config.base.js (getBaseConfig)",
+      "process.env.NODE_ENV",
+      "package.json (для списка dependencies через require)"
+    ],
+    "Usage": "Импортируется в скриптах сборки или в файле конфигурации Vite: `import ssrConfig from 'builder/vite/vite.config.ssr.js'; export default ssrConfig(__dirname);`",
+    "Importance": 4,
+    "Notes": [
+      "Использует rollupOptions.external для исключения из бандла всех зависимостей из package.json, кроме CSS/HTML/Vue-файлов и vue-meta.",
+      "В продакшн-режиме генерирует manifest.json для дальнейшей интеграции с серверным рендером.",
+      "Отключает минификацию и оптимизацию зависимостей для упрощённой отладки SSR-бандла.",
+      "CSS-обработка полностью игнорируется — все стили в SSR возвращают пустой объект.",
+      "Файл тесно связан с базовой конфигурацией Vite и не функционирует отдельно без getBaseConfig."
+    ]
+  }
+}

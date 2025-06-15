@@ -1,0 +1,93 @@
+{
+  "path": "../../src/modules/inventory/services/inventory.verifier.js",
+  "relativePath": "modules/inventory/services/inventory.verifier.js",
+  "type": "source",
+  "name": "inventory.verifier.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует factory-функцию, создающую набор middleware-проверок входных данных (query и body) для операций по учету запасов: корректировки, баланса, доступности и полного инвентаря.",
+    "Purpose": "Обеспечить централизованную валидацию и верификацию параметров запросов и тела запросов в модулях инвентаризации, стандартизировать проверку данных перед обработкой бизнес-логикой.",
+    "Components": [
+      {
+        "name": "adjustmentQueryConfig",
+        "role": "Конфигурация правил валидации для query-параметров при запросах корректировки запасов."
+      },
+      {
+        "name": "adjustmentBodyConfig",
+        "role": "Конфигурация правил валидации для тела запроса корректировки запасов."
+      },
+      {
+        "name": "balanceQueryConfig",
+        "role": "Конфигурация правил валидации для query-параметров при запросах баланса и доступности."
+      },
+      {
+        "name": "inventoryBodyConfig",
+        "role": "Конфигурация правил валидации для тела запроса полного инвентаря."
+      },
+      {
+        "name": "adjustmentQueryVerifier",
+        "role": "Экземпляр Verifier, обрабатывающий adjustmentQueryConfig."
+      },
+      {
+        "name": "adjustmentBodyVerifier",
+        "role": "Экземпляр Verifier, обрабатывающий adjustmentBodyConfig."
+      },
+      {
+        "name": "balanceQueryVerifier",
+        "role": "Экземпляр Verifier, обрабатывающий balanceQueryConfig."
+      },
+      {
+        "name": "inventoryBodyVerifier",
+        "role": "Экземпляр Verifier, обрабатывающий inventoryBodyConfig."
+      },
+      {
+        "name": "defaultExport",
+        "role": "Factory-функция, принимающая зависимость db и возвращающая объект middleware-методов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "verifyAdjustmentQuery",
+        "params": "req, res, next",
+        "description": "Middleware для проверки query-параметров корректировки запасов согласно adjustmentQueryConfig."
+      },
+      {
+        "name": "verifyAdjustmentBody",
+        "params": "req, res, next",
+        "description": "Middleware для проверки тела запроса корректировки запасов согласно adjustmentBodyConfig."
+      },
+      {
+        "name": "verifyBalanceQuery",
+        "params": "req, res, next",
+        "description": "Middleware для проверки query-параметров баланса запасов согласно balanceQueryConfig."
+      },
+      {
+        "name": "verifyAvailabilityQuery",
+        "params": "req, res, next",
+        "description": "Alias для verifyBalanceQuery — проверка доступности запаса."
+      },
+      {
+        "name": "verifyInventoryQuery",
+        "params": "req, res, next",
+        "description": "Alias для verifyBalanceQuery — проверка query-параметров полного инвентаря."
+      },
+      {
+        "name": "verifyInventoryBody",
+        "params": "req, res, next",
+        "description": "Middleware для проверки тела запроса полного инвентаря согласно inventoryBodyConfig."
+      },
+      {
+        "name": "verifyInventoryComplete",
+        "params": "req, res, next",
+        "description": "Пользовательский middleware: проверяет наличие поля _id в body, возвращает 400 при отсутствии, иначе продолжает цепочку."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/classes/globals.validator.js",
+      "@martyrs/src/modules/globals/controllers/classes/globals.verifier.js"
+    ],
+    "Usage": "Импортировать и вызвать как функцию, передав объект БД (db). Далее получить объект с middleware и подключить нужные методы в маршрутах Express/Restify перед бизнес-логикой.",
+    "Importance": 4,
+    "Notes": "1) Параметр db пока не используется внутри верификаторов, но передаётся для возможной интеграции с базой. 2) Некоторые методы (verifyAvailabilityQuery и verifyInventoryQuery) переиспользуют один экземпляр balanceQueryVerifier. 3) Пределы limit/skip и однотипные схемы обеспечивают защиту от перегрузки запросов."
+  }
+}

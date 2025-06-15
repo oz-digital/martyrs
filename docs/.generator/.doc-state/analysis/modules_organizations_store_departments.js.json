@@ -1,0 +1,137 @@
+{
+  "path": "../../src/modules/organizations/store/departments.js",
+  "relativePath": "modules/organizations/store/departments.js",
+  "type": "source",
+  "name": "departments.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a reactive Vue store module for managing department data in an organization. It maintains department list and single department state, provides CRUD actions via Axios calls to a backend API, tracks errors, and records state history.",
+    "Purpose": "To centralize and expose department-related state and actions (read, readOne, create, update, delete) for use in Vue components across the Organizations module of the Martyrs project.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibility": "Holds the departments array, a single department object, and any error. All fields mirror the API schema including access rights."
+      },
+      {
+        "name": "actions",
+        "type": "object of async methods",
+        "responsibility": "Defines asynchronous CRUD operations against the `/api/departments` endpoints, updates `state`, and delegates error handling to `setError`."
+      },
+      {
+        "name": "history",
+        "type": "array",
+        "responsibility": "Keeps a time-ordered log of snapshots of the entire `state` object to aid in debugging or time-travel."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "readOne",
+        "description": "Fetches data for a single department by ID and updates `state.department`.",
+        "parameters": [
+          {
+            "name": "departmentID",
+            "type": "string | number",
+            "description": "Identifier of the department to fetch."
+          }
+        ],
+        "returns": "Fetched department object or null on error."
+      },
+      {
+        "name": "read",
+        "description": "Fetches a filtered list of departments, sets `state.departments`.",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "object",
+            "description": "Query parameters for filtering or pagination."
+          }
+        ],
+        "returns": "Array of departments or null on error."
+      },
+      {
+        "name": "create",
+        "description": "Creates a new department under a given organization.",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "type": "string | number",
+            "description": "ID of the parent organization."
+          },
+          {
+            "name": "department",
+            "type": "object",
+            "description": "Department payload to create."
+          }
+        ],
+        "returns": "Created department data or null on error."
+      },
+      {
+        "name": "update",
+        "description": "Updates an existing department in a given organization.",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "type": "string | number",
+            "description": "ID of the parent organization."
+          },
+          {
+            "name": "department",
+            "type": "object",
+            "description": "Department payload with updated fields (must include `_id`)."
+          }
+        ],
+        "returns": "Axios response object or null on error."
+      },
+      {
+        "name": "delete",
+        "description": "Deletes a department by ID within an organization.",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "type": "string | number",
+            "description": "ID of the parent organization."
+          },
+          {
+            "name": "departmentId",
+            "type": "string | number",
+            "description": "ID of the department to delete."
+          }
+        ],
+        "returns": "Boolean `true` on success or `false` on error."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "reactive",
+          "watch"
+        ],
+        "purpose": "Creates reactive state and watches state changes."
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/store/globals.js",
+        "imports": [
+          "setError"
+        ],
+        "purpose": "Handles global error state updates."
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/utils/axios-instance.js",
+        "imports": [
+          "default"
+        ],
+        "purpose": "Provides a configured Axios instance for HTTP requests."
+      }
+    ],
+    "Usage": "Imported by Vue components or higher-level store index files as `import { state, actions } from 'modules/organizations/store/departments.js'`. Components call `actions.read()`, `actions.readOne(id)`, etc., and bind to `state.departments` or `state.department`.",
+    "Importance": 4,
+    "Notes": [
+      "A `history` array collects every new state snapshot; over time it may grow large unless pruned.",
+      "Errors from API calls are funneled through a global `setError` handler for centralized error display.",
+      "The department schema includes nested `accesses` flags to control feature-level permissions.",
+      "All actions clear previous errors on success, ensuring UI error indicators reset appropriately."
+    ]
+  }
+}

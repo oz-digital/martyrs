@@ -1,0 +1,31 @@
+{
+  "path": "../../src/modules/icons/labels/LabelGooglePlay.vue",
+  "relativePath": "modules/icons/labels/LabelGooglePlay.vue",
+  "type": "source",
+  "name": "LabelGooglePlay.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "LabelGooglePlay.vue is a Vue single-file component that renders a static SVG Google Play badge.",
+    "Purpose": "Provides a reusable Google Play Store label/icon to be displayed wherever the download badge is needed in the application.",
+    "Components": [
+      {
+        "name": "LabelGooglePlay",
+        "type": "VueComponent",
+        "responsibility": "Renders the SVG markup for the Google Play badge; no props or reactive state."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (for component registration/rendering)",
+      "CSS variables (--black, --white) for theming"
+    ],
+    "Usage": "Import in other Vue components or pages:\n\n  import LabelGooglePlay from 'modules/icons/labels/LabelGooglePlay.vue'\n\nand then use in template:\n\n  <LabelGooglePlay />",
+    "Importance": 2,
+    "Notes": [
+      "This file has no <script> or <style> sections; it is purely presentational.",
+      "All colors are driven by CSS custom properties for easy theming.",
+      "The SVG is fully inline, avoiding external asset requests.",
+      "No props or dynamic behavior; if customization is needed, wrapping or forking may be required."
+    ]
+  }
+}

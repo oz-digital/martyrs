@@ -1,0 +1,69 @@
+{
+  "path": "../../src/modules/backoffice/router/backoffice.js",
+  "relativePath": "modules/backoffice/router/backoffice.js",
+  "type": "source",
+  "name": "backoffice.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports the Vue Router route configuration for the \"backoffice\" section of the application, including its root path, child routes, metadata, and access control middleware.",
+    "Purpose": "To centralize and declare all routing rules, dynamic component imports, and access guards for the backoffice/admin area in a martyrs-based Vue.js project.",
+    "Components": [
+      {
+        "name": "backofficeRoutes",
+        "type": "Object",
+        "responsibility": "Holds the root route configuration for '/backoffice', including metadata, props, beforeEnter guards, and child routes."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "validationAuth.requiresAdmin",
+        "location": "@martyrs/src/modules/auth/views/middlewares/auth.validation.js",
+        "purpose": "Route guard middleware ensuring only users with admin roles can enter the backoffice routes.",
+        "params": [
+          "to",
+          "from",
+          "next"
+        ]
+      },
+      {
+        "name": "component loader functions",
+        "purpose": "Dynamically import and lazy-load the Vue components for each child route when the route is visited.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../components/partials/Sidebar.vue",
+        "purpose": "Sidebar component used in meta.sidebar_navigation"
+      },
+      {
+        "module": "@martyrs/src/modules/auth/views/middlewares/auth.validation.js",
+        "purpose": "Provides the requiresAdmin guard middleware"
+      },
+      {
+        "module": "../components/pages/Dashboard.vue",
+        "purpose": "Dashboard view for the base backoffice route"
+      },
+      {
+        "module": "@martyrs/src/modules/reports/components/pages/BackofficeReports.vue",
+        "purpose": "Component for the 'reports' child route"
+      },
+      {
+        "module": "@martyrs/src/modules/organizations/components/pages/Organizations.vue",
+        "purpose": "Component for the 'organizations' child route"
+      },
+      {
+        "module": "@martyrs/src/modules/community/components/pages/Blog.vue",
+        "purpose": "Component for the 'community' child route"
+      }
+    ],
+    "Usage": "Imported into the main Vue Router setup (e.g., src/router/index.js) and included in the routes array to activate the backoffice navigation and guards.",
+    "Importance": 4,
+    "Notes": [
+      "Contains a commented‐out 'admin' sub‐route block, possibly for future expansion.",
+      "Uses webpackChunkName hints for better chunk naming on dynamic imports.",
+      "Props for the route include a placeholder 'newsletterPopup' value (12344); likely for demonstration or future use.",
+      "Meta fields manage localized titles and sidebar configuration (component & width)."
+    ]
+  }
+}

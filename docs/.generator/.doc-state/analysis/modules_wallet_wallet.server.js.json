@@ -1,0 +1,96 @@
+{
+  "path": "../../src/modules/wallet/wallet.server.js",
+  "relativePath": "modules/wallet/wallet.server.js",
+  "type": "source",
+  "name": "wallet.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл отвечает за инициализацию модуля 'wallet' в приложении: регистрирует модели в объекте БД и настраивает HTTP-маршруты для платежей и вознаграждений.",
+    "Purpose": "Предоставить единую точку входа для подключения моделей, маршрутов и контроллеров модуля 'wallet' к основному приложению.",
+    "Components": [
+      {
+        "name": "FactoryPayments",
+        "type": "controller factory",
+        "responsibility": "Логика работы с платежами (создание, обработка и т. п.)"
+      },
+      {
+        "name": "RoutesPayments",
+        "type": "routes",
+        "responsibility": "Определение HTTP-эндоинтов для операций с платежами"
+      },
+      {
+        "name": "RoutesRewards",
+        "type": "routes",
+        "responsibility": "Определение HTTP-эндоинтов для операций с вознаграждениями"
+      },
+      {
+        "name": "ModelPayment",
+        "type": "data model",
+        "responsibility": "Схема и методы для работы с данными платежей в БД"
+      },
+      {
+        "name": "ModelReward",
+        "type": "data model",
+        "responsibility": "Схема и методы для работы с данными вознаграждений в БД"
+      },
+      {
+        "name": "ModelWallet",
+        "type": "data model",
+        "responsibility": "Схема и методы для работы с кошельками пользователей в БД"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializePayments",
+        "description": "Инициализирует модуль 'wallet': регистрирует модели в объекте БД и подключает маршруты к Express-приложению",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "Экземпляр Express-приложения (или аналогичного фреймворка)"
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект подключения к базе данных, куда будут добавлены модели"
+          },
+          {
+            "name": "wss",
+            "type": "WebSocketServer",
+            "description": "Сервер WebSocket для real-time уведомлений (используется в маршрутах вознаграждений)"
+          },
+          {
+            "name": "wdmClient",
+            "type": "Object",
+            "description": "Клиент для взаимодействия с внешним сервисом 'wdm' (используется в маршрутах вознаграждений)"
+          },
+          {
+            "name": "origins",
+            "type": "Array<String>",
+            "description": "Список разрешённых Origin для CORS"
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "Публичный путь для статических ресурсов или API"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./controllers/factories/payments.factory.js",
+      "./controllers/routes/payments.routes.js",
+      "./controllers/routes/rewards.routes.js",
+      "./models/payment.model.js",
+      "./models/reward.model.js",
+      "./models/wallet.model.js"
+    ],
+    "Usage": "Импортируется в основном файле сервера или модуле сборки фреймворка 'martyrs'. Обычно вызывается как `initialize(app, db, wss, wdmClient, origins, publicPath)` или через default-экспорт: `walletModule.initialize(...)`. Также доступны grouped exports: models, routes, controllers.",
+    "Importance": 4,
+    "Notes": [
+      "Роуты для rewards закомментированы в initializePayments (возможно, временно отключены).",
+      "Модели регистрируются динамически в объекте db, что позволяет легко подключать ORM или ODM.",
+      "Используется WebSocket и внешний клиент wdmClient только для маршрутов вознаграждений."
+    ]
+  }
+}

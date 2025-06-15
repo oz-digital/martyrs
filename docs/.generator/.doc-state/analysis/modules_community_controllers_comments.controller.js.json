@@ -1,0 +1,100 @@
+{
+  "path": "../../src/modules/community/controllers/comments.controller.js",
+  "relativePath": "modules/community/controllers/comments.controller.js",
+  "type": "source",
+  "name": "comments.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику контроллера комментариев для CRUD-операций над сущностью Comment в базе данных MongoDB. Он реализует методы чтения (с возможностью построения древовидной структуры), создания, обновления и удаления комментариев.",
+    "Purpose": "Обеспечить REST-endpoint-логику для работы с комментариями: получение списка (в плоском или древовидном формате), добавление нового комментария (с учётом вложенности), обновление и удаление.",
+    "Components": [
+      {
+        "name": "commentControllerFactory",
+        "type": "function",
+        "responsibility": "Принимает объект db (с Mongoose-моделями) и возвращает контроллер с методами read, create, update, delete."
+      },
+      {
+        "name": "read",
+        "type": "async function",
+        "responsibility": "Формирует агрегационный pipeline для выборки комментариев и (опционально) строит дерево вложенности."
+      },
+      {
+        "name": "create",
+        "type": "async function",
+        "responsibility": "Создаёт новый комментарий, вычисляет глубину, обновляет родителя, возвращает сохранённый документ с populated полями."
+      },
+      {
+        "name": "update",
+        "type": "async function",
+        "responsibility": "Обновляет поля существующего комментария по ID и возвращает обновлённый документ с populated данными owner/creator."
+      },
+      {
+        "name": "deleteComment",
+        "type": "async function",
+        "responsibility": "Удаляет комментарий по ID и возвращает удалённый документ."
+      },
+      {
+        "name": "buildCommentTree",
+        "type": "function (internal)",
+        "responsibility": "Пост-processing для read: получает плоский массив комментариев с вложенностями и строит JS-дерево объектов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "commentControllerFactory",
+        "params": [
+          "db"
+        ],
+        "description": "Factory-функция, создаёт и возвращает объект контроллера, привязанный к переданной базе данных."
+      },
+      {
+        "name": "read",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "GET-метод получения списка комментариев. Поддерживает фильтрацию по target/type/user/parentId, сортировку, формат вывода (tree|flat) и maxDepth для вложенности."
+      },
+      {
+        "name": "create",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "POST-метод создания комментария. Принимает body с {user, type, target, content, parent, creator, owner}, вычисляет depth и сохраняет документ."
+      },
+      {
+        "name": "update",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "PUT/PATCH-метод обновления комментария по req.params._id и возвращает обновлённый документ."
+      },
+      {
+        "name": "deleteComment",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "DELETE-метод удаления комментария по req.params._id."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+      "db.comment (Mongoose Model)",
+      "db.membership (Mongoose Model)",
+      "db.mongoose.Types.ObjectId",
+      "Express.js (req, res)"
+    ],
+    "Usage": "Импортируется как default из routes-файла: const commentController = commentControllerFactory(db); Затем используется в определении маршрутов Express: router.get('/comments', commentController.read), router.post('/comments', commentController.create) и т.д.",
+    "Importance": 4,
+    "Notes": [
+      "В методе read применяется MongoDB-оператор $graphLookup для получения вложенных комментариев.",
+      "Внутренний buildCommentTree восстанавливает корректную древовидную структуру и сортирует комментарии по createdAt.",
+      "Используется глобальный утилитный модуль queryProcessorGlobals для генерации этапов сортировки в pipeline.",
+      "При создании вложенного комментария глубина (depth) рассчитывается относительно родительского.",
+      "Возможны потенциальные проблемы по производительности при большой глубине вложенности и большом количестве комментариев."
+    ]
+  }
+}

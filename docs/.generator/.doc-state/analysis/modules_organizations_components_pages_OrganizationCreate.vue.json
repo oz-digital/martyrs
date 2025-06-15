@@ -1,0 +1,76 @@
+{
+  "path": "../../src/modules/organizations/components/pages/OrganizationCreate.vue",
+  "relativePath": "modules/organizations/components/pages/OrganizationCreate.vue",
+  "type": "source",
+  "name": "OrganizationCreate.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue компонент-обёртка для последовательного создания организации. Отображает индикатор шагов и рендерит содержимое текущего шага через <router-view> с анимацией перехода.",
+    "Purpose": "Предоставить общий макет и навигацию по шагам (детали, документы, приглашение людей) для процесса создания новой организации в приложении.",
+    "Components": [
+      {
+        "name": "router-view",
+        "responsibility": "Контейнер для рендеринга компонентов текущего шага согласно маршруту."
+      },
+      {
+        "name": "transition",
+        "responsibility": "Обеспечивает анимацию смены шагов при переходе между маршрутами."
+      },
+      {
+        "name": "component",
+        "responsibility": "Динамический рендеринг целевого шага по имени компонента из маршрута."
+      },
+      {
+        "name": "Tab",
+        "responsibility": "Импортируется, но в шаблоне не используется напрямую. Предназначен для табов в других частях процесса."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Импортируется для создания формовых полей на отдельных шагах."
+      },
+      {
+        "name": "Select",
+        "responsibility": "Импортируется для выпадающих списков на отдельных шагах."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Импортируется для кнопок управления на отдельных шагах."
+      },
+      {
+        "name": "Places",
+        "responsibility": "Секция для добавления локаций, вероятно используется в одном из дочерних маршрутов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onSubmit",
+        "purpose": "Заготовка для обработки отправки данных формы. Пока не реализована.",
+        "parameters": []
+      },
+      {
+        "name": "redirectTo",
+        "purpose": "Заготовка для перенаправления пользователя после успешного действия. Пока не реализована.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue-router (useRoute, useRouter, router-view)",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/organizations/components/sections/Places.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js"
+    ],
+    "Usage": "Включается в конфигурацию маршрутов Vue Router как родительский компонент по пути '/app/organization/create'. Дочерние компоненты подрутов (details, documents, people) рендерятся внутри него.",
+    "Importance": 3,
+    "Notes": [
+      "В шаблоне определён индикатор из трёх шагов, стиль активного шага зависит от route.path.",
+      "Импортированные компоненты Tab, Field, Select, Button используются в дочерних шагах, а не в данном файле напрямую.",
+      "Все обработчики onSubmit и redirectTo закомментированы и требуют реализации.",
+      "SCSS-стили минимальны и почти пустые.",
+      "Используется <script setup> синтаксис Vue 3."
+    ]
+  }
+}

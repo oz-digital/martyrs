@@ -1,0 +1,97 @@
+{
+  "path": "../../src/modules/products/components/sections/EditIngredients.vue",
+  "relativePath": "modules/products/components/sections/EditIngredients.vue",
+  "type": "source",
+  "name": "EditIngredients.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "EditIngredients.vue provides a UI section to view, add, update, and delete a list of ingredients for a product. It displays existing ingredients in a card layout and uses a popup with a searchable feed to add new ingredients from available products.",
+    "Purpose": "To manage the ingredients array for a parent product, allowing users to add items from the product catalog, adjust quantities/types, and remove them as needed.",
+    "Components": [
+      {
+        "name": "Block",
+        "responsibility": "Wrapper component providing title, placeholder and an action button to open the add-ingredient popup."
+      },
+      {
+        "name": "CardPosition",
+        "responsibility": "Renders each existing ingredient entry with controls to add/update/delete via global array actions."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal window to host the feed of available products for selection as new ingredients."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Searchable, paginated list of catalog products; emits rendered items via a scoped slot."
+      },
+      {
+        "name": "CardOrderItem",
+        "responsibility": "Presentation component inside Feed; clicking it adds the chosen product as a new ingredient."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openIngredientPopup",
+        "purpose": "Set the flag to open the add-ingredient popup.",
+        "parameters": []
+      },
+      {
+        "name": "closeIngredientPopup",
+        "purpose": "Set the flag to close the add-ingredient popup.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted (lifecycle)",
+        "purpose": "Fetch up to 100 products from the store for the popup feed when component mounts.",
+        "parameters": []
+      },
+      {
+        "name": "globals.actions.add",
+        "purpose": "Insert a new ingredient object into the ingredients array.",
+        "parameters": [
+          "arrayReference",
+          "itemObject"
+        ]
+      },
+      {
+        "name": "globals.actions.update",
+        "purpose": "Update an existing ingredient entry in the ingredients array at a given index.",
+        "parameters": [
+          "arrayReference",
+          "itemObject",
+          "index"
+        ]
+      },
+      {
+        "name": "globals.actions.delete",
+        "purpose": "Remove an ingredient entry from the ingredients array at a given index.",
+        "parameters": [
+          "arrayReference",
+          "itemObject",
+          "index"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, defineModel)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/products/store/products.js",
+      "@martyrs/src/modules/products/components/blocks/CardPosition.vue",
+      "@martyrs/src/modules/orders/components/blocks/CardOrderItem.vue"
+    ],
+    "Usage": "This component is imported into product‐editing views or forms. It uses defineModel('ingredients') to bind a parent v-model named \"ingredients\". A parent passes and reacts to changes in the ingredients array via v-model.",
+    "Importance": 3,
+    "Notes": [
+      "Uses defineModel for two‐way binding with parent component.",
+      "Limits feed load to 100 items; no pagination beyond initial fetch.",
+      "Relies on global array helper actions for add/update/delete to keep state consistent.",
+      "Inline arrow functions in template close the popup after every action.",
+      "Styling classes define min/max dimensions and scroll behavior for the popup content."
+    ]
+  }
+}

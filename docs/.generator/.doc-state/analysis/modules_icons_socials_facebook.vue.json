@@ -1,0 +1,30 @@
+{
+  "path": "../../src/modules/icons/socials/facebook.vue",
+  "relativePath": "modules/icons/socials/facebook.vue",
+  "type": "source",
+  "name": "facebook.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Это Vue-компонент, отображающий иконку Facebook в виде встроенного SVG.",
+    "Purpose": "Предоставить в проекте компонент-иконку Facebook для использования в пользовательском интерфейсе (например, в блоках социальных ссылок).",
+    "Components": [
+      {
+        "name": "FacebookIcon",
+        "responsibility": "Рендерит статический SVG, представляющий логотип Facebook."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (для рендеринга шаблона)",
+      "martyrs framework (автоматическая регистрация компонентов, если предусмотрена)"
+    ],
+    "Usage": "Импортируется из модуля \"modules/icons/socials/facebook.vue\" и используется в шаблонах других компонентов как <FacebookIcon /> (или под другим именем при регистрации).",
+    "Importance": 2,
+    "Notes": [
+      "В файле отсутствуют секции <script> и <style> – компонент полностью статичен.",
+      "Атрибуты width/height и viewBox зашиты в SVG.",
+      "Можно расширить для приёма пропсов, например, для изменения размера или цвета.",
+      "Путь SVG содержит заливку #fff – при темном фоне иконка будет видна."
+    ]
+  }
+}

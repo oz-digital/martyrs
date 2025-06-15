@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/icons/entities/IconPayments.vue",
+  "relativePath": "modules/icons/entities/IconPayments.vue",
+  "type": "source",
+  "name": "IconPayments.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue Single-File Component rendering a 'payments' SVG icon with a customizable fill color.",
+    "Purpose": "Предоставить переиспользуемый SVG-иконку для отображения в интерфейсе (иконка платежей).",
+    "Components": [
+      {
+        "name": "IconPayments",
+        "responsibilities": [
+          "Рендерит SVG-графику с заданным размером (56×56) и формой, имитирующей иконку платежей.",
+          "Принимает входной параметр `fill` для управления цветом заливки."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Объявляет входные свойства компонента.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Цвет заливки SVG-фигуры."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API: defineProps)"
+    ],
+    "Usage": "Импортируется в любые Vue-компоненты или страницы, где нужна иконка платежей. Пример:\n```js\nimport IconPayments from 'modules/icons/entities/IconPayments.vue';\n// ...\n<template>\n  <IconPayments fill=\"#3498db\" />\n</template>\n```",
+    "Importance": 2,
+    "Notes": [
+      "Компонент «легковесен»: не содержит логики помимо пропсов и шаблона.",
+      "Не требует собственного блока `<style>` — наследует стили через CSS-переменные.",
+      "SVG оптимизирован под фиксированный размер 56×56, при необходимости масштабируется CSS-стилями."
+    ]
+  }
+}

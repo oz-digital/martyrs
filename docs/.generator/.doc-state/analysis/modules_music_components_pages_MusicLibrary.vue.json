@@ -1,0 +1,90 @@
+{
+  "path": "../../src/modules/music/components/pages/MusicLibrary.vue",
+  "relativePath": "modules/music/components/pages/MusicLibrary.vue",
+  "type": "source",
+  "name": "MusicLibrary.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "MusicLibrary.vue is a Vue 3 component that renders the \"Your Library\" page of a music app. It provides tabbed navigation between Playlists, Albums, Artists, and Tracks, fetches user-specific data on mount, displays loader and empty-state UIs, and offers actions such as creating a playlist and uploading tracks.",
+    "Purpose": "Serve as the main user interface for browsing and managing a user's personal music library within the martyrs-based application.",
+    "Components": [
+      {
+        "name": "Button",
+        "responsibilities": "Reusable UI button with built-in loader/success states, used for tab switching and action triggers (create playlist, upload track)."
+      },
+      {
+        "name": "Loader",
+        "responsibilities": "Displays a loading spinner while data is being fetched."
+      },
+      {
+        "name": "PlaylistList",
+        "responsibilities": "Renders a list/grid of the user's playlists."
+      },
+      {
+        "name": "AlbumList",
+        "responsibilities": "Renders a list/grid of the user's albums."
+      },
+      {
+        "name": "ArtistManager",
+        "responsibilities": "Provides CRUD/UI management for the user's artists."
+      },
+      {
+        "name": "ArtistList",
+        "responsibilities": "(Currently unused/commented-out) Would render a list of the user's artists."
+      },
+      {
+        "name": "TrackList",
+        "responsibilities": "Renders a list/grid of the user's tracks, with optional album art and cover display."
+      },
+      {
+        "name": "Popup",
+        "responsibilities": "Generic modal wrapper for dialogs (used here for the Create Playlist form)."
+      },
+      {
+        "name": "PlaylistForm",
+        "responsibilities": "Form component to create a new playlist; emits events on create or cancel."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "fetchLibraryData",
+        "purpose": "Asynchronously fetches the current user's library data on component mount. Verifies authentication, redirects to Sign In if needed, fetches user tracks via the tracks store action, and toggles the loading state.",
+        "parameters": []
+      },
+      {
+        "name": "onPlaylistCreated",
+        "purpose": "Handles the successful creation of a new playlist: prepends it to the local list, closes the modal, and navigates to the playlist detail page.",
+        "parameters": [
+          "playlist (Object) – newly created playlist payload"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-router (useRouter)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "../lists/TrackList.vue",
+      "../lists/AlbumList.vue",
+      "../lists/PlaylistList.vue",
+      "../lists/ArtistList.vue",
+      "../pages/ArtistManager.vue",
+      "../forms/PlaylistForm.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js (authState)",
+      "../../store/playlists.js (playlistsState, playlistsActions)",
+      "../../store/albums.js (albumsState, albumsActions)",
+      "../../store/artists.js (artistsState, artistsActions)",
+      "../../store/tracks.js (tracksState, tracksActions)"
+    ],
+    "Usage": "Typically registered as a route component (e.g. path: '/library', name: 'MusicLibrary') in the vue-router configuration. Other page components link to it via router.push or <router-link>.",
+    "Importance": 4,
+    "Notes": [
+      "The fetchLibraryData function currently only fetches tracks; fetching for playlists, albums, and artists appears incomplete or deferred.",
+      "ArtistList rendering is commented out in favor of the ArtistManager component.",
+      "The component uses local refs for user data instead of directly mapping store state, providing isolation but duplicating state management.",
+      "No <style> block is present; styling relies entirely on global CSS utility classes.",
+      "Tabs are configured via a hard-coded array; adding a new tab requires updating both the array and the template logic."
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "section": {
+    "id": "source-builder-webpack",
+    "title": "Проект: Конструктор / Webpack",
+    "description": "Модуль предназначен для конфигурации и управления сборкой проекта с помощью Webpack. Содержит базовые и специализированные конфигурационные файлы для различных сценариев сборки.",
+    "subsections": [
+      {
+        "id": "webpack-index",
+        "title": "Главный модуль",
+        "description": "Файл index.js служит точкой входа для работы с Webpack-конфигурациями модуля."
+      },
+      {
+        "id": "webpack-config-base",
+        "title": "Базовая конфигурация",
+        "description": "Файл webpack.config.base.js содержит общие настройки Webpack, используемые в других конфигурациях."
+      },
+      {
+        "id": "webpack-config-client-server",
+        "title": "Конфигурации для клиента и сервера",
+        "description": "Файлы webpack.config.client.js и webpack.config.server.js предоставляют отдельные конфигурации для сборки клиентской и серверной частей приложения."
+      },
+      {
+        "id": "webpack-config-spa-ssr",
+        "title": "SPA и SSR конфигурации",
+        "description": "Файлы webpack.config.spa.js и webpack.config.ssr.js предназначены для настройки сборки одностраничных приложений (SPA) и серверного рендеринга (SSR)."
+      }
+    ]
+  },
+  "fileHashes": [
+    "17bfa41cf40437d5623d59a3c7684cdf",
+    "46fdf68a3c02a78c719f21d7f4852b8c",
+    "6823690fa75f52c7c521072f88e08e2c",
+    "7f57d643a9f9f68dc0464db97b62de8c",
+    "931c558bf7944dd19bee4f04451a3021",
+    "cfe1464b8ee856debad5540ed1daccf7"
+  ],
+  "groupHash": "184a73ba80a16c4bd93a42ec107cfabb",
+  "generated": "2025-06-05T09:15:58.618Z"
+}

@@ -1,0 +1,83 @@
+{
+  "path": "../../src/modules/music/routes/stream.routes.js",
+  "relativePath": "modules/music/routes/stream.routes.js",
+  "type": "source",
+  "name": "stream.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл регистрирует два HTTP-маршрута в Express-приложении для аудио-сервиса: один потоковой передачи аудио по заданному trackId, другой — выдачи данных волновой формы для визуализации.",
+    "Purpose": "Определить и привязать к экземпляру Express основные конечные точки API модуля «music/stream»: потоковое воспроизведение треков и получение precomputed waveform-данных.",
+    "Components": [
+      {
+        "name": "Экспортируемая функция (RouteInitializer)",
+        "responsibility": "Принимает app, db, origins и publicPath, создает экземпляр контроллера и регистрирует маршруты."
+      },
+      {
+        "name": "stream controller",
+        "responsibility": "Логика обработки поточного аудио (реализована в ../controllers/stream.controller.js)."
+      },
+      {
+        "name": "Inline Waveform Handler",
+        "responsibility": "Асинхронно читает из базы данных информацию о треке, затем из файловой системы отдаёт JSON с волновой формой."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default exported function",
+        "description": "Инициализирует маршруты streaming API.",
+        "parameters": [
+          "app (Express instance)",
+          "db (объект с моделями, в том числе db.track)",
+          "origins (список CORS-origin’ов, здесь не используется)",
+          "publicPath (строка пути до публичных ресурсов, логируется)"
+        ]
+      },
+      {
+        "name": "controller.streamAudio",
+        "description": "Обрабатывает GET-запрос к /api/stream/:trackId, осуществляет потоковую передачу аудио.",
+        "parameters": [
+          "req (Express Request)",
+          "res (Express Response)"
+        ]
+      },
+      {
+        "name": "Inline async handler for /api/waveform/:trackId",
+        "description": "Выполняет поиск трека по ID, проверяет наличие precomputed waveform JSON в файловой системе и возвращает его или ошибку.",
+        "parameters": [
+          "req.params.trackId",
+          "res"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../controllers/stream.controller.js",
+        "purpose": "Логика стриминга аудио"
+      },
+      {
+        "module": "fs (Node.js)",
+        "purpose": "Проверка и чтение файла с waveform-данными"
+      },
+      {
+        "module": "path (Node.js)",
+        "purpose": "Сборка пути до JSON-файла волновой формы"
+      },
+      {
+        "module": "db.track",
+        "purpose": "Mongo/Mongoose модель для поиска трека по ID"
+      },
+      {
+        "module": "process.env.FILE_STORAGE_PATH",
+        "purpose": "Базовый путь хранения файлов"
+      }
+    ],
+    "Usage": "Импортируется в основной модуль роутов (например, при инициализации всех маршрутов) и вызывается как `streamRoutes(app, db, origins, publicPath)` для привязки HTTP-эндпоинтов.",
+    "Importance": 4,
+    "Notes": [
+      "В файле используется fs и path, но они не импортированы — требует добавления `import fs from 'fs'; import path from 'path';`.",
+      "origins передается, но в текущей версии не применяется.",
+      "waveform JSON ожидается в папке `${FILE_STORAGE_PATH}/waveforms` и заранее должен быть сгенерирован.",
+      "Ошибка 404 и 500 обрабатываются корректно, но можно централизовать обработку ошибок через middleware."
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/governance/views/components/pages/Initiative.vue",
+  "relativePath": "modules/governance/views/components/pages/Initiative.vue",
+  "type": "source",
+  "name": "Initiative.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that fetches and displays the details of a single initiative (name, description, status) based on the route parameter `id`.",
+    "Purpose": "Serves as the page-level view for a specific initiative within the governance module; retrieves initiative data on mount and renders it in the template.",
+    "Components": [
+      {
+        "name": "Initiative",
+        "responsibilities": "On mount, reads the route parameter, dispatches a store action to load the initiative by ID, stores the result in a local `ref`, and renders the initiative details."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "purpose": "Vue lifecycle hook that runs after the component is mounted. It retrieves the `id` from the route, calls the store action to fetch initiative data, and assigns it to the `initiative` ref.",
+        "parameters": []
+      },
+      {
+        "name": "initiativesActions.getInitiativeById",
+        "purpose": "Store action invoked to fetch data for a single initiative by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string | number",
+            "description": "Identifier of the initiative to fetch."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-router (useRoute)",
+      "../../store/initiatives (initiativesActions, initiativesState)"
+    ],
+    "Usage": "Imported as a route component in the governance router configuration, typically mapped to a path like `/initiatives/:id`.",
+    "Importance": 3,
+    "Notes": [
+      "There is no explicit loading or error state handling; the UI remains empty until `initiative` is set.",
+      "No `<style>` block is defined, so styling must be inherited or defined globally.",
+      "Relies on the store module `initiatives` having a `current` state and `getInitiativeById` action."
+    ]
+  }
+}

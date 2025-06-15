@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/globals/views/router/addRoutes.js",
+  "relativePath": "modules/globals/views/router/addRoutes.js",
+  "type": "source",
+  "name": "addRoutes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл предоставляет утилиту для динамического добавления маршрутов во Vue Router на основе передённой конфигурации.",
+    "Purpose": "Организовать и упростить подключение вложенных и плоских маршрутов с фильтрацией, префиксами имён и обработкой «пустого» корневого пути.",
+    "Components": [
+      {
+        "name": "layoutEmpty",
+        "type": "Vue-компонент",
+        "responsibility": "Шаблон (layout) по умолчанию для оборачивания дочерних маршрутов"
+      },
+      {
+        "name": "NotFound",
+        "type": "Vue-компонент",
+        "responsibility": "Компонент-заглушка 404 для fallback-путей"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "addRoutes",
+        "purpose": "Главная функция; добавляет новые маршруты в экземпляр Vue Router по заданной конфигурации",
+        "parameters": [
+          {
+            "name": "router",
+            "type": "VueRouter",
+            "description": "Экземпляр роутера, куда будут добавлены маршруты"
+          },
+          {
+            "name": "config",
+            "type": "Object",
+            "description": "Конфигурация для генерации и фильтрации маршрутов: basePath, parentName, routes, префиксы, фильтры, meta, component, emptyRootBehavior"
+          }
+        ]
+      },
+      {
+        "name": "processRoutes",
+        "purpose": "Рекурсивная фильтрация и подготовка массива маршрутов: добавляет префиксы к имени, объединяет meta и обрабатывает вложенные children",
+        "parameters": [
+          {
+            "name": "routesArray",
+            "type": "Array<Object>",
+            "description": "Исходный список маршрутов"
+          },
+          {
+            "name": "prefix",
+            "type": "String",
+            "description": "Текущий префикс для имени маршрута"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/views/components/layouts/Empty.vue",
+      "@martyrs/src/modules/globals/views/components/pages/404.vue"
+    ],
+    "Usage": "Импортируется как функция: `import addRoutes from '.../addRoutes.js'` и вызывается в момент инициализации или расширения маршрутов: `addRoutes(router, config)`.",
+    "Importance": 4,
+    "Notes": [
+      "Поддерживает include/exclude/match-фильтрацию маршрутов",
+      "Обрабатывает случай отсутствия корневого пути через redirect или fallback",
+      "Автоматически префиксирует имена маршрутов",
+      "Выбрасывает ошибки при отсутствии basePath или дублировании имен",
+      "Гибкая конфигурация через параметр emptyRootBehavior"
+    ]
+  }
+}

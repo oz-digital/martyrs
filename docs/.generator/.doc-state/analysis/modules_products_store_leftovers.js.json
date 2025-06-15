@@ -1,0 +1,78 @@
+{
+  "path": "../../src/modules/products/store/leftovers.js",
+  "relativePath": "modules/products/store/leftovers.js",
+  "type": "source",
+  "name": "leftovers.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет реактивное хранилище (store) для работы с «остатками» (leftovers) в интерфейсе на Vue. Он содержит состояние, набор асинхронных действий для CRUD-операций через HTTP (axios), мутации для локального обновления состояния и ведёт историю изменений.",
+    "Purpose": "Служит модулем прикладного хранилища (store) для управления данными остатков товаров: получение списка, CRUD-операции, управление текущим объектом и настройками отображения колонок.",
+    "Components": [
+      {
+        "name": "state",
+        "responsibilities": "Реактивный объект с полями all (список всех остатков), current (текущий остаток) и settings (настройки отображения)."
+      },
+      {
+        "name": "actions",
+        "responsibilities": "Набор асинхронных методов для чтения, создания, обновления и удаления остатков через HTTP-запросы."
+      },
+      {
+        "name": "mutations",
+        "responsibilities": "Методы для локального сброса текущего остатка и обновления настроек колонок."
+      },
+      {
+        "name": "history",
+        "responsibilities": "Массив для хранения снимков состояния при каждом изменении (реализовано через watch)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "actions.read",
+        "description": "Получить список остатков",
+        "parameters": "options: объект с параметрами запроса (фильтры, пагинация и т.д.)"
+      },
+      {
+        "name": "actions.fetch",
+        "description": "Получить один остаток по его _id",
+        "parameters": "_id: идентификатор остатка"
+      },
+      {
+        "name": "actions.create",
+        "description": "Создать новый остаток",
+        "parameters": "{ organization, type, order, positions, creator, owner, comment } — параметры нового остатка"
+      },
+      {
+        "name": "actions.update",
+        "description": "Обновить существующий остаток",
+        "parameters": "leftover: объект остатка с полем _id и новыми данными"
+      },
+      {
+        "name": "actions.delete",
+        "description": "Удалить остаток по _id",
+        "parameters": "_id: идентификатор удаляемого остатка"
+      },
+      {
+        "name": "mutations.resetStock",
+        "description": "Сбросить текущее состояние остатка к начальному шаблону",
+        "parameters": "нет"
+      },
+      {
+        "name": "mutations.updateColumnSettings",
+        "description": "Обновить настройки видимости колонок",
+        "parameters": "settings: объект с булевыми флагами видимости колонок"
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js ($axios)"
+    ],
+    "Usage": "Импортируется в компонентах или других модулях как: import { state, actions, mutations } from 'modules/products/store/leftovers.js'; Затем используется для чтения/мутации реактивного состояния и вызова CRUD-методов.",
+    "Importance": 4,
+    "Notes": [
+      "Следит за всеми изменениями состояния через watch и сохраняет историю в массив history — может пригодиться для отладки или отмены изменений.",
+      "Использует централизованную обработку ошибок через setError.",
+      "Не является классическим Vuex-модулем, а представляет собой самописный reactive-store, что упрощает интеграцию с Composition API."
+    ]
+  }
+}

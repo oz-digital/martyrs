@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/icons/navigation/IconAdd.vue",
+  "relativePath": "modules/icons/navigation/IconAdd.vue",
+  "type": "source",
+  "name": "IconAdd.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single‐file component that renders an SVG “add” (plus in circle) icon with a configurable stroke color.",
+    "Purpose": "Provides a reusable Add icon for navigation or action buttons across the application.",
+    "Components": [
+      {
+        "name": "IconAdd",
+        "type": "Vue Component",
+        "responsibility": "Renders an SVG plus symbol inside a circle, accepts a `fill` prop to set stroke color."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Defines component props in the `<script setup>` block.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Stroke color for the SVG path."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API - defineProps)",
+      "CSS variable --black (for default fill color)"
+    ],
+    "Usage": "Import and use in templates or other components:\n\n```vue\n<script setup>\nimport IconAdd from 'modules/icons/navigation/IconAdd.vue'\n</script>\n<template>\n  <IconAdd fill=\"#ff0000\" />\n</template>\n```",
+    "Importance": 2,
+    "Notes": [
+      "There is no custom JavaScript logic or lifecycle hooks beyond prop definition.",
+      "Default fill uses CSS var `--black` to inherit theme color.",
+      "No scoped or global styles are defined in this file.",
+      "SVG attributes (`stroke-width`, `stroke-linecap`, `stroke-linejoin`) are hardcoded for consistent rendering."
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "path": "../../src/modules/orders/store/models/order.js",
+  "relativePath": "modules/orders/store/models/order.js",
+  "type": "source",
+  "name": "order.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет начальное состояние (initial state) модели заказа для store в модуле orders.",
+    "Purpose": "Предоставить стандартный шаблон (initial state) объекта заказа при инициализации или сбросе состояния в хранилище (store).",
+    "Components": [
+      {
+        "name": "orderInitState",
+        "type": "Object",
+        "description": "Константа с базовой структурой и значениями по умолчанию для сущности заказа."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/orders/store/models/customer.js",
+        "import": "customerInitState",
+        "description": "Начальное состояние для вложенного объекта customer."
+      }
+    ],
+    "Usage": "Импортируется в Vuex-модулях (или аналогичных store-модулях фреймворка martyrs) для задания исходного состояния раздела orders, например при инициализации или reset.",
+    "Importance": 3,
+    "Notes": [
+      "Использует spread-оператор для копирования состояния customerInitState.",
+      "Все поля заказа типизированы через простые JS-объекты без классов или методов.",
+      "Позволяет легко сбрасывать или инициализировать заказ с консистентной структурой."
+    ]
+  }
+}

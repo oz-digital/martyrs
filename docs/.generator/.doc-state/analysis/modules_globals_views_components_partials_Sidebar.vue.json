@@ -1,0 +1,59 @@
+{
+  "path": "../../src/modules/globals/views/components/partials/Sidebar.vue",
+  "relativePath": "modules/globals/views/components/partials/Sidebar.vue",
+  "type": "source",
+  "name": "Sidebar.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A responsive, collapsible sidebar Vue component that renders navigation content via a slot, adapts its width and styling based on props and device type, and provides a dark/light theme toggle button wired to a global store.",
+    "Purpose": "To serve as the application's main sidebar UI element: it can open/close, adjust for mobile/tablet breakpoints, apply theming, and notify parent components when it should be closed.",
+    "Components": [
+      {
+        "name": "Sidebar.vue",
+        "role": "Renders the sidebar container, applies dynamic classes, hosts a slot for navigation links, and contains a theme toggle control."
+      },
+      {
+        "name": "useGlobalMixins",
+        "role": "Provides utility methods isPhone() and isTablet() for responsive behavior."
+      },
+      {
+        "name": "globals (store)",
+        "role": "Holds application-wide state (including theme.darkmode) and actions (toggleTheme)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "toggleSidebar",
+        "description": "Emits the 'closeSidebar' event to request the parent to hide or collapse the sidebar.",
+        "parameters": []
+      },
+      {
+        "name": "router.beforeEach",
+        "description": "Navigation guard that closes the sidebar (via emit) whenever a route change occurs on phone or tablet form factors.",
+        "parameters": [
+          "to",
+          "from"
+        ]
+      },
+      {
+        "name": "globals.actions.toggleTheme",
+        "description": "Toggles the application's dark/light theme state in the global store.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watch, defineProps, defineEmits)",
+      "vue-router (useRouter, router.beforeEach)",
+      "@martyrs/src/modules/globals/views/mixins/mixins.js (useGlobalMixins)",
+      "@martyrs/src/modules/globals/views/store/globals.js (state, actions)"
+    ],
+    "Usage": "Imported into layout or parent view components. Used as <Sidebar :theme=\"...\" :stateSidebar=\"...\" @closeSidebar=\"handler\">...navigation links...</Sidebar> to wrap navigation items and control open/close state.",
+    "Importance": 3,
+    "Notes": [
+      "Uses CSS scoped styles for .hidden, .visible and custom scrollbar theming.",
+      "Responsive breakpoints (tablet, mobile) are applied via dynamic class binding on the <aside> element.",
+      "Emits 'closeSidebar' both on explicit toggle and automatically before each route change on smaller devices.",
+      "The theme toggle button adapts its label visibility based on sidebar state for compact mode."
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/globals/controllers/utils/seo-friendly-url.js",
+  "relativePath": "modules/globals/controllers/utils/seo-friendly-url.js",
+  "type": "source",
+  "name": "seo-friendly-url.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Модуль предоставляет функцию createFriendlyURL для преобразования строки в человеко-понятный URL (slug), обрабатывая Unicode-символы, специальные символы и генерируя идентификаторы для нетиповых символов.",
+    "Purpose": "Обеспечить единообразное и безопасное формирование ЧПУ из произвольных строк (заголовков, названий, меток) в рамках приложения на фреймворке martyrs.",
+    "Components": [
+      {
+        "name": "createFriendlyURL",
+        "type": "function",
+        "description": "Главная экспортируемая функция модуля. Принимает на вход строку и возвращает её трансформированную в slug-формат."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createFriendlyURL",
+        "params": [
+          {
+            "name": "str",
+            "type": "string",
+            "description": "Исходная строка для преобразования."
+          }
+        ],
+        "description": "Оркеструет процесс транслитерации, замены пробелов и очистки результата, возвращая готовый URL-friendly slug."
+      },
+      {
+        "name": "generateRandomId",
+        "params": [],
+        "description": "Создаёт случайную 6-символьную буквенно-цифровую строку с префиксом 'x' для неизвестных символов."
+      },
+      {
+        "name": "transliterateChar",
+        "params": [
+          {
+            "name": "char",
+            "type": "string",
+            "description": "Одиночный символ для транслитерации."
+          }
+        ],
+        "description": "Проверяет карту unicodeMap, возвращает замещающий символ, дефис или случайный ID из cache для неизвестных символов."
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Импортируется в других модулях для получения URL-friendly представления строк: `import createFriendlyURL from 'modules/globals/controllers/utils/seo-friendly-url';` затем `const slug = createFriendlyURL(title);`",
+    "Importance": 3,
+    "Notes": [
+      "unicodeMap содержит обширный набор замен для латиницы, кириллицы, цифр и спецсимволов.",
+      "unknownCharCache и generateRandomId объявлены внутри createFriendlyURL, поэтому кэш и генерация ID живут только в рамках одного вызова.",
+      "Из-за рандомизации неизвестных символов результаты для одинаковых строк с нетиповыми символами могут отличаться при повторных вызовах.",
+      "После транслитерации строка приводится к lowercase, лишние дефисы сводятся к одиночным, обрезаются по краям."
+    ]
+  }
+}

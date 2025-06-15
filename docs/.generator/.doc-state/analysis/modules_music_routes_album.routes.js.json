@@ -1,0 +1,107 @@
+{
+  "path": "../../src/modules/music/routes/album.routes.js",
+  "relativePath": "modules/music/routes/album.routes.js",
+  "type": "source",
+  "name": "album.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл регистрирует HTTP-маршруты (endpoints) для работы с ресурсом \"альбомы\" в Express-приложении на фреймворке Martyrs. Он подключает JWT-аутентификацию и связывает CRUD-операции, а также дополнительные методы получения треков, популярных и поиска по URL.",
+    "Purpose": "Организация и регистрация всех API-маршрутов для ресурса альбомов в основном приложении: создание, чтение, обновление, удаление, получение треков и особенности поиска.",
+    "Components": [
+      {
+        "name": "Экспортируемая функция",
+        "type": "initializer",
+        "responsibility": "Принимает экземпляры app (Express), db, origins и publicPath, настраивает маршруты."
+      },
+      {
+        "name": "controller",
+        "type": "AlbumControllerInstance",
+        "responsibility": "Инкапсулирует логику работы с альбомами (методы create, read, update, delete, getAlbumTracks, getFeaturedAlbums)."
+      },
+      {
+        "name": "authJwt",
+        "type": "middleware",
+        "responsibility": "JWT-проверка доступа к защищённым методам."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "create",
+        "location": "controller.create",
+        "purpose": "Создать новый альбом.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "read",
+        "location": "controller.read",
+        "purpose": "Получить список или детали альбомов.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "update",
+        "location": "controller.update",
+        "purpose": "Обновить существующий альбом.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "delete",
+        "location": "controller.delete",
+        "purpose": "Удалить альбом.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "getAlbumTracks",
+        "location": "controller.getAlbumTracks",
+        "purpose": "Получить список треков конкретного альбома по albumId.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "getFeaturedAlbums",
+        "location": "controller.getFeaturedAlbums",
+        "purpose": "Получить список рекомендованных/избранных альбомов.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      },
+      {
+        "name": "anonymous async handler",
+        "location": "app.get('/api/albums/url/:url', …)",
+        "purpose": "Найти альбом по полю url в БД, вернуть 404 если не найден или 500 при ошибке.",
+        "parameters": [
+          "req",
+          "res"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "../controllers/album.controller.js",
+      "Express app instance (app)",
+      "Database объект (db) с моделью album"
+    ],
+    "Usage": "Импортируется и вызывается в основном файле инициализации маршрутов (например server.js или index.js) с передачей app, db и опциональных параметров origins/publicPath для регистрации всех эндпоинтов.",
+    "Importance": 4,
+    "Notes": [
+      "Используется JWT-мидл для защиты POST, PUT и DELETE маршрутов.",
+      "При поиске по URL происходит populate('artist') для подгрузки данных об исполнителе.",
+      "Ошибка в асинхронном хендлере логируется в консоль и возвращается сообщение об ошибке клиенту.",
+      "Не используется routes-router – маршруты навешиваются напрямую на Express app."
+    ]
+  }
+}

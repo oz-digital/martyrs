@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/governance/views/router/goverance.router.js",
+  "relativePath": "modules/governance/views/router/goverance.router.js",
+  "type": "source",
+  "name": "goverance.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports two main utilities for the Governance module: a factory function to create route definitions for initiatives, tasks, and votings under a given path prefix, and a function to set up navigation guards that enforce business rules (e.g., only allowing edits of draft initiatives or preventing edits of closed votings).",
+    "Purpose": "To encapsulate all route definitions and related navigation guards for the governance section of the application, making it easy to register these routes and guards in the main Vue router.",
+    "Components": [
+      {
+        "name": "Route Configuration Object",
+        "description": "An object returned by createGovernanceRoutes() containing path, meta, and children properties for the governance section and its sub-routes (initiatives, tasks, votings)."
+      },
+      {
+        "name": "Dynamic Page Components",
+        "list": [
+          "Initiatives.vue          – list view of initiatives",
+          "InitiativeCreate.vue     – create/edit initiative form",
+          "Initiative.vue           – detail view of a single initiative",
+          "Tasks.vue                – list view of tasks",
+          "TaskCreate.vue           – create/edit task form",
+          "Task.vue                 – detail view of a single task",
+          "Votings.vue              – list view of votings",
+          "VotingCreate.vue         – create/edit voting form",
+          "Voting.vue               – detail view of a single voting"
+        ],
+        "description": "These are loaded asynchronously via dynamic import or defineAsyncComponent."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createGovernanceRoutes",
+        "parameters": [
+          "prefix (string) – optional prefix to prepend to route names",
+          "options (object) – customization options: { basePath, page_initiative, page_initiative_edit, page_task, page_task_edit, page_voting, page_voting_edit }"
+        ],
+        "returns": "A route definition object suitable for Vue Router, containing nested child routes for initiatives, tasks, and votings, each with meta and auth guards where needed."
+      },
+      {
+        "name": "setupGovernanceNavigationGuards",
+        "parameters": [
+          "router – the Vue Router instance to which navigation guards will be attached"
+        ],
+        "returns": "void",
+        "description": "Registers two global beforeEach guards on the router: one to prevent editing of closed votings, and another to prevent editing of non-draft initiatives."
+      }
+    ],
+    "Dependencies": [
+      "vue (defineAsyncComponent)",
+      "@martyrs/src/modules/auth/views/middlewares/auth.validation.js (validationAuth.requiresAuth)"
+    ],
+    "Usage": "Import createGovernanceRoutes and setupGovernanceNavigationGuards in the main router setup file. Call createGovernanceRoutes(...) to get the routes object and pass it to VueRouter (e.g., via routes array or router.addRoute). Then call setupGovernanceNavigationGuards(router) to activate the guards.",
+    "Importance": 4,
+    "Notes": [
+      "The navigation guards use fetch() to request API endpoints and make routing decisions based on the resource's status.",
+      "Two separate beforeEach hooks are registered; their order may affect routing logic.",
+      "Route names are auto-prefixed if a prefix is provided, enabling namespacing in larger applications.",
+      "Dynamic component imports include webpackChunkName 'Governance' to group all governance pages into one chunk.",
+      "Auth middleware is only applied to create/edit routes to enforce login requirement."
+    ]
+  }
+}

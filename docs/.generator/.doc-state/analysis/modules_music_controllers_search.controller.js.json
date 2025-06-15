@@ -1,0 +1,72 @@
+{
+  "path": "../../src/modules/music/controllers/search.controller.js",
+  "relativePath": "modules/music/controllers/search.controller.js",
+  "type": "source",
+  "name": "search.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует контроллер поиска музыкальных сущностей (треков, альбомов, артистов, плейлистов и жанров) с поддержкой кэширования и логирования ошибок.",
+    "Purpose": "Обеспечить HTTP-эндпоинт для обработки поисковых запросов по музыкальным данным, выполняя поиск по нескольким коллекциям в базе и кэшируя результаты.",
+    "Components": [
+      {
+        "name": "Logger",
+        "role": "Класс для логирования ошибок и информационных сообщений в контексте работы с базой данных."
+      },
+      {
+        "name": "Cache",
+        "role": "Класс для кэширования результатов поиска с возможностью установки TTL."
+      },
+      {
+        "name": "search (function)",
+        "role": "Основная функция-обработчик HTTP-запроса на поиск."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "search",
+        "description": "Обрабатывает GET-поиск по параметрам query, type и limit, возвращает JSON с результатами из нескольких коллекций, кэширует их и логирует ошибки.",
+        "parameters": [
+          {
+            "name": "req",
+            "type": "Express.Request",
+            "description": "Объект запроса, из которого читаются параметры query, type и limit."
+          },
+          {
+            "name": "res",
+            "type": "Express.Response",
+            "description": "Объект ответа, через который отдаются результаты или ошибки."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/classes/globals.cache.js",
+        "imported": "Cache"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/controllers/classes/globals.logger.js",
+        "imported": "Logger"
+      },
+      {
+        "module": "db",
+        "usedCollections": [
+          "track",
+          "album",
+          "artist",
+          "playlist",
+          "genre"
+        ]
+      }
+    ],
+    "Usage": "Импортируется и инициализируется при старте приложения: const searchController = require('modules/music/controllers/search.controller')(app, db); Затем обычно монтируется как маршрут: app.get('/api/search', searchController.search).",
+    "Importance": 4,
+    "Notes": [
+      "Параметр app передается, но внутри контроллера не используется напрямую.",
+      "Кэширование результатов происходит на 600 секунд (10 минут) по ключу, зависящему от query, type и limit.",
+      "Поисковый запрос должен быть не короче 2 символов, иначе возвращается 400 ошибка.",
+      "Используется регэксп-совпадение по различным полям: title, tags, description, bio.",
+      "Типы поиска можно ограничить параметром type или выполнить по всем категориям сразу."
+    ]
+  }
+}

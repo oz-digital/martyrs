@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/products/models/category.model.js",
+  "relativePath": "modules/products/models/category.model.js",
+  "type": "source",
+  "name": "category.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет Mongoose-модель «Category» с полями, индексами и подключением общих схем (common, ownership, metadata, engagement).",
+    "Purpose": "Центральное место для описания структуры и поведения коллекции категорий в базе данных проекта, создание и регистрация модели «Category».",
+    "Components": [
+      {
+        "name": "CategorySchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Описание полей документа категории (name, description, photo, order, url, parent, localization, filters) и настройка таймстемпов."
+      },
+      {
+        "name": "Category",
+        "type": "Mongoose.Model",
+        "responsibility": "Интерфейс для CRUD-операций с коллекцией «categories»."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "db => Model",
+        "description": "Принимает объект db (с подключённым mongoose), создаёт схему, подключает к ней глобальные плагины/схемы, устанавливает индексы и возвращает модель.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер с экземпляром mongoose и другими полезными объектами."
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель «Category» для работы с коллекцией 'categories'."
+        }
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/models/schemas/common.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/metadata.schema.js",
+      "@martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+      "mongoose (через переданный объект db)"
+    ],
+    "Usage": "В точке инициализации модулей проекта импортируется и вызывается с объектом db: const Category = require('modules/products/models/category.model')(db); Далее используется для операций с категориями (find, create, update, delete).",
+    "Importance": 4,
+    "Notes": [
+      "Применяет глобальные схемы/common-плагины: common, ownership, metadata, engagement.",
+      "Устанавливает индексы по полям parent и name для ускорения поиска.",
+      "Поле url помечено unique — обеспечивает уникальность адреса категории.",
+      "Использует timestamps с кастомным currentTime для записи времени создания/обновления."
+    ]
+  }
+}

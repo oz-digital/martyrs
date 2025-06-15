@@ -1,0 +1,197 @@
+{
+  "path": "../../src/styles/reset.scss",
+  "relativePath": "styles/reset.scss",
+  "type": "source",
+  "name": "reset.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "Этот файл содержит набор правил CSS/Sass для сброса (reset) и нормализации стилей браузера. Он обнуляет отступы, границы, шрифты и фон для большинства HTML-элементов, убирает стандартные украшения ссылок, списков, таблиц и форм, а также отключает некоторые дефолты браузеров (всплывающие стрелки у полей ввода, подсветку тапов на мобильных устройствах).",
+    "Purpose": "Обеспечить единообразную основу для всех компонентов интерфейса, устранив различия в стилях по умолчанию в разных браузерах перед подключением основных стилей проекта.",
+    "Components": [
+      {
+        "name": "Global reset",
+        "selectors": [
+          "html",
+          "button",
+          "body",
+          "div",
+          "span",
+          "applet",
+          "object",
+          "iframe",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "p",
+          "blockquote",
+          "pre",
+          "a",
+          "abbr",
+          "acronym",
+          "address",
+          "big",
+          "cite",
+          "code",
+          "del",
+          "dfn",
+          "em",
+          "img",
+          "ins",
+          "kbd",
+          "q",
+          "s",
+          "samp",
+          "small",
+          "strike",
+          "strong",
+          "sub",
+          "sup",
+          "tt",
+          "var",
+          "b",
+          "u",
+          "i",
+          "center",
+          "dl",
+          "dt",
+          "dd",
+          "ol",
+          "ul",
+          "li",
+          "fieldset",
+          "form",
+          "label",
+          "legend",
+          "table",
+          "caption",
+          "tbody",
+          "tfoot",
+          "thead",
+          "tr",
+          "th",
+          "td",
+          "article",
+          "aside",
+          "canvas",
+          "details",
+          "embed",
+          "figure",
+          "figcaption",
+          "footer",
+          "header",
+          "hgroup",
+          "menu",
+          "nav",
+          "output",
+          "ruby",
+          "section",
+          "summary",
+          "time",
+          "mark",
+          "audio",
+          "video",
+          "textarea",
+          "input"
+        ],
+        "responsibility": "Обнуление margin, padding, border; наследование шрифтов; сброс фона и текстовых декораций; отключение подсветки тапов."
+      },
+      {
+        "name": "Anchor tags",
+        "selectors": [
+          "a:link",
+          "a:visited",
+          "a:hover"
+        ],
+        "responsibility": "Сброс цвета и оформления ссылок."
+      },
+      {
+        "name": "HTML5 semantic elements",
+        "selectors": [
+          "article",
+          "aside",
+          "details",
+          "figcaption",
+          "figure",
+          "footer",
+          "header",
+          "hgroup",
+          "menu",
+          "nav",
+          "section"
+        ],
+        "responsibility": "Устанавливает display: block для новых семантических элементов."
+      },
+      {
+        "name": "Box sizing for form and header elements",
+        "selectors": [
+          "header",
+          "select",
+          "input",
+          "span",
+          "label",
+          "textarea"
+        ],
+        "responsibility": "Применяет box-sizing: border-box и наследует семейство шрифтов."
+      },
+      {
+        "name": "Lists",
+        "selectors": [
+          "ol",
+          "ul",
+          "li"
+        ],
+        "responsibility": "Убирает маркеры списков."
+      },
+      {
+        "name": "Blockquotes and Quotes",
+        "selectors": [
+          "blockquote",
+          "q",
+          "blockquote:before",
+          "blockquote:after",
+          "q:before",
+          "q:after"
+        ],
+        "responsibility": "Отключает оформление и кавычки."
+      },
+      {
+        "name": "Tables",
+        "selectors": [
+          "table"
+        ],
+        "responsibility": "Убирает отступы и сводит границы."
+      },
+      {
+        "name": "Inputs and Textareas",
+        "selectors": [
+          "input",
+          "textarea",
+          "input,&:link,&:focus,&:visited,&:active",
+          "textarea,&:link,&:focus,&:visited,&:active"
+        ],
+        "responsibility": "Сбрасывает фон, обводку, outline, appearance и текстовые декорации."
+      },
+      {
+        "name": "Vendor-specific tweaks",
+        "selectors": [
+          "div",
+          "input::-webkit-outer-spin-button",
+          "input::-webkit-inner-spin-button"
+        ],
+        "responsibility": "Разрешает выделение текста в div, убирает спиннеры у полей типа number."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [],
+    "Usage": "Подключается на самом раннем этапе сборки стилей (обычно через @import или @use в главном файле стилей), чтобы обеспечить базовый reset перед основными компонентными Sass-модулями.",
+    "Importance": 5,
+    "Notes": [
+      "Использует устоявшиеся приёмы CSS reset (по мотивам Meyer’s reset и normalize).",
+      "Добавлены мобильные оптимизации: -webkit-tap-highlight-color и удаление стрелок у input[type=number].",
+      "Нет переменных и миксинов — исключительно глобальные правила сброса."
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "path": "../../src/components/Table/TableCell.vue",
+  "relativePath": "components/Table/TableCell.vue",
+  "type": "source",
+  "name": "TableCell.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a table cell’s content dynamically based on provided value and column configuration, supporting custom components, formatter functions, object serialization, or default text.",
+    "Purpose": "Serve as a flexible cell renderer in a table/grid, abstracting the logic for how each cell’s value should be presented.",
+    "Components": [
+      {
+        "name": "TableCell (default export)",
+        "description": "Top-level component defined in this file, responsible for wrapping and rendering cell content."
+      },
+      {
+        "name": "<component>",
+        "description": "Vue’s dynamic component tag used twice: once to render a custom wrapper (column.wrapper) or div, and once to render a custom cell component (column.component)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "renderContent",
+        "purpose": "Compute the display content for the cell based on props.column and props.value.",
+        "parameters": "None explicitly – uses props.value and props.column from script setup."
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, h)",
+      "column.component (runtime dynamic component)",
+      "column.formatter (runtime function)"
+    ],
+    "Usage": "Imported into a parent Table or Grid component: e.g. `import TableCell from 'components/Table/TableCell.vue'` and used in a template: `<TableCell :value=\"row[field]\" :column=\"columnConfig\" />`. Usually iterated over rows/columns to render full table.",
+    "Importance": 4,
+    "Notes": [
+      "Uses `<script setup>` syntax for conciseness",
+      "Scoped CSS ensures `.table-cell-content` fills its parent",
+      "When value is an object, only enumerable primitive properties are JSON-stringified to avoid circular references",
+      "Allows overriding both wrapper element (`column.wrapper`) and cell component (`column.component`) for maximum flexibility"
+    ]
+  }
+}

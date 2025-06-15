@@ -1,0 +1,75 @@
+{
+  "path": "../../src/builder/modes/spa.dev.js",
+  "relativePath": "builder/modes/spa.dev.js",
+  "type": "source",
+  "name": "spa.dev.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл предоставляет функцию для запуска сервера разработки SPA с использованием webpack для клиентской и серверной частей, организует промежуточное ПО (middleware) для рендеринга, истории браузера и автоматической перезагрузки при изменениях кода.",
+    "Purpose": "Обеспечить режим разработки (dev mode) для одностраничного приложения: компиляция клиента и сервера через webpack, подмена истории маршрутов для SPA и автоматический рестарт сервера при изменении API-кода.",
+    "Components": [
+      {
+        "name": "createSpaDevServer",
+        "role": "Основная экспортируемая фабрика, создаёт и настраивает dev-сервер"
+      },
+      {
+        "name": "createDevRenderer",
+        "role": "Добавляет плагин прогресса webpack с цветным выводом в консоль"
+      },
+      {
+        "name": "startServer",
+        "role": "Асинхронно запускает/перезапускает сервер Express с нужным middleware и отдаёт index.html из памяти webpack"
+      },
+      {
+        "name": "clientDevMiddleware",
+        "role": "Middleware для обслуживания клиентской сборки из in-memory filesystem"
+      },
+      {
+        "name": "serverCompiler.watch callback",
+        "role": "Наблюдатель за изменениями серверного кода, перезапускает startServer"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (createSpaDevServer)",
+        "params": [
+          "projectRoot",
+          "{ spaConfig, apiConfig, createServer }"
+        ],
+        "description": "Инициализирует клиентый и серверный компиляторы, настраивает middleware и возвращает функцию startServer"
+      },
+      {
+        "name": "createDevRenderer",
+        "params": [],
+        "description": "Встраивает ProgressPlugin в spaConfig для отображения прогресса компиляции в цвете"
+      },
+      {
+        "name": "startServer",
+        "params": [],
+        "description": "Очищает кэш require, вызывает переданную функцию createServer, настраивает history и webpack-dev-middleware, обслуживает index.html из памяти, запускает HTTP-сервер"
+      },
+      {
+        "name": "serverCompiler.watch",
+        "params": [
+          "opts",
+          "callback(err, stats)"
+        ],
+        "description": "Следит за изменениями серверного бандла, логирует и перезапускает сервер"
+      }
+    ],
+    "Dependencies": [
+      "connect-history-api-fallback",
+      "path",
+      "webpack",
+      "webpack-dev-middleware"
+    ],
+    "Usage": "Импортируется в инструментарий сборки (например, CLI или скрипт запуска), вызывается с корнем проекта и конфигурациями spaConfig/apiConfig, затем выполняется возвращённая функция startServer.",
+    "Importance": 5,
+    "Notes": [
+      "Использует ANSI escape-коды для цветного прогресса в консоли",
+      "При каждом старте очищается require.cache для «горячей» перезагрузки серверного кода",
+      "Шаблон работы: clientDevMiddleware обслуживает бандл из памяти, а все GET-запросы отдают index.html",
+      "В коде оставлены закомментированные варианты горячей перезагрузки клиента и сжатия"
+    ]
+  }
+}

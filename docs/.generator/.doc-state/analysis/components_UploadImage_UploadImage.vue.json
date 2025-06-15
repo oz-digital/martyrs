@@ -1,0 +1,47 @@
+{
+  "path": "../../src/components/UploadImage/UploadImage.vue",
+  "relativePath": "components/UploadImage/UploadImage.vue",
+  "type": "source",
+  "name": "UploadImage.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 component for uploading and displaying a single image, supporting click-to-select and drag-and-drop, with server upload via Axios.",
+    "Purpose": "Provides a reusable image upload area that uploads files to a configured API endpoint and emits the uploaded image URL back to the parent component.",
+    "Components": [
+      {
+        "name": "UploadImage",
+        "responsibility": "Renders an upload area, handles user interactions (click, file selection, drag-and-drop), uploads the file, and displays the uploaded image."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onComponentClick",
+        "description": "Triggers the hidden file input click to open the native file picker.",
+        "parameters": "none"
+      },
+      {
+        "name": "onFileChange",
+        "description": "Handles file selection (either from picker or drop), uploads the file via Axios to the API, updates the displayed image URL, and emits events.",
+        "parameters": "e (Event or custom object with target.files)"
+      },
+      {
+        "name": "onDrop",
+        "description": "Handles drag-and-drop by preventing default behavior and delegating to onFileChange with the dropped files.",
+        "parameters": "e (DragEvent)"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watch, defineProps, defineEmits)",
+      "axios"
+    ],
+    "Usage": "Import the component using `import UploadImage from '@/components/UploadImage/UploadImage.vue'`. Use in templates as `<UploadImage uploadPath=\"path/to/folder\" v-model:photo=\"imageVariable\" @error=\"onError\" />`.",
+    "Importance": 3,
+    "Notes": [
+      "Supports both click-to-select and drag-and-drop file upload.",
+      "Uses environment variable `API_URL` for the base upload request and `FILE_SERVER_URL` for displaying the image.",
+      "Emits `update:photo` with the new image URL and `error` on upload failure.",
+      "No dedicated <style> section; relies on global utility classes (e.g., flex-v-center, bg-second).",
+      "Assumes server response shape `response.data[0].filepath`."
+    ]
+  }
+}

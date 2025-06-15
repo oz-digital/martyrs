@@ -1,0 +1,111 @@
+{
+  "path": "../../src/modules/music/components/player/MusicPlayer.vue",
+  "relativePath": "modules/music/components/player/MusicPlayer.vue",
+  "type": "source",
+  "name": "MusicPlayer.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "MusicPlayer.vue is a Vue single-file component that renders a playback bar with track information, playback controls (play/pause, next, previous, shuffle, repeat), a favorite toggle, progress bar and volume control.",
+    "Purpose": "This file provides the user interface and interaction logic for the audio player in the application, tying together player state, control actions and media display.",
+    "Components": [
+      {
+        "name": "MusicPlayer",
+        "responsibility": "Container component that orchestrates display of track info, controls and volume."
+      },
+      {
+        "name": "Media",
+        "responsibility": "Displays the album or track cover image, with fallback placeholder."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Generic button wrapper with loader/success state capabilities."
+      },
+      {
+        "name": "TrackProgress",
+        "responsibility": "Displays and updates the progress bar for the current track."
+      },
+      {
+        "name": "VolumeControl",
+        "responsibility": "Provides a slider or control to adjust playback volume."
+      },
+      {
+        "name": "IconPlay / IconPause / IconNext / IconPrevious / IconShuffle / IconRepeat / IconHeart / IconVolume / IconVolumeHalf / IconVolumeMute",
+        "responsibility": "SVG icon components for various player controls and states."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "togglePlay",
+        "description": "Toggles play/pause state by dispatching player action.",
+        "parameters": []
+      },
+      {
+        "name": "playNext",
+        "description": "Skips to the next track in the queue.",
+        "parameters": []
+      },
+      {
+        "name": "playPrevious",
+        "description": "Returns to the previous track.",
+        "parameters": []
+      },
+      {
+        "name": "toggleShuffle",
+        "description": "Enables or disables shuffle mode.",
+        "parameters": []
+      },
+      {
+        "name": "toggleRepeat",
+        "description": "Cycles repeat mode between none, all, and single.",
+        "parameters": []
+      },
+      {
+        "name": "toggleMute",
+        "description": "Mutes or unmutes audio output.",
+        "parameters": []
+      },
+      {
+        "name": "toggleFavorite",
+        "description": "Toggles a local favorite flag for the current track; placeholder for persistence logic.",
+        "parameters": []
+      },
+      {
+        "name": "getArtistName",
+        "description": "Returns a display string for the artist of a given track, handling object or string values and unknown cases.",
+        "parameters": [
+          {
+            "name": "track",
+            "type": "Object|null",
+            "description": "The track object from which to extract artist information."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, ref)",
+      "@martyrs/src/components/Media/Media.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "./TrackProgress.vue",
+      "./VolumeControl.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlay.vue",
+      "@martyrs/src/modules/icons/navigation/IconPause.vue",
+      "@martyrs/src/modules/icons/navigation/IconChevronRight.vue",
+      "@martyrs/src/modules/icons/navigation/IconChevronLeft.vue",
+      "@martyrs/src/modules/icons/navigation/IconShuffle.vue",
+      "@martyrs/src/modules/icons/navigation/IconRefresh.vue",
+      "@martyrs/src/modules/icons/navigation/IconHeart.vue",
+      "@martyrs/src/modules/icons/navigation/IconVolume.vue",
+      "@martyrs/src/modules/icons/navigation/IconMute.vue",
+      "../../store/player.js"
+    ],
+    "Usage": "Imported into higher-level views or layouts to provide a persistent audio player at the bottom or top of the app UI. Example: import MusicPlayer from '@/modules/music/components/player/MusicPlayer.vue';",
+    "Importance": 4,
+    "Notes": [
+      "Uses a fallback '/assets/placeholder-track.jpg' when no cover URL is available.",
+      "Favorite toggle is local-only; persistence should be implemented as needed.",
+      "Scoped style adds hover effect to the play/pause button.",
+      "Repeat icon color reflects current repeat mode via computed property.",
+      "VolumeHalf icon reuses the same source as Volume; styling can be adjusted for different states."
+    ]
+  }
+}

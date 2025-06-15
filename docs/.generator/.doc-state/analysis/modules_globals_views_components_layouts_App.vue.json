@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/globals/views/components/layouts/App.vue",
+  "relativePath": "modules/globals/views/components/layouts/App.vue",
+  "type": "source",
+  "name": "App.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Этот файл определяет корневой layout-компонент Vue, который оборачивает все маршруты приложения, настраивает метаданные страницы (head), инициализирует тему (dark mode) и мобильные настройки клавиатуры.",
+    "purpose": "Служит основным обёрточным компонентом для рендеринга routed-компонентов, управления документ-head (SEO, i18n), а также загрузки и применения глобальных настроек (тема, клавиатура в мобильном приложении).",
+    "components": [
+      {
+        "name": "router-view",
+        "role": "Выводит текущий маршрут и передаёт слот с обнаруженным компонентом."
+      },
+      {
+        "name": "component",
+        "role": "Динамически рендерит компонент страницы с передачей пропсов env, app, modules."
+      }
+    ],
+    "functions": [
+      {
+        "name": "removeTrailingSlash",
+        "description": "Удаляет конечный слэш из строки URL, если он присутствует.",
+        "parameters": [
+          "url (string)"
+        ]
+      },
+      {
+        "name": "metadata (computed)",
+        "description": "Формирует объект с SEO-метаданными: title, description, meta-тэги, ссылки (canonical, alternate) и атрибуты <html>."
+      },
+      {
+        "name": "generateAlternateLinks (computed)",
+        "description": "Генерирует массив объектов для hreflang на каждый язык из availableLocales."
+      },
+      {
+        "name": "onBeforeMount (lifecycle hook)",
+        "description": "При монтировании скрывает accessory bar iOS-клавиатуры (если мобильное приложение) и загружает из хранилища Preference настройку темной темы."
+      }
+    ],
+    "dependencies": [
+      "vue (computed, ref, onMounted, onBeforeMount)",
+      "@capacitor/preferences",
+      "@capacitor/keyboard",
+      "@unhead/vue",
+      "vue-i18n",
+      "vue-router",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "usage": "Подключается как корневой layout в конфигурации роутера или в точке входа (main.ts), оборачивая все вложенные страницы и передавая необходимые контексты (env, app, modules).",
+    "importance": 4,
+    "notes": "• Импорт auth из store/auth.js не используется в коде.\n• Переменная show не задействована в шаблоне.\n• Применяются переменные окружения FILE_SERVER_URL и MOBILE_APP.\n• useHead автоматически обновляет document.head при изменении metadata."
+  }
+}

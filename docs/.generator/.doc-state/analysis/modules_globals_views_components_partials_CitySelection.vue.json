@@ -1,0 +1,37 @@
+{
+  "path": "../../src/modules/globals/views/components/partials/CitySelection.vue",
+  "relativePath": "modules/globals/views/components/partials/CitySelection.vue",
+  "type": "source",
+  "name": "CitySelection.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for selecting a city. It displays the current city, a list of upcoming cities, and a contact link, with support for i18n and emits an event to close its parent popup.",
+    "Purpose": "Provides a UI partial for users to choose their city within the application, typically rendered inside a modal or popup.",
+    "Components": [
+      {
+        "name": "CitySelection",
+        "role": "Main component that renders the city selection interface and handles close-popup emission."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "closePopup",
+        "description": "Emits the 'close-popup' event to notify the parent to close this component's popup.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, onMounted, defineProps, defineEmits)",
+      "vue-router (useRoute, useRouter)",
+      "vue-i18n (useI18n)"
+    ],
+    "Usage": "Imported wherever a city selection modal is needed. The parent passes `isPopupOpen` and listens for the `close-popup` event. Example: <CitySelection :isPopupOpen=\"open\" @close-popup=\"handleClose\"/>.",
+    "Importance": 3,
+    "Notes": [
+      "Static text and city lists are defined locally in the `text` object passed to useI18n; no dynamic data source.",
+      "Imports `computed` and `onMounted` but these are not used in the current implementation.",
+      "Simple SCSS rule only sets max-width on the container.",
+      "Props and emits follow the Vue 3 <script setup> convention."
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "section": {
+    "id": "source-modules-gallery",
+    "title": "Проект: Модули / Галерея",
+    "description": "Модуль 'gallery' реализует функциональность фотогалереи, включая хранение, отображение и управление фотографиями через клиентскую и серверную части приложения.",
+    "subsections": [
+      {
+        "id": "gallery-server-init",
+        "title": "Инициализация и регистрация модуля",
+        "description": "Файл gallery.server.js отвечает за организацию, инициализацию и регистрацию модели Photo, маршрутов и контроллера галереи в приложении."
+      },
+      {
+        "id": "gallery-models",
+        "title": "Модели",
+        "description": "Файл photo.model.js определяет структуру и свойства объекта фотографии, используемого в галерее."
+      },
+      {
+        "id": "gallery-controllers",
+        "title": "Контроллеры",
+        "description": "Файл gallery.controller.js реализует бизнес-логику для управления фотографиями и обработку запросов, связанных с галереей."
+      },
+      {
+        "id": "gallery-routing",
+        "title": "Маршрутизация",
+        "description": "Файлы gallery.router.js, gallery.backoffice.router.js и gallery.routes.js определяют маршруты для публичной и административной части галереи."
+      },
+      {
+        "id": "gallery-client-store",
+        "title": "Клиентская логика и хранилище",
+        "description": "Файлы gallery.client.js и store/gallery.js реализуют клиентскую логику работы с галереей и управление состоянием фотографий."
+      },
+      {
+        "id": "gallery-ui",
+        "title": "Пользовательский интерфейс",
+        "description": "Файлы Gallery.vue и BackofficeGallery.vue реализуют страницы и секции для отображения галереи и административного управления фотографиями."
+      }
+    ]
+  },
+  "fileHashes": [
+    "390b9c3f514cebd72749e0b38bf5286a",
+    "5f073613a250c427a17b813de96461fd",
+    "6614c399a8a4e4c426f2b0bb5ffa8e39",
+    "735ed741246d2ec0c40f2c29204bdf2b",
+    "8d3331bc9c8107a4650db3411f3b638a",
+    "9dfbb74d9ce7b1d45ecd71d52f094f5c",
+    "a3ed0ac24b42fcdebf2d9ab468a8af7a",
+    "b55114b6291d5d1db2562c47533f20be",
+    "e426a0fed99f506d58ffa989ec33569b",
+    "f03479e98b57d92de33d7ba698a552a0"
+  ],
+  "groupHash": "df1ec5931bdfa595934e167516c3df2f",
+  "generated": "2025-06-05T09:19:01.085Z"
+}

@@ -1,0 +1,91 @@
+{
+  "path": "../../src/modules/rents/views/router/rents.router.js",
+  "relativePath": "modules/rents/views/router/rents.router.js",
+  "type": "source",
+  "name": "rents.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file exports a factory function that generates a Vue Router route configuration object for the \"rents\" module. It defines three child routes (list, create, edit) with internationalized titles, dynamic component imports, and access-control middleware.",
+    "Purpose": "To encapsulate and centralize the routing definitions for the rents feature in the application, making it easy to mount under a given prefix or base path.",
+    "Components": [
+      {
+        "name": "createRentsRoutes",
+        "type": "function",
+        "responsibility": "Primary factory that builds and returns the route object for the rents module."
+      },
+      {
+        "name": "nameWithPrefix",
+        "type": "function (internal)",
+        "responsibility": "Helper to prepend an optional prefix to route names."
+      },
+      {
+        "name": "Rents.vue",
+        "type": "Vue component",
+        "responsibility": "Page component for listing all rents."
+      },
+      {
+        "name": "RentsEdit.vue",
+        "type": "Vue component",
+        "responsibility": "Page component for creating or editing a rent."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createRentsRoutes",
+        "parameters": [
+          {
+            "name": "prefix",
+            "type": "string",
+            "default": "''",
+            "description": "Optional string to prepend to each route name."
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "default": "{}",
+            "description": "Configuration options. Currently supports basePath."
+          }
+        ],
+        "returns": "An object representing a Vue Router route with path, meta, and children definitions.",
+        "description": "Builds the main route and its child routes for listing, creating, and editing rents."
+      },
+      {
+        "name": "nameWithPrefix",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "The base name of the route."
+          }
+        ],
+        "returns": "string",
+        "description": "If a prefix was provided, returns `${prefix}${name}`, otherwise returns `name`."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/views/middlewares/ownership.validation.js",
+        "importedAs": "validationOwnership",
+        "description": "Provides `requiresAccess` middleware to guard routes based on user permissions."
+      },
+      {
+        "module": "../components/pages/Rents.vue",
+        "importedVia": "dynamic import",
+        "description": "Vue component for the rents list page."
+      },
+      {
+        "module": "../components/pages/RentsEdit.vue",
+        "importedVia": "dynamic import",
+        "description": "Vue component for the rent create/edit page."
+      }
+    ],
+    "Usage": "Typically imported into a higher-level router index (e.g. `modules/rents/views/router/index.js`) and invoked as `createRentsRoutes('SomePrefix', { basePath: 'custom-rents' })` to be added to the Vue Router's routes array.",
+    "Importance": 4,
+    "Notes": [
+      "Uses webpackChunkName 'Renting' to group dynamic imports into a single chunk.",
+      "Each route has `beforeEnter` guards enforcing read/create/edit permissions via `validationOwnership.requiresAccess`.",
+      "Meta objects include localized titles for English and Russian.",
+      "The `basePath` option allows overriding the default `'rents'` path segment."
+    ]
+  }
+}

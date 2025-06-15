@@ -1,0 +1,121 @@
+{
+  "path": "../../src/modules/globals/controllers/classes/globals.verifier.js",
+  "relativePath": "modules/globals/controllers/classes/globals.verifier.js",
+  "type": "source",
+  "name": "globals.verifier.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует класс Verifier для валидации входящих query-параметров на основании заданной конфигурации правил, дефолтных значений и кастомных валидаторов. Также предоставляет middleware для Express.",
+    "Purpose": "Обеспечить централизованную и гибкую валидацию параметров запроса, автоматическое применение значений по умолчанию, удаление или фиксацию невалидных параметров и интеграцию с Express.",
+    "Components": [
+      {
+        "name": "Verifier",
+        "type": "class",
+        "responsibilities": [
+          "Хранить конфигурацию параметров",
+          "Определять правило доступа к каждому параметру (required|optional|forbidden или вычисляемое)",
+          "Выполнять валидацию одного параметра или всего объекта query",
+          "Возвращать детализированный результат проверки (VerifyResult)",
+          "Обеспечивать Express-middleware для автоматической валидации"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "description": "Инициализирует экземпляр Verifier с переданным config.",
+        "params": [
+          {
+            "name": "config",
+            "type": "Object<string, ParamConfig>",
+            "description": "Конфигурация параметров: правило, default и validator."
+          }
+        ]
+      },
+      {
+        "name": "getRule",
+        "description": "Возвращает правило доступа для параметра (строку или Promise<string>).",
+        "params": [
+          {
+            "name": "paramName",
+            "type": "string",
+            "description": "Имя проверяемого параметра"
+          },
+          {
+            "name": "context",
+            "type": "Object",
+            "description": "Контекст для выполнения функции-правила"
+          }
+        ]
+      },
+      {
+        "name": "verifyParam",
+        "description": "Выполняет проверку одного параметра по его правилу, вызывает валидатор и формирует частичный результат.",
+        "params": [
+          {
+            "name": "paramName",
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "type": "any"
+          },
+          {
+            "name": "context",
+            "type": "Object"
+          }
+        ]
+      },
+      {
+        "name": "verify",
+        "description": "Проходит по всей конфигурации, проверяет каждый параметр, собирает итоговый VerifyResult с детальной информацией.",
+        "params": [
+          {
+            "name": "query",
+            "type": "Object",
+            "description": "Входящие параметры запроса"
+          },
+          {
+            "name": "options",
+            "type": "VerifyOptions",
+            "description": "Опции: applyDefaults, removeInvalid, only, except"
+          },
+          {
+            "name": "context",
+            "type": "Object",
+            "description": "Контекст для динамических правил"
+          }
+        ]
+      },
+      {
+        "name": "middleware",
+        "description": "Возвращает функцию middleware для Express, которая валидирует req.query и записывает результат в req.queryValidation.",
+        "params": [
+          {
+            "name": "options",
+            "type": "VerifyOptions"
+          },
+          {
+            "name": "contextResolver",
+            "type": "Function",
+            "description": "Функция для получения контекста из req"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "Пользовательский Validator (метод validate)",
+      "Встроенные Promise/console",
+      "Express (для middleware-интеграции)"
+    ],
+    "Usage": "import Verifier from 'modules/globals/controllers/classes/globals.verifier.js';\nconst verifier = new Verifier(config);\n// Прямая валидация\nconst result = verifier.verify(req.query, options, ctx);\n// Для Express\napp.get('/path', verifier.middleware(options, req=>({ user: req.user })), handler);",
+    "Importance": 4,
+    "Notes": [
+      "Поддерживает асинхронные правила (rule-функции, возвращающие Promise).",
+      "Логирует результат проверки через console.log.",
+      "Сохраняет неописанные в конфиге параметры как untouchedParams и включает их в verifiedData.",
+      "При отсутствии ошибок verificationErrors устанавливается в null.",
+      "Параметры only/except позволяют ограничить или исключить набор проверяемых полей."
+    ]
+  }
+}

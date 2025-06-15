@@ -1,0 +1,164 @@
+{
+  "path": "../../src/modules/orders/store/shopcart.js",
+  "relativePath": "modules/orders/store/shopcart.js",
+  "type": "source",
+  "name": "shopcart.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file implements a Vue-based reactive shopping cart store. It maintains cart state (items, organization, open/closed), provides actions to add/remove/update items (including variants and rental dates), persists to localStorage, computes totals, and periodically syncs with the server to remove invalid products.",
+    "Purpose": "Serve as the client-side state management module for the shopping cart in an e-commerce/order flow, providing CRUD operations on cart contents, persistence, and data validation via API syncing.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "description": "Holds current cart data: selected organization, list of positions (cart items), and UI open/closed flag."
+      },
+      {
+        "name": "helpers",
+        "type": "plain object",
+        "description": "Utility methods for creating cart items, saving state to localStorage, and validating products against the server."
+      },
+      {
+        "name": "api",
+        "type": "plain object",
+        "description": "Contains method to fetch product data from the backend via HTTP."
+      },
+      {
+        "name": "actions",
+        "type": "plain object",
+        "description": "Methods to mutate cart state: toggle UI, load from storage, add/remove/increment/decrement items, update rent dates, reset cart, and handle variants."
+      },
+      {
+        "name": "getters",
+        "type": "plain object",
+        "description": "Computed properties for total price, total quantity, and current open/closed state."
+      },
+      {
+        "name": "watch",
+        "type": "vue watcher",
+        "description": "Records state changes into a history array whenever the reactive state mutates."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "helpers.createCartItem",
+        "description": "Constructs a standardized cart item object from a product and organization.",
+        "params": [
+          "product",
+          "organization",
+          "type='sale'"
+        ]
+      },
+      {
+        "name": "helpers.saveToStorage",
+        "description": "Serializes current state.positions and state.organization into localStorage under the CART_STORAGE_KEY.",
+        "params": []
+      },
+      {
+        "name": "helpers.validateProduct",
+        "description": "Fetches product data from server and compares name, price, and availability to local copy.",
+        "params": [
+          "product"
+        ]
+      },
+      {
+        "name": "api.fetchProduct",
+        "description": "Performs a fetch call to '/api/products/read' to retrieve server product details by ID.",
+        "params": [
+          "productId"
+        ]
+      },
+      {
+        "name": "syncWithServer",
+        "description": "Iterates over cart items, removes those invalid on server, persists changes, and reports via setError.",
+        "params": []
+      },
+      {
+        "name": "startPeriodicSync",
+        "description": "Starts a repeating timer to run syncWithServer every SYNC_INTERVAL milliseconds.",
+        "params": []
+      },
+      {
+        "name": "stopPeriodicSync",
+        "description": "Clears the periodic sync timer if running.",
+        "params": []
+      },
+      {
+        "name": "actions.toggleShopcart",
+        "description": "Toggles the UI open/closed state of the cart.",
+        "params": []
+      },
+      {
+        "name": "actions.setShopcart",
+        "description": "Loads cart data from localStorage into state if present.",
+        "params": []
+      },
+      {
+        "name": "actions.addProductToCart",
+        "description": "Adds a product to the cart or increments quantity if already present; updates storage.",
+        "params": [
+          "product",
+          "organization",
+          "date"
+        ]
+      },
+      {
+        "name": "actions.addVariantToCart",
+        "description": "Adds or increments a product variant in the cart with optional rental dates; uses external notification.",
+        "params": [
+          "variantItem",
+          "organizationId",
+          "selectedDates=null"
+        ]
+      },
+      {
+        "name": "actions.removeProduct",
+        "description": "Removes an item by _id from the cart and updates storage.",
+        "params": [
+          "_id"
+        ]
+      },
+      {
+        "name": "actions.decrementItemQuantity",
+        "description": "Decreases quantity of a cart item, removing it if quantity falls below 1; updates storage.",
+        "params": [
+          "_id"
+        ]
+      },
+      {
+        "name": "actions.incrementItemQuantity",
+        "description": "Increases quantity of a cart item by 1; updates storage.",
+        "params": [
+          "_id"
+        ]
+      },
+      {
+        "name": "actions.updateRentDates",
+        "description": "Sets rental date range on a cart item and updates storage.",
+        "params": [
+          "{ productId, dates }"
+        ]
+      },
+      {
+        "name": "actions.resetShopcart",
+        "description": "Clears all cart positions and removes the storage entry.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue: computed, reactive, watch",
+      "@martyrs/src/modules/globals/views/store/globals.js: setError",
+      "Browser globals: localStorage, fetch",
+      "Implicit: showNotification (not imported), updateLocalStorage (not defined locally)"
+    ],
+    "Usage": "Imported by Vue components or other store modules: `import { state, actions, getters } from '.../shopcart.js'`. Components dispatch actions to modify cart and read computed getters or state directly.",
+    "Importance": 4,
+    "Notes": [
+      "A periodic sync is defined but `startPeriodicSync()` is commented out by default.",
+      "History of state snapshots is tracked but not exposed externally.",
+      "Some helper functions (showNotification, updateLocalStorage) are referenced but not defined/imported in this module.",
+      "Item schema is inconsistent between addProductToCart and addVariantToCart (different property names).",
+      "Error handling funnels through console.error and setError for user feedback."
+    ]
+  }
+}

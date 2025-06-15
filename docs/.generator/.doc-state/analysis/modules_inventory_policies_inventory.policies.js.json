@@ -1,0 +1,72 @@
+{
+  "path": "../../src/modules/inventory/policies/inventory.policies.js",
+  "relativePath": "modules/inventory/policies/inventory.policies.js",
+  "type": "source",
+  "name": "inventory.policies.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines attribute-based access control (ABAC) policies for inventory operations: stock adjustments and stock inventory edits.",
+    "Purpose": "Register resource-level authorization rules for the inventory module, enforcing role-based constraints on creating stock adjustments and editing/completing stock inventories.",
+    "Components": [
+      {
+        "name": "default export",
+        "type": "function",
+        "description": "Takes a database handle, retrieves an ABAC instance and registers inventory policies."
+      },
+      {
+        "name": "stockAdjustment policy",
+        "type": "ABAC policy callback",
+        "description": "Enforces that only users with 'warehouse', 'admin' or 'moderator' roles can create stock adjustments."
+      },
+      {
+        "name": "stockInventory policy",
+        "type": "ABAC policy callback",
+        "description": "Enforces that only the creator of an inventory record or an admin can complete/edit it."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "exported function (db)",
+        "parameters": [
+          "db"
+        ],
+        "returns": "abac instance",
+        "description": "Initializes ABAC, registers two resource policies, and returns the configured instance."
+      },
+      {
+        "name": "stockAdjustment policy callback",
+        "parameters": [
+          "context"
+        ],
+        "description": "Checks context.action === 'create'; loads user roles and allows only warehouse-related roles. Returns {allow, reason or force}."
+      },
+      {
+        "name": "stockInventory policy callback",
+        "parameters": [
+          "context"
+        ],
+        "description": "Checks context.action === 'edit'; verifies if the current user is the creator or has 'admin' role before allowing edit/complete. Returns {allow, reason or force}."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/classes/globals.abac.js",
+        "imported": "getInstance"
+      },
+      {
+        "module": "db.user",
+        "methods": [
+          "findById",
+          "populate"
+        ]
+      }
+    ],
+    "Usage": "Imported during app bootstrap or module initialization: `import inventoryPolicies from 'modules/inventory/policies/inventory.policies.js'; const abac = inventoryPolicies(db);` This ensures the inventory ABAC rules are active.",
+    "Importance": 4,
+    "Notes": [
+      "Uses lazy-loaded userDoc from context or database to minimize queries.",
+      "Role names are checked as either string or object with name property.",
+      "Default policy result is allow:true, force:false. Specific denials include 'WAREHOUSE_ROLE_REQUIRED' and 'NOT_INVENTORY_CREATOR'."
+    ]
+  }
+}

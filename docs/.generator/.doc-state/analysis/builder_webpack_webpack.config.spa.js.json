@@ -1,0 +1,67 @@
+{
+  "path": "../../src/builder/webpack/webpack.config.spa.js",
+  "relativePath": "builder/webpack/webpack.config.spa.js",
+  "type": "source",
+  "name": "webpack.config.spa.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and exports a function that builds a Webpack configuration object tailored for a single-page application (SPA) build, merging base client settings with SPA-specific options like entry, output, plugins and optimizations.",
+    "Purpose": "To produce a ready-to-use Webpack config for bundling the client-side SPA, including HTML template generation, asset minimization and stats output, based on the project root and environment.",
+    "Components": [
+      {
+        "name": "spaConfig",
+        "responsibility": "Holds Webpack settings for mode, source-maps, entry/output paths, plugins (HTML generation, stats writer, chunk limiting), and optimization minimizers."
+      },
+      {
+        "name": "default export (function)",
+        "responsibility": "Accepts a projectRoot path, constructs spaConfig, merges it with the base client config, and returns the final Webpack configuration."
+      },
+      {
+        "name": "HtmlWebpackPlugin.templateContent",
+        "responsibility": "An async function that reads environment variables, prepares metadata and renders an HTML template using Mustache."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Main entry point: generates and returns the merged Webpack configuration for SPA builds.",
+        "parameters": [
+          {
+            "name": "projectRoot",
+            "type": "string",
+            "description": "Absolute path to the root of the project; used to resolve entry, output and template paths."
+          }
+        ],
+        "returns": "Object — a Webpack configuration ready for use by the Webpack CLI or API."
+      },
+      {
+        "name": "HtmlWebpackPlugin.templateContent",
+        "description": "Asynchronously renders the HTML template by injecting meta tags and API keys via Mustache.",
+        "parameters": [],
+        "returns": "Promise<string> — the full HTML content for index.html."
+      }
+    ],
+    "Dependencies": [
+      "css-minimizer-webpack-plugin",
+      "fs (Node.js promises)",
+      "html-webpack-plugin",
+      "mustache",
+      "path",
+      "terser-webpack-plugin",
+      "webpack",
+      "webpack-merge",
+      "webpack-stats-plugin",
+      "../templates/page.js",
+      "./webpack.config.client.js"
+    ],
+    "Usage": "Imported by the project's build scripts (e.g. a custom CLI or npm script) to supply Webpack with the SPA configuration. Called with the project root to produce the final config.",
+    "Importance": 4,
+    "Notes": [
+      "Detects production mode via NODE_ENV and toggles optimizations.",
+      "Merges with a base client config for shared settings.",
+      "Currently limits chunks to one file (no code-splitting).",
+      "Comments hint at optional HMR, CopyWebpackPlugin and service worker support.",
+      "Renders index.html at build time using a Mustache template and environment variables."
+    ]
+  }
+}

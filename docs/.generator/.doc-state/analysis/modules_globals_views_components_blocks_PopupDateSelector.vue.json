@@ -1,0 +1,101 @@
+{
+  "path": "../../src/modules/globals/views/components/blocks/PopupDateSelector.vue",
+  "relativePath": "modules/globals/views/components/blocks/PopupDateSelector.vue",
+  "type": "source",
+  "name": "PopupDateSelector.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 popup component that lets the user pick a start and end date for renting a product. It displays a calendar with availability data, shows loading and error states, calculates the total price, and emits confirm or cancel actions.",
+    "purpose": "Provide a reusable date-range selector in a modal popup for rental products, complete with availability checks, price calculation and localized UI.",
+    "components": [
+      {
+        "name": "Popup",
+        "responsibility": "Wrapper modal that handles open/close state and emits a close event."
+      },
+      {
+        "name": "Calendar",
+        "responsibility": "Date-picker UI allowing range selection, disabling past dates and visualizing availability."
+      },
+      {
+        "name": "Loader",
+        "responsibility": "Spinner shown while availability data is being fetched."
+      },
+      {
+        "name": "PriceTotal",
+        "responsibility": "Displays computed total rental price, fees and VAT breakdown."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Stylized button component used for confirm and cancel actions."
+      },
+      {
+        "name": "IconShopcartAdd",
+        "responsibility": "Cart‐plus icon rendered inside the confirm button."
+      }
+    ],
+    "functions": [
+      {
+        "name": "loadAvailabilityData",
+        "purpose": "Fetch availability calendar data for the current and next month from the rents store.",
+        "params": [],
+        "notes": "Resets loading and error refs, formats dates as YYYY-MM-DD, writes to availabilityData."
+      },
+      {
+        "name": "checkAvailability",
+        "purpose": "Verify if a selected date range is available by reusing the rents store API.",
+        "params": [],
+        "notes": "Updates isAvailable and availabilityError, toggles loading indicator."
+      },
+      {
+        "name": "calculateDays",
+        "purpose": "Compute inclusive day count between two ISO date strings.",
+        "params": [
+          {
+            "name": "start",
+            "type": "string|Date",
+            "description": "Start date"
+          },
+          {
+            "name": "end",
+            "type": "string|Date",
+            "description": "End date"
+          }
+        ]
+      },
+      {
+        "name": "closePopup",
+        "purpose": "Emit the 'close' event to parent and hide the popup.",
+        "params": []
+      },
+      {
+        "name": "confirmSelection",
+        "purpose": "Invoke the onConfirm callback with the selected dates and close the popup if selection is valid.",
+        "params": []
+      },
+      {
+        "name": "cancelSelection",
+        "purpose": "Invoke the onCancel callback (if provided) and close the popup.",
+        "params": []
+      }
+    ],
+    "dependencies": [
+      "vue (ref, computed, watch, onMounted)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/DatePicker/Calendar.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/icons/actions/IconShopcartAdd.vue",
+      "@martyrs/src/modules/orders/components/elements/PriceTotal.vue",
+      "@martyrs/src/modules/rents/views/store/rents.store.js"
+    ],
+    "usage": "Import and register this component where a product rental date picker is needed. Pass in the `product` object, control the `isOpen` prop, and handle `onConfirm`/`onCancel` callbacks. The parent listens for `close` events to hide the popup.",
+    "importance": 3,
+    "notes": [
+      "The date‐range calendar watcher is currently commented out (checkAvailability call).",
+      "There is a call to `returnCurrency()` in the template, but no such function is defined here—likely provided by a mixin or omitted.",
+      "The component resets its state when `isOpen` toggles off.",
+      "Internationalized button text via vue-i18n with only an English fallback defined."
+    ]
+  }
+}

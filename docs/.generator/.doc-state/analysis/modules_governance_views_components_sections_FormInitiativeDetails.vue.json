@@ -1,0 +1,53 @@
+{
+  "path": "../../src/modules/governance/views/components/sections/FormInitiativeDetails.vue",
+  "relativePath": "modules/governance/views/components/sections/FormInitiativeDetails.vue",
+  "type": "source",
+  "name": "FormInitiativeDetails.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент с <script setup>, который рендерит форму для редактирования полей инициативы (name, description, status) и синхронизирует изменения через событие update:modelValue.",
+    "Purpose": "Обеспечить UI для ввода и правки деталей инициативы в разделе \"Governance\" проекта, работать по принципу v-model для двусторонней привязки данных.",
+    "Components": [
+      {
+        "name": "FormInitiativeDetails",
+        "role": "Основной компонент, отвечает за отображение полей формы и проброс изменений в родительский компонент."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updateField",
+        "description": "Универсальная функция для обновления одного поля модели и эмита события с новым объектом.",
+        "parameters": [
+          {
+            "name": "field",
+            "type": "string",
+            "description": "Ключ свойства в объекте modelValue, которое нужно обновить."
+          },
+          {
+            "name": "value",
+            "type": "any",
+            "description": "Новое значение для указанного поля."
+          }
+        ],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps",
+          "defineEmits"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в родительских компонентах и используется как:<br><code>&lt;FormInitiativeDetails v-model=\"initiativeData\" /&gt;</code>.",
+    "Importance": 3,
+    "Notes": [
+      "Не содержит собственного блока <style>, стили берутся глобально или на уровне родителя.",
+      "Используется Composition API (script setup) и native v-model binding.",
+      "При каждом вводе создаётся новый объект модели из-за spread-оператора; в крупных формах может быть влияние на производительность.",
+      "Нет встроенной валидации полей — её можно добавить во внешнем компоненте или через плагины."
+    ]
+  }
+}

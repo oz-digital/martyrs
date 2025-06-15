@@ -1,0 +1,80 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionRoadmap.vue",
+  "relativePath": "modules/landing/components/sections/SectionRoadmap.vue",
+  "type": "source",
+  "name": "SectionRoadmap.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "SectionRoadmap.vue is a Vue 3 component that renders a horizontal, scrollable roadmap timeline. It displays a series of milestones with dates, titles, descriptions, and an optional checkmark icon for completed items, using vue-i18n for localized text.",
+    "Purpose": "To provide a reusable, styled roadmap section on the landing page, showing project milestones in a visually consistent, internationalized format.",
+    "Components": [
+      {
+        "name": "SectionRoadmap",
+        "type": "Vue Component",
+        "responsibility": "Renders the roadmap container, header, and list of timeline items"
+      },
+      {
+        "name": "timeline",
+        "type": "CSS Class",
+        "responsibility": "Container for timeline items; sets up flex layout and minimum item widths"
+      },
+      {
+        "name": "timeline-item",
+        "type": "CSS Class",
+        "responsibility": "Styles each individual milestone block (border, padding, radius)"
+      },
+      {
+        "name": "timeline-icon",
+        "type": "CSS Class",
+        "responsibility": "Circular icon background for completed-state indicator"
+      },
+      {
+        "name": "custom-scroll",
+        "type": "CSS Class",
+        "responsibility": "Hides native scrollbars and ensures consistent flex overflow behavior"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Defines component props and default values",
+        "parameters": {
+          "textData": "Object containing localized messages and milestones"
+        }
+      },
+      {
+        "name": "useI18n",
+        "purpose": "Sets up translation functions tied to provided message data",
+        "parameters": {
+          "props.textData": "Source of locale-specific strings and arrays"
+        }
+      },
+      {
+        "name": "t",
+        "purpose": "Translates a single string key or raw string",
+        "parameters": {
+          "key": "String key or literal to translate"
+        }
+      },
+      {
+        "name": "tm",
+        "purpose": "Retrieves an array (e.g., milestones) or other non‐string entries from i18n data",
+        "parameters": {
+          "key": "String key referencing an array in message data"
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, <script setup>)",
+      "vue-i18n (useI18n, t, tm)"
+    ],
+    "Usage": "Imported into a parent or page component (e.g. LandingPage.vue) via `import SectionRoadmap from 'modules/landing/components/sections/SectionRoadmap.vue'` and then used in its template as `<SectionRoadmap :textData=\"...\" />`. Props can override default roadmap data or provide translations for other locales.",
+    "Importance": 3,
+    "Notes": [
+      "Default `textData` provides only English content; additional locales must be merged via parent i18n setup or by passing a custom prop.",
+      "The `milestone.finished` flag is checked truthily (string 'true' counts as true), so better practice would be a Boolean.",
+      "Scoped SCSS hides scrollbars in Firefox, IE/Edge, Chrome, Safari while preserving scroll behavior.",
+      "Uses responsive `min-width` on `.timeline-item` to ensure horizontal scroll on smaller viewports."
+    ]
+  }
+}

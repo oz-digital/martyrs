@@ -1,0 +1,110 @@
+{
+  "path": "../../src/modules/music/components/lists/ArtistList.vue",
+  "relativePath": "modules/music/components/lists/ArtistList.vue",
+  "type": "source",
+  "name": "ArtistList.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that provides a user interface for listing, searching, creating, editing and deleting artist profiles belonging to the current user.",
+    "Purpose": "Serves as the main artist management view in the music module, allowing users to manage their own artist entries.",
+    "Components": [
+      {
+        "name": "ArtistList",
+        "role": "Root component orchestrating the artist management UI"
+      },
+      {
+        "name": "Field",
+        "role": "Search input component with two-way binding and icon slot"
+      },
+      {
+        "name": "Button",
+        "role": "Reusable button component used for create, view, edit, delete and confirmation actions"
+      },
+      {
+        "name": "Loader",
+        "role": "Displays a spinner during data fetch operations"
+      },
+      {
+        "name": "Status",
+        "role": "Renders a colored badge based on artist status"
+      },
+      {
+        "name": "Popup",
+        "role": "Modal dialog for delete confirmation"
+      },
+      {
+        "name": "IconSearch",
+        "role": "Search icon displayed inside the Field component"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "loadUserArtists",
+        "description": "Fetches the current user's artists via the store and toggles loading state.",
+        "params": []
+      },
+      {
+        "name": "handleSearch",
+        "description": "Handles search input; reloads all artists when empty or fetches filtered results.",
+        "params": [
+          "value:string"
+        ]
+      },
+      {
+        "name": "viewArtist",
+        "description": "Navigates to the detail page of the given artist.",
+        "params": [
+          "artist:Object"
+        ]
+      },
+      {
+        "name": "editArtist",
+        "description": "Navigates to the edit page of the given artist.",
+        "params": [
+          "artist:Object"
+        ]
+      },
+      {
+        "name": "confirmDelete",
+        "description": "Opens the delete confirmation popup for the selected artist.",
+        "params": [
+          "artist:Object"
+        ]
+      },
+      {
+        "name": "deleteArtist",
+        "description": "Deletes the selected artist using the store action and shows success/error feedback.",
+        "params": []
+      },
+      {
+        "name": "getStatusLabel",
+        "description": "Maps an artist status key to a display label and color object.",
+        "params": [
+          "status:string"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRouter)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Status/Status.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+      "../../store/artists",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/store/globals.js"
+    ],
+    "Usage": "Imported as a route component (e.g. registered under 'artist-list') and rendered within the music module or admin dashboard to allow users to manage their artist profiles.",
+    "Importance": 3,
+    "Notes": [
+      "Uses FILE_SERVER_URL global constant to construct artist image URLs.",
+      "Handles three primary UI states: loading, empty list, and populated list.",
+      "Error and success messages are dispatched via globals.actions.setError.",
+      "Built with the Composition API and <script setup> syntax.",
+      "Confirmation popup prevents accidental deletions."
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "section": {
+    "id": "source-modules-landing",
+    "title": "Проект: Модули / Лендинг",
+    "description": "Модуль отвечает за отображение и логику главной страницы (лендинга), включая секции, блоки и элементы для презентации продукта, маркетинга и вовлечения пользователей.",
+    "subsections": [
+      {
+        "id": "sections-main",
+        "title": "Основные секции лендинга",
+        "description": "Vue-компоненты, реализующие ключевые разделы лендинга: SectionOverview.vue (обзор разделов), SectionEarn.vue (секция заработка), GiftSection.vue (промо подарочного сертификата), SectionMobileApp.vue (промо мобильного приложения)."
+      },
+      {
+        "id": "sections-additional",
+        "title": "Дополнительные секции",
+        "description": "Вспомогательные секции для расширения лендинга: Examples.vue, InstagramSection.vue, SectionFeature.vue, SectionFeatures.vue, SectionFeaturesImages.vue, SectionFocus.vue, SectionGuide.vue, SectionHeroToken.vue, SectionHeroVideo.vue, SectionJoinUs.vue, SectionRoadmap.vue, SubscribeNewsletter.vue."
+      },
+      {
+        "id": "blocks",
+        "title": "Блоки",
+        "description": "Отдельные визуальные блоки для лендинга, например, MapBlock.vue для отображения карты."
+      },
+      {
+        "id": "elements",
+        "title": "Элементы интерфейса",
+        "description": "Мелкие переиспользуемые элементы: AnimatedGrid.vue (анимированная сетка), FloatingImages.vue (плавающие изображения)."
+      },
+      {
+        "id": "client-logic",
+        "title": "Клиентская логика",
+        "description": "Файл landing.client.js содержит клиентскую логику, связанную с работой лендинга."
+      }
+    ]
+  },
+  "fileHashes": [
+    "04895b9ae17e039e60fa4dacab1aa142",
+    "051c6e83a10280ca6c30d3e383c6108a",
+    "21e524fba1987d063f5c148c02898fb4",
+    "227ae58659bf44703f869470e23d5ecf",
+    "36ef21c0f922fd1a58e5066ca43debee",
+    "3d1419f4d1e0c45fe94f2508fb97058b",
+    "54f4e736f03f8056ccc4e107bc911f1b",
+    "697b47c11c07b8ac4fd56076745ad4b7",
+    "8c1f673a1fe4da95ff52208b17f4c733",
+    "8ca9f81a1fb863f7e5abf8ba61653d76",
+    "92193f110894682676d907e60252dbee",
+    "ae7c886de1b34d44ba98826d61f03814",
+    "b1e9b6e65b364f9fc2f5bfc7353bb72d",
+    "b72ad7e9f5400cdafdca4816992ccc1b",
+    "b8d6dee71da0f2d9fab9db79bea2e3f5",
+    "c5399ebc408999dddf4c976b54cdc948",
+    "cdfbd4949aa5c50054fa6d56b14cbfe4",
+    "d447ec598b7ff71d10b0178674614a4f",
+    "da0df66f4ec9aa09da4e42dfe5ee8725",
+    "edbcd46b6b7f254b600436fb7dc27a4a"
+  ],
+  "groupHash": "dd7e30c4e313944c64934a4f4dfabbd1",
+  "generated": "2025-06-05T09:20:54.266Z"
+}

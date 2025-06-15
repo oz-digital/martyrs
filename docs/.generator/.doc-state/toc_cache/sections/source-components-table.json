@@ -1,0 +1,31 @@
+{
+  "section": {
+    "id": "source-components-table",
+    "title": "Проект: Компоненты / Table",
+    "description": "Модуль Table содержит компоненты для отображения таблиц, ячеек и статусов в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "table-main",
+        "title": "Table.vue",
+        "description": "Основной компонент для отображения таблицы."
+      },
+      {
+        "id": "table-cell",
+        "title": "TableCell.vue",
+        "description": "Компонент для отображения отдельной ячейки таблицы."
+      },
+      {
+        "id": "status-badge",
+        "title": "StatusBadge.vue",
+        "description": "Компонент для отображения статуса в виде бейджа внутри таблицы."
+      }
+    ]
+  },
+  "fileHashes": [
+    "48bf80bb89e7864408596e0fe37df616",
+    "9dd72507300c881f5af76f1092d10e60",
+    "a6e5ff5565a10fc82ccd269134310866"
+  ],
+  "groupHash": "2cf4f0361f0722dcb7ec14b81be5d99e",
+  "generated": "2025-06-05T09:17:25.545Z"
+}

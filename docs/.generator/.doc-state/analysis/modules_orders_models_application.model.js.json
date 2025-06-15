@@ -1,0 +1,45 @@
+{
+  "path": "../../src/modules/orders/models/application.model.js",
+  "relativePath": "modules/orders/models/application.model.js",
+  "type": "source",
+  "name": "application.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию-фабрику, которая принимает объект db (с подключённым mongoose) и определяет модель Application с полями статуса, типа и контактной информации, а также автоматически добавляет метки времени.",
+    "Purpose": "Обеспечить определение и регистрацию в mongoose модели данных «Application» для работы с коллекцией заявок (orders) в базе данных.",
+    "Components": [
+      {
+        "name": "ApplicationSchema",
+        "type": "mongoose.Schema",
+        "responsibilities": "Определяет структуру документов Application: поля status, type, contacts (name, phone, email) и метки времени."
+      },
+      {
+        "name": "Application",
+        "type": "mongoose.Model",
+        "responsibilities": "Предоставляет API для CRUD-операций над коллекцией Application в MongoDB."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "type": "Function(db)",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Экземпляр подключения, содержащий клиента mongoose."
+          }
+        ],
+        "description": "Создаёт ApplicationSchema, регистрирует модель 'Application' в mongoose и возвращает её."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose – экземпляр mongoose, передаваемый в функцию",
+      "mongoose.Schema – используется для описания структуры документов",
+      "mongoose.model – для регистрации модели в системе mongoose"
+    ],
+    "Usage": "Импортируется и вызывается при инициализации модуля orders, например: const Application = require('./application.model')(db); После этого в коде можно использовать Application.find(), create(), update() и т.п.",
+    "Importance": 4,
+    "Notes": "1) Используются timestamps с опцией currentTime, возвращающей Date.now(). 2) Поля status и type имеют значения по умолчанию ('created' и 'newsletter'). 3) Не предусмотрены никакие валидации (trim, required) для полей контактов."
+  }
+}

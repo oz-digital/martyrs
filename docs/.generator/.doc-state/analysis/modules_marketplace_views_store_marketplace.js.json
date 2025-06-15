@@ -1,0 +1,75 @@
+{
+  "path": "../../src/modules/marketplace/views/store/marketplace.js",
+  "relativePath": "modules/marketplace/views/store/marketplace.js",
+  "type": "source",
+  "name": "marketplace.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет реактивное состояние (state) для модуля «marketplace» во Vue 3, включая данные о магазинах, популярности, пагинации, поиске, фильтрах и сортировке, а также ведёт историю изменений состояния.",
+    "Purpose": "Централизованное хранение и отслеживание состояния (store) для представления списка магазинов и связанных UI-опций в разделе marketplace.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "Reactive Object",
+        "responsibilities": [
+          "Хранит массив магазинов (shops) и популярных объектов (popular)",
+          "Управляет параметрами пагинации (page, perPage)",
+          "Содержит данные поиска (active, current, result)",
+          "Содержит настройки фильтрации (active, class, selected, options)",
+          "Содержит настройки сортировки (param, order, options)"
+        ]
+      },
+      {
+        "name": "history",
+        "type": "Array",
+        "responsibilities": [
+          "Хранение снимков предыдущих состояний для возможного отката или логирования"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "reactive",
+        "origin": "vue",
+        "purpose": "Обёртывает plain-JS объект в реактивный",
+        "parameters": [
+          "object"
+        ]
+      },
+      {
+        "name": "watch",
+        "origin": "vue",
+        "purpose": "Следит за любыми изменениями в реактивном объекте state",
+        "parameters": [
+          "source (state)",
+          "callback (newState, oldState)"
+        ]
+      },
+      {
+        "name": "watch callback",
+        "origin": "inline",
+        "purpose": "При каждом изменении state сохраняет новую копию в history",
+        "parameters": [
+          "newState",
+          "oldState"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "reactive",
+          "watch"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в компонентах или других модулях Vue для чтения и модификации общего состояния marketplace. Пример: import { state } from '@/modules/marketplace/views/store/marketplace.js';",
+    "Importance": 4,
+    "Notes": [
+      "Переменная history не экспортируется и доступна только внутри модуля.",
+      "Накопление истории может приводить к росту потребления памяти при длинных сессиях.",
+      "Фильтры и сортировка представлены в виде статической конфигурации, которую при необходимости можно расширять."
+    ]
+  }
+}

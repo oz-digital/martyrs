@@ -1,0 +1,109 @@
+{
+  "path": "../../src/modules/organizations/components/pages/Members.vue",
+  "relativePath": "modules/organizations/components/pages/Members.vue",
+  "type": "source",
+  "name": "Members.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders and manages the Members page of an organization, including tabs for members, departments, and invites, with list fetching, invite popup, and delete actions.",
+    "Purpose": "Provides the user interface and behavior to view and manage an organization’s members, its sub-departments, and outstanding invites within the Martyrs framework.",
+    "Components": [
+      {
+        "name": "SectionPageTitle",
+        "responsibility": "Renders the page title bar with dynamic tabs and actions."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal container for the \"Invite members\" form."
+      },
+      {
+        "name": "MembersAdd",
+        "responsibility": "Form component to input emails/phones and send invitation requests."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Generic data-driven list container (supports read, slot, empty states, search)."
+      },
+      {
+        "name": "CardDepartment",
+        "responsibility": "Displays an individual department card."
+      },
+      {
+        "name": "CardUser",
+        "responsibility": "Displays an individual user or invite card, with optional action button."
+      },
+      {
+        "name": "IconDelete",
+        "responsibility": "Delete icon used in action buttons."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openMembersAddPopup",
+        "purpose": "Opens the invitation popup.",
+        "params": []
+      },
+      {
+        "name": "closeMembersAddPopup",
+        "purpose": "Closes the invitation popup.",
+        "params": []
+      },
+      {
+        "name": "handleSendInvite",
+        "purpose": "Sends invites via store action, appends results to local state, handles promise resolution/rejection.",
+        "params": [
+          "list (Array of strings or objects) – items to invite",
+          "resolve (Function) – callback to invoke on success",
+          "reject (Function) – callback to invoke on error"
+        ]
+      },
+      {
+        "name": "removeMember",
+        "purpose": "Removes a member from UI state and calls the store delete action after user confirmation.",
+        "params": [
+          "index (Number) – position in memberships array",
+          "member (Object) – membership record to delete"
+        ]
+      },
+      {
+        "name": "removeInvite",
+        "purpose": "Removes an invite from local invitesState and calls the store delete action after user confirmation.",
+        "params": [
+          "index (Number) – position in invitesState array",
+          "invite (Object) – invite record to delete"
+        ]
+      },
+      {
+        "name": "FirstLevelDepartments",
+        "purpose": "Computed property filtering out sub-departments, returning only top-level departments.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue",
+      "@martyrs/src/modules/organizations/components/sections/MembersAdd.vue",
+      "@martyrs/src/modules/auth/views/components/blocks/CardUser.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardDepartment.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/organizations/store/invites.js",
+      "@martyrs/src/modules/organizations/store/memberships.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/organizations/store/departments.js"
+    ],
+    "Usage": "Registered as a route component (e.g. `/organizations/:_id/members`) and imported by the router config. It fetches organization data on mount and drives the Members page in the Organizations module.",
+    "Importance": 4,
+    "Notes": [
+      "Uses confirm() dialogs for delete confirmation—could be replaced with a custom modal for consistency.",
+      "Tab state is managed locally via a ref; persists only during the session.",
+      "Empty `<style>` block scoped—no additional styling beyond component classes.",
+      "Leverages v-slot on Feed to render items and dynamic actions per tab.",
+      "Promise-based invite flow calls resolve/reject to integrate with form validation UX."
+    ]
+  }
+}

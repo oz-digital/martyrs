@@ -1,0 +1,47 @@
+{
+  "path": "../../src/modules/icons/navigation/IconSort.vue",
+  "relativePath": "modules/icons/navigation/IconSort.vue",
+  "type": "source",
+  "name": "IconSort.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a sortable icon as an SVG consisting of four horizontal bars whose widths change depending on the 'order' prop (ascending or descending).",
+    "Purpose": "Provide a reusable sort icon component that visually represents ascending or descending ordering in UI lists or tables.",
+    "Components": [
+      {
+        "name": "IconSort",
+        "role": "Root component that encapsulates the SVG markup and exposes 'fill' and 'order' props for customization."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Vue Composition API helper (script setup) used to declare and type component props.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color value for the bars (accepts any valid CSS color)."
+          },
+          "order": {
+            "type": "String",
+            "default": "desc",
+            "description": "Determines bar width logic; either 'asc' or 'desc'."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API)",
+      "CSS variable --black (global stylesheet)",
+      "transition-linear (global or framework-provided CSS utility class)"
+    ],
+    "Usage": "Import the component and embed it in templates: import IconSort from 'modules/icons/navigation/IconSort.vue'; then use <IconSort :order=\"'asc'\" fill=\"#333\"/> to display the icon.",
+    "Importance": 2,
+    "Notes": [
+      "No scoped <style> section – styling relies on global CSS variables and utility classes.",
+      "Reactive width bindings in <rect> elements switch between fixed widths (8, 16, 24, 32) based on the 'order' prop.",
+      "Minimal footprint: purely presentational, with no internal methods or state apart from props."
+    ]
+  }
+}

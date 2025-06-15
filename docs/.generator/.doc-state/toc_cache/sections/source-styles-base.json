@@ -1,0 +1,44 @@
+{
+  "section": {
+    "id": "source-styles-base",
+    "title": "Проект: Стили / Базовые",
+    "description": "Модуль содержит базовые SCSS-файлы для оформления фона, границ, скроллинга, теней и переходов. Используется для стандартизации и переиспользования основных стилей в проекте.",
+    "subsections": [
+      {
+        "id": "base-all",
+        "title": "Общий импорт",
+        "description": "Файл all.scss агрегирует и импортирует все базовые стили модуля."
+      },
+      {
+        "id": "base-backgrounds",
+        "title": "Фоны",
+        "description": "backgrounds.scss содержит стили для оформления фоновых элементов."
+      },
+      {
+        "id": "base-borders",
+        "title": "Границы",
+        "description": "borders.scss определяет стили для границ элементов."
+      },
+      {
+        "id": "base-scrolling",
+        "title": "Скроллинг",
+        "description": "scrolling.scss содержит стили для оформления полос прокрутки и поведения скроллинга."
+      },
+      {
+        "id": "base-transitions",
+        "title": "Переходы и анимации",
+        "description": "transitions.scss и shadow_transitions_hover_refactor.scss включают стили для анимаций, переходов и теней при наведении."
+      }
+    ]
+  },
+  "fileHashes": [
+    "0db9e85787e2c9bf424946ced74ce402",
+    "3af390cb579bc9032a19e31e8f21eeb5",
+    "63ccf1b8588a12c718be714e21201139",
+    "6f460c5dc13997cf622cae7238564d18",
+    "9524780e58182e328878ac8085cbce42",
+    "e78f2fff41e4d52ca44c14211a334c6c"
+  ],
+  "groupHash": "499384a2c8c051129f96b289ed24bf65",
+  "generated": "2025-06-05T09:23:44.640Z"
+}

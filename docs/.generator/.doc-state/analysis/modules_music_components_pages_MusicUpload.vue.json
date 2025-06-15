@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/music/components/pages/MusicUpload.vue",
+  "relativePath": "modules/music/components/pages/MusicUpload.vue",
+  "type": "source",
+  "name": "MusicUpload.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 page component that renders a music upload interface. It checks the user’s authentication state: if unauthenticated, it prompts for sign-in; if authenticated, it displays an upload form. Upon successful upload, it navigates to the newly uploaded track’s detail page.",
+    "Purpose": "Provides the UI and routing logic for the ‘Upload Music’ page in the music module of the application.",
+    "Components": [
+      {
+        "name": "Button",
+        "location": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Reusable button UI component that supports click handling, loading and success states."
+      },
+      {
+        "name": "UploadForm",
+        "location": "../forms/UploadForm.vue",
+        "responsibility": "Encapsulates the file selection and upload workflow; emits an `uploaded` event with track metadata upon success."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onTrackUploaded",
+        "description": "Callback invoked when the `UploadForm` emits its `uploaded` event. Navigates to the track-detail route for the newly uploaded track.",
+        "parameters": [
+          {
+            "name": "track",
+            "type": "object",
+            "properties": {
+              "url": "string (used as route parameter)"
+            }
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref)",
+      "vue-router (useRouter, $router, $route)",
+      "@martyrs/src/components/Button/Button.vue",
+      "../forms/UploadForm.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js (state as authState)"
+    ],
+    "Usage": "Typically registered as a route component in the music module's router config (e.g. path '/upload'). Rendered when users navigate to the Upload Music page.",
+    "Importance": 3,
+    "Notes": [
+      "Uses Vue 3 `<script setup>` syntax for concise Composition API code.",
+      "Relies on a global auth store (`authState.access.status`) to gate access to the upload form.",
+      "No local CSS; styling is driven by utility classes.",
+      "Redirects back to the current path after sign-in via query parameter.",
+      "Emits navigation imperatively via `router.push` rather than using `<router-link>`."
+    ]
+  }
+}

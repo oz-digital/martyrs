@@ -1,0 +1,70 @@
+{
+  "path": "../../src/builder/modes/ssr.prod.js",
+  "relativePath": "builder/modes/ssr.prod.js",
+  "type": "source",
+  "name": "ssr.prod.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику для создания и запуска production-сервера SSR на базе Express. Он настраивает отдачу статики из директории сборки, обрабатывает все запросы через SSR-рендеринг и возвращает готовый HTML.",
+    "Purpose": "Запустить сервер для server-side rendering (SSR) в production-режиме: раздавать клиентские ассеты, обрабатывать все входящие маршруты через функцию рендеринга и отдавать пользователю готовый HTML с предзагруженным состоянием.",
+    "Components": [
+      {
+        "name": "createSsrProdServer",
+        "type": "function",
+        "responsibility": "Фабрика для настройки SSR-сервера. Принимает корень проекта и конфиги, возвращает функцию запуска."
+      },
+      {
+        "name": "startServer",
+        "type": "async function",
+        "responsibility": "Конфигурирует Express: статические файлы, маршрутизацию всех запросов в SSR-функцию, собирает и возвращает HTTP-сервер."
+      },
+      {
+        "name": "start",
+        "type": "async function",
+        "responsibility": "Вызывает startServer, затем запускает прослушивание порта и логирует статус или завершает процесс при ошибке."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createSsrProdServer",
+        "description": "Инициализирует настройки SSR-сервера для production.",
+        "parameters": [
+          {
+            "name": "projectRoot",
+            "type": "string",
+            "description": "Корневая директория проекта."
+          },
+          {
+            "name": "{ clientConfig, apiConfig, createServer }",
+            "type": "object",
+            "description": "Объект с конфигурациями клиента, API и фабрикой сервера."
+          }
+        ],
+        "returns": "async function start"
+      },
+      {
+        "name": "startServer",
+        "description": "Настраивает Express-приложение: добавляет статические маршруты, настроенный SSR-маршрут и возвращает HTTP-сервер.",
+        "parameters": [],
+        "returns": "Promise<http.Server>"
+      },
+      {
+        "name": "start",
+        "description": "Запускает HTTP-сервер на указанном в окружении или по умолчанию порту, логирует или завершает при ошибке.",
+        "parameters": [],
+        "returns": "Promise<void>"
+      }
+    ],
+    "Dependencies": [
+      "path (Node.js)",
+      "express",
+      "../ssr/ssr-render-html.js",
+      "../ssr/ssr-transform-webpack-stats.js",
+      "createServer (инъекция из опций)",
+      "clientConfig, apiConfig (инъекция из опций)"
+    ],
+    "Usage": "Импортировать фабрику createSsrProdServer, передать ей корень проекта и опции (clientConfig, apiConfig, createServer), вызвать возвращённую функцию start() в entry-файле для production-режима.",
+    "Importance": 5,
+    "Notes": "1) Переменная clientStats в transformProdStats не определена внутри файла и, вероятно, должна приходить из API или быть передана в опциях. 2) SSR-рендеринг вызывается через render (не импортируется напрямую, вероятно, инжектируется внутрь createServer). 3) Кэш статики установлен на 1 день."
+  }
+}

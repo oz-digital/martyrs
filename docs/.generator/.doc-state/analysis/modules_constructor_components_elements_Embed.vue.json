@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/constructor/components/elements/Embed.vue",
+  "relativePath": "modules/constructor/components/elements/Embed.vue",
+  "type": "source",
+  "name": "Embed.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 component that renders third-party embed content if already provided, or displays a textarea and Save button to input new embed code. It validates the embed source and emits events to update the content block in a parent constructor/editor.",
+    "Purpose": "Serve as an 'Embed' element in a page-builder or content constructor, allowing users to paste and render embed codes from approved external platforms.",
+    "Components": [
+      {
+        "name": "Embed.vue",
+        "responsibility": "Main wrapper component handling display and input of embed codes."
+      },
+      {
+        "name": "Field",
+        "importPath": "@martyrs/src/components/Field/Field.vue",
+        "responsibility": "Provides a textarea input bound to `embedCode` via `v-model:field`."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "isValidEmbedCode",
+        "purpose": "Checks whether a given embed code string contains a URL from an allowed source.",
+        "parameters": [
+          {
+            "name": "code",
+            "type": "string",
+            "description": "The raw embed HTML or URL string to validate."
+          }
+        ],
+        "returns": "boolean"
+      },
+      {
+        "name": "onComponentClick",
+        "purpose": "Handler for the Save button: validates `embedCode.value`, emits `input` and `updateBlock` events with the new content or alerts on invalid input.",
+        "parameters": []
+      },
+      {
+        "name": "editEmbedCode",
+        "purpose": "Prompts the user to edit the existing embed code, validates it and emits update events (currently not used in template).",
+        "parameters": []
+      },
+      {
+        "name": "onMounted",
+        "purpose": "Lifecycle hook: if existing content is from Instagram and the global `instgrm` object is present, calls `window.instgrm.Embeds.process()` to re-render embeds.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps, defineEmits)",
+      "@martyrs/src/components/Field/Field.vue",
+      "window.instgrm (Instagram embed processor)"
+    ],
+    "Usage": "Imported into the constructor/editor registry or parent component mapping (e.g. `import Embed from 'modules/constructor/components/elements/Embed.vue'`) and rendered dynamically when an embed block is inserted or edited.",
+    "Importance": 3,
+    "Notes": [
+      "The `editEmbedCode` function and its button are implemented but commented out in the template.",
+      "`embedCode` ref is initialized to null and not pre-populated from existing `prop.content`, so editing flow may require adjustment.",
+      "Regex patterns whitelist common platforms; adding/removing sources requires updating the `allowedSources` array.",
+      "SCSS rule `.constructor-iframe iframe` forces full width/height and relative positioning for embedded iframes."
+    ]
+  }
+}

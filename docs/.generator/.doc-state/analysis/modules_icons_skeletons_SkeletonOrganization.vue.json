@@ -1,0 +1,26 @@
+{
+  "path": "../../src/modules/icons/skeletons/SkeletonOrganization.vue",
+  "relativePath": "modules/icons/skeletons/SkeletonOrganization.vue",
+  "type": "source",
+  "name": "SkeletonOrganization.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент отображает SVG-заглушку (skeleton) карточки организации с анимацией «shimmer» при загрузке.",
+    "Purpose": "Используется как loading-placeholder для карточки организации в интерфейсе, пока данные ещё не подгружены.",
+    "Components": [
+      {
+        "name": "SkeletonOrganization",
+        "type": "Vue SFC",
+        "responsibility": "Рендерит SVG-скелетон с прямоугольниками и анимацией"
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (фреймворк)",
+      "CSS-переменные --white и --black"
+    ],
+    "Usage": "Импортируется и вставляется в шаблон других компонентов: `import SkeletonOrganization from '@/modules/icons/skeletons/SkeletonOrganization.vue'` и далее `<SkeletonOrganization/>`",
+    "Importance": 2,
+    "Notes": "1. В файле нет блока `<script>` и `<style>`, весь UI описан в `<template>`.\n2. Используется SVG-анимация `<animate>` для эффекта переливов.\n3. CSS-переменные должны быть определены в корневых стилях проекта.\n4. Компонент полностью статический и не содержит реактивной логики."
+  }
+}

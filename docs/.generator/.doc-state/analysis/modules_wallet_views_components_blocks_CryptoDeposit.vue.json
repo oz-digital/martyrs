@@ -1,0 +1,75 @@
+{
+  "path": "../../src/modules/wallet/views/components/blocks/CryptoDeposit.vue",
+  "relativePath": "modules/wallet/views/components/blocks/CryptoDeposit.vue",
+  "type": "source",
+  "name": "CryptoDeposit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for handling cryptocurrency deposits: allows users to enter an amount, select a network/token, shows the calculated received token amount, and triggers a deposit action or navigates back.",
+    "Purpose": "Provides the UI and logic for the crypto deposit step in the wallet module, including loading configuration, input validation, and event communication with parent components.",
+    "Components": [
+      {
+        "name": "CryptoDeposit (root)",
+        "role": "Manages template, state bindings, computed values, and event emissions for the deposit flow."
+      },
+      {
+        "name": "Field",
+        "role": "Wrapper component providing a styled input field bound to `amount` and hosting the network selector."
+      },
+      {
+        "name": "Select",
+        "role": "Dropdown component presenting network-token options for the user to choose from."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "receiveAmount",
+        "type": "computed",
+        "description": "Calculates the number of tokens the user will receive by dividing the entered amount by the exchange rate.",
+        "parameters": []
+      },
+      {
+        "name": "depositOptions",
+        "type": "computed",
+        "description": "Builds an array of network-token option objects from the loaded configuration in the store.",
+        "parameters": []
+      },
+      {
+        "name": "backSelection",
+        "description": "Emits a 'back-selection' event to inform the parent to navigate back to the previous menu.",
+        "parameters": []
+      },
+      {
+        "name": "switchMenu",
+        "description": "Emits a 'switch-menu' event with a screen index to instruct the parent to switch UI steps.",
+        "parameters": [
+          "screen (Number) — index of the target menu/screen."
+        ]
+      },
+      {
+        "name": "onMounted callback",
+        "description": "Calls `actions.loadConfig()` on mount to fetch the deposit configuration (networks and tokens).",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-i18n (useI18n)",
+      "bignumber.js (BigNumber)",
+      "@martyrs/src/modules/wallet/views/store/wallet.store (state, actions)",
+      "@martyrs/src/modules/wallet/views/localization/wallet.json",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "process.env.TOKEN_EXCHANGE_RATE"
+    ],
+    "Usage": "Imported and rendered within the wallet view flow. Parent components listen for 'back-selection' and 'switch-menu' events to manage step navigation in the deposit process.",
+    "Importance": 3,
+    "Notes": [
+      "Uses BigNumber to avoid floating-point precision issues when calculating received tokens.",
+      "Empty scoped `<style>` block—styling relies on imported components and utility classes.",
+      "Depends on `state.config` being loaded before rendering inputs (`v-if=\"state.config\"`).",
+      "Environment variable TOKEN_EXCHANGE_RATE must be defined for correct receive amount calculation.",
+      "Events drive navigation; ensure parent handlers are implemented."
+    ]
+  }
+}

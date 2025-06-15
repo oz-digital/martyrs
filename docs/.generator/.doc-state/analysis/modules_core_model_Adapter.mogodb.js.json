@@ -1,0 +1,157 @@
+{
+  "path": "../../src/modules/core/model/Adapter.mogodb.js",
+  "relativePath": "modules/core/model/Adapter.mogodb.js",
+  "type": "source",
+  "name": "Adapter.mogodb.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует адаптер для работы с MongoDB, предоставляя стандартные CRUD- и вспомогательные операции над коллекцией по имени модели.",
+    "Purpose": "Инкапсулировать логику взаимодействия с MongoDB и предоставить унифицированный интерфейс (наследующийся от DBAdapter) для операций создания, чтения, обновления, удаления, агрегации и подсчёта документов.",
+    "Components": [
+      {
+        "name": "MongoDBAdapter",
+        "type": "class",
+        "responsibilities": [
+          "Хранение ссылки на подключение к базе",
+          "Преобразование строковых ID в ObjectId",
+          "Реализация CRUD-методов: create, findById, find, findOne, update, delete",
+          "Методы агрегирования (aggregate) и подсчёта документов (count)"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "purpose": "Инициализирует адаптер, сохраняет имя модели и объект подключения к базе.",
+        "parameters": [
+          {
+            "name": "modelName",
+            "type": "string",
+            "description": "Имя коллекции/модели"
+          },
+          {
+            "name": "connection",
+            "type": "object",
+            "description": "Объект подключения к MongoDB с полем db"
+          }
+        ]
+      },
+      {
+        "name": "convertId",
+        "purpose": "Конвертирует строковый идентификатор в MongoDB ObjectId.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Строковый ID документа"
+          }
+        ]
+      },
+      {
+        "name": "create",
+        "purpose": "Вставляет новый документ в коллекцию.",
+        "parameters": [
+          {
+            "name": "data",
+            "type": "object",
+            "description": "Данные нового документа"
+          }
+        ]
+      },
+      {
+        "name": "findById",
+        "purpose": "Ищет документ по _id.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Строковый ID искомого документа"
+          }
+        ]
+      },
+      {
+        "name": "find",
+        "purpose": "Возвращает все документы, соответствующие переданному фильтру.",
+        "parameters": [
+          {
+            "name": "query",
+            "type": "object",
+            "description": "Фильтр поиска (по умолчанию пустой)"
+          }
+        ]
+      },
+      {
+        "name": "findOne",
+        "purpose": "Возвращает первый найденный документ по фильтру.",
+        "parameters": [
+          {
+            "name": "query",
+            "type": "object",
+            "description": "Фильтр поиска (по умолчанию пустой)"
+          }
+        ]
+      },
+      {
+        "name": "update",
+        "purpose": "Обновляет документ по _id и возвращает обновлённый вариант.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Строковый ID обновляемого документа"
+          },
+          {
+            "name": "data",
+            "type": "object",
+            "description": "Новые поля для установки"
+          }
+        ]
+      },
+      {
+        "name": "delete",
+        "purpose": "Удаляет документ по _id.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "Строковый ID удаляемого документа"
+          }
+        ]
+      },
+      {
+        "name": "aggregate",
+        "purpose": "Выполняет агрегационный конвейер над коллекцией.",
+        "parameters": [
+          {
+            "name": "pipeline",
+            "type": "array",
+            "description": "Массив стадий агрегации"
+          }
+        ]
+      },
+      {
+        "name": "count",
+        "purpose": "Возвращает количество документов, соответствующих фильтру.",
+        "parameters": [
+          {
+            "name": "query",
+            "type": "object",
+            "description": "Фильтр подсчёта (по умолчанию пустой)"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./DBAdapter.js",
+      "mongodb (ObjectId)"
+    ],
+    "Usage": "import MongoDBAdapter from 'modules/core/model/Adapter.mongodb.js';\nconst adapter = new MongoDBAdapter('collectionName', mongoConnection);",
+    "Importance": 4,
+    "Notes": [
+      "Наследует общие методы и контракты из DBAdapter.",
+      "Метод update использует опцию returnDocument: 'after', чтобы вернуть обновлённый документ.",
+      "convertId бросит ошибку, если передан некорректный формат ID.",
+      "Все методы работают напрямую с коллекцией по имени модели, без дополнительной бизнес-логики."
+    ]
+  }
+}

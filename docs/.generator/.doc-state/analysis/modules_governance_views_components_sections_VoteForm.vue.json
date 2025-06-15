@@ -1,0 +1,57 @@
+{
+  "path": "../../src/modules/governance/views/components/sections/VoteForm.vue",
+  "relativePath": "modules/governance/views/components/sections/VoteForm.vue",
+  "type": "source",
+  "name": "VoteForm.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент формы голосования. Отображает текстовое поле для ввода выбора пользователя и кнопку отправки, затем вызывает экшен из Vuex-модуля votes для регистрации голоса.",
+    "Purpose": "Обеспечить интерфейс для ввода и отправки одного голоса в модуле управления (governance). Принимает идентификатор голосования и вызывает логику хранилища для сохранения выбора.",
+    "Components": [
+      {
+        "name": "VoteForm",
+        "role": "Основной компонент. Рендерит форму и управляет состоянием ввода, вызывает метод отправки голосa."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "castVote",
+        "description": "Асинхронная функция, вызывающая экшен votesActions.castVote для отправки голоса на сервер или в хранилище.",
+        "parameters": [
+          {
+            "name": "props.votingId",
+            "type": "String",
+            "description": "Идентификатор голосования, полученный через пропсы."
+          },
+          {
+            "name": "choice.value",
+            "type": "String",
+            "description": "Выбранный пользователем вариант голоса."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "defineProps"
+        ]
+      },
+      {
+        "module": "../../store/votes",
+        "imports": [
+          "votesActions"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в родительских компонентах или представлениях, где требуется форма голосования. Обычный синтаксис: import VoteForm from '@/modules/governance/views/components/sections/VoteForm.vue'; и используется как <VoteForm :votingId=\"someId\" />.",
+    "Importance": 3,
+    "Notes": [
+      "Не содержит секции <style> — стили берутся глобально или из внешних файлов.",
+      "Не реализована обработка ошибок и отображение статуса после отправки — стоит добавить уведомления об успехе/ошибке.",
+      "Компонент не наименован явно, но в контексте сборки считается единственным экспортом файла."
+    ]
+  }
+}

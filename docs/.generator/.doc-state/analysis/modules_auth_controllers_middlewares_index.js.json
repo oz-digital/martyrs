@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/auth/controllers/middlewares/index.js",
+  "relativePath": "modules/auth/controllers/middlewares/index.js",
+  "type": "source",
+  "name": "index.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл объединяет и инициализирует все middleware-модули аутентификации/валидации в одну фабрику.",
+    "Purpose": "Предоставить центральную точку для создания набора middleware-функций (authJwt, authSecret, verifySignUp, verifyUser, verifyInvites) с привязкой к экземпляру базы данных.",
+    "Components": [
+      {
+        "name": "authJwt",
+        "responsibility": "JWT-проверка токенов с использованием контекста БД"
+      },
+      {
+        "name": "authSecret",
+        "responsibility": "Проверка/установка секретного ключа или сигнатуры"
+      },
+      {
+        "name": "verifySignUp",
+        "responsibility": "Валидация данных при регистрации нового пользователя"
+      },
+      {
+        "name": "verifyUser",
+        "responsibility": "Проверка существования и статуса пользователя"
+      },
+      {
+        "name": "verifyInvites",
+        "responsibility": "Проверка и обработка приглашений"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middlewareIndexFactory",
+        "description": "Фабрика, создающая объект со всеми middleware",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Экземпляр подключения к базе данных, передаваемый в модули, которым нужен доступ к БД"
+          }
+        ],
+        "returns": {
+          "type": "Object",
+          "description": "Объект с инициализированными middleware: authJwt, authSecret, verifySignUp, verifyUser, verifyInvites"
+        }
+      }
+    ],
+    "Dependencies": [
+      "./authJwt.js",
+      "./authSecret.js",
+      "./verifySignUp.js",
+      "./verifyUser.js",
+      "./verifyInvites.js"
+    ],
+    "Usage": "Импортировать фабрику в точке конфигурации роутов или при инициализации сервера, передать экземпляр БД и получить готовые middleware для цепочек маршрутов.",
+    "Importance": 3,
+    "Notes": "authSecretModule вызывается без аргументов, поскольку ему не нужен доступ к БД. Новый middleware можно подключить, добавив соответствующий модуль сюда и экспортировав из объекта."
+  }
+}

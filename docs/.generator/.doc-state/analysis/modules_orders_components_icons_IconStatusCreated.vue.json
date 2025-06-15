@@ -1,0 +1,45 @@
+{
+  "path": "../../src/modules/orders/components/icons/IconStatusCreated.vue",
+  "relativePath": "modules/orders/components/icons/IconStatusCreated.vue",
+  "type": "source",
+  "name": "IconStatusCreated.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders an SVG icon representing an order status of “Created.” It displays a circular outline filled with a configurable color.",
+    "Purpose": "Provides a reusable, presentational icon for the “Created” state in the orders module of the application.",
+    "Components": [
+      {
+        "name": "IconStatusCreated",
+        "type": "Vue SFC (Single File Component)",
+        "responsibilities": [
+          "Render an SVG graphic",
+          "Accept a fill color via props"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare component props in script setup syntax",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "SVG path fill color"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (for defineProps, SFC support)",
+      "Global CSS variables (e.g. --black) for default coloring"
+    ],
+    "Usage": "Import and register or use directly in a parent Vue component:\n\nimport IconStatusCreated from 'modules/orders/components/icons/IconStatusCreated.vue';\n\n<template>\n  <IconStatusCreated fill=\"#4caf50\" />\n</template>",
+    "Importance": 2,
+    "Notes": [
+      "No <style> block—styles are driven entirely by the SVG and CSS variables.",
+      "Purely presentational; contains no event handlers or reactive state.",
+      "Lightweight and easily themeable via the `fill` prop."
+    ]
+  }
+}

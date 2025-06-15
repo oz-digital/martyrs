@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/governance/models/task.model.js",
+  "relativePath": "modules/governance/models/task.model.js",
+  "type": "source",
+  "name": "task.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and exports a Mongoose model for a Task entity with fields like title, description, status, assignee, due date, milestone, initiative, priority, and tags, along with timestamps and indexes.",
+    "Purpose": "Provides the schema and model definition for tasks in the governance module, centralizing data structure, validation rules, and indexes for task documents in MongoDB.",
+    "Components": [
+      {
+        "name": "TaskSchema",
+        "type": "Mongoose.Schema",
+        "responsibilities": [
+          "Defines the structure of a Task document",
+          "Sets field types, validation (required, enums), default values",
+          "Configures timestamps with custom currentTime",
+          "Declares indexes on milestone, assignedTo, status, and dueDate"
+        ]
+      },
+      {
+        "name": "Task",
+        "type": "Mongoose.Model",
+        "responsibilities": [
+          "Represents the Task collection",
+          "Provides CRUD operations and query interface for Task documents"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (model factory)",
+        "signature": "db => Model<Task>",
+        "description": "Accepts a db object with a mongoose instance, defines TaskSchema, attaches indexes, compiles and returns the Task model.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "object",
+            "description": "An object containing the mongoose instance (db.mongoose)"
+          }
+        ],
+        "returns": "Mongoose Model for Task"
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose (Mongoose)",
+      "User model (ref)",
+      "Milestone model (ref)",
+      "Initiative model (ref)"
+    ],
+    "Usage": "Imported by passing the application’s db object into the factory function, e.g.: `const Task = require('./task.model')(db);` Then used in services/controllers to create, read, update and delete task documents.",
+    "Importance": 4,
+    "Notes": [
+      "Timestamps use a custom currentTime function to generate `createdAt` and `updatedAt` fields.",
+      "Status and priority fields use enums to constrain values.",
+      "Indexes are added on key query fields (milestone, assignedTo, status, dueDate) for performance.",
+      "Tags field is an array of strings for flexible labeling."
+    ]
+  }
+}

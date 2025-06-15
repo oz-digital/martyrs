@@ -1,0 +1,44 @@
+{
+  "path": "../../src/modules/music/models/play-history.model.js",
+  "relativePath": "modules/music/models/play-history.model.js",
+  "type": "source",
+  "name": "play-history.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет Mongoose-схему и модель PlayHistory для хранения истории воспроизведения треков пользователями.",
+    "Purpose": "Создать/получить модель PlayHistory в контексте переданной базы данных (db) для сохранения информации о том, когда и откуда пользователь проигрывал трек.",
+    "Components": [
+      {
+        "name": "PlayHistorySchema",
+        "responsibility": "Описывает структуру документа истории воспроизведения: ссылки на пользователя и трек, время проигрывания, длительность, источник, контекст, информацию об устройстве и местоположении. Включает настройки timestamps и без versionKey."
+      },
+      {
+        "name": "PlayHistoryModel",
+        "responsibility": "Mongoose-модель на основе PlayHistorySchema, экспортируется или извлекается из mongoose.models для использования в запросах к коллекции playhistories."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (factory)",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контекст базы данных с подключённым mongoose."
+          }
+        ],
+        "description": "Инициализирует схему PlayHistory в переданном экземпляре mongoose, создаёт индексы и возвращает модель PlayHistory, если она ещё не зарегистрирована."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose (Mongoose instance)",
+      "mongoose.Schema",
+      "User (ref)",
+      "Track (ref)",
+      "динамические модели по refPath: playlist, album, search, recommendation, artist, other"
+    ],
+    "Usage": "Функция импортируется и вызывается при инициализации модуля «music» или ORM-слоя в приложении. После этого модель PlayHistory доступна в mongoose.models и может использоваться в сервисах и контроллерах для CRUD-операций по истории воспроизведения.",
+    "Importance": 4,
+    "Notes": "1) Определены три индекса для ускорения выборки по user+playedAt, track и playedAt.\n2) Поле playedFrom имеет enum и динамический refPath для привязки к разным коллекциям контекста.\n3) timestamps: true автоматически добавляет createdAt и updatedAt.\n4) versionKey отключён (нет поля __v)."
+  }
+}

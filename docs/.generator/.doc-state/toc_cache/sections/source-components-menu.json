@@ -1,0 +1,20 @@
+{
+  "section": {
+    "id": "source-components-menu",
+    "title": "Проект: Компоненты / Menu",
+    "description": "Модуль Menu содержит компоненты для создания и отображения меню в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "menu-components",
+        "title": "Основные компоненты меню",
+        "description": "Включает базовые компоненты для построения меню: Menu.vue и MenuItem.vue."
+      }
+    ]
+  },
+  "fileHashes": [
+    "2269dabee1043acc1972f6ed2d5c2c22",
+    "c0e657b8708bfd1e94a74f71c5f57af1"
+  ],
+  "groupHash": "f27749947c0d026cbc894963721b6b13",
+  "generated": "2025-06-05T09:16:59.738Z"
+}

@@ -1,0 +1,98 @@
+{
+  "path": "../../src/modules/governance/views/store/initiatives.js",
+  "relativePath": "modules/governance/views/store/initiatives.js",
+  "type": "source",
+  "name": "initiatives.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a reactive store for \"initiatives\" in a Vue application using the Martyrs framework. It maintains state, provides CRUD and approval/rejection actions via Axios calls, and records a history of state changes.",
+    "Purpose": "To centralize data management for initiatives: fetching all initiatives, retrieving a single initiative by ID, creating, updating, deleting, approving, and rejecting initiatives, as well as tracking state changes for debugging or undo/redo functionality.",
+    "Components": [
+      {
+        "name": "initiativesState",
+        "type": "reactive object",
+        "responsibilities": [
+          "Hold the list of all initiatives (`all`).",
+          "Hold the currently selected initiative (`current`)."
+        ]
+      },
+      {
+        "name": "initiativesActions",
+        "type": "plain object",
+        "responsibilities": [
+          "Expose asynchronous methods to interact with the `/api/initiatives` endpoints.",
+          "Update `initiativesState` based on API responses.",
+          "Set global error state on request failures."
+        ]
+      },
+      {
+        "name": "initiativesHistory",
+        "type": "array",
+        "responsibilities": [
+          "Store snapshots of `initiativesState` over time for history tracking."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getAllInitiatives",
+        "params": [],
+        "description": "Fetches all initiatives from the server, updates `initiativesState.all`, returns the data."
+      },
+      {
+        "name": "getInitiativeById",
+        "params": [
+          "id"
+        ],
+        "description": "Fetches a single initiative by its ID, updates `initiativesState.current`, returns the data."
+      },
+      {
+        "name": "createInitiative",
+        "params": [
+          "initiative"
+        ],
+        "description": "Sends a POST to create a new initiative, appends the response to `initiativesState.all`, returns the created object."
+      },
+      {
+        "name": "updateInitiative",
+        "params": [
+          "initiative"
+        ],
+        "description": "Sends a PUT to update an existing initiative, replaces the item in `initiativesState.all`, returns the updated object."
+      },
+      {
+        "name": "deleteInitiative",
+        "params": [
+          "id"
+        ],
+        "description": "Sends a DELETE for the specified initiative, removes it from `initiativesState.all`."
+      },
+      {
+        "name": "approveInitiative",
+        "params": [
+          "id"
+        ],
+        "description": "Sends a POST to mark an initiative as approved, returns the server response."
+      },
+      {
+        "name": "rejectInitiative",
+        "params": [
+          "id"
+        ],
+        "description": "Sends a POST to mark an initiative as rejected, returns the server response."
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js ($axios)"
+    ],
+    "Usage": "Imported into Vue components or other modules to read/write initiative data. Example: `import { initiativesState, initiativesActions } from 'modules/governance/views/store/initiatives.js';` then call `initiativesActions.getAllInitiatives()` and bind to UI via `initiativesState`.",
+    "Importance": 4,
+    "Notes": [
+      "Uses `watch` to deep-copy and record each state change into `initiativesHistory`, enabling time-travel debugging or undo functionality.",
+      "All actions propagate errors to a global error handler via `setError` and rethrow them, ensuring consistent error reporting.",
+      "State shape for `current` initiative is predefined with empty/default fields; components can rely on its structure for form bindings."
+    ]
+  }
+}

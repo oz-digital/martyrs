@@ -1,0 +1,88 @@
+{
+  "path": "../../src/modules/products/components/pages/Products.vue",
+  "relativePath": "modules/products/components/pages/Products.vue",
+  "type": "source",
+  "name": "Products.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders a products listing page with header controls, status tabs, filters, search input, and a feed of product cards. It synchronizes UI state (tabs, filters, sorting, search) with the route query and provides navigation to product details or creation forms.",
+    "Purpose": "Serve as the main products administration and browsing interface in the web application, allowing users to view, filter, search, and navigate to individual product pages or add new products.",
+    "Components": [
+      {
+        "name": "Tab",
+        "responsibility": "Renders a set of status tabs (All, Published, Unpublished, Archivied) and binds the selected tab to component state."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Handles fetching of product data (via provided store actions), renders a grid of items, and displays empty-state messages."
+      },
+      {
+        "name": "BlockFilter",
+        "responsibility": "Displays a sidebar filter UI bound to the products store filter state."
+      },
+      {
+        "name": "BlockSearch",
+        "responsibility": "Provides a search input that emits search events, which are debounced to update the route query."
+      },
+      {
+        "name": "CardProduct",
+        "responsibility": "Renders an individual product card with relevant details and edit/access controls."
+      },
+      {
+        "name": "IconPlus",
+        "responsibility": "Plus icon used in the global navigation bar to trigger the ‘add product’ action."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "debounce",
+        "description": "Utility that returns a debounced version of a function.",
+        "params": [
+          "fn: Function",
+          "delay: Number"
+        ],
+        "returns": "Function"
+      },
+      {
+        "name": "debouncedSearch",
+        "description": "Debounced handler for the search input; updates the 'search' parameter in the route query."
+      },
+      {
+        "name": "watch(tabProducts)",
+        "description": "Watches tab changes and updates route.query.tabProducts via router.replace."
+      },
+      {
+        "name": "watch(products.state.sort)",
+        "description": "Syncs sorting parameter changes to the route query (sortParam, sortOrder)."
+      },
+      {
+        "name": "watch(products.state.filter.selected)",
+        "description": "Keeps the route query in sync with selected filter values by adding/removing query keys."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch, onMounted, onUnmounted)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+      "@martyrs/src/modules/products/components/blocks/CardProduct.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlus.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/products/store/products.js",
+      "@martyrs/src/modules/marketplace/views/store/marketplace.js",
+      "@martyrs/src/modules/products/store/categories.js"
+    ],
+    "Usage": "This component is registered as a route view in the router config (e.g. '/products' or nested under '/organization/:_id/products') and is imported wherever a products listing page is needed. Other components can nest inside via its default <slot>.",
+    "Importance": 4,
+    "Notes": [
+      "generateFilters is referenced in the Feed options but not defined or imported here; likely comes from a global helper.",
+      "MOBILE_APP constant is used in the template conditioning but not declared in this file (assumed global build-time constant).",
+      "FilterProducts is imported but not used in the template—possibly an orphan import.",
+      "Global navigation bar actions are set on mount (IconPlus) and cleared on unmount via the globals store.",
+      "Route query parameters (tabProducts, filters, sort, search) are kept in sync with component state to maintain URL-driven state."
+    ]
+  }
+}

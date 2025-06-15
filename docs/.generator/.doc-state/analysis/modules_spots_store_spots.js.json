@@ -1,0 +1,97 @@
+{
+  "path": "../../src/modules/spots/store/spots.js",
+  "relativePath": "modules/spots/store/spots.js",
+  "type": "source",
+  "name": "spots.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет реактивный стор для работы с сущностями «spots» (точки) в приложении на Vue с использованием фреймворка martyrs. Он содержит состояние, CRUD-операции через Axios и логику обработки ошибок.",
+    "Purpose": "Организация централизованного хранения и управления данными «spots»: загрузка списка, получение одной записи, создание, обновление и удаление через API, а также реактивное отслеживание изменений.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive object",
+        "responsibility": "Хранит текущее состояние: массив spots, выбранный spot и поле error."
+      },
+      {
+        "name": "actions",
+        "type": "plain object",
+        "responsibility": "Набор асинхронных методов для выполнения CRUD-запросов к API и обновления state."
+      },
+      {
+        "name": "history",
+        "type": "Array",
+        "responsibility": "Локальный массив для хранения снимков state при каждом изменении (не экспортируется)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "readOne",
+        "parameters": [
+          "spotID"
+        ],
+        "description": "Запрашивает у API данные одной точки по ID и записывает в state.spot."
+      },
+      {
+        "name": "read",
+        "parameters": [
+          "options"
+        ],
+        "description": "Запрашивает у API список точек с переданными параметрами фильтрации и записывает в state.spots."
+      },
+      {
+        "name": "create",
+        "parameters": [
+          "organizationId",
+          "spot"
+        ],
+        "description": "Создаёт новую точку для указанной организации и обновляет state.spot."
+      },
+      {
+        "name": "update",
+        "parameters": [
+          "organizationId",
+          "spot"
+        ],
+        "description": "Отправляет на сервер обновлённые данные точки; не изменяет локальный state.spot."
+      },
+      {
+        "name": "delete",
+        "parameters": [
+          "organizationId",
+          "spotId"
+        ],
+        "description": "Удаляет точку по ID у указанной организации."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "reactive",
+          "watch"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/store/globals.js",
+        "imports": [
+          "setError"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/utils/axios-instance.js",
+        "imports": [
+          "$axios"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в компонентах или других стор-модулях как:\nimport { state, actions } from 'modules/spots/store/spots.js';\nДалее используют state для доступа к данным и actions для вызова CRUD-операций.",
+    "Importance": 4,
+    "Notes": [
+      "store реализован без Vuex, на чистом composition API.",
+      "Каждое изменение state сохраняется в локальный history, что может привести к росту памяти.",
+      "Все ошибки обрабатываются через глобальную функцию setError.",
+      "Методы update и delete не возвращают данные ответа, только обрабатывают результат запроса."
+    ]
+  }
+}

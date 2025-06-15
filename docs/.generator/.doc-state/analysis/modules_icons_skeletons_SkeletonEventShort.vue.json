@@ -1,0 +1,31 @@
+{
+  "path": "../../src/modules/icons/skeletons/SkeletonEventShort.vue",
+  "relativePath": "modules/icons/skeletons/SkeletonEventShort.vue",
+  "type": "source",
+  "name": "SkeletonEventShort.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue Single-File Component that renders an SVG-based skeleton loader for a short event item row with shimmer animation.",
+    "Purpose": "Provides a lightweight placeholder graphic while real event data is being fetched, maintaining layout consistency in event lists.",
+    "Components": [
+      {
+        "name": "SkeletonEventShort",
+        "type": "Vue SFC",
+        "responsibility": "Renders an SVG skeleton for an event row (time rectangle, title rectangle, avatar circles, animated shimmer overlay)."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (for SFC support)",
+      "CSS custom properties: --white, --black (for fill colors and opacities)"
+    ],
+    "Usage": "Imported into parent view or list component that displays events. Rendered conditionally during data-loading phases, e.g.:\n\nimport SkeletonEventShort from 'modules/icons/skeletons/SkeletonEventShort.vue';\n...\n<template>\n  <div v-if=\"loading\">\n    <SkeletonEventShort />\n  </div>\n</template>",
+    "Importance": 2,
+    "Notes": [
+      "No <script> or <style> blocks – all styling and animation lives inline in the SVG.",
+      "Uses `<animate>` inside `<rect>` for infinite horizontal shimmer effect.",
+      "Relies on CSS variables for color theming; ensure those are defined at a global level.",
+      "Accessibility attributes (aria roles/labels) are not included and could be added if needed."
+    ]
+  }
+}

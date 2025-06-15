@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/icons/entities/IconLeftovers.vue",
+  "relativePath": "modules/icons/entities/IconLeftovers.vue",
+  "type": "source",
+  "name": "IconLeftovers.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single-file component that renders a scalable SVG icon named IconLeftovers with customizable fill color and CSS classes.",
+    "Purpose": "Provide a reusable, parameterized icon for the UI, allowing other components to display the ‘leftovers’ SVG graphic with configurable styling.",
+    "Components": [
+      {
+        "name": "IconLeftovers",
+        "type": "Vue Functional Component (script setup)",
+        "props": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "CSS color or variable to fill the SVG path"
+          }
+        },
+        "responsibilities": [
+          "Render the <svg> element with a fixed viewBox and dimensions",
+          "Bind the fill color to the path via the `fill` prop",
+          "Apply any extra CSS classes passed in via $attrs.class"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare the `fill` property for the component",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (script setup, defineProps)",
+      "CSS variable --black (for default fill color)"
+    ],
+    "Usage": "Import and use in other Vue components or views: `import IconLeftovers from 'modules/icons/entities/IconLeftovers.vue'` then `<IconLeftovers fill=\"#f00\" class=\"my-icon\"/>` to render the icon with a red fill and custom CSS class.",
+    "Importance": 2,
+    "Notes": [
+      "No <style> block — styling is delegated via passed CSS classes and CSS variables.",
+      "Uses the Vue 3 <script setup> syntax and $attrs for class forwarding.",
+      "SVG dimensions are hardcoded to 80×80 but can be overridden via CSS on the component wrapper."
+    ]
+  }
+}

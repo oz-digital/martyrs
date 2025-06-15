@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/events/controllers/events.controller.js",
+  "relativePath": "modules/events/controllers/events.controller.js",
+  "type": "source",
+  "name": "events.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and exports a factory function that, given a database object, returns a set of CRUD controller methods (read, create, update, delete) for managing Event entities. It uses MongoDB aggregation pipelines, integrates with Stripe for ticket/product management, and applies SEO-friendly URL generation.",
+    "Purpose": "Provide HTTP handlers for the 'events' resource in the application, encapsulating query processing, data retrieval, creation, updating, and deletion logic, as well as external Stripe integration.",
+    "Components": [
+      {
+        "name": "middlewareFactory",
+        "responsibility": "Accepts a `db` object with models and returns an object containing the four controller methods (`read`, `create`, `update`, `delete`)."
+      },
+      {
+        "name": "serviceStripe",
+        "responsibility": "Instance of the Stripe integration service used to create, update, deactivate Stripe products and prices."
+      },
+      {
+        "name": "read",
+        "responsibility": "Builds a MongoDB aggregation pipeline based on query parameters (search, date, period, phase, pagination, sorting, ticket/participant filters, creator/owner lookups) and returns the matched events."
+      },
+      {
+        "name": "create",
+        "responsibility": "Generates an SEO-friendly URL for a new event, creates corresponding Stripe products/prices if ticket types are defined, saves the event in the database, and returns the saved document."
+      },
+      {
+        "name": "update",
+        "responsibility": "Finds an existing event by URL, updates its fields (including syncing changes to Stripe products/prices), writes updates to the database, and returns the updated payload."
+      },
+      {
+        "name": "deleteMethod",
+        "responsibility": "Finds and deletes an event by its ID, deactivates associated Stripe products if any, and returns the deleted event data."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middlewareFactory",
+        "params": [
+          "db"
+        ],
+        "description": "Factory that binds the Mongoose models and Stripe service, returning the CRUD controller functions."
+      },
+      {
+        "name": "read",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Handles GET requests, constructs aggregation stages from query parameters, executes `Event.aggregate()`, and sends the result or an error."
+      },
+      {
+        "name": "create",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Handles POST requests, strips out any `_id`, builds a friendly URL, optionally creates Stripe products/prices, saves the new Event, and returns it."
+      },
+      {
+        "name": "update",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Handles PUT/PATCH requests, looks up an existing Event by URL, syncs ticket type changes with Stripe, updates the Event document, and returns the update."
+      },
+      {
+        "name": "deleteMethod",
+        "params": [
+          "req",
+          "res"
+        ],
+        "description": "Handles DELETE requests, fetches the Event by ID, deactivates Stripe products if present, deletes the Event document, and returns the deleted record."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+      "@martyrs/src/modules/globals/controllers/utils/seo-friendly-url.js",
+      "@martyrs/src/modules/integrations/stripe/controllers/services/stripe.service.js",
+      "mongoose",
+      "./utils/queryProcessor.js",
+      "db models: ticket, event, membership"
+    ],
+    "Usage": "Import the default export, invoke it with the application `db` object (containing Mongoose models), then attach the returned handlers to Express routes. Example: `const controllers = eventsController(db); router.get('/events', controllers.read);`",
+    "Importance": 5,
+    "Notes": [
+      "Utilizes two separate query processor modules (global and local) to build a rich aggregation pipeline.",
+      "Generates SEO-friendly URLs via `createFriendlyURL` based on event names.",
+      "Integrates deeply with Stripe: creating, updating, deactivating products and prices in sync with ticketType definitions.",
+      "Error handling logs to console and returns HTTP 500 with error messages.",
+      "The `delete` method is renamed to `deleteMethod` internally to avoid reserved keyword conflicts but exported as `delete`."
+    ]
+  }
+}

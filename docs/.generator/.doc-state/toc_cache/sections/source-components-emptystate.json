@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-emptystate",
+    "title": "Проект: Компоненты / Empty State",
+    "description": "Модуль предоставляет компонент для отображения состояния пустых данных в интерфейсе.",
+    "subsections": [
+      {
+        "id": "emptystate-component",
+        "title": "EmptyState.vue",
+        "description": "Визуальный компонент для отображения информации о пустом состоянии, когда отсутствуют данные для отображения."
+      }
+    ]
+  },
+  "fileHashes": [
+    "0523c3b4928a2ea1c27fda5e13d07cec"
+  ],
+  "groupHash": "67577ce0f185f2b64348811bd1ee12e5",
+  "generated": "2025-06-05T09:16:43.715Z"
+}

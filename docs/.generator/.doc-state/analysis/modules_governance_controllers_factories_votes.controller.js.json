@@ -1,0 +1,148 @@
+{
+  "path": "../../src/modules/governance/controllers/factories/votes.controller.js",
+  "relativePath": "modules/governance/controllers/factories/votes.controller.js",
+  "type": "source",
+  "name": "votes.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file exports a factory function that, given a database object, returns a set of Express-style controller methods to create, read, update and delete vote records in the database.",
+    "Purpose": "Provide the HTTP handlers for vote-related operations (casting a vote, fetching votes by voting event or user, updating and deleting votes) within the governance module of the application.",
+    "Components": [
+      {
+        "name": "votesControllerFactory",
+        "type": "Function",
+        "responsibility": "Accepts a `db` object and returns an object with vote-related controller methods wired to that database."
+      },
+      {
+        "name": "Votes Controller Object",
+        "type": "Plain Object",
+        "responsibility": "Holds the five async methods (`castVote`, `getVotesForVoting`, `getUserVotes`, `updateVote`, `deleteVote`) that handle HTTP requests and responses."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "castVote",
+        "description": "Creates a new vote record for a given voting event and user choice.",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "behavior": {
+          "reads": [
+            "req.params.votingId",
+            "req.body.userId",
+            "req.body.choice"
+          ],
+          "writes": [
+            "db.vote.create(...)"
+          ],
+          "responds": [
+            "201 + newVote JSON",
+            "400 + error JSON"
+          ]
+        }
+      },
+      {
+        "name": "getVotesForVoting",
+        "description": "Retrieves all votes associated with a specific voting event.",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "behavior": {
+          "reads": [
+            "req.params.votingId"
+          ],
+          "queries": [
+            "db.vote.findAll({ where: { votingId } })"
+          ],
+          "responds": [
+            "200 + votes JSON",
+            "500 + error JSON"
+          ]
+        }
+      },
+      {
+        "name": "getUserVotes",
+        "description": "Retrieves all votes cast by a specific user.",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "behavior": {
+          "reads": [
+            "req.params.userId"
+          ],
+          "queries": [
+            "db.vote.findAll({ where: { userId } })"
+          ],
+          "responds": [
+            "200 + votes JSON",
+            "500 + error JSON"
+          ]
+        }
+      },
+      {
+        "name": "updateVote",
+        "description": "Updates fields of an existing vote by its ID.",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "behavior": {
+          "reads": [
+            "req.params.id",
+            "req.body"
+          ],
+          "updates": [
+            "db.vote.update(...)"
+          ],
+          "responds": [
+            "200 + success message if updated",
+            "404 + not found message if no rows affected",
+            "400 + error JSON on failure"
+          ]
+        }
+      },
+      {
+        "name": "deleteVote",
+        "description": "Deletes a vote record by its ID.",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "behavior": {
+          "reads": [
+            "req.params.id"
+          ],
+          "deletes": [
+            "db.vote.destroy(...)"
+          ],
+          "responds": [
+            "200 + success message if deleted",
+            "404 + not found message if no record",
+            "500 + error JSON on failure"
+          ]
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "db",
+        "details": "An injected database object (likely a Sequelize instance) containing the `vote` model with `create`, `findAll`, `update`, and `destroy` methods."
+      },
+      {
+        "framework": "Express.js",
+        "details": "Relies on Express `req` and `res` objects for HTTP request/response handling."
+      }
+    ],
+    "Usage": "Imported in a router or higher-level controller setup. Example:\n\n```js\nimport votesControllerFactory from './controllers/factories/votes.controller';\nconst votesController = votesControllerFactory(db);\nrouter.post('/votings/:votingId/vote', votesController.castVote);\nrouter.get('/votings/:votingId/votes', votesController.getVotesForVoting);\n// etc.\n```",
+    "Importance": 3,
+    "Notes": [
+      "Uses async/await for all database operations and standard HTTP status codes for success and error cases.",
+      "Error objects are passed directly in JSON responses; consider sanitizing in production.",
+      "The `update` method returns an array with the count of affected rows according to Sequelize's API.",
+      "Factory pattern allows swapping or mocking the `db` object in tests."
+    ]
+  }
+}

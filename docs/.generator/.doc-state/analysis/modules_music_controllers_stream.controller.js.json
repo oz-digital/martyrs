@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/music/controllers/stream.controller.js",
+  "relativePath": "modules/music/controllers/stream.controller.js",
+  "type": "source",
+  "name": "stream.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

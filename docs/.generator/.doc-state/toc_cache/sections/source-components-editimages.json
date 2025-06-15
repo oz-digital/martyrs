@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-editimages",
+    "title": "Проект: Компоненты / Edit Images",
+    "description": "Модуль содержит компонент для редактирования изображений в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "editimages-vue",
+        "title": "EditImages.vue",
+        "description": "Основной Vue-компонент для отображения и редактирования изображений. Предназначение и функциональность требуют уточнения."
+      }
+    ]
+  },
+  "fileHashes": [
+    "8aec75f0659764084cafa8227077b208"
+  ],
+  "groupHash": "32840d66ca97d6f44fc186dc805aa97a",
+  "generated": "2025-06-05T09:16:42.432Z"
+}

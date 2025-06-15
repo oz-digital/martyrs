@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-buttonsegmented",
+    "title": "Проект: Компоненты / Button Segmented",
+    "description": "Модуль предоставляет компонент сегментированной кнопки для пользовательского интерфейса.",
+    "subsections": [
+      {
+        "id": "buttonsegmented-vue",
+        "title": "ButtonSegmented.vue",
+        "description": "Основной Vue-компонент для отображения сегментированной кнопки."
+      }
+    ]
+  },
+  "fileHashes": [
+    "05341fc66d4df9d466da8eefca4a1161"
+  ],
+  "groupHash": "54af1132e2c0ea38531d8693595527a2",
+  "generated": "2025-06-05T09:16:25.333Z"
+}

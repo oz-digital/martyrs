@@ -1,0 +1,119 @@
+{
+  "path": "../../src/components/SelectMulti/SelectMulti.vue",
+  "relativePath": "components/SelectMulti/SelectMulti.vue",
+  "type": "source",
+  "name": "SelectMulti.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "SelectMulti.vue defines a highly configurable Vue 3 multi-select/dropdown component with optional search, tagging, grouping, keyboard navigation, customizable slots and accessibility support.",
+    "Purpose": "Provide a reusable multi-select UI widget that can be bound via v-model, display arbitrary option lists (flat or grouped), allow tagging, limit selections, and be fully styled/customized via slots.",
+    "Components": [
+      {
+        "name": "SelectMulti",
+        "role": "The single Vue component exported by this file. It renders the dropdown container, input/search field, tags, options list, handles user interaction, keyboard navigation and emits selection events."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "isEmpty",
+        "purpose": "Check if a value is considered empty (excluding zero).",
+        "parameters": [
+          "opt"
+        ]
+      },
+      {
+        "name": "includes",
+        "purpose": "Case-insensitive substring check between a string and query.",
+        "parameters": [
+          "str",
+          "query"
+        ]
+      },
+      {
+        "name": "filterOptions",
+        "purpose": "Filter and sort a flat options array based on search text and a custom label extractor.",
+        "parameters": [
+          "options",
+          "search",
+          "label",
+          "customLabel"
+        ]
+      },
+      {
+        "name": "flattenOptions",
+        "purpose": "Flatten a grouped options structure into a flat list, inserting group labels as items.",
+        "parameters": [
+          "values",
+          "label"
+        ]
+      },
+      {
+        "name": "filterGroups",
+        "purpose": "Filter option groups by search term, discarding empty groups.",
+        "parameters": [
+          "search",
+          "label",
+          "values",
+          "groupLabel",
+          "customLabel"
+        ]
+      },
+      {
+        "name": "flow",
+        "purpose": "Compose multiple unary functions into a pipeline.",
+        "parameters": [
+          "...fns"
+        ]
+      },
+      {
+        "name": "updateSearch",
+        "purpose": "Update the internal search query state.",
+        "parameters": [
+          "query"
+        ]
+      },
+      {
+        "name": "isSelected",
+        "purpose": "Determine if a given option is currently selected in the v-model.",
+        "parameters": [
+          "option"
+        ]
+      },
+      {
+        "name": "getOptionLabel",
+        "purpose": "Compute the display label for an option, handling tags and group labels.",
+        "parameters": [
+          "option"
+        ]
+      },
+      {
+        "name": "select",
+        "purpose": "Handle selecting or deselecting an option (or tag creation), emit appropriate events and optionally close the dropdown.",
+        "parameters": [
+          "option",
+          "key"
+        ]
+      },
+      {
+        "name": "selectGroup",
+        "purpose": "Select or deselect all options within a given group, emit group selection events.",
+        "parameters": [
+          "selectedGroup"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch, onMounted, nextTick)"
+    ],
+    "Usage": "Import the component (`import SelectMulti from 'components/SelectMulti/SelectMulti.vue'`), register it in your Vue app or parent component, then `<SelectMulti v-model=\"myValue\" :options=\"myOptions\" />`. Pass props to enable multiple selection, tags, grouping, custom labels, etc.",
+    "Importance": 4,
+    "Notes": [
+      "Extensively uses slots (`caret`, `clear`, `selection`, `tag`, `option`, `loading`, `beforeList`, `afterList`) for maximum customization.",
+      "Keyboard navigation supported via arrow keys, Enter, Esc and Tab, with ARIA roles for accessibility.",
+      "Supports flat and grouped data via props `groupValues`, `groupLabel` and optional `groupSelect` behavior.",
+      "Tagging mode (`taggable`) allows creating new options on-the-fly when search text does not match existing options.",
+      "Dynamic dropdown height and automatic 'above'/'below' placement based on available space or forced via `openDirection` prop.",
+      "Configurable selection limits (`max`), maximum rendered options (`optionsLimit`) and placeholder behaviour."
+    ]
+  }
+}

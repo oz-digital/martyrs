@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/notifications/notifications.client.js",
+  "relativePath": "modules/notifications/notifications.client.js",
+  "type": "source",
+  "name": "notifications.client.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

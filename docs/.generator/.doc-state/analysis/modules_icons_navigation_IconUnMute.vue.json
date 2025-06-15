@@ -1,0 +1,44 @@
+{
+  "path": "../../src/modules/icons/navigation/IconUnMute.vue",
+  "relativePath": "modules/icons/navigation/IconUnMute.vue",
+  "type": "source",
+  "name": "IconUnMute.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 component that renders an \"unmute\" (volume on) SVG icon with a customizable fill color.",
+    "Purpose": "Provide a reusable icon component for unmuted audio state in the application's navigation or control panels.",
+    "Components": [
+      {
+        "name": "IconUnMute",
+        "role": "Renders an inline SVG representing a speaker with sound waves; accepts a \"fill\" prop to set the SVG color."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Defines the component's props in the <script setup> block.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": {
+              "position": "rgb(var(--black))"
+            },
+            "description": "Color used to fill the SVG path; defaults to the CSS variable --black."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps API)",
+      "CSS variables (specifically --black from the global style sheet)"
+    ],
+    "Usage": "import IconUnMute from 'modules/icons/navigation/IconUnMute.vue';\n\n<IconUnMute fill=\"#ffffff\" />",
+    "Importance": 2,
+    "Notes": [
+      "There is no <style> block; all styling is handled via SVG attributes and CSS variables.",
+      "The default value for the `fill` prop is declared as an object rather than a string—this may be a typo or misconfiguration.",
+      "Uses inline SVG for crisp rendering at any size without external asset loading.",
+      "The component leverages Vue 3's <script setup> syntax for a minimal footprint."
+    ]
+  }
+}

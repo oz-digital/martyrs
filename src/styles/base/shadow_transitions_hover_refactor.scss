@@ -1,0 +1,189 @@
+body { 
+	.hover-scale-0 {&:hover {transform: scale(1.015); 	} } 
+	.hover-scale-1 {&:hover {transform: scale(1.05); 	} } 
+	.hover-scale-2 {&:hover {transform: scale(1.1); 	} }
+	.hover-scale-3 {&:hover {transform: scale(1.2); 	} }
+
+
+	.hover-bg-main {&:hover {background: rgb(var(--main), 1);; } }
+	.hover-bg-second {&:hover {background: rgb(var(--second), 1);; } }
+	.hover-bg-third {&:hover {background: rgb(var(--second), 1);; } }
+	.hover-bg-fourth {&:hover {background: rgb(var(--third), 1);; } }
+	.hover-bg-fifth {&:hover {background: rgb(var(--fifth), 1);; } }
+	.hover-bg-white {&:hover {background: rgb(var(--white), 1);; } }
+	.hover-bg-black {&:hover {background: rgb(var(--black), 1);; } }
+	.hover-bg-light {&:hover {background: rgb(var(--light), 1);; } }
+	.hover-bg-dark {&:hover {background: rgb(var(--dark), 1);; } }
+
+
+	.hover-fill-main {&:hover {fill: rgb(var(--main)); } }
+	.hover-fill-white {&:hover {fill: rgb(var(--white)); } }
+	.hover-fill-black {&:hover {fill: rgb(var(--black)); } }
+
+	.hover-t-white {&:hover {color: rgba(var(--white), 1);; } }
+	.hover-t-black {&:hover {color: rgba(var(--black), 1);; } }
+	.hover-br-transp {&:hover {background: rgba(var(--white),0); } }
+	.hover-br-l-dark {&:hover {border: 1px solid rgba(var(--dark), 0.2) } }
+
+	.hover-t-underline {&:hover {text-decoration: underline;}}
+
+
+	.hover-translate-1 {&:hover {transform: translateY(-10px); } }
+	.hover-rotate-1 {&:hover {transform: rotate(-10deg); } }
+	.hover-translateX-1 {&:hover {transform: translateX(20px); } }
+	.hover-combined-1 {&:hover {transform: translateY(-10px) rotate(-10deg); } }
+	.hover-easeInOut-1 {&:hover {transform: translateY(-10px) scale(1.1); } }
+	.hover-arc-1 {&:hover {transform: translateX(20px) translateY(-10px) rotate(-10deg); } }
+	.hover-timing-1 {&:hover {transition: transform 0.2s ease-in-out; transform: translateY(-10px); } }
+	.hover-exaggeration-1 {&:hover {transform: scale(1.5); } }
+	.hover-solid-drawing-1 {&:hover {transform: translateY(-10px) scale(1.1) rotate(-10deg); } }
+	.hover-appeal-1 {&:hover {transform: translateY(-10px) scale(1.1) rotate(-5deg); } } 
+
+
+	// Shadows 
+	.bs-red { box-shadow: 0 0 5px red; }
+
+	.bs-black { box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+
+
+	.bs-tilt {
+	  box-shadow: 10px 10px 10px rgba(0,0,0,0.1), -10px -10px 10px rgba(0,0,0,0.1);
+	}
+
+	/* тень с двух сторон */
+	.bs-double-sided {
+	  box-shadow: -3px 0px 3px rgba(0,0,0,0.1), 3px 0px 3px rgba(0,0,0,0.1);
+	}
+
+	/* тень с эффектом вырубки */
+	.bs-cutout {
+	  box-shadow: 0 0 0 5px rgba(0,0,0,0.1), 0 0 0 10px white, 0 0 0 15px rgba(0,0,0,0.1);
+	}
+
+	/* тень с эффектом глубины */
+	.bs-depth {
+	  box-shadow: 0 3px 3px rgba(0,0,0,0.1), 0 0 0 5px rgba(0,0,0,0.2), 0 6px 10px rgba(0,0,0,0.2);
+	}
+
+	/* тень с эффектом вздутия */
+	.bs-bubble {
+	  box-shadow: 0 0 0 3px rgba(0,0,0,0.1), 0 0 15px rgba(0,0,0,0.2), 0 6px 10px rgba(0,0,0,0.2);
+	}
+
+	/* тень с плавным переходом */
+	.bs-gradient {
+	  box-shadow: 0 0 5px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.4), 0 20px 30px rgba(0,0,0,0.5);
+	}
+
+	/* тень с эффектом расплывания */
+	.bs-blur-light {
+		box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 10px 15px rgba(0,0,0,0.15), 0 15px 25px rgba(0,0,0,0.2),0 0 5px rgba(255,255,255,0.05), 0 -10px 20px rgba(255,255,255,0.2), 0 -20px 30px rgba(255,255,255,0.25), 0 -30px 50px rgba(255,255,255,0.3);
+	}
+
+	.bs-blur-light-hover {
+	  &:hover {
+	    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 40px 60px rgba(0,0,0,0.35), 0 60px 80px rgba(0,0,0,0.4);
+	  }
+	}
+
+	.bs-blur-regular {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 20px 30px rgba(0,0,0,0.25), 0 30px 50px rgba(0,0,0,0.3),0 0 5px rgba(255,255,255,0.05), 0 -10px 20px rgba(255,255,255,0.2), 0 -20px 30px rgba(255,255,255,0.25), 0 -30px 50px rgba(255,255,255,0.3);
+	}
+
+	.bs-blur-regular-hover {
+	  &:hover {
+	    box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 50px 75px rgba(0,0,0,0.7), 0 75px 100px rgba(0,0,0,0.8);
+	  }
+	}
+
+	.bs-blur-medium {
+		box-shadow: 0 0 7px rgba(0,0,0,0.1), 0 15px 25px rgba(0,0,0,0.4), 0 25px 40px rgba(0,0,0,0.5), 0 40px 70px rgba(0,0,0,0.6);
+	}
+
+	.bs-blur-medium-hover {
+	  &:hover {
+	    box-shadow: 0 0 15px rgba(0,0,0,0.2), 0 30px 60px rgba(0,0,0,0.5), 0 60px 90px rgba(0,0,0,0.7), 0 90px 120px rgba(0,0,0,0.8);
+	  }
+	}
+
+	.bs-blur-semi {
+		box-shadow: 0 0 10px rgba(0,0,0,0.1), 0 20px 35px rgba(0,0,0,0.4), 0 35px 55px rgba(0,0,0,0.5), 0 55px 95px rgba(0,0,0,0.6);
+	}
+
+	.bs-blur-semi-hover {
+	  &:hover {
+			box-shadow: 0 0 18px rgba(0,0,0,0.2), 0 40px 80px rgba(0,0,0,0.5), 0 80px 120px rgba(0,0,0,0.7), 0 120px 200px rgba(0,0,0,0.8);
+		}
+	}
+
+	.bs-blur-heavy {
+		box-shadow: 0 0 15px rgba(0,0,0,0.1), 0 30px 50px rgba(0,0,0,0.4), 0 50px 80px rgba(0,0,0,0.5), 0 80px 130px rgba(0,0,0,0.6);
+	}
+
+	.bs-blur-heavy-hover {
+		&:hover {
+		box-shadow: 0 0 25px rgba(0,0,0,0.2), 0 60px 100px rgba(0,0,0,0.5), 0 100px 150px rgba(0,0,0,0.7), 0 150px 250px rgba(0,0,0,0.8);
+		}
+	}
+
+
+
+	/* тень с эффектом перекрестия */
+	.bs-cross {
+	  box-shadow: -10px -10px 10px rgba(0,0,0,0.1), 10px 10px 10px rgba(0,0,0,0.1);
+	}
+
+	/* тень с эффектом выступающей кнопки */
+	.bs-button {
+	  box-shadow: 0 0 0 2px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.2), 0 8px 10px rgba(0,0,0,0.2);
+	}
+
+	  /* .bs-dotted */
+	.bs-whirl {
+
+		box-shadow: 0 0 0 3px rgba(0,0,0,0.1) inset;
+	}
+
+	.bs-embossed {
+	    box-shadow: 0 2px 2px rgba(0,0,0,0.1), 0 0 0 3px rgba(0,0,0,0.1) inset;
+	}
+
+	.bs-gradient {
+	    background-image: linear-gradient(135deg, #1111 0%, #FFF 50%, #F0F2F5 100%);
+	    box-shadow: 2px 2px 10px rgba(0,0,0,0.2), -2px -2px 10px rgba(255,255,255,0.7);
+	}
+
+	.bs-perspective {
+	    perspective: 500px;
+	    transform: rotateY(15deg) rotateX(15deg) scale(1.1);
+	}
+
+	.bs-ripple {
+	    position: relative;
+	    overflow: hidden;
+	    transform: translate3d(0, 0, 0);
+	}
+
+	.bs-ripple::after {
+	    content: "";
+	    display: block;
+	    position: absolute;
+	    width: 100%;
+	    height: 100%;
+	    top: 0;
+	    left: 0;
+	    pointer-events: none;
+	    background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+	    background-repeat: no-repeat;
+	    background-position: 50%;
+	    transform: scale(10, 10);
+	    opacity: 0;
+	    transition: transform 0.5s, opacity 1s;
+	}
+
+	.bs-ripple:active::after {
+	    transform: scale(0, 0);
+	    opacity: 0.3;
+	    transition: 0s;
+	}
+}

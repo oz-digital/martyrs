@@ -1,0 +1,20 @@
+{
+  "section": {
+    "id": "source-components-map",
+    "title": "Проект: Компоненты / Map",
+    "description": "Модуль содержит компоненты для работы с картами, включая загрузку и отображение карт Google Maps.",
+    "subsections": [
+      {
+        "id": "map-components",
+        "title": "Основные компоненты карты",
+        "description": "Включает основные файлы для отображения и загрузки карт: Map.vue — основной компонент карты; LoaderGMaps.js — вспомогательный скрипт для загрузки Google Maps."
+      }
+    ]
+  },
+  "fileHashes": [
+    "0f71046d7e403b874bd974ac4f7f1759",
+    "e6581c496fa29120323afde25843bb90"
+  ],
+  "groupHash": "ee1482ea8575e3770776ccf7b8cf8f0b",
+  "generated": "2025-06-05T09:16:08.453Z"
+}

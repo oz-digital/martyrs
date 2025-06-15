@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-chips",
+    "title": "Проект: Компоненты / Chips",
+    "description": "Модуль Chips предоставляет компонент для отображения и управления элементами типа 'чипсы' (метки, теги) в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "chips-vue",
+        "title": "Chips.vue",
+        "description": "Основной Vue-компонент для отображения и взаимодействия с чипсами."
+      }
+    ]
+  },
+  "fileHashes": [
+    "2f779ce08a06cdd11cd28b71286a75af"
+  ],
+  "groupHash": "61dcafaf3cfe499aa96bfdeeb378a6c4",
+  "generated": "2025-06-05T09:16:28.671Z"
+}

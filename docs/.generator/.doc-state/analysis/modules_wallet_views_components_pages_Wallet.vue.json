@@ -1,0 +1,97 @@
+{
+  "path": "../../src/modules/wallet/views/components/pages/Wallet.vue",
+  "relativePath": "modules/wallet/views/components/pages/Wallet.vue",
+  "type": "source",
+  "name": "Wallet.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Wallet.vue is the main wallet interface for users: it displays token balances, share percentage, recent rewards and activity, and provides controls to connect/disconnect MetaMask, withdraw rewards, and deposit more tokens via cash, card or crypto pop-up menus.",
+    "Purpose": "Serve as the in-app wallet page in the Martyrs project, handling presentation and user interactions related to wallet connection, balance display, reward collection, and deposit flows.",
+    "Components": [
+      {
+        "name": "Popup",
+        "responsibility": "Generic modal wrapper for the deposit flow menus."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Standard styled button used for actions like Withdraw."
+      },
+      {
+        "name": "ConnectMetamask",
+        "responsibility": "UI element and logic to trigger MetaMask wallet connection."
+      },
+      {
+        "name": "CashDepositMenu",
+        "responsibility": "Sub-menu inside the popup for cash deposit instructions."
+      },
+      {
+        "name": "CardDepositMenu",
+        "responsibility": "Sub-menu inside the popup for card deposit flow."
+      },
+      {
+        "name": "CryptoDepositMenu",
+        "responsibility": "Sub-menu inside the popup for crypto deposit flow."
+      },
+      {
+        "name": "CardBalanceReplenished",
+        "responsibility": "Feedback screen shown after a successful card deposit."
+      },
+      {
+        "name": "CryptoDepositProcessing",
+        "responsibility": "Feedback screen shown while a crypto deposit is processing."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted callback",
+        "description": "Initializes web3 provider, listens for MetaMask account changes, fetches reward list and tries to reconnect the wallet on component mount.",
+        "parameters": []
+      },
+      {
+        "name": "switchGetMoreMenu",
+        "description": "Switches the internal popup menu state to display the selected deposit option.",
+        "parameters": [
+          {
+            "name": "value",
+            "type": "number",
+            "description": "Index of the popup submenu to display (0–5)."
+          }
+        ]
+      },
+      {
+        "name": "openGetMorePopup",
+        "description": "Opens the 'Get More' deposit popup.",
+        "parameters": []
+      },
+      {
+        "name": "closeGetMorePopup",
+        "description": "Closes the deposit popup, resets menu index, stops any timers and disconnects websocket channels.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-i18n (useI18n)",
+      "web3",
+      "@martyrs/src/modules/wallet/views/store/wallet.store (state, actions)",
+      "@martyrs/src/modules/wallet/views/localization/wallet.json",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/wallet/views/components/elements/ConnectMetamask.vue",
+      "@martyrs/src/modules/wallet/views/components/blocks/CashDeposit.vue",
+      "@martyrs/src/modules/wallet/views/components/blocks/CardDeposit.vue",
+      "@martyrs/src/modules/wallet/views/components/blocks/CryptoDeposit.vue",
+      "@martyrs/src/modules/wallet/views/components/blocks/CardBalanceReplenished.vue",
+      "@martyrs/src/modules/wallet/views/components/blocks/CryptoDepositProcessing.vue"
+    ],
+    "Usage": "Typically registered as a route component under the /wallet path. Other views or router definitions import it directly to render the wallet page.",
+    "Importance": 4,
+    "Notes": [
+      "Relies on a centralized store (state, actions) for wallet state and WebSocket communication.",
+      "Listens to window.ethereum 'accountsChanged' events to stay in sync with MetaMask.",
+      "Uses a local ref-based popup state rather than Vuex for transient UI state.",
+      "Imports a CardBlogpost component that is declared but not used.",
+      "Text is fully internationalized via vue-i18n and external JSON localization."
+    ]
+  }
+}

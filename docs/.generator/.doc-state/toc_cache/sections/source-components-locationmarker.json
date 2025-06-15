@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-locationmarker",
+    "title": "Проект: Компоненты / Location Marker",
+    "description": "Модуль содержит компонент для отображения маркера местоположения на карте или схеме.",
+    "subsections": [
+      {
+        "id": "locationmarker-component",
+        "title": "Компонент LocationMarker.vue",
+        "description": "Vue-компонент, реализующий визуализацию маркера местоположения. Используется для выделения определённой точки на карте."
+      }
+    ]
+  },
+  "fileHashes": [
+    "8ec0424a3880ccffef9f4ee4e2c3bea5"
+  ],
+  "groupHash": "e75e931c8dd941a00894a18d8d88984f",
+  "generated": "2025-06-05T09:16:53.543Z"
+}

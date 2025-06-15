@@ -1,0 +1,59 @@
+{
+  "path": "../../src/modules/music/components/cards/ArtistCard.vue",
+  "relativePath": "modules/music/components/cards/ArtistCard.vue",
+  "type": "source",
+  "name": "ArtistCard.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue компонент ArtistCard отображает карточку исполнителя с фотографией (или первой буквой имени), статусом, именем, жанрами и опциональными действиями. При клике (если разрешено) происходит переход на страницу с деталями исполнителя.",
+    "Purpose": "Предоставить переиспользуемый UI-блок для показа информации об артисте в виде карточки и обеспечить навигацию к детальному просмотру исполнителя.",
+    "Components": [
+      {
+        "name": "ArtistCard",
+        "type": "Vue SFC",
+        "responsibility": "Корневой компонент, инкапсулирующий логику отображения карточки артиста и навигации."
+      },
+      {
+        "name": "artist-image",
+        "type": "div-контейнер",
+        "responsibility": "Держатель изображения артиста или fallback-блока с первой буквой имени."
+      },
+      {
+        "name": "status badge",
+        "type": "div-контейнер",
+        "responsibility": "Показывает статус артиста (published, featured, draft) с разными фоновыми классами."
+      },
+      {
+        "name": "info section",
+        "type": "div-контейнер",
+        "responsibility": "Отображает имя артиста и список жанров."
+      },
+      {
+        "name": "actions slot",
+        "type": "Vue slot",
+        "responsibility": "Позволяет вставить кнопки или другие элементы управления в нижнюю часть карточки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleClick",
+        "purpose": "Обрабатывает клик по карточке: если свойство clickable = true, выполняет router.push к роуту 'artist-detail' с параметром url артиста.",
+        "parameters": [],
+        "uses": "props.clickable, props.artist.url, vue-router"
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API: defineProps, <script setup>)",
+      "vue-router (useRouter)",
+      "константа FILE_SERVER_URL (глобально доступный URL сервера файлов)"
+    ],
+    "Usage": "Импортируется и регистрируется в списках или грид-ах артистов, например: import ArtistCard from 'modules/music/components/cards/ArtistCard.vue'; затем в шаблоне: <ArtistCard :artist=\"item\" />.",
+    "Importance": 3,
+    "Notes": [
+      "Используется scoped CSS для рамки карточки и эффекта hover-scale.",
+      "При отсутствии фото выводится первая буква имени (или '?').",
+      "Поддерживает lazy-loading изображений через атрибут loading=\"lazy\".",
+      "Параметр showStatus по умолчанию скрыт; можно включить вывод статус-бейджа."
+    ]
+  }
+}

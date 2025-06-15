@@ -1,0 +1,170 @@
+{
+  "path": "../../src/components/FieldTags/create-tags.js",
+  "relativePath": "components/FieldTags/create-tags.js",
+  "type": "source",
+  "name": "create-tags.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file provides helper functions to deep-clone tag data, validate tags against a set of user-defined rules, and generate CSS class names that reflect each tag’s validation status or duplication state. It exposes utilities to create or validate a single tag (createTag) or multiple tags at once (createTags).",
+    "Purpose": "Centralize and standardize the logic for tag creation, cloning, validation and CSS-class assignment used by a tag-input or tag-management component within the project.",
+    "Components": [
+      {
+        "name": "validateUserRules",
+        "responsibility": "Applies an array of validation rules (string, RegExp, or function) to a tag’s text and returns an array of CSS class names corresponding to the rules that have failed."
+      },
+      {
+        "name": "clone",
+        "responsibility": "Performs a deep clone of a JavaScript object or value using JSON serialization."
+      },
+      {
+        "name": "findIndex",
+        "responsibility": "Polyfill for Array.findIndex: iterates over an array and returns the index of the first element satisfying a callback, or -1 if none match."
+      },
+      {
+        "name": "createClasses",
+        "responsibility": "Combines validation results and duplicate checks to assemble a final list of CSS classes ('ti-valid', 'ti-invalid', 'ti-duplicate') for a given tag."
+      },
+      {
+        "name": "createTag",
+        "responsibility": "Creates or validates a single tag object: ensures it has a text property, clones it, assigns validation classes via createClasses, and returns the enriched tag."
+      },
+      {
+        "name": "createTags",
+        "responsibility": "Processes an array of tags or strings through createTag to produce an array of fully validated tag objects."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "validateUserRules(tag, validation)",
+        "description": "Filter the validation array to find rules the tag fails and returns their associated CSS classes.",
+        "parameters": [
+          {
+            "name": "tag",
+            "type": "Object",
+            "description": "The tag object with at least a text property."
+          },
+          {
+            "name": "validation",
+            "type": "Array",
+            "description": "Array of validation rule objects: { rule: string|RegExp|Function, classes: string }"
+          }
+        ],
+        "returns": "Array<string>"
+      },
+      {
+        "name": "clone(node)",
+        "description": "Deep-clones the input node or value using JSON.stringify/parse.",
+        "parameters": [
+          {
+            "name": "node",
+            "type": "any",
+            "description": "The value or object to clone."
+          }
+        ],
+        "returns": "any"
+      },
+      {
+        "name": "findIndex(arr, callback)",
+        "description": "Custom implementation of Array.findIndex.",
+        "parameters": [
+          {
+            "name": "arr",
+            "type": "Array",
+            "description": "Array to search."
+          },
+          {
+            "name": "callback",
+            "type": "Function",
+            "description": "Predicate function invoked with (element, index, array)."
+          }
+        ],
+        "returns": "number"
+      },
+      {
+        "name": "createClasses(tag, tags, validation = [], customDuplicateFn)",
+        "description": "Generate an array of CSS classes for a tag by combining validation results and duplicate detection logic.",
+        "parameters": [
+          {
+            "name": "tag",
+            "type": "Object|string",
+            "description": "Tag object or string to validate."
+          },
+          {
+            "name": "tags",
+            "type": "Array",
+            "description": "Array of existing tags."
+          },
+          {
+            "name": "validation",
+            "type": "Array",
+            "description": "(Optional) Array of validation rule objects."
+          },
+          {
+            "name": "customDuplicateFn",
+            "type": "Function",
+            "description": "(Optional) Custom function to detect duplicates."
+          }
+        ],
+        "returns": "Array<string>"
+      },
+      {
+        "name": "createTag(tag, tags, validation?, customDuplicateFn?)",
+        "description": "Ensure a tag object, clone it, assign validation/duplicate classes, and return the enriched tag.",
+        "parameters": [
+          {
+            "name": "tag",
+            "type": "Object|string",
+            "description": "Tag object or string."
+          },
+          {
+            "name": "tags",
+            "type": "Array",
+            "description": "Array of tags for context."
+          },
+          {
+            "name": "validation",
+            "type": "Array",
+            "description": "(Optional) Validation rules array."
+          },
+          {
+            "name": "customDuplicateFn",
+            "type": "Function",
+            "description": "(Optional) Custom duplicate detection function."
+          }
+        ],
+        "returns": "Object"
+      },
+      {
+        "name": "createTags(tags, validation?, customDuplicateFn?)",
+        "description": "Map over an array of tags or strings to produce validated tag objects with CSS classes.",
+        "parameters": [
+          {
+            "name": "tags",
+            "type": "Array",
+            "description": "Array of tag objects or strings."
+          },
+          {
+            "name": "validation",
+            "type": "Array",
+            "description": "(Optional) Validation rules array."
+          },
+          {
+            "name": "customDuplicateFn",
+            "type": "Function",
+            "description": "(Optional) Custom duplicate detection function."
+          }
+        ],
+        "returns": "Array<Object>"
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Import the specific helper you need, e.g.: import { createTags } from 'components/FieldTags/create-tags'; then invoke createTags(listOfStrings, validationRules) to get an array of validated tag objects.",
+    "Importance": 4,
+    "Notes": [
+      "Uses JSON-based deep cloning which may not support functions or special object types.",
+      "By default, duplicate detection is a simple text match but can be overridden via customDuplicateFn.",
+      "validateUserRules converts string rules to RegExp at runtime; inefficient for very large rule sets.",
+      "findIndex is a lightweight polyfill to support environments without Array.findIndex."
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/events/components/sections/HeroEvent.vue",
+  "relativePath": "modules/events/components/sections/HeroEvent.vue",
+  "type": "source",
+  "name": "HeroEvent.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 component that renders an event hero section with a full-screen background image or video, an overlay gradient, and logic to auto-play/pause the video.",
+    "Purpose": "Provide a reusable hero/banner section for events, displaying either a cover image or looping background video based on provided props.",
+    "Components": [
+      {
+        "name": "HeroEvent",
+        "description": "Root Vue component wrapping a <section> that shows an image or video background, overlay layers, and container for title/text (empty in this snippet)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "checkAndPlayVideo",
+        "description": "Attaches event handlers to the video element to track play/pause state.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "getVideoType",
+        "description": "Determines the MIME type for the video source based on its file extension.",
+        "params": [
+          {
+            "name": "videoUrl",
+            "type": "string",
+            "description": "URL of the video file"
+          }
+        ],
+        "returns": "string (e.g. 'video/mp4' or 'video/webm')"
+      },
+      {
+        "name": "playVid",
+        "description": "Attempts to play the video if it is paused and not already playing.",
+        "params": [],
+        "returns": "Promise<void> | undefined"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "vue-i18n (useI18n)"
+    ],
+    "Usage": "Import HeroEvent.vue into parent pages or layout components. Pass in a `content` prop with `cover` or `video` URL and an `options` prop containing at least a `date` field.",
+    "Importance": 3,
+    "Notes": [
+      "Uses `<script setup>` syntax and `scoped` SCSS for styling.",
+      "Computes `timeDifference` from `options.date` and current time, but it's not used in this snippet.",
+      "Imports `useI18n` but does not use it; could be leftover or for future localization.",
+      "The `playsinlineclass playsinline` attribute on <video> looks like a typo and may require correction.",
+      "Overlay gradient class `.bg-white-overlay` provides a fade from opaque white to transparent."
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/orders/components/partials/ShopCart.vue",
+  "relativePath": "modules/orders/components/partials/ShopCart.vue",
+  "type": "source",
+  "name": "ShopCart.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Этот файл реализует выезжающую сбоку панель «Корзина» с перечнем товаров, возможностью управления количеством/удаления, отображением итоговой суммы и кнопкой быстрого оформления заказа.",
+    "Purpose": "Обеспечить интерфейс просмотра и управления корзиной заказов в клиентском приложении на Vue, включая локализацию, реактивное отображение контента и навигацию к форме оформления.",
+    "Components": [
+      {
+        "name": "CardOrderItem",
+        "role": "Отображает одну позицию из корзины с кнопками увеличения/уменьшения количества, удаления и возможностью обновления дат аренды."
+      },
+      {
+        "name": "PriceTotal",
+        "role": "Рассчитывает и показывает итоговую стоимость заказа с учётом сборов и НДС, форматирует валюту."
+      },
+      {
+        "name": "IconCross",
+        "role": "Иконка-кнопка «закрыть» для переключения состояния видимости корзины."
+      },
+      {
+        "name": "transition / teleport",
+        "role": "Обеспечивает анимацию затемнения фона и перенос оверлея на корневой элемент приложения."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openOrder",
+        "description": "Переадресовывает пользователя на страницу оформления заказа или входа в систему (если неавторизован) и закрывает панель корзины.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, onMounted)",
+      "vue-router (useRouter, useRoute)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/modules/orders/components/blocks/CardOrderItem.vue",
+      "@martyrs/src/modules/orders/components/elements/PriceTotal.vue",
+      "@martyrs/src/modules/icons/navigation/IconCross.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/orders/store/shopcart.js"
+    ],
+    "Usage": "Подключается в шаблонах или основном лэйауте приложения как дочерний компонент, управляется через store-модуль shopcart и переключается по клику на иконку корзины. При активации рендерится через <teleport> в корневой контейнер (#app-wrapper).",
+    "Importance": 4,
+    "Notes": [
+      "Локализация текста вынесена в объект text и подключена через useI18n.",
+      "Состояние корзины и все мутации осуществляются через store-модуль shopcart.js.",
+      "Есть отзывчивый SCSS-код: на узких экранах ширина панели становится 100%, а эффект выезда плавно адаптируется.",
+      "Закомментирован блок router.beforeEach — может быть восстановлен для автоматического закрытия корзины при смене маршрута."
+    ]
+  }
+}

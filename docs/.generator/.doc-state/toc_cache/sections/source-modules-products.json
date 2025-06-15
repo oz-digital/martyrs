@@ -1,0 +1,169 @@
+{
+  "section": {
+    "id": "source-modules-products",
+    "title": "Проект: Модули / Продукты",
+    "description": "Модуль управления продуктами, категориями, остатками и связанными сущностями. Включает модели, контроллеры, схемы, роутеры и вспомогательные файлы для работы с продуктами.",
+    "subsections": [
+      {
+        "id": "models",
+        "title": "Модели",
+        "description": "Определяют структуры данных для продуктов, категорий, остатков и вариантов. Включают Mongoose-модели и схемы.",
+        "files": [
+          "models/product.model.js",
+          "models/category.model.js",
+          "models/leftover.model.js",
+          "models/variant.model.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Обрабатывают бизнес-логику для продуктов, категорий и остатков.",
+        "files": [
+          "controllers/products.controller.js",
+          "controllers/categories.controller.js",
+          "controllers/leftovers.controller.js"
+        ]
+      },
+      {
+        "id": "schemas",
+        "title": "Схемы",
+        "description": "Определяют дополнительные структуры данных, такие как скидки и ингредиенты.",
+        "files": [
+          "schemas/discount.schema.js",
+          "schemas/ingredient.schema.js"
+        ]
+      },
+      {
+        "id": "middlewares",
+        "title": "Промежуточные обработчики",
+        "description": "Валидация и загрузка ресурсов для категорий.",
+        "files": [
+          "middlewares/categories.verifier.js"
+        ]
+      },
+      {
+        "id": "configs-queries",
+        "title": "Конфигурации и запросы",
+        "description": "Файлы конфигурации и запросов для работы с продуктами.",
+        "files": [
+          "configs/products.lookup.config.js",
+          "queries/products.queries.js"
+        ]
+      },
+      {
+        "id": "router",
+        "title": "Маршрутизаторы",
+        "description": "Файлы маршрутизаторов Express для обработки HTTP-запросов, связанных с продуктами и остатками.",
+        "files": [
+          "router/leftovers.router.js",
+          "router/products.router.js"
+        ]
+      },
+      {
+        "id": "client-server",
+        "title": "Клиент и сервер",
+        "description": "Файлы для клиентской и серверной логики, связанные с продуктами.",
+        "files": [
+          "products/products.client.js",
+          "products/products.server.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Определения серверных маршрутов для категорий, остатков и продуктов.",
+        "files": [
+          "routes/categories.routes.js",
+          "routes/leftovers.routes.js",
+          "routes/products.routes.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилища данных",
+        "description": "Модули для работы с данными категорий, остатков и продуктов.",
+        "files": [
+          "store/categories.js",
+          "store/leftovers.js",
+          "store/products.js"
+        ]
+      },
+      {
+        "id": "blocks",
+        "title": "UI-компоненты",
+        "description": "Vue-компоненты для отображения карточек товаров, категорий, остатков, а также блоков скидок, изображений и вариантов продуктов.",
+        "files": [
+          "blocks/CardCategory.vue",
+          "blocks/CardLeftover.vue",
+          "blocks/CardPosition.vue",
+          "blocks/CardProduct.vue",
+          "blocks/ProductDiscounts.vue",
+          "blocks/ProductImages.vue",
+          "blocks/ProductVariants.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "024661e1e55039671a427ca101d85536",
+    "0ce4dcbaa091205e726dc2addb5ebf02",
+    "0e6857c3c4fe193860f7d61ec8c49bf6",
+    "0f66d9cac20443117a4a8e3dd9b719d1",
+    "122fb4114a8ae8992135b159f91fb28f",
+    "1327e1d80b039cadb8dd6375618f59fe",
+    "17a605ca1856d032eb4a849cbe375058",
+    "1aabfac002762fad591ed900da9a06b1",
+    "1d2d7be4689d24c2a2cd6288daf49a7c",
+    "246e553fbc1df6ff6c4b0e45a57802b1",
+    "26bdfdc492a21d25b39fc3f3a1db86dd",
+    "2bc8bb9b9e7483182a33339e7b3bc56b",
+    "2c0a32f0d7c3c4734919bd1a4584042e",
+    "2c0cb82220d6776d8db69cf022e7f4fd",
+    "2efec18aa0c91fcd592ff0f94ad29526",
+    "330e309dc991cba800f73de9ed06b27e",
+    "34128bd8c18aa2d947a4aaf0e369b5ba",
+    "3b224f070a5e69948645af3ba5a722a7",
+    "41c37fc8190a49bbe3a850c2c50e9c6d",
+    "48211ba9aacc273010f28f118a3dcd01",
+    "512d1dd0d3407d90cbc1e3f2bb26fd2b",
+    "55c3a05a095a24256dd6dbf13ca39129",
+    "6c08827e5ddba762785c2e72a435f0bd",
+    "6d3cb21535f3b2233e4c1adac476877f",
+    "76dfd28526f2a4cdc87ba546d83ba1d4",
+    "7a581047620a338ed26e5ba0f7286bc4",
+    "7c47d497b0b42625ac390af95d2767a3",
+    "7d3fa4e7dae0d91ad5c7da929b50ccce",
+    "7e95b3fa8f77b46ea9e232000414ac38",
+    "88759ef7308f4bbdebbefeb80b7a79f8",
+    "98ce1fe3598b9353b5b6e0a80a2ae664",
+    "9ade7cb941c4d03f20914fa2c81762bf",
+    "9b2b9532e74484373c05e28f3a3b87fc",
+    "9eec83f70a10277cc63908295294bb84",
+    "a0fe22c4ea7caabaf773d2ce289a56cb",
+    "a2140ba1a77ce94fcfb4801ad839c722",
+    "ab68db34f7683be4a457e0d9fc92d3bf",
+    "ab99f89463772cdca6df746772a64c91",
+    "aeb155678cec87d3a34a1c24d5ddc028",
+    "b448d30ee93f1a34ebc0002a115dbf45",
+    "b7e0417eaffda879891667342b2738d3",
+    "bc32a06c146fa096ddd72892cd2cb3e9",
+    "bee144c9773e07e52ea9cdb909211553",
+    "bf668829ac8a0ba60c31b7e51b224793",
+    "c10e6ac365b968d9831cfd6a76c7f09f",
+    "c2b0f24f58958af3d987bd046b51a35b",
+    "cb4785cd4c35cdb6c4c04cc0129bc6e7",
+    "d0ea9aca54574e142ebd71b40cb804dc",
+    "d425a225e981a639acb2ade0d88d77e2",
+    "db874482779637b06f947f5917a04026",
+    "ded905b9c16739809b33ccf3f92ef844",
+    "e879cd5cb48dc4132a1b9c5a96821bca",
+    "e8e57a1c55c2104750bf8bc9e84ae577",
+    "ed1b571a501e9ca885cf35515f253f43",
+    "f46e1a70c408356c5e05c2b45358eaef",
+    "fa4362d4fa08c25ab05cdb533767e69c",
+    "fb743a918a0a6fba4e720b17c1c41617"
+  ],
+  "groupHash": "d805ff76acfbb912e08318835d68646b",
+  "generated": "2025-06-05T09:23:11.091Z"
+}

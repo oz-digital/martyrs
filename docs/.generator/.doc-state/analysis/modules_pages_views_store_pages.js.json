@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/pages/views/store/pages.js",
+  "relativePath": "modules/pages/views/store/pages.js",
+  "type": "source",
+  "name": "pages.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет Vue-подобный стор-модуль для работы с страницами (pages). Он содержит реактивное состояние, CRUD-операции (create, read, update, delete) через HTTP-запросы и механизм истории изменений состояния.",
+    "Purpose": "Обеспечить централизованное управление данными страниц в приложении: хранить список страниц и текущую страницу, выполнять запросы к бэкенду и обрабатывать ошибки.",
+    "Components": [
+      {
+        "name": "state",
+        "role": "Реактивный объект Vue, содержащий свойства all (массив всех страниц) и current (текущая страница с полями name, localization, groups, url, content)."
+      },
+      {
+        "name": "actions",
+        "role": "Набор асинхронных методов для взаимодействия с API: create, read, update, delete."
+      },
+      {
+        "name": "history",
+        "role": "Массив для хранения снимков state. Слежение за изменениями state с помощью watch и накопление снимков."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "create",
+        "purpose": "Создать новую страницу на сервере.",
+        "params": [
+          "page – объект с данными страницы"
+        ]
+      },
+      {
+        "name": "read",
+        "purpose": "Получить список страниц или фильтрованный набор.",
+        "params": [
+          "options – объект с критериями выборки (по умолчанию {} )"
+        ]
+      },
+      {
+        "name": "update",
+        "purpose": "Обновить данные существующей страницы на сервере и сохранить результат в state.current.",
+        "params": [
+          "page – объект с обновлёнными данными страницы"
+        ]
+      },
+      {
+        "name": "delete",
+        "purpose": "Удалить страницу на сервере и убрать её из state.all.",
+        "params": [
+          "page – идентификатор или объект страницы (используется в теле запроса и для поиска в state.all)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)",
+      "vue (reactive, watch)",
+      "@martyrs/src/modules/globals/views/utils/axios-instance.js ($axios)"
+    ],
+    "Usage": "Импортируется в точке инициализации стора или в компонентах: import { state, actions } from 'modules/pages/views/store/pages.js'; Затем actions вызывают методы CRUD, а state подписывается на изменения.",
+    "Importance": 4,
+    "Notes": "1. После read и create элементы не добавляются автоматически в state.all – методы возвращают данные без прямого обновления массива all. 2. В delete для поиска элемента сравнивается p._id с переданным параметром page – может потребоваться уточнение, что передаётся именно идентификатор. 3. Массив history накапливает все снимки state, что может привести к росту памяти при частых изменениях."
+  }
+}

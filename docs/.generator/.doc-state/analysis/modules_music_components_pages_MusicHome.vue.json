@@ -1,0 +1,106 @@
+{
+  "path": "../../src/modules/music/components/pages/MusicHome.vue",
+  "relativePath": "modules/music/components/pages/MusicHome.vue",
+  "type": "source",
+  "name": "MusicHome.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "MusicHome.vue defines the landing page for the music section of the application. It renders a hero banner and four content sections: featured playlists, new releases, popular tracks, and top artists. Each section uses a Feed component to fetch and display data, rendering cards or lists via scoped slots.",
+    "purpose": "Serve as the main music home page, orchestrating data fetching and presentation of key music entities (playlists, albums, tracks, artists) via reusable components.",
+    "components": [
+      {
+        "name": "Feed",
+        "responsibility": "Generic data-fetching and display wrapper. Accepts items via v-model, shows loading/skeleton UI, and provides a scoped slot for rendering."
+      },
+      {
+        "name": "PlaylistCard",
+        "responsibility": "Displays a single playlist item with cover art and title."
+      },
+      {
+        "name": "AlbumCard",
+        "responsibility": "Displays a single album item with cover art and title."
+      },
+      {
+        "name": "TrackList",
+        "responsibility": "Renders a list of tracks, optionally showing album info and cover art."
+      },
+      {
+        "name": "ArtistCard",
+        "responsibility": "Displays a single artist item with avatar and name."
+      }
+    ],
+    "functions": [
+      {
+        "name": "computed properties",
+        "items": [
+          {
+            "name": "featuredPlaylists",
+            "purpose": "Reactive getter for playlistsState.featuredPlaylists",
+            "params": []
+          },
+          {
+            "name": "recentAlbums",
+            "purpose": "Reactive getter for albumsState.albums",
+            "params": []
+          },
+          {
+            "name": "popularTracks",
+            "purpose": "Reactive getter for tracksState.popular",
+            "params": []
+          },
+          {
+            "name": "topArtists",
+            "purpose": "Reactive getter for artistsState.topArtists",
+            "params": []
+          },
+          {
+            "name": "loadingFeatured",
+            "purpose": "Reactive getter for playlistsState.loadingFeatured",
+            "params": []
+          },
+          {
+            "name": "loadingRecentAlbums",
+            "purpose": "Reactive getter for albumsState.isLoading",
+            "params": []
+          },
+          {
+            "name": "loadingPopularTracks",
+            "purpose": "Reactive getter for tracksState.loadingPopular",
+            "params": []
+          },
+          {
+            "name": "loadingTopArtists",
+            "purpose": "Reactive getter for artistsState.loadingTopArtists",
+            "params": []
+          }
+        ]
+      },
+      {
+        "name": "onMounted hook",
+        "purpose": "Fetch initial data for featured playlists, recent albums, popular tracks, and top artists when component mounts.",
+        "params": []
+      }
+    ],
+    "dependencies": [
+      "vue (ref, onMounted, computed)",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "../cards/PlaylistCard.vue",
+      "../cards/AlbumCard.vue",
+      "../cards/ArtistCard.vue",
+      "../lists/TrackList.vue",
+      "../../store/playlists.js",
+      "../../store/albums.js",
+      "../../store/tracks.js",
+      "../../store/artists.js",
+      "vue-router (router-link)"
+    ],
+    "usage": "Registered as the view component for the '/music' route in the router configuration. Imported by the application's music module routing file to render the music home page.",
+    "importance": 4,
+    "notes": [
+      "Uses scoped slots in Feed to customize rendering per section.",
+      "Skeleton structures differ per content type (horizontal vs. vertical layouts).",
+      "Styling relies on utility classes (e.g., 'mn-b-medium', 'flex-between').",
+      "Scoped style defines a dark gradient background for the hero section."
+    ]
+  }
+}

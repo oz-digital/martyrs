@@ -1,0 +1,79 @@
+{
+  "path": "../../src/modules/auth/views/store/twofa.js",
+  "relativePath": "modules/auth/views/store/twofa.js",
+  "type": "source",
+  "name": "twofa.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует реактивный стор для двухфакторной аутентификации: хранит состояние кода, отправляет запрос на получение кода и отслеживает изменения состояния.",
+    "Purpose": "Обеспечить логику отправки и хранения одноразового кода (2FA) для подтверждения действий (вход, сброс пароля) в модуле авторизации.",
+    "Components": [
+      {
+        "name": "state",
+        "type": "reactive объект",
+        "responsibility": "Хранит данные текущего одноразового кода: значение, тип, метод отправки, флаги отправки и валидации."
+      },
+      {
+        "name": "history",
+        "type": "массив",
+        "responsibility": "Локальный журнал изменений состояния (не экспортируется)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "sendCode",
+        "params": [
+          {
+            "name": "user",
+            "type": "Object",
+            "description": "Объект пользователя с полями phone и email."
+          },
+          {
+            "name": "method",
+            "type": "String",
+            "description": "Метод отправки кода ('login' или 'reset-password')."
+          },
+          {
+            "name": "type",
+            "type": "String",
+            "description": "Тип кода (например, 'sms' или 'email')."
+          }
+        ],
+        "description": "Отправляет POST-запрос на соответствующий API-эндпоинт, обновляет state.code и устанавливает флаг isSended."
+      },
+      {
+        "name": "validCode",
+        "params": [],
+        "description": "Сравнивает введённый пользователем код с тем, что хранится в состоянии. Устанавливает state.status.signup.code.isValid или вызывает setError при несоответствии."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "reactive",
+          "watch"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/store/globals.js",
+        "imports": [
+          "setError"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/globals/views/utils/axios-instance.js",
+        "imports": [
+          "$axios"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в компонентах или других стор-модулях авторизации: import { sendCode, state } from 'modules/auth/views/store/twofa.js'. Вызывается для отправки кода и подписки на реактивное состояние.",
+    "Importance": 3,
+    "Notes": [
+      "Функция validCode ссылается на свойства state.status.signup и state.user, которые не определены в текущем state — потенциальный баг.",
+      "Массив history накапливает все снимки состояния и не очищается, что может привести к утечке памяти.",
+      "sendCode обрабатывает два разных эндпоинта в зависимости от метода: '/api/twofa/sendcode' и '/api/twofa/sendcodereset'."
+    ]
+  }
+}

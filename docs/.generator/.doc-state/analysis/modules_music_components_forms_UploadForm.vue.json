@@ -1,0 +1,93 @@
+{
+  "path": "../../src/modules/music/components/forms/UploadForm.vue",
+  "relativePath": "modules/music/components/forms/UploadForm.vue",
+  "type": "source",
+  "name": "UploadForm.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 component that renders and manages a form for uploading music tracks, including metadata (title, artist, album, genre, release date, explicit flag, privacy), cover image, audio file, and lyrics.",
+    "Purpose": "Collect user input for a new music track, handle file uploads (cover image and audio), validate and submit the data via the application store, then emit an event when the upload completes.",
+    "Components": [
+      {
+        "name": "Field",
+        "responsibilities": "Reusable input component (text, date, textarea) with built-in validation support via v-model:field"
+      },
+      {
+        "name": "Select",
+        "responsibilities": "Dropdown selector for single or multi-choice fields with v-model:select binding"
+      },
+      {
+        "name": "Radio",
+        "responsibilities": "Single-choice radio button with v-model:radio binding"
+      },
+      {
+        "name": "Checkbox",
+        "responsibilities": "Boolean toggle with v-model:checkbox binding"
+      },
+      {
+        "name": "Button",
+        "responsibilities": "Configurable button that can show loader and success states; used for reset and submit actions"
+      },
+      {
+        "name": "Upload",
+        "responsibilities": "Generic file uploader for audio files; uses v-model:field and emits file-change events"
+      },
+      {
+        "name": "UploadImage",
+        "responsibilities": "Image uploader specialized for cover art; uses v-model:photo to bind the uploaded image URL"
+      },
+      {
+        "name": "Media",
+        "responsibilities": "Displays media content (image) from a URL"
+      },
+      {
+        "name": "IconMusic",
+        "responsibilities": "Placeholder music icon when no cover image is present"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "submitForm",
+        "description": "Asynchronously validates and submits the track form data to the backend via the tracks store action. On success, emits an 'uploaded' event and resets the form. Logs detailed debug information on failure.",
+        "parameters": []
+      },
+      {
+        "name": "resetForm",
+        "description": "Clears all form fields to their initial default values and resets validation errors.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted callback",
+        "description": "Lifecycle hook that fetches the current user’s artists and albums via store actions and populates the dropdown option lists.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, onMounted, defineEmits)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Radio/Radio.vue",
+      "@martyrs/src/components/Checkbox/Checkbox.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Upload/Upload.vue",
+      "@martyrs/src/components/UploadImage/UploadImage.vue",
+      "@martyrs/src/components/Media/Media.vue",
+      "@martyrs/src/modules/icons/entities/IconMusic.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js (authState)",
+      "../../store/tracks.js (tracksActions)",
+      "../../store/artists.js (artistsState, artistsActions)",
+      "../../store/albums.js (albumsState, albumsActions)",
+      "process.env.API_URL (environment variable)"
+    ],
+    "Usage": "Imported into a parent view or route component as `<UploadForm />`. It listens for the 'uploaded' custom event to react after a successful track upload.",
+    "Importance": 3,
+    "Notes": [
+      "The `<form>` tag is commented out; submission is handled via Button :submit prop.",
+      "Validation logic is present but commented out; you can enable it by uncommenting and customizing.",
+      "Genre options are defined statically; artist and album options are fetched dynamically on mount.",
+      "The component emits an 'uploaded' event with the created track payload.",
+      "Error handling logs HTTP status, message, and stack trace for debugging.",
+      "Reset behavior preserves default values for `releaseDate`, `isPublic`, and `isExplicit`."
+    ]
+  }
+}

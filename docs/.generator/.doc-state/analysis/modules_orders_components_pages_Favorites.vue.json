@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/orders/components/pages/Favorites.vue",
+  "relativePath": "modules/orders/components/pages/Favorites.vue",
+  "type": "source",
+  "name": "Favorites.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент отображает список избранных товаров пользователя в виде сетки. Если массив пуст, показывается сообщение-подсказка добавить товары в избранное.",
+    "Purpose": "Выступает как страница «Избранное» в модуле заказов: принимает массив favorites и визуализирует его через карточки продуктов.",
+    "Components": [
+      {
+        "name": "Favorites",
+        "role": "Vue-компонент страницы, принимает проп favorites и рендерит UI"
+      },
+      {
+        "name": "CardProduct",
+        "role": "Отображение одной карточки товара. Принимает проп product и показывает данные о товаре"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Определяет входные пропы компонента (favorites: Array)",
+        "params": [
+          {
+            "name": "{ favorites: Array }",
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "name": "toRefs",
+        "purpose": "Преобразует проп favorites в реактивную ссылку для удобства деструктуризации",
+        "params": [
+          {
+            "name": "props",
+            "type": "object"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, toRefs)",
+      "@/components/blocks/CardProduct.vue"
+    ],
+    "Usage": "Импортируется в маршруты или родительские компоненты модуля orders как страница favorites: import Favorites from '@/modules/orders/components/pages/Favorites.vue' и используется с передачей пропа :favorites.",
+    "Importance": 3,
+    "Notes": [
+      "В шаблоне есть проверка v-if=\"favorites\" и v-for одновременно; v-if на массив обычно не обязателен, достаточно проверять длину.",
+      "CSS содержит стили для .grid-item, но в шаблоне класс .grid-item не применяется.",
+      "Ключ :key=\"product\" может приводить к проблемам, если product не является примитивом (лучше использовать уникальный id).",
+      "Сетка зафиксирована на три колонки — при мобильной верстке может потребоваться адаптация."
+    ]
+  }
+}

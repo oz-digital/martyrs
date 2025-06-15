@@ -1,0 +1,104 @@
+{
+  "path": "../../src/modules/products/routes/products.routes.js",
+  "relativePath": "modules/products/routes/products.routes.js",
+  "type": "source",
+  "name": "products.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and registers all product-related HTTP endpoints (CRUD + recommendations) on an Express application instance.",
+    "Purpose": "Modularizes the product API routes so that they can be plugged into the main application with a single function call, wiring each route to its corresponding controller method.",
+    "Components": [
+      {
+        "name": "default export function",
+        "type": "Function",
+        "description": "Main initializer that accepts (app, db, allowedOrigins) and registers product routes on the Express `app`."
+      },
+      {
+        "name": "controller",
+        "type": "Object",
+        "description": "Returned by controllerFactory(db); exposes methods Create, Read, Update, Delete, getProductRecommendation."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "exportedRouteInitializer",
+        "params": [
+          "app",
+          "db",
+          "allowedOrigins"
+        ],
+        "description": "Invokes controllerFactory with the DB connection and registers each HTTP endpoint on the Express app."
+      },
+      {
+        "name": "controller.Create",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handler for POST /api/products/create – creates a new product."
+      },
+      {
+        "name": "controller.Read",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handler for GET /api/products/read – retrieves a list of products."
+      },
+      {
+        "name": "controller.Update",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handler for POST /api/products/:_id – updates an existing product by ID."
+      },
+      {
+        "name": "controller.Delete",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handler for DELETE /api/products/:_id – removes a product by ID."
+      },
+      {
+        "name": "controller.getProductRecommendation",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Handler for POST /api/product/recommended – returns recommended products based on input criteria."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../controllers/products.controller.js",
+        "importedAs": "controllerFactory",
+        "purpose": "Factory to create a product controller instance bound to the given DB."
+      },
+      {
+        "module": "Express app instance",
+        "injectedAs": "app",
+        "purpose": "Used to register HTTP routes (app.get, app.post, app.delete)."
+      },
+      {
+        "module": "Database connection",
+        "injectedAs": "db",
+        "purpose": "Passed into controllerFactory so that controller methods can perform DB operations."
+      }
+    ],
+    "Usage": "In the application bootstrap (e.g. app.js or index.js), import this module and invoke it: `import productsRoutes from './modules/products/routes/products.routes.js'; productsRoutes(app, db, allowedOrigins);`",
+    "Importance": 4,
+    "Notes": [
+      "The `allowedOrigins` parameter is accepted but not used inside this file—potentially for future CORS logic.",
+      "Uses POST for the update route instead of the more REST-conventional PUT/PATCH.",
+      "Endpoint pluralization is slightly inconsistent (e.g. `/api/products/...` vs `/api/product/recommended`).",
+      "Controller methods must adhere to Express middleware signature (req, res, next)."
+    ]
+  }
+}

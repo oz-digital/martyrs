@@ -1,0 +1,22 @@
+{
+  "path": "../../src/builder/templates/page.js",
+  "relativePath": "builder/templates/page.js",
+  "type": "source",
+  "name": "page.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует строковый HTML-шаблон с Mustache-подстановками для серверного рендеринга страницы: meta-теги, фавиконки, аналитика Facebook и Google, контейнеры для приложения и сериализованного состояния.",
+    "Purpose": "Определить базовую HTML-структуру страницы проекта (layout/template), которую затем наполняют динамическими данными при генерации страницы на сервере во фреймворке martyrs.",
+    "Components": [],
+    "Functions": [],
+    "Dependencies": [],
+    "Usage": "Импортируется как default-экспорт в модуле рендеринга страниц (например, builder/render или аналогичном), куда передают объект meta, appHtml, initialState, userState и другие параметры для финальной вставки в шаблон.",
+    "Importance": 5,
+    "Notes": [
+      "Шаблон использует синтаксис Mustache ({{{ }}} и условные секции {{#…}}{{/…}}).",
+      "Содержит блоки для Facebook Domain Verification, Facebook Pixel и Google Tag Manager — вставляются только при наличии соответствующих параметров.",
+      "Не содержит JavaScript-кода или логики — только статический template literal.",
+      "Ключевые вставки: meta.htmlAttrs, meta.headTags, meta.head, meta.bodyAttrs, appHtml, userState, initialState, body."
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "path": "../../src/modules/organizations/components/pages/OrganizationEdit.vue",
+  "relativePath": "modules/organizations/components/pages/OrganizationEdit.vue",
+  "type": "source",
+  "name": "OrganizationEdit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for creating and editing organization entities. It renders a multi-section form allowing users to set group type, upload a profile image, enter profile details (name, description, tags), contact information, and social media handles, then submit changes.",
+    "Purpose": "Provides the UI and logic to read, create, update, and delete organization records via the Martyrs store and integrate routing behaviors based on a route parameter _id.",
+    "Components": [
+      {
+        "name": "SelectMulti",
+        "responsibility": "Displays a single‐select dropdown for choosing the organization type ('public', 'exclusive', 'hidden')."
+      },
+      {
+        "name": "UploadImage",
+        "responsibility": "Handles image upload for the organization's profile photo."
+      },
+      {
+        "name": "Field",
+        "responsibility": "Renders text input fields bound to various organization properties (name, description, contacts, socials)."
+      },
+      {
+        "name": "BlockTags",
+        "responsibility": "Manages a list of tags for the organization profile."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Submits the form (save) and invokes callbacks for navigation."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted callback",
+        "description": "Runs on component mount; if an _id route parameter exists, fetches the corresponding organization record by dispatching organization.actions.read.",
+        "parameters": []
+      },
+      {
+        "name": "organizationData (computed)",
+        "description": "Reactive computed reference to organization.state.current.",
+        "parameters": []
+      },
+      {
+        "name": "onSubmit",
+        "description": "Handles form submission. If editing (route.params._id present), calls update; otherwise, calls create with the current user ID from auth state.",
+        "parameters": []
+      },
+      {
+        "name": "onDelete",
+        "description": "Deletes the organization if editing, then navigates to the main Organization listing.",
+        "parameters": []
+      },
+      {
+        "name": "redirectTo",
+        "description": "Redirects the router to the organization detail view after successful create/update.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (onMounted, computed)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/SelectMulti/SelectMulti.vue",
+      "@martyrs/src/components/UploadImage/UploadImage.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/FieldTags/BlockTags.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/organizations/store/memberships.js"
+    ],
+    "Usage": "This component is registered on an '/organizations/edit/:_id?' route. It's imported by the router configuration and rendered when creating or editing an organization. Other components or pages navigate to it via named routes ('Organization' or similar).",
+    "Importance": 4,
+    "Notes": [
+      "Imports Breadcrumbs, Tab, Select, Popup, and memberships store but does not use all of them in the template.",
+      "No <style> block is defined, so default/global styles apply.",
+      "Uses v-model shorthand syntax (v-model:photo, v-model:field).",
+      "Reset action clears previous organization data on each mount.",
+      "The Delete button is commented out in the template."
+    ]
+  }
+}

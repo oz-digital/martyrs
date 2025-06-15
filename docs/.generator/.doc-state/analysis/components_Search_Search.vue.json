@@ -1,0 +1,56 @@
+{
+  "path": "../../src/components/Search/Search.vue",
+  "relativePath": "components/Search/Search.vue",
+  "type": "source",
+  "name": "Search.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент Search.vue отображает результаты поиска товаров. Он загружает опубликованные продукты при монтировании, показывает индикатор загрузки и ошибки, фильтрует товары по введённой строке поиска и рендерит карточки продуктов.",
+    "Purpose": "Обеспечить интерфейс для отображения и фильтрации списка товаров на основе пользовательского запроса поиска.",
+    "Components": [
+      {
+        "name": "ProductCard",
+        "role": "Отображает отдельный товар в виде карточки"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "declOfNum",
+        "purpose": "Возвращает правильное слово в зависимости от числа (склонение)",
+        "params": [
+          "number (число)",
+          "words (массив строк)"
+        ]
+      },
+      {
+        "name": "fetchData",
+        "purpose": "Загружает список опубликованных товаров из Vuex, управляет состояниями loading, error и products",
+        "params": []
+      },
+      {
+        "name": "router.afterEach",
+        "purpose": "Хук роутера, который сбрасывает состояние поиска при навигации",
+        "params": [
+          "to",
+          "from",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (toRefs, ref, computed, onMounted)",
+      "vue-router (useRoute, useRouter)",
+      "vuex store (useStore)",
+      "@/components/blocks/ProductCard.vue"
+    ],
+    "Usage": "Обычно подключается в качестве view-компонента для маршрута поиска (например, в router/index.js как компонент для пути \"/search\").",
+    "Importance": 3,
+    "Notes": [
+      "Используется computed-свойство search для доступа к store.state.products.search",
+      "searchResult фильтрует store.state.products.all локально по текущей строке поиска",
+      "Есть пропущенный импорт useStore (в коде не показан)",
+      "router.afterEach без проверки текущего маршрута срабатывает на каждую навигацию",
+      "Стили ограничены обёрткой .search-wrapper и написаны на SCSS"
+    ]
+  }
+}

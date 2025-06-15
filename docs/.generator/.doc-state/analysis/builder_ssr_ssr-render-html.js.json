@@ -1,0 +1,62 @@
+{
+  "path": "../../src/builder/ssr/ssr-render-html.js",
+  "relativePath": "builder/ssr/ssr-render-html.js",
+  "type": "source",
+  "name": "ssr-render-html.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл отвечает за генерацию HTML-контента на стороне сервера с помощью шаблонизатора Mustache и динамических данных (включая переменные окружения).",
+    "Purpose": "Обеспечить единый механизм рендеринга итоговой HTML-страницы (SSR) с возможностью «горячего» обновления шаблона.",
+    "Components": [
+      {
+        "name": "renderHtml",
+        "type": "function",
+        "responsibility": "Принимает данные, дополняет их переменными окружения и рендерит HTML через Mustache."
+      },
+      {
+        "name": "createHtmlRenderer",
+        "type": "function",
+        "responsibility": "Создаёт функцию-рендерер с периодическим вызовом callback’а при обновлении шаблона и сам рендерит HTML аналогично renderHtml."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "renderHtml",
+        "description": "Асинхронно рендерит HTML-строку по переданным данным и шаблону.",
+        "parameters": [
+          {
+            "name": "stuff",
+            "type": "object",
+            "description": "Входные данные для шаблона."
+          }
+        ],
+        "returns": "Promise<string> — сгенерированный HTML."
+      },
+      {
+        "name": "createHtmlRenderer",
+        "description": "Возвращает функцию-рендерер и запускает таймер для оповещения об обновлении шаблона.",
+        "parameters": [
+          {
+            "name": "onTemplateUpdate",
+            "type": "function?",
+            "description": "Опциональный callback, вызываемый каждую секунду для обработки обновления шаблона."
+          }
+        ],
+        "returns": "function(stuff): Promise<string> — рендер-функция аналогична renderHtml."
+      }
+    ],
+    "Dependencies": [
+      "mustache (npm)",
+      "../templates/page.js (локальный ES-модуль)",
+      "process.env (переменные окружения)"
+    ],
+    "Usage": "Импортировать либо именованные функции { renderHtml, createHtmlRenderer }, либо default-объект. В коде SSR вызывать renderHtml(data) или создавать рендерер через createHtmlRenderer и использовать его.",
+    "Importance": 4,
+    "Notes": [
+      "Использует Mustache для шаблонизации.",
+      "Подтягивает из process.env ключи Google Tag, Facebook Pixel, Facebook Domain Verification и Google Maps API Key.",
+      "createHtmlRenderer запускает setInterval без clearInterval — возможный «утечка» таймера, если не планируется долгоживущий процесс.",
+      "ES-модульная система автоматически сбрасывает кеш при изменении шаблона, вручную не производится delete require.cache."
+    ]
+  }
+}

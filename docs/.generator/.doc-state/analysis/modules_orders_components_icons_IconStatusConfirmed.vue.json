@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/orders/components/icons/IconStatusConfirmed.vue",
+  "relativePath": "modules/orders/components/icons/IconStatusConfirmed.vue",
+  "type": "source",
+  "name": "IconStatusConfirmed.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a ‘status confirmed’ SVG icon and exposes a customizable fill color via a prop.",
+    "Purpose": "Provides a reusable, configurable icon for indicating a ‘confirmed’ status in the orders module.",
+    "Components": [
+      {
+        "name": "IconStatusConfirmed",
+        "type": "Vue component",
+        "responsibility": "Renders the SVG markup and applies a fill color based on the `fill` prop."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "location": "script setup",
+        "purpose": "Declares component props and default values.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color value applied to the SVG `fill` attribute."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API: defineProps)",
+      "CSS custom property --black (for default fill color)"
+    ],
+    "Usage": "Import and register `<IconStatusConfirmed>` in parent components. Example:\n\n  import IconStatusConfirmed from '@/modules/orders/components/icons/IconStatusConfirmed.vue'\n\n  // in template\n  <IconStatusConfirmed fill=\"#28a745\" />",
+    "Importance": 2,
+    "Notes": [
+      "No `<style>` block – purely presentational SVG markup.",
+      "Uses Vue 3 `<script setup>` syntax for lean setup code.",
+      "Default fill pulls from a CSS variable, ensuring theme consistency."
+    ]
+  }
+}

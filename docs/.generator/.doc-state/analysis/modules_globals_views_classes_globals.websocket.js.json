@@ -1,0 +1,180 @@
+{
+  "path": "../../src/modules/globals/views/classes/globals.websocket.js",
+  "relativePath": "modules/globals/views/classes/globals.websocket.js",
+  "type": "source",
+  "name": "globals.websocket.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет класс GlobalWebSocket и экспортирует его единственный экземпляр. Класс реализует обёртку над WebSocket, включая автоматическое переподключение, периодический пинг, подписку на модули, централизованную систему событий и RPC-вызовы с таймаутами.",
+    "Purpose": "Обеспечить единый глобальный канал WebSocket для всего приложения: подключаться к серверу, поддерживать соединение, отправлять и принимать сообщения, обрабатывать RPC-вызовы, переподключаться при ошибках и рассылаать события подписчикам.",
+    "Components": [
+      {
+        "name": "GlobalWebSocket",
+        "type": "class",
+        "responsibilities": [
+          "Инициализация и конфигурирование URL, параметров переподключения и пинга",
+          "Управление соединением (connect, disconnect, переподключение)",
+          "Отправка произвольных сообщений и JSON-RPC запросов",
+          "Управление слушателями пользовательских событий",
+          "Подписка и отписка модулей (subscribe/unsubscribe)",
+          "Обработка входящих сообщений, ошибок, закрытия соединения"
+        ]
+      },
+      {
+        "name": "globalWebSocket",
+        "type": "instance",
+        "responsibilities": [
+          "Единственный экспортируемый объект для использования в приложении"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "purpose": "Инициализирует внутренние поля (socket, флаги, параметры переподключения и RPC)",
+        "parameters": []
+      },
+      {
+        "name": "initialize",
+        "purpose": "Настраивает опциональные параметры (URL, таймауты, интервалы)",
+        "parameters": [
+          "options.maxReconnectAttempts",
+          "options.reconnectDelay",
+          "options.wsUrl",
+          "options.pingInterval",
+          "options.rpcTimeout"
+        ]
+      },
+      {
+        "name": "_getDefaultWsUrl",
+        "purpose": "Формирует URL для WebSocket, основываясь на текущем протоколе и host",
+        "parameters": []
+      },
+      {
+        "name": "connect",
+        "purpose": "Устанавливает соединение с сервером, предотвращает множественные параллельные попытки, обрабатывает open/message/error/close",
+        "parameters": [
+          "userId"
+        ]
+      },
+      {
+        "name": "disconnect",
+        "purpose": "Закрывает соединение, очищает интервал пинга, сбрасывает слушатели и отменяет все активные RPC-вызовы",
+        "parameters": []
+      },
+      {
+        "name": "send",
+        "purpose": "Отправляет через socket строку или JSON-представление объекта, возвращает Promise успеха/неудачи",
+        "parameters": [
+          "data"
+        ]
+      },
+      {
+        "name": "rpc",
+        "purpose": "Выполняет JSON-RPC вызов на сервере с уникальным ID, отслеживанием таймаута и коллбэками",
+        "parameters": [
+          "module",
+          "method",
+          "params",
+          "options.timeout"
+        ]
+      },
+      {
+        "name": "addEventListener",
+        "purpose": "Регистрирует callback для указанного типа события WebSocket",
+        "parameters": [
+          "eventType",
+          "callback",
+          "options.module"
+        ]
+      },
+      {
+        "name": "removeEventListener",
+        "purpose": "Удаляет ранее зарегистрированный слушатель по ID",
+        "parameters": [
+          "eventType",
+          "listenerId"
+        ]
+      },
+      {
+        "name": "removeModuleListeners",
+        "purpose": "Удаляет все слушатели, связанные с указанным модулем",
+        "parameters": [
+          "moduleName"
+        ]
+      },
+      {
+        "name": "subscribeModule",
+        "purpose": "Отправляет запрос на подписку для указанного модуля и сохраняет его в локальном сете",
+        "parameters": [
+          "moduleName"
+        ]
+      },
+      {
+        "name": "unsubscribeModule",
+        "purpose": "Отправляет запрос на отписку для указанного модуля и удаляет его из сета",
+        "parameters": [
+          "moduleName"
+        ]
+      },
+      {
+        "name": "_resubscribeAllModules",
+        "purpose": "Автоматически переподписывает все ранее сохранённые модули (используется при переподключении)",
+        "parameters": []
+      },
+      {
+        "name": "_handleOpen",
+        "purpose": "Устанавливает флаг isConnected, сбрасывает счётчик переподключений, запускает пинг и уведомляет слушателей",
+        "parameters": []
+      },
+      {
+        "name": "_handleMessage",
+        "purpose": "Парсит входящие строки, обрабатывает ответы RPC и рассылает события зарегистрированным слушателям",
+        "parameters": [
+          "event"
+        ]
+      },
+      {
+        "name": "_handleError",
+        "purpose": "Логирует ошибку, уведомляет слушателей, отклоняет все активные RPC-вызовы",
+        "parameters": [
+          "error"
+        ]
+      },
+      {
+        "name": "_handleClose",
+        "purpose": "Очищает состояние соединения, уведомляет слушателей, пытается переподключиться при ненормальном закрытии",
+        "parameters": [
+          "event"
+        ]
+      },
+      {
+        "name": "_notifyListeners",
+        "purpose": "Итерирует и вызывает все коллбэки, зарегистрированные на данный тип события",
+        "parameters": [
+          "eventType",
+          "data"
+        ]
+      },
+      {
+        "name": "isSocketConnected",
+        "purpose": "Проверяет, открыт ли WebSocket",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "Глобальный объект WebSocket в браузере или нода-окружении (если определён)",
+      "window.location (для браузерного URL)",
+      "JSON (для сериализации/десериализации сообщений)"
+    ],
+    "Usage": "Импортируется как singleton: `import globalWebSocket from 'modules/globals/views/classes/globals.websocket.js'`. Вызывают `initialize` для настройки, `connect(userId)` для установки соединения и затем используют `rpc`, `send`, `addEventListener`, `subscribeModule` и др. методы из разных частей приложения.",
+    "Importance": 4,
+    "Notes": [
+      "Реализован автоматический пинг для удержания соединения живым.",
+      "JSON-RPC поддерживает отслеживание ответов по ID и таймауты.",
+      "При переподключении сохраняются подписки на модули и восстанавливаются.",
+      "Все слушатели структурированы по типу события и имеют уникальные ID.",
+      "При disconnect все незавершённые RPC-вызовы отклоняются с ошибкой."
+    ]
+  }
+}

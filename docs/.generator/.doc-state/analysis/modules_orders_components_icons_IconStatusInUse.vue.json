@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/orders/components/icons/IconStatusInUse.vue",
+  "relativePath": "modules/orders/components/icons/IconStatusInUse.vue",
+  "type": "source",
+  "name": "IconStatusInUse.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component rendering an SVG “in use” status icon with configurable fill color",
+    "Purpose": "Provide a reusable, customizable icon for order status within the application",
+    "Components": [
+      {
+        "name": "IconStatusInUse",
+        "role": "Functional Vue component that outputs an SVG icon"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare component props",
+        "parameters": [
+          {
+            "name": "fill",
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Color value for the SVG fill attribute"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, <script setup> syntax)"
+    ],
+    "Usage": "Imported and used in other Vue components, e.g. import IconStatusInUse from 'modules/orders/components/icons/IconStatusInUse.vue'; then <IconStatusInUse :fill=\"'#ff0000'\"/>",
+    "Importance": 2,
+    "Notes": [
+      "No local styles defined",
+      "Purely functional; no reactive state or methods beyond props",
+      "Relies on CSS variable --black for default color",
+      "SVG dimensions hardcoded to 18×17"
+    ]
+  }
+}

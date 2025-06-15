@@ -1,0 +1,59 @@
+{
+  "path": "../../src/modules/products/components/blocks/CardCategory.vue",
+  "relativePath": "modules/products/components/blocks/CardCategory.vue",
+  "type": "source",
+  "name": "CardCategory.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue SFC that renders a single product category card with its image, name, edit and delete actions. It optionally supports recursive rendering of sub-categories (commented out).",
+    "Purpose": "Serve as a reusable UI block for displaying a category in lists or grids, allowing users to navigate to an edit page or trigger deletion.",
+    "Components": [
+      {
+        "name": "CardCategory",
+        "role": "Self-recursive wrapper for rendering child categories (currently commented out)."
+      },
+      {
+        "name": "IconEdit",
+        "role": "Presents a pencil/edit icon inside the edit button/link."
+      },
+      {
+        "name": "IconAdd",
+        "role": "Imported but not used in this component (potential for future use)."
+      },
+      {
+        "name": "IconDelete",
+        "role": "Renders a trash/delete icon inside the delete button."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "deleteCategory",
+        "purpose": "Emit a 'delete' event upstream when user clicks the delete button.",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "Object",
+            "description": "The category object to delete."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps, defineEmits, onMounted, toRef)",
+      "vue-router (useRoute, useRouter, <router-link>)",
+      "FILE_SERVER_URL (global env var for image base URL)",
+      "./CardCategory.vue (self-import for recursion)",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/navigation/IconAdd.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue"
+    ],
+    "Usage": "Imported into parent components or pages (e.g. a category list) via `import CardCategory from './CardCategory.vue'` and used in templates with `<CardCategory :category=\"cat\" @delete=\"onDelete\" />` or inside a `v-for` loop.",
+    "Importance": 4,
+    "Notes": [
+      "The recursive rendering of child categories is present but commented out; if enabled, props and events must flow correctly for nested deletions.",
+      "The SCSS targets a `.card-title` wrapper that isn't present in the template—styles may not apply as intended.",
+      "IconAdd is imported but unused, indicating either a leftover or preparation for an 'add subcategory' feature.",
+      "Navigation to edit page uses route param `_id` from current route and `category.url` for the category identifier."
+    ]
+  }
+}

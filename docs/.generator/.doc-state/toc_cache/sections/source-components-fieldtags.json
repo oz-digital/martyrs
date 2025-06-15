@@ -1,0 +1,39 @@
+{
+  "section": {
+    "id": "source-components-fieldtags",
+    "title": "Проект: Компоненты / Field Tags",
+    "description": "Модуль FieldTags предоставляет компоненты и утилиты для работы с тегами в пользовательском интерфейсе. Включает визуальные компоненты, обработку свойств и стилизацию.",
+    "subsections": [
+      {
+        "id": "components",
+        "title": "Визуальные компоненты",
+        "description": "Основные Vue-компоненты для отображения и редактирования тегов: FieldTags.vue, BlockTags.vue, tag-input.vue."
+      },
+      {
+        "id": "props",
+        "title": "Свойства компонентов",
+        "description": "Файл vue-tags-input.props.js содержит описание свойств, используемых для настройки поведения компонентов тегов."
+      },
+      {
+        "id": "utils",
+        "title": "Утилиты для тегов",
+        "description": "Файл create-tags.js реализует вспомогательные функции для создания и обработки тегов."
+      },
+      {
+        "id": "styles",
+        "title": "Стилизация",
+        "description": "Файл vue-tags-input.scss содержит стили для визуального оформления компонентов тегов."
+      }
+    ]
+  },
+  "fileHashes": [
+    "1ab6939d68450a614b5fbee11f37aca8",
+    "43bd29fd9430900823bcc1f69cade712",
+    "44fd4b3adababe6ad40cc7c63b213cd6",
+    "5c1d4317299eedad6be8c4e9314e96f2",
+    "821fb1ab07655da65c12b7eb320ad6aa",
+    "b173854387e93e69d3dcda180d44ea65"
+  ],
+  "groupHash": "8ea6dad9a687f3945fbad936f5b6bb0f",
+  "generated": "2025-06-05T09:16:06.321Z"
+}

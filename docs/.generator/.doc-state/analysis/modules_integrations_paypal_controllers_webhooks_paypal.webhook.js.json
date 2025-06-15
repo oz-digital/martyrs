@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/integrations/paypal/controllers/webhooks/paypal.webhook.js",
+  "relativePath": "modules/integrations/paypal/controllers/webhooks/paypal.webhook.js",
+  "type": "source",
+  "name": "paypal.webhook.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a PayPal-specific webhook handler by extending a generic WebhookHandler base class and implementing logic for different PayPal event types.",
+    "Purpose": "To process incoming PayPal webhook HTTP requests, route them by event type, and send an acknowledgment response.",
+    "Components": [
+      {
+        "name": "PayPalWebhookHandler",
+        "type": "class",
+        "extends": "WebhookHandler",
+        "responsibility": "Override the generic handler to implement PayPal-specific event processing logic."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleWebhook",
+        "signature": "async handleWebhook(req, res)",
+        "description": "Entry point for incoming webhook calls. Extracts the `event_type` from the request body, logs based on the event, and returns a 200 response.",
+        "parameters": [
+          {
+            "name": "req",
+            "type": "object",
+            "description": "Express request object, expects a JSON body with an `event_type` field."
+          },
+          {
+            "name": "res",
+            "type": "object",
+            "description": "Express response object, used to send back HTTP status and payload."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "./webhookHandler.js",
+        "importedEntity": "WebhookHandler",
+        "purpose": "Base class providing a standard interface or shared logic for all webhook handlers."
+      }
+    ],
+    "Usage": "Imported (default export) into a router or controller setup. An instance is created and its `handleWebhook` method is registered as the Express route handler for PayPal webhook endpoints.",
+    "Importance": 3,
+    "Notes": [
+      "Currently only logs events; production code should include validation of the webhook signature and persistence or business logic.",
+      "Handles only two event types: PAYMENT.SALE.COMPLETED and PAYMENT.SALE.DENIED; all other events are logged as unhandled.",
+      "Relies on Express.js request/response conventions but does not import Express directly."
+    ]
+  }
+}

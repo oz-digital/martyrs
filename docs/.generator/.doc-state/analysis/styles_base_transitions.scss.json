@@ -1,0 +1,105 @@
+{
+  "path": "../../src/styles/base/transitions.scss",
+  "relativePath": "styles/base/transitions.scss",
+  "type": "source",
+  "name": "transitions.scss",
+  "extension": ".scss",
+  "analysis": {
+    "Summary": "Этот файл содержит набор утилитарных CSS-классов для управления переходами (transitions) в проекте: различные кривые ускорения (easing), предустановленные пресеты, а также классы для настройки длительности и задержки переходов.",
+    "Purpose": "Обеспечить единую и удобную возможность добавлять и комбинировать переходы и анимации через простые CSS-классы без повторного прописывания свойств transition в компонентах.",
+    "Components": [
+      {
+        "name": "Easing-классы (кубические кривые)",
+        "description": "Набор классов для задания кривых ускорения через cubic-bezier с фиксированной длительностью 0.33s.",
+        "classes": [
+          ".transition-sine-in",
+          ".transition-sine-out",
+          ".transition-sine-in-out",
+          ".transition-quad-in",
+          ".transition-quad-out",
+          ".transition-quad-in-out",
+          ".transition-cubic-in",
+          ".transition-cubic-out",
+          ".transition-cubic-in-out",
+          ".transition-quart-in",
+          ".transition-quart-out",
+          ".transition-quart-in-out",
+          ".transition-quint-in",
+          ".transition-quint-out",
+          ".transition-quint-in-out",
+          ".transition-expo-in",
+          ".transition-expo-out",
+          ".transition-expo-in-out",
+          ".transition-circ-in",
+          ".transition-circ-out",
+          ".transition-circ-in-out",
+          ".transition-back-in",
+          ".transition-back-out",
+          ".transition-back-in-out",
+          ".transition-elastic-in",
+          ".transition-elastic-out",
+          ".transition-elastic-in-out",
+          ".transition-bounce-in",
+          ".transition-bounce-out",
+          ".transition-bounce-in-out"
+        ]
+      },
+      {
+        "name": "Оригинальные пресеты",
+        "description": "Часто используемые переходы с разными предустановленными кривыми и длительностями.",
+        "classes": [
+          ".transition-linear",
+          ".transition-ease-in",
+          ".transition-ease-out",
+          ".transition-ease-in-out",
+          ".transition-staggered",
+          ".transition-bounce",
+          ".transition-elastic",
+          ".transition-spring",
+          ".transition-boomerang",
+          ".transition-slow-motion",
+          ".transition-zoom",
+          ".transition-fly-away",
+          ".transition-squeeze"
+        ]
+      },
+      {
+        "name": "Классы длительности (Timing)",
+        "description": "Утилитарные классы для быстрого изменения свойства transition-duration.",
+        "classes": [
+          ".transition-timing-1",
+          ".transition-timing-2",
+          ".transition-timing-3",
+          ".transition-timing-4",
+          ".transition-timing-5",
+          ".transition-timing-6",
+          ".transition-timing-7",
+          ".transition-timing-8"
+        ]
+      },
+      {
+        "name": "Классы задержки (Delay)",
+        "description": "Утилитарные классы для быстрого задания transition-delay.",
+        "classes": [
+          ".transition-delay-1",
+          ".transition-delay-2",
+          ".transition-delay-3",
+          ".transition-delay-4",
+          ".transition-delay-5",
+          ".transition-delay-6",
+          ".transition-delay-7",
+          ".transition-delay-8"
+        ]
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [],
+    "Usage": "Импортируется в главный SCSS или прямо подключается как часть базовых стилевых утилит. В разметке HTML к нужному элементу добавляется один или несколько классов (easing + timing + delay).",
+    "Importance": 3,
+    "Notes": [
+      "Все easing-классы по умолчанию используют transition: all 0.33s, кроме .transition-boomerang (0.66s), .transition-slow-motion (1.33s) и .transition-squeeze (0.3s + transform-origin:center).",
+      "Файл не содержит зависимостей на другие переменные или миксины и может подключаться автономно.",
+      "Класс .transition-squeeze задаёт transform-origin: center дополнительно к transition."
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "section": {
+    "id": "source-modules-core",
+    "title": "Проект: Модули / Ядро",
+    "description": "Модуль core содержит базовые классы и модели для управления событиями, модулями и данными. Используется как фундамент для расширения функциональности других модулей.",
+    "subsections": [
+      {
+        "id": "events",
+        "title": "События",
+        "description": "Классы для работы с событиями и их обработкой.",
+        "files": [
+          "classes/event.js"
+        ]
+      },
+      {
+        "id": "memory-management",
+        "title": "Управление памятью",
+        "description": "Инструменты для отслеживания и управления использованием памяти.",
+        "files": [
+          "classes/memory-tracker.js"
+        ]
+      },
+      {
+        "id": "modules-management",
+        "title": "Управление модулями",
+        "description": "Классы для создания и управления модулями.",
+        "files": [
+          "classes/module-manager.js",
+          "classes/module.js"
+        ]
+      },
+      {
+        "id": "data-models",
+        "title": "Модели данных",
+        "description": "Базовые классы моделей, схем и валидации данных.",
+        "files": [
+          "model/Model.js",
+          "model/Schema.js",
+          "model/Validation.js"
+        ]
+      },
+      {
+        "id": "adapters",
+        "title": "Адаптеры хранения данных",
+        "description": "Адаптеры для взаимодействия с различными хранилищами данных.",
+        "files": [
+          "model/Adapter.js",
+          "model/Adapter.mogodb.js",
+          "model/Adapter.postgre.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "4ea70cd631261d3dffad090bc41ab9ca",
+    "574cdddd5024f2e03b604f4df3782a31",
+    "968998978a097a6c62174dda08dbd01f",
+    "9afaf681a093b972ea133ac2f3cbc26f",
+    "b02f8c2446103b021b1bc6ce527fe0b0",
+    "b3c112f13679db3892e54f1604c9f37c",
+    "c9abd08d2802b7d4e06b757c568440c3",
+    "cebbc2f066a4159bb687e6e23f242692",
+    "dee69b00c1954c94046fa712b8620b7b",
+    "f704457f8f0f019977a7bf9bb562cbcf"
+  ],
+  "groupHash": "92f5d3465e33a1517b69715265c961c5",
+  "generated": "2025-06-05T09:18:40.605Z"
+}

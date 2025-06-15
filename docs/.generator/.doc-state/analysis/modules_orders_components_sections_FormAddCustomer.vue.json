@@ -1,0 +1,76 @@
+{
+  "path": "../../src/modules/orders/components/sections/FormAddCustomer.vue",
+  "relativePath": "modules/orders/components/sections/FormAddCustomer.vue",
+  "type": "source",
+  "name": "FormAddCustomer.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that provides a UI for searching or entering a customer (either existing user or visitor), filling in their details, and submitting to create or select a customer record for an order.",
+    "Purpose": "To allow order creators to add or select a customer within the orders module by searching existing users or entering visitor details, then emit the chosen customer data back to the parent.",
+    "Components": [
+      {
+        "name": "Block",
+        "responsibility": "Layout container for positioning and styling the search & result area"
+      },
+      {
+        "name": "BlockSearch",
+        "responsibility": "Search input field with click-outside directive to capture user search queries"
+      },
+      {
+        "name": "CardUser",
+        "responsibility": "Displays a user card (either selected customer or search result) with photo/name and click handler"
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Handles listing of search results via the users store; supports empty state and pagination"
+      },
+      {
+        "name": "FormCustomerDetails",
+        "responsibility": "Sub-form for editing or reviewing customer details (phone, email, profile, socials)"
+      },
+      {
+        "name": "Button",
+        "responsibility": "Submit button to trigger the addCustomer action and callback emission"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "addCustomer",
+        "purpose": "Builds a customer payload (identity, owner, creator, contact info) and calls the customers.create store action to persist it. On success, replaces local dataCustomer with the returned record.",
+        "parameters": "none",
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "callbackCustomer",
+        "purpose": "Emits the 'callbackCustomer' event with the current dataCustomer object after creation or selection.",
+        "parameters": "none",
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+      "@martyrs/src/modules/auth/views/components/blocks/CardUser.vue",
+      "@martyrs/src/modules/orders/components/sections/FormCustomerDetails.vue",
+      "@martyrs/src/modules/auth/views/store/users.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/store/globals.js (setError)",
+      "@martyrs/src/modules/orders/store/customers.store",
+      "@martyrs/src/modules/orders/store/models/customer.js",
+      "@martyrs/src/components/FieldPhone/click-outside.js"
+    ],
+    "Usage": "Imported into an order creation or editing view; placed as a child component. Parent passes an optional order prop and listens for the 'callbackCustomer' event to receive the finalized customer object.",
+    "Importance": 4,
+    "Notes": [
+      "Uses a custom click-outside directive to close the search dropdown when clicking outside.",
+      "Search results are fetched via the users.read action in the Feed component.",
+      "Distinguishes between existing users and visitors when building the customer identity payload.",
+      "Upon create, the component replaces its state with the persisted customer to allow further updates.",
+      "Errors from create are currently only logged to console; no UI error handling is implemented yet."
+    ]
+  }
+}

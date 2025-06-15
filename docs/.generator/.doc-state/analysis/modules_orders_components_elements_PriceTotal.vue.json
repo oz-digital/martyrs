@@ -1,0 +1,68 @@
+{
+  "path": "../../src/modules/orders/components/elements/PriceTotal.vue",
+  "relativePath": "modules/orders/components/elements/PriceTotal.vue",
+  "type": "source",
+  "name": "PriceTotal.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue-компонент для отображения расчёта и вывода итоговых сумм заказа: подытог, комиссия платформы, НДС, доставка и общая итоговая сумма.",
+    "purpose": "Обеспечить единый UI-блок в оформлении заказа или корзине, который показывает пользователю детализированный расчёт стоимости.",
+    "components": [
+      {
+        "name": "PriceTotal",
+        "type": "Vue Single File Component",
+        "responsibilities": [
+          "Принимает входные данные (цены, ставки комиссий и флаговые параметры отображения).",
+          "Вычисляет суммы по ставкам комиссии, НДС и доставки.",
+          "Форматирует и рендерит результаты с учётом локализации."
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "formatPrice",
+        "description": "Округляет число до целых и преобразует в строку без десятичных знаков.",
+        "parameters": [
+          "value: Number"
+        ],
+        "returns": "String"
+      },
+      {
+        "name": "vatAmount (computed)",
+        "description": "Вычисляет сумму НДС на основе totalPrice и vatRate, возвращает отформатированное значение.",
+        "parameters": [],
+        "returns": "String"
+      },
+      {
+        "name": "feesRate (computed)",
+        "description": "Вычисляет сумму комиссии платформы на основе totalPrice и feesRate, возвращает отформатированное значение.",
+        "parameters": [],
+        "returns": "String"
+      },
+      {
+        "name": "deliveryAmount (computed)",
+        "description": "Возвращает ставку доставки (deliveryRate) отформатированной как строку, если showDeliveryFee=true.",
+        "parameters": [],
+        "returns": "String"
+      },
+      {
+        "name": "grandTotal (computed)",
+        "description": "Суммирует totalPrice, комиссии, НДС и доставку, возвращает итоговую сумму как строку.",
+        "parameters": [],
+        "returns": "String"
+      }
+    ],
+    "dependencies": [
+      "vue (computed, defineProps)",
+      "vue-i18n (useI18n)"
+    ],
+    "usage": "Импортируется в родительских компонентах (например, в модулях оформления заказа) и вызывается как <PriceTotal :totalPrice=\"...\" :currency=\"...\" :showFees=\"...\" ... />.",
+    "importance": 3,
+    "notes": [
+      "В шаблоне отсутствует секция <style>; стили задаются через CSS-классы (утилиты Tailwind-подобного фреймворка).",
+      "Локализация строк встроена через объект text и vue-i18n.",
+      "Форматирование цен округляет до целых, без поддержки дробной части.",
+      "Все вычисляемые свойства зависят только от входных props."
+    ]
+  }
+}

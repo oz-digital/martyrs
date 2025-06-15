@@ -1,0 +1,125 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/Socials.vue",
+  "relativePath": "modules/organizations/components/blocks/Socials.vue",
+  "type": "source",
+  "name": "Socials.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Socials.vue — Vue component that renders a row of social media icons as links. It accepts various social network handles as props, builds full URLs, and displays only the networks for which a prop value is provided.",
+    "Purpose": "To provide a reusable block of social media links/icons for an organization or user profile within the Martyrs framework project.",
+    "Components": [
+      {
+        "name": "Socials",
+        "type": "Vue SFC",
+        "responsibilities": [
+          "Define props for each supported social network handle",
+          "Compute an array of active social links (name + URL)",
+          "Resolve and render the corresponding icon component"
+        ]
+      },
+      {
+        "name": "IconTelegram",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/telegram.vue",
+        "responsibilities": [
+          "Render the Telegram icon"
+        ]
+      },
+      {
+        "name": "IconFacebook",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/facebook.vue",
+        "responsibilities": [
+          "Render the Facebook icon"
+        ]
+      },
+      {
+        "name": "IconInstagram",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/instagram.vue",
+        "responsibilities": [
+          "Render the Instagram icon"
+        ]
+      },
+      {
+        "name": "IconTwitter",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/twitter.vue",
+        "responsibilities": [
+          "Render the Twitter icon"
+        ]
+      },
+      {
+        "name": "IconReddit",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/reddit.vue",
+        "responsibilities": [
+          "Render the Reddit icon"
+        ]
+      },
+      {
+        "name": "IconLine",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/line.vue",
+        "responsibilities": [
+          "Render the Line icon"
+        ]
+      },
+      {
+        "name": "IconDribble",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/dribbble.vue",
+        "responsibilities": [
+          "Render the Dribbble icon"
+        ]
+      },
+      {
+        "name": "IconYoutube",
+        "type": "Vue Component",
+        "location": "@martyrs/src/modules/icons/socials/youtube.vue",
+        "responsibilities": [
+          "Render the YouTube icon"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "socialLinks",
+        "type": "computed",
+        "description": "Filters the supported network list by truthy prop values and maps each into an object with `name` and full `href` URL.",
+        "parameters": []
+      },
+      {
+        "name": "resolveSocialIcon",
+        "type": "function",
+        "description": "Given a network name, returns the corresponding icon component or null if unsupported.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Key of the social network (e.g. 'telegram', 'facebook')."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, defineProps)",
+      "@martyrs/src/modules/icons/socials/telegram.vue",
+      "@martyrs/src/modules/icons/socials/facebook.vue",
+      "@martyrs/src/modules/icons/socials/instagram.vue",
+      "@martyrs/src/modules/icons/socials/twitter.vue",
+      "@martyrs/src/modules/icons/socials/reddit.vue",
+      "@martyrs/src/modules/icons/socials/line.vue",
+      "@martyrs/src/modules/icons/socials/dribbble.vue",
+      "@martyrs/src/modules/icons/socials/youtube.vue"
+    ],
+    "Usage": "Import and embed `<Socials>` in a parent component, passing handles as props. E.g.: `<Socials telegram=\"myChannel\" facebook=\"myPage\" />`. Only non-empty props result in rendered icons.",
+    "Importance": 3,
+    "Notes": [
+      "No `<style>` block is defined; relies on global or utility CSS classes.",
+      "Networks with empty `base` (e.g. Line) will produce a raw href if provided.",
+      "Unused import: `resolveComponent` is imported but not used.",
+      "Icon resolution is static—extending networks requires updating both the `networks` array and the `icons` map."
+    ]
+  }
+}

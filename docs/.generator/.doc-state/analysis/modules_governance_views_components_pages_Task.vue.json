@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/governance/views/components/pages/Task.vue",
+  "relativePath": "modules/governance/views/components/pages/Task.vue",
+  "type": "source",
+  "name": "Task.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single‐file component that, on mount, reads a task ID from the route, fetches the corresponding task data from the central store, and renders its details (name, description, status, assignedTo) in the template.",
+    "Purpose": "Provides a dedicated page/view in the governance module for displaying the details of a single task identified by route parameter `id`.",
+    "Components": [
+      {
+        "name": "TaskView",
+        "role": "Main component that ties together routing, state management, and template rendering for a single task."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted",
+        "purpose": "Vue lifecycle hook that runs after the component is mounted.",
+        "parameters": "async callback with no parameters",
+        "behavior": "Reads `id` from `route.params`, dispatches `tasksActions.getTaskById(id)`, then assigns the fetched task to local `task` ref."
+      },
+      {
+        "name": "tasksActions.getTaskById",
+        "purpose": "Store action that fetches a task by its ID from the backend or other source.",
+        "parameters": "id (String or Number)",
+        "behavior": "Populates `tasksState.current` with fetched task data."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "onMounted",
+          "ref"
+        ]
+      },
+      {
+        "module": "vue-router",
+        "imports": [
+          "useRoute"
+        ]
+      },
+      {
+        "module": "../../store/tasks",
+        "imports": [
+          "tasksActions",
+          "tasksState"
+        ]
+      }
+    ],
+    "Usage": "Typically registered in the router under a route like `/governance/tasks/:id`, then rendered when a user navigates to a task detail URL.",
+    "Importance": 3,
+    "Notes": [
+      "Uses the `<script setup>` syntax for a concise Composition API integration.",
+      "No explicit loading or error state handling is implemented; if the fetch fails or is slow, the UI may remain empty.",
+      "No `<style>` block—styling must be provided by parent/global styles or via other CSS modules."
+    ]
+  }
+}

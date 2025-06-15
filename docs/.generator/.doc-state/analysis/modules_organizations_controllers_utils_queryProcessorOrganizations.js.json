@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/organizations/controllers/utils/queryProcessorOrganizations.js",
+  "relativePath": "modules/organizations/controllers/utils/queryProcessorOrganizations.js",
+  "type": "source",
+  "name": "queryProcessorOrganizations.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

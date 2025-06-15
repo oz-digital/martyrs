@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/backoffice/components/admin/Backcalls.vue",
+  "relativePath": "modules/backoffice/components/admin/Backcalls.vue",
+  "type": "source",
+  "name": "Backcalls.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue SFC displaying a list of \"обратный звонок\" (callback) requests for the back-office admin UI. При монтировании запрашивает все запросы, показывает их в карточках и позволяет подтвердить или удалить записи.",
+    "Purpose": "Обеспечить интерфейс администратора для просмотра и управления запросами обратного звонка.",
+    "Components": [
+      {
+        "name": "Backcalls.vue",
+        "responsibilities": "Рендерит заголовок и список запросов обратного звонка из Vuex, управляет подтверждением и удалением запросов через store.dispatch."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "fetchAll (store.dispatch)",
+        "description": "При загрузке компонента (top-level await) запрашивает все записи backcalls.",
+        "parameters": {}
+      },
+      {
+        "name": "DateToFormattedString",
+        "description": "Форматирует метку времени createdAt в человекочитаемую строку.",
+        "parameters": {
+          "date": "Date|String"
+        }
+      },
+      {
+        "name": "update",
+        "description": "Меняет статус одного запроса на «Обработан».",
+        "parameters": {
+          "_id": "string",
+          "status": "string"
+        }
+      },
+      {
+        "name": "delete",
+        "description": "Удаляет запрос обратного звонка по его _id.",
+        "parameters": {
+          "_id": "string"
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API)",
+      "vue-router (useRoute, useRouter, <router-link>)",
+      "vuex store (useStore, module 'backcalls')",
+      "DateToFormattedString (глобальный хелпер)"
+    ],
+    "Usage": "Импортируется как компонент-страница в маршрутизаторе (например, path '/admin/backcalls'), отображается в админ-панели.",
+    "Importance": 3,
+    "Notes": "• Использует <script setup> с top-level await для pre-fetch данных.\n• Неявный импорт useStore (нужно убедиться, что доступен из контекста).\n• Компонент статeless, все данные в Vuex.\n• SCSS стили локальны, оформляют карточки и статус."
+  }
+}

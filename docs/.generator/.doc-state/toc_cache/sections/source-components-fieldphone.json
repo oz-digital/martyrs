@@ -1,0 +1,39 @@
+{
+  "section": {
+    "id": "source-components-fieldphone",
+    "title": "Проект: Компоненты / Field Phone",
+    "description": "Модуль FieldPhone реализует компонент ввода телефонного номера с поддержкой выбора страны и вспомогательными утилитами.",
+    "subsections": [
+      {
+        "id": "fieldphone-component",
+        "title": "FieldPhone.vue",
+        "description": "Основной Vue-компонент для ввода телефонного номера с выбором страны."
+      },
+      {
+        "id": "fieldphone-utils",
+        "title": "Вспомогательные утилиты",
+        "description": "Содержит вспомогательные функции для обработки телефонных номеров и взаимодействия с компонентом.",
+        "files": [
+          "FieldPhone/utils.js",
+          "FieldPhone/click-outside.js"
+        ]
+      },
+      {
+        "id": "fieldphone-countries",
+        "title": "Справочник стран",
+        "description": "Модуль с данными по странам для выбора телефонного кода.",
+        "files": [
+          "FieldPhone/all-countries.js"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "639cfd9a3b13b5abdd118d8e92528333",
+    "75c70b89e3968d6d330028bc184d0bb0",
+    "d4002ab7fea68b894d9bff94c031107f",
+    "d60d29cfa4785ef55ddef10c4b10ac5e"
+  ],
+  "groupHash": "09b7fd1ca1c2c043b9cb65b1e4e0ec6c",
+  "generated": "2025-06-05T09:16:03.200Z"
+}

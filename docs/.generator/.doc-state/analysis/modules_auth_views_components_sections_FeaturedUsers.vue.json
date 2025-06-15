@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/auth/views/components/sections/FeaturedUsers.vue",
+  "relativePath": "modules/auth/views/components/sections/FeaturedUsers.vue",
+  "type": "source",
+  "name": "FeaturedUsers.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент отображает секцию «Featured Users» – бегущие строки с карточками пользователей, данные для которых загружаются при монтировании.",
+    "Purpose": "Предоставить интерактивный UI-блок для показа избранных пользователей на страницах авторизации/промо в рамках модуля auth.",
+    "Components": [
+      {
+        "name": "Marquee",
+        "role": "Отображает бесконечную бегущую строку с настройками градиента, направления, паузы и клонирования контента."
+      },
+      {
+        "name": "CardUser",
+        "role": "Выводит карточку пользователя с фотографией, именем (или телефоном/логином) и дополнительными стилями."
+      },
+      {
+        "name": "router-link",
+        "role": "Навигационная ссылка Vue Router для перехода на страницу «Sign In»."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "users.actions.read",
+        "description": "Асинхронно запрашивает список пользователей из модуля store auth",
+        "parameters": "{ limit: number } → Promise<Users[]>"
+      },
+      {
+        "name": "onMounted callback",
+        "description": "При монтировании компонента вызывает users.actions.read и сохраняет результат в реактивный usersList",
+        "parameters": "нет"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "@martyrs/src/modules/auth/views/store/users.js",
+      "@martyrs/src/components/Marquee/Marquee.vue",
+      "@martyrs/src/modules/auth/views/components/blocks/CardUser.vue",
+      "vue-router (router-link)"
+    ],
+    "Usage": "Импортируется как обычный Vue-компонент: import FeaturedUsers from '.../modules/auth/views/components/sections/FeaturedUsers.vue'; затем вставляется в шаблон родительской страницы auth.",
+    "Importance": 3,
+    "Notes": [
+      "Используется три отдельных Marquee с жёстко заданными срезами списка пользователей (0–6,7–14,15–22).",
+      "Параметр phone в CardUser статически задан как 'DJ'.",
+      "В секции <style> описан селектор .selector, который не применяется в шаблоне – возможно, остаток или задел под будущее.",
+      "SCSS-поддержка подключена через lang=\"scss\"."
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "path": "../../src/modules/globals/views/components/elements/PhotoStack.vue",
+  "relativePath": "modules/globals/views/components/elements/PhotoStack.vue",
+  "type": "source",
+  "name": "PhotoStack.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент отображает стек из максимум двух фотографий с круглой рамкой и бейджем, указывающим общее количество элементов.",
+    "Purpose": "Обеспечить визуальное представление группы фото (или заглушек), наложенных друг на друга, с индикатором общего количества.",
+    "Components": [
+      {
+        "name": "PhotoStack",
+        "role": "Основной Vue-компонент, принимает props number и photos и рендерит набор изображений со смещением и счётчиком."
+      },
+      {
+        "name": "PlaceholderUserpic",
+        "role": "Иконка-заглушка для отображения, если в массиве photos нет реального URL изображения."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue",
+      "FILE_SERVER_URL (глобальная константа для базового URL файлового сервера)"
+    ],
+    "Usage": "Импортируется и используется в родительском компоненте как:\n\nimport PhotoStack from 'modules/globals/views/components/elements/PhotoStack.vue';\n\n<PhotoStack :number=\"count\" :photos=\"photoArray\" />",
+    "Importance": 3,
+    "Notes": [
+      "Использует <script setup> и Composition API для определения props.",
+      "В шаблоне реализован вывод не более двух фото (photos.slice(0, 2)).",
+      "Для отсутствующих фото используется компонент-заглушка PlaceholderUserpic.",
+      "Все стили задаются инлайн через атрибут :style и утилитные CSS-классы, секция <style> в файле отсутствует."
+    ]
+  }
+}

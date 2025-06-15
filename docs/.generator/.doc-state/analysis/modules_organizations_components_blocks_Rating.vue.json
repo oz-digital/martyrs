@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/Rating.vue",
+  "relativePath": "modules/organizations/components/blocks/Rating.vue",
+  "type": "source",
+  "name": "Rating.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue Single File Component that displays a numeric rating and renders up to five star icons, adjusting their opacity based on the rating value. It also shows the total number of reviews.",
+    "Purpose": "Provide a reusable UI block for displaying an average rating (1–5) alongside the count of reviews within the organizations module.",
+    "Components": [
+      {
+        "name": "Rating",
+        "type": "Vue Component",
+        "responsibility": "Render a section containing the rating number, star graphics and review count."
+      },
+      {
+        "name": "SVG Star Icon",
+        "type": "Inline SVG",
+        "responsibility": "Visual representation of a single star; CSS class toggles opacity when the index exceeds the rating."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare and type-check incoming props: rating (Number, required) and amount (Number, required).",
+        "parameters": [
+          {
+            "rating": "Number (required)"
+          },
+          {
+            "amount": "Number (required)"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "watch",
+          "defineProps"
+        ],
+        "note": "ref and watch imported but not used in current implementation."
+      }
+    ],
+    "Usage": "Imported into parent components or pages via `import Rating from 'modules/organizations/components/blocks/Rating.vue'`, then used as <Rating :rating=\"value\" :amount=\"count\"/>.",
+    "Importance": 3,
+    "Notes": [
+      "No style block present; styling is applied via utility CSS classes (e.g., flex, mn-r-small).",
+      "The component pre-imports `ref` and `watch` but does not currently utilize them—these imports could be removed or extended later.",
+      "Star icons are generated with `v-for` over a hardcoded range of 1 to 5."
+    ]
+  }
+}

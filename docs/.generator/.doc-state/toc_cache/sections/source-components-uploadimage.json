@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-uploadimage",
+    "title": "Проект: Компоненты / Upload Image",
+    "description": "Модуль предоставляет компонент для загрузки изображений в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "uploadimage-vue",
+        "title": "UploadImage.vue",
+        "description": "Vue-компонент для загрузки изображений. Реализует пользовательский интерфейс и обработку событий загрузки."
+      }
+    ]
+  },
+  "fileHashes": [
+    "de4f697b0feba85c771bc7dd48cf7b53"
+  ],
+  "groupHash": "2406623a84236ae559f63b34a618d4bb",
+  "generated": "2025-06-05T09:17:35.172Z"
+}

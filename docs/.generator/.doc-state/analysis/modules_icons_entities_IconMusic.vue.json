@@ -1,0 +1,37 @@
+{
+  "path": "../../src/modules/icons/entities/IconMusic.vue",
+  "relativePath": "modules/icons/entities/IconMusic.vue",
+  "type": "source",
+  "name": "IconMusic.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Этот файл содержит Vue компонент, который рендерит SVG-иконку «музыка» с возможностью настройки цвета заливки и CSS-класса.",
+    "purpose": "Обеспечить переиспользуемый компонент иконки «музыка» в UI-библиотеке проекта для вставки в шаблоны других компонентов.",
+    "components": [
+      {
+        "name": "IconMusic",
+        "type": "Vue Component (SFC)",
+        "responsibility": "Отрисовывает SVG-графику музыкальной ноты с динамическими свойствами fill и class"
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "description": "Определяет входные свойства компонента",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Цвет заливки SVG"
+          }
+        }
+      }
+    ],
+    "dependencies": [
+      "vue (Composition API)"
+    ],
+    "usage": "Импортировать и зарегистрировать компонент в другом Vue-файле: import IconMusic from 'modules/icons/entities/IconMusic.vue';\nВ шаблоне: <IconMusic fill=\"#ff0000\" class=\"my-icon-class\"/>",
+    "importance": 2,
+    "notes": "— Нет блока <style>, стили передаются через внешние CSS-классы и CSS-переменную --black\n— Используется синтаксис <script setup>\n— Передача class осуществляется через $attrs.class\n— Поддерживается кастомизация только цвета заливки"
+  }
+}

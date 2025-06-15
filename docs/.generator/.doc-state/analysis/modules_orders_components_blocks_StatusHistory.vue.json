@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/orders/components/blocks/StatusHistory.vue",
+  "relativePath": "modules/orders/components/blocks/StatusHistory.vue",
+  "type": "source",
+  "name": "StatusHistory.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 component that renders a tracking history of order statuses, displaying each status with an optional checkmark for those already in the history.",
+    "purpose": "Provides a visual history of status changes for an order, showing which statuses have occurred and when (timestamp display is currently commented out).",
+    "components": [
+      {
+        "name": "StatusHistory",
+        "type": "Vue SFC",
+        "responsibility": "Renders a list of possible statuses, marks those present in the history, and lays out basic styling and icons."
+      },
+      {
+        "name": "IconCheckmark",
+        "type": "Vue Component",
+        "responsibility": "Displays a checkmark icon next to statuses that are already in the order's history."
+      }
+    ],
+    "functions": [
+      {
+        "name": "isStatusInHistory",
+        "description": "Checks whether a given status value exists in the current status history.",
+        "parameters": [
+          {
+            "name": "statusValue",
+            "type": "String",
+            "description": "The status name to check for in the history."
+          }
+        ],
+        "returns": "Boolean"
+      }
+    ],
+    "dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "computed",
+          "defineProps"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/icons/navigation/IconCheckmark.vue",
+        "imports": [
+          "IconCheckmark"
+        ]
+      }
+    ],
+    "usage": "Imported into higher-level order or tracking detail views. Passed props: statusHistory (Array of {status, timestamp, user, _id}), statusCurrent (String), edit (Boolean), statuses (Array of all possible status strings). Renders a scrollable/status list block wherever the order's tracking history is needed.",
+    "importance": 3,
+    "notes": [
+      "statusDetailedHistory is computed once during component setup and is not reactive to later changes in props.statusHistory or props.statuses. Consider wrapping it in a computed() if reactivity is needed.",
+      "Timestamp and 'Check User' link are commented out, indicating future or conditional functionality.",
+      "There is a leftover console.log() with no arguments.",
+      "A printReceipt function and socket import are commented out, suggesting planned support for printing receipts via TCP sockets.",
+      "Styling relies on utility classes (bg-light, radius-medium, flex, etc.) from the project's CSS framework."
+    ]
+  }
+}

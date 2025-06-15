@@ -1,0 +1,101 @@
+{
+  "path": "../../src/modules/globals/views/components/sections/Walkthrough.vue",
+  "relativePath": "modules/globals/views/components/sections/Walkthrough.vue",
+  "type": "source",
+  "name": "Walkthrough.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Walkthrough.vue is a full-screen onboarding slider that presents a series of introductory slides, culminating in a final call-to-action slide offering Sign Up, Sign In, or Continue as Guest. It uses Embla Carousel for slide mechanics and Capacitor Preferences to record that the user has completed the walkthrough.",
+    "Purpose": "To guide new users through key app features on first launch and then route them to Sign Up / Sign In or let them continue as guests, while persisting a flag so the walkthrough does not reappear.",
+    "Components": [
+      {
+        "name": "Walkthrough",
+        "responsibilities": [
+          "Render a full-screen carousel of slides with titles, subtitles, and images",
+          "Show navigation dots and a skip button",
+          "Handle slide tweening (opacity and scale) and background translation",
+          "Provide Sign Up, Sign In, and guest entry flows",
+          "Emit an event to update the first-use flag"
+        ]
+      },
+      {
+        "name": "emblaCarouselVue",
+        "responsibilities": "Provides emblaNode ref and emblaApi to control the carousel (init, scroll, select, reInit)"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "setFirstUseFalse",
+        "description": "Marks onboarding as completed in Capacitor Preferences and emits 'updateFirstUse' event with false.",
+        "parameters": []
+      },
+      {
+        "name": "openFirstRoute",
+        "description": "Navigates to the given named route (e.g. 'Sign Up' or 'Sign In'), persists first-use flag as false, and emits update event.",
+        "parameters": [
+          {
+            "name": "routeName",
+            "type": "string",
+            "description": "Name of the route to navigate to"
+          }
+        ]
+      },
+      {
+        "name": "scrollTo",
+        "description": "Programmatically scrolls the carousel to the given slide index.",
+        "parameters": [
+          {
+            "name": "index",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "onInit",
+        "description": "Initializes scrollSnaps array from emblaApi on carousel initialization.",
+        "parameters": [
+          {
+            "name": "embla",
+            "type": "object",
+            "description": "Embla instance (unused directly, emblaApi used)"
+          }
+        ]
+      },
+      {
+        "name": "onSelect",
+        "description": "Updates selectedIndex whenever the carousel selection changes.",
+        "parameters": [
+          {
+            "name": "embla",
+            "type": "object"
+          }
+        ]
+      },
+      {
+        "name": "onScroll",
+        "description": "Calculates tween values for slide opacity, scale, and background translation on scroll events.",
+        "parameters": [
+          {
+            "name": "embla",
+            "type": "object"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps, defineEmits)",
+      "vue-router (useRouter)",
+      "embla-carousel-vue",
+      "@capacitor/preferences"
+    ],
+    "Usage": "Imported as a view or component in a parent, e.g. <Walkthrough @updateFirstUse=\"handleFirstUse\"/>, typically mounted on first app launch or when route name is 'Walkthrough'.",
+    "Importance": 4,
+    "Notes": [
+      "The component uses script setup syntax and Composition API.",
+      "Background components (WavesBackground, ColorsBackground) are commented out and can be re-enabled for visual effects.",
+      "Image assets are dynamically required by index; ensure correct asset naming convention.",
+      "The TWEEN_FACTOR constant controls the intensity of opacity/scale animations.",
+      "Skip button uses @click.native modifier to directly trigger setFirstUseFalse on the root div."
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "path": "../../src/modules/auth/models/visitor.model.js",
+  "relativePath": "modules/auth/models/visitor.model.js",
+  "type": "source",
+  "name": "visitor.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Экспортируется функция-фабрика, которая на основе переданного объекта db создает и возвращает Mongoose-модель Visitor со схемой, содержащей поля для хранения информации о посетителе.",
+    "Purpose": "Обеспечить в проекте модель данных для работы с информацией о посетителях (IP-адрес, User-Agent, язык, уникальный отпечаток) в базе MongoDB через Mongoose.",
+    "Components": [
+      {
+        "name": "VisitorSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Определяет структуру документов Visitor (ip, userAgent, acceptLanguage, fingerprint)."
+      },
+      {
+        "name": "Visitor",
+        "type": "Mongoose.Model",
+        "responsibility": "Модель для CRUD-операций с коллекцией visitors в MongoDB."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "signature": "db => Model",
+        "description": "Функция-фабрика, принимающая объект db с инициализированным Mongoose, создающая схему VisitorSchema и модель Visitor, и возвращающая её.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "object",
+            "description": "Контейнер, содержащий подключение Mongoose и его методы (db.mongoose)."
+          }
+        ],
+        "returns": {
+          "type": "Mongoose.Model",
+          "description": "Модель Visitor для взаимодействия с коллекцией в базе данных."
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "db.mongoose",
+        "importType": "injected via parameter",
+        "description": "Основной модуль Mongoose для определения схемы и модели."
+      }
+    ],
+    "Usage": "В других частях кода импортируется этот файл и вызывается с объектом db: const Visitor = require('modules/auth/models/visitor.model.js').default(db); После чего используется для операций с коллекцией visitors.",
+    "Importance": 3,
+    "Notes": [
+      "Поле fingerprint помечено уникальным, что гарантирует единственность отпечатков посетителей.",
+      "Закомментированная строка с методом index может быть раскомментирована для явного создания индекса на fingerprint.",
+      "Файл не регистрирует дополнительных виртуальных полей или хуков."
+    ]
+  }
+}

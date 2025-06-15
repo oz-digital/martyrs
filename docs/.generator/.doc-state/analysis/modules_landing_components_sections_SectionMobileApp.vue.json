@@ -1,0 +1,67 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionMobileApp.vue",
+  "relativePath": "modules/landing/components/sections/SectionMobileApp.vue",
+  "type": "source",
+  "name": "SectionMobileApp.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 component rendering a ‘Mobile App’ promotional section with a hero image, title, description, feature list and download links for App Store and Google Play, all driven by i18n content.",
+    "purpose": "Provide a reusable section on the landing page to showcase and link to the mobile application in multiple languages.",
+    "components": [
+      {
+        "name": "SectionMobileApp",
+        "type": "Vue Component",
+        "responsibility": "Main wrapper component combining template, i18n logic and styling for the mobile app promo section."
+      },
+      {
+        "name": "LabelAppStore",
+        "type": "Vue Component",
+        "responsibility": "Render the App Store badge/icon inside a link."
+      },
+      {
+        "name": "LabelGooglePlay",
+        "type": "Vue Component",
+        "responsibility": "Render the Google Play badge/icon inside a link."
+      }
+    ],
+    "functions": [
+      {
+        "name": "t(key: string): string",
+        "purpose": "Translate and return a string or path based on the i18n messages provided via props.content.",
+        "params": [
+          "key — translation key (e.g. 'title', 'image', 'description', 'label', 'linkAppStore', 'linkGooglePlay')"
+        ]
+      },
+      {
+        "name": "tm(key: string): any[]",
+        "purpose": "Return an array from the i18n messages (used for looping over 'features').",
+        "params": [
+          "key — translation key pointing to an array (e.g. 'features')"
+        ]
+      },
+      {
+        "name": "te(key: string): boolean",
+        "purpose": "Test whether a translation key exists in the provided messages (used to conditionally render links and labels).",
+        "params": [
+          "key — translation key to test for existence"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/modules/icons/labels/LabelAppStore.vue",
+      "@martyrs/src/modules/icons/labels/LabelGooglePlay.vue",
+      "FILE_SERVER_URL (environment/global variable)"
+    ],
+    "usage": "Imported into a parent landing-page component (e.g. LandingPage.vue) and used as <SectionMobileApp :content=\"someI18nObject\" />. The parent passes a localized content object matching the expected keys.",
+    "importance": 3,
+    "notes": [
+      "Uses <script setup> syntax and the Composition API for brevity.",
+      "Relies on a global FILE_SERVER_URL variable to prefix the image path.",
+      "Mobile-first SCSS media query adjusts layout at max-width 1025px (centers text and stacks columns).",
+      "Conditional rendering of download links ensures absence of broken links if translations are missing.",
+      "CSS utility classes (cols-2, flex, w-100, etc.) presume a global utility stylesheet or framework."
+    ]
+  }
+}

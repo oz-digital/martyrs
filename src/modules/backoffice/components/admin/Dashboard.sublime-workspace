@@ -1,0 +1,1038 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pr",
+				"prometheus-framework"
+			],
+			[
+				"rad",
+				"radius-small"
+			],
+			[
+				"br",
+				"br-grey-transp"
+			],
+			[
+				"bgr",
+				"br-grey-transp"
+			],
+			[
+				"br-",
+				"br-2px"
+			],
+			[
+				"min",
+				"min-h-100vh"
+			],
+			[
+				"h-100",
+				"min-h-100vh"
+			],
+			[
+				"h-",
+				"h-8r"
+			],
+			[
+				"z-",
+				"z-index-1"
+			],
+			[
+				"flex",
+				"flex-v-center"
+			],
+			[
+				"pos-",
+				"pos-t-1"
+			],
+			[
+				"cols-2",
+				"cols-2-1_3"
+			],
+			[
+				"gap-",
+				"gap-medium"
+			],
+			[
+				"cols",
+				"cols-2-1_3"
+			],
+			[
+				"cols-2_1",
+				"cols-2-1_3"
+			],
+			[
+				"de",
+				"default"
+			],
+			[
+				"flex-",
+				"flex-nowrap"
+			],
+			[
+				"Deparm",
+				"departments"
+			],
+			[
+				"memb",
+				"memberships"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"back",
+				"background-repeat"
+			],
+			[
+				"ra",
+				"radius-small"
+			],
+			[
+				"c",
+				"round-checkmark"
+			],
+			[
+				"pd-",
+				"pd-medium"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"radiu",
+				"radius-small"
+			],
+			[
+				"departm",
+				"departments"
+			],
+			[
+				"t-",
+				"t-transp"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"bg",
+				"bg-white"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"findOneA",
+				"findOneAndUpdate"
+			],
+			[
+				"slide",
+				"slideIn"
+			],
+			[
+				"z-i",
+				"z-index-1"
+			],
+			[
+				"pad",
+				"padding-bottom"
+			],
+			[
+				"mn-",
+				"mn-medium"
+			],
+			[
+				"oN",
+				"onMounted"
+			],
+			[
+				"aut",
+				"authorId"
+			],
+			[
+				"v",
+				"v-if\t<div v-if=\"\">"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"vu",
+				"vue-router"
+			],
+			[
+				"use",
+				"useRouter"
+			],
+			[
+				"desc",
+				"description"
+			],
+			[
+				"langu",
+				"languages"
+			],
+			[
+				"z",
+				"z-index-1"
+			],
+			[
+				"padding",
+				"padding-bottom"
+			],
+			[
+				"loca",
+				"localization"
+			],
+			[
+				"flex-n",
+				"flex-nojustify"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"paddi",
+				"padding-bottom"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"mn-r",
+				"mn-r-medium"
+			],
+			[
+				"mn-ex",
+				"mn-extra-thin"
+			],
+			[
+				"mn-extr",
+				"mn-extra-thin"
+			],
+			[
+				"backgro",
+				"background"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"margin",
+				"margin-right"
+			],
+			[
+				"last",
+				"last-of-type"
+			],
+			[
+				"b",
+				"background-size"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"Synt js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"conve",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"conv",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"markd",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"con",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"Packag",
+				"Preferences: Browse Packages"
+			],
+			[
+				"co",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"set syntax vue",
+				"Set Syntax: Vue Component"
+			],
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"set syn",
+				"Set Syntax: Textile"
+			],
+			[
+				"set tyntax",
+				"Set Syntax: Bash"
+			],
+			[
+				"Py",
+				"Set Syntax: Python"
+			],
+			[
+				"Set Syn",
+				"Set Syntax: Python"
+			],
+			[
+				"re",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ng",
+				"Set Syntax: nginx"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"set synt",
+				"Set Syntax: TeX"
+			],
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
+			],
+			[
+				"Bash",
+				"Set Syntax: Bash"
+			],
+			[
+				"Vue",
+				"Set Syntax: Vue Component"
+			],
+			[
+				"Close",
+				"CloseFolder: Close all files in this folder recursively"
+			],
+			[
+				"close",
+				"File: Close All"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"scss",
+				"Set Syntax: SCSS"
+			],
+			[
+				"Sass",
+				"Set Syntax: SCSS"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Set CSS",
+				"Set Syntax: CSS"
+			],
+			[
+				"Ma",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"Markd",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"Conve",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"Rei",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"Snippet",
+				"Snippet: classList.remove"
+			],
+			[
+				"convert to",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"syntax jav",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"es6 mod",
+				"Snippet: ES6 Module Export Variable"
+			],
+			[
+				"snippet",
+				"Snippet: ES6 Module Export Variable"
+			],
+			[
+				"es6",
+				"Snippet: ES6 Arrow Function"
+			],
+			[
+				"pre",
+				"Preferences: Settings"
+			],
+			[
+				"Local",
+				"Local History: Browse in Explorer"
+			],
+			[
+				"Co",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"r",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"rei",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"Con",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"ind",
+				"Indentation: Detect"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"count",
+				"Calculate: Count"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"c",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"Sftp",
+				"SFTP: Browse Server…"
+			],
+			[
+				"sftp",
+				"SFTP: Browse Server…"
+			],
+			[
+				"Pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Termi",
+				"Terminal View: Open Bash Terminal"
+			],
+			[
+				"Ter",
+				"Terminality: Browse Commands..."
+			],
+			[
+				"JS",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"cal",
+				"Calculate"
+			],
+			[
+				"ca",
+				"Calculate: Add all selections"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"hbs",
+				"Set Syntax: Handlebars"
+			],
+			[
+				"CO",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"hb",
+				"Set Syntax: Handlebars"
+			],
+			[
+				"CONVERT TO",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"Reii",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"Ident",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			],
+			[
+				"prefe",
+				"Preferences: Settings"
+			],
+			[
+				"p",
+				"Package Control: Install Package"
+			],
+			[
+				"handle",
+				"Set Syntax: Handlebars"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/layouts/Auth.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/LocationSelection/LocationSelection.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/LocationMarker/LocationMarker.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/Header/Header.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/FieldBig/FieldBig.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/Breadcrumbs/Breadcrumbs.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/store/index.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/scss/theme.scss",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/router/index.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/wallet/wallet.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/marketplace/pages/Catalog.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/marketplace/layouts/Marketplace.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/marketplace/store.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/marketplace/router.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/landing/sections/GuideSection.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/landing/pages/Page.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/landing/pages/Hotel.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/landing/pages/Home.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/admin/CategoryEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/template.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/projects.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/pages.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/events.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/applications.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/account/pages/profile/ProfileEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/account/pages/Profile.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/account/pages/Organizations.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/account/layouts/Account.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/account/account.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/components/layout/Client.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/components/elements/InputBig.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/entry-client.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/app.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/users/router/users.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/users/components/pages/ProfileEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/users/components/pages/Profile.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/spots/store/spots.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/spots/router/spots.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/spots/components/pages/Map.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/spots/components/layouts/Spots.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/store/products.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/store/leftovers.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/store/categories.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/SectionProduct.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/PopularProducts.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/EditProductInfo.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/EditProductImages.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/EditParameters.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/sections/EditModifications.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/Products.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/ProductRecommmendation.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/ProductEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/Product.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/OrganizationPeople.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/OrganizationDocuments.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/OrganizationDetails.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/pages/OrganizationCreate.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/blocks/ImagesThumbnails.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/products/components/blocks/Images360.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/store/organizations.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/store/memberships.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/store/invites.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/router/organizations.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/Unit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/StructureTab.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/Places.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/Organizations.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/MembersTab.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/MembersList.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/MembersAdd.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/Documents.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/DetailsTab.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/sections/Department.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/OrganizationsAccount.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/Organizations.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/OrganizationEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/Organization.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/DepartmentEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/pages/Department.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/elements/ButtonFollow.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/blocks/DepartmentSubDepartmentModify.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/blocks/DepartmentMemberModify.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/blocks/CardOrganization.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/store/shopcart.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/store/payments.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/store/orders.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/components/sections/Form.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/components/partials/ShopCart.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/components/pages/Order.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/middlewares/client/inputs.validation.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/sections/SubscribeNewsletter.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/sections/Publics.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/sections/HotPosts.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/sections/Feed.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/sections/Comments.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/pages/CreateBlogPost.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/pages/Community.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/pages/BlogPost.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/pages/Blog.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/layouts/Community.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/blocks/CardOrganization.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/blocks/CardBlogpost.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/router/auth.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/SignUp.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/SignIn.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/ResetPassword.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/Invite.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/EnterPassword.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/auth/components/pages/EnterCode.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/admin/Orders.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/admin/PageEdit.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/admin/Products.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/backoffice/admin/Users.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/src/modules/landing/pages/Governance.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/server/api.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/server/app/models/index.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/blocks/Contacts.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/global/store/global.js",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/vite.modules.server.config.ts",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/vite.modules.client.config.ts",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/community/components/blocks/FooterBlogpost.vue",
+		"/Users/mac/.Trash/modules 6.21.07 PM/organizations/blocks/EmptyState.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/components/EmptyState/EmptyState.vue",
+		"/Users/mac/.Trash/EmptyState.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/orders/components/sections/EmptyState.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OSI/app/client/src/components/blocks/EmptyState.vue",
+		"/Users/mac/Development/OZ ECOSYSTEM/OZ DAO/weeder.delivery/client/prometheus-framework/src/modules/organizations/components/blocks/EmptyState.vue",
+		"/Users/mac/.Trash/dist 20-59-23-183/modules/organizations/components/blocks/EmptyState.vue.d.ts"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 110.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": false,
+		"use_buffer2": false,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SFTP":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 328.0
+	},
+	"pinned_build_system": "",
+	"project": "Dashboard.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"logo",
+				"weeder.delivery/client/src/assets/logo.svg"
+			],
+			[
+				"InputBig",
+				"client/src/components/elements/InputBig.vue"
+			],
+			[
+				"Hero",
+				"client/src/modules/products/sections/HeroRecommendation.vue"
+			],
+			[
+				"Big",
+				"client/src/components/elements/InputBig.vue"
+			],
+			[
+				"unf",
+				"OZ DAO/weeder.delivery/client/public/icons/unfollow.svg"
+			],
+			[
+				"folow",
+				"OZ DAO/weeder.delivery/client/public/icons/follow.svg"
+			],
+			[
+				"loca",
+				"OZ DAO/weeder.delivery/client/src/assets/icons/location.svg"
+			],
+			[
+				"location",
+				"OZ DAO/weeder.delivery/client/src/assets/icons/location.svg"
+			],
+			[
+				"global.js weed",
+				"OZ DAO/weeder.delivery/client/src/store/modules/global.js"
+			],
+			[
+				"trash",
+				"weeder.delivery/client/src/assets/icons/trash.svg"
+			],
+			[
+				"photo.svg",
+				"weeder.delivery/client/src/assets/icons/photo.svg"
+			],
+			[
+				"web",
+				"weeder.delivery/client/src/assets/icons/website.svg"
+			],
+			[
+				"avatar.svg",
+				"weeder.delivery/client/public/assets/users/avatars/default.svg"
+			],
+			[
+				"edit",
+				"weeder.delivery/client/src/assets/icons/edit.svg"
+			],
+			[
+				"Hot",
+				"weeder.delivery/client/src/utils/hot-reload.js"
+			],
+			[
+				"page.html",
+				"weeder.delivery/client/src/page.html"
+			],
+			[
+				"edit.svg",
+				"OSI/app/client/src/assets/images/icons/edit.svg"
+			],
+			[
+				"arrow-down",
+				"weeder.delivery/prometheus/assets/icons/arrow-down-spoiler.svg"
+			],
+			[
+				"check",
+				"weeder.delivery/prometheus/assets/icons/check-mark.svg"
+			],
+			[
+				"Sidebar",
+				"OSI/app/client/src/components/partials/Sidebar.vue"
+			],
+			[
+				"side",
+				"client/src/components/partials/Sidebar.vue"
+			],
+			[
+				"menu",
+				"weeder.delivery/src/assets/images/icons/menu.svg"
+			],
+			[
+				"very",
+				"server/app/middlewares/verifySignUp.js"
+			],
+			[
+				"auth",
+				"server/app/controllers/auth.controller.js"
+			],
+			[
+				"service-wo",
+				"weeder.delivery/dist/service-worker.js"
+			],
+			[
+				"instagram",
+				"ogilvy/src/assets/images/social/instagram.svg"
+			],
+			[
+				"Postions.vue",
+				"yourbeach.ru/src/components/admin/blocks/Positions.vue"
+			],
+			[
+				"solide",
+				"yourbeach.ru/src/components/partials/splide/Splide.vue"
+			],
+			[
+				"vuex router pac",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"vuex-rou",
+				"node_modules/vuex-router-sync/dist/vuex-router-sync.cjs.js"
+			],
+			[
+				"vue-splide",
+				"node_modules/@splidejs/vue-splide/node_modules/vue/package.json"
+			],
+			[
+				"vuex-route pac",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"vue router",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"vue router sync pa",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"router sync packa",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"splide",
+				"node_modules/@splidejs/splide/src/js/splide.js"
+			],
+			[
+				"vue-slick",
+				"node_modules/vue-slick-carousel/dist/vue-slick-carousel.umd.js"
+			],
+			[
+				"carousel navi",
+				"node_modules/vue3-carousel/dist/components/Navigation.d.ts"
+			],
+			[
+				"vue3-carousel/dist/carousel.css",
+				"node_modules/vue3-carousel/dist/carousel.css"
+			],
+			[
+				"cata",
+				"src/pages/Catalog.vue"
+			],
+			[
+				"catalo",
+				"src/pages/Catalog.vue"
+			],
+			[
+				"vuex-ruter sync pack",
+				"node_modules/vuex-router-sync/package.json"
+			],
+			[
+				"vuex-router",
+				"node_modules/vuex-router-sync/dist/vuex-router-sync.cjs.js"
+			],
+			[
+				"combineURLs",
+				"node_modules/axios/lib/helpers/combineURLs.js"
+			],
+			[
+				"ShopCart",
+				"src/components/blocks/ShopCart.vue"
+			],
+			[
+				".html",
+				"yourbeach.ru/rendered.html"
+			],
+			[
+				"cleave-phone.ru.js",
+				"node_modules/cleave.js/dist/addons/cleave-phone.ru.js"
+			],
+			[
+				"glide.core",
+				"node_modules/@glidejs/glide/dist/css/glide.core.min.css"
+			],
+			[
+				"compile-sass",
+				"server/node_modules/compile-sass/node_modules/.bin/node-sass"
+			],
+			[
+				"render.js",
+				"server/node_modules/node-sass/lib/render.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Development/oz.digital/oz.digital.sublime-project"
+			],
+			[
+				"s",
+				"~/Development/silan.pro/silan-pro.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 955.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 356.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

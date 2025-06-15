@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/pages/views/components/partials/SidebarPages.vue",
+  "relativePath": "modules/pages/views/components/partials/SidebarPages.vue",
+  "type": "source",
+  "name": "SidebarPages.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Компонент SidebarPages отображает список страниц в виде карточек и предоставляет интерфейс для создания новой страницы через popup-конструктор.",
+    "purpose": "Выступает боковой панелью (sidebar) в разделе управления страницами, отвечая за вывод существующих страниц и открытие/закрытие окна публикации новой страницы.",
+    "components": [
+      {
+        "name": "Block",
+        "responsibility": "Контейнер-обёртка для сетки карточек страниц"
+      },
+      {
+        "name": "CardPage",
+        "responsibility": "Отображение отдельной страницы и эмиссия события создания вложенной страницы"
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Модальное окно для формы создания новой страницы"
+      },
+      {
+        "name": "Constructor",
+        "responsibility": "Редактор содержимого новой страницы"
+      },
+      {
+        "name": "Button",
+        "responsibility": "Кнопка отправки формы сохранения"
+      }
+    ],
+    "functions": [
+      {
+        "name": "openPulicationPopup",
+        "params": [
+          "page"
+        ],
+        "purpose": "Открывает popup публикации и устанавливает выбранную страницу как родительскую"
+      },
+      {
+        "name": "closePublicationPopup",
+        "params": [],
+        "purpose": "Закрывает popup и сбрасывает данные новой страницы к начальному состоянию"
+      },
+      {
+        "name": "onSubmit",
+        "params": [],
+        "purpose": "Собирает данные новой страницы, вызывает pages.actions.create и перенаправляет на страницу редактирования созданной страницы"
+      },
+      {
+        "name": "onMounted (lifecycle)",
+        "params": [],
+        "purpose": "При монтировании компонента загружает полный список страниц через pages.actions.read()"
+      }
+    ],
+    "dependencies": [
+      "vue (onMounted, ref, computed)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/constructor/components/sections/Constructor.vue",
+      "../blocks/CardPage.vue",
+      "../../store/pages.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/globals/views/mixins/mixins.js"
+    ],
+    "usage": "Импортируется и вставляется в layout или родительский компонент раздела «Pages» для отображения списка страниц и управления публикацией.",
+    "importance": 3,
+    "notes": [
+      "Использует глобальные mixins для нормализации URL и проверки прав администратора",
+      "Автоматически перенаправляет на маршрут редактирования после создания страницы",
+      "Не учитывает ошибки сети – при необходимости стоит добавить обработку исключений",
+      "popup-дизайн и размеры задаются классами утилит из фреймворка martyrs"
+    ]
+  }
+}

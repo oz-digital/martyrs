@@ -1,0 +1,45 @@
+{
+  "path": "../../src/modules/icons/entities/IconRecent.vue",
+  "relativePath": "modules/icons/entities/IconRecent.vue",
+  "type": "source",
+  "name": "IconRecent.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue SFC that renders a \"recent\" SVG icon. It exposes a `fill` prop to control the path color and forwards any CSS classes via `$attrs.class`.",
+    "Purpose": "Provides a reusable, configurable icon component representing a \"recent\" or \"history\" symbol for use throughout the application UI.",
+    "Components": [
+      {
+        "name": "IconRecent",
+        "type": "Vue Component",
+        "responsibilities": [
+          "Render an inline SVG markup with multiple <path> elements",
+          "Accept a `fill` prop to set the SVG paths' fill color",
+          "Forward additional CSS classes via `$attrs.class`"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Define the `fill` prop with type validation and default",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API: script setup, defineProps, $attrs)"
+    ],
+    "Usage": "Import and register the component in a parent Vue component or auto-register via a global icon plugin. Example:\n\n  import IconRecent from 'modules/icons/entities/IconRecent.vue';\n  \n  <template>\n    <IconRecent fill=\"#ff0000\" class=\"w-6 h-6\" />\n  </template>",
+    "Importance": 2,
+    "Notes": [
+      "No scoped or global <style> block – styling is driven by props and external CSS classes.",
+      "Uses CSS variable (--black) as the default fill color to adapt to theme changes.",
+      "Forwards classes via `$attrs.class` to allow sizing or custom styling from parent.",
+      "Fully functional in environments using Vue’s <script setup> syntax."
+    ]
+  }
+}

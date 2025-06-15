@@ -1,0 +1,52 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/Unit.vue",
+  "relativePath": "modules/organizations/components/blocks/Unit.vue",
+  "type": "source",
+  "name": "Unit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент для отображения и редактирования информации об организационной единице с поддержкой рекурсивного рендеринга её подотделов.",
+    "Purpose": "Предоставить интерфейс для просмотра, правки и добавления подразделов внутри организационной структуры.",
+    "Components": [
+      {
+        "name": "Unit.vue",
+        "role": "Главный компонент, отображает название и описание отдела, переключается в режим редактирования и эмитит события сохранения и добавления"
+      },
+      {
+        "name": "unit-component",
+        "role": "Рекурсивный дочерний компонент (тот же Unit.vue), отвечает за рендеринг каждого подотдела"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "saveUnit",
+        "description": "Сохраняет изменения отдела: эмитит событие 'unit-updated' с объектом editedUnit",
+        "parameters": []
+      },
+      {
+        "name": "addSubunit",
+        "description": "Инициирует добавление нового подотдела: эмитит событие 'subunit-added' с _id текущего отдела",
+        "parameters": []
+      },
+      {
+        "name": "watch(props.unit)",
+        "description": "Наблюдатель за изменениями prop 'unit', синхронизирует внутренний editedUnit с новым значением",
+        "parameters": [
+          "newUnit"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, watch, defineProps, script setup API)",
+      "unit-component (рекурсивный импорт самого себя или глобальная регистрация компонента Unit.vue)"
+    ],
+    "Usage": "Импортируется или регистрируется как компонент под именем 'unit-component' в родительских компонентах и используется в шаблоне с передачей props 'unit' и 'editMode'.",
+    "Importance": 4,
+    "Notes": [
+      "В script setup вызывается emit, но нет явного defineEmits – возможно, это упущение.",
+      "Методы saveUnit и addSubunit содержат TODO-комментарии для реализации сетевых запросов.",
+      "Секция <style> в файле отсутствует или вынесена в глобальные стили.",
+      "Потенциальная рекурсия при рендеринге подотделов требует контроля глубины."
+    ]
+  }
+}

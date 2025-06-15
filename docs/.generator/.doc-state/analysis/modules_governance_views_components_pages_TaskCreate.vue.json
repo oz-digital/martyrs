@@ -1,0 +1,48 @@
+{
+  "path": "../../src/modules/governance/views/components/pages/TaskCreate.vue",
+  "relativePath": "modules/governance/views/components/pages/TaskCreate.vue",
+  "type": "source",
+  "name": "TaskCreate.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Этот файл предоставляет страницу для создания новой задачи. Он рендерит заголовок, форму ввода деталей задачи и кнопку для отправки данных в хранилище.",
+    "Purpose": "Обеспечить интерфейс для ввода и отправки данных по новой задаче в state-менеджмент (store) проекта.",
+    "Components": [
+      {
+        "name": "TaskCreate",
+        "role": "Vue SFC со <script setup> — корневой компонент страницы создания задачи."
+      },
+      {
+        "name": "FormTaskDetails",
+        "role": "Дочерний компонент, отвечающий за отображение и редактирование полей задачи (name, description, status, assignedTo)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createTask",
+        "description": "Асинхронно вызывает метод createTask из tasksActions для сохранения новой задачи в хранилище.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "import": "ref",
+        "purpose": "Создание реактивного объекта newTask."
+      },
+      {
+        "module": "../../store/tasks",
+        "import": "tasksActions",
+        "purpose": "API для выполнения действий над задачами (createTask и пр.)."
+      },
+      {
+        "module": "../sections/FormTaskDetails.vue",
+        "import": "FormTaskDetails",
+        "purpose": "Форма ввода деталей задачи."
+      }
+    ],
+    "Usage": "Компонент обычно регистрируется в маршрутизаторе (router) проекта как страница по пути создания задач; вставляется в шаблон через <router-view> или как дочерний компонент другого представления.",
+    "Importance": 3,
+    "Notes": "1) Используется синтаксис <script setup> из Vue 3. 2) В текущей реализации отсутствует обработка ошибок и перенаправление после успешного создания (есть комментарий-заглушка). 3) Секция <style> отсутствует — стили, вероятно, наследуются или определяются глобально."
+  }
+}

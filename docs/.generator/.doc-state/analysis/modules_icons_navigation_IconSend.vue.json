@@ -1,0 +1,32 @@
+{
+  "path": "../../src/modules/icons/navigation/IconSend.vue",
+  "relativePath": "modules/icons/navigation/IconSend.vue",
+  "type": "source",
+  "name": "IconSend.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single‐file component that renders an SVG \"send\" icon with a customizable fill color.",
+    "Purpose": "Provides a reusable, stylable \"send\" icon for use in navigation or UI elements throughout the application.",
+    "Components": [
+      {
+        "name": "IconSend",
+        "responsibilities": [
+          "Render an SVG path shaped like a \"send\" arrow.",
+          "Expose a `fill` prop to allow dynamic coloring of the icon."
+        ]
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (for defining the component and props API)"
+    ],
+    "Usage": "Import in any Vue component or view:\n\n```js\nimport IconSend from 'modules/icons/navigation/IconSend.vue';\n```\n\nThen use in the template:\n\n```html\n<IconSend fill=\"#ff0000\"/>\n```",
+    "Importance": 2,
+    "Notes": [
+      "The default `fill` prop value has a missing closing parenthesis: 'rgb(var(--black)'.",
+      "No accessibility attributes (e.g. `aria-label` or `<title>`) are provided on the SVG.",
+      "The component has fixed width/height (80×80) and viewBox; styling overrides require wrapping or direct CSS targeting.",
+      "No additional methods or lifecycle hooks — purely presentational."
+    ]
+  }
+}

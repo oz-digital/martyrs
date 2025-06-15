@@ -1,0 +1,92 @@
+{
+  "path": "../../src/modules/events/components/sections/SelectDate.vue",
+  "relativePath": "modules/events/components/sections/SelectDate.vue",
+  "type": "source",
+  "name": "SelectDate.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 component that renders a set of pre-defined date options (today, tomorrow, this weekend, this week, next weekend, next week) and emits a standardized date range payload when the user clicks on one of them.",
+    "Purpose": "Provide a reusable UI section for users to quickly pick common date ranges in the events module and notify parent components about the selected date range.",
+    "Components": [
+      {
+        "name": "SelectDate.vue",
+        "type": "Vue SFC",
+        "responsibility": "Renders the list of date options, computes their labels and ranges, and handles user selection."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "formatSingleDate",
+        "purpose": "Format a single Date object into a localized string with weekday short, day number and short month.",
+        "parameters": [
+          {
+            "name": "date",
+            "type": "Date"
+          }
+        ]
+      },
+      {
+        "name": "formatDateRange",
+        "purpose": "Format two dates into a localized range string. If they are in the same month it collapses the month label.",
+        "parameters": [
+          {
+            "name": "startDate",
+            "type": "Date"
+          },
+          {
+            "name": "endDate",
+            "type": "Date"
+          }
+        ]
+      },
+      {
+        "name": "setStartOfDay",
+        "purpose": "Normalize a Date object to the start of its day (00:00:00.000).",
+        "parameters": [
+          {
+            "name": "date",
+            "type": "Date"
+          }
+        ]
+      },
+      {
+        "name": "setEndOfDay",
+        "purpose": "Normalize a Date object to the end of its day (23:59:59.999).",
+        "parameters": [
+          {
+            "name": "date",
+            "type": "Date"
+          }
+        ]
+      },
+      {
+        "name": "computedDateOptions",
+        "purpose": "Vue computed property that returns an array of date option objects. It either uses `props.customDateOptions` if provided or builds default options for today, tomorrow, this weekend, this week, next weekend and next week.",
+        "parameters": []
+      },
+      {
+        "name": "handleDateSelect",
+        "purpose": "Emit a `date-selected` event with the payload `{ startDate, endDate, ... }` when a date option is clicked.",
+        "parameters": [
+          {
+            "name": "date",
+            "type": "Object",
+            "description": "An object containing `label`, `range`, and `data` with date boundaries."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, defineProps, defineEmits)",
+      "Intl.DateTimeFormat (built-in for localization)"
+    ],
+    "Usage": "Imported into parent components (e.g. EventsPage.vue) via `import SelectDate from 'modules/events/components/sections/SelectDate.vue'` and used in template as `<SelectDate :locale=\"locale\" @date-selected=\"onDateSelected\" />`.",
+    "Importance": 3,
+    "Notes": [
+      "The `thisMonth` and `customDate` options are defined but currently commented out; they can be reactivated as needed.",
+      "Accepts `customDateOptions` prop to override default date list with external data.",
+      "Locale-aware formatting via `props.locale`.",
+      "SCSS block is present but contains no custom rules; component styling relies on global utility classes from the martyrs framework."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "path": "../../src/modules/core/classes/module-manager.js",
+  "relativePath": "modules/core/classes/module-manager.js",
+  "type": "source",
+  "name": "module-manager.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабричную функцию createModuleManager, которая создает и возвращает объект-менеджер модулей. Менеджер отвечает за регистрацию и отписку модулей, проверку циклических зависимостей, последовательную инициализацию модулей (с учетом плагинов) и корректную очистку ресурсов.",
+    "Purpose": "Обеспечить централизованное управление жизненным циклом модулей и их плагинов в рамках приложения на базе фреймворка \"martyrs\".",
+    "Components": [
+      {
+        "name": "createModuleManager",
+        "type": "function",
+        "responsibility": "Фабричная функция, создающая и настраивающая экземпляр менеджера модулей."
+      },
+      {
+        "name": "manager",
+        "type": "object",
+        "responsibility": "Главный объект-менеджер с методами управления модулями, зависимостями и событиями."
+      },
+      {
+        "name": "modules",
+        "type": "Map",
+        "responsibility": "Хранилище зарегистрированных модулей по их именам."
+      },
+      {
+        "name": "plugins",
+        "type": "Map",
+        "responsibility": "Хранилище плагинов, сгруппированных по имени модуля."
+      },
+      {
+        "name": "events",
+        "type": "EventBus",
+        "responsibility": "Шина событий для оповещения о регистрации и отписке модулей."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "registerModule",
+        "description": "Регистрирует новый модуль, кидает ошибку при отсутствии имени или дублировании.",
+        "parameters": [
+          {
+            "name": "module",
+            "type": "object",
+            "notes": "Должен содержать обязательное свойство name."
+          }
+        ]
+      },
+      {
+        "name": "unregisterModule",
+        "description": "Удаляет модуль по имени: вызывает его destroy(), убирает из хранилища модулей и плагинов и эмитит событие.",
+        "parameters": [
+          {
+            "name": "name",
+            "type": "string",
+            "notes": "Имя модуля для отписки."
+          }
+        ]
+      },
+      {
+        "name": "_detectCircularDependencies",
+        "description": "Рекурсивно проверяет на наличие циклических зависимостей между модулями, бросает ошибку при обнаружении.",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "type": "string",
+            "notes": "Имя проверяемого модуля."
+          },
+          {
+            "name": "visited",
+            "type": "Set",
+            "notes": "Набор уже посещенных при рекурсии модулей."
+          }
+        ]
+      },
+      {
+        "name": "initialize",
+        "description": "Инициализирует все зарегистрированные модули и их плагины в порядке зависимостей, кидает и откатывает все при ошибке.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "any",
+            "notes": "Инстанс приложения."
+          },
+          {
+            "name": "store",
+            "type": "any",
+            "notes": "Стор для состояния."
+          },
+          {
+            "name": "router",
+            "type": "any",
+            "notes": "Роутер приложения."
+          },
+          {
+            "name": "options",
+            "type": "object",
+            "notes": "Опции для отдельных модулей по имени."
+          }
+        ]
+      },
+      {
+        "name": "destroy",
+        "description": "Очищает все модули и плагины, вызывает destroy() у каждого модуля и уничтожает шину событий.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "createEventBus",
+        "source": "внутренняя утилита фреймворка",
+        "notes": "Создает шину событий для модуля manager."
+      },
+      {
+        "module": "Map",
+        "source": "стандартный JS",
+        "notes": "Используется для хранения модулей и плагинов."
+      }
+    ],
+    "Usage": "import { createModuleManager } from 'modules/core/classes/module-manager';\nconst moduleManager = createModuleManager();\nmoduleManager.registerModule(myModule);\nawait moduleManager.initialize(app, store, router, { MyModule: { /* опции */ } });",
+    "Importance": 5,
+    "Notes": [
+      "Имеет встроенную проверку циклических зависимостей перед инициализацией.",
+      "При ошибке инициализации выполняет откат через destroy() у всех модулей.",
+      "Плагины могут быть ассоциированы с модулем по тому же имени и инициализируются после основного модуля.",
+      "Метод _detectCircularDependencies помечен как приватный (начинается с '_')."
+    ]
+  }
+}

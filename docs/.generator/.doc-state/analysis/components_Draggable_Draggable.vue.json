@@ -1,0 +1,82 @@
+{
+  "path": "../../src/components/Draggable/Draggable.vue",
+  "relativePath": "components/Draggable/Draggable.vue",
+  "type": "source",
+  "name": "Draggable.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Компонент Draggable предоставляет контейнер для drag-and-drop (мышью и тачем) элементов списка. Он оборачивает слот-контент, отслеживает начало и конец перетаскивания, уведомляет родительский компонент о необходимости обновить порядок элементов и эмитит события start/end.",
+    "purpose": "Обеспечить в проекте универсальный механизм перестановки элементов списка с помощью drag-and-drop или touch-событий, с возможностью помечать некоторые элементы как недоступные для перетаскивания.",
+    "components": [
+      {
+        "name": "Draggable",
+        "type": "Vue-компонент",
+        "responsibility": "Оборачивает произвольные дочерние элементы, добавляет к ним логику перетаскивания и генерирует события для изменения порядка."
+      }
+    ],
+    "functions": [
+      {
+        "name": "handleDragStart",
+        "params": [
+          "e: DragEvent"
+        ],
+        "description": "Обрабатывает начало drag-события: проверяет целевой элемент, запрещает перетаскивание для элементов с disabledClass, запоминает индекс и эмитит событие 'start'."
+      },
+      {
+        "name": "handleDragOver",
+        "params": [
+          "e: DragEvent"
+        ],
+        "description": "Отменяет дефолтное поведение при dragover, чтобы разрешить drop."
+      },
+      {
+        "name": "handleDrop",
+        "params": [
+          "e: DragEvent"
+        ],
+        "description": "Обрабатывает drop: определяет конечный индекс, проверяет валидность перемещения, переставляет элементы в копии списка, эмитит 'update:list' и 'end'."
+      },
+      {
+        "name": "handleTouchStart",
+        "params": [
+          "e: TouchEvent"
+        ],
+        "description": "Начало тач-перетаскивания: аналогично handleDragStart, но без dataTransfer."
+      },
+      {
+        "name": "handleTouchMove",
+        "params": [
+          "e: TouchEvent"
+        ],
+        "description": "Отменяет дефолтное поведение на touchmove, чтобы избежать скролла."
+      },
+      {
+        "name": "handleTouchEnd",
+        "params": [
+          "e: TouchEvent"
+        ],
+        "description": "Завершение тач-перетаскивания: вычисляет конечный элемент по координатам, выполняет перестановку аналогично handleDrop, эмитит 'update:list' и 'end'."
+      },
+      {
+        "name": "isInvalidMove",
+        "params": [
+          "start: number",
+          "end: number"
+        ],
+        "description": "Проверяет, не является ли целевая позиция индексом элемента с disabledClass."
+      }
+    ],
+    "dependencies": [
+      "vue (ref, onMounted, defineProps, defineEmits)"
+    ],
+    "usage": "Импортируется и регистрируется в родительском компоненте: \nimport Draggable from 'components/Draggable/Draggable.vue';\n\n<Draggable :list=\"myList\" @update:list=\"onListUpdate\" @start=\"onDragStart\" @end=\"onDragEnd\">\n  <div\n    v-for=\"(item, index) in myList\"\n    :key=\"item.id\"\n    class=\"draggable-item\"\n    :data-index=\"index\"\n    draggable\n  >\n    {{ item.name }}\n  </div>\n</Draggable>\n\nВажно: дочерние элементы должны иметь класс 'draggable-item', атрибут data-index и draggable.",
+    "importance": 4,
+    "notes": [
+      "Поддерживает как мышь (drag&drop), так и тач-устройства.",
+      "Запрещает перемещение для элементов, отмеченных props.disabledClass.",
+      "При обновлении порядка создаёт shallow-копию списка, сохраняя неизменяемость исходного props.list.",
+      "Эмитит три события: 'start' (начало), 'update:list' (новый массив) и 'end' (конец перетаскивания).",
+      "CSS-класс .draggable-container задаёт вертикальное flex-расположение слотов."
+    ]
+  }
+}

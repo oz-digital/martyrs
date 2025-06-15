@@ -1,0 +1,46 @@
+{
+  "path": "../../src/modules/governance/views/components/blocks/CardTaskItem.vue",
+  "relativePath": "modules/governance/views/components/blocks/CardTaskItem.vue",
+  "type": "source",
+  "name": "CardTaskItem.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue.js single-file component that renders a task object as a styled card, displaying its name, description, status, and assignee.",
+    "Purpose": "Provide a reusable, presentational block in the governance module for displaying individual task details in a card format.",
+    "Components": [
+      {
+        "name": "CardTaskItem",
+        "responsibility": "Accepts a `task` prop and renders its properties (name, description, status, assignedTo) in a card layout."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare and validate incoming component props.",
+        "parameters": [
+          {
+            "name": "task",
+            "type": "Object",
+            "required": true,
+            "description": "The task data to display, must include name, description, status, assignedTo fields."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Imported into a parent Vue component (e.g. in modules/governance/views) and used in the template as `<CardTaskItem :task=\"someTaskObject\" />`.",
+    "Importance": 3,
+    "Notes": [
+      "No local `<style>` block; relies on global or parent styles for `.card` class.",
+      "Stateless and purely presentational—no reactive data or methods beyond prop usage.",
+      "Can be extended with slots or additional styling if needed."
+    ]
+  }
+}

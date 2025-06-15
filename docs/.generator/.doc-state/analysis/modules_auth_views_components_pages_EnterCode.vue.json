@@ -1,0 +1,67 @@
+{
+  "path": "../../src/modules/auth/views/components/pages/EnterCode.vue",
+  "relativePath": "modules/auth/views/components/pages/EnterCode.vue",
+  "type": "source",
+  "name": "EnterCode.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for entering and validating a 4-digit two-factor authentication code, handling user input, focus navigation between inputs, code validation, error reporting, and code resend timer.",
+    "Purpose": "Provides the UI and logic in the authentication flow where the user must enter a verification code sent via SMS or email, and optionally resend that code if necessary.",
+    "Components": [
+      {
+        "name": "EnterCode (this component)",
+        "role": "Renders the code-entry form with four inputs, handles all related logic and navigation."
+      },
+      {
+        "name": "Field",
+        "role": "Imported reusable input component (not currently used in the template but available for future form-field abstraction)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "sendAgain",
+        "purpose": "Requests a new verification code from the server, starts a 30-second countdown during which the resend link is disabled.",
+        "params": []
+      },
+      {
+        "name": "onKeyDown",
+        "purpose": "Listens for Backspace in an empty input to move focus to the previous input field.",
+        "params": [
+          "event: KeyboardEvent",
+          "index: Number"
+        ]
+      },
+      {
+        "name": "onInput",
+        "purpose": "Handles digit entry, moves focus forward or backward, and when all four digits are entered compares the joined code against the stored code; on success navigates to the next step, on failure resets inputs and reports an error.",
+        "params": [
+          "index: Number"
+        ]
+      },
+      {
+        "name": "watch on state.digits[0]",
+        "purpose": "Detects if the user pasted or typed more than one digit into the first input, splits that string into individual digits and distributes them across the four fields, then triggers the onInput handler on the last field.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (reactive, ref, watch, onMounted, onBeforeMount, computed)",
+      "vue-router (useRoute, useRouter)",
+      "vue-i18n (useI18n)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/auth/views/store/twofa.js",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/auth/views/localization/EnterCode.json"
+    ],
+    "Usage": "Registered as the view for the '/auth/enter-code' route in the auth module. Imported dynamically by the router when the user arrives at the two-factor code entry step.",
+    "Importance": 3,
+    "Notes": [
+      "No dedicated <style> section; relies on global utility classes for layout and spacing.",
+      "The Field component is imported but not used in the current template—could be legacy or placeholder for future refactoring.",
+      "The onPaste handler is commented out; multi-digit paste is partially supported via the watcher on the first input.",
+      "Error reporting is delegated to the global store via setError, using error codes: CODE_NOT_SENT, WRONG_CODE.",
+      "Uses direct DOM queries (document.querySelectorAll) for input navigation rather than Vue refs for each element."
+    ]
+  }
+}

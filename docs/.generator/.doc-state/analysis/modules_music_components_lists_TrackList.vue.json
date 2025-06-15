@@ -1,0 +1,121 @@
+{
+  "path": "../../src/modules/music/components/lists/TrackList.vue",
+  "relativePath": "modules/music/components/lists/TrackList.vue",
+  "type": "source",
+  "name": "TrackList.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "TrackList.vue is a Vue 3 component that renders a scrollable list of audio tracks with play/pause controls, hover effects, optional headers, album covers, and links to artist/album detail pages.",
+    "Purpose": "Provide a reusable UI widget for displaying and controlling playback of a list of tracks within the Martyrs-based music application.",
+    "Components": [
+      {
+        "name": "TrackList (this component)",
+        "responsibility": "Main container rendering the list, handling user interactions (play, pause, hover) and delegating actions to the player store."
+      },
+      {
+        "name": "Media",
+        "importPath": "@martyrs/src/components/Media/Media.vue",
+        "responsibility": "Render album/track cover images with object-fit styling."
+      },
+      {
+        "name": "Button",
+        "importPath": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Generic button wrapper used for play/pause icons with configurable loader/success states."
+      },
+      {
+        "name": "IconPlay",
+        "importPath": "@martyrs/src/modules/icons/navigation/IconPlay.vue",
+        "responsibility": "SVG icon for the play button."
+      },
+      {
+        "name": "IconPause",
+        "importPath": "@martyrs/src/modules/icons/navigation/IconPause.vue",
+        "responsibility": "SVG icon for the pause button."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "isPlaying",
+        "description": "Returns true if the given track is the current one playing in the store.",
+        "parameters": [
+          {
+            "name": "track",
+            "type": "Object",
+            "description": "Track object to test."
+          }
+        ]
+      },
+      {
+        "name": "isHovering",
+        "description": "Checks if the user’s mouse is currently over the track item at the given index.",
+        "parameters": [
+          {
+            "name": "index",
+            "type": "Number",
+            "description": "Index of the track item."
+          }
+        ]
+      },
+      {
+        "name": "playTrack",
+        "description": "Dispatches an action to play the selected track or add it to the queue.",
+        "parameters": [
+          {
+            "name": "track",
+            "type": "Object",
+            "description": "Track object to play or queue."
+          },
+          {
+            "name": "addToQueue",
+            "type": "Boolean",
+            "description": "If true, adds to queue; otherwise starts playing from this track within the current list."
+          }
+        ]
+      },
+      {
+        "name": "pauseTrack",
+        "description": "Toggles playback state (play/pause) via the player store.",
+        "parameters": []
+      },
+      {
+        "name": "getArtistName",
+        "description": "Safely extracts and returns the artist’s display name or 'Unknown Artist'.",
+        "parameters": [
+          {
+            "name": "track",
+            "type": "Object",
+            "description": "Track object that may contain artist info."
+          }
+        ]
+      },
+      {
+        "name": "formatDuration",
+        "description": "Formats a duration in seconds into M:SS string format.",
+        "parameters": [
+          {
+            "name": "seconds",
+            "type": "Number",
+            "description": "Track duration in seconds."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed)",
+      "@martyrs/src/components/Media/Media.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlay.vue",
+      "@martyrs/src/modules/icons/navigation/IconPause.vue",
+      "../../store/player.js (playerState, playerActions)",
+      "vue-router (router-link)"
+    ],
+    "Usage": "Import and use as <TrackList :tracks=\"arrayOfTracks\" :showHeader=\"true\" :showAlbum=\"false\" :showCover=\"true\" /> in any parent component or page template that needs to display a playlist or album track listing.",
+    "Importance": 4,
+    "Notes": [
+      "The computed isPlaying function references itself in its return expression, which appears to be a bug; it should likely reference a boolean 'isPlaying' state from the store instead.",
+      "Uses @click.stop on nested Buttons and router-links to prevent event propagation to the parent track-item click handler.",
+      "Scoped CSS only defines a transition on .track-item; rest of styling relies on global utility classes.",
+      "Tracks without album or artist data gracefully fall back to placeholder text or images."
+    ]
+  }
+}

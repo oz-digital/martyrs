@@ -1,0 +1,148 @@
+{
+  "section": {
+    "id": "source-modules-auth",
+    "title": "Проект: Модули / Аутентификация",
+    "description": "Модуль аутентификации реализует регистрацию, вход, сброс пароля, двухфакторную аутентификацию и управление пользователями. Состоит из клиентских и серверных компонентов, middleware, сервисов и маршрутов.",
+    "subsections": [
+      {
+        "id": "auth-client-server",
+        "title": "Клиент и сервер аутентификации",
+        "description": "Файлы для клиентской и серверной логики аутентификации."
+      },
+      {
+        "id": "middlewares",
+        "title": "Промежуточные обработчики (Middleware)",
+        "description": "Модули для проверки JWT, секретов, приглашений, регистрации, пользователей и логирования посетителей."
+      },
+      {
+        "id": "auth-routes",
+        "title": "Маршруты",
+        "description": "Роутеры для обработки запросов, связанных с аутентификацией и пользователями.",
+        "files": [
+          "router/auth.js",
+          "router/users.js"
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Сервисы",
+        "description": "Содержат бизнес-логику для аутентификации, двухфакторной аутентификации и работы с пользователями."
+      },
+      {
+        "id": "auth-models",
+        "title": "Модели данных",
+        "description": "Содержит схемы и модели для пользователей, ролей, запросов и посетителей.",
+        "files": [
+          "models/request.model.js",
+          "models/role.model.js",
+          "models/user.model.js",
+          "models/visitor.model.js"
+        ]
+      },
+      {
+        "id": "auth-middlewares-validations",
+        "title": "Мидлвары и валидации",
+        "description": "Мидлвары для проверки прав, валидации данных и контроля доступа.",
+        "files": [
+          "middlewares/auth.validation.js",
+          "middlewares/ownership.validation.js",
+          "validations/inputs.validation.js"
+        ]
+      },
+      {
+        "id": "auth-store",
+        "title": "Хранилище состояния",
+        "description": "Модули для управления состоянием аутентификации, пользователей и двухфакторной авторизации.",
+        "files": [
+          "store/auth.js",
+          "store/twofa.js",
+          "store/users.js"
+        ]
+      },
+      {
+        "id": "auth-utils",
+        "title": "Утилиты",
+        "description": "Вспомогательные функции для проверки токенов и других задач.",
+        "files": [
+          "utils/verifyAppleIdToken.js"
+        ]
+      },
+      {
+        "id": "auth-ui",
+        "title": "Компоненты интерфейса",
+        "description": "Vue-компоненты для отображения информации о пользователях и страниц аутентификации.",
+        "files": [
+          "blocks/CardUser.vue",
+          "layouts/Auth.vue"
+        ]
+      },
+      {
+        "id": "auth-pages-signin-signup",
+        "title": "Страницы входа и регистрации",
+        "description": "Компоненты для входа, регистрации, ввода кода, пароля и восстановления доступа.",
+        "files": [
+          "pages/SignIn.vue",
+          "pages/SignUp.vue",
+          "pages/EnterCode.vue",
+          "pages/EnterPassword.vue",
+          "pages/ResetPassword.vue",
+          "pages/Invite.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "05d45bec1071fec37f2cc4b827b69640",
+    "0fa96244a0168ba48c0e30c41923ac49",
+    "120694510920d965cf87b076d2375726",
+    "122933c3a2948dd346e0ab27888ef2aa",
+    "18ba7a7e669a3ddce0621fb45198c7a6",
+    "1e65a1c41b22cb216138ee3655bcb472",
+    "211abe9bf70c83ca0e6cc9bc9b0872f5",
+    "23257b1b79716019ddfc6af53ea11c4c",
+    "2cd588f36802f5b2945ad75e7a24f796",
+    "2f2bbc9eef8a82ea592c93f6c1b9435a",
+    "2f55f483db70e013a37c38b34877e34b",
+    "346f9af4a3837c343db4ac3e4ff528eb",
+    "3ed74ab2a4665e656917893ff3f15a86",
+    "4c7ba7b4324d9eeab5e406317a1f86f0",
+    "51c1accdb8ea29dc42306c912a6bd8d1",
+    "5370ad15206dedc06396d0e8ffdbdaf0",
+    "5c33f353edf1b691d353e599502db610",
+    "5c8648d12a1f1da8d7eb2c3b7cd201ee",
+    "5ca22ef18e6da0082251dc8b6fbe7034",
+    "63e9fcad2b59aaa23ffefe136da133ea",
+    "6636cc09d14829cd7c9906ae4ff644c9",
+    "6fda162b501a34849a37fcd6a14e4a55",
+    "6fec2e564428181c71a523e17242432e",
+    "7203d306d0b013f5a3d00cad6aa18a1b",
+    "7336e0034776307393aa4497390b866c",
+    "7693793ca1cc73f304a6ed2989f8c3e3",
+    "795851784ba34a918eeb16be4c96e0e4",
+    "81e55c92c08789c803b6063d65c06d52",
+    "8d1122437a981342d5af23a51415b823",
+    "9380aadffe48d94f2856f0a1445c2bb3",
+    "9c49a12a60c252b8e494d00d37db4b45",
+    "9fa30ae09a681951c5e769eba761c3aa",
+    "a20145d033cc3656c3b60286a9c060f8",
+    "a85eed92f31167c564701ff0075c7cb4",
+    "ae28c79c800dd5adc8f3ba0931286639",
+    "b3fc07ddcddaa70b83a1d51216e88207",
+    "b4c607fd6f953b8918f4af7b3269d23d",
+    "bb347ee207edfbd5cd127f44332c2d74",
+    "be8726f032ffd812c905178e6eb01e99",
+    "bee3093bca44157c90bacefd5256b609",
+    "c859851c53c407e8cc3a88b4bc911ec9",
+    "c9586437513fbcce89161c89cb85cbde",
+    "c9e2f17fe24c1483548adf6bb61bc86a",
+    "d02a8979627779c7bd521328b4843107",
+    "d20ef0f8391208f6b6481de7203bf831",
+    "d61feeb0ebd122c0d7e3853d9d40c738",
+    "e711601b819807853ad7708d66a14b66",
+    "e982b431557fa808a630e4e01984fcf8",
+    "ea2ff8d6595a71377b23403ded73c855",
+    "f5b6691d338140a46f837dad9d0b26f2"
+  ],
+  "groupHash": "218e82be1f453afcafd8f6d6b0f754c2",
+  "generated": "2025-06-05T09:18:10.189Z"
+}

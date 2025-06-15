@@ -1,0 +1,49 @@
+{
+  "path": "../../src/components/Countdown/Countdown.vue",
+  "relativePath": "components/Countdown/Countdown.vue",
+  "type": "source",
+  "name": "Countdown.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that displays a live countdown (days, hours, minutes, seconds) to a target date, and shows an \"Offer is over\" message when the countdown reaches zero.",
+    "Purpose": "Provide a reusable countdown timer UI element in the project, driven by a `date` prop, to indicate time left until a given event or deadline.",
+    "Components": [
+      {
+        "name": "Countdown",
+        "responsibilities": [
+          "Render the countdown UI (days, hours, minutes, seconds).",
+          "Manage the timing logic (calculate remaining time at 1-second intervals).",
+          "Switch to an \"Offer is over\" state once the target date is reached."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "calculateTime",
+        "description": "Compute the difference between the current time and the target date, update reactive refs for days, hours, minutes, seconds, and set the `isTimeOver` flag when the countdown ends.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted callback",
+        "description": "Start a setInterval timer that updates `currentDate` every second and calls `calculateTime`.",
+        "parameters": []
+      },
+      {
+        "name": "onBeforeUnmount callback",
+        "description": "Clear the interval timer to avoid memory leaks when the component is destroyed.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, onBeforeUnmount, defineProps)"
+    ],
+    "Usage": "Import and register the component in a parent Vue file, then use `<Countdown date=\"2024-12-31T23:59:59Z\" />` (or any ISO date string) in the template to render the timer.",
+    "Importance": 3,
+    "Notes": [
+      "The component does not watch for changes to the `date` prop — if the prop changes after mount, the targetDate is not updated.",
+      "No dedicated <style> section is provided; styling relies on global utility classes.",
+      "Interval is cleared both when countdown ends and on component unmount to prevent orphaned timers.",
+      "All time calculations use direct arithmetic on milliseconds; be mindful of potential timezone discrepancies if the input date is not in UTC."
+    ]
+  }
+}

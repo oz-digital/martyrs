@@ -1,0 +1,145 @@
+{
+  "path": "../../src/modules/notifications/services/notification.service.js",
+  "relativePath": "modules/notifications/services/notification.service.js",
+  "type": "source",
+  "name": "notification.service.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует сервис уведомлений для обработки и маршрутизации сообщений пользователям через различные каналы (websocket, push, email, SMS и др.). Он регистрируется в WebSocket-сервере, получает из базы очередные уведомления, определяет предпочтения пользователя и отправляет уведомления по соответствующим каналам с последующим логированием статуса.",
+    "Purpose": "Обеспечить централизованную логику отправки уведомлений пользователям проекта, абстрагируя разные транспортные каналы (web, push, email, sms, telegram, whatsapp) и учитывая пользовательские настройки.",
+    "Components": [
+      {
+        "name": "processNotification",
+        "role": "Основная функция для обработки одного уведомления: получение предпочтений, определение каналов, отправка и логирование результата."
+      },
+      {
+        "name": "processPendingNotifications",
+        "role": "Функция для выборки пачки уведомлений со статусом \"pending\" и последовательной обработки через processNotification."
+      },
+      {
+        "name": "sendWebNotification",
+        "role": "Отправляет уведомление по WebSocket через зарегистрированный модуль 'notification'."
+      },
+      {
+        "name": "sendPushNotification",
+        "role": "Отправляет пуш-уведомление на мобильное устройство, выбирая сервис по типу устройства."
+      },
+      {
+        "name": "getPushServiceByDeviceType",
+        "role": "Утилита для выбора между APNS, FCM и WebPush в зависимости от deviceType."
+      },
+      {
+        "name": "sendEmailNotification",
+        "role": "Отправляет письмо через emailService."
+      },
+      {
+        "name": "sendSmsNotification",
+        "role": "Отправляет SMS через smsService."
+      },
+      {
+        "name": "sendTelegramNotification",
+        "role": "Заготовка для отправки уведомлений в Telegram (пока не включен в основной роутер)."
+      },
+      {
+        "name": "sendWhatsAppNotification",
+        "role": "Заготовка для отправки уведомлений в WhatsApp (пока не включен в основной роутер)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "processNotification",
+        "parameters": [
+          "notification"
+        ],
+        "description": "Обрабатывает одно уведомление: читает предпочтения, получает данные пользователя и устройств, маршрутизирует уведомление по каналам, обновляет статус и логирует результат."
+      },
+      {
+        "name": "processPendingNotifications",
+        "parameters": [],
+        "description": "Загружает ограниченную пачку (limit=100) уведомлений со статусом 'pending' и обрабатывает каждое через processNotification."
+      },
+      {
+        "name": "sendWebNotification",
+        "parameters": [
+          "notification",
+          "user"
+        ],
+        "description": "Отправляет real-time оповещение пользователю через WebSocket."
+      },
+      {
+        "name": "sendPushNotification",
+        "parameters": [
+          "notification",
+          "user",
+          "device"
+        ],
+        "description": "Отправляет push-уведомление на определённое устройство пользователя."
+      },
+      {
+        "name": "getPushServiceByDeviceType",
+        "parameters": [
+          "deviceType"
+        ],
+        "description": "Возвращает инстанс push-сервиса (apns, fcm или webPush) в зависимости от типа устройства."
+      },
+      {
+        "name": "sendEmailNotification",
+        "parameters": [
+          "notification",
+          "user"
+        ],
+        "description": "Формирует и отправляет email-уведомление."
+      },
+      {
+        "name": "sendSmsNotification",
+        "parameters": [
+          "notification",
+          "user"
+        ],
+        "description": "Формирует и отправляет SMS-уведомление."
+      },
+      {
+        "name": "sendTelegramNotification",
+        "parameters": [
+          "notification",
+          "user"
+        ],
+        "description": "Формирует и отправляет сообщение в Telegram. На данный момент функция не задействована."
+      },
+      {
+        "name": "sendWhatsAppNotification",
+        "parameters": [
+          "notification",
+          "user"
+        ],
+        "description": "Формирует и отправляет сообщение в WhatsApp. На данный момент функция не задействована."
+      }
+    ],
+    "Dependencies": [
+      "mongoose (Types.ObjectId)",
+      "./apns.service.js",
+      "./email.service.js",
+      "./fcm.service.js",
+      "./sms.service.js",
+      "./telegram.service.js",
+      "./web-push.service.js",
+      "./whatsapp.service.js",
+      "db.notificationPreference",
+      "db.mongoose.model('User')",
+      "db.userDevice",
+      "db.notification",
+      "db.notificationLog",
+      "wss (WebSocketServer)"
+    ],
+    "Usage": "Импортируется и инициализируется при старте приложения: const notificationService = require('notification.service.js')(db, wss). После чего из возвращённого объекта вызывают processPendingNotifications (например, по расписанию) и processNotification вручную при создании нового уведомления.",
+    "Importance": 4,
+    "Notes": [
+      "Web-канал всегда включён по умолчанию.",
+      "Email и SMS добавляются в каналы по наличию user.email и user.phoneNumber.",
+      "Пользовательские настройки каналов переопределяют дефолтный набор.",
+      "Telegram и WhatsApp-функции закомментированы в основном роутере, готовы к расширению.",
+      "При ошибках отправки создаются записи в notificationLog со статусом 'failed'.",
+      "Лимит на пакетную обработку — 100 уведомлений за запуск."
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "path": "../../src/modules/wallet/controllers/routes/rewards.routes.js",
+  "relativePath": "modules/wallet/controllers/routes/rewards.routes.js",
+  "type": "source",
+  "name": "rewards.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл настраивает HTTP-роуты для работы с крипто-вознаграждениями, депозитами и сбором токенов, применяя CORS- и аутентификационные middlewares.",
+    "Purpose": "Обеспечить в рамках модуля «wallet» эндпоинты для получения списка вознаграждений, сбора токенов, управления депозитами и получения конфигурации депозита.",
+    "Components": [
+      {
+        "name": "default export (routes initializer)",
+        "responsibility": "Функция, принимающая app, db, wss, wdmClient и origins, и настраивающая набор маршрутов и middleware."
+      },
+      {
+        "name": "CORS middleware",
+        "responsibility": "Разрешает междоменные запросы с указанных в origins источников и добавляет заголовок Access-Control-Allow-Headers."
+      },
+      {
+        "name": "Auth middlewares",
+        "responsibility": "Проверка JWT-токена (authJwt.verifyToken) и проверка секретного ключа (authSecret.verifySecret) для защищённых эндпоинтов."
+      },
+      {
+        "name": "Controller",
+        "responsibility": "Объект с методами для обработки запросов (listRewards, collectTokens и т.д.), создаётся фабрикой rewardsControllerFactory."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "anonymous default export",
+        "purpose": "Инициализирует все маршруты и middleware для управления вознаграждениями и депозитами",
+        "parameters": [
+          "app — экземпляр Express-подобного приложения",
+          "db — объект подключения к БД",
+          "wss — WebSocket сервер",
+          "wdmClient — клиент внешнего WDM-сервиса",
+          "origins — список разрешённых CORS-источников"
+        ]
+      },
+      {
+        "name": "CORS middleware (app.use callback)",
+        "purpose": "Устанавливает Access-Control-Allow-Origin и Access-Control-Allow-Headers",
+        "parameters": [
+          "req — HTTP-запрос",
+          "res — HTTP-ответ",
+          "next — функция продолжения цепочки middleware"
+        ]
+      },
+      {
+        "name": "app.get('/api/crypto/rewards')",
+        "purpose": "Возвращает список доступных вознаграждений",
+        "parameters": [
+          "authJwt.verifyToken — middleware проверки JWT",
+          "controller.listRewards — обработчик"
+        ]
+      },
+      {
+        "name": "app.post('/api/crypto/collect')",
+        "purpose": "Инициирует сбор токенов пользователем",
+        "parameters": [
+          "authJwt.verifyToken",
+          "controller.collectTokens"
+        ]
+      },
+      {
+        "name": "app.post('/api/crypto/deposit')",
+        "purpose": "Запрос на создание депозита",
+        "parameters": [
+          "authJwt.verifyToken",
+          "controller.requestDeposit"
+        ]
+      },
+      {
+        "name": "app.post('/api/crypto/deposit/cancel')",
+        "purpose": "Отмена ранее созданного депозита",
+        "parameters": [
+          "authJwt.verifyToken",
+          "controller.cancelDeposit"
+        ]
+      },
+      {
+        "name": "app.post('/api/crypto/deposit/update')",
+        "purpose": "Внешний callback для обновления статуса депозита",
+        "parameters": [
+          "authSecret.verifySecret('POST','/api/crypto/deposit/update', process.env.WDM_SECRET)",
+          "controller.handleDepositUpdate"
+        ]
+      },
+      {
+        "name": "app.get('/api/crypto/deposit/config')",
+        "purpose": "Получение текущей конфигурации депозитов",
+        "parameters": [
+          "controller.getDepositConfig"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+        "imported": [
+          "middlewareFactoryAuth"
+        ]
+      },
+      {
+        "module": "../factories/rewards.factory.js",
+        "imported": [
+          "rewardsControllerFactory"
+        ]
+      },
+      {
+        "module": "process.env.WDM_SECRET",
+        "imported": "Переменная окружения для проверки секретного ключа"
+      }
+    ],
+    "Usage": "В основном импортируется и вызывается из точки инициализации HTTP-сервера (например, в app.js или server.js), куда передаются экземпляры app, db, wss, wdmClient и массив origins для настройки маршрутов.",
+    "Importance": 4,
+    "Notes": [
+      "Используется два уровня аутентификации: JWT для операций пользователя и секретный ключ для внешнего callback от WDM.",
+      "Фабрика контроллера позволяет иметь тесно связанную логику с доступом к базе и WebSocket.",
+      "CORS-настройки здесь применяются перед всеми маршрутами, что важно для клиентских приложений с разных доменов."
+    ]
+  }
+}

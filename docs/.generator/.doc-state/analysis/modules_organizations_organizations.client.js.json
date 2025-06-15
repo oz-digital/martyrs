@@ -1,0 +1,126 @@
+{
+  "path": "../../src/modules/organizations/organizations.client.js",
+  "relativePath": "modules/organizations/organizations.client.js",
+  "type": "source",
+  "name": "organizations.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file serves as the entry point for the \"organizations\" feature module. It imports Vuex store modules, a Vue router definition, and a set of Vue components (pages, blocks, sections, elements). It defines and exports an initialization function that registers stores and routes, and it bundles all pieces into a default module object for the Martyrs application framework.",
+    "Purpose": "To centralize and expose all organization-related stores, routes, and UI components, and to provide an initialize method for integrating the organizations module into the main application.",
+    "Components": [
+      {
+        "name": "ModuleOrganization",
+        "type": "Object",
+        "responsibility": "Module descriptor containing initialization logic and a registry of all stores, router definitions, and components."
+      },
+      {
+        "name": "initializeOrganization",
+        "type": "Function",
+        "responsibility": "Entry-point function that attaches the organizations route and registers all related Vuex store modules."
+      },
+      {
+        "name": "storeDepartments",
+        "type": "Vuex Store Module",
+        "responsibility": "Manages state, actions, mutations, and getters for organization departments."
+      },
+      {
+        "name": "storeInvites",
+        "type": "Vuex Store Module",
+        "responsibility": "Handles invitation-related state and logic."
+      },
+      {
+        "name": "storeMemberships",
+        "type": "Vuex Store Module",
+        "responsibility": "Tracks membership data and operations."
+      },
+      {
+        "name": "storeOrganizations",
+        "type": "Vuex Store Module",
+        "responsibility": "Maintains the list of organizations and their metadata."
+      },
+      {
+        "name": "routerOrganization",
+        "type": "Vue Router Definition",
+        "responsibility": "Defines the child routes for organization-related pages."
+      },
+      {
+        "name": "Pages",
+        "type": "Vue Components",
+        "responsibility": "Top-level views: Department, DepartmentEdit, Organization, OrganizationEdit, Organizations."
+      },
+      {
+        "name": "Blocks",
+        "type": "Vue Components",
+        "responsibility": "Reusable UI blocks: CardDepartment, CardOrganization, Contacts, DepartmentSub, EditArray, EmptyState, Rating, Socials, Unit."
+      },
+      {
+        "name": "Sections",
+        "type": "Vue Components",
+        "responsibility": "Page sections: DetailsTabSection, Documents, MembersAdd, OrganizationsSection, Publics."
+      },
+      {
+        "name": "Elements",
+        "type": "Vue Components",
+        "responsibility": "Standalone elements: ButtonToggleMembership."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeOrganization",
+        "description": "Registers the organizations route in the router and adds the four Vuex store modules to the application's store.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "The main Martyrs/Vue application instance."
+          },
+          {
+            "name": "store",
+            "type": "Object",
+            "description": "The Vuex store manager where modules will be registered."
+          },
+          {
+            "name": "router",
+            "type": "Object",
+            "description": "The Vue Router instance to which new routes are added."
+          },
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Optional settings; currently supports a custom base route name (default: 'Home')."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "./store/departments.js",
+      "./store/invites.js",
+      "./store/memberships.js",
+      "./store/organizations.js",
+      "./router/organizations.js",
+      "./components/pages/Department.vue",
+      "./components/pages/DepartmentEdit.vue",
+      "./components/pages/Organization.vue",
+      "./components/pages/OrganizationEdit.vue",
+      "./components/pages/Organizations.vue",
+      "./components/blocks/CardDepartment.vue",
+      "./components/blocks/CardOrganization.vue",
+      "./components/blocks/Contacts.vue",
+      "./components/blocks/DepartmentSub.vue",
+      "./components/blocks/EditArray.vue",
+      "./components/blocks/EmptyState.vue",
+      "./components/blocks/Rating.vue",
+      "./components/blocks/Socials.vue",
+      "./components/blocks/Unit.vue",
+      "./components/sections/DetailsTabSection.vue",
+      "./components/sections/Documents.vue",
+      "./components/sections/MembersAdd.vue",
+      "./components/sections/Organizations.vue",
+      "./components/sections/Publics.vue",
+      "./components/elements/ButtonToggleMembership.vue"
+    ],
+    "Usage": "Import the default ModuleOrganization into the main application bootstrap. Call ModuleOrganization.initialize(app, store, router, options) to wire up routes and stores. Optionally, import individual components or store modules for more granular use.",
+    "Importance": 4,
+    "Notes": "This module follows the Martyrs pattern: a self-contained feature bundle. The initialize function assumes that the app's store manager supports addStore(), and the router supports addRoute(). All UI components are grouped for both named and default exports, facilitating lazy loading or direct import."
+  }
+}

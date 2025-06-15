@@ -1,0 +1,49 @@
+{
+  "path": "../../src/modules/rents/models/rent.model.js",
+  "relativePath": "modules/rents/models/rent.model.js",
+  "type": "source",
+  "name": "rent.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and registers a Mongoose model for rental records (‘Rent’), including fields for order, product, quantity, dates, status, creator/owner metadata, comments, and dynamic extra fields.",
+    "Purpose": "To represent and persist rental transactions in the database, capturing all necessary relations and state transitions for the rent lifecycle.",
+    "Components": [
+      {
+        "name": "RentSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Describes the shape of a Rent document, its fields, types, defaults, validation rules, enums, and relations to other collections."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Factory function that takes a database context and optional extra schema fields, builds the RentSchema, and registers the ‘Rent’ model.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Database context containing a Mongoose instance under `db.mongoose`."
+          },
+          {
+            "name": "additionalFields",
+            "type": "Object",
+            "description": "Optional map of extra schema definitions to merge into the RentSchema."
+          }
+        ],
+        "returns": "A Mongoose Model named 'Rent'."
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose (Schema, model)",
+      "Order (via ref 'Order')",
+      "Product (via ref 'Product')"
+    ],
+    "Usage": "Imported and invoked during application bootstrap or model registration: const Rent = require('modules/rents/models/rent.model')(db, customFields); Then accessed elsewhere via mongoose.model('Rent') or through DI.",
+    "Importance": 3,
+    "Notes": [
+      "Allows schema extension via `additionalFields` parameter.",
+      "`creator.type` and `owner.type` enums include duplicate lowercase and uppercase values (‘user’/‘User’).",
+      "Relies on Order and Product models being registered before usage due to schema refs."
+    ]
+  }
+}

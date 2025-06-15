@@ -1,0 +1,81 @@
+{
+  "path": "../../src/modules/globals/views/components/blocks/BlockMultiselect.vue",
+  "relativePath": "modules/globals/views/components/blocks/BlockMultiselect.vue",
+  "type": "source",
+  "name": "BlockMultiselect.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "BlockMultiselect.vue реализует настраиваемый компонент мультиселекта с поиском и выпадающим списком, поддерживающий как одиночный, так и множественный выбор элементов. Компонент интегрируется с внешним источником данных через Feed и предоставляет гибкие слоты для кастомизации отображения выбранных и доступных элементов.",
+    "Purpose": "Основное назначение файла — предоставить переиспользуемый UI-компонент для выбора одного или нескольких элементов из списка с возможностью поиска. Компонент предназначен для использования в формах и интерфейсах, где требуется удобный и расширяемый механизм выбора с поддержкой асинхронной загрузки данных.",
+    "Components": [
+      {
+        "name": "BlockMultiselect",
+        "responsibility": "Главный компонент, реализующий логику мультиселекта, отображение выбранных элементов, поиск и выпадающий список."
+      },
+      {
+        "name": "BlockSearch",
+        "responsibility": "Встраиваемый компонент поиска, используемый для фильтрации элементов в выпадающем списке."
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Компонент для получения и отображения списка элементов из внешнего источника (store) с поддержкой состояния загрузки и пустого результата."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getItemKey",
+        "purpose": "Получает уникальный ключ для элемента на основе props.key (строка или функция).",
+        "params": [
+          "item"
+        ]
+      },
+      {
+        "name": "getItemLabel",
+        "purpose": "Получает отображаемое имя элемента на основе props.label (строка или функция).",
+        "params": [
+          "item"
+        ]
+      },
+      {
+        "name": "filterItems",
+        "purpose": "Фильтрует элементы, исключая уже выбранные (актуально для multiple).",
+        "params": [
+          "items"
+        ]
+      },
+      {
+        "name": "selectItem",
+        "purpose": "Обрабатывает выбор элемента: добавляет к выбранным (multiple) или заменяет (single), сбрасывает поиск, закрывает дропдаун.",
+        "params": [
+          "item"
+        ]
+      },
+      {
+        "name": "removeItem",
+        "purpose": "Удаляет элемент из выбранных по индексу (multiple).",
+        "params": [
+          "index"
+        ]
+      },
+      {
+        "name": "clearSelection",
+        "purpose": "Очищает выбор (single — null, multiple — пустой массив), сбрасывает поиск.",
+        "params": []
+      },
+      {
+        "name": "closeDropdown",
+        "purpose": "Закрывает выпадающий список.",
+        "params": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch)",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+      "@martyrs/src/components/FieldPhone/click-outside.js"
+    ],
+    "Usage": "BlockMultiselect.vue импортируется и используется в других компонентах или страницах для предоставления функционала выбора с поиском. Обычно его используют в формах, передавая необходимые props (store, options, modelValue и др.), а также могут кастомизировать отображение через слоты ('selected', 'item').",
+    "Importance": 4,
+    "Notes": "Компонент поддерживает кастомизацию через props и слоты, что делает его гибким для различных сценариев. Использует директиву v-click-outside для закрытия дропдауна при клике вне компонента. Вся логика реализована через Composition API (script setup). Нет собственной секции style — стилизация осуществляется через классы, передаваемые через props. Компонент тесно интегрирован с архитектурой martyrs, особенно с Feed и BlockSearch."
+  }
+}

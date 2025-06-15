@@ -1,0 +1,91 @@
+{
+  "path": "../../src/components/Marquee/Marquee.vue",
+  "relativePath": "components/Marquee/Marquee.vue",
+  "type": "source",
+  "name": "Marquee.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue3 component that renders a continuous scrolling marquee (horizontal or vertical) with optional cloning, gradient overlays, looping and pause/resume behavior on hover or click.",
+    "Purpose": "Provide a reusable marquee effect for any slot content in the project, configurable via props (direction, speed, delay, loops, gradient, cloning, pause behavior).",
+    "Components": [
+      {
+        "name": "Marquee",
+        "role": "Root Vue component encapsulating the marquee functionality."
+      },
+      {
+        "name": ".vue3-marquee",
+        "role": "Root CSS class controlling layout, overflow, flex direction and animation context."
+      },
+      {
+        "name": ".marquee",
+        "role": "Child container class that holds slot content and applies keyframe animation."
+      },
+      {
+        "name": ".transparent-overlay",
+        "role": "Invisible overlay used to measure container dimensions for cloning calculations."
+      },
+      {
+        "name": ".overlay",
+        "role": "Gradient overlay element applying fade-in/out masks at marquee edges."
+      },
+      {
+        "name": ".cloned",
+        "role": "Modifier class applied to cloned elements to extend the scrollable content seamlessly."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "checkForClone",
+        "description": "Periodically measures content vs. container dimensions and computes how many clones are needed to fill the scroll area.",
+        "parameters": []
+      },
+      {
+        "name": "ForcesUpdate",
+        "description": "Re-runs cloning logic and forces the marquee to re-render by bumping `componentKey`.",
+        "parameters": []
+      },
+      {
+        "name": "setupMarquee",
+        "description": "Initializes min dimensions, gradient length and cloning logic, then marks the component as ready.",
+        "parameters": []
+      },
+      {
+        "name": "hoverStarted",
+        "description": "Emits `onPause` when pauseOnHover is enabled and mouse enters.",
+        "parameters": []
+      },
+      {
+        "name": "hoverEnded",
+        "description": "Emits `onResume` when pauseOnHover is enabled and mouse leaves.",
+        "parameters": []
+      },
+      {
+        "name": "mouseDown",
+        "description": "Emits `onPause` when pauseOnClick is enabled and mouse button is pressed.",
+        "parameters": []
+      },
+      {
+        "name": "mouseUp",
+        "description": "Emits `onResume` when pauseOnClick is enabled and mouse button is released.",
+        "parameters": []
+      },
+      {
+        "name": "getCurrentStyle",
+        "description": "Computed property returning an object of CSS variable values controlling animation and gradient parameters.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, watch, onMounted, onBeforeUnmount, defineProps, defineEmits)"
+    ],
+    "Usage": "Import and register the component: `import Marquee from '@/components/Marquee/Marquee.vue'`, then use `<Marquee :duration=\"10\" loop=\"0\" gradient clone> ... </Marquee>` in templates.",
+    "Importance": 3,
+    "Notes": [
+      "Uses a 100ms setInterval inside `checkForClone` to dynamically recalculate clone count; ensure proper cleanup if the component is frequently mounted/unmounted.",
+      "CSS animations leverage custom properties (e.g. --duration, --loops, --orientation) for dynamic control.",
+      "Emits `onComplete` when the total number of loops finishes and `onLoopComplete` on each loop iteration.",
+      "Pause/resume logic is driven by CSS `animation-play-state` modifications on hover, click and via the `pause` prop.",
+      "Gradient edges are optional and configurable via `gradientColor` and `gradientLength` props."
+    ]
+  }
+}

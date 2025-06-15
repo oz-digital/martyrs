@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-marquee",
+    "title": "Проект: Компоненты / Marquee",
+    "description": "Модуль содержит компонент Marquee для отображения бегущей строки или анимационного текста.",
+    "subsections": [
+      {
+        "id": "marquee-component",
+        "title": "Marquee.vue",
+        "description": "Основной Vue-компонент для создания бегущей строки. Используется для визуального выделения информации с помощью анимации текста."
+      }
+    ]
+  },
+  "fileHashes": [
+    "a8fac339cd7d0edbe859c44eb1941bbe"
+  ],
+  "groupHash": "bc661086fe03280aa28c5f42543a330f",
+  "generated": "2025-06-05T09:16:55.949Z"
+}

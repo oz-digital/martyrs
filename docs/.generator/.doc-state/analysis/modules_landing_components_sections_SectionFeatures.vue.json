@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/landing/components/sections/SectionFeatures.vue",
+  "relativePath": "modules/landing/components/sections/SectionFeatures.vue",
+  "type": "source",
+  "name": "SectionFeatures.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "SectionFeatures.vue defines a reusable Vue component that renders a “How to buy”/features section on a landing page. It displays a localized title and a list of feature cards (icon, title, description) driven by i18n message data passed in via props.",
+    "Purpose": "Serve as a modular section within the landing page to showcase a set of features or steps, using translation data provided by the parent.",
+    "Components": [
+      {
+        "name": "SectionFeatures",
+        "description": "Main Vue component that uses the Composition API and vue-i18n to render a section with a heading and a dynamic list of features."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Vue Composition API helper to declare and validate the `content` prop of type Object, required.",
+        "parameters": [
+          {
+            "name": "{ content }",
+            "type": "Object",
+            "required": true,
+            "description": "Contains localization messages including `title` and `features` array."
+          }
+        ]
+      },
+      {
+        "name": "useI18n",
+        "description": "Hook from vue-i18n returning translation functions configured with incoming messages.",
+        "returns": [
+          {
+            "name": "t",
+            "type": "Function",
+            "description": "Translate a single string key, used here for the section title."
+          },
+          {
+            "name": "tm",
+            "type": "Function",
+            "description": "Translate message arrays or access nested translation data, used here to retrieve the array of `features`."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue",
+      "vue-i18n"
+    ],
+    "Usage": "Imported into a parent landing page component and rendered with `<SectionFeatures :content=\"landingContent\"/>`, where `landingContent` is an object containing localized strings under `title` and `features`.",
+    "Importance": 3,
+    "Notes": [
+      "The root `<section>` has id `howtobuy`, which may not semantically match “features”.",
+      "The `<style lang=\"scss\">` block is empty—styling is entirely via utility classes.",
+      "Feature items rely on `feature.title` as a unique key; ensure titles are unique in provided data."
+    ]
+  }
+}

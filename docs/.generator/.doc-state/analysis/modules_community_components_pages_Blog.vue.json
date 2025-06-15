@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/community/components/pages/Blog.vue",
+  "relativePath": "modules/community/components/pages/Blog.vue",
+  "type": "source",
+  "name": "Blog.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue page component that renders a feed of blog posts, applies sorting and filtering based on route parameters and query strings, and displays each post using a CardBlogpost component.",
+    "Purpose": "Serves as the main blog listing page in the community module, driving data fetch, filter synchronization with the URL, and rendering of individual blog post cards.",
+    "Components": [
+      {
+        "name": "Feed",
+        "responsibility": "Fetches and paginates a list of items using the provided store.read method and renders them via a scoped slot."
+      },
+      {
+        "name": "CardBlogpost",
+        "responsibility": "Renders an individual blog post card given a blogpost object and the current user ID."
+      },
+      {
+        "name": "Breadcrumbs",
+        "responsibility": "Imported but not currently used in the template; likely intended for page-level navigation breadcrumbs."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "blog.read",
+        "description": "Provided to Feed as the store.read handler; fetches posts from the community store with given options.",
+        "parameters": [
+          "options (object)"
+        ]
+      },
+      {
+        "name": "onMounted",
+        "description": "Lifecycle hook that initializes the blog.state.filter from the current route query parameters when the component mounts.",
+        "parameters": []
+      },
+      {
+        "name": "watch(blog.state.filter)",
+        "description": "Watches for deep changes in the filter state, maps filter values back to the route query string, and replaces the current URL without reloading the page.",
+        "parameters": [
+          "newFilterValue (object)",
+          "oldFilterValue (object)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Breadcrumbs/Breadcrumbs.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/community/components/blocks/CardBlogpost.vue",
+      "@martyrs/src/modules/community/store/blogposts.js",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Registered as a page component in the community module router. Mounted at a route that provides an optional `category` param and query filters (tags, period). Other parts of the app navigate to it or link to `/blog/:category?tags=...&period=...`.",
+    "Importance": 4,
+    "Notes": [
+      "The `<style>` block is present but empty—styling may be inherited or defined at a higher level.",
+      "Commented-out code hints at a default category fallback and breadcrumb inclusion that could be enabled in future.",
+      "Breadcrumbs is imported but not used in the template; consider removing or integrating it.",
+      "Filter synchronization ensures deep-linkable and shareable URLs for blog post filtering."
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/files/middlewares/server/middlewareBusboy.js",
+  "relativePath": "modules/files/middlewares/server/middlewareBusboy.js",
+  "type": "source",
+  "name": "middlewareBusboy.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

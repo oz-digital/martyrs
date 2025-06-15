@@ -1,0 +1,102 @@
+{
+  "section": {
+    "id": "source-modules-community",
+    "title": "Проект: Модули / Сообщество",
+    "description": "Модуль 'Сообщество' реализует функциональность блогов, комментариев и реакций пользователей. Содержит серверные и клиентские компоненты, модели, контроллеры, маршруты, утилиты и визуальные блоки.",
+    "subsections": [
+      {
+        "id": "client-server",
+        "title": "Клиент и сервер",
+        "description": "Файлы инициализации и взаимодействия между клиентской и серверной частью модуля."
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Обработка логики для блогов, комментариев и реакций."
+      },
+      {
+        "id": "models",
+        "title": "Модели данных",
+        "description": "Структуры данных для блогов, комментариев и реакций."
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты и роутеры",
+        "description": "Определение API-маршрутов для работы с блогами, комментариями и реакциями."
+      },
+      {
+        "id": "store-utils",
+        "title": "Хранилища и утилиты",
+        "description": "Вспомогательные функции и хранилища для обработки запросов и хранения данных."
+      },
+      {
+        "id": "ui-blocks",
+        "title": "UI-блоки",
+        "description": "Компоненты для отображения отдельных элементов интерфейса, таких как футер блогпоста.",
+        "files": [
+          "blocks/FooterBlogpost.vue"
+        ]
+      },
+      {
+        "id": "layouts",
+        "title": "Макеты",
+        "description": "Основные шаблоны страниц сообщества.",
+        "files": [
+          "layouts/Community.vue"
+        ]
+      },
+      {
+        "id": "blog-pages",
+        "title": "Страницы блога",
+        "description": "Страницы для отображения списка блогов, отдельных постов и создания новых публикаций.",
+        "files": [
+          "pages/Blog.vue",
+          "pages/BlogPost.vue",
+          "pages/CreateBlogPost.vue"
+        ]
+      },
+      {
+        "id": "comments-sections",
+        "title": "Секции комментариев",
+        "description": "Компоненты для отображения комментариев и популярных постов.",
+        "files": [
+          "sections/Comment.vue",
+          "sections/Comments.vue",
+          "sections/HotPosts.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "1313f87b6476475e9c3e61888a2c3a47",
+    "1335733e743ed75f0b0567241eac24ad",
+    "192ae950a5f756c2dd2de1271f3fc3e1",
+    "1f59c9d39737d1d117cefd5457d4214d",
+    "3834f012721ea1fcc5d16de112da2243",
+    "39cec5ccec56ed8b15e55e04458d1d78",
+    "6e6d713704504eea69c3ff0dfab06a99",
+    "72a1057d7c6922e78748b8af97fe32b4",
+    "75bdcf8fefe1451f5590bf1057dddc11",
+    "76a5694559a9c4094bf2b607fae79105",
+    "7f89b064320d22e3bf020efb2ce91987",
+    "8991f59de7dc10e3641769d770066205",
+    "90e39d16cab134fccd86bbbc1b03412b",
+    "949ee2f7366eebc3828cc315ea649720",
+    "9613593de56f2073a0b4d1b221854289",
+    "9ca5003a6fe5f4842f69d4bb55c83b3d",
+    "a60caef92e1efd37e618ac92f9c04936",
+    "b99c226ffd0ca6eb0d927b69d104d1fb",
+    "bdb4ed163315d821e43274459eb9f669",
+    "c0a3ada030d77b728ed8e872341eb7bb",
+    "c5402d09cf360dad16f7369db736419b",
+    "c9aed27ade7f7271970ceccfaf1a0f25",
+    "d1f38aa1cbc121dcad24f29db432eba5",
+    "d267f2834bfe56d11a2d230c676bafea",
+    "e0e264f96ab4e68463e5c7f038ceb8bc",
+    "e5728273346d58b96aa5f56272dcce87",
+    "f46d82ccccaba204daa7d9a571fdcd8d",
+    "f47a4613705c74e7024ea80e3450f669"
+  ],
+  "groupHash": "0cef33551caa6fec10ebfc69511a6762",
+  "generated": "2025-06-05T09:18:36.560Z"
+}

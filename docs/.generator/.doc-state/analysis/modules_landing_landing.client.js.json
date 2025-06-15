@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/landing/landing.client.js",
+  "relativePath": "modules/landing/landing.client.js",
+  "type": "source",
+  "name": "landing.client.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Модуль-«бочка» для централизованного экспорта Vue-компонентов, используемых на лендинговой странице.",
+    "Purpose": "Обеспечить единый входной файл для импорта всех секционных и элементных компонентов лендинга в других частях приложения.",
+    "Components": [
+      {
+        "name": "SectionEarn",
+        "path": "./components/sections/SectionEarn.vue",
+        "description": "Секция, описывающая способы заработка или выгоды."
+      },
+      {
+        "name": "SectionFeatures",
+        "path": "./components/sections/SectionFeatures.vue",
+        "description": "Секция с основными возможностями продукта."
+      },
+      {
+        "name": "SectionFeaturesImages",
+        "path": "./components/sections/SectionFeaturesImages.vue",
+        "description": "Секция с изображениями, иллюстрирующими возможности."
+      },
+      {
+        "name": "SectionGuide",
+        "path": "./components/sections/SectionGuide.vue",
+        "description": "Секция-путеводитель по использованию или настройке."
+      },
+      {
+        "name": "SectionHeroToken",
+        "path": "./components/sections/SectionHeroToken.vue",
+        "description": "Главная («геройская») секция с ключевым токеном или промо-изображением."
+      },
+      {
+        "name": "SectionJoinUs",
+        "path": "./components/sections/SectionJoinUs.vue",
+        "description": "Секция призыва присоединиться к сообществу или проекту."
+      },
+      {
+        "name": "SectionMobileApp",
+        "path": "./components/sections/SectionMobileApp.vue",
+        "description": "Секция с информацией о мобильном приложении."
+      },
+      {
+        "name": "SectionOverview",
+        "path": "./components/sections/SectionOverview.vue",
+        "description": "Обзорная секция с общей информацией о продукте."
+      },
+      {
+        "name": "SectionRoadmap",
+        "path": "./components/sections/SectionRoadmap.vue",
+        "description": "Дорожная карта развития проекта."
+      },
+      {
+        "name": "SubscribeNewsletter",
+        "path": "./components/sections/SubscribeNewsletter.vue",
+        "description": "Форма подписки на новостную рассылку."
+      },
+      {
+        "name": "AnimatedGrid",
+        "path": "./components/elements/AnimatedGrid.vue",
+        "description": "Компонент для анимированной сетки элементов."
+      },
+      {
+        "name": "FloatingImages",
+        "path": "./components/elements/FloatingImages.vue",
+        "description": "Компонент для плавающих изображений в фоне."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "./components/sections/SectionEarn.vue",
+      "./components/sections/SectionFeatures.vue",
+      "./components/sections/SectionFeaturesImages.vue",
+      "./components/sections/SectionGuide.vue",
+      "./components/sections/SectionHeroToken.vue",
+      "./components/sections/SectionJoinUs.vue",
+      "./components/sections/SectionMobileApp.vue",
+      "./components/sections/SectionOverview.vue",
+      "./components/sections/SectionRoadmap.vue",
+      "./components/sections/SubscribeNewsletter.vue",
+      "./components/elements/AnimatedGrid.vue",
+      "./components/elements/FloatingImages.vue"
+    ],
+    "Usage": "Импортируется в точках маршрутизации или в корневых компонентах лендинга для регистрации и рендеринга соответствующих секций и элементов.",
+    "Importance": 3,
+    "Notes": [
+      "Не содержит логики, только реэкспорт компонентов (barrel pattern).",
+      "Упрощает и стандартизирует импорт Vue-компонентов в других модулях.",
+      "Не выполняет асинхронного/ленивого импорта — все компоненты загружаются при подключении этого модуля."
+    ]
+  }
+}

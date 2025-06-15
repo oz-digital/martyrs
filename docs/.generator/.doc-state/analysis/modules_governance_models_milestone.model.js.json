@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/governance/models/milestone.model.js",
+  "relativePath": "modules/governance/models/milestone.model.js",
+  "type": "source",
+  "name": "milestone.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет и экспортирует Mongoose-модель «Milestone» с полным набором полей, виртуальными свойствами и индексами для хранения и управления этапами (milestones) в модуле governance.",
+    "Purpose": "Обеспечить схему и модель данных для сущности Milestone (этап проекта): валидацию полей, автоматические отметки времени, виртуальные свойства и индексы для эффективного поиска.",
+    "Components": [
+      {
+        "name": "MilestoneSchema",
+        "type": "mongoose.Schema",
+        "responsibilities": [
+          "Определение полей (name, description, status, даты, прогресс, ссылки на User/Initiative и т. д.)",
+          "Настройка опций схемы (timestamps, toJSON/toObject с виртуальными полями)",
+          "Добавление виртуальных свойств (isOverdue, duration)",
+          "Создание индексов по полям для оптимизации запросов"
+        ]
+      },
+      {
+        "name": "Milestone",
+        "type": "mongoose.Model",
+        "responsibilities": [
+          "Предоставление интерфейса для CRUD-операций над коллекцией milestones в MongoDB"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (factory)",
+        "description": "Фабрика, которая принимает объект db и создаёт/возвращает модель Milestone",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер с подключением mongoose и конфигурацией базы"
+          }
+        ],
+        "returns": "mongoose.Model — модель Milestone"
+      },
+      {
+        "name": "isOverdue (virtual)",
+        "description": "Геттер, который возвращает true, если dueDate в прошлом и статус не 'completed'",
+        "parameters": [],
+        "returns": "Boolean"
+      },
+      {
+        "name": "duration (virtual)",
+        "description": "Геттер, который возвращает продолжительность этапа в днях, округляя вверх",
+        "parameters": [],
+        "returns": "Number|null"
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose — основная библиотека mongoose",
+      "Schema.Types.ObjectId — для ссылочных полей owner, contributors, initiative, dependencies.milestone",
+      "Модели User и Initiative — через ref в полях owner и initiative"
+    ],
+    "Usage": "Импортируется как функция-фабрика в точке инициализации моделей (обычно в modules/governance/models/index.js), вызывается с аргументом db, результат сохраняется как db.models.Milestone для дальнейшего использования в сервисах и контроллерах.",
+    "Importance": 4,
+    "Notes": [
+      "Используются автоматические timestamps с currentTime, чтобы сохранять createdAt/updatedAt.",
+      "Включены виртуалы в toJSON/toObject для включения полей isOverdue и duration в отдаваемый клиентам объект.",
+      "Определены индексы по ключевым полям (initiative, status, owner, dueDate, dependencies.milestone) для ускорения выборок.",
+      "Поле dependencies позволяет моделировать зависимости между этапами (blocks, blocked_by, related_to).",
+      "Схема настроена на хранение дополнительных метаданных (оценка и фактические часы, бюджет и т. д.)."
+    ]
+  }
+}

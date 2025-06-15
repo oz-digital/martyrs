@@ -1,0 +1,11 @@
+{
+  "path": "../../src/modules/orders/components/pages/OrderCreate.vue",
+  "relativePath": "modules/orders/components/pages/OrderCreate.vue",
+  "type": "source",
+  "name": "OrderCreate.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Не удалось разобрать анализ как JSON",
+    "rawAnalysis": ""
+  }
+}

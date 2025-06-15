@@ -1,0 +1,153 @@
+{
+  "section": {
+    "id": "source-modules-icons",
+    "title": "Проект: Модули / Иконки",
+    "description": "Модуль предоставляет набор Vue-компонентов SVG-иконок для повторного использования в интерфейсе, а также вспомогательные скрипты для работы с иконками.",
+    "subsections": [
+      {
+        "id": "actions-icons",
+        "title": "Иконки действий",
+        "description": "Компоненты иконок, используемых для отображения действий пользователя (например, дублирование, добавление в корзину). Содержит файлы: IconDuplicate.vue, IconShopcartAdd.vue."
+      },
+      {
+        "id": "entities-icons",
+        "title": "Иконки сущностей",
+        "description": "Компоненты иконок, представляющих различные сущности и состояния интерфейса (например, уведомления, календарь, каталог, скидки, события, избранное, файл, подписки). Содержит файлы: IconBell.vue, IconCalendar.vue, IconCatalog.vue, IconCommunity.vue, IconDate.vue, IconDiscount.vue, IconEarn.vue, IconEvents.vue, IconFeatured.vue, IconFile.vue, IconFollowing.vue."
+      },
+      {
+        "id": "client-scripts",
+        "title": "Клиентские скрипты",
+        "description": "Вспомогательные скрипты для работы с иконками на стороне клиента. Содержит файл: icons.client.js."
+      },
+      {
+        "id": "router-scripts",
+        "title": "Маршрутизация иконок",
+        "description": "Скрипты для маршрутизации, связанные с иконками. Содержит файл: icons.router.js."
+      },
+      {
+        "id": "entities-icons-gallery-music",
+        "title": "Галерея и музыкальные иконки",
+        "description": "Компоненты IconGallery.vue и IconMusic.vue предоставляют SVG-иконки для галереи и музыки с возможностью настройки цвета."
+      },
+      {
+        "id": "entities-icons-main",
+        "title": "Основные иконки интерфейса",
+        "description": "Включает компоненты для отображения главных элементов интерфейса: IconHome.vue, IconProfile.vue, IconSettings.vue, IconInfo.vue."
+      },
+      {
+        "id": "entities-icons-commerce",
+        "title": "Иконки для коммерции и заказов",
+        "description": "Содержит компоненты для отображения иконок корзины, заказов, платежей, цен и продуктов: IconShopcart.vue, IconOrders.vue, IconPayments.vue, IconPrice.vue, IconProducts.vue."
+      },
+      {
+        "id": "entities-icons-categories",
+        "title": "Иконки категорий и популярного",
+        "description": "Включает IconGroups.vue, IconPopular.vue, IconRecent.vue, IconLeftovers.vue для отображения различных категорий и популярных элементов."
+      },
+      {
+        "id": "labels-icons",
+        "title": "Лейблы магазинов",
+        "description": "Компоненты для отображения лейблов App Store и Google Play.",
+        "files": [
+          "labels/LabelAppStore.vue",
+          "labels/LabelGooglePlay.vue"
+        ]
+      },
+      {
+        "id": "logos",
+        "title": "Логотипы",
+        "description": "Компоненты для отображения фирменных логотипов.",
+        "files": [
+          "logos/Logotype.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "00f4ebe76cd0029f4a16f09ffca5bc28",
+    "0136df05f1924f0afde326d4099ef661",
+    "0aada347aef4a865e92de0d852e72e4b",
+    "0b038bd47330b3e6c776ab8195a32321",
+    "0d01acd4f67bb87265f552c00a8caa0d",
+    "0d01acd4f67bb87265f552c00a8caa0d",
+    "0d01acd4f67bb87265f552c00a8caa0d",
+    "0ff5457f8261a5a0104fb7a03fd0aff3",
+    "164e17a34c8aefac40e4c3ae2f89ed95",
+    "182a5e6175f70dfc4ffe66012edb5b68",
+    "189ef097acec433d3b6e90a2f4a8ede1",
+    "1d98bf7b2dcfde79324f5c545a1956c3",
+    "20a071a2eb3d645e6906076913b7a71e",
+    "27648e9da441392a9edaa2460a0b8c16",
+    "2af34d7cd9373fa99d9cec3179a8ea0d",
+    "2db42cf1411d6c095883700d9981f763",
+    "314b1fe6547131b79597fdf88c0137d1",
+    "3168f8918ff1ecedaaee9b9f0ab5fe7c",
+    "37cc31b963e02d1febe16113bf810c7e",
+    "3b9ceb23f3d7f2eae453e5eb850b930a",
+    "3f2e3247c7522d1cc14a48dc449792fd",
+    "3f88d4e139b9ef5fb6bdb53fb54987c0",
+    "40b9c5cbe7cde4b25c80a5b431c7d229",
+    "4a97f83efc1e6ec53e159ab62e31e0a2",
+    "4d79e885a891614c59e7c28a349e3d76",
+    "4e7e0a7c7256c0ca022acd7195eadb0f",
+    "4ea41a97358d99d7fed422bc93df2824",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "53fc575b2d9cd167595e81f3f7aaa5e5",
+    "54f68b8a670c536fec4051afc12d441c",
+    "55f5f81c5f403636768103cf5dd56c06",
+    "58a5c9e2d9409b46547f785e3f6d9dec",
+    "58a5c9e2d9409b46547f785e3f6d9dec",
+    "5f021656933d60b001e72a6366ee568f",
+    "5f6f7f0f8914b0bb4a96a7102f71e86a",
+    "60fbab28882e50f7a268a90a4056a00a",
+    "60fbab28882e50f7a268a90a4056a00a",
+    "63cb3bb95b08548f9ee3517ba1d47444",
+    "64ba87039601c77929988c452fee3fbb",
+    "67ccda7e49da7744405f0c042f9ebdf3",
+    "6db5e04747564ec7ba6b6026dc509fb8",
+    "74e0e2a622f5afc8f88f08bdad8855b4",
+    "78f0ac3a0950b2f06b8f6a51b424de85",
+    "792d58c49034da0550cc79679c58224f",
+    "7adf5f8d073b521ef5445d718e2bb8bc",
+    "84028aff96f87dbf91a4376549c8b2ca",
+    "8524a2c2aa82225e88fcc3c9b6ba996f",
+    "86d070bb6a6598438d14549fc844b4a8",
+    "87a8c2c9089700ec5ea4a0a3fcb41d6f",
+    "87f2d66a7bf618eba4cf26c8edb11387",
+    "8fde1cdb268378fb4b70442512ff5bbe",
+    "95671e7140c704574eae0da728335e5a",
+    "9725ed1dc4f3530dcf809fcffcd8a791",
+    "9e321c35e61a9fbf42fc1456cbb97a65",
+    "a37ccc48e46973ad11ffb916617571ac",
+    "bca89a92f7668e9c84b8fa44d99597f4",
+    "c0c6f8c082379f4664c31d325d6aa276",
+    "c4b2c550684c2738ce05a1c9d2874b9c",
+    "c57933b3f045ccf417f12de3710cd046",
+    "c61506a00ac4d71f280a4c16a42feaff",
+    "c70f0cf3f3bb8aca963c318257fbc7b8",
+    "c73b94b46768d2092af3c2b99451a75e",
+    "c8d3c4dc0c265283864d1fce5950469f",
+    "c98697a1a7c3fc4ee19c2aa180a1ebb8",
+    "cd6ccf795f9fb57c9edb3c4654f7f262",
+    "cd6ccf795f9fb57c9edb3c4654f7f262",
+    "cd6ccf795f9fb57c9edb3c4654f7f262",
+    "cddc8b72ae287a2da0384dec88d57715",
+    "d080915256821236b03a51b017b9b7af",
+    "d7ad40d5a51dd05c568381172a055281",
+    "dca30f2645d8ff89249fbbadf1ede8f9",
+    "e07a38c57d71ceefb943273f5a2e9571",
+    "e2c2ae72aa16ceb5eef73673c55c6ac2",
+    "ec1319cf595d16d005c14d3f60c19321",
+    "ed19a9817cdf0313227745d2af1c49db",
+    "f144441fcd273b49f731972f9e1c7c01",
+    "f55c95ba95d09e05cfb03a81c9b75f8a",
+    "fd4657aa845b7bb11680cde1a21f1730"
+  ],
+  "groupHash": "b34e060b3ec9424446cd4250bb81b8f3",
+  "generated": "2025-06-05T09:20:41.446Z"
+}

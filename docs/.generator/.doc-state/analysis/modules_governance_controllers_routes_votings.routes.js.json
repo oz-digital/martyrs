@@ -1,0 +1,126 @@
+{
+  "path": "../../src/modules/governance/controllers/routes/votings.routes.js",
+  "relativePath": "modules/governance/controllers/routes/votings.routes.js",
+  "type": "source",
+  "name": "votings.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет набор HTTP-маршрутов для работы с сущностью «votings» (голосования) и связывает их с контроллером, созданным фабрикой votings.controller.js.",
+    "Purpose": "Регистрация REST API маршрутов для управления голосованиями (CRUD операции, запуск/завершение голосования, получение результатов) в Express-приложении.",
+    "Components": [
+      {
+        "name": "routes registrar (default export)",
+        "responsibility": "Функция, принимающая app, db, origins, publicPath и на её основе регистрирующая все маршруты для голосований."
+      },
+      {
+        "name": "controller",
+        "responsibility": "Получает методы управления голосованиями из votingFactory и предоставляет логику для каждого HTTP-роута."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default",
+        "params": [
+          "app",
+          "db",
+          "origins",
+          "publicPath"
+        ],
+        "description": "Главная функция модуля. Создает контроллер и регистрирует маршруты в объекте app."
+      },
+      {
+        "name": "getAllVotings",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Возвращает список всех голосований."
+      },
+      {
+        "name": "getVotingById",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Возвращает детали одного голосования по его ID."
+      },
+      {
+        "name": "createVoting",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Создает новое голосование на основе данных из тела запроса."
+      },
+      {
+        "name": "updateVoting",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Обновляет существующее голосование по ID."
+      },
+      {
+        "name": "deleteVoting",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Удаляет голосование по его ID."
+      },
+      {
+        "name": "startVoting",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Переводит голосование в состояние «начато»."
+      },
+      {
+        "name": "endVoting",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Переводит голосование в состояние «завершено»."
+      },
+      {
+        "name": "getVotingResults",
+        "source": "controller",
+        "params": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "Возвращает итоги голосования."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../factories/votings.controller.js",
+        "import": "votingFactory"
+      }
+    ],
+    "Usage": "Этот файл импортируется в точке инициализации роутов (например, в server.js или main router-файле) и вызывается с параметрами (app, db, origins, publicPath) для регистрации маршрутов.",
+    "Importance": 3,
+    "Notes": [
+      "Параметры origins и publicPath передаются, но внутри функции не используются.",
+      "Следует убедиться, что votingFactory возвращает корректные методы контроллера.",
+      "Файл строго следует стилю маршрутизации Express и концепциям фреймворка martyrs."
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "path": "../../src/components/FieldPhone/FieldPhone.vue",
+  "relativePath": "components/FieldPhone/FieldPhone.vue",
+  "type": "source",
+  "name": "FieldPhone.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "FieldPhone.vue is a Vue 3 component that renders a telephone input field with an integrated country‐selection dropdown. It handles formatting, validation, country lookup (via IP or defaults), and emits events for model updates, focus, blur, country changes and more.",
+    "Purpose": "Provide a reusable, configurable phone‐number input widget for the application, supporting international dialing codes, auto‐formatting with libphonenumber-js, validation and customizable styling.",
+    "Components": [
+      {
+        "name": "FieldPhone",
+        "role": "Main Vue component: hosts root container, dropdown for selecting country, input for entering phone number, and a validation message."
+      },
+      {
+        "name": "v-click-outside",
+        "role": "Custom directive imported from click-outside.js; detects clicks outside the dropdown to close it."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getCountry",
+        "description": "Fetches the user's country code via IP lookup from ip2c.org.",
+        "parameters": []
+      },
+      {
+        "name": "setCaretPosition",
+        "description": "Places the text caret at a specified position in an input or textarea DOM element.",
+        "parameters": [
+          "ctrl (HTMLInputElement)",
+          "pos (number)"
+        ]
+      },
+      {
+        "name": "resetPlaceholder",
+        "description": "Resets the input placeholder to the configured value.",
+        "parameters": []
+      },
+      {
+        "name": "initializeCountry",
+        "description": "Initializes active country based on phone value, defaultCountry prop, IP lookup or fallback.",
+        "parameters": []
+      },
+      {
+        "name": "getCountries",
+        "description": "Looks up country data objects for an array of ISO2 codes.",
+        "parameters": [
+          "list (string[])"
+        ]
+      },
+      {
+        "name": "findCountry",
+        "description": "Finds a country in the filteredCountries list by ISO2 code.",
+        "parameters": [
+          "iso (string)"
+        ]
+      },
+      {
+        "name": "getItemClass",
+        "description": "Computes CSS classes for a dropdown list item (highlighted, preferred, last-preferred).",
+        "parameters": [
+          "index (number)",
+          "iso2 (string)"
+        ]
+      },
+      {
+        "name": "choose",
+        "description": "Handles country selection: updates activeCountryCode, phone value and formatting based on selection.",
+        "parameters": [
+          "country (string | object)"
+        ]
+      },
+      {
+        "name": "cleanInvalidCharacters",
+        "description": "Strips out disallowed characters or custom-validated patterns from the phone value.",
+        "parameters": []
+      },
+      {
+        "name": "testCharacters",
+        "description": "Checks if current phone value matches allowed character patterns or custom RegExp.",
+        "parameters": []
+      },
+      {
+        "name": "testCustomValidate",
+        "description": "Tests phone value against a custom validation RegExp prop.",
+        "parameters": []
+      },
+      {
+        "name": "onInput",
+        "description": "Handler for input events: sets custom validity, emits updated modelValue and change events.",
+        "parameters": []
+      },
+      {
+        "name": "emitInput",
+        "description": "Emits update:modelValue event and change event if phone is valid.",
+        "parameters": [
+          "value (string)"
+        ]
+      },
+      {
+        "name": "onBlur",
+        "description": "Emits blur event when input loses focus.",
+        "parameters": []
+      },
+      {
+        "name": "onFocus",
+        "description": "Emits focus event when input gains focus.",
+        "parameters": []
+      },
+      {
+        "name": "onEnter",
+        "description": "Emits enter event when user presses Enter key.",
+        "parameters": []
+      },
+      {
+        "name": "onSpace",
+        "description": "Emits space event when user presses Space key.",
+        "parameters": []
+      },
+      {
+        "name": "toggleDropdown",
+        "description": "Opens or closes the country dropdown.",
+        "parameters": []
+      },
+      {
+        "name": "clickedOutside",
+        "description": "Handler for clicks outside the dropdown: closes it.",
+        "parameters": []
+      },
+      {
+        "name": "setDropdownPosition",
+        "description": "Calculates and sets whether the dropdown opens above or below the input based on viewport.",
+        "parameters": []
+      },
+      {
+        "name": "keyboardNav",
+        "description": "Handles keyboard navigation (arrows, Enter, Esc) within the dropdown list.",
+        "parameters": [
+          "event (KeyboardEvent)"
+        ]
+      },
+      {
+        "name": "reset",
+        "description": "Closes the dropdown and resets selection index.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue: ref, reactive, computed, watch, onMounted, nextTick",
+      "libphonenumber-js: parsePhoneNumberFromString",
+      "./click-outside.js: custom directive",
+      "./all-countries.js: country metadata array"
+    ],
+    "Usage": "Imported as a Vue component and used with v-model for two-way binding. Example: <FieldPhone v-model=\"phone\" :preferredCountries=\"['US','CA']\" :validation=\"phoneValidation\"/>",
+    "Importance": 4,
+    "Notes": [
+      "Supports auto-formatting (via autoFormat prop) and custom validation RegEx (customValidate prop).",
+      "Emits multiple events: update:modelValue, change, validate, country-changed, open, close, blur, focus, enter, space.",
+      "Dropdown positioning is dynamic (opens above or below input).",
+      "Filters country list via onlyCountries or ignoredCountries props.",
+      "Uses watchers extensively to keep phone state, formatting and props in sync.",
+      "Validation feedback message appears below input on validation prop."
+    ]
+  }
+}

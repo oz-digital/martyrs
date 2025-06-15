@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/landing/components/elements/FloatingImages.vue",
+  "relativePath": "modules/landing/components/elements/FloatingImages.vue",
+  "type": "source",
+  "name": "FloatingImages.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент, динамически создающий и анимирующий набор плавающих изображений внутри заданного контейнера.",
+    "Purpose": "Добавить на страницу эффект непрерывного поднятия (float up) изображений для декоративных или презентационных целей в лэндинге.",
+    "Components": [
+      {
+        "name": "FloatingImages",
+        "type": "Vue SFC (Single File Component)",
+        "responsibilities": [
+          "Принимать список URL-изображений и конфигурацию через пропсы.",
+          "Генерировать CSS-анимацию keyframes для движения вверх и изменения прозрачности.",
+          "Создавать DOM-элементы <img>, устанавливать им стили и привязывать анимацию.",
+          "Повторно порождать изображения при изменении списка или при окончании цикла анимации."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getRandomSize",
+        "purpose": "Генерирует случайный размер между двумя заданными (с сохранением единиц измерения).",
+        "parameters": [
+          {
+            "name": "sizeMin",
+            "type": "string",
+            "description": "Минимальный размер с единицами (например \"3rem\")."
+          },
+          {
+            "name": "sizeMax",
+            "type": "string",
+            "description": "Максимальный размер с единицами."
+          }
+        ]
+      },
+      {
+        "name": "createKeyframes",
+        "purpose": "Вставляет в первый CSS-стилевой лист @keyframes floatUp с заданными параметрами анимации.",
+        "parameters": [
+          {
+            "name": "animation",
+            "type": "object",
+            "description": "Конфигурация прозрачности и смещения для ключевых кадров."
+          }
+        ]
+      },
+      {
+        "name": "createFloatingImages",
+        "purpose": "Для каждого URL из props.images создаёт элемент <img>, задаёт ему позицию, размеры и анимацию, а также обрабатывает повторный спаун при каждом окончании анимации.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, watch, defineProps)",
+      "document.styleSheets и document.querySelector для манипуляций DOM",
+      "css-класс .floating-image (ожидается в глобальных стилях или блоке <style>)"
+    ],
+    "Usage": "Импортируется и вставляется в шаблон любого родительского компонента:  \nimport FloatingImages from 'modules/landing/components/elements/FloatingImages.vue';\n<template>\n  <FloatingImages\n    container=\"#float-container\"\n    :images=\"['a.png','b.png']\"\n    :config=\"{ /* ... */ }\"/>\n</template>",
+    "Importance": 3,
+    "Notes": [
+      "При каждом вызове createKeyframes вставляется новый @keyframes в начало CSS-таблицы без проверки дубликатов.",
+      "Нет механизма очистки (cleanup) при размонтировании компонента — возможны утечки памяти.",
+      "Если props.images меняется, старые изображения не удаляются — новые добавляются поверх.",
+      "Для корректной работы требуется контейнер с селектором props.container уже присутствовать в DOM."
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-search",
+    "title": "Проект: Компоненты / Search",
+    "description": "Модуль Search содержит компонент для поиска, используемый в пользовательском интерфейсе приложения.",
+    "subsections": [
+      {
+        "id": "search-vue",
+        "title": "Search.vue",
+        "description": "Основной Vue-компонент, реализующий функционал поиска."
+      }
+    ]
+  },
+  "fileHashes": [
+    "a0278d3a993f0064dc7ec965a4e86fa9"
+  ],
+  "groupHash": "61c1f52cfe93a50a956226cd6f9ec2a9",
+  "generated": "2025-06-05T09:17:05.741Z"
+}

@@ -1,0 +1,50 @@
+{
+  "path": "../../src/modules/backoffice/components/admin/Dashboard.vue",
+  "relativePath": "modules/backoffice/components/admin/Dashboard.vue",
+  "type": "source",
+  "name": "Dashboard.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 компонент административной панели, отображающий общее количество категорий, предоставляет кнопку для добавления новой категории и рендерит секцию списка категорий (CategoriesSection).",
+    "purpose": "Обеспечить на странице /admin/categories интерфейс просмотра и управления списком товарных категорий: показать их количество и дать возможность перейти к созданию новой категории.",
+    "components": [
+      {
+        "name": "CategoriesSection",
+        "responsibility": "Отображает сам список категорий, реализует логику пагинации/фильтрации/удаления (внутри этого дочернего компонента)."
+      },
+      {
+        "name": "router-link",
+        "responsibility": "Vue Router-компонент для перехода на маршрут добавления категории ('/admin/categories/add')."
+      }
+    ],
+    "functions": [
+      {
+        "name": "store.dispatch('categories/read')",
+        "purpose": "Запрос на сервер/инициализация загрузки списка категорий в Vuex-стор.",
+        "parameters": [
+          "'categories/read'"
+        ]
+      },
+      {
+        "name": "computed(() => store.state.categories)",
+        "purpose": "Создает реактивное свойство для массива категорий из состояния Vuex.",
+        "parameters": [
+          "() => store.state.categories"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (computed, onMounted)",
+      "vue-router (useRoute, router-link)",
+      "vuex-store (через useStore)",
+      "@/components/sections/CategoriesSection.vue"
+    ],
+    "usage": "Подключается в конфигурации маршрутизатора как компонент для пути '/admin/categories'. При монтировании запускает чтение категорий из стора и рендерит дочерний компонент CategoriesSection.",
+    "importance": 3,
+    "notes": [
+      "В <script setup> импортирован onMounted, но он не используется — логика dispatch выполняется сразу при инициализации скрипта.",
+      "Пустой блок <style lang=\"scss\"> зарезервирован для возможных стилей, но в текущей версии не содержит правил.",
+      "Импорт useRoute есть, но объект route не применяется внутри шаблона или скрипта."
+    ]
+  }
+}

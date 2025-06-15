@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-breadcrumbs",
+    "title": "Проект: Компоненты / Breadcrumbs",
+    "description": "Модуль Breadcrumbs предоставляет компонент для отображения навигационной цепочки (хлебных крошек) в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "breadcrumbs-component",
+        "title": "Breadcrumbs.vue",
+        "description": "Основной Vue-компонент для отображения хлебных крошек. Используется для навигации по иерархии страниц."
+      }
+    ]
+  },
+  "fileHashes": [
+    "5553fdb1713ff1493b3af97b4418b231"
+  ],
+  "groupHash": "83935fe3a5d88c5dd5d59cbaa626ea24",
+  "generated": "2025-06-05T09:16:21.807Z"
+}

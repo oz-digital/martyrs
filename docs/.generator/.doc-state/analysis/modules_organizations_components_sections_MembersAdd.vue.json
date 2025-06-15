@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/organizations/components/sections/MembersAdd.vue",
+  "relativePath": "modules/organizations/components/sections/MembersAdd.vue",
+  "type": "source",
+  "name": "MembersAdd.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент для добавления и приглашения пользователей в организацию через поиск или ввод email/телефона.",
+    "Purpose": "Обеспечить UI и логику сбора списка контактов (пользователей) и отправку приглашений в организацию.",
+    "Components": [
+      {
+        "name": "BlockSearch",
+        "role": "Поле ввода с поиском пользователей по имени, телефону или email."
+      },
+      {
+        "name": "Feed",
+        "role": "Отображение списка результатов поиска с поддержкой кастомного слота для элементов."
+      },
+      {
+        "name": "CardUser",
+        "role": "Карточка пользователя в списке результатов поиска."
+      },
+      {
+        "name": "Field",
+        "role": "Поле ввода для ручного указания email или телефона нового участника."
+      },
+      {
+        "name": "Button",
+        "role": "Кнопка отправки собранного списка приглашений."
+      },
+      {
+        "name": "IconAdd",
+        "role": "Иконка для добавления нового пустого поля ввода контакта."
+      },
+      {
+        "name": "IconDelete",
+        "role": "Иконка для удаления существующего поля ввода контакта."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "submitMembers",
+        "description": "Асинхронная функция-обёртка, эмитит событие 'send-invite' с текущим списком контактов и колбэками resolve/reject.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps, defineEmits)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+      "@martyrs/src/modules/auth/views/components/blocks/CardUser.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+      "@martyrs/src/modules/icons/navigation/IconAdd.vue",
+      "@martyrs/src/modules/auth/views/validations/inputs.validation",
+      "@martyrs/src/modules/auth/views/store/users.js"
+    ],
+    "Usage": "Импортируется и встраивается в компоненты управления организацией. Родительский компонент подписывается на событие @send-invite для обработки отправки приглашений.",
+    "Importance": 3,
+    "Notes": [
+      "Использует директиву v-click-outside для закрытия выпадающей области поиска.",
+      "Динамические слоты Feed позволяют кастомизировать отображение списка пользователей.",
+      "Поле contactValidation и импорт Select не используются в текущей реализации.",
+      "Список членов хранится в реактивном ref-массиве и рендерится с возможностью динамического добавления/удаления полей.",
+      "В качестве уникального key для CardUser используется user._id, для полей ввода – индекс."
+    ]
+  }
+}

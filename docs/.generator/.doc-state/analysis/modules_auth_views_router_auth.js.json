@@ -1,0 +1,69 @@
+{
+  "path": "../../src/modules/auth/views/router/auth.js",
+  "relativePath": "modules/auth/views/router/auth.js",
+  "type": "source",
+  "name": "auth.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines the 'auth' route module for the authentication section of the Vue application: sets up a parent layout, child routes (sign in, sign up, reset password, etc.), associated components, route guards and metadata.",
+    "Purpose": "Configure and export authentication-related routes for the Vue Router, including dynamic component loading, route metadata (titles) and middleware guards.",
+    "Components": [
+      {
+        "name": "auth",
+        "type": "Route Object",
+        "responsibility": "Acts as the parent route with path '/auth' and applies the Auth layout component."
+      },
+      {
+        "name": "children routes",
+        "type": "Array of Route Objects",
+        "responsibility": "Defines individual pages for SignIn, ResetPassword, SignUp, EnterCode, EnterPassword and Invite under the auth path."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "requiresNoAuth",
+        "type": "Middleware",
+        "source": "validationAuth",
+        "purpose": "Blocks access to auth pages if the user is already authenticated.",
+        "parameters": []
+      },
+      {
+        "name": "resetUser",
+        "type": "Middleware",
+        "source": "validationAuth",
+        "purpose": "Clears or resets any existing user state before entering certain auth routes.",
+        "parameters": []
+      },
+      {
+        "name": "checkUser",
+        "type": "Middleware",
+        "source": "validationAuth",
+        "purpose": "Verifies user existence or token validity before allowing access to code/password entry pages.",
+        "parameters": []
+      },
+      {
+        "name": "dynamic component import",
+        "type": "Function",
+        "purpose": "Lazy-loads the Vue component for each child route via Webpack code-splitting.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "../components/layouts/Auth.vue",
+      "@martyrs/src/modules/auth/views/middlewares/auth.validation.js",
+      "../components/pages/SignIn.vue",
+      "../components/pages/ResetPassword.vue",
+      "../components/pages/SignUp.vue",
+      "../components/pages/EnterCode.vue",
+      "../components/pages/EnterPassword.vue",
+      "../components/pages/Invite.vue"
+    ],
+    "Usage": "Imported into the main router configuration (e.g., in `router/index.js`) to register all '/auth' child routes within the application's route tree.",
+    "Importance": 4,
+    "Notes": [
+      "Uses bilingual titles in route metadata (en/ru).",
+      "Employs Webpack's `/* webpackChunkName */` for better chunk naming and lazy-loading.",
+      "Follows 'martyrs' framework conventions for middleware and route module structure."
+    ]
+  }
+}

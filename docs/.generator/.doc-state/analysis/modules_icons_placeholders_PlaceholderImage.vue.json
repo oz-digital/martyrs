@@ -1,0 +1,26 @@
+{
+  "path": "../../src/modules/icons/placeholders/PlaceholderImage.vue",
+  "relativePath": "modules/icons/placeholders/PlaceholderImage.vue",
+  "type": "source",
+  "name": "PlaceholderImage.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue single‐file component that renders a static SVG placeholder image (an icon shaped as a generic photograph).",
+    "Purpose": "Acts as a reusable placeholder graphic for image containers or avatar slots when no real image is available.",
+    "Components": [
+      {
+        "name": "PlaceholderImage",
+        "type": "Vue component",
+        "responsibility": "Renders an inline SVG graphic using CSS variables for coloring."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "Vue runtime (to process .vue files)",
+      "CSS variable `--main` (for fill color)"
+    ],
+    "Usage": "Imported like any other Vue component: import PlaceholderImage from 'modules/icons/placeholders/PlaceholderImage.vue' and then used in templates as <PlaceholderImage/>.",
+    "Importance": 2,
+    "Notes": "1. No <script> or <style> block—purely presentational.  2. Fill color is driven by the CSS variable `--main`.  3. Optimized for small bundle size and easy theming."
+  }
+}

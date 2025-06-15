@@ -1,0 +1,115 @@
+{
+  "path": "../../src/modules/music/components/pages/ArtistForm.vue",
+  "relativePath": "modules/music/components/pages/ArtistForm.vue",
+  "type": "source",
+  "name": "ArtistForm.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component for creating or editing an artist record. Renders a form with inputs for basic info, social links, genres, publishing status, image uploads, and handles data fetching, validation, submission and navigation.",
+    "Purpose": "Provides the user interface and logic to manage artist entities in the music module, supporting both creation and editing workflows.",
+    "Components": [
+      {
+        "name": "Field",
+        "source": "@martyrs/src/components/Field/Field.vue",
+        "responsibility": "Renders text inputs and textareas with labels, v-model binding and validation feedback."
+      },
+      {
+        "name": "Button",
+        "source": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Renders primary and secondary buttons, supports submit callbacks, loader and success states."
+      },
+      {
+        "name": "Checkbox",
+        "source": "@martyrs/src/components/Checkbox/Checkbox.vue",
+        "responsibility": "Renders toggleable checkboxes with labels for boolean and multi-select fields."
+      },
+      {
+        "name": "Select",
+        "source": "@martyrs/src/components/Select/Select.vue",
+        "responsibility": "Renders a dropdown select input bound to an array of options."
+      },
+      {
+        "name": "UploadImage",
+        "source": "@martyrs/src/components/UploadImage/UploadImage.vue",
+        "responsibility": "Handles image selection, preview and upload to a specified path, emits errors."
+      },
+      {
+        "name": "Loader",
+        "source": "@martyrs/src/components/Loader/Loader.vue",
+        "responsibility": "Shows a loading spinner while asynchronous operations are in progress."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "fetchGenres",
+        "description": "Loads the list of available genres from the store and populates `availableGenres`. Manages `isLoadingGenres` state and global errors.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "initializeSelectedGenres",
+        "description": "Resets and sets up the `selectedGenres` reactive map based on an array of genre IDs.",
+        "params": [
+          {
+            "name": "genreIds",
+            "type": "Array<string>",
+            "description": "List of genre IDs to mark as selected."
+          }
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "fetchArtist",
+        "description": "Fetches an existing artist by URL when in edit mode, populates the reactive `artist` object and selected genres, and handles errors.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "validateForm",
+        "description": "Validates required fields (`name`, optional length check for `bio`) and updates the `validation` object accordingly.",
+        "params": [],
+        "returns": "boolean"
+      },
+      {
+        "name": "submitForm",
+        "description": "Validates the form, constructs payload (including owner/creator on create), calls create or update action on the store, and navigates to the artist detail page on success. Handles errors via global store.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "handleUploadError",
+        "description": "Logs and broadcasts image upload errors via global error store.",
+        "params": [
+          {
+            "name": "error",
+            "type": "any",
+            "description": "Error object or message from the upload component."
+          }
+        ],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, reactive, computed, onMounted)",
+      "vue-router (useRouter, useRoute)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Checkbox/Checkbox.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/UploadImage/UploadImage.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "../../store/artists (artistsStore)",
+      "@martyrs/src/modules/globals/views/store/globals.js (globals)",
+      "@martyrs/src/modules/auth/views/store/auth.js (auth)"
+    ],
+    "Usage": "Imported as a page-level component in the music module's router. Rendered under routes for creating (`editMode=false`) or editing (`editMode=true`, with `url` prop) artist entities.",
+    "Importance": 4,
+    "Notes": [
+      "No <style> block is defined—styles are provided via utility classes.",
+      "Genre fetching logic is scaffolded but actual store call is commented out; ensure `genreStore.actions.fetchGenres` is enabled.",
+      "Form uses Composition API `script setup` with reactive state and computed properties.",
+      "Custom URL field is only shown when creating a new artist and left blank to auto-generate from the name.",
+      "After submit, navigation to the detail page is delayed by 1 second to allow for backend processing or success transition."
+    ]
+  }
+}

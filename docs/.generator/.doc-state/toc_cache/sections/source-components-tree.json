@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-tree",
+    "title": "Проект: Компоненты / Tree",
+    "description": "Модуль Tree содержит компонент для отображения иерархических данных в виде дерева.",
+    "subsections": [
+      {
+        "id": "tree-vue",
+        "title": "Tree.vue",
+        "description": "Основной Vue-компонент для визуализации древовидных структур."
+      }
+    ]
+  },
+  "fileHashes": [
+    "7cd83094d3d5f00c1cd0002643c22889"
+  ],
+  "groupHash": "c16055ada74349a79e6308f7c6f479d2",
+  "generated": "2025-06-05T09:17:31.689Z"
+}

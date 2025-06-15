@@ -1,0 +1,75 @@
+{
+  "path": "../../src/modules/music/components/layouts/MusicLayout.vue",
+  "relativePath": "modules/music/components/layouts/MusicLayout.vue",
+  "type": "source",
+  "name": "MusicLayout.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "MusicLayout.vue defines the top-level layout for all music-related views. It renders a header with back/forward navigation, page title, search bar and user menu; a main region for nested routes; and a persistent music player at the bottom when a track is active.",
+    "purpose": "To provide a consistent page frame for the music module, handling navigation controls, search, user links and embedding the router view and player component.",
+    "components": [
+      {
+        "name": "MusicPlayer",
+        "role": "Displays the currently playing track controls at the bottom of the layout when a track is selected"
+      },
+      {
+        "name": "SearchForm",
+        "role": "Emits a search event to trigger music search navigation"
+      },
+      {
+        "name": "Button",
+        "role": "Generic button UI component (imported but not used in template)"
+      },
+      {
+        "name": "Dropdown",
+        "role": "Generic dropdown UI component (imported but not used in template)"
+      },
+      {
+        "name": "IconChevronLeft",
+        "role": "Icon for the back navigation button"
+      },
+      {
+        "name": "IconChevronRight",
+        "role": "Icon for the forward navigation button"
+      },
+      {
+        "name": "IconProfile",
+        "role": "User profile icon (imported but not currently rendered)"
+      },
+      {
+        "name": "router-view",
+        "role": "Placeholder for nested route components"
+      }
+    ],
+    "functions": [
+      {
+        "name": "handleSearch",
+        "description": "Handles the search form submission by pushing a new route to 'music-search' with the query parameter",
+        "parameters": [
+          "query: string"
+        ]
+      }
+    ],
+    "dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRouter, $router, <router-link>, <router-view>)",
+      "../player/MusicPlayer.vue",
+      "../forms/SearchForm.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/modules/icons/navigation/IconChevronLeft.vue",
+      "@martyrs/src/modules/icons/navigation/IconChevronRight.vue",
+      "@martyrs/src/modules/icons/entities/IconProfile.vue",
+      "../../store/player.js (playerState)",
+      "@martyrs/src/modules/auth/views/store/auth.js (authState, authActions)"
+    ],
+    "usage": "Typically registered as the layout component for all music-related routes in the router configuration, e.g.:\n{\n  path: '/music',\n  component: MusicLayout,\n  children: [ /* music library, upload, search, etc. */ ]\n}",
+    "importance": 4,
+    "notes": [
+      "No <style> section in this file; all styling derives from utility CSS classes.",
+      "showUserMenu ref is declared but not yet used in the template—user menu UX may be incomplete.",
+      "Button, Dropdown and IconProfile are imported but not currently rendered; likely placeholders for future enhancements.",
+      "Computed auth properties (isAuthenticated, user) are set up but not conditionally displayed in this layout."
+    ]
+  }
+}

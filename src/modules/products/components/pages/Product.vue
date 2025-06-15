@@ -1,0 +1,322 @@
+<template>
+  <div v-if="products.state.current" class="h-100 w-100 mobile:pd-thin pd-big bg-white">
+    <div class="cols-2-1_2 w-100 gap-medium">
+
+      <ProductImages
+        :images="currentImages"
+        :product="product"
+      />
+
+      <div class="pos-relative w-100 h-100 flex-column flex-h-center flex">
+        <!-- Edit Button -->
+        <router-link
+          v-if="hasAccess(route.params._id, 'products', 'edit', auth.state.accesses, auth.state.access.roles)"
+          :to="
+            route.params._id 
+            ? { name: 'Organization_ProductEdit', params: { id: route.params._id, product: product._id } } 
+            : { name: 'ProductEdit', params: { product: product._id } }
+          "
+          class="
+            z-index-2
+            cursor-pointer 
+            pos-absolute pos-t-zero pos-r-zero
+            radius-extra pd-thin bg-second
+          "
+        >
+          <IconEdit
+            class="i-regular"
+            classes="fill-white"
+          />
+        </router-link>
+
+        <h2 class="w-100 h1-product mn-b-small">{{ product.name }}</h2>
+        
+        <!-- Показываем цену, если нет вариантов или не выбран ни один вариант -->
+        <Price 
+          v-if="!selectedVariant"
+          :product="product" 
+          size="big" 
+          class="flex gap-micro flex-center pd-small br-solid br-1px br-black-transp-10 w-max mn-b-medium" 
+        />
+        
+        <!-- Показываем цену выбранного варианта -->
+        <div 
+          v-else 
+          class="flex gap-micro flex-center pd-small br-solid br-1px br-black-transp-10 w-max mn-b-medium"
+        >
+          <span class="h2 t-bold">{{ returnCurrency() }}{{ selectedVariant.price.toFixed(2) }}</span>
+        </div>
+
+        <p v-if="product.description" class="w-100 mn-b-medium">
+          {{ product.translations?.length > 1 ? t('description') : product.description }}
+        </p>
+       
+        <!-- Компонент выбора вариантов товара -->
+        <ProductConfigurator
+          v-if="product.variants.length > 0"
+          :product-variants="product.variants"
+          :product-id="product._id"
+          :product-name="product.name"
+          :discounts="product.discounts"
+          :regularPrice="100"
+          @variant-selected="handleVariantSelected"
+          @add-to-cart="handleAddVariantToCart"
+          @update-images="handleUpdateImages"
+        />
+
+        <div class="mn-b-small flex-nowrap flex flex-v-center">
+          <IconInfo class="mn-r-micro i-medium"/>
+          <p class="t-medium ">Product Details</p>
+        </div>
+
+        <div class="cols-2 mn-b-medium w-100 gap-small">
+          <div
+            v-if="product.attributes && product.attributes.length > 0"
+            v-for="attributes in product.attributes"
+            class="w-100 pd-small radius-small bg-light product-attributes"
+          >
+            <p class="mn-b-thin t-demi">{{ attributes.name }}</p>
+            <p>{{ attributes.value }}</p>
+          </div>
+        </div>
+
+        <div class="mn-b-small flex-nowrap flex flex-v-center">
+          <IconGroups class="mn-r-micro i-medium"/>
+          <p class="t-medium ">Provided by</p>
+        </div>
+
+        <CardOrganization 
+          v-if="product.owner"
+          :organization="product.owner.target"
+          :showRating="true"
+          :showFollowers="false"
+          :showProducts="false"
+          class="bg-light w-100 o-hidden radius-medium pd-small "
+        />
+      </div>
+    </div>
+
+    <div class="h-max mn-t-big pos-relative">
+      <h3 class="pd-b-small">Most Popular</h3>
+      <PopularProducts class="mn-r-big-negative mn-l-big-negative"/>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed, ref, onMounted, getCurrentInstance } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+
+import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
+import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+import * as products from '@martyrs/src/modules/products/store/products.js'
+import * as categories from '@martyrs/src/modules/products/store/categories.js'
+import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'
+
+import Button from '@martyrs/src/components/Button/Button.vue'
+import Popup from '@martyrs/src/components/Popup/Popup.vue'
+import Tab from '@martyrs/src/components/Tab/Tab.vue'
+import Calendar from '@martyrs/src/components/DatePicker/Calendar.vue'
+
+import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
+import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.vue'
+
+import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+import IconGroups from '@martyrs/src/modules/icons/entities/IconGroups.vue'
+
+import ProductImages from '@martyrs/src/modules/products/components/blocks/ProductImages.vue'
+import Price from '@martyrs/src/modules/products/components/elements/Price.vue'
+import PopularProducts from '@martyrs/src/modules/products/components/sections/PopularProducts.vue'
+import ProductConfigurator from '@martyrs/src/modules/products/components/sections/ProductConfigurator.vue'
+
+import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
+
+const route = useRoute()
+const router = useRouter()
+const { proxy } = getCurrentInstance()
+const { returnCurrency, hasAccess } = useGlobalMixins()
+
+const product = computed(() => products.state.current)
+const productImages = computed(() => products.state.current.images || [])
+
+// Состояние для отслеживания текущих изображений (товара или варианта)
+const currentImages = ref([])
+// Выбранный вариант товара
+const selectedVariant = ref(null)
+
+const text = {
+  en: { addtoorder: 'Add to Cart', fastorder: 'Fast Order', description: 'Description' },
+  ru: { addtoorder: 'Добавить в корзину', fastorder: 'Быстрый заказ', description: 'Описание' }
+}
+
+const { t } = useI18n({ messages: text })
+
+const emits = defineEmits(['page-loading', 'page-loaded']);
+
+const recommendation = defineProps({
+  recommendation: {
+    type: Boolean,
+    default: false
+  }
+})
+  
+products.state.current = null
+
+onMounted(async () => {
+  emits('page-loading');
+  
+  await products.actions.read({ _id: route.params.product })
+  
+  // Инициализируем текущие изображения изображениями товара
+  currentImages.value = [...productImages.value]
+
+  if (typeof gtag === 'function') {
+    gtag('event', 'view_item', {
+      currency: returnCurrency(),
+      value: product.value.price || 0,
+      items: [{
+        item_id: product.value._id,
+        item_name: product.value.name,
+        price: product.value.price || 0,
+        item_category: product.value.category || '',
+        item_brand: product.value.owner?.target?.profile.name || ''
+      }]
+    });
+  }
+
+  emits('page-loaded');
+})
+
+// Обработчик выбора варианта
+function handleVariantSelected(variant) {
+  selectedVariant.value = variant
+}
+
+// Обработчик обновления изображений при выборе варианта
+function handleUpdateImages(images) {
+  if (images && images.length > 0) {
+    currentImages.value = [...images]
+  } else {
+    // Если у варианта нет изображений, возвращаем изображения товара
+    currentImages.value = [...productImages.value]
+  }
+}
+
+// Обработчик добавления варианта в корзину
+async function handleAddVariantToCart(variantItem) {
+  try {
+    if (!shopcart.state.organization) {
+      shopcart.state.organization = product.value.owner.target._id
+    }
+    
+    // Проверка на товар с арендой
+    if (product.value.listing === 'rent') {
+      const selectedDates = await proxy.$dateSelector({
+        product: product.value
+      });
+      
+      if (!selectedDates) throw new Error('Date selection cancelled')
+      
+      variantItem.selectedDates = selectedDates
+    }
+    
+    // Проверка на разные организации в корзине
+    if (shopcart.state.organization !== product.value.owner.target._id) {
+      const result = await proxy.$alert({
+        title: 'Replace items in your cart?',
+        message: `Your cart has items from another vendor. If you continue, we'll clear it so you can order from this one instead.`,
+        actions: [
+          { label: 'Cancel', value: false },
+          { label: 'Replace', value: true }
+        ]
+      })
+
+      if (!result) throw new Error('Cart replacement cancelled')
+
+      shopcart.state.positions = []
+      shopcart.state.organization = product.value.owner.target._id
+    }
+
+    // Аналитика: регистрируем добавление в корзину
+    if (typeof gtag === 'function') {
+      gtag('event', 'add_to_cart', {
+        currency: returnCurrency(),
+        value: variantItem.price || 0,
+        items: [{
+          item_id: variantItem._id,
+          item_name: variantItem.name,
+          price: variantItem.price || 0,
+          quantity: 1,
+          item_category: product.value.category || '',
+          item_brand: product.value.owner?.target?.profile?.name || ''
+        }]
+      });
+    }
+    
+    // Добавляем вариант в корзину
+    await shopcart.actions.addVariantToCart(variantItem, product.value.owner.target._id)
+    return true
+  } catch (error) {
+    console.error('Error while adding variant to cart:', error)
+    throw error
+  }
+}
+
+// Оригинальная функция добавления товара в корзину (для товаров без вариантов)
+async function addToCart(product) {
+  let selectedDates = null
+
+  try {
+    if (!shopcart.state.organization) {
+      shopcart.state.organization = product.owner.target._id
+    }
+    if (product.listing === 'rent') {
+      selectedDates = await proxy.$dateSelector({
+        product: product.value
+      });
+      
+      if (!selectedDates) throw new Error('Date selection cancelled')
+      
+    }
+    // Если организация товара отличается от текущей в корзине
+    if (shopcart.state.organization !== product.owner.target._id) {
+      const result = await proxy.$alert({
+        title: 'Replace items in your cart?',
+        message: `Your cart has items from another vendor. If you continue, we'll clear it so you can order from this one instead.`,
+        actions: [
+          { label: 'Cancel', value: false },
+          { label: 'Replace', value: true }
+        ]
+      })
+
+      if (!result) throw new Error('Cart replacement cancelled')
+
+      shopcart.state.positions = []
+      shopcart.state.organization = product.owner.target._id
+    }
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'add_to_cart', {
+        currency: returnCurrency(),
+        value: product.price || 0,
+        items: [{
+          item_id: product._id,
+          item_name: product.name,
+          price: product.price || 0,
+          quantity: 1,
+          item_category: product.category || '',
+          item_brand: product.owner?.target?.profile?.name || ''
+        }]
+      });
+    }
+    
+    await shopcart.actions.addProductToCart(product, product.owner.target._id, selectedDates)
+    return true
+  } catch (error) {
+    console.error('Error while adding product to cart:', error)
+    throw error
+  }
+}
+</script>

@@ -1,0 +1,29 @@
+{
+  "path": "../../src/modules/community/components/blocks/Activity.vue",
+  "relativePath": "modules/community/components/blocks/Activity.vue",
+  "type": "source",
+  "name": "Activity.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Activity.vue is a presentational Vue component (using <script setup>) that takes numeric props for likes, comments, and subscriptions, and renders a styled flex container showing each metric with an icon and label if the corresponding prop is provided.",
+    "Purpose": "To serve as a reusable UI block in the community module, displaying key interaction metrics (likes, comments, subscriptions) in a consistent, styled layout.",
+    "Components": [
+      {
+        "name": "Activity",
+        "role": "Root component that handles layout and conditional rendering of individual metric blocks."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue (ref, computed, defineProps)"
+    ],
+    "Usage": "Import the component into a parent view or layout:\n\nimport Activity from 'modules/community/components/blocks/Activity.vue';\n\nThen use it in the template with bound props:\n\n<Activity :likes=\"post.likes\" :comments=\"post.comments\" :subscriptions=\"user.subscriptions\" />",
+    "Importance": 2,
+    "Notes": [
+      "Uses <script setup> Composition API syntax.",
+      "Imports ref and computed but does not use them—these imports can be removed.",
+      "Icons are hardcoded emojis; the subscription block reuses the thumbs-up emoji, which may be unintended.",
+      "All styling relies on utility CSS classes; no <style> block is present in the file."
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "path": "../../src/modules/globals/views/components/partials/NavigationBar.vue",
+  "relativePath": "modules/globals/views/components/partials/NavigationBar.vue",
+  "type": "source",
+  "name": "NavigationBar.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component rendering a sticky top navigation bar with a back button, dynamic title or logotype, shopping cart button, user profile icon and any custom action buttons defined in global state or route metadata. Uses smooth slide-in transitions for elements.",
+    "Purpose": "Serves as the main header/navigation bar across application pages, providing consistent branding (title or logotype), navigation controls (back, profile), cart access and contextual action buttons.",
+    "Components": [
+      {
+        "name": "NavigationBar (this component)",
+        "responsibility": "Coordinates layout and rendering of header elements, manages navigation and action triggers."
+      },
+      {
+        "name": "IconShopcart",
+        "import": "@martyrs/src/modules/icons/entities/IconShopcart.vue",
+        "responsibility": "SVG icon for shopping cart, rendered inside a Button to show cart status."
+      },
+      {
+        "name": "IconProfile",
+        "import": "@martyrs/src/modules/icons/entities/IconProfile.vue",
+        "responsibility": "SVG icon for user profile toggle/navigation."
+      },
+      {
+        "name": "Button",
+        "import": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Reusable button component used for toggling the shopping cart with counter badge."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleBackNavigation",
+        "description": "Navigates back in history or to 'Home' if the query parameter 'afterAuth' is present.",
+        "parameters": []
+      },
+      {
+        "name": "handleToggle",
+        "description": "Checks authentication status: if not signed in, routes to 'Sign In', otherwise to the user's profile page.",
+        "parameters": []
+      },
+      {
+        "name": "actions (computed)",
+        "description": "Reactive computed array of custom action definitions, sourcing from global state navigation_bar.actions or route.meta.actions.",
+        "parameters": []
+      },
+      {
+        "name": "formateText",
+        "description": "Utility function (from globals store) to format the navigation title text, applied to either a custom name or localized route title or route name.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "String",
+            "description": "The raw title text to format."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue",
+      "vue-router",
+      "vue-i18n",
+      "@martyrs/src/modules/icons/entities/IconShopcart.vue",
+      "@martyrs/src/modules/icons/entities/IconProfile.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/orders/store/shopcart.js",
+      "@martyrs/src/modules/auth/views/store/auth.js"
+    ],
+    "Usage": "Imported and placed in layout or page components (e.g. App.vue or specific route layouts) to provide a consistent header. Props 'theme' and optional 'logotype' can be passed to customize appearance.",
+    "Importance": 4,
+    "Notes": [
+      "Elements use Vue <transition> and <transition-group> with 'slideIn' classes for animated entry/exit.",
+      "Shows or hides back button and title based on route.meta.title_hide.",
+      "Cart button visibility controlled by route.meta.showShopCart or title_hide flag.",
+      "Supports arbitrary action components defined in global state or route metadata with custom condition, props and click handler.",
+      "Relies on a global 'formateText' utility from the globals store which must be present.",
+      "Responsive styling is handled via utility CSS classes; SCSS defines transition timing and transform behaviors."
+    ]
+  }
+}

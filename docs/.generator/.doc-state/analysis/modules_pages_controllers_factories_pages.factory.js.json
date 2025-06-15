@@ -1,0 +1,77 @@
+{
+  "path": "../../src/modules/pages/controllers/factories/pages.factory.js",
+  "relativePath": "modules/pages/controllers/factories/pages.factory.js",
+  "type": "source",
+  "name": "pages.factory.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит фабрику контроллера страниц, предоставляющую CRUD-операции над сущностью Page, включая рекурсивную подгрузку дочерних страниц.",
+    "Purpose": "Сформировать набор методов для создания, чтения, обновления и удаления документов Page в базе данных, а также реализовать логику вложенности (parent/children).",
+    "Components": [
+      {
+        "name": "createPageController",
+        "type": "factory function",
+        "responsibility": "Принимает объект db и возвращает объект с методами create, read, update, delete для работы с моделью Page."
+      },
+      {
+        "name": "populateChildrenRecursively",
+        "type": "helper function",
+        "responsibility": "Рекурсивно подгружает поле children у переданной страницы и всех её потомков."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "populateChildrenRecursively",
+        "parameters": [
+          "page"
+        ],
+        "description": "Асинхронно вызывает page.populate('children') и рекурсивно для каждого ребёнка."
+      },
+      {
+        "name": "create",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Создаёт новую страницу по данным из req.body, привязывает её к родителю (если задан parent), сохраняет и возвращает созданную страницу."
+      },
+      {
+        "name": "read",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Если в query указан url — возвращает одну страницу с этим URL, иначе возвращает все верхнеуровневые страницы вместе с их вложениями."
+      },
+      {
+        "name": "update",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Обновляет страницу по _id из req.body и возвращает дообновлённую версию."
+      },
+      {
+        "name": "deletePage",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Удаляет страницу по _id из req.body и возвращает удалённый документ."
+      }
+    ],
+    "Dependencies": [
+      "db.page — модель Page (например, Mongoose)",
+      "Express request (req) и response (res)",
+      "Консоль для логов (console.warn, console.error)"
+    ],
+    "Usage": "Импортируется как функция-фабрика: `import createPageController from './pages.factory'`. Затем вызывается с объектом db — `const pageController = createPageController(db);` и методы pageController передаются в маршруты Express.",
+    "Importance": 4,
+    "Notes": [
+      "Фабрика позволяет «подменять» db при тестировании.",
+      "Рекурсивная подгрузка может привести к глубоким цепочкам вызовов при большой вложенности.",
+      "При удалении дочерние страницы не удаляются автоматически.",
+      "Метод update возвращает старую версию документа; для возвращения нового требуется опция { new: true }."
+    ]
+  }
+}

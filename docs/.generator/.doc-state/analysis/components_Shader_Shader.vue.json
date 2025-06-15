@@ -1,0 +1,70 @@
+{
+  "path": "../../src/components/Shader/Shader.vue",
+  "relativePath": "components/Shader/Shader.vue",
+  "type": "source",
+  "name": "Shader.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 компонент, который рендерит на канвасе WebGL-шейдер, передаваемый через пропс. Поддерживает динамическую смену темы (light/dark) и обновляет uniform-переменные шейдера в реальном времени.",
+    "purpose": "Обеспечить отображение произвольного GLSL-фрагментного шейдера в приложении с возможностью переключения темы.",
+    "components": [
+      {
+        "name": "Shader.vue",
+        "role": "Рендерит <canvas>, инициализирует WebGL-контекст, компилирует и запускает шейдер. Отвечает за анимацию и передачу uniform-переменных (время, разрешение, тема)."
+      }
+    ],
+    "functions": [
+      {
+        "name": "updateUniforms",
+        "description": "Обновляет uniform-переменную iTheme в текущей программе шейдера в зависимости от props.theme.",
+        "parameters": []
+      },
+      {
+        "name": "compileShader",
+        "description": "Компилирует GLSL-шейдер (вершинный или фрагментный), сообщает об ошибках компиляции.",
+        "parameters": [
+          {
+            "name": "gl",
+            "type": "WebGLRenderingContext"
+          },
+          {
+            "name": "type",
+            "type": "GLenum"
+          },
+          {
+            "name": "source",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "resizeCanvasToDisplaySize",
+        "description": "Изменяет размеры canvas в соответствии с CSS-размером и devicePixelRatio, возвращает true при изменении.",
+        "parameters": [
+          {
+            "name": "canvas",
+            "type": "HTMLCanvasElement"
+          }
+        ]
+      },
+      {
+        "name": "render",
+        "description": "Основной цикл рендеринга: сбрасывает буфер, настраивает атрибуты и uniform-переменные (iTime, iResolution, iTheme), рисует треугольный стрип и вызывает сам себя через requestAnimationFrame.",
+        "parameters": []
+      }
+    ],
+    "dependencies": [
+      "vue (onMounted, ref, watch, defineProps)",
+      "WebGLRenderingContext API (createShader, compileShader, createProgram, getUniformLocation, bufferData и т. д.)",
+      "browser globals (window.devicePixelRatio, requestAnimationFrame, performance.now)"
+    ],
+    "usage": "Импортируется и используется как <Shader :shader=\"yourGLSLCode\" :theme=\"'light'|'dark'\"/>. Встраивается в любой Vue-компонент.",
+    "importance": 4,
+    "notes": [
+      "Каждый кадр создаётся новый буфер вершин; для оптимизации можно вынести его за пределы render().",
+      "watch с immediate=true сразу применяет тему при монтировании.",
+      "В случае ошибок компиляции или линковки шейдера выводится alert.",
+      "Стиль canvas scoped, занимает 100% ширины и высоты контейнера."
+    ]
+  }
+}

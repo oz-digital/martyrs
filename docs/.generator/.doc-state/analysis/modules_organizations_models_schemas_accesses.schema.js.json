@@ -1,0 +1,27 @@
+{
+  "path": "../../src/modules/organizations/models/schemas/accesses.schema.js",
+  "relativePath": "modules/organizations/models/schemas/accesses.schema.js",
+  "type": "source",
+  "name": "accesses.schema.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет схему доступа (accessesSchema) с набором булевых флагов для CRUD-операций по различным модулям в рамках организации.",
+    "Purpose": "Служит для структурирования и валидации данных о правах доступа (create, read, edit, delete и др.) при работе с сущностями организации.",
+    "Components": [
+      {
+        "name": "accessesSchema",
+        "type": "object",
+        "description": "Объект, содержащий вложенные поля для каждого подраздела (categories, rents, spots и т.д.), где для каждого действия (create, read, edit, delete, confirm) задан тип Boolean и дефолтное значение false."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [],
+    "Usage": "Импортируется в модель или схему организации (например, via Mongoose или иной ORM фреймворка \"martyrs\") как sub-schema для поля accesses. Пример: `import accessesSchema from './accesses.schema.js';` далее в `new Schema({ ..., accesses: accessesSchema })`.",
+    "Importance": 4,
+    "Notes": [
+      "Все булевые поля по умолчанию установлены в false.",
+      "У некоторых разделов (например, members) отсутствует флаг create, это может быть осознанным ограничением или упущением.",
+      "Файл не содержит функций или внешних импортов – лишь декларацию структуры."
+    ]
+  }
+}

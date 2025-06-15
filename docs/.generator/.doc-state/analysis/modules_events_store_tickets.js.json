@@ -1,0 +1,117 @@
+{
+  "path": "../../src/modules/events/store/tickets.js",
+  "relativePath": "modules/events/store/tickets.js",
+  "type": "source",
+  "name": "tickets.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines a Vue 3 reactive store module for managing \"tickets\" in the Martyrs application. It sets up an Axios client for backend communication, maintains local state (tickets and error), provides CRUD actions against the `/api/tickets` endpoints, and defines a mutation to update ticket associations on other entities.",
+    "Purpose": "Centralize all ticket‐related state management and API interactions, so that Vue components and other parts of the app can read, create, update, delete, and reactively track tickets.",
+    "Components": [
+      {
+        "name": "state",
+        "description": "A Vue reactive object holding `tickets` (array) and `error` (nullable) for the module."
+      },
+      {
+        "name": "actions",
+        "description": "An object of asynchronous methods (`read`, `create`, `update`, `delete`) that call backend endpoints and update `state`."
+      },
+      {
+        "name": "mutations",
+        "description": "An object containing `handleTicketUpdate`, which updates the `hasTicket`, `tickets`, and `numberOfTickets` fields on target entities."
+      },
+      {
+        "name": "history",
+        "description": "An array capturing snapshots of the `state` over time; updated via a `watch` on `state`."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "read",
+        "description": "Fetch a paginated/filterable list of tickets.",
+        "params": [
+          {
+            "user": "String|Number|undefined"
+          },
+          {
+            "type": "String|undefined"
+          },
+          {
+            "target": "String|undefined"
+          },
+          {
+            "role": "String|undefined"
+          },
+          {
+            "skip": "Number|undefined"
+          },
+          {
+            "limit": "Number|undefined"
+          },
+          {
+            "search": "String|undefined"
+          }
+        ],
+        "returns": "Promise resolving to `response.data`"
+      },
+      {
+        "name": "create",
+        "description": "Submit a new ticket to the backend.",
+        "params": [
+          {
+            "ticket": "Object"
+          }
+        ],
+        "returns": "Promise resolving to created ticket data"
+      },
+      {
+        "name": "update",
+        "description": "Submit updates for an existing ticket.",
+        "params": [
+          {
+            "ticket": "Object"
+          }
+        ],
+        "returns": "Promise resolving to updated ticket data"
+      },
+      {
+        "name": "delete",
+        "description": "Request deletion of a ticket.",
+        "params": [
+          {
+            "ticket": "Object"
+          }
+        ],
+        "returns": "Promise resolving to deletion result"
+      },
+      {
+        "name": "handleTicketUpdate",
+        "description": "Given a target entity (or array of entities), mark it as having/losing a ticket and adjust its tickets list and count.",
+        "params": [
+          {
+            "data": "Object|Array"
+          },
+          {
+            "ticket": "Object"
+          },
+          {
+            "hasTicket": "Boolean"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "axios (via `import axios from 'axios'`)",
+      "Vue Composition API (`reactive`, `watch` from 'vue')",
+      "Global error handler (`setError` from '@martyrs/src/modules/globals/views/store/globals.js')"
+    ],
+    "Usage": "Imported into Vue components or other store modules as `import { state, actions, mutations } from 'modules/events/store/tickets.js'`. Components then call `actions.read({...})`, bind to `state.tickets`, and use `mutations.handleTicketUpdate` to sync ticket flags on related entities.",
+    "Importance": 4,
+    "Notes": [
+      "Uses a custom Axios instance with `baseURL` from `process.env.API_URL` and `withCredentials: true`.",
+      "Error handling delegates to a global `setError` store.",
+      "Maintains an internal `history` of state snapshots for debugging or time-travel, though not exported.",
+      "Mutations assume target entities have `_id`, `tickets` array, and `numberOfTickets` fields."
+    ]
+  }
+}

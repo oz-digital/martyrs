@@ -1,0 +1,24 @@
+{
+  "section": {
+    "id": "source-components-tooltip",
+    "title": "Проект: Компоненты / Tooltip",
+    "description": "Модуль Tooltip предоставляет компонент для отображения всплывающих подсказок в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "tooltip-overview",
+        "title": "Обзор Tooltip",
+        "description": "Компонент Tooltip используется для отображения дополнительной информации при наведении курсора на элемент."
+      },
+      {
+        "id": "tooltip-files",
+        "title": "Файлы модуля",
+        "description": "В состав модуля входит файл Tooltip.vue, реализующий основной функционал компонента."
+      }
+    ]
+  },
+  "fileHashes": [
+    "4f2ee18b700e5d38c2e4f77d9a3bb7cb"
+  ],
+  "groupHash": "29314197cd1500964630f253bb9df89f",
+  "generated": "2025-06-05T09:17:30.237Z"
+}

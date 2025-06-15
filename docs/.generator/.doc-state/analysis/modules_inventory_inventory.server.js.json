@@ -1,0 +1,91 @@
+{
+  "path": "../../src/modules/inventory/inventory.server.js",
+  "relativePath": "modules/inventory/inventory.server.js",
+  "type": "source",
+  "name": "inventory.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует подсистему управления запасами: регистрирует модели, подключает HTTP-маршруты и политики доступа.",
+    "Purpose": "Организовать и сконфигурировать все части модуля inventory (модели, маршруты, политики) в единой точке входа для последующей инициализации при старте приложения.",
+    "Components": [
+      {
+        "name": "StockAdjustmentModel",
+        "type": "Model Factory",
+        "responsibility": "Определение схемы и методов работы с коррекциями остатков на складе."
+      },
+      {
+        "name": "StockBalanceModel",
+        "type": "Model Factory",
+        "responsibility": "Определение схемы и методов работы с текущими остатками на складе."
+      },
+      {
+        "name": "StockAvailabilityModel",
+        "type": "Model Factory",
+        "responsibility": "Определение схемы и методов работы с доступностью товаров."
+      },
+      {
+        "name": "StockInventoryModel",
+        "type": "Model Factory",
+        "responsibility": "Определение схемы и методов работы с инвентаризацией склада."
+      },
+      {
+        "name": "inventoryRoutes",
+        "type": "Router",
+        "responsibility": "Настройка REST-маршрутов для работы с сущностями модуля inventory."
+      },
+      {
+        "name": "inventoryPolicies",
+        "type": "Policy Loader",
+        "responsibility": "Регистрация бизнес-политик и правил доступа для маршрутов inventory."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeInventory",
+        "description": "Регистрация моделей в объекте DB, настройка маршрутов и политик для модуля inventory.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express Application",
+            "description": "Инстанс Express для регистрации маршрутов."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер для всех моделей базы данных."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "Список разрешённых источников для CORS или иного контроля доступа."
+          },
+          {
+            "name": "publicPath",
+            "type": "String",
+            "description": "Публичный путь для размещения статических ресурсов или UI-интерфейса."
+          }
+        ],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "./models/stockAdjustment.model.js",
+      "./models/stockBalance.model.js",
+      "./models/stockAvailability.model.js",
+      "./models/stockInventory.model.js",
+      "./routes/inventory.routes.js",
+      "./policies/inventory.policies.js"
+    ],
+    "Usage": [
+      "В основном вызывается из точки входа сервера (например, app.js или server.js):",
+      "import inventory from './modules/inventory/inventory.server.js';",
+      "inventory.initialize(app, db, origins, publicPath);"
+    ],
+    "Importance": 4,
+    "Notes": [
+      "Все модели подключаются к переданному объекту db динамически.",
+      "Маршруты и политики регистрируются только в случае наличия Express-приложения (app).",
+      "Экспортирует как именованный (initialize), так и дефолтный объект с ключом initialize."
+    ]
+  }
+}

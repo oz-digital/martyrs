@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/integrations/stripe/controllers/webhooks/stripe.webhook.js",
+  "relativePath": "modules/integrations/stripe/controllers/webhooks/stripe.webhook.js",
+  "type": "source",
+  "name": "stripe.webhook.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a Stripe webhook controller that registers an API endpoint, verifies incoming Stripe webhook payloads, and notifies application observers of received events.",
+    "Purpose": "Integrate Stripe’s event-driven notifications into the application by handling and validating incoming webhook requests and dispatching events to registered observers.",
+    "Components": [
+      {
+        "name": "stripe",
+        "type": "instance",
+        "responsibility": "Configures the Stripe client with API key and version for constructing and validating webhook events."
+      },
+      {
+        "name": "middleware",
+        "type": "function",
+        "responsibility": "Placeholder Express-style middleware that currently just calls next()."
+      },
+      {
+        "name": "StripeWebhook",
+        "type": "class",
+        "responsibility": "Extends a generic Webhook base class, sets up the route, attaches middleware, and implements the webhook handler logic."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middleware",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ],
+        "description": "A no-op middleware for the webhook route that simply invokes next(). Can be extended later for logging, body parsing, etc."
+      },
+      {
+        "name": "StripeWebhook.handleWebhook",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Main request handler: reads the raw payload, generates or uses a Stripe signature header, validates the event with Stripe's SDK, notifies observers of event.type with payload data, and returns appropriate HTTP status codes."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/globals/controllers/classes/globals.webhook.js",
+      "stripe",
+      "process.env.STRIPE_API_KEY",
+      "process.env.STRIPE_WEBHOOK_SECRET",
+      "Express-style req/res/next",
+      "an observer object passed into the constructor"
+    ],
+    "Usage": "Imported and instantiated during application bootstrap (e.g. in integrations setup), passing in the Express app instance, database handle, and an observer. The constructor registers the '/api/webhook/stripe' POST route with its handler and middleware.",
+    "Importance": 4,
+    "Notes": [
+      "The code currently uses stripe.webhooks.generateTestHeaderString to fabricate a signature header, which is intended for testing. In production, you would use the incoming 'stripe-signature' header from req.headers.",
+      "On signature validation failure, it logs an error and responds with HTTP 400.",
+      "Extends a generic Webhook base class from the Martyrs framework; shared logic (route binding, error handling) lives in the superclass.",
+      "Can be extended with additional middleware (e.g. raw body parsing, authentication) by passing extra functions to the constructor."
+    ]
+  }
+}

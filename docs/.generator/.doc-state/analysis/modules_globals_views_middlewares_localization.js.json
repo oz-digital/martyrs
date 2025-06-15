@@ -1,0 +1,59 @@
+{
+  "path": "../../src/modules/globals/views/middlewares/localization.js",
+  "relativePath": "modules/globals/views/middlewares/localization.js",
+  "type": "source",
+  "name": "localization.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Middleware for a Vue/Vue-Router application that reads a locale parameter from the incoming route and, if valid, applies it to the global i18n configuration.",
+    "Purpose": "Ensure that when a route contains a `locale` parameter and that locale exists in the available i18n locales, the application’s current locale is switched accordingly before navigation proceeds.",
+    "Components": [
+      {
+        "name": "setLocale",
+        "type": "middleware function",
+        "responsibilities": [
+          "Extract the `locale` parameter from the `to` route object.",
+          "Check if the extracted locale exists in the application’s available locales list.",
+          "If valid, assign the new locale to the global i18n instance and continue navigation.",
+          "Otherwise, simply continue navigation without changing locale."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "setLocale",
+        "description": "Route guard/middleware that switches the app’s locale based on `to.params.locale` if it is recognized.",
+        "parameters": [
+          {
+            "name": "to",
+            "type": "RouteLocationNormalized",
+            "description": "The target route object, expected to have a `params.locale` field."
+          },
+          {
+            "name": "from",
+            "type": "RouteLocationNormalized",
+            "description": "The current route being navigated away from (unused here)."
+          },
+          {
+            "name": "next",
+            "type": "Function",
+            "description": "Callback to resolve the hook and let navigation continue."
+          }
+        ],
+        "returns": "Calls `next()` to proceed. No value returned."
+      }
+    ],
+    "Dependencies": [
+      "vue-router (for `to`, `from`, `next` signature)",
+      "vue-i18n (access via `this.$i18n` and `app.config.globalProperties.$i18n`)",
+      "A global `app` instance (to access `config.globalProperties`)"
+    ],
+    "Usage": "Imported into a router setup file and used as a per-route `beforeEnter` guard or globally via `router.beforeEach(setLocale)` to enforce locale switching on every navigation.",
+    "Importance": 3,
+    "Notes": [
+      "References `app` without an import—assumes a global or higher-scope variable named `app` (likely the Vue application instance).",
+      "Contains a `console.log('true')` that appears to be a debugging remnant and could be removed.",
+      "Always calls `next()`, even for invalid locales; you might want to redirect or fallback in those cases."
+    ]
+  }
+}

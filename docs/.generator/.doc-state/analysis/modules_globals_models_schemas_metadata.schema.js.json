@@ -1,0 +1,72 @@
+{
+  "path": "../../src/modules/globals/models/schemas/metadata.schema.js",
+  "relativePath": "modules/globals/models/schemas/metadata.schema.js",
+  "type": "source",
+  "name": "metadata.schema.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and applies a metadata schema extension for a Mongoose model: it adds url and tags fields, sets up a pre-save hook that auto-generates an SEO-friendly URL, and creates an index on those fields.",
+    "Purpose": "To centralize and reuse the metadata parts of different schemas in the project, ensuring consistent definition of url and tags fields and automatic generation of SEO-friendly URLs before saving documents.",
+    "Components": [
+      {
+        "name": "applyMetadataSchema",
+        "type": "function",
+        "responsibilities": [
+          "Add `url` and `tags` properties to the passed schema",
+          "Register a pre-save hook to auto-generate `url` if not provided",
+          "Create a compound index on `url` and `tags`"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "applyMetadataSchema",
+        "purpose": "Configures a given Mongoose schema with metadata fields and hooks",
+        "parameters": [
+          {
+            "name": "schema",
+            "type": "Mongoose.Schema",
+            "description": "The schema object to extend"
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "(Unused) Potential database connection or context"
+          }
+        ]
+      },
+      {
+        "name": "pre('save') callback",
+        "purpose": "Before saving, if `url` is empty, generate it from `name`, `title`, or `profile.name` using the imported utility",
+        "parameters": [
+          {
+            "name": "next",
+            "type": "Function",
+            "description": "Callback to proceed with the save operation"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/seo-friendly-url.js",
+        "import": "createFriendlyURL",
+        "description": "Utility to generate SEO-friendly URL strings from names"
+      },
+      {
+        "module": "mongoose",
+        "import": "schema.add / schema.pre / schema.index",
+        "description": "Schema modification and hook registration methods"
+      }
+    ],
+    "Usage": "In model definition files, import this default function and invoke it with a Mongoose schema (and optional db) to apply the metadata fields and hooks before compiling the model.",
+    "Importance": 3,
+    "Notes": [
+      "The `db` parameter is declared but not used.",
+      "The URL generation checks `this.name`, `this.title`, then `this.profile.name` in that order.",
+      "The compound index on `{ url: 1, tags: 1 }` improves query performance for filters by URL and tags.",
+      "Uniqueness is enforced at the schema level for `url`. Consider handling potential conflicts on generation.",
+      "Tags array has no enforced cardinality or value constraints here; validation may be added elsewhere if needed."
+    ]
+  }
+}

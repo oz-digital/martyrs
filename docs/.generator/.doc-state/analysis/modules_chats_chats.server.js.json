@@ -1,0 +1,73 @@
+{
+  "path": "../../src/modules/chats/chats.server.js",
+  "relativePath": "modules/chats/chats.server.js",
+  "type": "source",
+  "name": "chats.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл инициализирует и экспортирует основные компоненты модуля чатов: модель, контроллер и маршруты, а также предоставляет функцию initialize для настройки модуля в приложении.",
+    "Purpose": "Обеспечить централизованную точку инициализации и экспорта всех частей подсистемы чатов (модели, контроллера и маршрутов) в рамках серверного приложения.",
+    "Components": [
+      {
+        "name": "ChatsController",
+        "type": "Controller",
+        "description": "Обрабатывает логику бизнес-правил и взаимодействие с моделью чатов."
+      },
+      {
+        "name": "ChatModel",
+        "type": "Model Factory",
+        "description": "Функция-конструктор, создающая модель чата и регистрирующая её в объекте базы данных."
+      },
+      {
+        "name": "chatsRoutes",
+        "type": "Router",
+        "description": "Настраивает HTTP/WebSocket-эндпоинты для работы с чатами."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeChats",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express application instance",
+            "description": "Если передан, на него навешиваются маршруты чатов."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер для моделей базы данных; сюда добавляется модель чата."
+          },
+          {
+            "name": "wss",
+            "type": "WebSocket.Server",
+            "description": "Сервер WebSocket для передачи сообщений в реальном времени."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "Разрешённые источники для CORS/WebSocket."
+          },
+          {
+            "name": "publicPath",
+            "type": "string",
+            "description": "Путь к публичным статическим ресурсам (для обслуживания клиентского кода)."
+          }
+        ],
+        "description": "Регистрирует модель чата в объекте базы данных и, при наличии app, настраивает маршруты чатов."
+      }
+    ],
+    "Dependencies": [
+      "./controllers/chats.controller.js",
+      "./models/chat.model.js",
+      "./routes/chats.routes.js"
+    ],
+    "Usage": "Импортируется в точке старта сервера и вызывается как initialize(app, db, wss, origins, publicPath) или через default-экспорт модуля для подключения подсистемы чатов к приложению.",
+    "Importance": 4,
+    "Notes": [
+      "Маршруты регистрируются только если передан экземпляр приложения (app), что позволяет выносить инициализацию в независимые сценарии (например, только WebSocket).",
+      "Файл выступает фасадом (barrel) для всех exports: моделей, контроллеров, маршрутов и функции инициализации.",
+      "Использует «factory pattern» для создания модели и инверсию управления при передаче зависимостей (app, db, wss)."
+    ]
+  }
+}

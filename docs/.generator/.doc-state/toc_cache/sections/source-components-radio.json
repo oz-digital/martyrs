@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-radio",
+    "title": "Проект: Компоненты / Radio",
+    "description": "Модуль предоставляет компонент Radio для выбора одного значения из набора опций.",
+    "subsections": [
+      {
+        "id": "radio-component",
+        "title": "Radio.vue",
+        "description": "Основной Vue-компонент для отображения радиокнопки."
+      }
+    ]
+  },
+  "fileHashes": [
+    "b9a30dee78b38a7d8d97bd576b366c18"
+  ],
+  "groupHash": "2df14c1371aa40831dbf38a1a98075db",
+  "generated": "2025-06-05T09:17:04.267Z"
+}

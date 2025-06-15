@@ -1,0 +1,105 @@
+{
+  "path": "../../src/modules/core/model/Model.js",
+  "relativePath": "modules/core/model/Model.js",
+  "type": "source",
+  "name": "Model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Определяет класс Model для работы с данными: хранит схему, валидатор и делегирует CRUD-операции конкретному адаптеру БД.",
+    "Purpose": "Унифицировать логику создания, чтения, обновления и удаления записей в базе данных, а также валидацию данных на уровне моделей.",
+    "Components": [
+      {
+        "name": "Model",
+        "description": "Класс, инкапсулирующий схему (ModelSchema), валидатор (ModelValidator) и адаптер для БД (MongoDBAdapter или PostgreSQLAdapter). Предоставляет методы CRUD и вспомогательные функции."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "params": [
+          "db",
+          "name",
+          "schema"
+        ],
+        "description": "Инициализирует модель: сохраняет имя, создаёт экземпляры ModelSchema и ModelValidator, выбирает адаптер по типу БД."
+      },
+      {
+        "name": "create",
+        "params": [
+          "data"
+        ],
+        "description": "Валидирует объект данных и передаёт его адаптеру для создания записи."
+      },
+      {
+        "name": "find",
+        "params": [
+          "query = {}"
+        ],
+        "description": "Возвращает массив записей, соответствующих условию query, через адаптер."
+      },
+      {
+        "name": "findOne",
+        "params": [
+          "query = {}"
+        ],
+        "description": "Возвращает первую запись, соответствующую условию query, через адаптер."
+      },
+      {
+        "name": "findById",
+        "params": [
+          "id"
+        ],
+        "description": "Возвращает запись по её идентификатору через адаптер."
+      },
+      {
+        "name": "update",
+        "params": [
+          "id",
+          "data"
+        ],
+        "description": "Валидирует объект данных и передаёт адаптеру инструкцию на обновление записи по id."
+      },
+      {
+        "name": "delete",
+        "params": [
+          "id"
+        ],
+        "description": "Удаляет запись по id через адаптер."
+      },
+      {
+        "name": "validate",
+        "params": [
+          "data"
+        ],
+        "description": "Вызывает ModelValidator.validate для проверки всего объекта данных."
+      },
+      {
+        "name": "validateField",
+        "params": [
+          "field",
+          "value"
+        ],
+        "description": "Вызывает ModelValidator.validateField для проверки одного поля."
+      },
+      {
+        "name": "getSchema",
+        "params": [],
+        "description": "Возвращает JSON-определение схемы из ModelSchema."
+      },
+      {
+        "name": "createEmpty",
+        "params": [],
+        "description": "Генерирует пустой объект на основе схемы через ModelSchema.createEmpty."
+      }
+    ],
+    "Dependencies": [
+      "./ModelSchema.js",
+      "./ModelValidator.js",
+      "MongoDBAdapter",
+      "PostgreSQLAdapter"
+    ],
+    "Usage": "import Model from 'modules/core/model/Model.js';\nconst userModel = new Model(dbConfig, 'users', userSchema);\nawait userModel.create({ name: 'Alice' });",
+    "Importance": 4,
+    "Notes": "1) В коде есть небольшая несоответствие: свойства this.adapter и this._adapter используют разную нотацию при проверке. 2) MongoDBAdapter и PostgreSQLAdapter не импортированы явно в этом файле — предполагается, что они доступны в глобальной области или импортируются автоматически. 3) По умолчанию при неизвестном типе БД выбирается MongoDBAdapter."
+  }
+}

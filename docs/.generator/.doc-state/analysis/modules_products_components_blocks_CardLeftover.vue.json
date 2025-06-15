@@ -1,0 +1,81 @@
+{
+  "path": "../../src/modules/products/components/blocks/CardLeftover.vue",
+  "relativePath": "modules/products/components/blocks/CardLeftover.vue",
+  "type": "source",
+  "name": "CardLeftover.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент, отображающий карточку «Leftover» (остатка) с заголовком, кнопкой редактирования и сворачиваемым списком позиций.",
+    "Purpose": "Представить в интерфейсе информацию об остатке: тип (приход/расход), количество позиций, привязанные заказы и комментарии, а также дать быстрый доступ к редактированию записи.",
+    "Components": [
+      {
+        "name": "CardLeftover",
+        "role": "Сам компонент, объединяющий заголовок, ссылку на редактирование и контент со списком позиций."
+      },
+      {
+        "name": "CardHeader",
+        "importedFrom": "@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue",
+        "role": "Отображает общую информацию о сущности (автор, дата создания и т.п.)."
+      },
+      {
+        "name": "IconEdit",
+        "importedFrom": "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+        "role": "Иконка «редактировать», обёрнутая в router-link для перехода на страницу редактирования."
+      },
+      {
+        "name": "PlaceholderUserpic",
+        "importedFrom": "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue",
+        "role": "Плейсхолдер аватарки пользователя (импортируется, но в текущей реализации не используется)."
+      },
+      {
+        "name": "router-link",
+        "role": "Навигационный компонент vue-router для перехода на маршрут редактирования Leftover."
+      },
+      {
+        "name": "transition",
+        "role": "Анимация «fade» для плавного отображения/скрытия списка позиций."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "declOfNum",
+        "purpose": "Выбирает правильное слово по падежу/числу из переданного массива слов.",
+        "parameters": [
+          {
+            "name": "number",
+            "type": "Number",
+            "description": "Числовое значение, по которому определяется форма."
+          },
+          {
+            "name": "words",
+            "type": "Array<String>",
+            "description": "Три варианта слова для чисел (1, 2–4, 5+)."
+          }
+        ],
+        "note": "В текущей разметке не используется."
+      },
+      {
+        "name": "returnCurrency",
+        "purpose": "Возвращает символ или код валюты для отображения рядом с ценой.",
+        "parameters": [],
+        "note": "Не объявлена в этом файле — берётся из глобального миксина/плагина или упущена."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps)",
+      "vue-router (useRouter, router-link)",
+      "@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue"
+    ],
+    "Usage": "Импортируется и регистрируется в родительских компонентах или представлениях, где нужно отобразить информацию об остатке. Пример:\n\nimport CardLeftover from 'modules/products/components/blocks/CardLeftover.vue'\n\n<template>\n  <CardLeftover :leftover=\"someLeftoverObject\" />\n</template>",
+    "Importance": 3,
+    "Notes": [
+      "В шаблоне используется метод returnCurrency(), но в <script> он не определён — возможная ошибка или обращение к глобальной функции.",
+      "Импорт PlaceholderUserpic не используется — можно удалить или добавить в секцию заголовка для аватарки.",
+      "Импорт и создание объекта router (useRouter) объявлены, но в коде не используются.",
+      "Scoped стили минимальны: только модификатор .spoiler-active и отступ для .shop-cart-item.",
+      "Учитывая зависимость от фреймворка martyrs и централизованную стилизацию, компонент играет роль типовой карточки в системе управления запасами."
+    ]
+  }
+}

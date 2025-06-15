@@ -1,0 +1,39 @@
+{
+  "path": "../../src/modules/globals/views/components/elements/ButtonSort.vue",
+  "relativePath": "modules/globals/views/components/elements/ButtonSort.vue",
+  "type": "source",
+  "name": "ButtonSort.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент ButtonSort отображает кнопку-сортировщик с иконкой и обрабатывает клик, вызывая переданный колбек action. Иконка отражает текущий порядок сортировки (order).",
+    "Purpose": "Предоставить переиспользуемый элемент интерфейса для сортировки: отображает состояние порядка и обрабатывает пользовательский клик через callback.",
+    "Components": [
+      {
+        "name": "ButtonSort",
+        "description": "Обёртка с обработчиком клика, рендерит IconSort и проксирует событие клика в action-проп."
+      },
+      {
+        "name": "IconSort",
+        "description": "Отображает графическую иконку сортировки в зависимости от переданного order ('asc' | 'desc' и т.д.)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleClick",
+        "description": "Вызывается при клике на контейнер. Если передан проп action, вызывает его без аргументов.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (toRefs, defineProps)",
+      "@martyrs/src/modules/icons/navigation/IconSort.vue"
+    ],
+    "Usage": "import ButtonSort from 'modules/globals/views/components/elements/ButtonSort.vue';\n<template>\n  <ButtonSort :order=\"sortOrder\" :action=\"onSortClick\" />\n</template>",
+    "Importance": 3,
+    "Notes": [
+      "Не содержит локального <style> — использует глобальные утилитные CSS-классы.",
+      "Построен на <script setup> и Composition API.",
+      "Проп action необязательный — при отсутствии клика просто ничего не произойдёт."
+    ]
+  }
+}

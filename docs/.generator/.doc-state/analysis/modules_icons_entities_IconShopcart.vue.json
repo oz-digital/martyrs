@@ -1,0 +1,42 @@
+{
+  "path": "../../src/modules/icons/entities/IconShopcart.vue",
+  "relativePath": "modules/icons/entities/IconShopcart.vue",
+  "type": "source",
+  "name": "IconShopcart.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a shop-cart SVG icon with customizable fill color and class attributes.",
+    "Purpose": "Provides a reusable, configurable shopping cart icon for use throughout the application’s UI.",
+    "Components": [
+      {
+        "name": "IconShopcart",
+        "type": "Vue component",
+        "responsibility": "Renders an SVG of a shopping cart; exposes a 'fill' prop to change icon color; forwards CSS classes via $attrs."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Defines the component props interface",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Determines the fill color of the SVG paths."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "Vue 3 runtime (for <script setup>, defineProps, $attrs)",
+      "CSS variable '--black' (used in default fill value)"
+    ],
+    "Usage": "Imported into other Vue components or pages via `import IconShopcart from 'modules/icons/entities/IconShopcart.vue'`, then used in templates as `<IconShopcart fill=\"red\" class=\"my-icon\"/>`.",
+    "Importance": 2,
+    "Notes": [
+      "No local <style> block; styling is expected to be applied via passed-in CSS classes or global styles.",
+      "Uses `$attrs.class` to forward any class attribute to the <path> elements, enabling custom sizing, color overrides, etc.",
+      "Purely presentational – no reactive state or lifecycle hooks."
+    ]
+  }
+}

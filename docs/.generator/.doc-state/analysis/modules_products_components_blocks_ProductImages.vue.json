@@ -1,0 +1,58 @@
+{
+  "path": "../../src/modules/products/components/blocks/ProductImages.vue",
+  "relativePath": "modules/products/components/blocks/ProductImages.vue",
+  "type": "source",
+  "name": "ProductImages.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "This Vue component renders the main product image (including a 360° view if available), a list of thumbnails, and a popup photo viewer for enlarged images.",
+    "Purpose": "Provide an interactive image gallery for products, supporting both standard images and 360° rotational views, within the product details UI.",
+    "Components": [
+      {
+        "name": "Image360",
+        "responsibility": "Displays a 360-degree rotational view of the product using a sequence of images."
+      },
+      {
+        "name": "PlaceholderImage",
+        "responsibility": "Renders a placeholder graphic when no image is available."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Wraps its slot content in a modal overlay and emits a close event."
+      },
+      {
+        "name": "PhotoViewer",
+        "responsibility": "Displays a full-screen view of the currently selected image."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "openPopup",
+        "description": "If a valid image URL is passed, stores it in selectedImage and opens the popup.",
+        "parameters": [
+          "image (String)"
+        ]
+      },
+      {
+        "name": "closePopup",
+        "description": "Closes the photo viewer popup by setting isPopupVisible to false.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, defineProps)",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/PhotoViewer/PhotoViewer.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue",
+      "@martyrs/src/modules/products/components/elements/Image360.vue"
+    ],
+    "Usage": "Typically imported into a product details page or another parent component to display a product’s images. For example: import ProductImages from 'modules/products/components/blocks/ProductImages.vue'.",
+    "Importance": 4,
+    "Notes": [
+      "Uses a global FILE_SERVER_URL constant to build full image source URLs.",
+      "Applies lazy loading to thumbnails and main images for performance.",
+      "Scoped CSS ensures the .thumbnail rules only affect this component.",
+      "Handles both a single main image and multiple thumbnails conditionally."
+    ]
+  }
+}

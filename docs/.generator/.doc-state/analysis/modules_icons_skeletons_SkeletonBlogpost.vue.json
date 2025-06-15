@@ -1,0 +1,31 @@
+{
+  "path": "../../src/modules/icons/skeletons/SkeletonBlogpost.vue",
+  "relativePath": "modules/icons/skeletons/SkeletonBlogpost.vue",
+  "type": "source",
+  "name": "SkeletonBlogpost.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue компонент, отрисовывающий SVG-заглушку (skeleton loader) для карточки блога с анимацией «блика».",
+    "Purpose": "Показывать анимационный скелетон-карточку блога во время загрузки контента.",
+    "Components": [
+      {
+        "name": "SkeletonBlogpost",
+        "role": "Корневой компонент, рендерит SVG с прямоугольниками-заглушками и анимацией движения блика."
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "Vue (шаблонный синтаксис)",
+      "CSS-переменные --light и --black",
+      "SVG-маска с id=\"myMask\" (должна быть определена в другом месте)"
+    ],
+    "Usage": "Импортируется как обычный Vue-компонент: import SkeletonBlogpost from 'modules/icons/skeletons/SkeletonBlogpost.vue' и вставляется в шаблон вместо контента до его загрузки.",
+    "Importance": 3,
+    "Notes": [
+      "В файле отсутствуют секции <script> и <style>",
+      "Используются CSS-переменные для цветов, их определение должно быть в глобальных стилях",
+      "SVG-маска с id=\"myMask\" не определена в этом файле — должна быть объявлена отдельно",
+      "Можно расширить компонент добавлением пропсов для управления размерами или цветами"
+    ]
+  }
+}

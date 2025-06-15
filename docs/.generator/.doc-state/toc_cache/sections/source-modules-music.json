@@ -1,0 +1,167 @@
+{
+  "section": {
+    "id": "source-modules-music",
+    "title": "Проект: Модули / Музыка",
+    "description": "Модуль управления музыкальным контентом: альбомы, исполнители, жанры, плейлисты, треки и история воспроизведения.",
+    "subsections": [
+      {
+        "id": "music-init",
+        "title": "Инициализация и структура",
+        "description": "Описание базовой структуры и инициализации модуля.",
+        "files": [
+          "policies/music.policies.js",
+          "router/music.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Логика управления музыкальными сущностями.",
+        "files": [
+          "controllers/album.controller.js",
+          "controllers/artist.controller.js",
+          "controllers/genre.controller.js",
+          "controllers/music.controller.js",
+          "controllers/playlist.controller.js",
+          "controllers/search.controller.js",
+          "controllers/stream.controller.js"
+        ]
+      },
+      {
+        "id": "models-album-artist-genre",
+        "title": "Модели: Альбом, Исполнитель, Жанр",
+        "description": "Описание моделей данных для альбомов, исполнителей и жанров.",
+        "files": [
+          "routes/album.routes.js",
+          "routes/artist.routes.js",
+          "routes/genre.routes.js"
+        ]
+      },
+      {
+        "id": "models-playlist-track-history",
+        "title": "Модели: Плейлист, Трек, История",
+        "description": "Описание моделей данных для плейлистов, треков и истории прослушиваний.",
+        "files": [
+          "routes/playlist.routes.js",
+          "routes/music.routes.js",
+          "routes/stream.routes.js"
+        ]
+      },
+      {
+        "id": "search",
+        "title": "Поиск",
+        "description": "Механизмы поиска музыкального контента.",
+        "files": [
+          "routes/search.routes.js",
+          "store/search.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище",
+        "description": "Работа с состоянием и данными модуля.",
+        "files": [
+          "store/albums.js",
+          "store/artists.js",
+          "store/tracks.js",
+          "store/playlists.js",
+          "store/player.js"
+        ]
+      },
+      {
+        "id": "ui-components",
+        "title": "UI-компоненты",
+        "description": "Визуальные компоненты для отображения и управления музыкальным контентом: карточки (AlbumCard, ArtistCard, PlaylistCard, TrackCard), списки (AlbumList, ArtistList, PlaylistList, TrackList), формы (PlaylistForm, SearchForm, UploadForm), макеты (MusicLayout), боковая панель (SidebarMusic), страницы (AlbumDetail)."
+      },
+      {
+        "id": "streaming",
+        "title": "Стриминг и WebSocket",
+        "description": "Обработка потоковой передачи музыки и взаимодействие через WebSocket (streaming.handler.js)."
+      },
+      {
+        "id": "music-pages",
+        "title": "Страницы модуля",
+        "description": "Основные страницы раздела музыки: домашняя, библиотека, загрузка, детали трека и плейлиста, результаты поиска.",
+        "files": [
+          "pages/MusicHome.vue",
+          "pages/MusicLibrary.vue",
+          "pages/MusicUpload.vue",
+          "pages/TrackDetail.vue",
+          "pages/PlaylistDetail.vue",
+          "pages/SearchResults.vue"
+        ]
+      },
+      {
+        "id": "artist-management",
+        "title": "Управление артистами",
+        "description": "Компоненты для просмотра, создания и редактирования артистов.",
+        "files": [
+          "pages/ArtistManager.vue",
+          "pages/ArtistDetail.vue",
+          "pages/ArtistForm.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "01fa906fa30840cb7a70afc4b0d81a4f",
+    "02dbcaa1236df1fb375c1232dec0bc17",
+    "09e82274888f47929e22d52bee497281",
+    "11b91169306f47b5024d7fc5a332613a",
+    "13e439fb04fc64392776479d39b29694",
+    "163008be099a75a1b50be18ff11de7dd",
+    "178e03573f3d45921c4c7a5b1a797804",
+    "1d82a265686bf3cb6828fe32c9d6f665",
+    "202c6585fefa92273d973a641174a8ef",
+    "24bc7d0d38537508a40ccddf811b3711",
+    "29d99d42e2a97c27cc146c0fd9933465",
+    "36dddba4a2ab0194184da44cf9b65fe3",
+    "3abb3efa186cddb0b13426f4bccf200c",
+    "3f3ff73fb5896d091234c849d2efdb17",
+    "59182623a9138110c46d0faf1bfc1f4e",
+    "5f7ef18480b3fa773cf34b0ff5ae0b24",
+    "64c92283fe0c97e2c0ef290822f0ec45",
+    "65888c7eb0bbe51a8fe52d53eb20f521",
+    "65904999f8975be5d70653c1bc2c890b",
+    "6be3f55837466b8aa1a016dd35c2b33b",
+    "6f9d8086d2b5c79c14724245bd5184ab",
+    "7876cc7ee8d6b01641f23374dbb61da8",
+    "7c5c78f08662d4aa0b4bf343ccd2d63a",
+    "7f1dbf476212c84861611b415a1fcf45",
+    "804b1b40c2a4850551ce5f3c749b563a",
+    "81b45c999ca568686cb7b7d9fbe9dfb8",
+    "92d8fa8e79af001940c7c56376922fa6",
+    "947f4c867cca11798b2368063726787e",
+    "9b0c8e74151edb1c8115c141e6d32217",
+    "9ef162d1b494977cd1ae899124f1c4f4",
+    "a3cef750bfd073234be7939b1186e6ff",
+    "a81e4e0d19934f0e5850ba8732d3d4ea",
+    "ac1156c670a38c8efc37f273f3131af5",
+    "ae93be5b6316919a6d32412b5e4171e6",
+    "b1e4b7135741e158377ee8f1fed72e27",
+    "b8322ec7ae670d72bdd576a6466331cf",
+    "c34856a9519f44d6ea760bd59cf7bdd2",
+    "c9ac3b9990b3d3851a27cc513391e6ff",
+    "c9d6ec612c506c84a8ccc7a1a0f5f446",
+    "ce05e9ec09e0d907acfee4d64db63e0d",
+    "d2f310ccaf9b5d60bdf7fd2e6bd59ddc",
+    "d441e8d2f35d79085f336abcbcd1b88a",
+    "d7a1bce9ba2a94832c36f55c0f11b982",
+    "dc3e558778c4c9e2621801282c6a1b93",
+    "dc504104a0eff5debed2247c281902d3",
+    "ddbbceea66fe2c9931bb3c64afc14b41",
+    "e193d6922dfcb34fa99db43c22d935e3",
+    "e2f0fee7b9148d2e7ea1cdd5fafb5adf",
+    "e8b4163efdb0f30fa2eea62cb821f218",
+    "eb118c2d901db1268d0b31e6e34ba1c6",
+    "ef70054b6bc8ee8adc0be435d013b6ed",
+    "efc8a59c0438fd18a9bca13d4931d1a5",
+    "f2becdad978ad49cb40e8cdc86b4f020",
+    "f34d3ea9fa6889d0e4ea0c54b8810350",
+    "f70171052326f01182933a16ddf05521",
+    "fe2a49770a5442d68de06a1c5905c103",
+    "ff8428faf15a2b453ba48ba841a4ebf1"
+  ],
+  "groupHash": "1a159edabbe8fe0004d503257938102f",
+  "generated": "2025-06-05T09:21:33.331Z"
+}

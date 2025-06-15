@@ -1,0 +1,31 @@
+{
+  "section": {
+    "id": "source-builder-ssr",
+    "title": "Проект: Конструктор / SSR",
+    "description": "Модуль отвечает за серверный рендеринг (SSR) и вспомогательные функции для работы с HTML и Webpack статистикой.",
+    "subsections": [
+      {
+        "id": "ssr-render-html",
+        "title": "Рендеринг HTML",
+        "description": "Файл ssr-render-html.js реализует функции для генерации HTML на сервере."
+      },
+      {
+        "id": "ssr-transform-webpack-stats",
+        "title": "Обработка статистики Webpack",
+        "description": "Файл ssr-transform-webpack-stats.js содержит инструменты для преобразования статистики Webpack в процессе SSR."
+      },
+      {
+        "id": "ssr-utils",
+        "title": "Вспомогательные функции",
+        "description": "Файл utils.js предоставляет утилиты, используемые в SSR-процессах."
+      }
+    ]
+  },
+  "fileHashes": [
+    "1bab1aaf8c8f4fd7ca6588d513793d21",
+    "999055cd78b4de61baddd8b05bcd8e11",
+    "f41bc2a753dcec3e7a11bad8dec106e3"
+  ],
+  "groupHash": "6767305a0e602fbad3e0fe235ae05876",
+  "generated": "2025-06-05T09:15:45.203Z"
+}

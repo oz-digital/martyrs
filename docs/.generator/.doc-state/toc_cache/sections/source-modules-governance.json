@@ -1,0 +1,152 @@
+{
+  "section": {
+    "id": "source-modules-governance",
+    "title": "Проект: Модули / Управление",
+    "description": "Модуль управления (governance) реализует основные сущности и процессы для поддержки инициатив, задач, голосований и управления проектами. Включает модели данных, контроллеры, маршруты и хранилища.",
+    "subsections": [
+      {
+        "id": "models",
+        "title": "Модели данных",
+        "description": "Определяют структуры данных для инициатив, задач, этапов, голосов и голосований.",
+        "files": [
+          "models/initiative.model.js",
+          "models/milestone.model.js",
+          "models/task.model.js",
+          "models/vote.model.js",
+          "models/voting.model.js"
+        ]
+      },
+      {
+        "id": "controllers",
+        "title": "Контроллеры",
+        "description": "Обрабатывают бизнес-логику для инициатив, задач, голосов и голосований.",
+        "files": [
+          "factories/initiatives.controller.js",
+          "factories/tasks.controller.js",
+          "factories/votes.controller.js",
+          "factories/votings.controller.js"
+        ]
+      },
+      {
+        "id": "routes",
+        "title": "Маршруты",
+        "description": "Определяют API-маршруты для работы с инициативами, задачами, голосами и голосованиями.",
+        "files": [
+          "routes/initiatives.routes.js",
+          "routes/tasks.routes.js",
+          "routes/votes.routes.js",
+          "routes/votings.routes.js",
+          "router/goverance.router.js"
+        ]
+      },
+      {
+        "id": "store",
+        "title": "Хранилище данных",
+        "description": "Содержит логику работы с состоянием и загрузкой данных для голосований.",
+        "files": [
+          "store/votings.js"
+        ]
+      },
+      {
+        "id": "core",
+        "title": "Клиент и сервер",
+        "description": "Основные файлы клиента и сервера для модуля управления.",
+        "files": [
+          "governance/governance.client.js",
+          "governance/governance.server.js"
+        ]
+      },
+      {
+        "id": "blocks",
+        "title": "Карточки элементов",
+        "description": "Визуальные компоненты для отображения инициатив, задач и голосований в виде карточек.",
+        "files": [
+          "blocks/CardInitiativeItem.vue",
+          "blocks/CardTaskItem.vue",
+          "blocks/CardVotingItem.vue"
+        ]
+      },
+      {
+        "id": "pages",
+        "title": "Страницы",
+        "description": "Основные страницы для работы с инициативами, задачами и голосованиями: просмотр, создание, детализация.",
+        "files": [
+          "pages/Initiative.vue",
+          "pages/InitiativeCreate.vue",
+          "pages/Initiatives.vue",
+          "pages/Task.vue",
+          "pages/TaskCreate.vue",
+          "pages/Tasks.vue",
+          "pages/Voting.vue",
+          "pages/VotingCreate.vue",
+          "pages/Votings.vue"
+        ]
+      },
+      {
+        "id": "partials",
+        "title": "Частичные компоненты",
+        "description": "Малые компоненты для отображения результатов, наград и информации о голосах.",
+        "files": [
+          "partials/RewardDisplay.vue",
+          "partials/VoteDisplay.vue",
+          "partials/VotingResult.vue"
+        ]
+      },
+      {
+        "id": "sections",
+        "title": "Формы и секции",
+        "description": "Компоненты для ввода и редактирования деталей инициатив, задач и голосований, а также форма голосования.",
+        "files": [
+          "sections/FormInitiativeDetails.vue",
+          "sections/FormTaskDetails.vue",
+          "sections/FormVotingDetails.vue",
+          "sections/VoteForm.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "116ebb14318d73c6a2d9d4aad1df003e",
+    "20cb54223610daf418fc2a3a7024b965",
+    "24b554352aba1ae2f84a9bebf492d530",
+    "360a74c930fcbe8001ab0c1eb54286f7",
+    "42bd57ad74468fddd5c20d57f287cebe",
+    "43a19b99260d794815bcf6ad71dd473f",
+    "46472f01a1179c0f9958c113f4a04d6e",
+    "488339de9aa32147c24182f5ad4cacb2",
+    "4dd8f2492cd732be07d30eaca5faf5b4",
+    "4f39f675caf475a4dcc4d96473a8882e",
+    "52a48ebd33d6c4009a1b7f1b463c1e97",
+    "630a857754630ca46b936a71777229ec",
+    "6913036d1ce130c632531fe365b18d6e",
+    "694e6a4267a9de487f5def70b3ea1164",
+    "70a03bea79d896170d7acd49c60aa0cd",
+    "720545d8d94ae33f5099c6ef48ce5573",
+    "7526bd9241245d0f713f16e8eca1fbb2",
+    "8d68dfb6dc2d8df5a3021e9ceb698616",
+    "8fa71691419093335a7885b00427e5f4",
+    "945705f648200b1e568941cc9cbe53fb",
+    "9b9b747854aed5fc84b82c968fd98f36",
+    "9d1640e0381baa8d45111da7af2a8668",
+    "a1f7aebcd5f7a85e63ad0a48cd90a5c7",
+    "a437ea65534789a261e6948f828e8655",
+    "a65f76decfdd27d610e72c2fd196f93a",
+    "a7930457f76f4ad5ce54b00b061c01c7",
+    "a8c5f5fdb982a17f3bdbb06b73de3427",
+    "abd4d9bc038823233d8a65ceb8c501b5",
+    "ac3b7de99b13c42776d0c63e05e7e2e8",
+    "c57c81b6a6861afa27fb712be844d9d4",
+    "c6771fff920470428d9bc95b914c1297",
+    "cf6dc820338289d31b190bf094761aef",
+    "d36cbf71e46d39020ebf659007ea9c64",
+    "d65548649c2f806079385b5742d16cec",
+    "d96b0505454b70f7c981c0d5b4c4847f",
+    "daddd04aae5a554c65ee189d48b5ef3d",
+    "daf56ae24a0a9a8c3c463fa106acbcb2",
+    "f4f852b6f8d55f37f0fd9340cb4dd6ae",
+    "f4f852b6f8d55f37f0fd9340cb4dd6ae",
+    "fbe13e78f07e3ea92700565105571b3a"
+  ],
+  "groupHash": "3bc40c72ba8961796828ffa7bad102ed",
+  "generated": "2025-06-05T09:19:47.579Z"
+}

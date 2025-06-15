@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/notifications/services/telegram.service.js",
+  "relativePath": "modules/notifications/services/telegram.service.js",
+  "type": "source",
+  "name": "telegram.service.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Обёртка для отправки сообщений в Telegram, использующая низкоуровневый утилитный метод sendChatMessageTelegram.",
+    "Purpose": "Инкапсулировать логику отправки Telegram-сообщений в едином сервисе для модуля уведомлений.",
+    "Components": [
+      {
+        "name": "TelegramService",
+        "type": "object",
+        "responsibility": "Экспортирует метод send для асинхронной отправки одиночного сообщения в Telegram."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "send",
+        "description": "Асинхронно отправляет сообщение в указанный чат Telegram, обрабатывает ошибки и возвращает результат.",
+        "parameters": [
+          {
+            "name": "chatId",
+            "type": "string|number",
+            "description": "ID чата, куда отправляется сообщение."
+          },
+          {
+            "name": "message",
+            "type": "string",
+            "description": "Текст отправляемого сообщения."
+          }
+        ],
+        "returns": {
+          "type": "object",
+          "description": "Если успех, объект { success: true, messageId: string } с сгенерированным по timestamp ID."
+        },
+        "throws": "Прокидывает ошибку, если утилита не вернула правдивый результат или произошёл сбой."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/mailing.js",
+        "imported": [
+          "sendChatMessageTelegram"
+        ]
+      }
+    ],
+    "Usage": "import TelegramService from 'modules/notifications/services/telegram.service.js';\n\n// Пример\nawait TelegramService.send({ chatId: '123456', message: 'Hello, world!' });",
+    "Importance": 3,
+    "Notes": [
+      "Внутренняя утилита sendChatMessageTelegram ожидает массив chatId, поэтому оборачиваем в [chatId].",
+      "ID сообщения генерируется на основе текущего времени Date.now().toString().",
+      "При ошибке логируем её в консоль и пробрасываем дальше для централизованной обработки."
+    ]
+  }
+}

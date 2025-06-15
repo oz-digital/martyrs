@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/spots/components/blocks/SpotMemberModify.vue",
+  "relativePath": "modules/spots/components/blocks/SpotMemberModify.vue",
+  "type": "source",
+  "name": "SpotMemberModify.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент предоставляет интерфейс для добавления или удаления подразделений (subspots) внутри выбранного «spot». При отсутствии выбранного spot отображается выпадающий список для выбора нового подразделения, а при наличии — кнопка удаления.",
+    "Purpose": "Позволяет редактировать список дочерних отделов (subspots) у основного отдела: добавлять новые из общего списка или удалять уже существующие.",
+    "Components": [
+      {
+        "name": "SpotMemberModify",
+        "role": "Корневой компонент, управляющий формой добавления/удаления подразделения."
+      },
+      {
+        "name": "VueSelect",
+        "role": "Выпадающий селект для выбора подразделения из списка."
+      },
+      {
+        "name": "Field",
+        "role": "Импортирован из @martyrs, но в шаблоне не используется (возможно, задел под будущее расширение)."
+      },
+      {
+        "name": "Select",
+        "role": "Импортирован из @martyrs, но в шаблоне не используется."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "filterSpots",
+        "description": "Фильтрует общий список отделов, исключая уже добавленные и текущий редактируемый.",
+        "parameters": [
+          "allSpots: Array — полный список отделов",
+          "spots: Array — уже добавленные подразделения",
+          "editingSpot: Object — объект текущего основного отдела"
+        ]
+      },
+      {
+        "name": "submitForm",
+        "description": "Добавляет выбранное подразделение в props.spots и генерирует событие 'callback'.",
+        "parameters": []
+      },
+      {
+        "name": "removeMember",
+        "description": "Удаляет подразделение по индексу props.spot из props.spots и генерирует событие 'callback'.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, defineProps, defineEmits)",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "VueSelect (предположительно глобально зарегистрированный компонент)"
+    ],
+    "Usage": "Импортируется в родительском компоненте (вероятно, в модальном окне или странице списка подразделений) и получает набор props: { isPopupOpen, spot (индекс), spots, mainspot, allspots }. Родитель подписывается на событие 'callback' для обновления данных после добавления или удаления.",
+    "Importance": 3,
+    "Notes": [
+      "Импортированные Field и Select в текущей версии не используются — возможно, задел на будущее.",
+      "В шаблоне используется VueSelect без локального импорта, подразумевается глобальная регистрация.",
+      "Событие 'remove' declared в defineEmits, но в коде не вызывается — имя события удаления совпадает с 'callback'.",
+      "Стиль определяет классы .form-group, label, input, но в шаблоне они напрямую не применяются."
+    ]
+  }
+}

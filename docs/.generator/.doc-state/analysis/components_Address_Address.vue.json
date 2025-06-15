@@ -1,0 +1,55 @@
+{
+  "path": "../../src/components/Address/Address.vue",
+  "relativePath": "components/Address/Address.vue",
+  "type": "source",
+  "name": "Address.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component providing an address autocomplete input using Google Maps Places API.",
+    "Purpose": "Allow users to type and select an address; automatically emit selected address, geographic coordinates, and parsed country/state/city back to parent components.",
+    "Components": [
+      {
+        "name": "<template>",
+        "responsibility": "Renders label (if provided), text input for address, and validation feedback."
+      },
+      {
+        "name": "<script setup>",
+        "responsibility": "Initializes Google Maps Places Autocomplete, handles place selection, defines props and emits."
+      },
+      {
+        "name": "styles (.pac-container)",
+        "responsibility": "Styles the Google Places suggestion dropdown container."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onPlaceChanged",
+        "purpose": "Called when user selects a place from autocomplete suggestions. Extracts formatted_address, latitude/longitude, country, state, city, then emits updates.",
+        "parameters": "none (uses closure over props, emit, autocomplete)"
+      },
+      {
+        "name": "loader.load().then(...) callback",
+        "purpose": "After Google Maps API loads, initializes Autocomplete on the input and registers onPlaceChanged listener.",
+        "parameters": "none (uses closure over props.apiKey, props.locale, addressInput)"
+      },
+      {
+        "name": "onMounted",
+        "purpose": "Vue lifecycle hook to kick off Google Maps JS API loading once component mounts.",
+        "parameters": "none"
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps, defineEmits)",
+      "@googlemaps/js-api-loader",
+      "Google Maps Places library (google.maps.places.Autocomplete)"
+    ],
+    "Usage": "Imported into parent components and used via e.g. <Address :apiKey=\"apikey\" v-model:address=\"addr\" @update:location=\"onLoc\"/>. Parent listens to emitted events to capture address data.",
+    "Importance": 3,
+    "Notes": [
+      "The component expects an external validation prop under $attrs (e.g. passed via a form library) to show errors.",
+      "An onInput handler is referenced in template but not defined – likely intended to emit 'update:address' on raw typing.",
+      "watchEffect import is unused and can be removed.",
+      "Styles target .pac-container, the default Google suggestions container, for z-index and appearance adjustments."
+    ]
+  }
+}

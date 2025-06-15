@@ -1,0 +1,68 @@
+{
+  "path": "../../src/modules/globals/views/components/blocks/CardHeader.vue",
+  "relativePath": "modules/globals/views/components/blocks/CardHeader.vue",
+  "type": "source",
+  "name": "CardHeader.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "CardHeader.vue is a Vue component that renders the header section of a card-like UI element. It displays the owner’s avatar or placeholder, name, creator information, time elapsed since creation, formatted date, a stack of participant photos, and an actions dropdown including reporting functionality.",
+    "Purpose": "To provide a reusable header block for various entities (posts, events, organizations, etc.) across the application, centralizing display of ownership, authorship, timing, membership and contextual actions.",
+    "Components": [
+      {
+        "Tooltip": "Wraps and displays a hoverable tooltip for the full formatted date when showing elapsed time."
+      },
+      {
+        "Dropdown": "Provides a right-aligned contextual menu for actions such as reporting or custom entity actions."
+      },
+      {
+        "PlaceholderUserpic": "Renders a default user avatar when the owner has no profile photo."
+      },
+      {
+        "PlaceholderOrganizationPic": "Renders a default organization avatar when the owner has no profile photo."
+      },
+      {
+        "IconEllipsis": "Ellipsis icon used as the label trigger for the Dropdown."
+      },
+      {
+        "FormReport": "Embeds a reporting form to file a complaint against the entity."
+      },
+      {
+        "PhotoStack": "Displays a stack of participant avatars based on a list of photos."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getTimeElapsed",
+        "purpose": "Calculate and return a human-readable string indicating how much time has passed since a given timestamp (e.g. '5 days ago').",
+        "parameters": [
+          {
+            "name": "timestamp",
+            "type": "String | Number | Date",
+            "description": "The creation date/time of the entity."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, ref, defineProps)",
+      "vue-router (useRouter, $router.push)",
+      "@martyrs/src/components/Tooltip/Tooltip.vue",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderOrganizationPic.vue",
+      "@martyrs/src/modules/icons/navigation/IconEllipsis.vue",
+      "@martyrs/src/modules/reports/components/sections/FormReport.vue",
+      "@martyrs/src/modules/organizations/components/elements/ButtonToggleMembership.vue",
+      "@martyrs/src/modules/globals/views/components/elements/PhotoStack.vue"
+    ],
+    "Usage": "Imported into parent Vue views or components that render an entity card. Typically used as <CardHeader :owner=\"...\" :creator=\"...\" :date=\"...\" :actions=\"[...]\" /> to display consistent headers across modules.",
+    "Importance": 3,
+    "Notes": [
+      "Supports a 'short' type mode that hides avatar, name, participants and actions for compact displays.",
+      "Uses optional chaining heavily to guard against missing profile or creator data.",
+      "Navigates to user or organization profile on avatar/name click via vue-router.",
+      "Actions dropdown conditionally shows report form for other users and arbitrary links or methods passed in props.",
+      "No scoped or additional styling defined; relies on global utility classes for layout."
+    ]
+  }
+}

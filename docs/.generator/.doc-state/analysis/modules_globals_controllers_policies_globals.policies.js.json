@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/globals/controllers/policies/globals.policies.js",
+  "relativePath": "modules/globals/controllers/policies/globals.policies.js",
+  "type": "source",
+  "name": "globals.policies.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует функцию инициализации, которая регистрирует две глобальные ABAC-политики: одну для администраторов/модераторов и одну для проверки прав собственности на ресурсы.",
+    "Purpose": "Определить и подключить набор базовых политик доступа (AdminModeratorAccessPolicy и PersonalResourceOwnerPolicy) в систему управления доступом abacAccessControl.",
+    "Components": [
+      {
+        "name": "initializeDefaultPolicies",
+        "type": "Function",
+        "description": "Главная экспортируемая функция, принимающая объект abacAccessControl и регистрирующая на нём две глобальные политики."
+      },
+      {
+        "name": "AdminModeratorAccessPolicy",
+        "type": "Global Policy Callback",
+        "description": "Глобальная политика, дающая полный доступ пользователям с ролями admin или moderator, иначе не влияет на решение."
+      },
+      {
+        "name": "PersonalResourceOwnerPolicy",
+        "type": "Global Policy Callback",
+        "description": "Глобальная политика, которая проверяет право владения ресурсом при операциях create/read/edit/delete и устанавливает ограничения для публичного доступа по статусам."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializeDefaultPolicies",
+        "parameters": [
+          "abacAccessControl"
+        ],
+        "description": "Регистрирует две политики на переданном объекте abacAccessControl и возвращает его же."
+      },
+      {
+        "name": "AdminModeratorAccessPolicy (callback)",
+        "parameters": [
+          "context"
+        ],
+        "description": "Асинхронная функция-политика, которая загружает из БД роли пользователя, проверяет наличие ролей admin или moderator и при наличии возвращает allow:true, force:true с причиной.",
+        "returns": "{ allow: boolean, force: boolean, reason?: string }"
+      },
+      {
+        "name": "PersonalResourceOwnerPolicy (callback)",
+        "parameters": [
+          "context"
+        ],
+        "description": "Асинхронная функция-политика, контролирующая операции create/read/edit/delete: проверяет, что пользователь является владельцем ресурса, и ограничивает публичный доступ по статусам.",
+        "returns": "{ allow: boolean, force: boolean, reason?: string }"
+      }
+    ],
+    "Dependencies": [
+      "abacAccessControl.registerGlobalPolicy",
+      "abacAccessControl.db.user (Mongoose Model)",
+      "abacAccessControl.db.mongoose.Types.ObjectId",
+      "console.error"
+    ],
+    "Usage": "Импортируется при старте приложения и вызывается с экземпляром abacAccessControl для подключения дефолтных политик доступа.",
+    "Importance": 4,
+    "Notes": "- Политики используют флаг force для принудительного allow/deny.  \n- В контекст при успешной загрузке администраторской политики добавляется userDoc для дальнейших проверок.  \n- Обработка ошибок в политиках не блокирует доступ (fallback allow:true)."
+  }
+}

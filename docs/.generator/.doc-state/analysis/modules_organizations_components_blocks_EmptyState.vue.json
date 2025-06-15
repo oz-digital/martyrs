@@ -1,0 +1,32 @@
+{
+  "path": "../../src/modules/organizations/components/blocks/EmptyState.vue",
+  "relativePath": "modules/organizations/components/blocks/EmptyState.vue",
+  "type": "source",
+  "name": "EmptyState.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент EmptyState отображает блок «пустого состояния» с заголовком, описанием и кнопкой действия для создания новой организации.",
+    "Purpose": "Предоставить UI-блок, информирующий пользователя об отсутствии организаций и предлагающий создать новую организацию посредством кнопки.",
+    "Components": [
+      {
+        "name": "EmptyState",
+        "type": "Vue Single File Component",
+        "responsibilities": "Принимает через props заголовок, описание, текст кнопки и callback-функцию, рендерит соответствующую разметку и вызывает callback при клике."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "callback",
+        "description": "Функция-обработчик клика по кнопке. Вызывается при нажатии на кнопку действия.",
+        "params": [],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      "vue (Composition API — defineProps)"
+    ],
+    "Usage": "Импортировать компонент в родительский Vue-файл:  \n`import EmptyState from '@/modules/organizations/components/blocks/EmptyState.vue'`  \nЗатем вставить в шаблон:  \n`<EmptyState :title=\"title\" :description=\"desc\" :action=\"btnText\" :callback=\"onCreateOrg\"/>`",
+    "Importance": 2,
+    "Notes": "1. Не содержит собственной секции <style> — оформление задаётся глобальными CSS-классами (mn-b-big, radius-medium и т.д.).  \n2. Использует <script setup> и defineProps из Vue 3.  \n3. По умолчанию props имеют текстовые значения на русском языке и noop-функцию."
+  }
+}

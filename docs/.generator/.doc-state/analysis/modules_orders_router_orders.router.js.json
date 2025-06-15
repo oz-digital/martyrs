@@ -1,0 +1,62 @@
+{
+  "path": "../../src/modules/orders/router/orders.router.js",
+  "relativePath": "modules/orders/router/orders.router.js",
+  "type": "source",
+  "name": "orders.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and exports the Vue Router configuration for the orders module, including routes for listing, creating, viewing, and editing orders in both frontend and backoffice contexts.",
+    "Purpose": "Centralize the orders-related route definitions so they can be mounted under a parent path (e.g. '/orders') in the main application router.",
+    "Components": [
+      {
+        "name": "Orders",
+        "source": "@martyrs/src/modules/orders/components/pages/Orders.vue",
+        "role": "Page component displaying a list of orders."
+      },
+      {
+        "name": "OrderCreate",
+        "source": "@martyrs/src/modules/orders/components/pages/OrderCreate.vue",
+        "role": "Frontend page component for creating a new order."
+      },
+      {
+        "name": "OrderCreateBackoffice",
+        "source": "@martyrs/src/modules/orders/components/pages/OrderCreateBackoffice.vue",
+        "role": "Backoffice/admin page component for adding a new order."
+      },
+      {
+        "name": "OrderBackoffice",
+        "source": "@martyrs/src/modules/orders/components/pages/OrderBackoffice.vue",
+        "role": "Backoffice page component for viewing or editing an existing order."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "props (route => {...})",
+        "description": "Generates the `mode` prop based on the route's meta.context to toggle between 'view' and 'edit' modes.",
+        "parameters": [
+          {
+            "name": "route",
+            "type": "Object",
+            "description": "The current Vue Router route object."
+          }
+        ],
+        "returns": {
+          "mode": "String ('edit' or 'view')"
+        }
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/orders/components/pages/OrderBackoffice.vue",
+      "@martyrs/src/modules/orders/components/pages/OrderCreate.vue",
+      "@martyrs/src/modules/orders/components/pages/OrderCreateBackoffice.vue",
+      "@martyrs/src/modules/orders/components/pages/Orders.vue"
+    ],
+    "Usage": "Imported into the main router setup (e.g., `router/index.js`) and concatenated under the `/orders` parent route to register all order-related routes.",
+    "Importance": 4,
+    "Notes": [
+      "Each route defines a `meta.title` object with English and Russian translations.",
+      "Two creation routes: one for frontend users (`path: 'form'`) and one for backoffice admins (`path: 'add'`).",
+      "Dynamic prop function on the `:order` route reads `route.matched[0].meta.context` to decide the mode."
+    ]
+  }
+}

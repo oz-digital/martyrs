@@ -1,0 +1,50 @@
+{
+  "path": "../../src/modules/icons/entities/IconCatalog.vue",
+  "relativePath": "modules/icons/entities/IconCatalog.vue",
+  "type": "source",
+  "name": "IconCatalog.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders an SVG icon depicting a 2×2 grid (catalog) with a customizable fill color.",
+    "Purpose": "Provides a reusable IconCatalog component in the project’s icon library, allowing other UI pieces to display a catalog/grid icon with adjustable color.",
+    "Components": [
+      {
+        "name": "IconCatalog",
+        "type": "Vue component",
+        "responsibilities": [
+          "Render an SVG graphic representing a catalog or grid icon.",
+          "Accept props for customizing the fill color and theme."
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Declare component props in the <script setup> context.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "Sets the SVG path fill color."
+          },
+          "theme": {
+            "type": "String",
+            "default": "light",
+            "description": "Currently unused, reserved for theming contexts."
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (defineProps)",
+      "CSS custom properties (e.g. --black) for default coloring"
+    ],
+    "Usage": "Imported wherever an catalog/grid icon is needed: import IconCatalog from 'modules/icons/entities/IconCatalog.vue'; then use <IconCatalog :fill=\"'#ff0000'\" /> in templates.",
+    "Importance": 2,
+    "Notes": [
+      "There is no <style> block – styles come from external CSS variables.",
+      "The 'theme' prop is defined but not applied in the template; may be reserved for future use or omitted.",
+      "SVG viewBox and dimensions are fixed at 27×27."
+    ]
+  }
+}

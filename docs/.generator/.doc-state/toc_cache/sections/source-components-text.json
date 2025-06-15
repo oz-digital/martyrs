@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-text",
+    "title": "Проект: Компоненты / Text",
+    "description": "Модуль содержит компонент Text для отображения и стилизации текстовых элементов в приложении.",
+    "subsections": [
+      {
+        "id": "text-vue",
+        "title": "Text.vue",
+        "description": "Основной Vue-компонент для вывода текста с возможностью настройки стилей и форматирования."
+      }
+    ]
+  },
+  "fileHashes": [
+    "c1715f03911946b8060187d8f427de7b"
+  ],
+  "groupHash": "acb5da56596af46c825aa7ec91d4cf1e",
+  "generated": "2025-06-05T09:17:26.941Z"
+}

@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/auth/controllers/middlewares/verifyInvites.js",
+  "relativePath": "modules/auth/controllers/middlewares/verifyInvites.js",
+  "type": "source",
+  "name": "verifyInvites.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику Express-мидлвар, которая проверяет, не созданы ли уже приглашения для указанных email/телефонов и не являются ли приглашенные пользователи уже участниками организации.",
+    "Purpose": "Обеспечить валидацию входящих запросов на создание приглашений: предотвратить дублирование инвайтов и повторное добавление существующих пользователей в организацию.",
+    "Components": [
+      {
+        "name": "middlewareFactory",
+        "role": "Фабрика мидлвар. Принимает объект db и возвращает два middleware–обработчика."
+      },
+      {
+        "name": "checkInviteExist",
+        "role": "Мидлвар, который пробегает по массиву invites из тела запроса и проверяет, не было ли ранее создано приглашение для того же контакта в той же организации."
+      },
+      {
+        "name": "checkUsersExist",
+        "role": "Мидлвар, который пробегает по invites, ищет существующего пользователя и проверяет, не является ли он уже членом организации."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "middlewareFactory",
+        "description": "Создает и возвращает объект с двумя функциями-мидлварами: checkInviteExist и checkUsersExist.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Контейнер моделей базы данных (user, invite, membership)."
+          }
+        ],
+        "returns": "Объект { checkInviteExist, checkUsersExist }"
+      },
+      {
+        "name": "checkInviteExist",
+        "description": "Проверяет для каждого приглашения в req.body.invites, не существует ли уже инвайт с тем же email или телефоном в указанной организации.",
+        "parameters": [
+          {
+            "name": "req",
+            "type": "Object",
+            "description": "Express request, содержит body.invites и body.owner.target."
+          },
+          {
+            "name": "res",
+            "type": "Object",
+            "description": "Express response, использует res.status().send() для ошибок."
+          },
+          {
+            "name": "next",
+            "type": "Function",
+            "description": "Функция для передачи управления дальше при успешной проверке."
+          }
+        ]
+      },
+      {
+        "name": "checkUsersExist",
+        "description": "Проверяет, существует ли уже пользователь с данным email/телефоном и не состоит ли он в организации.",
+        "parameters": [
+          {
+            "name": "req",
+            "type": "Object",
+            "description": "Express request с body.invites и body.owner.target."
+          },
+          {
+            "name": "res",
+            "type": "Object",
+            "description": "Express response, использует res.status().send() для ошибок."
+          },
+          {
+            "name": "next",
+            "type": "Function",
+            "description": "Функция для передачи управления дальше при успешной проверке."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "mongodb.ObjectId — для сравнения и создания ObjectId из строкового _id",
+      "db.user — модель пользователей (User.findOne().exec())",
+      "db.invite — модель приглашений (Invite.findOne().exec())",
+      "db.membership — модель членств в организациях (Membership.findOne().exec())"
+    ],
+    "Usage": "Импортируется как middlewareFactory, вызывается с объектом db из точки входа приложения или из конфигурации маршрутов: e.g. router.post('/invites', verifyInvites(db).checkInviteExist, verifyInvites(db).checkUsersExist, controller.createInvites).",
+    "Importance": 3,
+    "Notes": [
+      "Оба мидлвара итерируют массив invites последовательно, что может замедлить обработку при большом числе элементов.",
+      "Используется метод .exec(), что подразумевает Mongoose-подобный API.",
+      "В случае отсутствия поля req.body.invites не предусмотрена явная обработка ошибки.",
+      "Консольные логи (console.log) оставлены для отладки и могут быть удалены в продакшн."
+    ]
+  }
+}

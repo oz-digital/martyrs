@@ -1,0 +1,63 @@
+{
+  "path": "../../src/modules/auth/views/components/sections/SliderFeatures.vue",
+  "relativePath": "modules/auth/views/components/sections/SliderFeatures.vue",
+  "type": "source",
+  "name": "SliderFeatures.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders an autoplaying, i18n‐aware carousel of feature slides using Embla Carousel",
+    "Purpose": "To display a localized, sliding feature overview in the auth section of the application",
+    "Components": [
+      {
+        "name": "SliderFeatures (default export)",
+        "role": "Renders the carousel, handles reactive state and lifecycle hooks"
+      },
+      {
+        "name": "emblaCarouselVue",
+        "role": "Provides Embla Carousel composition API for Vue"
+      },
+      {
+        "name": "Autoplay",
+        "role": "Embla Carousel plugin enabling automatic slide transitions"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "scrollTo",
+        "description": "Programmatically scrolls carousel to specified slide index",
+        "parameters": [
+          "index (Number)"
+        ]
+      },
+      {
+        "name": "onInit",
+        "description": "Initializes scrollSnap positions once carousel is ready",
+        "parameters": [
+          "embla (Object)"
+        ]
+      },
+      {
+        "name": "onSelect",
+        "description": "Updates the current selected slide index when carousel changes",
+        "parameters": [
+          "embla (Object)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue",
+      "vue-i18n",
+      "embla-carousel-vue",
+      "embla-carousel-autoplay"
+    ],
+    "Usage": "Imported and registered in a parent Vue view or component (e.g. `<SliderFeatures/>`), typically under modules/auth/views",
+    "Importance": 3,
+    "Notes": [
+      "Uses `<script setup>` syntax for composition API",
+      "Defines hard-coded feature data for English and Russian locales",
+      "Applies SCSS scoped styles for carousel container and indicators",
+      "Dynamic inline background images based on slide index",
+      "Autoplay configured with custom options (no stop on interaction, focus, etc.)"
+    ]
+  }
+}

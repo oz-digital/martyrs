@@ -1,0 +1,56 @@
+{
+  "path": "../../src/builder/webpack/webpack.config.server.js",
+  "relativePath": "builder/webpack/webpack.config.server.js",
+  "type": "source",
+  "name": "webpack.config.server.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабричную функцию, которая генерирует webpack-конфигурацию для сборки серверной части приложения в виде ESM-модуля.",
+    "Purpose": "Обеспечить специализированную webpack-настройку для сборки Node.js сервера в режиме разработки.",
+    "Components": [
+      {
+        "name": "defaultExportFunction",
+        "type": "function",
+        "responsibility": "Принимает путь до корня проекта и возвращает объект конфигурации webpack с настройками для серверного бандла."
+      },
+      {
+        "name": "HotModuleReplacementPlugin",
+        "type": "webpack.Plugin",
+        "responsibility": "Добавляет поддержку горячей перезагрузки модулей (HMR) на сервере."
+      },
+      {
+        "name": "nodeExternals",
+        "type": "function",
+        "responsibility": "Исключает зависимости из node_modules из бандла, используя ESM-импорты (importType: 'module')."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default",
+        "description": "Фабричная функция, создающая конфигурацию webpack для серверного бандла.",
+        "parameters": [
+          {
+            "name": "projectRoot",
+            "type": "string",
+            "description": "Абсолютный путь к корню проекта."
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "path",
+      "webpack",
+      "webpack-node-externals"
+    ],
+    "Usage": "Импортируется в скриптах сборки или напрямую в CLI webpack: `import config from './webpack.config.server.js'; const cfg = config(projectRoot);`",
+    "Importance": 4,
+    "Notes": [
+      "target: 'node' — конфигурация рассчитана на выполнение в среде Node.js.",
+      "mode: 'development' — сборка в режиме разработки.",
+      "output.module и experiments.outputModule включают вывод ESM-модуля.",
+      "resolve.alias связывает '@martyrs' с локальной папкой 'martyrs'.",
+      "resolve.fallback.path: false предотвращает полифиллы для модуля path.",
+      "Используется clean: true для очистки директории сборки перед выходом."
+    ]
+  }
+}

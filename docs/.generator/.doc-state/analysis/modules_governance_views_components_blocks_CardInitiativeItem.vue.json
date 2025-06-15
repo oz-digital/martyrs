@@ -1,0 +1,49 @@
+{
+  "path": "../../src/modules/governance/views/components/blocks/CardInitiativeItem.vue",
+  "relativePath": "modules/governance/views/components/blocks/CardInitiativeItem.vue",
+  "type": "source",
+  "name": "CardInitiativeItem.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a card displaying basic information (name, description, status) about a governance initiative passed in via props.",
+    "Purpose": "Serve as a reusable presentational block within the governance module to show individual initiative details in list or grid views.",
+    "Components": [
+      {
+        "name": "CardInitiativeItem",
+        "role": "Main component that accepts an `initiative` object prop and renders its fields in a styled card layout."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "description": "Vue Composition API helper for declaring component props in `<script setup>`.",
+        "parameters": {
+          "initiative": {
+            "type": "Object",
+            "required": true,
+            "fields": [
+              "name",
+              "description",
+              "status"
+            ]
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Imported into parent views or list components within the governance feature (e.g., initiative list) and used in a `v-for` loop or individually to display initiative details.",
+    "Importance": 3,
+    "Notes": [
+      "Uses `<script setup>` syntax—no additional script logic beyond prop declaration.",
+      "No dedicated `<style>` block included here; styling must come from global or parent CSS.",
+      "Only displays three fields; if initiatives evolve, additional props or slots may be needed."
+    ]
+  }
+}

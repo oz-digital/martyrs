@@ -1,0 +1,44 @@
+{
+  "section": {
+    "id": "source-builder-rspack",
+    "title": "Проект: Конструктор / Rspack",
+    "description": "Модуль отвечает за интеграцию и конфигурацию сборщика Rspack для различных сценариев сборки проекта.",
+    "subsections": [
+      {
+        "id": "rspack-entrypoint",
+        "title": "Точка входа",
+        "description": "Файл index.js — основной входной файл модуля, инициализирует работу с Rspack."
+      },
+      {
+        "id": "rspack-config-base",
+        "title": "Базовая конфигурация",
+        "description": "Файл rspack.config.base.js содержит общие настройки сборщика, используемые во всех режимах."
+      },
+      {
+        "id": "rspack-config-api",
+        "title": "Конфигурация через API",
+        "description": "Файл rspack.config.api.js предоставляет интерфейс для настройки Rspack через программный API."
+      },
+      {
+        "id": "rspack-config-spa",
+        "title": "Конфигурация для SPA",
+        "description": "Файл rspack.config.spa.client.js содержит настройки сборки для клиентской части одностраничных приложений (SPA)."
+      },
+      {
+        "id": "rspack-config-ssr",
+        "title": "Конфигурация для SSR",
+        "description": "Файлы rspack.config.ssr.client.js и rspack.config.ssr.server.js содержат настройки для клиентской и серверной сборки приложений с серверным рендерингом (SSR)."
+      }
+    ]
+  },
+  "fileHashes": [
+    "18ccd1d4009f95879402f51f722d15e0",
+    "2226d3eebf428fec4902ca3758014e0b",
+    "305f0dc85b37d9979718e89daef99751",
+    "7acf1bd82798dca9b4dd6b9fc63adc57",
+    "81d936afd145262f8cefc3150b8abb57",
+    "fc8ba1253a3201c5bc8b6bf3bd6037da"
+  ],
+  "groupHash": "55606665676cc74b46ccd92ce51978ef",
+  "generated": "2025-06-05T09:15:40.461Z"
+}

@@ -1,0 +1,87 @@
+{
+  "path": "../../src/modules/organizations/components/sections/Organizations.vue",
+  "relativePath": "modules/organizations/components/sections/Organizations.vue",
+  "type": "source",
+  "name": "Organizations.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "A Vue 3 component that fetches and displays a list of organizations (filtered by owner/user props). If there are no organizations, it shows an EmptyState call-to-action to create one. It also manages a `tab` query parameter in the URL to persist UI state.",
+    "Purpose": "To serve as the main section in the Organizations module—rendering either an empty state or a list of organization cards, handling navigation for creating organizations, and syncing a tab state with the router.",
+    "Components": [
+      {
+        "name": "EmptyState",
+        "responsibility": "Shows a placeholder message and action button when the user has not joined any organizations."
+      },
+      {
+        "name": "CardOrganization",
+        "responsibility": "Renders details of a single organization and emits `updateMembership` when membership changes."
+      },
+      {
+        "name": "Tab",
+        "responsibility": "(imported) Potentially used to render tabbed navigation within this section."
+      },
+      {
+        "name": "Field",
+        "responsibility": "(imported) A form input component, available if needed."
+      },
+      {
+        "name": "Select",
+        "responsibility": "(imported) A dropdown selection component, available if needed."
+      },
+      {
+        "name": "Button",
+        "responsibility": "(imported) A button component, available if needed."
+      },
+      {
+        "name": "Unit",
+        "responsibility": "(imported) A subsection component, not currently used in template."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "organization.actions.read",
+        "description": "Asynchronously fetches the list of organizations from the store based on filter props.",
+        "params": {
+          "owner": "String|null",
+          "user": "String|Number|null",
+          "onlyuser": "String|Number|null"
+        }
+      },
+      {
+        "name": "watch(tabOrganization)",
+        "description": "Watches the reactive `tabOrganization` and updates the route query parameter `tab` on change.",
+        "params": {
+          "newValue": "String"
+        }
+      },
+      {
+        "name": "Inline callback in EmptyState",
+        "description": "Arrow function assigned to `:callback` to navigate to the organization creation route.",
+        "params": "none"
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, reactive, ref, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "js-cookie",
+      "@martyrs/src/components/Tab/Tab.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue",
+      "@martyrs/src/modules/organizations/components/blocks/EmptyState.vue",
+      "@martyrs/src/modules/organizations/components/sections/Unit.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/organizations/store/memberships.js"
+    ],
+    "Usage": "Typically imported into a parent view or router setup under the Organizations feature. Example: `import Organizations from '@/modules/organizations/components/sections/Organizations.vue'` and used in a route or another component template.",
+    "Importance": 3,
+    "Notes": [
+      "The component directly awaits the `read` action at module load time—this may block rendering until data returns.",
+      "Several imported components (Tab, Field, Select, Button, Unit) are not used in the template; consider removing or adding usage.",
+      "No local `handleMembershipUpdate` function is defined, yet it is used as an event handler on CardOrganization—this may be provided by a consuming parent or is missing.",
+      "The style block defines a slide-fade transition for entering/leaving elements."
+    ]
+  }
+}

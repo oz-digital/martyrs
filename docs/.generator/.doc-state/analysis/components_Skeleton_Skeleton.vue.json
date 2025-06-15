@@ -1,0 +1,54 @@
+{
+  "path": "../../src/components/Skeleton/Skeleton.vue",
+  "relativePath": "components/Skeleton/Skeleton.vue",
+  "type": "source",
+  "name": "Skeleton.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент для отображения скелетон-загрузчика (placeholder) с настраиваемой структурой, цветами и анимацией shimmer, который показывается во время загрузки данных.",
+    "Purpose": "Обеспечить единообразный и настраиваемый UI-плейсхолдер для различных частей приложения, скрывая реальный контент и показывая анимированный скелетон до окончания загрузки.",
+    "Components": [
+      {
+        "name": "Skeleton",
+        "responsibility": "Обёртка-контейнер, которая в зависимости от пропсов и наличия слот-контента рендерит либо слоты, либо пользовательскую структуру скелетона, либо дефолтный набор блоков."
+      },
+      {
+        "name": "skeleton-wrapper",
+        "responsibility": "Корневой <div>, в котором переключается стилизация loading/non-loading."
+      },
+      {
+        "name": "skeleton-structure",
+        "responsibility": "Контейнер для кастомной структуры скелетон-блоков (v-for по массиву structure)."
+      },
+      {
+        "name": "skeleton-default",
+        "responsibility": "Набор трёх текстовых блоков по умолчанию, когда нет слотов и нет переданной структуры."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "hasDefaultSlot",
+        "type": "computed",
+        "description": "Булева переменная, указывающая, передан ли в компонент дефолтный слот.",
+        "parameters": []
+      },
+      {
+        "name": "onMounted (callback)",
+        "type": "lifecycle hook",
+        "description": "При монтировании компонента устанавливает CSS-переменные на корневом элементе документа, основываясь на значениях пропсов.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, useSlots, computed, onMounted, defineProps)"
+    ],
+    "Usage": "Импортировать компонент: import Skeleton from 'components/Skeleton/Skeleton.vue'; Использовать в шаблоне: <Skeleton :loading=\"true\" :structure=\"[...]\" horizontal /> либо передать собственный слот с разметкой.",
+    "Importance": 4,
+    "Notes": [
+      "Использует scoped CSS и ::v-deep для наложения shimmer-анимации на любой дочерний элемент.",
+      "При монтировании вносит глобальные изменения в document.documentElement через CSS-переменные, что может повлиять на другие экземпляры или стили в приложении.",
+      "Поддерживает передачу готовой структуры skeleton-item: тип блока (block), размер (size), круглость (rounded) и инлайн-стили.",
+      "Дефолтные цвета и длительность анимации настраиваются через пропсы и CSS-переменные."
+    ]
+  }
+}

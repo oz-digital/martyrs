@@ -1,0 +1,67 @@
+{
+  "path": "../../src/modules/globals/controllers/utils/mailing.js",
+  "relativePath": "modules/globals/controllers/utils/mailing.js",
+  "type": "source",
+  "name": "mailing.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл предоставляет утилиты для отправки сообщений через разные каналы: email (SMTP), SMS (через внешний API) и Telegram (бот API).",
+    "Purpose": "Упрощает интеграцию в проекте механизма уведомлений: отправку электронной почты, SMS и сообщений в Telegram из любых частей приложения.",
+    "Components": [
+      {
+        "name": "sendEmail",
+        "responsibility": "Создаёт SMTP-транспортер и отправляет письмо с опциональными вложениями."
+      },
+      {
+        "name": "sendSms",
+        "responsibility": "Формирует HTTP-запрос к внешнему SMS-API и отправляет SMS."
+      },
+      {
+        "name": "sendChatMessageTelegram",
+        "responsibility": "Параллельно рассылает текстовые сообщения в указанные чаты Telegram через Bot API."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "sendEmail",
+        "parameters": [
+          "to (string) – адрес получателя",
+          "subject (string) – тема письма",
+          "text (string) – текст письма",
+          "files (Array<string>) – пути к файлам для вложений, по умолчанию []"
+        ],
+        "description": "Отправляет email через nodemailer, возвращает true при успехе и false при ошибке."
+      },
+      {
+        "name": "sendSms",
+        "parameters": [
+          "phone (string) – номер телефона получателя",
+          "message (string) – текст SMS"
+        ],
+        "description": "Формирует запрос к API sms.to через axios.get, возвращает true при успехе и false при ошибке."
+      },
+      {
+        "name": "sendChatMessageTelegram",
+        "parameters": [
+          "chatIds (Array<string|number>) – список идентификаторов чатов",
+          "text (string) – текст сообщения"
+        ],
+        "description": "Отправляет сообщения в несколько чатов Telegram параллельно, ошибки логирует, возвращает true даже при частичных неудачах."
+      }
+    ],
+    "Dependencies": [
+      "axios – для HTTP-запросов",
+      "dotenv – для загрузки переменных окружения",
+      "nodemailer – для отправки email через SMTP",
+      "process.env – набор переменных: SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASSWORD, SMTP_NAME, SMTP_EMAIL, SMS_API_KEY, APP_NAME, TELEGRAM_BOT_TOKEN"
+    ],
+    "Usage": "Импортировать функции из 'modules/globals/controllers/utils/mailing.js':\nimport { sendEmail, sendSms, sendChatMessageTelegram } from '.../utils/mailing.js';\nИли использовать дефолтный экспорт: import mailing from '.../mailing.js';",
+    "Importance": 4,
+    "Notes": [
+      "Вызывается ({ config }).config() вместо просто config(), но работает корректно.",
+      "SMTP-транспортёр настраивается с requireTLS и специфичным cipher SSLv3.",
+      "При отправке Telegram используется Promise.all, чтобы не прерывать рассылку из-за одной неудачи.",
+      "Все функции асинхронные и возвращают булевый результат."
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "path": "../../src/modules/orders/components/blocks/CardOrderItem.vue",
+  "relativePath": "modules/orders/components/blocks/CardOrderItem.vue",
+  "type": "source",
+  "name": "CardOrderItem.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue компонент CardOrderItem отображает один элемент заказа или аренды: показывает изображение товара, его название, цену, количество или длительность аренды, а также предоставляет элементы управления для изменения количества, удаления или выбора дат аренды.",
+    "Purpose": "Предоставить в интерфейсе карточку заказа/аренды с возможностью редактирования (изменения количества, удаления или выбора дат аренды) и передачи соответствующих событий родительскому компоненту.",
+    "Components": [
+      {
+        "name": "PlaceholderImage",
+        "responsibility": "Отображает заглушку, если у товара нет изображения."
+      },
+      {
+        "name": "IconAdd",
+        "responsibility": "Иконка кнопки увеличения количества товара."
+      },
+      {
+        "name": "IconMinus",
+        "responsibility": "Иконка кнопки уменьшения количества товара."
+      },
+      {
+        "name": "IconDelete",
+        "responsibility": "Иконка кнопки удаления товара из заказа."
+      },
+      {
+        "name": "IconEdit",
+        "responsibility": "Иконка кнопки редактирования дат аренды."
+      },
+      {
+        "name": "IconCalendar",
+        "responsibility": "Иконка календаря для открытия выбора дат аренды."
+      },
+      {
+        "name": "PopupDateSelector",
+        "responsibility": "Всплывающий компонент для выбора и подтверждения дат аренды."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "rentalDays",
+        "type": "computed",
+        "params": [],
+        "description": "Вычисляет число дней аренды на основе rentDates.start и rentDates.end."
+      },
+      {
+        "name": "increase_",
+        "params": [
+          "product"
+        ],
+        "description": "Вызывает проп increase(product) и эмитит событие 'increase' с товаром."
+      },
+      {
+        "name": "decrease",
+        "params": [
+          "product"
+        ],
+        "description": "Вызывает проп decrease(product) и эмитит событие 'decrease' с товаром."
+      },
+      {
+        "name": "remove",
+        "params": [
+          "product"
+        ],
+        "description": "Вызывает проп remove(product) и эмитит событие 'remove' с товаром."
+      },
+      {
+        "name": "openRentDatePopup",
+        "params": [],
+        "description": "Устанавливает флаг isRentDatePopupOpen в true, открывая попап выбора дат."
+      },
+      {
+        "name": "closeRentDatePopup",
+        "params": [],
+        "description": "Устанавливает флаг isRentDatePopupOpen в false, закрывая попап выбора дат."
+      },
+      {
+        "name": "updateRentDates",
+        "params": [
+          "dates"
+        ],
+        "description": "Обновляет локальный стейт rentDates, эмитит событие 'updateRentDates' и закрывает попап."
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed)",
+      "vue-router (useRouter)",
+      "vue-i18n (useI18n)",
+      "date-fns (format)",
+      "@martyrs/src/modules/icons/navigation/IconAdd.vue",
+      "@martyrs/src/modules/icons/navigation/IconMinus.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/entities/IconCalendar.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue",
+      "@martyrs/src/modules/globals/views/components/blocks/PopupDateSelector.vue"
+    ],
+    "Usage": "Импортируется и используется внутри блоков оформления заказа или корзины. Родительский компонент передает props product, editable и callback-функции (increase, decrease, remove), а также обрабатывает эмитируемые события для синхронизации стейта заказа.",
+    "Importance": 3,
+    "Notes": [
+      "В шаблоне используется функция returnCurrency(), определенная, вероятно, глобально (миксины или provide/inject) вне данного компонента.",
+      "Импорт date-fns.format не используется напрямую в коде — возможно, оставлен на будущее расширение.",
+      "FILE_SERVER_URL используется из глобального скоупа (environment variable) для формирования URL изображения.",
+      "Секция style в компоненте пуста и предполагает наследование стилей из общих классов."
+    ]
+  }
+}

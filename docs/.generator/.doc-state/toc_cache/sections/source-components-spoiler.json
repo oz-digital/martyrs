@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-spoiler",
+    "title": "Проект: Компоненты / Spoiler",
+    "description": "Модуль содержит компонент Spoiler, предназначенный для скрытия и отображения контента по требованию пользователя.",
+    "subsections": [
+      {
+        "id": "spoiler-component",
+        "title": "Компонент Spoiler",
+        "description": "Основной Vue-компонент для реализации функционала спойлера. Позволяет скрывать и раскрывать вложенный контент."
+      }
+    ]
+  },
+  "fileHashes": [
+    "4d43e40c2458d213c6b572b6496df855"
+  ],
+  "groupHash": "b00006583e8048f242f2a1ce74eabe6d",
+  "generated": "2025-06-05T09:17:17.765Z"
+}

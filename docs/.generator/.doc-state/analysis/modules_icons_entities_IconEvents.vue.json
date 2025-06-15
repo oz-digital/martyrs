@@ -1,0 +1,45 @@
+{
+  "path": "../../src/modules/icons/entities/IconEvents.vue",
+  "relativePath": "modules/icons/entities/IconEvents.vue",
+  "type": "source",
+  "name": "IconEvents.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 single-file component that renders an 'events' SVG icon. It exposes a `fill` prop to customize the icon color and forwards any CSS class passed via attributes onto the `<path>` element.",
+    "purpose": "Provide a reusable, customizable SVG icon for 'events' in the martyrs icon library.",
+    "components": [
+      {
+        "name": "IconEvents",
+        "responsibilities": [
+          "Render an 80×80 SVG canvas with a predefined path representing an events/calendar icon.",
+          "Accept a `fill` prop to set the path's fill color.",
+          "Forward any `class` attribute to the `<path>` element via `$attrs.class`."
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "defineProps",
+        "description": "Vue `<script setup>` helper that declares component props.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))",
+            "description": "CSS color value used to fill the SVG path."
+          }
+        }
+      }
+    ],
+    "dependencies": [
+      "vue (Composition API: `<script setup>`, defineProps, `$attrs`)"
+    ],
+    "usage": "Import the component where needed, then use it in a template. For example:\n\n```js\nimport IconEvents from \"modules/icons/entities/IconEvents.vue\"\n```\n\n```html\n<IconEvents fill=\"#007acc\" class=\"my-icon-class\" />\n```",
+    "importance": 2,
+    "notes": [
+      "No `<style>` block is defined; styling is driven by the `fill` prop and external CSS classes.",
+      "The component relies on CSS variables (e.g. `--black`) for default color, ensure they are defined in the global stylesheet.",
+      "Any additional attributes passed (besides `fill`) will be forwarded to the `<svg>` root via `$attrs`, but only `class` is specifically applied to the `<path>`.",
+      "Since it's a purely presentational component, it has no internal state or lifecycle hooks."
+    ]
+  }
+}

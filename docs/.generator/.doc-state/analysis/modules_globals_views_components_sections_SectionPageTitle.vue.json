@@ -1,0 +1,70 @@
+{
+  "path": "../../src/modules/globals/views/components/sections/SectionPageTitle.vue",
+  "relativePath": "modules/globals/views/components/sections/SectionPageTitle.vue",
+  "type": "source",
+  "name": "SectionPageTitle.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 компонент для отрисовки заголовка страницы с набором действий (кнопок или ссылок) и опциональной табуляцией.",
+    "Purpose": "Предоставить единый UI-блок для отображения заголовка страницы, набора действий (router-link или button) и переключателя вкладок.",
+    "Components": [
+      {
+        "name": "SectionPageTitle",
+        "role": "Корневой компонент, объединяющий заголовок, действия и вкладки."
+      },
+      {
+        "name": "router-link",
+        "role": "Из библиотеки vue-router; рендерит ссылку для навигации по маршрутам."
+      },
+      {
+        "name": "Tab",
+        "role": "Собственный компонент из @martyrs: отображает табуляцию и позволяет выбирать вкладки."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "updateTabsCurrent",
+        "purpose": "Обрабатывает изменение выбранной вкладки и эмитит событие наружу.",
+        "parameters": [
+          {
+            "name": "newValue",
+            "type": "Object|String",
+            "description": "Новое значение выбраной вкладки."
+          }
+        ],
+        "emits": "update:tabs_current"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "defineProps",
+          "defineEmits"
+        ]
+      },
+      {
+        "module": "@martyrs/src/components/Tab/Tab.vue",
+        "imports": [
+          "Tab"
+        ]
+      },
+      {
+        "module": "vue-router",
+        "imports": [
+          "router-link (через глобальную регистрацию)"
+        ]
+      }
+    ],
+    "Usage": "Импортируется в родительских представлениях и страницах: <SectionPageTitle :title=\"...\" :actions=\"[...]\" :tabs=\"[...]\" :tabs_current=\"...\" @update:tabs_current=\"...\"/>",
+    "Importance": 3,
+    "Notes": [
+      "В блоке <style scoped> нет пользовательских стилей — стили наследуются от внешних утилитных классов.",
+      "Используется Composition API (script setup) для простоты и читаемости.",
+      "Динамическая отрисовка действий: ссылка, если задано поле to; кнопка, если задан метод.",
+      "Emits-событие 'update:tabs_current' позволяет синхронизировать текущую вкладку с родителем.",
+      "Импорт ref в текущей реализации не используется и может быть удалён."
+    ]
+  }
+}

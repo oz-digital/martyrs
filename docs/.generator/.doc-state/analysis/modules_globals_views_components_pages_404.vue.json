@@ -1,0 +1,24 @@
+{
+  "path": "../../src/modules/globals/views/components/pages/404.vue",
+  "relativePath": "modules/globals/views/components/pages/404.vue",
+  "type": "source",
+  "name": "404.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Простой Vue-компонент, отображающий текст «404 Not Found» при обращении к несуществующему маршруту.",
+    "Purpose": "Отображать страницу ошибки «Не найдено» (404) в приложении на основе фреймворка martyrs.",
+    "Components": [
+      {
+        "name": "404.vue (root)",
+        "responsibility": "Рендерит статический контент с сообщением 404 Not Found"
+      }
+    ],
+    "Functions": [],
+    "Dependencies": [
+      "vue"
+    ],
+    "Usage": "Импортируется и подключается в конфигурации маршрутизатора (router) как компонент по умолчанию для всех невалидных путей.",
+    "Importance": 2,
+    "Notes": "В файле отсутствуют блоки <script> и <style>, компонент исключительно статичен и не содержит логики или оформления."
+  }
+}

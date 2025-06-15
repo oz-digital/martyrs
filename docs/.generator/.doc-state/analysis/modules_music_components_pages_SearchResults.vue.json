@@ -1,0 +1,109 @@
+{
+  "path": "../../src/modules/music/components/pages/SearchResults.vue",
+  "relativePath": "modules/music/components/pages/SearchResults.vue",
+  "type": "source",
+  "name": "SearchResults.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "SearchResults.vue is a Vue 3 page component that renders a music search interface. It displays a search form, filter buttons, handles loading/error states, and shows categorized search results (top result, songs, artists, albums, playlists, genres) with actions like play or navigate.",
+    "Purpose": "This file provides the main search results page in the music module of the application. It ties the search store, routing, and UI components together to allow users to query and browse music content.",
+    "Components": [
+      {
+        "name": "SearchForm",
+        "role": "Renders the search input and emits search queries"
+      },
+      {
+        "name": "TrackList",
+        "role": "Displays a list of track results"
+      },
+      {
+        "name": "AlbumCard",
+        "role": "Renders album result cards"
+      },
+      {
+        "name": "PlaylistCard",
+        "role": "Renders playlist result cards"
+      },
+      {
+        "name": "ArtistCard",
+        "role": "Renders artist result cards"
+      },
+      {
+        "name": "Button",
+        "role": "UI button component with loader/success states"
+      },
+      {
+        "name": "Loader",
+        "role": "Displays a loading spinner"
+      },
+      {
+        "name": "Media",
+        "role": "Renders images or media assets"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "handleSearch",
+        "description": "Triggered when a search is submitted. Updates the query, pushes a new route, and dispatches the search action.",
+        "parameters": [
+          "query:String"
+        ]
+      },
+      {
+        "name": "setActiveFilter",
+        "description": "Sets the active filter tab and dispatches a store action to filter results.",
+        "parameters": [
+          "filter:String"
+        ]
+      },
+      {
+        "name": "playTopResult",
+        "description": "Handles playing or navigating to the top result based on its type (track, album, playlist, artist).",
+        "parameters": []
+      },
+      {
+        "name": "getArtistName",
+        "description": "Extracts and returns the artist name from an item object, with a fallback.",
+        "parameters": [
+          "item:Object"
+        ]
+      },
+      {
+        "name": "getPlaylistOwner",
+        "description": "Extracts and returns the playlist owner's name from a playlist object, with a fallback.",
+        "parameters": [
+          "playlist:Object"
+        ]
+      },
+      {
+        "name": "getRandomGradient",
+        "description": "Returns a random CSS gradient string for genre cards.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "../forms/SearchForm.vue",
+      "../lists/TrackList.vue",
+      "../cards/AlbumCard.vue",
+      "../cards/PlaylistCard.vue",
+      "../cards/PlaylistCard.vue",
+      "../cards/ArtistCard.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Media/Media.vue",
+      "../../store/search.js",
+      "../../store/player.js"
+    ],
+    "Usage": "This component is registered as a route component (e.g. name: 'music-search') in the vue-router configuration. It is imported and rendered when users navigate to the search page.",
+    "Importance": 4,
+    "Notes": [
+      "Uses Vue 3 <script setup> Composition API for concise logic.",
+      "Syncs the query param 'q' from the URL with the internal searchQuery state.",
+      "Implements conditional sections and slices arrays to limit initial preview vs. full view.",
+      "Scoped style only defines a gradient background helper for genre cards.",
+      "Relies on a central search store (searchState, searchActions, searchComputed) and player store (playerActions)."
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "path": "../../src/modules/products/router/leftovers.router.js",
+  "relativePath": "modules/products/router/leftovers.router.js",
+  "type": "source",
+  "name": "leftovers.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет маршруты (routes) для работы с разделом \"Остатки\" в модуле продуктов. Он экспортирует массив конфигураций маршрутов для просмотра списка остатков, добавления и редактирования конкретного остатка.",
+    "Purpose": "Обеспечить регистрацию и ленивую загрузку (lazy-load) компонентов страниц раздела «Остатки» в основном маршрутизаторе (router) приложения, поддерживая локализацию заголовков и авторизационные метаданные.",
+    "Components": [
+      {
+        "name": "productRoutes",
+        "type": "Array",
+        "responsibility": "Хранит конфигурации трёх маршрутов: списка остатков, добавления и редактирования."
+      },
+      {
+        "name": "Route Objects",
+        "type": "Object",
+        "responsibility": "Каждый объект описывает одну точку входа (path, name, meta, component) для vue-router."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "component Loader",
+        "signature": "() => Promise<Component>",
+        "description": "Динамически импортирует Vue-компонент для конкретного маршрута. Webpack соберёт отдельные чанки с именами ProductsLeftovers и LeftoverEdit."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/products/components/pages/Leftovers.vue",
+      "@martyrs/src/modules/products/components/pages/LeftoverEdit.vue",
+      "webpackChunkName (комментарии для Webpack)"
+    ],
+    "Usage": "Импортируется в основной файл маршрутизации проекта (например, в modules/products/router/index.js или в глобальный router/index.js) и объединяется с другими route-модулями. Пример: `import leftoversRoutes from './leftovers.router'; router.addRoutes(leftoversRoutes);`",
+    "Importance": 3,
+    "Notes": [
+      "Все три маршрута используют meta.authorize = [] (открытые маршруты без авторизации).",
+      "Поля meta.title настроены для двух языков (en/ru) — система i18n.",
+      "Динамическая загрузка компонентов позволяет оптимизировать размер основных бандлов.",
+      "Chunk-имена (`ProductsLeftovers`, `LeftoverEdit`) задаются вручную через webpackChunkName."
+    ]
+  }
+}

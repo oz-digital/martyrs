@@ -1,0 +1,82 @@
+{
+  "path": "../../src/modules/organizations/components/elements/ButtonToggleMembership.vue",
+  "relativePath": "modules/organizations/components/elements/ButtonToggleMembership.vue",
+  "type": "source",
+  "name": "ButtonToggleMembership.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Это Vue-компонент ButtonToggleMembership, отображающий кнопку для присоединения или выхода пользователя из организации. В зависимости от текущего статуса членства (props.status) при клике запускается процесс создания или удаления членства и эмита события об обновлении статуса.",
+    "purpose": "Обеспечить единый UI-элемент для управления членством пользователя в целевом ресурсе (организации, группе и т.п.) и передавать результат операции вышестоящим компонентам через событие 'updateMembership'.",
+    "components": [
+      {
+        "name": "ButtonToggleMembership",
+        "responsibility": "Главный компонент, рендерит кнопку и обрабатывает логику создания/удаления членства."
+      },
+      {
+        "name": "Button",
+        "source": "@martyrs/src/components/Button/Button.vue",
+        "responsibility": "Базовый переиспользуемый UI-компонент кнопки, принимает callback через prop submit и отображает слоты."
+      }
+    ],
+    "functions": [
+      {
+        "name": "toggleMembership",
+        "description": "Выбирает, создавать или удалять членство в зависимости от props.status.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "createMembership",
+        "description": "Собирает данные (user, type, role, target), вызывает memberships.actions.create, эмитит 'updateMembership' со статусом true.",
+        "params": [],
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "removeMembership",
+        "description": "Собирает данные (user, type, role, target), вызывает memberships.actions.delete, эмитит 'updateMembership' со статусом false.",
+        "params": [
+          {
+            "name": "targetId",
+            "note": "Не используется внутри функции, данные берутся из props.target"
+          }
+        ],
+        "returns": "Promise<void>"
+      }
+    ],
+    "dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "defineProps",
+          "defineEmits"
+        ]
+      },
+      {
+        "module": "@martyrs/src/components/Button/Button.vue",
+        "imports": [
+          "Button"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/auth/views/store/auth.js",
+        "imports": [
+          "* as auth"
+        ]
+      },
+      {
+        "module": "@martyrs/src/modules/organizations/store/memberships.js",
+        "imports": [
+          "* as memberships"
+        ]
+      }
+    ],
+    "usage": "Импортируется и используется в родительских компонентах, где требуется кнопка присоединения/выхода: import ButtonToggleMembership from 'modules/organizations/components/elements/ButtonToggleMembership.vue'; Затем в шаблоне: <ButtonToggleMembership :user=\"...\" :type=\"...\" :target=\"...\" :status=\"...\" @updateMembership=\"handler\" />.",
+    "importance": 3,
+    "notes": [
+      "В prop text дефолтное значение задано как объект, но в Vue 3 рекомендуется дефолт быть функцией, возвращающей объект, чтобы избежать разделяемого состояния между инстансами.",
+      "Функция removeMembership принимает параметр targetId, который фактически не используется — параметры для удаления берутся из props.",
+      "При ошибках в create/remove логируются ошибки в консоль и бросаются дальше, но пользователю нет визуального feedback-UI."
+    ]
+  }
+}

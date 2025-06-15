@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-fieldbig",
+    "title": "Проект: Компоненты / Field Big",
+    "description": "Модуль содержит компонент FieldBig, предназначенный для отображения и ввода больших полей данных в пользовательском интерфейсе.",
+    "subsections": [
+      {
+        "id": "fieldbig-osnovnoy-komponent",
+        "title": "FieldBig.vue",
+        "description": "Основной Vue-компонент для работы с большими полями данных. Используется для отображения и редактирования информации в расширенном формате."
+      }
+    ]
+  },
+  "fileHashes": [
+    "d7b6450ee160710e0974031885adc6d1"
+  ],
+  "groupHash": "a197224208243d6fb9e02ff58033f10e",
+  "generated": "2025-06-05T09:16:49.948Z"
+}

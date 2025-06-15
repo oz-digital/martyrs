@@ -1,0 +1,53 @@
+{
+  "path": "../../src/modules/marketplace/views/components/pages/Catalog.vue",
+  "relativePath": "modules/marketplace/views/components/pages/Catalog.vue",
+  "type": "source",
+  "name": "Catalog.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент страницы каталога маркетплейса, который выводит список организаций (shops) с возможностью сортировки, фильтрации и поиска, используя общий компонент Feed и карточки CardOrganization.",
+    "Purpose": "Предоставить интерфейс для просмотра и навигации по списку организаций в рамках маркетплейса, управляя параметрами сортировки, фильтрации и подгрузкой данных из store.",
+    "Components": [
+      {
+        "name": "Feed",
+        "responsibility": "Оборачивает логику загрузки, пагинации, сортировки и фильтрации списка элементов; рендерит слот с данными."
+      },
+      {
+        "name": "CardOrganization",
+        "responsibility": "Отвечает за отображение одной организации: название, рейтинг, список продуктов и т. д."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "store.read",
+        "description": "Функция чтения данных для компонента Feed.",
+        "parameters": [
+          "options — объект с параметрами запроса (страна, город, категории, цены, доставка, расположение пользователя и т. д.)"
+        ]
+      },
+      {
+        "name": "onMounted (Google Analytics)",
+        "description": "При монтировании компонента отправляет событие 'view_marketplace' в Google Analytics.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, reactive, ref, onMounted, watch)",
+      "vue-router (useRoute)",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/globals/views/store/globals.js",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue",
+      "../../store/marketplace"
+    ],
+    "Usage": "Импортируется в маршрутах Vue Router как страница каталога маркетплейса (обычно для пути вида /marketplace/:country/:state/:city) и отображает список организаций.",
+    "Importance": 4,
+    "Notes": [
+      "Использует двусторонние привязки v-model для sort и filter из marketplace.store.",
+      "Прокидывает кастомные состояния (empty) в Feed для отображения сообщения об отсутствии организаций.",
+      "В options запроса включает lookup и contain для предварительной загрузки связанных сущностей (products, spots).",
+      "В блоке style нет локальных стилей (пустой <style lang=\"scss\">).",
+      "Проверяет наличие глобальной функции gtag перед отправкой события Google Analytics."
+    ]
+  }
+}

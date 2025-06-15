@@ -1,0 +1,79 @@
+{
+  "path": "../../src/modules/music/components/SidebarMusic.vue",
+  "relativePath": "modules/music/components/SidebarMusic.vue",
+  "type": "source",
+  "name": "SidebarMusic.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Этот Vue-компонент рендерит боковую панель навигации музыкального модуля, включая ссылки на основные разделы (Home, Search, Library), список пользовательских плейлистов и функционал создания нового плейлиста.",
+    "Purpose": "Обеспечить навигацию внутри раздела \"Music\" приложения: переключение между страницами, отображение пользовательских плейлистов и создание новых.",
+    "Components": [
+      {
+        "name": "Sidebar",
+        "responsibility": "Обёртка для боковой панели с возможностью скрытия/показа"
+      },
+      {
+        "name": "router-link",
+        "responsibility": "Навигация между маршрутами Vue Router"
+      },
+      {
+        "name": "IconHome, IconSearch, IconLibrary, IconPlus",
+        "responsibility": "Отображение иконок для пунктов меню и кнопки добавления"
+      },
+      {
+        "name": "Button",
+        "responsibility": "Кнопка запуска модального окна создания плейлиста"
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Вывод списка пользовательских плейлистов со скелетоном и состоянием пустого списка"
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Модальное окно для формы создания плейлиста"
+      },
+      {
+        "name": "PlaylistForm",
+        "responsibility": "Форма создания нового плейлиста"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onPlaylistCreated",
+        "description": "Обрабатывает событие успешного создания плейлиста: закрывает модалку и перенаправляет на страницу нового плейлиста",
+        "parameters": [
+          "playlist (объект созданного плейлиста)"
+        ]
+      },
+      {
+        "name": "onMounted callback",
+        "description": "При монтировании компонента проверяет авторизацию и загружает пользовательские плейлисты",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRouter, router-link)",
+      "@martyrs/src/modules/globals/views/components/partials/Sidebar.vue",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "../forms/PlaylistForm.vue",
+      "@martyrs/src/modules/icons/navigation/IconHome.vue",
+      "@martyrs/src/modules/icons/navigation/IconSearch.vue",
+      "@martyrs/src/modules/icons/entities/IconFolder.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlus.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js (authState)",
+      "../../store/playlists.js (playlistsState, playlistsActions)"
+    ],
+    "Usage": "Импортируется и размещается в layout или родительском компоненте музыкального раздела (например, MusicLayout.vue) для отображения боковой навигации. Передаётся булево свойство stateSidebar и прослушивает событие closeSidebar.",
+    "Importance": 4,
+    "Notes": [
+      "Используется Composition API и <script setup>",
+      "Активный пункт меню определяется сравнением $route.name или $route.params.url",
+      "При отсутствии плейлистов компонент Feed показывает кастомное сообщение",
+      "Нет отдельного блока <style> — стили берутся из классов утилит и глобальных стилей фреймворка",
+      "Управление авторизацией и данными плейлистов через централизованный store Martyrs"
+    ]
+  }
+}

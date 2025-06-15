@@ -1,0 +1,54 @@
+{
+  "path": "../../src/modules/products/components/forms/StockHistoryView.vue",
+  "relativePath": "modules/products/components/forms/StockHistoryView.vue",
+  "type": "source",
+  "name": "StockHistoryView.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that displays a product’s stock history in a scrollable table with date, type, quantity, reason, and user. It shows the product image (or placeholder), loads history from the store on mount, and emits a close event when the Close button is clicked.",
+    "Purpose": "To provide a reusable view for inspecting and presenting the stock movement history of a given product within the application, typically in a modal or detail panel.",
+    "Components": [
+      {
+        "name": "StockHistoryView",
+        "responsibility": "Main component rendering the stock history UI, managing state (loading, history) and exposing a close event."
+      },
+      {
+        "name": "PlaceholderImage",
+        "responsibility": "Renders a placeholder graphic when a product or user image is missing."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "loadHistory",
+        "description": "Asynchronously fetches stock history entries for the given product using leftovers.actions.read, populates the history array, and handles loading state and errors.",
+        "parameters": []
+      },
+      {
+        "name": "formatDate",
+        "description": "Converts an ISO date string into a human-readable format (e.g., '1 Jan 2023') using the en-US locale.",
+        "parameters": [
+          {
+            "name": "dateString",
+            "type": "string",
+            "description": "ISO date string to format"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted)",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue",
+      "@martyrs/src/modules/products/store/leftovers.js",
+      "Global constant: FILE_SERVER_URL"
+    ],
+    "Usage": "Imported into a parent view or modal and used as <StockHistoryView :product=\"product\" @close=\"handleClose\" />. The parent passes a product object and listens for the close event.",
+    "Importance": 3,
+    "Notes": [
+      "Uses scoped styles for table row borders.",
+      "Handles empty history and loading states with conditional rows.",
+      "Applies optional chaining to guard against missing nested properties.",
+      "Relies on a global FILE_SERVER_URL to prefix image paths.",
+      "Emits 'close' to allow parent components to dismiss the view."
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "path": "../../src/modules/spots/models/spot.model.js",
+  "relativePath": "modules/spots/models/spot.model.js",
+  "type": "source",
+  "name": "spot.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and exports a Mongoose model for 'Spot', encapsulating schema, indexes, virtual properties and returning the model constructor.",
+    "Purpose": "Provide a database schema and model for managing 'Spot' entities (locations/departments) within the application, including metadata, geolocation, working hours and membership.",
+    "Components": [
+      {
+        "name": "spotSchema",
+        "type": "Mongoose.Schema",
+        "responsibility": "Defines the structure, field types and validation for Spot documents, including nested sub-documents and arrays."
+      },
+      {
+        "name": "Spot",
+        "type": "Mongoose.Model",
+        "responsibility": "The compiled model used to create, query and manipulate Spot documents in MongoDB."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (factory)",
+        "description": "Accepts a 'db' object, defines the Spot schema on db.mongoose, compiles and returns the Spot model.",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "An object containing a Mongoose instance under 'db.mongoose'."
+          }
+        ],
+        "returns": "Mongoose.Model ('Spot')"
+      },
+      {
+        "name": "isOpenNow (virtual getter)",
+        "description": "Computed property that determines if the spot is open at the current date and time by checking special and regular worktime periods.",
+        "parameters": [],
+        "returns": "Boolean"
+      }
+    ],
+    "Dependencies": [
+      "db.mongoose (Mongoose library instance)",
+      "Mongoose.Schema",
+      "Mongoose.Schema.Types.ObjectId",
+      "Mongoose.Model",
+      "Referenced models: 'User', 'Organization', 'Spot' (self-reference for subspots)"
+    ],
+    "Usage": "Imported and invoked with the database context: const Spot = require('modules/spots/models/spot.model')(db); Then used via Spot.find(), Spot.create(), etc.",
+    "Importance": 4,
+    "Notes": [
+      "Defines geospatial '2dsphere' index on 'location' for map queries.",
+      "Defines index on 'organization' to speed up filtering by organization.",
+      "Uses virtuals in toJSON/toObject to include 'isOpenNow' in API responses.",
+      "Worktime structure supports both regular weekly hours and special date overrides.",
+      "Subspots are self-referential via ObjectId ref to 'Spot'."
+    ]
+  }
+}

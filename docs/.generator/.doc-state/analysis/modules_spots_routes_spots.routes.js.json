@@ -1,0 +1,100 @@
+{
+  "path": "../../src/modules/spots/routes/spots.routes.js",
+  "relativePath": "modules/spots/routes/spots.routes.js",
+  "type": "source",
+  "name": "spots.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines and registers HTTP routes for the 'spots' resource, delegating request handling to the spots controller.",
+    "Purpose": "Sets up CRUD API endpoints on the Express application for managing spots in the database.",
+    "Components": [
+      {
+        "name": "Route Registration Function",
+        "type": "Function",
+        "responsibility": "Accepts an Express app and a DB connection, initializes the spots controller, and binds its methods to RESTful endpoints."
+      },
+      {
+        "name": "controller",
+        "type": "Object",
+        "responsibility": "Exposes methods (read, readOne, create, update, delete) that implement business logic for the spots resource."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export",
+        "description": "Main initializer that wires up spots routes.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Express.Application",
+            "description": "The Express server instance on which to register routes."
+          },
+          {
+            "name": "db",
+            "type": "any",
+            "description": "Database connection or context passed into the controller factory."
+          }
+        ]
+      },
+      {
+        "name": "controller.read",
+        "description": "Handles GET /api/spots — retrieves a list of all spots.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.readOne",
+        "description": "Handles GET /api/spots/get/:_id — retrieves a single spot by its ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.create",
+        "description": "Handles POST /api/spots/:_id/create — creates a new spot under a given organization ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.update",
+        "description": "Handles POST /api/spots/:_id/update — updates an existing spot identified by ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      },
+      {
+        "name": "controller.delete",
+        "description": "Handles DELETE /api/spots/:_id/delete — deletes a spot by its ID.",
+        "parameters": [
+          "req",
+          "res",
+          "next"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "../controllers/spots.controller.js",
+        "import": "controllerFactory",
+        "description": "Factory function that, given a DB connection, returns a controller object with CRUD handlers."
+      }
+    ],
+    "Usage": "Imported and invoked in the main server setup file (e.g., index.js or app.js). Pass the Express app instance and DB object to register all /api/spots endpoints.",
+    "Importance": 4,
+    "Notes": [
+      "Routes for update use POST instead of conventional PUT/PATCH.",
+      "Single-item retrieval endpoint is '/api/spots/get/:_id' (includes 'get' in URL).",
+      "The file exports an anonymous function wrapped in parentheses; no immediate invocation."
+    ]
+  }
+}

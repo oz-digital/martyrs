@@ -1,0 +1,89 @@
+{
+  "path": "../../src/modules/organizations/controllers/invites.controller.js",
+  "relativePath": "modules/organizations/controllers/invites.controller.js",
+  "type": "source",
+  "name": "invites.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет фабрику контроллера для управления приглашениями в рамках организации. Он предоставляет методы для создания, чтения, поиска по коду и удаления приглашений, а также автоматически отправляет email или SMS с ссылкой на регистрацию для новых приглашённых пользователей.",
+    "Purpose": "Обеспечить CRUD-операции над моделью Invite и упростить процесс приглашения пользователей в организацию: если пользователь уже существует — сразу добавить его в состав организации, иначе — создать запись приглашения и отправить уведомление.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "responsibility": "Принимает объект db (с моделями user, invite, membership) и возвращает объект с методами-обработчиками HTTP-запросов."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getOneByCode",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Ищет приглашение по полю code (параметр URL req.params._id). Возвращает 404, если не найдено; иначе — объект приглашения."
+      },
+      {
+        "name": "read",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Возвращает все приглашения, у которых owner.target === req.params._id. Если записей нет — возвращает пустой массив."
+      },
+      {
+        "name": "create",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Принимает в теле список контактов приглашённых. Для каждого: если контакт совпадает с существующим пользователем — добавляет его в таблицу Membership; иначе — создаёт Invite с уникальным кодом и отправляет email и/или SMS."
+      },
+      {
+        "name": "deleteInvite",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Удаляет приглашение по _id (req.params._id). Возвращает 404, если приглашение не найдено, и подтверждение об успешном удалении."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/mailing.js",
+        "imports": [
+          "sendEmail",
+          "sendSms"
+        ]
+      },
+      {
+        "module": "uuidv4",
+        "imports": [
+          "uuid"
+        ]
+      },
+      {
+        "module": "db",
+        "models": [
+          "user",
+          "invite",
+          "membership"
+        ]
+      },
+      {
+        "module": "process.env",
+        "vars": [
+          "APP_NAME",
+          "API_URL"
+        ]
+      }
+    ],
+    "Usage": "Импортировать функцию по умолчанию (controllerFactory) в роутер, передать ей объект db и использовать возвращённые методы как middleware для соответствующих маршрутов (GET /invites/:_id, GET /invites/owner/:_id, POST /invites, DELETE /invites/:_id).",
+    "Importance": 4,
+    "Notes": [
+      "В create реализована логика «мягкого» приглашения: если пользователь уже есть в системе, сразу создаётся запись в memberships вместо Invite.",
+      "Для генерации кода используется uuidv4.",
+      "Отправка уведомлений вынесена в общий утилитный модуль mailing.",
+      "Игнорируются пустые объекты и объекты без contact в списке приглашённых."
+    ]
+  }
+}

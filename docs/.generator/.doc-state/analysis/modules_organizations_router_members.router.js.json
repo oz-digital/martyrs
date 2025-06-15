@@ -1,0 +1,45 @@
+{
+  "path": "../../src/modules/organizations/router/members.router.js",
+  "relativePath": "modules/organizations/router/members.router.js",
+  "type": "source",
+  "name": "members.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines the front–end route configuration for the “members” section of the organizations module in a Martyrs/Vue.js application. It exports an array of route objects, each mapping a URL path to a lazy-loaded Vue component.",
+    "Purpose": "Provide centralized route definitions for listing organization members and inviting new members, so they can be registered in the app’s main router.",
+    "Components": [
+      {
+        "routeName": "Organization Members",
+        "path": "members",
+        "componentFile": "@martyrs/src/modules/organizations/components/pages/Members.vue",
+        "responsibility": "Displays the list of organization members."
+      },
+      {
+        "routeName": "Invite Member",
+        "path": "members/invite",
+        "componentFile": "@martyrs/src/modules/organizations/components/sections/MembersAdd.vue",
+        "responsibility": "Shows the UI for inviting or adding a new member to the organization."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (membersRoutes)",
+        "type": "Array",
+        "description": "An array of route-definition objects used by Vue Router to register the members and invite-members pages."
+      },
+      {
+        "name": "component (arrow function)",
+        "signature": "() => Promise<Module>",
+        "description": "A dynamic import function that lazy-loads the specified Vue component when the route is visited.",
+        "parameters": "none"
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/organizations/components/pages/Members.vue",
+      "@martyrs/src/modules/organizations/components/sections/MembersAdd.vue"
+    ],
+    "Usage": "Imported into the module’s main router index (e.g. modules/organizations/router/index.js) and spread into the global Vue Router configuration so that these routes become active in the application.",
+    "Importance": 3,
+    "Notes": "1) Uses dynamic imports for code-splitting and on-demand component loading. 2) Meta title is internationalized (en/ru) for the members listing page. 3) No authentication or guard logic is defined here; such logic would be applied at a higher routing layer if needed."
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "path": "../../src/modules/pages/views/components/pages/PageEdit.vue",
+  "relativePath": "modules/pages/views/components/pages/PageEdit.vue",
+  "type": "source",
+  "name": "PageEdit.vue",
+  "extension": ".vue",
+  "analysis": {
+    "summary": "Vue 3 single‐file component for editing or creating a \"Page\" entity in the backoffice. It loads existing page data (if a URL param is present), allows content composition via a `Constructor` sub‐component, and provides toolbar buttons to save or delete the page.",
+    "purpose": "Serve as the UI and logic for the backoffice \"Pages Edit\" route—displaying an editor for page content, handling CRUD operations (read, create, update, delete) and navigation after each action.",
+    "components": [
+      {
+        "name": "Constructor",
+        "path": "@martyrs/src/modules/constructor/components/sections/Constructor.vue",
+        "role": "Provides a WYSIWYG or structured content builder for the page body."
+      },
+      {
+        "name": "Button",
+        "path": "@martyrs/src/components/Button/Button.vue",
+        "role": "Reusable button component, used here for Save and Delete actions."
+      },
+      {
+        "name": "Field",
+        "path": "@martyrs/src/components/Field/Field.vue",
+        "role": "Form field element (imported but not directly used in this file)."
+      },
+      {
+        "name": "CardPage",
+        "path": "../blocks/CardPage.vue",
+        "role": "Block component (imported but not used here; likely for future or related UI)."
+      },
+      {
+        "name": "Block",
+        "path": "@martyrs/src/components/Block/Block.vue",
+        "role": "Generic block wrapper (imported but not directly used)."
+      },
+      {
+        "name": "IconDelete",
+        "path": "@martyrs/src/modules/icons/navigation/IconDelete.vue",
+        "role": "SVG/icon component for delete action (imported but not directly used)."
+      }
+    ],
+    "functions": [
+      {
+        "name": "onMounted callback",
+        "purpose": "Initialize `page.value` either by reading from the store via `actions.read` (when editing an existing page) or by grabbing the current draft (`state.current`) when creating a new page.",
+        "parameters": "none (uses `route.params.url` internally)",
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "onSubmit",
+        "purpose": "Handle Save button click: normalize or generate URL, then call `actions.update` or `actions.create` based on whether this is an existing page, and finally navigate to the edit view of the saved page.",
+        "parameters": "none (operates on reactive `page.value` and `route.params.url`)",
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "createPageCallback",
+        "purpose": "Navigate to the edit route of a newly created page. (Note: `newPage` ref is referenced but not defined in this file.)",
+        "parameters": "none",
+        "returns": "void"
+      },
+      {
+        "name": "onDelete",
+        "purpose": "Call `actions.delete` to remove the current page.",
+        "parameters": "none (operates on `page.value`)",
+        "returns": "Promise<void>"
+      },
+      {
+        "name": "deletePageCallback",
+        "purpose": "After deletion, navigate up—either to the parent page's edit route or back to the pages list if no parent exists.",
+        "parameters": "none",
+        "returns": "void"
+      }
+    ],
+    "dependencies": [
+      "vue (ref, computed, onMounted)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/modules/globals/views/mixins/mixins.js (normalizeUrlParam, joinArrayToUrl)",
+      "../../store/pages (state, actions)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Field/Field.vue",
+      "../blocks/CardPage.vue",
+      "@martyrs/src/components/Block/Block.vue",
+      "@martyrs/src/modules/constructor/components/sections/Constructor.vue",
+      "@martyrs/src/modules/icons/navigation/IconDelete.vue"
+    ],
+    "usage": "This component is registered on the route named 'Backoffice Pages Edit'. It is imported by the router configuration and rendered when the user navigates to `/backoffice/pages/edit/:url*`.",
+    "importance": 4,
+    "notes": [
+      "No `<style>` block is present, so styling relies on global or parent styles.",
+      "`createPageCallback` references `newPage` which is not declared—likely a leftover or bug.",
+      "Uses Composition API (`<script setup>`) and global mixins for URL normalization.",
+      "Conditional rendering (`v-if=\"page\"`) ensures no UI is shown until page data is loaded."
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "path": "../../src/modules/notifications/models/notification-preference.model.js",
+  "relativePath": "modules/notifications/models/notification-preference.model.js",
+  "type": "source",
+  "name": "notification-preference.model.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику модели mongoose для хранения пользовательских настроек уведомлений (NotificationPreference). Он определяет схему, индексы и возвращает модель.",
+    "Purpose": "Обеспечить централизованное определение структуры и поведения коллекции NotificationPreference в базе данных MongoDB для хранения предпочтений пользователей по типам уведомлений и каналам доставки.",
+    "Components": [
+      {
+        "name": "Schema",
+        "type": "mongoose.Schema",
+        "responsibility": "Определяет поля userId, channelType, notificationType, isEnabled и уникальный индекс для сочетания этих полей."
+      },
+      {
+        "name": "NotificationPreference Model",
+        "type": "mongoose.Model",
+        "responsibility": "ORM-модель для работы с коллекцией notificationpreferences: CRUD-операции, валидация и индексация."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "default export (factory function)",
+        "parameters": [
+          {
+            "name": "db",
+            "type": "object",
+            "description": "Контейнер с подключенной библиотекой mongoose (db.mongoose)."
+          },
+          {
+            "name": "additionalFields",
+            "type": "object",
+            "description": "Дополнительные поля для расширения схемы (не используются в текущей реализации)."
+          }
+        ],
+        "description": "Создаёт и возвращает модель NotificationPreference на основе переданного подключения mongoose."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "db",
+        "import": "передаётся в качестве аргумента функции",
+        "details": "Ожидается объект с полем mongoose (mongoose.Schema, model)."
+      },
+      {
+        "module": "mongoose",
+        "import": "db.mongoose",
+        "details": "Используется для создания Schema, типов полей, индексов и модели."
+      },
+      {
+        "model": "User",
+        "import": "Schema.Types.ObjectId ref",
+        "details": "Ссылка (ref) на модель User для поля userId."
+      }
+    ],
+    "Usage": "Импортируется и вызывается с передачей инициализированного подключения db. Например:\nconst NotificationPreference = require('./notification-preference.model.js')(db);\nДалее используется как обычная mongoose-модель: NotificationPreference.find(), create(), update() и т.д.",
+    "Importance": 3,
+    "Notes": [
+      "Параметр additionalFields объявлен, но не используется — возможно, зарезервирован для будущего расширения схемы.",
+      "Уникальный индекс по полям (userId, channelType, notificationType) предотвращает дублирование записей для одного пользователя и одного типа канала/уведомления.",
+      "channelType ограничен фиксированным списком: ['web', 'push', 'email', 'sms', 'telegram', 'whatsapp'].",
+      "notificationType хранится в виде строки без enum, что оставляет гибкость, но требует контролировать допустимые значения на уровне бизнес-логики."
+    ]
+  }
+}

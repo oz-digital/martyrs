@@ -1,0 +1,84 @@
+{
+  "path": "../../src/modules/community/components/layouts/Community.vue",
+  "relativePath": "modules/community/components/layouts/Community.vue",
+  "type": "source",
+  "name": "Community.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Community.vue defines the main two-column layout for the community/blog section. The left column renders a header with filters and a <router-view> for child pages (e.g. list of posts, create post). The right column shows latest comments and popular communities, loading data from APIs and stores.",
+    "Purpose": "Serve as the top-level layout component for all community/blog routes, providing navigation, filtering, and sidebars for comments and organizations.",
+    "Components": [
+      {
+        "name": "Select",
+        "responsibility": "Renders a dropdown to choose the time period filter for posts"
+      },
+      {
+        "name": "IconFeatured, IconPopular, IconRecent, IconFollowing",
+        "responsibility": "SVG icons used in the category tab navigation"
+      },
+      {
+        "name": "router-view",
+        "responsibility": "Placeholder to render nested route components (post list, create form, etc.) within a transition"
+      },
+      {
+        "name": "Comment",
+        "responsibility": "Displays individual comments in the “Latest Comments” sidebar"
+      },
+      {
+        "name": "Feed",
+        "responsibility": "Wrapper component to fetch and render a list of popular communities"
+      },
+      {
+        "name": "CardOrganization",
+        "responsibility": "Renders a single organization card inside the Feed list"
+      },
+      {
+        "name": "transition",
+        "responsibility": "Applies enter/leave animations to routed components and Feed content"
+      }
+    ],
+    "Functions": [
+      {
+        "name": "fetchComments",
+        "description": "Asynchronously fetches the most recent top-level comments via Axios and populates the reactive comments array",
+        "parameters": []
+      },
+      {
+        "name": "handleMembershipUpdate",
+        "description": "Delegates membership status updates to the organizations/memberships store mutation",
+        "parameters": [
+          "{ membership, status, target } (object)",
+          "statusName (string)",
+          "statusNumber (number)"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, onMounted, ref, script setup)",
+      "vue-router (useRoute, useRouter, router-link)",
+      "axios",
+      "@martyrs/src/components/Select/Select.vue",
+      "@martyrs/src/components/Feed/Feed.vue",
+      "@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue",
+      "@martyrs/src/modules/icons/entities/IconFeatured.vue",
+      "@martyrs/src/modules/icons/entities/IconPopular.vue",
+      "@martyrs/src/modules/icons/entities/IconRecent.vue",
+      "@martyrs/src/modules/icons/entities/IconFollowing.vue",
+      "../sections/Comment.vue",
+      "@martyrs/src/modules/community/store/blogposts.js",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js",
+      "@martyrs/src/modules/organizations/store/memberships.js"
+    ],
+    "Usage": "Imported as the layout component in the community/blog route definitions. Other route files register it with child routes (e.g. Blog list, Create BlogPost) so that Community.vue wraps those pages.",
+    "Importance": 4,
+    "Notes": [
+      "Uses Composition API with <script setup>.",
+      "Empty <style> block – styling is applied via utility classes.",
+      "Immediately invokes fetchComments at import time to populate sidebar comments.",
+      "Initial sort parameter for blog.state.sort.param is set based on route.params.category.",
+      "Click handlers in template mutate blog store state and navigate via router.push.",
+      "Feed for popular communities is configured with a custom store.read and state, limiting to top 10 by numberOfMemberships."
+    ]
+  }
+}

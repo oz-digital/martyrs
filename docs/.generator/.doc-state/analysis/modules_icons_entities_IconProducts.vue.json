@@ -1,0 +1,40 @@
+{
+  "path": "../../src/modules/icons/entities/IconProducts.vue",
+  "relativePath": "modules/icons/entities/IconProducts.vue",
+  "type": "source",
+  "name": "IconProducts.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue-компонент IconProducts, отображающий SVG-иконку «продуктов»; принимает цвет заливки и CSS-класс через атрибуты.",
+    "Purpose": "Предоставить переиспользуемый SVG-значок «Products» в интерфейсе приложения, встроенный в систему иконок проекта.",
+    "Components": [
+      {
+        "name": "IconProducts",
+        "responsibility": "Рендерить SVG-элемент с путём, описывающим форму иконки; принимать пропс fill для заливки и проксировать CSS-класс из $attrs.class."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Определяет входящий пропс fill с типом String и значением по умолчанию 'rgb(var(--black))'.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "rgb(var(--black))"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (script setup, defineProps, $attrs)",
+      "CSS-переменная --black"
+    ],
+    "Usage": "Импортируется и регистрируется как компонент Vue. В шаблоне используется как <IconProducts fill=\"#f00\" class=\"my-icon\"/> или передаётся автоматически через систему глобальных иконок фреймворка martyrs.",
+    "Importance": 2,
+    "Notes": [
+      "Не содержит блока <style> — стили задаются через атрибут class и CSS-переменные.",
+      "Используется подход script setup для компактного синтаксиса.",
+      "Пропс fill позволяет динамически менять цвет иконки."
+    ]
+  }
+}

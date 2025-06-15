@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/orders/routes/applications.routes.js",
+  "relativePath": "modules/orders/routes/applications.routes.js",
+  "type": "source",
+  "name": "applications.routes.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "This file defines and registers HTTP routes for application-related operations using an Express app instance. It binds controller methods to REST endpoints under the '/applications' path, including a special Telegram webhook endpoint.",
+    "Purpose": "Acts as the route initializer for the 'applications' resource, wiring up endpoints to controller logic and (potentially) authentication middleware within the orders module.",
+    "Components": [
+      {
+        "name": "default export function",
+        "responsibility": "Accepts an Express app, a database connection, and origins configuration, then sets up all application routes."
+      },
+      {
+        "name": "controller",
+        "responsibility": "Houses the business logic for CRUD operations and webhook handling, created by controllerFactory(db)."
+      },
+      {
+        "name": "authJwt",
+        "responsibility": "JWT authentication middleware, provided by the auth module (imported but not applied to any route here)."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "initializer (default export)",
+        "purpose": "Registers the following routes on the given app:",
+        "parameters": [
+          "app   – Express application instance",
+          "db    – Database connection or ORM instance",
+          "origins – (optional) CORS origins configuration (not used here)"
+        ],
+        "registeredRoutes": [
+          "POST   /applications                  → controller.create",
+          "GET    /applications                  → controller.read",
+          "POST   /applications/:_id             → controller.update",
+          "DELETE /applications/:_id             → controller.delete",
+          "GET    /applications/:_id             → controller.get",
+          "POST   /applications/telegram-webhook → controller.handleTelegramWebhook"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/controllers/middlewares/index.js",
+      "../controllers/applications.controller.js"
+    ],
+    "Usage": "Imported in the main server or module bootstrap file and invoked with (app, db, origins) to register the 'applications' routes before starting the Express server.",
+    "Importance": 3,
+    "Notes": [
+      "The imported authJwt middleware is not applied to any route—authentication may be intended but not yet enforced.",
+      "The 'origins' parameter is accepted but unused in this implementation.",
+      "The update operation uses POST instead of a more semantically appropriate PUT or PATCH.",
+      "Includes a dedicated Telegram webhook endpoint alongside standard CRUD routes."
+    ]
+  }
+}

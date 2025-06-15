@@ -1,0 +1,125 @@
+{
+  "path": "../../src/modules/music/components/pages/TrackDetail.vue",
+  "relativePath": "modules/music/components/pages/TrackDetail.vue",
+  "type": "source",
+  "name": "TrackDetail.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a detailed view of a single music track, handling loading state, error state (not found), display of track metadata, lyrics, related tracks, and user interactions (play, favorite, queue, edit, delete, copy link).",
+    "Purpose": "Serves as the track-detail page in the music module, fetching the track by URL, managing its state, and providing UI controls for playback and track management.",
+    "Components": [
+      {
+        "name": "Loader",
+        "responsibility": "Displays a loading spinner while track data is being fetched."
+      },
+      {
+        "name": "TrackList",
+        "responsibility": "Shows a list of related tracks with cover art and album information."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Generic button component used in action controls (play, favorite, etc.)."
+      },
+      {
+        "name": "Media",
+        "responsibility": "Media player or display component (assumed for album art or audio preview)."
+      },
+      {
+        "name": "Dropdown",
+        "responsibility": "Action menu for operations like copy link, edit, delete, add to playlist."
+      },
+      {
+        "name": "Popup",
+        "responsibility": "Modal container (currently commented out) for adding track to a playlist."
+      },
+      {
+        "name": "IconPlay",
+        "responsibility": "Play icon used in the play button."
+      },
+      {
+        "name": "IconHeart",
+        "responsibility": "Heart icon used to toggle favorite state."
+      },
+      {
+        "name": "IconEllipsis",
+        "responsibility": "Ellipsis icon used for opening the actions dropdown menu."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getArtistName",
+        "description": "Returns the artist's name or 'Unknown' if missing.",
+        "parameters": [
+          "track"
+        ]
+      },
+      {
+        "name": "formatReleaseYear",
+        "description": "Extracts the four-digit year from a release date or returns 'Unknown'.",
+        "parameters": [
+          "date"
+        ]
+      },
+      {
+        "name": "playTrack",
+        "description": "Adds the current track to the player queue.",
+        "parameters": []
+      },
+      {
+        "name": "toggleFavorite",
+        "description": "Toggles the `isFavorite` flag for the current track (UI only).",
+        "parameters": []
+      },
+      {
+        "name": "addToQueue",
+        "description": "Appends the current track to the existing player queue.",
+        "parameters": []
+      },
+      {
+        "name": "editTrack",
+        "description": "Navigates to the upload page with an edit query for the current track.",
+        "parameters": []
+      },
+      {
+        "name": "deleteTrack",
+        "description": "Calls the store action to delete the track, then redirects to the music library.",
+        "parameters": []
+      },
+      {
+        "name": "copyLink",
+        "description": "Copies the current page URL to the clipboard and closes the dropdown.",
+        "parameters": []
+      },
+      {
+        "name": "fetchTrackData",
+        "description": "Fetches track details and related tracks by URL, manages the loading state.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, computed, onMounted, watch)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Button/Button.vue",
+      "@martyrs/src/components/Loader/Loader.vue",
+      "@martyrs/src/components/Media/Media.vue",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/components/Popup/Popup.vue",
+      "@martyrs/src/modules/icons/navigation/IconPlay.vue",
+      "@martyrs/src/modules/icons/navigation/IconHeart.vue",
+      "@martyrs/src/modules/icons/navigation/IconEllipsis.vue",
+      "../lists/TrackList.vue",
+      "../../store/tracks.js (state, actions)",
+      "../../store/player.js (actions)",
+      "@martyrs/src/modules/auth/views/store/auth.js (state)"
+    ],
+    "Usage": "Registered as a route component (e.g. `/track/:url`) in the music module's router. Imported and rendered by the router when navigating to a specific track's detail page.",
+    "Importance": 4,
+    "Notes": [
+      "The Add to Playlist modal is present but commented out; enabling it requires importing and wiring the PlaylistSelector component.",
+      "Favorite toggling is local/UI-only; persistence logic is not implemented.",
+      "Watches `route.params.url` to refetch data when the URL changes without full page reload.",
+      "Error handling for fetch operations logs to console; no user-facing error message is shown.",
+      "Uses Martyrs CSS utility classes for layout and theming."
+    ]
+  }
+}

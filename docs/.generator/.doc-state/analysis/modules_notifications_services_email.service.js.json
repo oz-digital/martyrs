@@ -1,0 +1,78 @@
+{
+  "path": "../../src/modules/notifications/services/email.service.js",
+  "relativePath": "modules/notifications/services/email.service.js",
+  "type": "source",
+  "name": "email.service.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл реализует сервис для отправки электронных писем, выступая в роли обёртки над утилитой отправки почты из глобального модуля.",
+    "Purpose": "Обеспечить единый интерфейс для отправки писем в модуле уведомлений, обрабатывая вложения и ошибки при отправке.",
+    "Components": [
+      {
+        "name": "EmailService",
+        "type": "object",
+        "responsibilities": [
+          "Принимать параметры письма (to, subject, text, html, metadata)",
+          "Преобразовывать и передавать вложения",
+          "Логировать и пробрасывать ошибки",
+          "Возвращать результат отправки (успех и messageId)"
+        ]
+      }
+    ],
+    "Functions": [
+      {
+        "name": "send",
+        "type": "async function",
+        "parameters": [
+          {
+            "name": "to",
+            "type": "string",
+            "description": "Email адрес получателя"
+          },
+          {
+            "name": "subject",
+            "type": "string",
+            "description": "Тема письма"
+          },
+          {
+            "name": "text",
+            "type": "string",
+            "description": "Текстовая часть письма"
+          },
+          {
+            "name": "html",
+            "type": "string",
+            "description": "HTML-часть письма (не используется в текущей реализации)"
+          },
+          {
+            "name": "metadata",
+            "type": "object",
+            "description": "Дополнительные данные: может содержать attachments — массив файлов"
+          }
+        ],
+        "returns": {
+          "type": "Promise<object>",
+          "description": "Объект вида { success: true, messageId: string } или выбрасывает ошибку при неудаче"
+        },
+        "description": "Вызывает sendEmail из глобальной утилиты, передаёт вложения и обрабатывает ошибки."
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/mailing.js",
+        "imported": "mailing",
+        "used": [
+          "sendEmail"
+        ]
+      }
+    ],
+    "Usage": "Импортируется как default-экспорт модуля: `import EmailService from 'modules/notifications/services/email.service.js'`. Далее вызывается EmailService.send({ to, subject, text, html?, metadata? }).",
+    "Importance": 4,
+    "Notes": [
+      "Параметр html передаётся в сигнатуру метода, но не используется при вызове sendEmail.",
+      "Вложениями служит metadata.attachments — массив файлов.",
+      "messageId генерируется на основе текущего timestamp.",
+      "В случае ошибки отправки происходит логирование через console.error и повторное выбрасывание ошибки."
+    ]
+  }
+}

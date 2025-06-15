@@ -1,0 +1,60 @@
+{
+  "path": "../../src/modules/community/controllers/utils/queryProcessor.js",
+  "relativePath": "modules/community/controllers/utils/queryProcessor.js",
+  "type": "source",
+  "name": "queryProcessor.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит утилитарные функции для генерации MongoDB-агрегационных стадий (pipeline stages) на основе заданного временного периода и категории.",
+    "Purpose": "Обеспечить единый механизм формирования условий поиска/фильтрации (aggregation pipeline stages) при построении запросов к коллекциям (например, посты сообщества) в контроллерах или сервисах проекта.",
+    "Components": [
+      {
+        "name": "getPeriodConditions",
+        "role": "Генерирует массив стадий $match для фильтрации записей по диапазону дат на основе переданного периода."
+      },
+      {
+        "name": "getCategoryConditions",
+        "role": "Генерирует массив стадий агрегации (сортировка или фильтрация по тегам) на основании переданной категории."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getPeriodConditions",
+        "description": "Возвращает этапы агрегации для фильтрации документов по дате создания в указанном диапазоне (today, week, month, year). Если период не распознан, возвращает пустой массив.",
+        "parameters": [
+          {
+            "name": "period",
+            "type": "string",
+            "description": "Ключевое слово периода: 'today', 'week', 'month', 'year'."
+          }
+        ],
+        "returns": "Array<Object> — массив стадий MongoDB-агрегации ({ $match: { createdAt: { $gte, $lte } } })."
+      },
+      {
+        "name": "getCategoryConditions",
+        "description": "Асинхронная функция, возвращающая набор стадий агрегации для сортировки или фильтрации по категории: featured, popular, new. Если категория не указана или не распознана, возвращает пустой массив.",
+        "parameters": [
+          {
+            "name": "category",
+            "type": "string",
+            "description": "Тип категории: 'featured', 'popular', 'new'."
+          },
+          {
+            "name": "user",
+            "type": "Object",
+            "description": "Пользователь (не используется в текущей реализации, может быть зарезервирован для будущих фильтров)."
+          }
+        ],
+        "returns": "Promise<Array<Object>> — обещание, разрешающееся в массив стадий агрегации."
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Импортируется в контроллерах или сервисах для формирования части aggregation pipeline при запросе к MongoDB. Пример:\n\nimport queryProcessor, { getPeriodConditions } from 'modules/community/controllers/utils/queryProcessor';\n\nconst periodStages = getPeriodConditions('week');\nconst categoryStages = await queryProcessor.getCategoryConditions('popular', currentUser);\nModel.aggregate([...periodStages, ...categoryStages, /* другие этапы */]).exec();",
+    "Importance": 3,
+    "Notes": [
+      "getCategoryConditions объявлена как async, но в текущей реализации не содержит await — может быть упрощена или расширена в будущем.",
+      "getPeriodConditions возвращает диапазон с $gte и $lte, что исключает будущие записи.",
+      "При неизвестных значениях обоих параметров возвращается пустой массив, что позволяет безопасно объединять стадии без побочных эффектов."
+    ]
+  }
+}

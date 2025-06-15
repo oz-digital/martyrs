@@ -1,0 +1,64 @@
+{
+  "path": "../../src/modules/auth/controllers/services/users.service.js",
+  "relativePath": "modules/auth/controllers/services/users.service.js",
+  "type": "source",
+  "name": "users.service.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику контроллеров для работы с сущностью User: предоставляет CRUD-операции (read, create, update, remove), включая сложный метод чтения с фильтрацией, пагинацией и агрегациями.",
+    "Purpose": "Определить сервис (контроллер) для управления пользователями: поиск/фильтрация, создание, обновление и удаление записей в коллекции users через Mongoose.",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "role": "Главная функция-фабрика: принимает объект db и возвращает набор CRUD-методов для работы с моделью User."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "read",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Собирает агрегированную цепочку запросов: фильтрация по _id/username/search, lookup для orders/roles/memberships, добавление полей из утилит, пагинация, возвращает список пользователей."
+      },
+      {
+        "name": "create",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Создает нового пользователя с полями phone, email, roles и возвращает созданный документ."
+      },
+      {
+        "name": "update",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Обновляет пользователя по _id (из URL-параметров) новыми данными из тела запроса, возвращает обновленный документ."
+      },
+      {
+        "name": "remove",
+        "parameters": [
+          "req",
+          "res"
+        ],
+        "description": "Удаляет пользователя по номеру телефона (из URL-параметров) и возвращает удаленный документ."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/organizations/controllers/utils/addMembersQuantity.js",
+      "@martyrs/src/modules/organizations/controllers/utils/addUserStatusFields.js",
+      "mongoose (Types.ObjectId)"
+    ],
+    "Usage": "Импортируется как default export, затем вызывается с объектом db (db.user — Mongoose-модель User). Возвращенные методы подключаются к маршрутам Express: e.g. `const userCtrl = usersService(db); router.get('/users', userCtrl.read)`.",
+    "Importance": 4,
+    "Notes": [
+      "В методе read используется безопасное экранирование поиска и проверка на валидность ObjectId.",
+      "Сборка pipeline через lookup добавляет связанные документы (orders, roles, memberships).",
+      "Для подсчета и добавления полей статуса/количества участников привлекаются внешние утилиты.",
+      "Метод remove удаляет по phone, а не по _id — возможно, особенность бизнес-логики."
+    ]
+  }
+}

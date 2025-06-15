@@ -1,0 +1,56 @@
+{
+  "path": "../../src/components/FieldPhone/all-countries.js",
+  "relativePath": "components/FieldPhone/all-countries.js",
+  "type": "source",
+  "name": "all-countries.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Defines a raw list of country metadata (name, ISO code, dial code, priority, area codes, flag) and exports a processed array of country objects formatted for phone input components.",
+    "Purpose": "Provide a normalized list of countries with phone dialing information and flags for use in phone number input/select components within the project.",
+    "Components": [
+      {
+        "name": "allCountries",
+        "type": "constant array",
+        "description": "An array of raw country data entries. Each entry is an array: [country name, ISO2 code, dial code, priority?, area codes?, flag emoji]."
+      },
+      {
+        "name": "default export",
+        "type": "array of objects",
+        "description": "A mapped version of allCountries where each item is an object with keys name, iso2, dialCode, priority, areaCodes, flag."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "Array.prototype.map callback",
+        "description": "Transforms each raw country array into a structured object.",
+        "parameters": [
+          {
+            "name": "country",
+            "type": "Array",
+            "description": "Raw country data array."
+          }
+        ],
+        "returns": {
+          "type": "Object",
+          "properties": {
+            "name": "string – full country name",
+            "iso2": "string – uppercase ISO2 country code",
+            "dialCode": "string – international phone dial code",
+            "priority": "number – selection priority (default 0)",
+            "areaCodes": "Array|null – array of area codes or null",
+            "flag": "string|null – emoji flag or null"
+          }
+        }
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Imported as the default export wherever a phone input or country picker is needed. Example: import countries from 'components/FieldPhone/all-countries';",
+    "Importance": 4,
+    "Notes": [
+      "ISO2 codes are converted to uppercase for consistency.",
+      "Missing priority or areaCodes values default to 0 and null respectively.",
+      "Flag is always taken from the last element of each country entry.",
+      "No external libraries are required; pure data transformation."
+    ]
+  }
+}

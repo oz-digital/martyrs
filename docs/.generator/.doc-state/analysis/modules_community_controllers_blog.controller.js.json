@@ -1,0 +1,87 @@
+{
+  "path": "../../src/modules/community/controllers/blog.controller.js",
+  "relativePath": "modules/community/controllers/blog.controller.js",
+  "type": "source",
+  "name": "blog.controller.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл экспортирует фабрику контроллера для работы с сущностью Blogpost: чтение (сложным агрегированием и фильтрацией), создание, обновление и удаление записей блога.",
+    "Purpose": "Обеспечить CRUD-операции над блог-постами в модуле community с поддержкой продвинутых опций выборки (фильтрация по периодам, тегам, подпискам, блокировкам, реакциям, комментариям и т.д.).",
+    "Components": [
+      {
+        "name": "controllerFactory",
+        "type": "function",
+        "description": "Фабрика контроллера, принимает объект db и возвращает методы read/create/update/delete для работы с моделью Blogpost."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "controllerFactory",
+        "description": "Инициализирует контроллер, привязывая к нему модели из переданного db.",
+        "parameters": [
+          "db — объект с моделями: blogpost, organization, membership"
+        ],
+        "returns": "Объект с методами { read, create, update, delete }"
+      },
+      {
+        "name": "read",
+        "description": "Обрабатывает GET-запрос, строит агрегационный pipeline на основе query-параметров и возвращает массив постов.",
+        "parameters": [
+          "req — HTTP-запрос с query-параметрами фильтрации",
+          "res — HTTP-ответ"
+        ]
+      },
+      {
+        "name": "create",
+        "description": "Обрабатывает POST-запрос, генерирует slug для url, создаёт новый документ Blogpost и возвращает его.",
+        "parameters": [
+          "req — HTTP-запрос с body: name, status, tags, owner, source, creator, content",
+          "res — HTTP-ответ"
+        ]
+      },
+      {
+        "name": "update",
+        "description": "Обрабатывает PUT/PATCH-запрос, обновляет существующий блогпост по _id и возвращает обновлённый документ.",
+        "parameters": [
+          "req — HTTP-запрос с body: полный объект блога (включая _id)",
+          "res — HTTP-ответ"
+        ]
+      },
+      {
+        "name": "delete",
+        "description": "Обрабатывает DELETE-запрос, удаляет блогпост по _id из req.params и возвращает удалённый документ.",
+        "parameters": [
+          "req — HTTP-запрос с params: {_id}",
+          "res — HTTP-ответ"
+        ]
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "@martyrs/src/modules/community/controllers/utils/queryProcessorReactions.js",
+        "purpose": "Стадии lookup и поля для реакций и комментариев"
+      },
+      {
+        "module": "@martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+        "purpose": "Базовые опции выборки, теги, сортировка, пагинация, поля creator/owner"
+      },
+      {
+        "module": "@martyrs/src/modules/organizations/controllers/utils/queryProcessor.js",
+        "purpose": "Стадии для подписок (following) и блокировок"
+      },
+      {
+        "module": "./utils/queryProcessor.js",
+        "purpose": "Локальные утилиты для периодов и категорий"
+      }
+    ],
+    "Usage": "Импортируется и вызывается в роутере community: `import blogControllerFactory from './controllers/blog.controller.js'; const blogCtrl = blogControllerFactory(db); router.get('/blog', blogCtrl.read); ...`",
+    "Importance": 4,
+    "Notes": [
+      "Метод read строит сложный aggregation pipeline, включая lookup для автора, организации, реакций и комментариев.",
+      "Генерация поля url в create выполняется через slugify-подобную логику.",
+      "Используется console.log для отладки входных параметров и ошибок.",
+      "Нет явной валидации входных данных перед сохранением/обновлением.",
+      "Закомментирован пример этапа $sample в pipeline для случайной выборки."
+    ]
+  }
+}

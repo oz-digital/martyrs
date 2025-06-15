@@ -1,0 +1,51 @@
+{
+  "path": "../../src/modules/products/router/products.router.js",
+  "relativePath": "modules/products/router/products.router.js",
+  "type": "source",
+  "name": "products.router.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл содержит фабрику маршрутов для секции «Products» (Товары) во Vue-router, генерируя описания вложенных путей, метаданные и динамические импорты компонентов.",
+    "Purpose": "Собрать и вернуть конфигурацию маршрутов для модуля продуктов, включая листинг, добавление, просмотр, редактирование и рекомендации товаров, с возможностью настройки префикса имен и прав доступа.",
+    "Components": [
+      {
+        "name": "createProductRoutes",
+        "responsibility": "Функция-фабрика, которая на основании переданных префикса и опций генерирует объект с маршрутом «products» и его дочерними путями."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "createProductRoutes",
+        "description": "Основная экспортируемая функция. Генерирует дерево маршрутов под базовый путь и возвращает объект конфигурации.",
+        "parameters": {
+          "prefix": "string (необязательно) — префикс для имен маршрутов.",
+          "options": "object (необязательно) — дополнительные настройки: basePath, productsAuthorize, addProductAuthorize, editProductAuthorize."
+        },
+        "returns": "Объект маршрута с полями `path` и `children`."
+      },
+      {
+        "name": "nameWithPrefix",
+        "description": "Вложенная утилитарная функция. Склеивает префикс с именем маршрута, если префикс задан.",
+        "parameters": {
+          "name": "string — суффикс имени маршрута."
+        },
+        "returns": "string — итоговое имя маршрута с префиксом."
+      }
+    ],
+    "Dependencies": [
+      "@martyrs/src/modules/auth/views/middlewares/auth.validation.js",
+      "@martyrs/src/modules/products/components/pages/Products.vue",
+      "@martyrs/src/modules/products/components/pages/ProductEdit.vue",
+      "@martyrs/src/modules/products/components/pages/Product.vue",
+      "@martyrs/src/modules/products/components/pages/ProductRecommmendation.vue"
+    ],
+    "Usage": "Импортировать `createProductRoutes` в главный файл роутера и включить результат в массив `routes` или `children` другого маршрута. Например:\n\n```js\nimport { createProductRoutes } from './modules/products/router/products.router.js';\n\nconst routes = [\n  ...createProductRoutes('/app/', { basePath: 'products', editProductAuthorize: ['admin'] }),\n  // другие маршруты\n];\n```",
+    "Importance": 4,
+    "Notes": [
+      "Динамические импорты компонентов (`import(/* webpackChunkName */ ...)`) позволяют код-сплиттинг на уровне роутов.",
+      "Для маршрута редактирования товара (`:product/edit`) подключён guard `validationAuth.requiresAuth` для проверки авторизации.",
+      "В маршруте `recommendation` передаётся параметр `mood` как props для компонента.",
+      "Опции `authorize` позволяют гибко настраивать права доступа для разных действий."
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "path": "../../src/components/PhotoViewer/PhotoViewer.vue",
+  "relativePath": "components/PhotoViewer/PhotoViewer.vue",
+  "type": "source",
+  "name": "PhotoViewer.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Компонент PhotoViewer отображает изображение с возможностью масштабирования (колёсико мыши или жесты) и перетаскивания (drag & pan) внутри контейнера.",
+    "Purpose": "Обеспечить интерактивный просмотр фотографий с поддержкой зума и перемещения в пределах контейнера, с автоматическим ограничением границ просмотра.",
+    "Components": [
+      {
+        "name": "PhotoViewer",
+        "description": "Vue SFC (Single File Component) для отображения и интерактивного управления изображением."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "getImageDimensions",
+        "description": "Вычисляет реальные размеры изображения и контейнера, а также размеры изображения после object-fit: scale-down.",
+        "params": [],
+        "returns": "{ renderedWidth, renderedHeight, containerWidth, containerHeight }"
+      },
+      {
+        "name": "handleWheel",
+        "description": "Обрабатывает колесико мыши: изменяет масштаб в пределах [1,3], корректирует позицию так, чтобы точка под курсором оставалась на месте и применяет ограничение границ.",
+        "params": [
+          "event: WheelEvent"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "startDrag",
+        "description": "Инициирует перетаскивание при нажатии мыши или касании, добавляет слушатели движения и завершения перетаскивания.",
+        "params": [
+          "event: MouseEvent | TouchEvent"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "handleTouchStart",
+        "description": "Обрабатывает начало касания: определяет pinch-to-zoom при двух точках или передаёт событие в startDrag для одиночного касания.",
+        "params": [
+          "event: TouchEvent"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "handleTouchMove",
+        "description": "Обрабатывает движение двух касаний для pinch-to-zoom: рассчитывает новый масштаб и позицию центра касания, затем ограничивает границы.",
+        "params": [
+          "event: TouchEvent"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "handleTouchEnd",
+        "description": "Сбрасывает состояние pinch-to-zoom при завершении касаний.",
+        "params": [
+          "event: TouchEvent"
+        ],
+        "returns": "void"
+      },
+      {
+        "name": "initialize",
+        "description": "Сбрасывает масштаб и позицию изображения к первоначальным значениям (scale=1, position=0,0). Вызывается по событию load изображения.",
+        "params": [],
+        "returns": "void"
+      },
+      {
+        "name": "constrainPosition",
+        "description": "Ограничивает смещение изображения по осям X и Y так, чтобы оно не выходило за пределы контейнера при текущем масштабе.",
+        "params": [],
+        "returns": "void"
+      }
+    ],
+    "Dependencies": [
+      {
+        "module": "vue",
+        "imports": [
+          "ref",
+          "reactive",
+          "computed",
+          "onMounted",
+          "watch",
+          "defineProps"
+        ]
+      }
+    ],
+    "Usage": "Импортируется как обычный Vue-компонент: `import PhotoViewer from '@/components/PhotoViewer/PhotoViewer.vue'` и вставляется в шаблон родительского компонента, передавая `photoUrl` и флаг `show`.",
+    "Importance": 3,
+    "Notes": [
+      "Поддерживается как мышь (wheel / drag), так и сенсорные жесты (pinch-to-zoom).",
+      "Масштаб ограничен от 1 до 3.",
+      "При масштабе 1 позиция сбрасывается в центр.",
+      "Используется object-fit: scale-down для первоначальной подгонки изображения."
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "section": {
+    "id": "source-components-shader",
+    "title": "Проект: Компоненты / Shader",
+    "description": "Модуль содержит компонент для отображения WebGL-шейдеров на канвасе с помощью Vue 3.",
+    "subsections": [
+      {
+        "id": "shader-vue",
+        "title": "Shader.vue",
+        "description": "Vue 3 компонент для рендеринга GLSL-фрагментных шейдеров на канвасе. Позволяет интегрировать динамические визуальные эффекты в приложение."
+      }
+    ]
+  },
+  "fileHashes": [
+    "a9752172f9e00f9d88cd34cef394cca9"
+  ],
+  "groupHash": "f7b77818cc5ca71ed1f3917bb0df8900",
+  "generated": "2025-06-05T09:17:11.233Z"
+}

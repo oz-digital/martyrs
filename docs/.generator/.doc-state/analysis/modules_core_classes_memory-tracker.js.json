@@ -1,0 +1,169 @@
+{
+  "path": "../../src/modules/core/classes/memory-tracker.js",
+  "relativePath": "modules/core/classes/memory-tracker.js",
+  "type": "source",
+  "name": "memory-tracker.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет класс VueMemoryTracker, который обеспечивает отслеживание и анализ использования памяти в приложениях Vue 3. Трекер периодически сканирует дерево компонентов через Vue DevTools и DOM, собирает статистику по экземплярам компонентов, вычисляет рост потребления памяти и сигнализирует о возможных утечках.",
+    "Purpose": "Основная цель файла — предоставить простой инструмент для мониторинга и визуализации употребления JS-кучи и активности Vue-компонентов в реальном времени, облегчая поиск и диагностику утечек памяти.",
+    "Components": [
+      {
+        "name": "VueMemoryTracker",
+        "responsibilities": "Инициализирует настройки, подключается к Vue DevTools и DOM, периодически собирает метрики памяти и статистику по компонентам, отслеживает создание/обновление/уничтожение компонентов, анализирует тренды и сигнализирует о потенциальных утечках."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "constructor",
+        "description": "Инициализирует объект трекера, задаёт опции, внутренние структуры хранения и привязывает методы.",
+        "params": [
+          {
+            "name": "options",
+            "type": "Object",
+            "description": "Настройки трекера (интервал проверки и т.п.)."
+          }
+        ]
+      },
+      {
+        "name": "start",
+        "description": "Запускает периодическое сканирование и измерение памяти, инициализирует UI и подписки на события Vue DevTools и visibilityChange.",
+        "params": []
+      },
+      {
+        "name": "stop",
+        "description": "Останавливает сканирование, удаляет подписки и очищает UI.",
+        "params": []
+      },
+      {
+        "name": "handleVisibilityChange",
+        "description": "Обработчик смены видимости вкладки: при возвращении на видимую вкладку запускает немедленный сбор метрик.",
+        "params": []
+      },
+      {
+        "name": "checkMemory",
+        "description": "Снимает текущее состояние JS-кучи через performance.memory, сохраняет срез в историю, обновляет UI и выполняет проверку утечек.",
+        "params": []
+      },
+      {
+        "name": "checkForLeaks",
+        "description": "Анализ последних нескольких замеров памяти, выявляет устойчивый рост и логирует предупреждение вместе со списком подозрительных компонентов.",
+        "params": []
+      },
+      {
+        "name": "getComponentStats",
+        "description": "Собирает статистику по активным экземплярам каждого компонента: количество, общий и средний размер, возраст.",
+        "params": []
+      },
+      {
+        "name": "hookVueDevtools",
+        "description": "Подключается к глобальному хуку Vue DevTools, патчит emit для отслеживания событий component:init и component:updated.",
+        "params": []
+      },
+      {
+        "name": "trackComponent",
+        "description": "Регистрирует новый компонент в трекере: вычисляет имя, оценивает размер, сохраняет экземпляр и рекурсивно сканирует дочерние узлы.",
+        "params": [
+          {
+            "name": "instance",
+            "type": "Object",
+            "description": "Vue-инстанс компонента."
+          }
+        ]
+      },
+      {
+        "name": "updateComponentInfo",
+        "description": "Обновляет информацию о ранее зарегистрированном компоненте: его размер и статус уничтожения, а также сканирует новые дочерние компоненты.",
+        "params": [
+          {
+            "name": "instance",
+            "type": "Object",
+            "description": "Vue-инстанс компонента."
+          }
+        ]
+      },
+      {
+        "name": "trackComponentDestruction",
+        "description": "Перехватывает хук unmounted (Vue 3) для пометки компонента как уничтоженного.",
+        "params": [
+          {
+            "name": "instance",
+            "type": "Object"
+          },
+          {
+            "name": "name",
+            "type": "String",
+            "description": "Имя компонента."
+          }
+        ]
+      },
+      {
+        "name": "scanVNode",
+        "description": "Рекурсивно обходит VNode-дерево для поиска и регистрации компонентов, обрабатывает Suspense и слоты.",
+        "params": [
+          {
+            "name": "vnode",
+            "type": "Object",
+            "description": "Virtual DOM node."
+          }
+        ]
+      },
+      {
+        "name": "scanComponentTree",
+        "description": "Рекурсивно сканирует дерево компонентов Vue начиная с root-инстанса, с ограничением глубины.",
+        "params": [
+          {
+            "name": "instance",
+            "type": "Object"
+          },
+          {
+            "name": "depth",
+            "type": "Number",
+            "description": "Текущая глубина рекурсии."
+          }
+        ]
+      },
+      {
+        "name": "scanVueComponents",
+        "description": "Запускает сканирование всех приложений, зарегистрированных в Vue DevTools, и дополнительно сканирует DOM.",
+        "params": []
+      },
+      {
+        "name": "scanDOMForComponents",
+        "description": "Ищет DOM-элементы Vue по data-v- атрибутам или __vue__ свойству, регистрирует найденные инстансы.",
+        "params": []
+      },
+      {
+        "name": "scanSpecialComponents",
+        "description": "Обрабатывает Suspense и RouterView: ищет внутренние Vue-элементы и регистрирует их.",
+        "params": []
+      },
+      {
+        "name": "getComponentName",
+        "description": "Определяет имя компонента по полям type, vnode, __file, или по метаданным маршрутов.",
+        "params": [
+          {
+            "name": "instance",
+            "type": "Object"
+          }
+        ]
+      }
+    ],
+    "Dependencies": [
+      "Глобальный API performance",
+      "Глобальный объект window.__VUE_DEVTOOLS_GLOBAL_HOOK__",
+      "Глобальный объект window.__VUE__ (Vue 2 инспектор)",
+      "DOM API (document, querySelectorAll, addEventListener)",
+      "Консоль (console)"
+    ],
+    "Usage": "Импортировать файл (ESM или путем вставки через <script>), создать экземпляр: const tracker = new VueMemoryTracker({interval:5000}); затем вызвать tracker.start() для начала отслеживания.",
+    "Importance": 4,
+    "Notes": [
+      "Использует WeakSet для предотвращения дублирования инстансов.",
+      "Ограничивает историю до 100 записей для экономии памяти.",
+      "Метод estimateSize и setupUI объявлены, но детали реализации UI и оценки размера компонентов размещены вне фрагмента.",
+      "Существует защита глубины рекурсии (max depth=15) при сканировании дерева компонентов.",
+      "Патч Vue DevTools emit происходит только один раз благодаря флагу _memTrackerPatched."
+    ]
+  }
+}

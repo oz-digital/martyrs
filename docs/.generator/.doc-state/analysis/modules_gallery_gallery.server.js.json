@@ -1,0 +1,65 @@
+{
+  "path": "../../src/modules/gallery/gallery.server.js",
+  "relativePath": "modules/gallery/gallery.server.js",
+  "type": "source",
+  "name": "gallery.server.js",
+  "extension": ".js",
+  "analysis": {
+    "summary": "Организует и инициализирует модуль «gallery» в приложении: настраивает модель фотографий, подключает контроллер и маршруты.",
+    "purpose": "Обеспечить централизованную регистрацию модели Photo, маршрутов и контроллера для работы галереи в контексте веб-приложения и базы данных.",
+    "components": [
+      {
+        "name": "GalleryController",
+        "path": "./controllers/gallery.controller.js",
+        "responsibility": "Содержит логику обработки запросов и взаимодействия с моделью Photo для операций галереи."
+      },
+      {
+        "name": "PhotoModel",
+        "path": "./models/photo.model.js",
+        "responsibility": "Определяет схему и методы работы с сущностью «фотография» в базе данных."
+      },
+      {
+        "name": "galleryRoutes",
+        "path": "./routes/gallery.routes.js",
+        "responsibility": "Регистрирует HTTP-маршруты (эндпоинты) для CRUD-операций галереи в веб-сервере."
+      }
+    ],
+    "functions": [
+      {
+        "name": "initializeGallery",
+        "description": "Устанавливает модель Photo в объект базы данных и при наличии экземпляра приложения регистрирует маршруты.",
+        "parameters": [
+          {
+            "name": "app",
+            "type": "Object",
+            "description": "Инстанс фреймворка (например, Express) для регистрации HTTP-маршрутов."
+          },
+          {
+            "name": "db",
+            "type": "Object",
+            "description": "Объект для хранения моделей соединения с базой данных."
+          },
+          {
+            "name": "origins",
+            "type": "Array|string",
+            "description": "Список или строка разрешённых CORS-доменов для маршрутов."
+          },
+          {
+            "name": "publicPath",
+            "type": "string",
+            "description": "Путь к публичной директории для статических ресурсов галереи."
+          }
+        ],
+        "returns": "void"
+      }
+    ],
+    "dependencies": [
+      "./controllers/gallery.controller.js",
+      "./models/photo.model.js",
+      "./routes/gallery.routes.js"
+    ],
+    "usage": "Импортировать функцию и/или именованные экспорты из модуля, затем вызвать initialize(app, db, origins, publicPath). Например:\n\nimport galleryModule, { initialize } from 'modules/gallery/gallery.server.js';\ninitialize(app, db, ['https://example.com'], '/public/gallery');",
+    "importance": 3,
+    "notes": "1) Вносит динамическое расширение объекта db (db.photo).\n2) Использует как именованные, так и default-экспорт для гибкого импорта.\n3) Не выполняет действий без передачи app, что позволяет использовать модуль только для определения моделей."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "path": "../../src/modules/icons/navigation/IconMute.vue",
+  "relativePath": "modules/icons/navigation/IconMute.vue",
+  "type": "source",
+  "name": "IconMute.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue 3 single-file component that renders a mute icon as an inline SVG with a customizable fill color.",
+    "Purpose": "Provides a reusable navigation icon (mute) that can be placed in toolbars, menus or other UI elements requiring a mute symbol.",
+    "Components": [
+      {
+        "name": "IconMute",
+        "description": "Root component wrapping the SVG markup for the mute icon and exposing a `fill` prop to control the icon color."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "defineProps",
+        "purpose": "Defines the `fill` prop for the component.",
+        "parameters": {
+          "fill": {
+            "type": "String",
+            "default": "{ position: 'rgb(var(--black))' }"
+          }
+        }
+      }
+    ],
+    "Dependencies": [
+      "vue (for defineProps)",
+      "CSS custom property --black (used in default fill value)"
+    ],
+    "Usage": "Import this component where you need the mute icon, for example:\n\nimport IconMute from 'modules/icons/navigation/IconMute.vue'\n\n<IconMute fill=\"#ff0000\" />",
+    "Importance": 2,
+    "Notes": [
+      "Default `fill` prop is declared as an object with a `position` key, which may be a typo—expected a string.",
+      "SVG has fixed width and height but inherits fill from the `fill` prop.",
+      "No scoped styles section is present; styling is driven entirely by the SVG attributes and CSS variables."
+    ]
+  }
+}

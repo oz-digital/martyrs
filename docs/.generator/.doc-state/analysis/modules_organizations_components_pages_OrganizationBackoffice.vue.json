@@ -1,0 +1,93 @@
+{
+  "path": "../../src/modules/organizations/components/pages/OrganizationBackoffice.vue",
+  "relativePath": "modules/organizations/components/pages/OrganizationBackoffice.vue",
+  "type": "source",
+  "name": "OrganizationBackoffice.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "OrganizationBackoffice.vue is a Vue 3 component that renders a horizontal navigation menu for an organization's backoffice. It conditionally displays menu items (Members, Products, Categories, Leftovers, Orders, Rents, Gallery, Events) based on user permissions and routes the user to the corresponding backoffice pages.",
+    "Purpose": "Provide a reusable backoffice navigation bar for organization-specific sections in the admin interface. It centralizes routing logic and permission checks for different organization resources.",
+    "Components": [
+      {
+        "Menu": "Container component that groups MenuItem elements into a styled menu bar."
+      },
+      {
+        "MenuItem": "Individual clickable item in the Menu that triggers navigation when clicked."
+      },
+      {
+        "SelectMulti": "Imported multi-select component (currently unused)."
+      },
+      {
+        "IconProducts": "SVG icon representing the \"Products\" section."
+      },
+      {
+        "IconEvents": "SVG icon representing the \"Events\" section."
+      },
+      {
+        "IconGroups": "SVG icon representing the \"Members\" section."
+      },
+      {
+        "IconCommunity": "SVG icon for a community section (imported but unused in template)."
+      },
+      {
+        "IconGallery": "SVG icon representing the \"Gallery\" section."
+      },
+      {
+        "IconOrders": "SVG icon representing the \"Orders\" and \"Rents\" sections."
+      },
+      {
+        "IconLeftovers": "SVG icon representing the \"Leftovers\" section."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "hasAccess",
+        "description": "Helper function imported from auth store to determine if the current user has read permission on a given resource for the organization.",
+        "parameters": [
+          "organizationId",
+          "resourceName",
+          "action (e.g. 'read')",
+          "accessList",
+          "roleList"
+        ]
+      },
+      {
+        "name": "onMounted",
+        "description": "Vue lifecycle hook invoked when component is mounted; placeholder for any initialization logic.",
+        "parameters": []
+      },
+      {
+        "name": "router.push",
+        "description": "Vue Router programmatic navigation method that routes to a named route with parameters.",
+        "parameters": [
+          "locationObject"
+        ]
+      }
+    ],
+    "Dependencies": [
+      "vue (ref, onMounted, defineProps)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/components/Menu/Menu.vue",
+      "@martyrs/src/components/Menu/MenuItem.vue",
+      "@martyrs/src/components/SelectMulti/SelectMulti.vue",
+      "@martyrs/src/modules/icons/entities/IconProducts.vue",
+      "@martyrs/src/modules/icons/entities/IconEvents.vue",
+      "@martyrs/src/modules/icons/entities/IconGroups.vue",
+      "@martyrs/src/modules/icons/entities/IconCommunity.vue",
+      "@martyrs/src/modules/icons/entities/IconGallery.vue",
+      "@martyrs/src/modules/icons/entities/IconOrders.vue",
+      "@martyrs/src/modules/icons/entities/IconLeftovers.vue",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/organizations/store/organizations.js"
+    ],
+    "Usage": "This component is used in the routing configuration as the view for organization backoffice routes. It is typically imported in a parent page or directly referenced in the router to render the organization navigation bar at the top of each backoffice section.",
+    "Importance": 3,
+    "Notes": [
+      "SelectMulti and the organizations store are imported but not used in the current implementation.",
+      "IconCommunity is imported but commented out in the template; may be added later for a 'Community' section.",
+      "There is an empty <style lang=\"scss\"> block; no scoped styles are defined.",
+      "Commented-out MenuItems suggest future expansion for Reports, Payments, or other backoffice sections.",
+      "Permission checks via hasAccess guard navigation and menu rendering."
+    ]
+  }
+}

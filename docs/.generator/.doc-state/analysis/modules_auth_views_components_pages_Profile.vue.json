@@ -1,0 +1,126 @@
+{
+  "path": "../../src/modules/auth/views/components/pages/Profile.vue",
+  "relativePath": "modules/auth/views/components/pages/Profile.vue",
+  "type": "source",
+  "name": "Profile.vue",
+  "extension": ".vue",
+  "analysis": {
+    "Summary": "Vue component that renders a user profile page. It fetches and displays the current user's information (photo, name, username, bio, roles, follower count, social links), and conditionally shows actions like edit, report, block/unblock, follow/unfollow, and navigation menus for profile‐related modules and settings.",
+    "Purpose": "Serve as the main profile page in the authentication module of the application, allowing any visitor to view a user's public info and the profile owner (or admin) to perform actions such as editing, viewing notifications, and logging out.",
+    "Components": [
+      {
+        "name": "Field",
+        "responsibility": "Generic input field (imported but not used in this file)."
+      },
+      {
+        "name": "Button",
+        "responsibility": "Generic button element (imported but not used directly here)."
+      },
+      {
+        "name": "Dropdown",
+        "responsibility": "Displays a dropdown container for actions like reporting or blocking."
+      },
+      {
+        "name": "Completion",
+        "responsibility": "Displays profile completeness (commented out in this file)."
+      },
+      {
+        "name": "Menu",
+        "responsibility": "Container for menu items/navigation links."
+      },
+      {
+        "name": "MenuItem",
+        "responsibility": "Individual menu entry used in navigation menus."
+      },
+      {
+        "name": "ButtonToggleMembership",
+        "responsibility": "Button to toggle membership status (block/unblock, follow/unfollow)."
+      },
+      {
+        "name": "FormReport",
+        "responsibility": "Form wrapper that submits a report against the user."
+      },
+      {
+        "name": "Activity",
+        "responsibility": "Community activity block (imported but not used in this file)."
+      },
+      {
+        "name": "Socials",
+        "responsibility": "Displays social media links/icons for the user."
+      },
+      {
+        "name": "IconEvents",
+        "responsibility": "Icon for the Events module in the profile menu."
+      },
+      {
+        "name": "IconGroups",
+        "responsibility": "Icon for the Groups module in the profile menu."
+      },
+      {
+        "name": "IconCommunity",
+        "responsibility": "Icon for the Posts module in the profile menu."
+      },
+      {
+        "name": "IconOrders",
+        "responsibility": "Icon for the Orders module in the profile menu."
+      },
+      {
+        "name": "IconEdit",
+        "responsibility": "Edit icon shown for the profile owner to enter edit mode."
+      },
+      {
+        "name": "PlaceholderUserpic",
+        "responsibility": "Placeholder graphic when user has no profile photo."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "onMounted(async)",
+        "description": "Lifecycle hook that fetches the user data from the server and then shows the component.",
+        "parameters": []
+      },
+      {
+        "name": "handleMembershipUpdate",
+        "description": "Wrapper around the memberships store mutation to handle block/unblock or follow/unfollow and update UI state accordingly.",
+        "parameters": [
+          "{ membership, status, target }: Object",
+          "statusName: String (field to update, e.g. 'isBlocked' or 'isSubscriber')",
+          "statusNumber: String (optional count field, e.g. 'numberOfSubscribers')"
+        ]
+      },
+      {
+        "name": "logout",
+        "description": "Logs the current user out via auth store action and navigates to the Sign In page.",
+        "parameters": []
+      }
+    ],
+    "Dependencies": [
+      "vue (computed, watch, onMounted, ref, inject)",
+      "vue-router (useRoute, useRouter)",
+      "@martyrs/src/modules/auth/views/store/auth.js",
+      "@martyrs/src/modules/auth/views/store/users.js",
+      "@martyrs/src/modules/organizations/store/memberships.js",
+      "@martyrs/src/components/Dropdown/Dropdown.vue",
+      "@martyrs/src/components/Menu/Menu.vue",
+      "@martyrs/src/components/Menu/MenuItem.vue",
+      "@martyrs/src/modules/organizations/components/elements/ButtonToggleMembership.vue",
+      "@martyrs/src/modules/reports/components/sections/FormReport.vue",
+      "@martyrs/src/modules/organizations/components/blocks/Socials.vue",
+      "@martyrs/src/modules/icons/entities/IconEvents.vue",
+      "@martyrs/src/modules/icons/entities/IconGroups.vue",
+      "@martyrs/src/modules/icons/entities/IconCommunity.vue",
+      "@martyrs/src/modules/icons/entities/IconOrders.vue",
+      "@martyrs/src/modules/icons/navigation/IconEdit.vue",
+      "@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue"
+    ],
+    "Usage": "Imported and used as the view component for a user-profile route (e.g. `/users/:_id`). The router will render it when navigating to a profile page. Other components link into it via `<router-link>` or programmatic navigation.",
+    "Importance": 4,
+    "Notes": [
+      "Uses an injected `store` object to read available modules and map them to menu items dynamically.",
+      "The `filteredModules` computed property applies a visibility rule for the Orders section (only owner or admins/moderators see it).",
+      "A `show` ref is used to defer rendering until after the user data is loaded.",
+      "Some imports (Field, Button, Completion, Activity) are not currently used and could be cleaned up.",
+      "A commented‐out Completion component suggests a future plan to display profile completeness."
+    ]
+  }
+}
