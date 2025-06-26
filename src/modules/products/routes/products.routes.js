@@ -9,5 +9,6 @@ export default (function (app, db, allowedOrigins) {
   app.post('/api/products/:_id', controller.Update);
   // (D) Delete product
   app.delete('/api/products/:_id', controller.Delete);
+  
   app.post('/api/product/recommended', controller.getProductRecommendation);
 });

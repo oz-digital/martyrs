@@ -1,5 +1,5 @@
 <template>
-  <div v-if="discounts && discounts.length" class="mn-t-large mn-b-large">
+  <div v-if="discounts && discounts.length">
     <div class="mn-b-small flex-nowrap flex flex-v-center">
       <IconDiscount class="mn-r-micro i-medium"/>
       <p class="t-medium">Special Offers</p>
@@ -9,7 +9,7 @@
       <div 
         v-for="(discount, index) in discounts" 
         :key="index" 
-        class="discount-card pd-medium radius-medium br-1px br-solid br-light cursor-pointer hover-scale-1"
+        class="discount-card bg-light pd-small radius-small br-1px br-solid br-light cursor-pointer "
         @click="selectDiscount(discount)"
       >
         <div class="flex flex-wrap gap-thin flex-v-center w-100">
@@ -25,8 +25,7 @@
         </div>
         
         <p v-if="discount.description" class="t-small mn-t-thin t-transp">{{ discount.description }}</p>
-
-        <div class="mn-t-small"><Chips v-if="getConditionsAsChips.length > 0" class="" :chips="getConditionsAsChips(discount)" /></div>
+        <div v-if="getConditionsAsChips(discount).length > 0" class="mn-t-small"><Chips  class="" :chips="getConditionsAsChips(discount)" /></div>
       </div>
     </div>
   </div>

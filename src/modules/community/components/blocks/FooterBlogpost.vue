@@ -6,11 +6,11 @@
         url: blogpost.url 
       }
     }" 
-    class="font-second cursor-pointer hover-bg-light pd-l-thin pd-r-thin radius-big">
+    class="font-second cursor-pointer hover-bg-white pd-l-thin pd-r-thin radius-big">
       👁️ {{blogpost.views}}
     </router-link>
     
-    <div class="hover-bg-light pd-l-thin pd-r-thin radius-big cursor-pointer">
+    <div class="hover-bg-white pd-l-thin pd-r-thin radius-big cursor-pointer">
       <div class="cursor-pointer" @click="addReaction('like')" v-if="!isReacted">
         👍 {{reactionsCount }}
       </div>
@@ -25,7 +25,7 @@
         url: blogpost.url 
       }
     }" 
-    class="font-second cursor-pointer hover-bg-light pd-l-thin pd-r-thin radius-big">
+    class="font-second cursor-pointer hover-bg-white pd-l-thin pd-r-thin radius-big">
       💬 {{ blogpost.numberOfComments }}
     </router-link>
   </footer>

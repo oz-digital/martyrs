@@ -146,39 +146,9 @@ body {
 	// ////////////////////////////////////////
 	// Pointer Events
 	.no-events { pointer-events: none }
-	// Transition
 	// //////////////////////////////////////// 
 	// Layout
 	// //////////////////////////////////////// 
-	// Positions
-	.pos-relative { position: relative; }
-	.pos-absolute { position: absolute; }
-	.pos-fixed    { position: fixed; }
-	.pos-sticky   { position: sticky; }
-	.pos-static   { position: static; }
-	// Overflow
-	.o-hidden   {overflow: hidden; }
-	.o-scroll   {overflow: scroll; }
-	.o-y-scroll {overflow-y: scroll; }
-	.o-x-scroll {overflow-x: scroll; } /* This was incorrect in your code */
-	.o-x-hidden {overflow-x: hidden; touch-action: pan-y;}
-	.o-auto     {overflow: auto; }
-	.o-visible  {overflow: visible; }
-	.o-clip     {overflow: clip; } /* Modern alternative to hidden */
-	.o-y-auto   {overflow-y: auto; }
-	.o-x-auto   {overflow-x: auto; }
-	.o-y-hidden {overflow-y: hidden; }
-	.o-y-visible {overflow-y: visible; }
-	.o-x-visible {overflow-x: visible; }
-	.o-y-clip   {overflow-y: clip; }
-	.o-x-clip   {overflow-x: clip; }
-	.o-initial  {overflow: initial; }
-	.o-inherit  {overflow: inherit; }
-	.o-unset    {overflow: unset; }
-	.o-revert   {overflow: revert; }
-	.o-revert-layer {overflow: revert-layer; }
-	// Display
-
 	// Flex
 	.flex {
 		display: flex;
@@ -186,14 +156,6 @@ body {
 		&-wrap 						{ flex-wrap: wrap; }	
 		&-center 					{ align-items: center; justify-content: center; }
 	}
-
-
-	.d-flex 				{display: flex; }
-	.d-block 				{display: block; }
-	.d-inline-block {display: inline-block; }
-	.d-inline-flex 	{display: inline-flex; }	
-	.d-grid 				{display: grid; }	
-	.d-none 				{display: none; }
 
 	.align-self-start {
 		align-self: start;

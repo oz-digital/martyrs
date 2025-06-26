@@ -104,6 +104,14 @@ export default  {
       }
     ]
   },
+  recommended: {
+    lookup: {
+      from: 'products',
+      localField: 'recommended',
+      foreignField: '_id',
+      as: 'recommended'
+    }
+  },
   // Лукап для категорий продукта
   categories: {
     lookup: {
@@ -112,24 +120,21 @@ export default  {
       foreignField: '_id',
       as: 'category'
     },
-    additionalStages: [
-      // Проецируем только нужные поля для каждой категории
-      {
-        $addFields: {
-          category: {
-            $map: {
-              input: '$category',
-              as: 'cat',
-              in: {
-                _id: '$$cat._id',
-                name: '$$cat.name',
-                description: '$$cat.description',
-                url: '$$cat.url'
-              }
+    additionalStages: [{
+      $addFields: {
+        category: {
+          $map: {
+            input: '$category',
+            as: 'cat',
+            in: {
+              _id: '$$cat._id',
+              name: '$$cat.name',
+              description: '$$cat.description',
+              url: '$$cat.url'
             }
           }
         }
       }
-    ]
+    }]
   }
 };

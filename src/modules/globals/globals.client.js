@@ -20,6 +20,7 @@ import * as storeGlobals from './views/store/globals.js';
 import * as appRenderer from './views/utils/vue-app-renderer.js';
 
 import alertPlugin from './views/plugins/alert.plugin.js';
+import popupAuthPlugin from './views/plugins/popup.auth.plugin.js';
 import datePickerPlugin from './views/plugins/date-picker.plugin.js';
 import storeDebuggerPlugin from './views/plugins/store-debugger/store-debugger.plugin.js';
 
@@ -42,6 +43,7 @@ function initializeGlobals(app, store, router, config, options = {}) {
   app.mixin(mixins.globalMixins);
 
   app.use(alertPlugin);
+  app.use(popupAuthPlugin);
   app.use(datePickerPlugin);
   app.use(storeDebuggerPlugin, store);
 

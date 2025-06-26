@@ -6,7 +6,6 @@
         'p-medium t-semi': size === 'small',
         'h3 t-semi': size === 'big'
       }"
-      class="t-second"
     >
       {{ returnCurrency() + variant.price }}
     </span>
@@ -19,7 +18,7 @@
       }"
       class="p-small mn-l-micro t-transp"
     >
-      {{ product.listing === 'rent' ? 'per day' : 'for ' + variant.quantity + variant.unit }}
+      {{ product?.listing === 'rent' ? 'per day' : 'for ' + variant.quantity + variant.unit }}
     </span>
 
     <p
@@ -36,10 +35,11 @@ import { computed } from 'vue';
 
 const props = defineProps({
   product: Object,
+  variants: Array,
   size: String
 });
 
 const variant = computed(() => {
-  return props.product?.variants?.[0] || props.product;
+  return props.product?.variants?.[0] || props.variants?.[0] || props.product;
 });
 </script>

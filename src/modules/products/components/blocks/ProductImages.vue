@@ -1,7 +1,7 @@
 <template>
-  <div class="w-100 o-hidden bg-light radius-medium flex-nowrap flex-column flex pos-relative">
+  <div class="w-100 bs-heavy h-max  mobile:pos-relative tablet:pos-relative pos-sticky pos-t-0 pd-medium o-hidden bg-light radius-medium gap-small flex-nowrap flex-row mobile:flex-column flex pos-relative">
     <!-- Main image container -->
-    <div class="pd-semi w-100 bg-light radius-semi o-hidden" @click="openPopup(images[0])">
+    <div class="order-1 w-100 bg-light radius-small o-hidden" @click="openPopup(currentImageIndex)">
       <Image360
         v-if="product && product.image3d"
         class="h-100 w-100"
@@ -10,35 +10,44 @@
       />
       <img
         loading="lazy"
-        v-if="images[0] && !product?.image3d"
-        class="h-max h-max-15r bg-white radius-semi w-100"
+        v-if="images[currentImageIndex] && !product?.image3d"
+        class="h-100 flex-child-default bg-white radius-small w-100"
         style="object-fit: contain;"
-        :src="(FILE_SERVER_URL || '') + images[0]"
+        :src="(FILE_SERVER_URL || '') + images[currentImageIndex]"
       />
       <PlaceholderImage
-        v-if="!images[0] && !product?.image3d"
-        class="h-max-20r h-100 w-100"
+        v-if="!images[currentImageIndex] && !product?.image3d"
+        class="h-100 w-100"
         style="object-fit: cover;"
       />
     </div>
     
     <!-- Thumbnails -->
-    <div v-if="images.length > 1" class="o-scroll w-100 pd-semi pd-t-zero">
-      <div class="no-responsive w-max flex flex-nowrap gap-thin">
+    <div v-if="images.length > 1" class="mobile:order-1 order-0 w-5r mobile:w-100">
+      <div class="w-100 mobile:flex-row flex-column flex flex-nowrap gap-thin">
         <img loading="lazy" 
-          v-for="(image, index) in images"
+          v-for="(image, index) in images.slice(0, 5)"
           :key="index"
           :src="(FILE_SERVER_URL || '') + image" 
-          @click="openPopup(image)"
-          class="flex-child flex-child-grow-1 aspect-1x1 radius-semi bg-white o-hidden thumbnail"
+          @click="currentImageIndex = index"
+          class="aspect-1x1 radius-small bg-white o-hidden thumbnail"
+          :class="{ 'active': currentImageIndex === index }"
         />
+        <div
+          v-if="images.length > 5"
+          @click="openPopup(5)"
+          class="aspect-1x1 radius-small o-hidden thumbnail flex flex-center t-medium t-black bg-white "
+        >
+          +{{ images.length - 5 }}
+        </div>
       </div>
     </div>
     
     <!-- Popup with photo viewer -->
-    <Popup @close-popup="closePopup" :isPopupOpen="isPopupVisible" class="radius-medium o-hidden">
+    <Popup @close-popup="closePopup" :isPopupOpen="isPopupVisible" class="radius-zero o-hidden">
       <PhotoViewer
-        :photoUrl="(FILE_SERVER_URL || '') + selectedImage"
+        :photos="images.map(img => (FILE_SERVER_URL || '') + img)"
+        :initialIndex="selectedImageIndex"
       />
     </Popup>
   </div>
@@ -46,12 +55,9 @@
 
 <script setup>
 import { ref } from "vue";
-
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import PhotoViewer from '@martyrs/src/components/PhotoViewer/PhotoViewer.vue';
-
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
-
 import Image360 from '@martyrs/src/modules/products/components/elements/Image360.vue'
 
 const props = defineProps({
@@ -66,15 +72,17 @@ const props = defineProps({
 });
 
 const isPopupVisible = ref(false);
-const selectedImage = ref(null);
+const selectedImageIndex = ref(0);
+const currentImageIndex = ref(0);
 
-const openPopup = (image) => {
-  if (!image) return;
-  selectedImage.value = image;
+const openPopup = (index) => {
+  if (!props.images.length) return;
+  selectedImageIndex.value = index;
   isPopupVisible.value = true;
 };
 
 const closePopup = () => {
+  selectedImageIndex.value = 0;
   isPopupVisible.value = false;
 };
 </script>
@@ -82,9 +90,10 @@ const closePopup = () => {
 <style scoped>
 .thumbnail {
   width: 100%;
-  max-width: 6rem;
-  height: 6rem;
   object-fit: cover;
   cursor: pointer;
+}
+.thumbnail.active {
+  border: 1px solid rgb(var(--second));
 }
 </style>

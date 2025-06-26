@@ -6,6 +6,10 @@ import IconGroups from '@martyrs/src/modules/icons/entities/IconGroups.vue';
 import IconOrders from '@martyrs/src/modules/icons/entities/IconOrders.vue';
 import IconProducts from '@martyrs/src/modules/icons/entities/IconProducts.vue';
 import IconLeftovers from '@martyrs/src/modules/icons/entities/IconLeftovers.vue';
+import IconDate from '@martyrs/src/modules/icons/entities/IconDate.vue';
+import IconPrice from '@martyrs/src/modules/icons/entities/IconPrice.vue';
+import IconSettings from '@martyrs/src/modules/icons/entities/IconSettings.vue';
+import IconHome from '@martyrs/src/modules/icons/entities/IconHome.vue';
 
 // Import global mixins for access control
 import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
@@ -18,7 +22,7 @@ export const navigationItems = [
     items: [
       {
         title: 'Profile',
-        iconComponent: IconGroups,
+        iconComponent: IconHome,
         route: (auth, route) => ({
           name: 'Organization',
           params: { _id: route.params._id }
@@ -48,7 +52,7 @@ export const navigationItems = [
       },
       {
         title: 'Settings',
-        iconComponent: IconGroups,
+        iconComponent: IconSettings,
         route: (auth, route) => ({
           name: 'Organization Edit',
           params: { _id: route.params._id }
@@ -83,7 +87,7 @@ export const navigationItems = [
       },
       {
         title: 'Categories',
-        iconComponent: IconProducts,
+        iconComponent: IconPrice,
         route: (auth, route) => ({
           name: 'Categories',
           params: { _id: route.params._id }
@@ -133,7 +137,7 @@ export const navigationItems = [
       },
       {
         title: 'Rents',
-        iconComponent: IconOrders,
+        iconComponent: IconEvents,
         route: (auth, route) => ({
           name: 'Organization_Rents',
           params: { _id: route.params._id }

@@ -27,9 +27,7 @@
 	const props = defineProps({
   fill: {
     type: String,
-    default: {
-      position: 'rgb(var(--black))'
-    }
+    default: 'rgb(var(--black))'
   },
   isLiked: {
     type: Boolean,

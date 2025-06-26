@@ -66,15 +66,17 @@
 				{{product.description.substring(0, 99)}}...
 			</p>
 
+			<slot></slot>
+
 			<div class="flex-v-center flex-nowrap flex">
 				<Price 
 					:product="product" 
 					size="small" 
-					class="bg-white h-100 p-medium flex flex-center pd-r-small pd-l-small radius-small mn-r-auto" 
+					class="bg-white h-100 p-medium flex flex-center pd-thin radius-small mn-r-auto" 
 				/>
 				
 				<button
-					v-if="user"
+					v-if="showAddToCart"
 		      class="
 		        cursor-pointer 
 		        radius-extra pd-thin bg-main
@@ -114,6 +116,10 @@
 		},
 		organization: {
 			type: String
+		},
+		showAddToCart: {
+			type: Boolean,
+			default: true
 		},
 		user: {
 			type: [Object, String] 

@@ -28,9 +28,16 @@ export default db => {
     description: {
       type: String,
     },
+    included: {
+      type: String
+    },
     attributes: [{
       name: { type: String },
       value: { type: String },
+    }],
+    recommended: [{ 
+      type: db.mongoose.Schema.Types.ObjectId, 
+      ref: 'Product' 
     }],
     translations: {
       type: Array,
@@ -45,8 +52,37 @@ export default db => {
   applyCommonSchema(ProductSchema, db);
   applyOwnershipSchema(ProductSchema, db);
 
-  ProductSchema.index({ category: 1 });
+   // Текстовый индекс для поиска
   ProductSchema.index({ name: 'text', description: 'text' });
+
+  // Основные составные индексы (покрывают префиксные запросы)
+  ProductSchema.index({ 'owner.type': 1, 'owner.target': 1, status: 1, category: 1 });
+  ProductSchema.index({ category: 1, status: 1, delivery: 1, price: 1 });
+  ProductSchema.index({ category: 1, status: 1, price: -1 });
+  ProductSchema.index({ category: 1, status: 1, views: -1 });
+  ProductSchema.index({ category: 1, status: 1, createdAt: -1 });
+  ProductSchema.index({ category: 1, status: 1, updatedAt: -1 });
+  ProductSchema.index({ category: 1, delivery: 1, price: 1 });
+  
+  // Индексы для атрибутов
+  ProductSchema.index({ 'attributes.name': 1, 'attributes.value': 1 });
+  
+  // Индексы для сортировки без категории
+  ProductSchema.index({ status: 1, delivery: 1, price: 1 });
+  ProductSchema.index({ status: 1, price: -1 });
+  ProductSchema.index({ status: 1, views: -1 });
+  ProductSchema.index({ status: 1, createdAt: -1 });
+  ProductSchema.index({ status: 1, updatedAt: -1 });
+  ProductSchema.index({ status: 1, name: 1 });
+  ProductSchema.index({ status: 1, 'attributes.name': 1, 'attributes.value': 1 });
+  
+  // Отдельные индексы для полей без префиксов в составных
+  ProductSchema.index({ listing: 1 });
+  ProductSchema.index({ recommended: 1 });
+  ProductSchema.index({ price: 1 });
+  ProductSchema.index({ views: -1 });
+  ProductSchema.index({ createdAt: -1 });
+  ProductSchema.index({ updatedAt: -1 });
 
   const Product = db.mongoose.model('Product', ProductSchema);
 

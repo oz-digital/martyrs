@@ -30,7 +30,7 @@
           :user="auth.state.user._id"
           :type="'blogpostPage'"
           :hideTitle="true"
-          class="mn-b-regular  bg-light radius-medium"
+          class="mn-b-small  bg-light radius-medium mobile:radius-zero"
         >
 
   	      <Viewer
@@ -54,6 +54,7 @@
         :type="'blogpost'" 
         :target="blogpost._id" 
         :owner="auth.state.user._id"
+        class="bg-light radius-medium mobile:radius-zero pd-medium"
       />
       
     </TransitionGroup>  

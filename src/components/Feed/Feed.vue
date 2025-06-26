@@ -112,7 +112,7 @@
       :horizontal="skeleton.horizontal"
       :loading="skeleton.apply_to_slot"
       :key="'skeleton-' + i"
-      class="radius-medium flex-child-default o-hidden d-block"
+      :class="replaceClasses('radius-medium bg-light pd-thin flex-child-default o-hidden d-block', skeleton.class)"
     />
     <Loader v-if="isLoading && skeleton?.hide"/>
   </TransitionGroup>
@@ -128,7 +128,7 @@
       :description="states.empty.description"
       :action="states.empty.action"
       :callback="states.empty.callback"
-      class="pd-medium mn-b-thin bg-light radius-medium"
+      :class="replaceClasses('pd-medium bg-light radius-medium', states.empty.class)"
     />
    </TransitionGroup>
 

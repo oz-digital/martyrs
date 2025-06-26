@@ -43,7 +43,6 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		opacity: 0.9
 	}
 </style>
 

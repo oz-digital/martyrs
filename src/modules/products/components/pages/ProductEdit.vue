@@ -32,6 +32,7 @@
         { label: 'Details', value: 'details' },
         { label: 'Variants', value: 'variants' },
         { label: 'Discounts', value: 'discounts' },
+        { label: 'Recommended', value: 'recommended' },
         { label: 'Localization', value: 'localization' }
       ]"
       class="flex-child-default bg-light radius-medium h-max pd-thin o-x-scroll"
@@ -49,6 +50,74 @@
           :uploadPath="'photos'" 
           @update:images="(imagesNew) => { products.state.current.images = imagesNew }" 
         />
+      </Block>
+
+      <Block title="Categories">
+        <BlockMultiselect
+          v-model="products.state.current.category"
+          placeholder="Search categories..."
+          :multiple="true"
+          :transform="(item) => ({ _id: item._id, name: item.name })"
+          :store="{
+            read: (options) => categories.actions.read(options),
+            state: categories.state
+          }"
+          :options="{
+            rootOnly: false,
+            excludeChildren: false,
+            limit: 50
+          }"
+          :skeleton="{
+            hide: false,
+            horizontal: true,
+            class: 'radius-small',
+            structure: [{ 
+              block: 'text', size: 'large'
+            }]
+          }"
+          :states="{
+            empty: {
+              title: 'No categories found',
+              description: 'Try different search terms or create a new category',
+              class: 'radius-small'
+            }
+          }"
+          key="_id"
+          :label="item => item.name"
+          classSearch="bg-white radius-small"
+          classSelected="bg-white pd-small radius-small"
+          classDropdown="bg-white pd-small radius-medium bs-small"
+          classItem="pd-small radius-small hover-bg-light cursor-pointer"
+          classFeed="h-max-30r gap-thin flex-column flex o-scroll"
+        >
+          <!-- Слот для выбранных категорий -->
+          <template #selected="{ item, clear }">
+            <div class="flex-nowrap flex-v-center flex gap-thin">
+              <span class="t-medium">{{ item?.name || item }}</span>
+              <button 
+                @click.stop="clear"
+                class="i-small pd-micro bg-red radius-extra flex-center flex aspect-1x1 hover-scale-1"
+              >
+                <IconCross class="i-micro fill-white" />
+              </button>
+            </div>
+          </template>
+          
+          <!-- Слот для элементов в списке -->
+          <template #item="{ item }">
+            <div class="flex-nowrap flex-v-center flex">
+              <img 
+                v-if="item.photo" 
+                :src="(FILE_SERVER_URL || '') + item.photo"
+                class="i-medium radius-small object-fit-cover mn-r-thin"
+              />
+              <div class="w-100">
+                <p class="t-medium">{{ item.name }}</p>
+                <p v-if="item.description" class="t-small t-transp">{{ item.description }}</p>
+              </div>
+            </div>
+          </template>
+        </BlockMultiselect>
       </Block>
 
       <!-- Product Profile -->
@@ -87,76 +156,20 @@
         <Field
           v-model:field="products.state.current.description" 
           placeholder="Enter product description" 
+          class="w-100 bg-white radius-small mn-b-thin pd-medium"
+          style="resize: vertical"
+          type="textarea"
+        />
+        <Field
+          v-model:field="products.state.current.included" 
+          placeholder="Enter what's inside" 
           class="w-100 bg-white radius-small pd-medium"
+          style="resize: vertical"
           type="textarea"
         />
       </Block>
       <!-- Categories -->
-       <Block title="Categories">
-        <BlockMultiselect
-          v-model="products.state.current.category"
-          placeholder="Search categories..."
-          :multiple="true"
-           :transform="(item) => ({ _id: item._id, name: item.name })"
-          :store="{
-            read: (options) => categories.actions.read(options),
-            state: categories.state
-          }"
-          :options="{
-            rootOnly: false,
-            excludeChildren: false,
-            limit: 50
-          }"
-          :skeleton="{
-				    hide: false,
-				    horizontal: true,
-				    structure: [
-				      { block: 'text', size: 'large' }
-				    ]
-				  }"
-          :states="{
-            empty: {
-              title: 'No categories found',
-              description: 'Try different search terms or create a new category'
-            }
-          }"
-          key="_id"
-          :label="item => item.name"
-          classSearch="bg-white radius-small"
-          classSelected="bg-white pd-small radius-small mn-b-thin"
-          classDropdown="bg-white pd-small radius-medium bs-light"
-          classItem="pd-small radius-small hover-bg-light cursor-pointer mn-b-thin"
-         	classFeed="h-max-30r o-scroll"
-        >
-          <!-- Слот для выбранных категорий -->
-          <template #selected="{ item, clear }">
-					  <div class="flex-nowrap flex-v-center flex gap-thin">
-					    <span class="t-medium">{{ item?.name || item }}</span>
-					    <button 
-					      @click.stop="clear"
-					      class="i-small pd-micro bg-red radius-extra flex-center flex aspect-1x1 hover-scale-1"
-					    >
-					      <IconCross class="i-micro fill-white" />
-					    </button>
-					  </div>
-					</template>
-          
-          <!-- Слот для элементов в списке -->
-          <template #item="{ item }">
-            <div class="flex-nowrap flex-v-center flex">
-              <img 
-                v-if="item.photo" 
-                :src="(FILE_SERVER_URL || '') + item.photo"
-                class="i-medium radius-small object-fit-cover mn-r-thin"
-              />
-              <div class="w-100">
-                <p class="t-medium">{{ item.name }}</p>
-                <p v-if="item.description" class="t-small t-transp">{{ item.description }}</p>
-              </div>
-            </div>
-          </template>
-        </BlockMultiselect>
-      </Block>
+      
 
 
       <!-- Attributes -->
@@ -175,6 +188,11 @@
     <EditDiscounts
 			v-if="activeTab === 'discounts'"
       v-model:discounts="products.state.current.discounts"
+    />
+    <EditRecommended 
+      v-if="activeTab === 'recommended'" 
+      v-model:recommended="products.state.current.recommended"
+      class="cols-1 gap-thin"
     />
 
     <!-- Localization Tab -->
@@ -261,7 +279,7 @@ import EditVariants from '@martyrs/src/modules/products/components/sections/Edit
 import EditAttributes from '@martyrs/src/modules/products/components/sections/EditAttributes.vue';
 import EditDiscounts from '@martyrs/src/modules/products/components/sections/EditDiscounts.vue';
 import EditCategories from '@martyrs/src/modules/products/components/sections/EditCategories.vue';
-
+import EditRecommended from '@martyrs/src/modules/products/components/sections/EditRecommended.vue';
 
 // Accessing router and store
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
@@ -284,7 +302,7 @@ onMounted(async() => {
   products.mutations.resetProduct();
 
   if (route.params.product) {
-    await products.actions.read({ _id: route.params.product, lookup: ['variants','categories'] });
+    await products.actions.read({ _id: route.params.product, lookup: ['variants','categories','recommended'] });
   } else {
     // Создаем дефолтный вариант для нового товара
     if (!products.state.current.variants || products.state.current.variants.length === 0) {
@@ -306,6 +324,10 @@ onMounted(async() => {
   // Убедимся, что массивы инициализированы
   if (!products.state.current.translations) {
     products.state.current.translations = []
+  }
+   // Убедимся, что массивы инициализированы
+  if (!products.state.current.recommended) {
+    products.state.current.recommended = []
   }
   if (!products.state.current.discounts) {
     products.state.current.discounts = []
@@ -329,12 +351,12 @@ onMounted(async() => {
 
 async function onSubmit() {
   try {
-    // Проверка на наличие хотя бы одного варианта
-    if (!products.state.current.variants || products.state.current.variants.length === 0) {
-      setError({ response: { data: { errorCode: "PRODUCT_MUST_HAVE_VARIANT" }} })
-      return;
-    }
-
+    // // Проверка на наличие хотя бы одного варианта
+    // if (!products.state.current.variants || products.state.current.variants.length === 0) {
+    //   setError({ response: { data: { errorCode: "PRODUCT_MUST_HAVE_VARIANT" }} })
+    //   return;
+    // }
+      console.log('product is',products.state.current)
     if (route.params.product) {
       await products.actions.update(route.params.product, products.state.current)
     } else {
@@ -348,6 +370,7 @@ async function onSubmit() {
         type: 'user',
         hidden: false
       }
+
       await products.actions.create(products.state.current)
     }
     

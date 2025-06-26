@@ -1,8 +1,8 @@
 {
-  "path": "../../src/modules/products/components/sections/PopularProducts.vue",
-  "relativePath": "modules/products/components/sections/PopularProducts.vue",
+  "path": "../../src/modules/products/components/sections/ProductsPopular.vue",
+  "relativePath": "modules/products/components/sections/ProductsPopular.vue",
   "type": "source",
-  "name": "PopularProducts.vue",
+  "name": "ProductsPopular.vue",
   "extension": ".vue",
   "analysis": {
     "Summary": "Компонент отображает слайдер популярных продуктов с автоплеем и загрузчиком.",
@@ -69,7 +69,7 @@
       "@martyrs/src/modules/products/components/blocks/CardProduct.vue",
       "@martyrs/src/modules/products/store/products.js"
     ],
-    "Usage": "Импортируется и встраивается в интерфейс (например в Home или Dashboard) как <PopularProducts/>, автоматически загружает и показывает товары.",
+    "Usage": "Импортируется и встраивается в интерфейс (например в Home или Dashboard) как <ProductsPopular/>, автоматически загружает и показывает товары.",
     "Importance": 3,
     "Notes": [
       "Организация жёстко задана в loadProducts (ID = '657e7134efb8110c51b8b713')",

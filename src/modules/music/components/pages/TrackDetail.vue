@@ -58,7 +58,7 @@ import Media from '@martyrs/src/components/Media/Media.vue';
 import Dropdown from '@martyrs/src/components/Dropdown/Dropdown.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import IconPlay from '@martyrs/src/modules/icons/navigation/IconPlay.vue';
-import IconHeart from '@martyrs/src/modules/icons/navigation/IconHeart.vue';
+import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
 import TrackList from '../lists/TrackList.vue';
 // import PlaylistSelector from '../forms/PlaylistSelector.vue';

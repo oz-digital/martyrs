@@ -40,6 +40,26 @@ body {
 	.hover-appeal-1 {&:hover {transform: translateY(-10px) scale(1.1) rotate(-5deg); } } 
 
 
+	.bs-thin{box-shadow:0 2px 4px rgba(var(--dark),0.05),0 4px 6px rgba(var(--dark),0.08),0 6px 8px rgba(var(--dark),0.10);}
+	.bs-thin-hover:hover{box-shadow:0 4px 8px rgba(var(--dark),0.10),0 8px 12px rgba(var(--dark),0.10),0 12px 16px rgba(var(--dark),0.10);}
+
+	.bs-small{box-shadow:0 5px 10px rgba(var(--dark),0.05),0 10px 15px rgba(var(--dark),0.10),0 15px 25px rgba(var(--dark),0.10),0 0 5px rgba(var(--white),0),0 -10px 20px rgba(var(--white),0.10),0 -20px 30px rgba(var(--white),0.10),0 -30px 50px rgba(var(--white),0.10);}
+	.bs-small-hover:hover{box-shadow:0 20px 40px rgba(var(--dark),0.10),0 40px 60px rgba(var(--dark),0.10),0 60px 80px rgba(var(--dark),0.10);}
+
+	.bs-regular{box-shadow:0 10px 20px rgba(var(--dark),0.10),0 20px 30px rgba(var(--dark),0.10),0 30px 50px rgba(var(--dark),0.10),0 0 5px rgba(var(--white),0),0 -10px 20px rgba(var(--white),0.10),0 -20px 30px rgba(var(--white),0.10),0 -30px 50px rgba(var(--white),0.10);}
+	.bs-regular-hover:hover{box-shadow:0 25px 50px rgba(var(--dark),0.10),0 50px 75px rgba(var(--dark),0.10),0 75px 100px rgba(var(--dark),0.10);}
+
+	.bs-medium{box-shadow:0 0 7px rgba(var(--dark),0.05),0 15px 25px rgba(var(--dark),0.10),0 25px 40px rgba(var(--dark),0.10),0 40px 70px rgba(var(--dark),0.10);}
+	.bs-medium-hover:hover{box-shadow:0 0 15px rgba(var(--dark),0.10),0 30px 60px rgba(var(--dark),0.10),0 60px 90px rgba(var(--dark),0.10),0 90px 120px rgba(var(--dark),0.10);}
+
+	.bs-semi{box-shadow:0 0 10px rgba(var(--dark),0.05),0 20px 35px rgba(var(--dark),0.10),0 35px 55px rgba(var(--dark),0.10),0 55px 95px rgba(var(--dark),0.10);}
+	.bs-semi-hover:hover{box-shadow:0 0 18px rgba(var(--dark),0.10),0 40px 80px rgba(var(--dark),0.10),0 80px 120px rgba(var(--dark),0.10),0 120px 200px rgba(var(--dark),0.10);}
+
+	.bs-big{box-shadow:0 0 15px rgba(var(--dark),0.05),0 30px 50px rgba(var(--dark),0.10),0 50px 80px rgba(var(--dark),0.10),0 80px 130px rgba(var(--dark),0.10);}
+	.bs-big-hover:hover{box-shadow:0 0 25px rgba(var(--dark),0.10),0 60px 100px rgba(var(--dark),0.10),0 100px 150px rgba(var(--dark),0.10),0 150px 250px rgba(var(--dark),0.10);}
+
+
+
 	// Shadows 
 	.bs-red { box-shadow: 0 0 5px red; }
 
@@ -73,57 +93,6 @@ body {
 	/* тень с плавным переходом */
 	.bs-gradient {
 	  box-shadow: 0 0 5px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.4), 0 20px 30px rgba(0,0,0,0.5);
-	}
-
-	/* тень с эффектом расплывания */
-	.bs-blur-light {
-		box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 10px 15px rgba(0,0,0,0.15), 0 15px 25px rgba(0,0,0,0.2),0 0 5px rgba(255,255,255,0.05), 0 -10px 20px rgba(255,255,255,0.2), 0 -20px 30px rgba(255,255,255,0.25), 0 -30px 50px rgba(255,255,255,0.3);
-	}
-
-	.bs-blur-light-hover {
-	  &:hover {
-	    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 40px 60px rgba(0,0,0,0.35), 0 60px 80px rgba(0,0,0,0.4);
-	  }
-	}
-
-	.bs-blur-regular {
-		box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 20px 30px rgba(0,0,0,0.25), 0 30px 50px rgba(0,0,0,0.3),0 0 5px rgba(255,255,255,0.05), 0 -10px 20px rgba(255,255,255,0.2), 0 -20px 30px rgba(255,255,255,0.25), 0 -30px 50px rgba(255,255,255,0.3);
-	}
-
-	.bs-blur-regular-hover {
-	  &:hover {
-	    box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 50px 75px rgba(0,0,0,0.7), 0 75px 100px rgba(0,0,0,0.8);
-	  }
-	}
-
-	.bs-blur-medium {
-		box-shadow: 0 0 7px rgba(0,0,0,0.1), 0 15px 25px rgba(0,0,0,0.4), 0 25px 40px rgba(0,0,0,0.5), 0 40px 70px rgba(0,0,0,0.6);
-	}
-
-	.bs-blur-medium-hover {
-	  &:hover {
-	    box-shadow: 0 0 15px rgba(0,0,0,0.2), 0 30px 60px rgba(0,0,0,0.5), 0 60px 90px rgba(0,0,0,0.7), 0 90px 120px rgba(0,0,0,0.8);
-	  }
-	}
-
-	.bs-blur-semi {
-		box-shadow: 0 0 10px rgba(0,0,0,0.1), 0 20px 35px rgba(0,0,0,0.4), 0 35px 55px rgba(0,0,0,0.5), 0 55px 95px rgba(0,0,0,0.6);
-	}
-
-	.bs-blur-semi-hover {
-	  &:hover {
-			box-shadow: 0 0 18px rgba(0,0,0,0.2), 0 40px 80px rgba(0,0,0,0.5), 0 80px 120px rgba(0,0,0,0.7), 0 120px 200px rgba(0,0,0,0.8);
-		}
-	}
-
-	.bs-blur-heavy {
-		box-shadow: 0 0 15px rgba(0,0,0,0.1), 0 30px 50px rgba(0,0,0,0.4), 0 50px 80px rgba(0,0,0,0.5), 0 80px 130px rgba(0,0,0,0.6);
-	}
-
-	.bs-blur-heavy-hover {
-		&:hover {
-		box-shadow: 0 0 25px rgba(0,0,0,0.2), 0 60px 100px rgba(0,0,0,0.5), 0 100px 150px rgba(0,0,0,0.7), 0 150px 250px rgba(0,0,0,0.8);
-		}
 	}
 
 

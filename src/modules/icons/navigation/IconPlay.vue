@@ -1,17 +1,14 @@
+<script setup>
+  const props = defineProps({
+    fill: {
+      type: String,
+      default: 'rgb(var(--black))'
+    },
+  })
+</script>
+
 <template>
-	<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
-	  <path :fill="fill" d="M25.2765 9.37509L29.0265 5.93759C30.589 4.53134 32.9327 4.68759 34.339 6.25009L63.2453 37.8126C64.339 39.0626 64.339 40.9376 63.2453 42.1876L34.339 73.7501C32.9327 75.3126 30.589 75.4689 29.0265 74.0626L25.2765 70.6251C23.714 69.3751 23.5577 66.8751 24.964 65.4689L48.4015 40.0001L24.964 14.5313C23.5577 13.1251 23.714 10.6251 25.2765 9.37509Z"/>
+	<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path :fill="fill" d="M0.764999 10.9248C0.431975 11.1329 0 10.8935 0 10.5008V0.5008C0 0.108082 0.431975 -0.13134 0.764999 0.0768003L8.765 5.0768C9.07833 5.27263 9.07833 5.72896 8.765 5.9248L0.764999 10.9248ZM7.5566 5.5008L1 1.40292V9.59868L7.5566 5.5008Z"/>
 	</svg>
 </template>
-
-
-<script>
-	export default {
-	  props: {
-	    fill: {
-	      type: String,
-	      default: 'rgb(var(--black)'
-	    }
-	  }
-	}
-</script>

@@ -155,7 +155,7 @@
 
 			</section>
 			
-			
+			<RouterView />
 
 			<Menu v-if="filteredModules.length > 0" class="mn-b-regular bg-light">
 	      <MenuItem 

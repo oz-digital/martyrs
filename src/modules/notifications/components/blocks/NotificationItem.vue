@@ -59,68 +59,23 @@ const handleClick = () => {
 
 <template>
   <div 
-    class="notification-item" 
-    :class="{ unread: isUnread }"
+    class="notification-item gap-thin flex pd-small radius-small bg-light" 
+    :class="{ 'bg-second-small': isUnread }"
     @click="handleClick"
   >
     <div class="notification-icon">
       {{ notificationIcon }}
     </div>
     <div class="notification-content">
-      <h3 class="notification-title">{{ notification.title }}</h3>
-      <p class="notification-body">{{ notification.body }}</p>
-      <span class="notification-time">{{ formattedDate }}</span>
+      <p class="p-medium t-medium mn-b-small">{{ notification.title }}</p>
+      <p class="p-small mn-b-small">{{ notification.body }}</p>
+      <p class="pd-thin w-max radius-thin bg-white">{{ formattedDate }}</p>
     </div>
-    <div v-if="isUnread" class="unread-indicator"></div>
+    <div v-if="isUnread" class="flex-child-default unread-indicator"></div>
   </div>
 </template>
 
 <style scoped>
-.notification-item {
-  display: flex;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.notification-item:hover {
-  background-color: #f9f9f9;
-}
-
-.notification-item.unread {
-  background-color: #f0f7ff;
-}
-
-.notification-icon {
-  flex-shrink: 0;
-  margin-right: 1rem;
-  font-size: 1.5rem;
-}
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-title {
-  margin: 0 0 0.25rem;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.notification-body {
-  margin: 0 0 0.5rem;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.notification-time {
-  font-size: 0.8rem;
-  color: #999;
-}
-
 .unread-indicator {
   width: 10px;
   height: 10px;

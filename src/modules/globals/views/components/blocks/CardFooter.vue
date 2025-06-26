@@ -3,14 +3,14 @@
     👁️ {{ views }}
     <span class="mn-r-small mn-l-small d-block">·</span>
     <div class="cursor-pointer">
-      <div class="cursor-pointer" @click="addReaction('like')" v-if="!isReacted">
+      <div class="cursor-pointer hover-bg-white" @click="addReaction('like')" v-if="!isReacted">
         👍 {{ reactionsCount }}
       </div>
-      <div class="cursor-pointer" @click="deleteReaction('like')" v-if="isReacted">
+      <div class="cursor-pointer hover-bg-white" @click="deleteReaction('like')" v-if="isReacted">
         👍 {{ reactionsCount }}
       </div>
     </div>
-    <span class="mn-r-small mn-l-small d-block">·</span>
+    <span class="mn-r-small hover-bg-white mn-l-small d-block">·</span>
     💬 {{ commentsCount }}
   </footer>
 </template>

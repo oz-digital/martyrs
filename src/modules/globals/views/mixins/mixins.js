@@ -49,26 +49,45 @@ export function useGlobalMixins() {
     return currency;
   };
 
-   const formatPrice = number => {
-  try {
-    if (number == null) {
-      throw new TypeError('formatPrice: ожидается число, но получено null или undefined');
+  const formatPrice = number => {
+    try {
+      if (number == null) {
+        throw new TypeError('formatPrice: ожидается число, но получено null или undefined');
+      }
+
+      const currency = returnCurrency();
+      const absNumber = Math.abs(number)
+        .toFixed(2)
+        .replace('.', ',')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+      const sign = number < 0 ? '-' : '';
+      return `${sign} ${currency}${absNumber}`;
+    } catch (err) {
+      console.error(err);
+      return 'null';
+    }
+  };
+  
+  const replaceClasses = (original = '', map = null) => {
+    if (map == null && typeof original !== 'string') return '';
+    if (typeof map === 'string') {
+      const orig = typeof original === 'string' ? original.trim().split(/\s+/) : [];
+      const next = map.trim().split(/\s+/);
+      const replaceSet = new Set(next);
+      const replaced = orig.map(cls => (replaceSet.has(cls) ? next.find(c => c !== cls) || cls : cls));
+      const extra = next.filter(c => !orig.includes(c));
+      return [...new Set([...replaced, ...extra])].join(' ');
     }
 
-    const currency = returnCurrency();
-    const absNumber = Math.abs(number)
-      .toFixed(2)
-      .replace('.', ',')
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    if (typeof map === 'object' && map !== null) {
+      const orig = typeof original === 'string' ? original.trim().split(/\s+/) : [];
+      return orig.map(cls => map[cls] ?? cls).join(' ');
+    }
 
-    const sign = number < 0 ? '-' : '';
-    return `${sign} ${currency}${absNumber}`;
-  } catch (err) {
-    console.error(err);
-    return 'null';
-  }
-};
-
+    return typeof original === 'string' ? original.trim() : '';
+  };
+    
 
   const formatDate = (d, options = {}) => {
     var fixedDate = new Date(d);
@@ -274,6 +293,7 @@ export function useGlobalMixins() {
     formatPrice,
     formatDate,
     formateText,
+    replaceClasses,
     normalizeUrlParam,
     joinArrayToUrl,
     getMarketplaceLink,

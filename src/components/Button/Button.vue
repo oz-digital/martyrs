@@ -143,8 +143,8 @@
 		opacity: 0.75  !important;
 	 	pointer-events: none  !important;
 	 	cursor: default  !important;
-	 	color: rgba(var(--black), 0.5)  !important;
-		background: rgba(var(--grey), 1) !important; 
+	 	color: rgba(var(--dark), 0.33)  !important;
+		background: rgba(var(--light), 1) !important; 
 	}
 
 	a.button {

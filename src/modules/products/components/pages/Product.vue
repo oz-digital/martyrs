@@ -1,6 +1,6 @@
 <template>
-  <div v-if="products.state.current" class="h-100 w-100 mobile:pd-thin pd-big bg-white">
-    <div class="cols-2-1_2 w-100 gap-medium">
+  <div v-if="products.state.current" class="h-100 w-100 mobile:pd-thin pd-small bg-white">
+    <div class="cols-2 mobile:cols-1 w-100 gap-medium">
 
       <ProductImages
         :images="currentImages"
@@ -29,31 +29,15 @@
           />
         </router-link>
 
-        <h2 class="w-100 h1-product mn-b-small">{{ product.name }}</h2>
-        
-        <!-- Показываем цену, если нет вариантов или не выбран ни один вариант -->
-        <Price 
-          v-if="!selectedVariant"
-          :product="product" 
-          size="big" 
-          class="flex gap-micro flex-center pd-small br-solid br-1px br-black-transp-10 w-max mn-b-medium" 
-        />
-        
-        <!-- Показываем цену выбранного варианта -->
-        <div 
-          v-else 
-          class="flex gap-micro flex-center pd-small br-solid br-1px br-black-transp-10 w-max mn-b-medium"
-        >
-          <span class="h2 t-bold">{{ returnCurrency() }}{{ selectedVariant.price.toFixed(2) }}</span>
-        </div>
+        <h2 class="w-100 h1-product mn-b-medium">{{ product.name }}</h2>
 
-        <p v-if="product.description" class="w-100 mn-b-medium">
+        <p v-if="product.description" class="w-100 mn-b-medium" style="white-space: pre-line;">
           {{ product.translations?.length > 1 ? t('description') : product.description }}
         </p>
        
         <!-- Компонент выбора вариантов товара -->
         <ProductConfigurator
-          v-if="product.variants.length > 0"
+          v-if="product.variants?.length > 0"
           :product-variants="product.variants"
           :product-id="product._id"
           :product-name="product.name"
@@ -63,6 +47,20 @@
           @add-to-cart="handleAddVariantToCart"
           @update-images="handleUpdateImages"
         />
+
+        <div  v-if="product.included" class="mn-b-small flex-nowrap flex flex-v-center">
+          <IconList class="mn-r-micro i-medium"/>
+          <p class="t-medium ">Included</p>
+        </div>
+
+        <div   v-if="product.included" class="cols-1 mn-b-medium w-100 ">
+          <div
+            class="w-100 pd-small radius-small flex flex-column gap-small bg-light"
+          >
+            <p class="t-medium" style="white-space: pre-line;" v-html="product.included"></p>
+          </div>
+        </div>
+
 
         <div class="mn-b-small flex-nowrap flex flex-v-center">
           <IconInfo class="mn-r-micro i-medium"/>
@@ -95,10 +93,16 @@
         />
       </div>
     </div>
+    
+    <ProductsRecommended 
+      v-if="product.recommended.length > 0"
+      :products="product.recommended"
+      class=" mn-t-big h-max pos-relative"
+    />
 
     <div class="h-max mn-t-big pos-relative">
       <h3 class="pd-b-small">Most Popular</h3>
-      <PopularProducts class="mn-r-big-negative mn-l-big-negative"/>
+      <ProductsPopular class="mn-r-big-negative mn-l-big-negative"/>
     </div>
   </div>
 </template>
@@ -121,15 +125,17 @@ import Tab from '@martyrs/src/components/Tab/Tab.vue'
 import Calendar from '@martyrs/src/components/DatePicker/Calendar.vue'
 
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
+import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+
 import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.vue'
 
-import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+import IconList from '@martyrs/src/modules/icons/entities/IconList.vue';
 import IconGroups from '@martyrs/src/modules/icons/entities/IconGroups.vue'
 
 import ProductImages from '@martyrs/src/modules/products/components/blocks/ProductImages.vue'
-import Price from '@martyrs/src/modules/products/components/elements/Price.vue'
-import PopularProducts from '@martyrs/src/modules/products/components/sections/PopularProducts.vue'
 import ProductConfigurator from '@martyrs/src/modules/products/components/sections/ProductConfigurator.vue'
+import ProductsRecommended from '@martyrs/src/modules/products/components/sections/ProductsRecommended.vue';
+import ProductsPopular from '@martyrs/src/modules/products/components/sections/ProductsPopular.vue'
 
 import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
 
@@ -167,7 +173,7 @@ products.state.current = null
 onMounted(async () => {
   emits('page-loading');
   
-  await products.actions.read({ _id: route.params.product })
+  await products.actions.read({ _id: route.params.product, lookup: ['recommended'] })
   
   // Инициализируем текущие изображения изображениями товара
   currentImages.value = [...productImages.value]

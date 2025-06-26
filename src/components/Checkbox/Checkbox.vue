@@ -1,6 +1,8 @@
 <script setup>
   import { ref, watch, computed } from 'vue'
 
+  import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue';
+
   const props = defineProps({
     label: String,
     name: String,
@@ -12,11 +14,14 @@
     theme: {
       type: String,
       default: "light"
+    },
+    mode: {
+      type: String,
+      default: "switch",
+      validator: (v) => ["switch", "checkbox"].includes(v)
     }
   })
-
   const emit = defineEmits(['update:radio'])
-
   const updateInputText = (event) => {
     if (Array.isArray(props.radio)) {
       let newRadio = [...props.radio];  // создаем копию массива для иммутабельности
@@ -34,14 +39,11 @@
     }
   }
 </script>
-
 <template>
-
   <label class="flex-v-center flex-nowrap flex">
     <div v-if="label" class="mn-r-auto t-transp mn-r-small">
       <span>{{label}}</span>
     </div>
-
     <input 
       @change="updateInputText"
       class="round radiobutton" 
@@ -50,25 +52,35 @@
       :value="value"
       :checked="Array.isArray(radio) ? radio.includes(value) : radio"
     > 
-
     <div 
-      class="transition-elastic cursor-pointer mn-l-thin pd-thin h-2r w-4r radius-extra"
+      class="cursor-pointer mn-l-thin flex-center"
       :class="{
-        'bg-dark':!(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'dark',
-        'bg-light':!(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'light',
-        'bg-main':Array.isArray(radio) ? radio.includes(value) : radio,
+        'transition-elastic pd-thin h-2r w-4r radius-extra': mode === 'switch',
+        'w-2r h-2r radius-small br-solid br-1px': mode === 'checkbox',
+        'bg-dark': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'dark' && mode === 'switch',
+        'bg-light': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'light' && mode === 'switch',
+        'br-dark': theme === 'dark' && mode === 'checkbox',
+        'br-light': theme === 'light' && mode === 'checkbox',
+        'bg-main': (Array.isArray(radio) ? radio.includes(value) : radio) && mode === 'switch',
+        'bg-main br-main': (Array.isArray(radio) ? radio.includes(value) : radio) && mode === 'checkbox',
       }"
-
     >
+      <!-- Switch toggle circle -->
       <div 
-        class="transition-linear w-1r h-1r radius-extra h-100 bg-white"
+        v-if="mode === 'switch'"
+        class="transition-linear w-1r h-1r radius-extra bg-white"
         :class="{
-          'mn-r-auto':!(Array.isArray(radio) ? radio.includes(value) : radio),
-          'mn-l-auto':Array.isArray(radio) ? radio.includes(value) : radio,
+          'mn-r-auto': !(Array.isArray(radio) ? radio.includes(value) : radio),
+          'mn-l-auto': Array.isArray(radio) ? radio.includes(value) : radio,
         }"
+      />
+      <!-- Checkbox checkmark -->
+      <span 
+        v-else-if="mode === 'checkbox' && (Array.isArray(radio) ? radio.includes(value) : radio)"
+        class="t-white w-100 h-100 flex flex-center"
       >
-      </div>
+        <IconCheckmark class="i-medium" fill="rgb(var(--white))" />
+      </span>
     </div>
   </label>
-
 </template>

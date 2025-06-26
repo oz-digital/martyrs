@@ -37,7 +37,7 @@
 
 				<div 
 					v-if="type !== 'short'"
-					class="flex flex-nowrap t-medium w-100 o-hidden pos-relative"
+					class="flex flex-nowrap t-medium w-100 pos-relative"
 				>
 					<span 
 						@click.stop="$router.push({

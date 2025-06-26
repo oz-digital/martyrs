@@ -38,7 +38,6 @@ import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue';
 import IconMinus from '@martyrs/src/modules/icons/navigation/IconMinus.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
 import IconPlus from '@martyrs/src/modules/icons/navigation/IconPlus.vue';
-import IconHeart from '@martyrs/src/modules/icons/navigation/IconHeart.vue';
 import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue';
 import IconPause from '@martyrs/src/modules/icons/navigation/IconPause.vue';
 import IconAdd from '@martyrs/src/modules/icons/navigation/IconAdd.vue';
@@ -145,7 +144,6 @@ function loadIcons() {
         { name: 'IconMinus', component: IconMinus },
         { name: 'IconEllipsis', component: IconEllipsis },
         { name: 'IconPlus', component: IconPlus },
-        { name: 'IconHeart', component: IconHeart },
         { name: 'IconCheckmark', component: IconCheckmark },
         { name: 'IconPause', component: IconPause },
         { name: 'IconAdd', component: IconAdd },

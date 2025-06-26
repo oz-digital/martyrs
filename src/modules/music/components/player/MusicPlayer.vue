@@ -26,7 +26,7 @@
           :showLoader="false" 
           :showSucces="false"
         >
-          <IconHeart class="i-small" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--grey))'"/>
+          <IconLike class="i-small" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--grey))'"/>
         </Button>
       </div>
     </div>
@@ -116,7 +116,7 @@ import IconNext from '@martyrs/src/modules/icons/navigation/IconChevronRight.vue
 import IconPrevious from '@martyrs/src/modules/icons/navigation/IconChevronLeft.vue';
 import IconShuffle from '@martyrs/src/modules/icons/navigation/IconShuffle.vue';
 import IconRepeat from '@martyrs/src/modules/icons/navigation/IconRefresh.vue';
-import IconHeart from '@martyrs/src/modules/icons/navigation/IconHeart.vue';
+import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconVolume from '@martyrs/src/modules/icons/navigation/IconVolume.vue';
 // import IconVolumeHalf from '@martyrs/src/modules/icons/navigation/IconVolume.vue'; // Using same icon but we'd style it differently
 import IconVolumeMute from '@martyrs/src/modules/icons/navigation/IconMute.vue';

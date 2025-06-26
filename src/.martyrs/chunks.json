@@ -1,0 +1,325 @@
+[
+  {
+    "id": "chunk_main_js",
+    "centerFile": "main.js",
+    "files": [
+      {
+        "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/main.js",
+        "relativePath": "main.js",
+        "type": "VueComponent",
+        "tokens": 1083,
+        "analysis": {
+          "file": "main.js",
+          "type": "VueComponent",
+          "exports": [
+            "Address",
+            "Breadcrumbs",
+            "Button",
+            "Checkbox",
+            "Chips",
+            "Countdown",
+            "DatePicker",
+            "Dropdown",
+            "EmptyState",
+            "Error",
+            "Feed",
+            "Field",
+            "FieldBig",
+            "FieldPhone",
+            "FieldTags",
+            "Loader",
+            "LocationMarker",
+            "Map",
+            "Marquee",
+            "Menu",
+            "MenuItem",
+            "Popup",
+            "Radio",
+            "Select",
+            "SelectMulti",
+            "Shader",
+            "Slider",
+            "Spoiler",
+            "Status",
+            "Tab",
+            "Text",
+            "Tooltip",
+            "Upload",
+            "UploadImage",
+            "UploadImageMultiple"
+          ],
+          "imports": [
+            {
+              "name": "Address",
+              "source": "./components/Address/Address.vue"
+            },
+            {
+              "name": "Button",
+              "source": "./components/Button/Button.vue"
+            },
+            {
+              "name": "Checkbox",
+              "source": "./components/Checkbox/Checkbox.vue"
+            },
+            {
+              "name": "Dropdown",
+              "source": "./components/Dropdown/Dropdown.vue"
+            },
+            {
+              "name": "Error",
+              "source": "./components/Error/Error.vue"
+            },
+            {
+              "name": "Field",
+              "source": "./components/Field/Field.vue"
+            },
+            {
+              "name": "FieldPhone",
+              "source": "./components/FieldPhone/FieldPhone.vue"
+            },
+            {
+              "name": "LocationMarker",
+              "source": "./components/LocationMarker/LocationMarker.vue"
+            },
+            {
+              "name": "Map",
+              "source": "./components/Map/Map.vue"
+            },
+            {
+              "name": "Popup",
+              "source": "./components/Popup/Popup.vue"
+            },
+            {
+              "name": "Radio",
+              "source": "./components/Radio/Radio.vue"
+            },
+            {
+              "name": "Select",
+              "source": "./components/Select/Select.vue"
+            },
+            {
+              "name": "SelectMulti",
+              "source": "./components/SelectMulti/SelectMulti.vue"
+            },
+            {
+              "name": "Spoiler",
+              "source": "./components/Spoiler/Spoiler.vue"
+            },
+            {
+              "name": "Tab",
+              "source": "./components/Tab/Tab.vue"
+            },
+            {
+              "name": "Tooltip",
+              "source": "./components/Tooltip/Tooltip.vue"
+            },
+            {
+              "name": "Text",
+              "source": "./components/Text/Text.vue"
+            },
+            {
+              "name": "Menu",
+              "source": "./components/Menu/Menu.vue"
+            },
+            {
+              "name": "MenuItem",
+              "source": "./components/Menu/MenuItem.vue"
+            },
+            {
+              "name": "Upload",
+              "source": "./components/Upload/Upload.vue"
+            },
+            {
+              "name": "UploadImage",
+              "source": "./components/UploadImage/UploadImage.vue"
+            },
+            {
+              "name": "UploadImageMultiple",
+              "source": "./components/UploadImageMultiple/UploadImageMultiple.vue"
+            },
+            {
+              "name": "Breadcrumbs",
+              "source": "./components/Breadcrumbs/Breadcrumbs.vue"
+            },
+            {
+              "name": "Chips",
+              "source": "./components/Chips/Chips.vue"
+            },
+            {
+              "name": "Countdown",
+              "source": "./components/Countdown/Countdown.vue"
+            },
+            {
+              "name": "DatePicker",
+              "source": "./components/DatePicker/DatePicker.vue"
+            },
+            {
+              "name": "EmptyState",
+              "source": "./components/EmptyState/EmptyState.vue"
+            },
+            {
+              "name": "Feed",
+              "source": "./components/Feed/Feed.vue"
+            },
+            {
+              "name": "FieldBig",
+              "source": "./components/FieldBig/FieldBig.vue"
+            },
+            {
+              "name": "FieldTags",
+              "source": "./components/FieldTags/FieldTags.vue"
+            },
+            {
+              "name": "Loader",
+              "source": "./components/Loader/Loader.vue"
+            },
+            {
+              "name": "Shader",
+              "source": "./components/Shader/Shader.vue"
+            },
+            {
+              "name": "Slider",
+              "source": "./components/Slider/Slider.vue"
+            },
+            {
+              "name": "Status",
+              "source": "./components/Status/Status.vue"
+            },
+            {
+              "name": "Marquee",
+              "source": "./components/Marquee/Marquee.vue"
+            }
+          ],
+          "description": "This file serves as the main entry point for a Vue.js application, registering various UI components for use throughout the app.",
+          "keyFeatures": [
+            "Dynamic component registration with lazy loading",
+            "Centralized export of multiple UI components",
+            "Integration of various reusable components for UI consistency"
+          ],
+          "dependencies": [
+            "Vue"
+          ]
+        }
+      }
+    ],
+    "tokens": 1083,
+    "purpose": "Documentation for main Vue component and related files",
+    "priority": 39
+  },
+  {
+    "id": "chunk_styles_typography_scss",
+    "centerFile": "styles/typography.scss",
+    "files": [
+      {
+        "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/styles/typography.scss",
+        "relativePath": "styles/typography.scss",
+        "type": "Style",
+        "tokens": 983,
+        "analysis": {
+          "file": "styles/typography.scss",
+          "type": "Style",
+          "exports": [],
+          "imports": [],
+          "description": "This file contains global typography styles, including font families, sizes, weights, and text alignment for various HTML elements.",
+          "keyFeatures": [
+            "Defines global font families for body and headings",
+            "Specifies font sizes and weights for different text elements",
+            "Includes utility classes for text alignment and trimming",
+            "Provides responsive typography adjustments"
+          ],
+          "dependencies": []
+        }
+      },
+      {
+        "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/styles/theme.scss",
+        "relativePath": "styles/theme.scss",
+        "type": "Style",
+        "tokens": 26,
+        "analysis": {
+          "file": "styles/theme.scss",
+          "type": "Style",
+          "exports": [],
+          "imports": [
+            {
+              "name": "reset",
+              "source": "reset"
+            },
+            {
+              "name": "base/all",
+              "source": "base/all"
+            },
+            {
+              "name": "typography",
+              "source": "typography"
+            },
+            {
+              "name": "layout",
+              "source": "layout"
+            },
+            {
+              "name": "responsive",
+              "source": "responsive"
+            },
+            {
+              "name": "config",
+              "source": "config"
+            }
+          ],
+          "description": "This file serves as a central theme stylesheet that imports various style modules for consistent styling across the application.",
+          "keyFeatures": [
+            "Resets default browser styles",
+            "Provides base styles and typography settings",
+            "Defines layout styles",
+            "Includes responsive design utilities",
+            "Centralizes configuration for styling"
+          ],
+          "dependencies": []
+        }
+      },
+      {
+        "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/styles/responsive.scss",
+        "relativePath": "styles/responsive.scss",
+        "type": "Style",
+        "tokens": 882,
+        "analysis": {
+          "file": "styles/responsive.scss",
+          "type": "Style",
+          "exports": [],
+          "imports": [],
+          "description": "This SCSS file defines responsive design breakpoints and media queries for adjusting styles based on different screen sizes.",
+          "keyFeatures": [
+            "Defines breakpoints for various device sizes (mobile, tablet, desktop)",
+            "Adjusts font sizes based on screen width",
+            "Controls visibility of elements based on device type (mobile-only, desktop-only)",
+            "Utilizes CSS Grid for layout management"
+          ],
+          "dependencies": []
+        }
+      },
+      {
+        "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/styles/reset.scss",
+        "relativePath": "styles/reset.scss",
+        "type": "Style",
+        "tokens": 431,
+        "analysis": {
+          "file": "styles/reset.scss",
+          "type": "Style",
+          "exports": [],
+          "imports": [],
+          "description": "This file provides a CSS reset to standardize the styling of HTML elements across different browsers.",
+          "keyFeatures": [
+            "Resets default margin and padding for all HTML elements",
+            "Standardizes font size and family",
+            "Removes default list styles for ordered and unordered lists",
+            "Ensures consistent box-sizing across elements",
+            "Normalizes table styling"
+          ],
+          "dependencies": []
+        }
+      }
+    ],
+    "tokens": 2322,
+    "purpose": "Documentation for typography styles and related components",
+    "priority": 1
+  }
+]

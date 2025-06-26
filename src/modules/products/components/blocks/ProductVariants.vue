@@ -10,13 +10,14 @@
       class="w-100 mn-b-medium"
     >
       <p class="capitalize mn-b-thin t-medium">{{ group.label }}</p>
-      <div class="flex flex-wrap gap-small mn-b-medium">
+
+      <div class="flex flex-wrap gap-thin mn-b-medium">
         <button
           v-for="item in group.items"
           :key="item.key"
           @click="group.label === 'Options' ? pick(item.variant) : pickAttr(group.label, item.value)"
           :disabled="item.off"
-          class="h-3r w-min-3r flex-nowrap gap-thin radius-small flex flex-center pos-relative br-1px pd-micro"
+          class="pd-small radius-small"
           :class="[
             isSelected(group, item) ? 'br-main' : 'br-black-transp-10',
             item.off ? 'o-50 cursor-not-allowed' : 'cursor-pointer hover-scale-1',
@@ -27,9 +28,10 @@
             :src="`${FILE_SERVER_URL}${item.img}`"
             class="h-100 radius-thin aspect-1x1 object-fit-contain"
           />
-          <span class="flex-center capitalize flex h-100 w-100 t-small t-center">
+          <p class="">
             {{ item.text }}
-          </span>
+          </p>
+
           <div
             v-if="isSelected(group, item)"
             class="pos-absolute pos-b-0 pos-r-0 pos-l-0 flex flex-center h-1r bg-main t-white t-small"

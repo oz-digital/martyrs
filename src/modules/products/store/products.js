@@ -25,8 +25,10 @@ const state = reactive({
     price: 0,
     price_cost: 0,
     localization: [],
+    recommended: [],
     variants: [],
     discounts: [],
+    included: [],
     ingredients: [],
     description: '',
   },
@@ -206,6 +208,7 @@ const actions = {
 const mutations = {
   resetProduct(product) {
     state.current = {
+      included: [],
       recommendation: false,
       category: [],
       status: 'unpublished',
@@ -220,6 +223,7 @@ const mutations = {
       price_currency: '$',
       localization: [],
       variants: [],
+      recommended: [],
       discounts: [],
       ingredients: [],
       description: '',

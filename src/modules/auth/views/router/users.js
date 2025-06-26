@@ -35,18 +35,29 @@ const users = {
             hideNavigationBar: route => route.params._id === auth.state.user._id,
           },
           component: () => import(/* webpackChunkName: "profile" */ '../components/pages/Profile.vue'),
-        },
-        {
-          path: 'edit',
-          name: 'User Edit Profile',
-          beforeEnter: [validationAuth.requiresAuth],
-          meta: {
-            title: {
-              en: 'Edit Profile',
-              ru: 'Редактировать Профиль',
-            },
-          },
-          component: () => import(/* webpackChunkName: "profile" */ '../components/pages/ProfileEdit.vue'),
+          children: [
+            {
+              path: 'edit',
+              name: 'User Edit Profile',
+              component: () => import('../components/pages/ProfileEdit.vue'),
+              children: [
+                {
+                  path: '',
+                  redirect: { name: 'Profile Edit Profile' }
+                },
+                {
+                  path: 'profile',
+                  name: 'Profile Edit Profile',
+                  component: () => import('../components/pages/ProfileEditProfile.vue')
+                },
+                {
+                  path: 'account', 
+                  name: 'Profile Edit Account',
+                  component: () => import('../components/pages/ProfileEditAccount.vue')
+                }
+              ]
+            }
+          ]
         },
         {
           path: 'blogposts',

@@ -1,0 +1,14 @@
+{
+  "title": "Project Documentation",
+  "sections": [
+    {
+      "title": "Components",
+      "slug": "components",
+      "description": "UI Components and Views",
+      "files": [
+        "main.js"
+      ],
+      "subsections": []
+    }
+  ]
+}

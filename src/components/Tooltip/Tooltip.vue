@@ -2,7 +2,7 @@
   <div class="cursor-pointer tooltip-container" @mouseover="showTooltip" @mouseleave="hideTooltip">
     <slot></slot>
     <div  class="tooltip-content" :style="tooltipStyle">
-      {{ text }}
+      <span>{{ text }}</span>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ const tooltipStyle = reactive({
   zIndex: 1000,
   background: '#333',
   color: '#fff',
-  padding: '5px 10px',
+  padding: '5px',
   borderRadius: '3px',
   fontSize: '14px',
   display: 'none',

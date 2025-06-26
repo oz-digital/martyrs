@@ -72,7 +72,7 @@ const controllerFactory = db => {
   const Update = async (req, res) => {
     try {
       const { _id } = req.params;
-      
+
       const updateData = {
         name: req.body.name,
         status: req.body.status,
@@ -81,8 +81,10 @@ const controllerFactory = db => {
         category: req.body.category?.map(cat => cat._id) || [],
         images: req.body.images,
         attributes: req.body.attributes,
+        recommended: req.body.recommended,
         localization: req.body.translations,
         discounts: req.body.discounts,
+        included: req.body.included
       };
       
       const updatedProduct = await Product.findOneAndUpdate({ _id }, updateData, { new: true });
@@ -90,7 +92,9 @@ const controllerFactory = db => {
       if (!updatedProduct) {
         return res.status(404).send({ message: 'Something wrong when updating product.' });
       }
+
       res.status(200).send(updatedProduct);
+
     } catch (err) {
       res.status(500).send({ message: err.message });
     }
@@ -108,6 +112,7 @@ const controllerFactory = db => {
       res.status(500).send({ message: err.message });
     }
   };
+  
   const getProductRecommendation = async (req, res) => {
     const { mood } = req.body;
     try {
@@ -155,32 +160,12 @@ const controllerFactory = db => {
       res.status(500).send({ message: err });
     }
   };
-  const getProductsPopular = (req, res) => {
-    Product.find({
-      status: 'published',
-      views: { $gt: 10 },
-    })
-      // .populate('variants')
-      .limit(10)
-      .exec((err, products) => {
-        // If error
-        if (err) {
-          return res.status(500).send({ message: err });
-        }
-        // If not found
-        if (!products) {
-          return res.status(404).send({ message: 'Products not found.' });
-        }
-        // If succes
-        res.status(200).send(products);
-      });
-  };
+
   return {
     Create,
     Read,
     Update,
     Delete,
-    getProductsPopular,
     getProductRecommendation,
   };
 };

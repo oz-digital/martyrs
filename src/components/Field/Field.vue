@@ -67,6 +67,7 @@ watch(() => props.autofocus, (newVal) => {
 
 onMounted(() => {
   nextTick(focus);
+  nextTick(resize);
 });
 
 const text = ref(props.field);

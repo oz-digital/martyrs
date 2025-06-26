@@ -1,15 +1,5 @@
 // @martyrs/src/modules/globals/controllers/classes/abac/abac.fields.js
 
-/**
- * @typedef {Object} FieldConfig
- * @property {string[]|'*'} [actions=['*']] - Действия
- * @property {'allow'|'deny'|'optional'|Function} [access='allow'] - Правило доступа
- * @property {import('../globals.validator.js').default|Function} [validator] - Валидатор
- * @property {Function} [transform] - Трансформация (value, ctx) => any
- * @property {'remove'|'error'} [rule='remove'] - Действие при отказе в доступе
- * @property {boolean} [force=false] - Принудительное применение (высший приоритет)
- */
-
 export default class ABACFields {
   constructor(abac) {
     this.abac = abac;
@@ -23,15 +13,32 @@ export default class ABACFields {
     const normalized = {};
     
     for (const [pattern, conf] of Object.entries(config)) {
-      normalized[pattern] = {
-        actions: conf.actions || '*',
-        access: conf.access || 'allow',
-        validator: conf.validator || null,
-        transform: conf.transform || null,
-        rule: conf.rule || 'remove',
-        force: conf.force || false,
+      // Извлекаем базовые настройки (все кроме actions)
+      const { actions, ...baseSettings } = conf;
+      
+      // Нормализуем базовые настройки
+      const base = {
+        actions: baseSettings.actions || '*',
+        access: baseSettings.access || 'allow',
+        validator: baseSettings.validator || null,
+        transform: baseSettings.transform || null,
+        rule: baseSettings.rule || 'remove',
+        force: baseSettings.force || false,
         pattern
       };
+      
+      // Если есть переопределения для действий
+      if (actions && typeof actions === 'object') {
+        normalized[pattern] = {
+          base,
+          actions: Object.entries(actions).reduce((acc, [action, override]) => {
+            acc[action] = { ...base, ...override };
+            return acc;
+          }, {})
+        };
+      } else {
+        normalized[pattern] = { base };
+      }
     }
     
     this.configs.set(resourceName, normalized);
@@ -42,8 +49,10 @@ export default class ABACFields {
    * Проверка доступа к полям
    */
   async checkFields(context, data, action = null) {
-    if (context.skipFieldPolicies) {
-      console.log('Field policies skipped for admin/moderator');
+    // Используем нормализованный контекст из core
+    const normalizedContext = this.abac.core.normalizeContext(context);
+    
+    if (normalizedContext.skipFieldPolicies) {
       return { 
         allowed: data, 
         denied: [], 
@@ -52,23 +61,19 @@ export default class ABACFields {
       };
     }
 
-    const { resource } = context;
-    const fieldAction = action || context.action;
-    const config = context.options?.fieldsConfig || this.configs.get(resource);
+    const { resource } = normalizedContext;
+    const fieldAction = action || normalizedContext.action;
+    const config = normalizedContext.options?.fieldsConfig || this.configs.get(resource);
     
     if (!config) {
       return { allowed: data, denied: [], errors: [], transformed: data };
     }
 
-    // ВАЖНО: Применяем расширения к контексту перед проверкой полей
-    const enrichedContext = { ...context };
-    
-    // Проверяем, есть ли расширения в ABAC
+    // Применяем расширения к контексту (если есть)
     if (this.abac.policies && this.abac.policies.priorities.extensions.length > 0) {
-      // Применяем расширения к контексту
       for (const [name, extensionFn] of this.abac.policies.priorities.extensions) {
         try {
-          await extensionFn(enrichedContext);
+          await extensionFn(normalizedContext);
         } catch (error) {
           console.error(`Extension ${name} error:`, error);
         }
@@ -82,10 +87,6 @@ export default class ABACFields {
       transformed: null
     };
 
-    // Используем обогащенный контекст
-    const ctx = { ...enrichedContext, fieldAction, cache: new Map(), originalData: data };
-
-
     // Собираем правила с учетом force
     const rules = this._collectRules(data, config, fieldAction);
     const forced = rules.filter(r => r.rule.force);
@@ -93,24 +94,33 @@ export default class ABACFields {
 
     // Применяем правила (сначала forced, потом обычные)
     for (const { path, value, rule } of [...forced, ...regular]) {
-      const fieldCtx = { ...ctx, field: path, value };
       const processed = new Set();
       
       // Пропускаем уже обработанные пути (для force)
       if (processed.has(path)) continue;
       processed.add(path);
 
-      // Проверка доступа
-      const hasAccess = await this._checkAccess(rule.access, fieldCtx);
+      // Проверка доступа - передаем поле и значение как параметры
+      const hasAccess = await this._checkFieldAccess(
+        rule.access, 
+        normalizedContext, 
+        path, 
+        value
+      );
       
       if (!hasAccess) {
-        await this._handleDenied(result, path, rule.rule, fieldCtx);
+        await this._handleDenied(result, path, rule.rule);
         continue;
       }
 
       // Валидация
       if (rule.validator && rule.access !== 'optional') {
-        const validation = await this._validate(rule.validator, value, fieldCtx);
+        const validation = await this._validateField(
+          rule.validator, 
+          value, 
+          normalizedContext,
+          path
+        );
         
         if (!validation.isValid) {
           result.errors.push({ path, errors: validation.errors });
@@ -118,7 +128,7 @@ export default class ABACFields {
           if (rule.rule === 'error') {
             throw new Error(`Validation failed: ${path}`);
           }
-          await this._handleDenied(result, path, rule.rule, fieldCtx);
+          await this._handleDenied(result, path, rule.rule);
         }
       }
     }
@@ -132,12 +142,78 @@ export default class ABACFields {
       const isDenied = result.denied.some(d => d.path === path);
       if (isDenied) continue;
 
-      const fieldCtx = { ...ctx, field: path, value, currentData: result.transformed };
-      const transformed = await rule.transform(value, fieldCtx);
+      const transformed = await this._transformField(
+        rule.transform,
+        value,
+        normalizedContext,
+        path,
+        result.transformed
+      );
       this._setValue(result.transformed, path, transformed);
     }
 
     return result;
+  }
+
+  /**
+   * Проверка доступа к полю
+   * @private
+   */
+  async _checkFieldAccess(access, context, fieldPath, fieldValue) {
+    if (access === 'allow') return true;
+    if (access === 'deny') return false;
+    if (access === 'optional') return true;
+    
+    if (typeof access === 'function') {
+      try {
+        // Передаем поле и значение как параметры функции
+        return !!(await access(context, fieldPath, fieldValue));
+      } catch (e) {
+        console.error('Field access check error:', e);
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Валидация поля
+   * @private
+   */
+  async _validateField(validator, value, context, fieldPath) {
+    if (typeof validator === 'function') {
+      try {
+        // Передаем контекст и путь как параметры
+        const result = await validator(value, context, fieldPath);
+        if (typeof result === 'boolean') {
+          return { isValid: result, errors: result ? [] : ['Validation failed'] };
+        }
+        return result;
+      } catch (e) {
+        return { isValid: false, errors: [e.message] };
+      }
+    }
+    
+    if (validator && validator.validate) {
+      return validator.validate(value);
+    }
+    
+    return { isValid: true, errors: [] };
+  }
+
+  /**
+   * Трансформация поля
+   * @private
+   */
+  async _transformField(transform, value, context, fieldPath, currentData) {
+    try {
+      // Передаем все необходимые данные как параметры
+      return await transform(value, context, fieldPath, currentData);
+    } catch (error) {
+      console.error('Field transform error:', error);
+      return value;
+    }
   }
 
   /**
@@ -154,8 +230,17 @@ export default class ABACFields {
     for (const path of dataPaths) {
       for (const pattern of patterns) {
         if (this._matchesPattern(path, pattern)) {
-          const rule = config[pattern];
+          const fieldConfig = config[pattern];
           
+          // Получаем правило для конкретного действия
+          let rule;
+          if (fieldConfig.actions && fieldConfig.actions[action]) {
+            rule = fieldConfig.actions[action];
+          } else {
+            rule = fieldConfig.base;
+          }
+          
+          // Проверяем, подходит ли правило для действия
           if (this._matchesAction(rule.actions, action)) {
             rules.push({
               path,

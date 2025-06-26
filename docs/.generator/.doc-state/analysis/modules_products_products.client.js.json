@@ -83,8 +83,8 @@
         "import": "HeroRecommendation"
       },
       {
-        "module": "./components/sections/PopularProducts.vue",
-        "import": "PopularProducts"
+        "module": "./components/sections/ProductsPopular.vue",
+        "import": "ProductsPopular"
       },
       {
         "module": "./components/sections/SectionProduct.vue",

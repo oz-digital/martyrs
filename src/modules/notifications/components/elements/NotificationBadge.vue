@@ -13,52 +13,66 @@
         <span>{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
       </div>
     </button>
-    <div v-if="isOpen" class="notifications-dropdown">
-      <div class="notifications-header">
-        <h3>Notifications</h3>
-        <button 
-          v-if="unreadCount > 0" 
-          class="mark-all-read-btn" 
-          @click="markAllAsRead"
-        >
-          Mark all read
-        </button>
+    
+    <Popup
+      title="Notifications"
+      @close-popup="closeNotifications"
+      :isPopupOpen="isOpen"
+      align="center right"
+      class="bg-white h-min-100 w-100 w-max-30r pd-medium"
+    >
+      <div class="cols-1 gap-thin o-y-scroll">
+        <div v-if="loading" class="notifications-loading">
+          Loading...
+        </div>
+        
+        <div v-else-if="notifications.length === 0" class="notifications-empty">
+          No notifications
+        </div>
+        
+        <div v-else class="flex-column flex gap-thin">
+          <notification-item 
+            v-for="notification in recentNotifications" 
+            :key="notification._id" 
+            :notification="notification"
+            @click="handleNotificationClick(notification)"
+          />
+
+          <div class="flex-nowrap flex gap-thin">
+            <button 
+              v-if="unreadCount > 0"
+              class="w-100 bg-second t-white radius-small  button" 
+              @click="markAllAsRead"
+            >
+              Mark all read
+            </button>
+
+            <router-link class="w-100 bg-black t-white radius-small button" to="/notifications" @click="closeNotifications">
+              View all 
+            </router-link>
+          </div>
+
+        </div>
+
       </div>
-      <div v-if="loading" class="notifications-loading">
-        Loading...
-      </div>
-      <div v-else-if="notifications.length === 0" class="notifications-empty">
-        No notifications
-      </div>
-      <div v-else class="notifications-list">
-        <notification-item 
-          v-for="notification in recentNotifications" 
-          :key="notification._id" 
-          :notification="notification"
-          @click="handleNotificationClick(notification)"
-        />
-      </div>
-      <div class="notifications-footer">
-        <router-link to="/notifications" @click="isOpen = false">
-          View all notifications
-        </router-link>
-      </div>
-    </div>
+    </Popup>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, inject } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
+
+import Popup from '@martyrs/src/components/Popup/Popup.vue';
+
 import NotificationItem from '../blocks/NotificationItem.vue';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-
 import IconBell from '@martyrs/src/modules/icons/entities/IconBell.vue';
 
 const props = defineProps({
   maxNotifications: {
     type: Number,
-    default: 5
+    default: 10
   },
   fill: {
     type: String,
@@ -86,6 +100,10 @@ const toggleNotifications = () => {
   isOpen.value = !isOpen.value;
 };
 
+const closeNotifications = () => {
+  isOpen.value = false;
+};
+
 const handleNotificationClick = (notification) => {
   isOpen.value = false;
   
@@ -98,27 +116,13 @@ const handleNotificationClick = (notification) => {
   }
 };
 
-// Close dropdown when clicking outside
-const handleClickOutside = (event) => {
-  const container = document.querySelector('.notification-badge-container');
-  if (container && !container.contains(event.target)) {
-    isOpen.value = false;
-  }
-};
-
 // Lifecycle hooks
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-
   // Load notifications when component mounts
   const userId = auth.state.user._id;
   if (userId) {
     getNotifications(userId);
   }
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
 });
 </script>
 
@@ -139,6 +143,7 @@ onUnmounted(() => {
 .notification-icon {
   font-size: 1.4rem;
 }
+
 .button-counter {
   position: absolute;
   right: -8px;
@@ -153,61 +158,12 @@ onUnmounted(() => {
   line-height: 16px;
   font-size: 10px;
 }
-.notifications-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: 320px;
-  max-height: 400px;
-  overflow-y: auto;
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
 
-.notifications-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-}
-
-.notifications-header h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.mark-all-read-btn {
-  background: none;
-  border: none;
-  color: #2196f3;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
 
 .notifications-loading,
 .notifications-empty {
   padding: 24px;
   text-align: center;
-  color: #666;
-}
-
-.notifications-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notifications-footer {
-  padding: 12px 16px;
-  text-align: center;
-  border-top: 1px solid #eee;
-}
-
-.notifications-footer a {
-  color: #2196f3;
-  text-decoration: none;
-  font-size: 0.9rem;
+  color: rgb(var(--text-light));
 }
 </style>

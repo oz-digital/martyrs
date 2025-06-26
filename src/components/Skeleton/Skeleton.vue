@@ -1,10 +1,13 @@
 <template>
-  <div class="skeleton-wrapper" :class="{ 'skeleton-wrapper--loading': loading }">
+  <div class="w-100 pos-relative" :class="{ 'skeleton-wrapper--loading': loading }">
     <!-- Используем слот по умолчанию, если он есть -->
     <slot v-if="hasDefaultSlot && !structure.length"></slot>
     
-    <!-- Создаем скелетон на основе переданной структуры, если слот пустой -->
-    <div v-else-if="structure.length" class="skeleton-structure" :class="{ 'skeleton-structure--horizontal': horizontal }">
+    <div 
+      v-else-if="structure.length" 
+      class="skeleton-structure"
+       :class="{ 'skeleton-structure--horizontal': horizontal }"
+    >
       <div 
         v-for="(item, index) in structure" 
         :key="index" 
@@ -12,10 +15,11 @@
         :class="[
           `skeleton-item--${item.block}`,
           `skeleton-item--${item.size || 'medium'}`,
-          { 'skeleton-item--rounded': item.rounded }
+          { 'skeleton-item--rounded': item.rounded },
+          item.class
         ]"
         :style="item.style"
-      ></div>
+      />
     </div>
     
     <!-- Если слот пустой и структура не определена - показываем дефолтный скелетон -->
@@ -90,13 +94,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.skeleton-wrapper {
-  width: 100%;
-  position: relative;
-  background-color: var(--skeleton-card-color);
-  padding: 1rem;
-}
-
 /* Стили для режима загрузки */
 .skeleton-wrapper--loading ::v-deep(*) {
   color: transparent !important;

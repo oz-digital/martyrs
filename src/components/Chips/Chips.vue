@@ -3,14 +3,14 @@
     class="font-main"
    >
    	<slot></slot>
-		<span 
+		<p 
 			v-if="chips?.length"
 		  v-for="(chip,index) in chips" 
 		  :class="$attrs.class || 'p-medium font-main'"
-		 	class="mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-main" 
+		 	class="mn-r-nano d-inline-block w-max pd-thin radius-thin t-medium bg-main" 
 		>
-			<span class="text-box-trim-none t-truncate">{{chip.text ? chip.text : chip}}</span>
-		</span>
+			{{chip.text ? chip.text : chip}}
+		</p>
 
 		<div 
 			v-else

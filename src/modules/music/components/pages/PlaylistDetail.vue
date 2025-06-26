@@ -63,7 +63,7 @@
           :showLoader="false" 
           :showSucces="false"
         >
-          <IconHeart class="i-medium" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
+          <IconLike class="i-medium" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
         </Button>
         
         <Dropdown class="pos-relative">
@@ -306,7 +306,7 @@ import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue';
 
 // Import icons
 import IconPlay from '@martyrs/src/modules/icons/navigation/IconPlay.vue';
-import IconHeart from '@martyrs/src/modules/icons/navigation/IconHeart.vue';
+import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
 import IconMusic from '@martyrs/src/modules/icons/entities/IconMusic.vue';
 

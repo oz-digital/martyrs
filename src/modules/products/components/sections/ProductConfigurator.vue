@@ -16,18 +16,34 @@
       :selectedVariant="selectedVariant"
       :productVariants="productVariants"
       @select-discount="handleDiscountSelected"
+      class="mn-b-medium"
     />
-    
-    <!-- Quantity Selection -->
-    <div class="w-100 mn-b-medium">
-      <div class="flex flex-nowrap flex-v-center mn-b-thin">
-        <p class="t-medium">Quantity</p>
-        <span v-if="selectedVariant" class="t-small t-transp mn-l-thin">
-          (Max: {{ maxQuantity }})
-        </span>
-      </div>
       
-      <QuantitySelector v-model="quantity" :maxValue="maxQuantity" />
+    <!-- Показываем цену, если нет вариантов или не выбран ни один вариант -->
+    <div class="flex-nowrap flex gap-thin">
+      <div class="">
+        <p class="t-medium mn-b-thin">Price</p>
+        <Price 
+          v-if="!selectedVariant"
+          :product="product"
+          :variants="productVariants" 
+          size="big" 
+          class="flex gap-micro flex-center pd-small bg-second t-white w-max mn-b-medium" 
+        />
+      </div>
+     
+      
+      <!-- Quantity Selection -->
+      <div class="w-100">
+        <div class="flex flex-nowrap flex-v-center mn-b-thin">
+          <p class="t-medium">Quantity</p>
+          <span v-if="selectedVariant" class="t-small t-transp mn-l-thin">
+            (Max: {{ maxQuantity }})
+          </span>
+        </div>
+        
+        <QuantitySelector v-model="quantity" :maxValue="maxQuantity" />
+      </div>
     </div>
 
     <!-- Out of stock notice -->
@@ -38,25 +54,21 @@
     </div>
 
     <!-- Add to cart button -->
-    <div class="w-100 mn-b-small">
+    <div class="w-100 mn-b-medium">
       <Button
-        v-if="isVariantAvailable"
-        :submit="addVariantToCart"
+        :submit="isVariantAvailable ? addVariantToCart : undefined"
+        :disabled="!isVariantAvailable"
         class="cursor-pointer pd-medium radius-big w-100 bg-main button h-3r"
       >
-        <div class="gap-micro flex flex-center flex-nowrap">
+        <div v-if="isVariantAvailable" class="gap-micro flex flex-center flex-nowrap">
           <IconShopcartAdd class="i-semi"/>
           <span class="t-nowrap">{{ t('addtoorder') }}</span>
         </div>
+        <template v-else>
+          <span v-if="!selectedVariant && productVariants.length > 1">Select variant</span>
+          <span v-else>Out of Stock</span>
+        </template>
       </Button>
-
-      <div
-        v-else
-        class="flex-center flex uppercase radius-big t-black w-100 pd-medium t-medium bg-grey h-3r"
-      >
-        <span v-if="!selectedVariant && productVariants.length > 1">Select variant</span>
-        <span v-else>Out of Stock</span>
-      </div>
     </div>
   </div>
 </template>
@@ -70,6 +82,8 @@ import Button from '@martyrs/src/components/Button/Button.vue';
 import ProductVariants from '../blocks/ProductVariants.vue';
 import ProductDiscounts from '../blocks/ProductDiscounts.vue';
 import QuantitySelector from '../elements/QuantitySelector.vue';
+
+import Price from '@martyrs/src/modules/products/components/elements/Price.vue'
 
 const props = defineProps({
   productVariants: { type: Array, default: () => [] },

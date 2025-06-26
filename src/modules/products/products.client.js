@@ -20,7 +20,7 @@ import ProductImages from './components/blocks/ProductImages.vue';
 import EditVariants from './components/sections/EditVariants.vue';
 import FilterProducts from './components/sections/FilterProducts.vue';
 import HeroRecommendation from './components/sections/HeroRecommendation.vue';
-import PopularProducts from './components/sections/PopularProducts.vue';
+import ProductsPopular from './components/sections/ProductsPopular.vue';
 import SectionProduct from './components/sections/SectionProduct.vue';
 
 // Elements
@@ -72,7 +72,7 @@ const ModuleProducts = {
       HeroRecommendation,
       FilterProducts,
       EditVariants,
-      PopularProducts,
+      ProductsPopular,
       // Pages
       Product,
       ProductEdit,
@@ -98,7 +98,7 @@ export {
   // Blocks
   ProductImages,
   Leftovers,
-  PopularProducts,
+  ProductsPopular,
   // Elements
   Price,
   // Pages

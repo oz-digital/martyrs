@@ -16,8 +16,10 @@ export default class ABACCore {
       req: null,
       socket: null,
       params: {},
-      _cache: new Map(), // Кэш результатов политик для этого контекста
+      _cache: new Map(),
       _abac: this.abac,
+      // Добавляем флаг для пропуска field policies (например, для админов)
+      skipFieldPolicies: input.skipFieldPolicies || false,
     };
 
     if (input.req) {

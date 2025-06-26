@@ -1,5 +1,5 @@
 <template>
-  <Slider
+  <Carousel
     :store="{
       read: (options) => blog.read({ 
         skip, 
@@ -29,13 +29,12 @@
       :hideDescription="true"
       class="bg-white flex flex-column radius-medium h-35r"
     />
-  </Slider>
+  </Carousel>
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from 'vue'
-import Feed from '@martyrs/src/components/Feed/Feed.vue'
-import Slider from '@martyrs/src/components/Slider/Slider.native.vue'
+import { defineProps } from 'vue'
+import Carousel from '@martyrs/src/components/Feed/Carousel.vue'
 import CardBlogpost from '@martyrs/src/modules/community/components/blocks/CardBlogpost.vue'
 import * as blog from '@martyrs/src/modules/community/store/blogposts.js'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
@@ -64,11 +63,12 @@ const props = defineProps({
 </script>
 
 <style lang="scss">
-.slider-hotpost .carousel__slide {
+.slider-hotpost :deep(.carousel__slide ) {
   flex: 0 0 25%;
 }
+
 @media screen and (max-width: 1025px) {
-  .slider-hotpost .carousel__slide {
+  .slider-hotpost :deep(.carousel__slide ) {
     flex: 0 0 75%;
   }
 }

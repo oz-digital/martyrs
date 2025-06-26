@@ -1,243 +1,330 @@
-<template>
-  <div class="photo-container" @wheel="handleWheel" @mousedown="startDrag" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
-    <img loading="lazy" :src="photoUrl" :style="imgStyle" ref="image" @load="initialize" />
-  </div>
-</template>
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue';
-const props = defineProps({
-  photoUrl: String,
-  show: Boolean,
-});
-const scale = ref(1);
-const position = reactive({ x: 0, y: 0 });
-const dragging = ref(false);
-const startPosition = reactive({ x: 0, y: 0 });
-const startScale = ref(1);
-const startDistance = ref(0);
-const image = ref(null);
-const container = ref(null);
+  import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 
-const imgStyle = computed(() => ({
-  transform: `scale(${scale.value}) translate(${position.x}px, ${position.y}px)`,
-}));
+  import IconChevronLeft from '@martyrs/src/modules/icons/navigation/IconChevronLeft.vue';
+  import IconChevronRight from '@martyrs/src/modules/icons/navigation/IconChevronRight.vue';
 
-// Наблюдаем за изменением масштаба, чтобы ограничивать позицию
-watch(scale, () => {
-  constrainPosition();
-});
+  const props = defineProps({
+    photoUrl: String,
+    photos: Array,
+    initialIndex: Number,
+    show: Boolean,
+  });
 
-const getImageDimensions = () => {
-  if (!image.value) return { width: 0, height: 0 };
-  
-  // Используем естественные размеры изображения
-  const imgWidth = image.value.naturalWidth;
-  const imgHeight = image.value.naturalHeight;
-  
-  // Получаем размеры контейнера
-  const containerRect = image.value.parentElement?.getBoundingClientRect();
-  if (!containerRect) return { width: 0, height: 0 };
-  
-  const containerWidth = containerRect.width;
-  const containerHeight = containerRect.height;
-  
-  // Определяем, как изображение вписывается в контейнер (с учетом object-fit: scale-down)
-  let renderedWidth, renderedHeight;
-  
-  if (imgWidth > containerWidth || imgHeight > containerHeight) {
-    const ratioX = containerWidth / imgWidth;
-    const ratioY = containerHeight / imgHeight;
-    const ratio = Math.min(ratioX, ratioY);
-    
-    renderedWidth = imgWidth * ratio;
-    renderedHeight = imgHeight * ratio;
-  } else {
-    renderedWidth = imgWidth;
-    renderedHeight = imgHeight;
-  }
-  
-  return {
-    renderedWidth,
-    renderedHeight,
-    containerWidth,
-    containerHeight
+  const currentIndex = ref(0);
+  const translateX = ref(0);
+  const isDragging = ref(false);
+  const scale = ref(1);
+  const pos = ref({ x: 0, y: 0 });
+  const image = ref(null);
+  const thumbnailsRef = ref(null);
+
+  let startX = 0, startDist = 0, startScale = 1, dragX = 0, wheelTimer, dragTimer;
+
+  const photos = computed(() => props.photos?.length ? props.photos : props.photoUrl ? [props.photoUrl] : []);
+
+  const sliderStyle = computed(() => ({
+    transform: `translate3d(${translateX.value}px, 0, 0)`,
+    transition: isDragging.value ? 'none' : 'transform 0.3s',
+    backfaceVisibility: 'hidden'
+  }));
+
+  const imgStyle = computed(() => ({
+    transform: `scale3d(${scale.value}, ${scale.value}, 1) translate3d(${pos.value.x}px, ${pos.value.y}px, 0)`,
+    backfaceVisibility: 'hidden'
+  }));
+
+  const reset = () => {
+    scale.value = 1;
+    pos.value = { x: 0, y: 0 };
   };
-};
 
-const handleWheel = (event) => {
-  event.preventDefault();
-  
-  const delta = event.deltaY > 0 ? -0.1 : 0.1;
-  const newScale = Math.min(Math.max(1, scale.value + delta), 3);
-  
-  // Рассчитываем позицию курсора относительно центра изображения
-  const rect = image.value.getBoundingClientRect();
-  const mouseX = event.clientX - rect.left - rect.width / 2;
-  const mouseY = event.clientY - rect.top - rect.height / 2;
-  
-  // Сохраняем соотношение позиции курсора к изображению при масштабировании
-  const scaleChange = newScale / scale.value;
-  
-  // Обновляем позицию так, чтобы точка под курсором оставалась на месте
-  position.x = position.x - (mouseX / scale.value) * (scaleChange - 1);
-  position.y = position.y - (mouseY / scale.value) * (scaleChange - 1);
-  
-  // Обновляем масштаб
-  scale.value = newScale;
-  
-  // Ограничиваем позицию после обновления масштаба
-  constrainPosition();
-};
+  const goTo = (index) => {
+    currentIndex.value = index;
+    translateX.value = -index * window.innerWidth;
+    reset();
+  };
 
-const startDrag = (event) => {
-  event.preventDefault();
-  if (scale.value <= 1) return; // Не позволяем перетаскивать при масштабе 1
-  
-  dragging.value = true;
-  startPosition.x = event.type === 'mousedown' ? event.clientX : event.touches[0].clientX;
-  startPosition.y = event.type === 'mousedown' ? event.clientY : event.touches[0].clientY;
-  
-  const move = (moveEvent) => {
-    if (dragging.value) {
-      const currentX = moveEvent.type === 'mousemove' ? moveEvent.clientX : moveEvent.touches[0].clientX;
-      const currentY = moveEvent.type === 'mousemove' ? moveEvent.clientY : moveEvent.touches[0].clientY;
-      
-      const deltaX = (currentX - startPosition.x) / scale.value;
-      const deltaY = (currentY - startPosition.y) / scale.value;
-      
-      position.x += deltaX;
-      position.y += deltaY;
-      
-      // Ограничиваем позицию после перемещения
-      constrainPosition();
-      
-      startPosition.x = currentX;
-      startPosition.y = currentY;
+  const jumpTo = (index) => {
+    isDragging.value = true;
+    goTo(index);
+    requestAnimationFrame(() => isDragging.value = false);
+  };
+
+  const scrollToThumb = (el) => {
+    if (el && thumbnailsRef.value) {
+      const container = thumbnailsRef.value;
+      const thumb = el;
+      const left = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left, behavior: 'smooth' });
     }
   };
-  
-  const endDrag = () => {
-    dragging.value = false;
-    document.removeEventListener('mousemove', move);
-    document.removeEventListener('mouseup', endDrag);
-    document.removeEventListener('touchmove', move);
-    document.removeEventListener('touchend', endDrag);
+
+  const getXY = (e) => {
+    const t = e.touches?.[0] || e;
+    return [t.clientX, t.clientY];
   };
-  
-  document.addEventListener('mousemove', move);
-  document.addEventListener('mouseup', endDrag);
-  document.addEventListener('touchmove', move);
-  document.addEventListener('touchend', endDrag);
-};
 
-const handleTouchStart = (event) => {
-  if (event.touches.length === 2) {
-    const touch1 = event.touches[0];
-    const touch2 = event.touches[1];
-    const distanceX = Math.abs(touch1.clientX - touch2.clientX);
-    const distanceY = Math.abs(touch1.clientY - touch2.clientY);
-    startDistance.value = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-    startScale.value = scale.value;
-  } else {
-    startDrag(event);
-  }
-};
+  const constrain = () => {
+    if (scale.value <= 1 || !image.value) return reset();
+    
+    const { naturalWidth: nw, naturalHeight: nh } = image.value;
+    const [cw, ch] = [window.innerWidth, window.innerHeight];
+    const r = Math.min(cw / nw, ch / nh, 1);
+    
+    const maxX = Math.max(0, (nw * r * scale.value - cw) / 2 / scale.value);
+    const maxY = Math.max(0, (nh * r * scale.value - ch) / 2 / scale.value);
+    
+    pos.value.x = Math.max(-maxX, Math.min(maxX, pos.value.x));
+    pos.value.y = Math.max(-maxY, Math.min(maxY, pos.value.y));
+  };
 
-const handleTouchMove = (event) => {
-  if (event.touches.length === 2) {
-    event.preventDefault();
-    const touch1 = event.touches[0];
-    const touch2 = event.touches[1];
-    const distanceX = Math.abs(touch1.clientX - touch2.clientX);
-    const distanceY = Math.abs(touch1.clientY - touch2.clientY);
-    const newDistance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
-    const scaleFactor = newDistance / startDistance.value;
+  const zoom = (newScale, fx, fy) => {
+    if (!image.value) return;
     
-    // Получаем центр между двумя касаниями
-    const centerX = (touch1.clientX + touch2.clientX) / 2;
-    const centerY = (touch1.clientY + touch2.clientY) / 2;
-    
-    // Получаем координаты центра касания относительно изображения
+    newScale = Math.max(1, Math.min(3, newScale));
     const rect = image.value.getBoundingClientRect();
-    const touchCenterX = centerX - rect.left - rect.width / 2;
-    const touchCenterY = centerY - rect.top - rect.height / 2;
+    const [mx, my] = [fx - rect.left - rect.width / 2, fy - rect.top - rect.height / 2];
+    const change = newScale / scale.value;
     
-    const newScale = Math.min(Math.max(1, startScale.value * scaleFactor), 3);
-    const scaleChange = newScale / scale.value;
-    
-    // Обновляем позицию, чтобы центр касания оставался на месте
-    position.x = position.x - (touchCenterX / scale.value) * (scaleChange - 1);
-    position.y = position.y - (touchCenterY / scale.value) * (scaleChange - 1);
-    
+    pos.value.x -= (mx / scale.value) * (change - 1);
+    pos.value.y -= (my / scale.value) * (change - 1);
     scale.value = newScale;
-    constrainPosition();
-  }
-};
+    constrain();
+  };
 
-const handleTouchEnd = (event) => {
-  if (event.touches.length === 0) {
-    startDistance.value = 0;
-  }
-};
+  const startDrag = (e) => {
+    if (e.type === 'mousedown') e.preventDefault();
+    isDragging.value = true;
+    let [x, y] = getXY(e);
+    
+    const handleMove = scale.value > 1
+      ? (e) => {
+          if (!isDragging.value) return;
+          if (e.type === 'touchmove') e.preventDefault();
+          const [cx, cy] = getXY(e);
+          pos.value.x += (cx - x) / scale.value;
+          pos.value.y += (cy - y) / scale.value;
+          constrain();
+          [x, y] = [cx, cy];
+        }
+      : (e) => {
+          if (!isDragging.value) return;
+          if (e.type === 'touchmove') e.preventDefault();
+          dragX = getXY(e)[0] - startX;
+          translateX.value = dragX - currentIndex.value * window.innerWidth;
+        };
+    
+    const handleEnd = () => {
+      isDragging.value = false;
+      if (scale.value <= 1 && Math.abs(dragX) > window.innerWidth / 4) {
+        goTo(Math.max(0, Math.min(photos.value.length - 1, currentIndex.value + (dragX > 0 ? -1 : 1))));
+      } else if (scale.value <= 1) {
+        goTo(currentIndex.value);
+      }
+      dragX = 0;
+      document.removeEventListener('mousemove', handleMove, { passive: true });
+      document.removeEventListener('mouseup', handleEnd, { passive: true });
+      document.removeEventListener('touchmove', handleMove, { passive: false });
+      document.removeEventListener('touchend', handleEnd, { passive: true });
+    };
+    
+    if (scale.value <= 1) startX = x;
+    document.addEventListener('mousemove', handleMove, { passive: true });
+    document.addEventListener('mouseup', handleEnd, { passive: true });
+    document.addEventListener('touchmove', handleMove, { passive: false });
+    document.addEventListener('touchend', handleEnd, { passive: true });
+  };
 
-const initialize = () => {
-  scale.value = 1;
-  position.x = 0;
-  position.y = 0;
-};
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      clearTimeout(dragTimer);
+      const [t1, t2] = e.touches;
+      startDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      startScale = scale.value;
+    } else {
+      dragTimer = setTimeout(() => startDrag(e), 50);
+    }
+  };
 
-const constrainPosition = () => {
-  // Если масштаб 1, сбрасываем позицию в центр
-  if (scale.value <= 1) {
-    position.x = 0;
-    position.y = 0;
-    return;
-  }
-  
-  const { renderedWidth, renderedHeight, containerWidth, containerHeight } = getImageDimensions();
-  
-  // Вычисляем максимальное смещение
-  const scaledWidth = renderedWidth * scale.value;
-  const scaledHeight = renderedHeight * scale.value;
-  
-  // Отступ от края изображения до края контейнера при текущем масштабе
-  const horizontalOffset = (scaledWidth - containerWidth) / 2 / scale.value;
-  const verticalOffset = (scaledHeight - containerHeight) / 2 / scale.value;
-  
-  // Ограничиваем смещение, чтобы изображение не выходило за пределы контейнера
-  if (horizontalOffset > 0) {
-    position.x = Math.max(-horizontalOffset, Math.min(horizontalOffset, position.x));
-  } else {
-    position.x = 0;
-  }
-  
-  if (verticalOffset > 0) {
-    position.y = Math.max(-verticalOffset, Math.min(verticalOffset, position.y));
-  } else {
-    position.y = 0;
-  }
-};
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 2 && !isDragging.value) {
+      clearTimeout(dragTimer);
+      e.preventDefault();
+      const [t1, t2] = e.touches;
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      zoom(startScale * (dist / startDist), (t1.clientX + t2.clientX) / 2, (t1.clientY + t2.clientY) / 2);
+    }
+  };
 
-onMounted(() => {
-  window.addEventListener('resize', () => {
-    constrainPosition();
+  const handleTouchEnd = () => {
+    clearTimeout(dragTimer);
+    startDist = 0;
+  };
+
+  const handleWheel = (e) => {
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => zoom(scale.value + (e.deltaY > 0 ? -0.1 : 0.1), e.clientX, e.clientY), 10);
+  };
+
+  const handleKey = (e) => {
+    const dir = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+    if (dir) goTo(Math.max(0, Math.min(photos.value.length - 1, currentIndex.value + dir)));
+  };
+
+  watch(() => props.initialIndex, (i) => i != null && jumpTo(i));
+
+  onMounted(() => {
+    window.addEventListener('keydown', handleKey, { passive: true });
+    jumpTo(props.initialIndex || 0);
   });
-});
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('keydown', handleKey);
+    clearTimeout(wheelTimer);
+    clearTimeout(dragTimer);
+  });
 </script>
-<style>
-.photo-container {
+
+<template>
+  <div class="photo-viewer" @wheel.prevent="handleWheel">
+    <div 
+      class="slider-track" 
+      :style="sliderStyle"
+      @mousedown="startDrag" 
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+    >
+      <div 
+        v-for="(photo, index) in photos" 
+        :key="index"
+        class="slide"
+      >
+        <img 
+          :src="photo" 
+          :style="index === currentIndex ? imgStyle : null"
+          :ref="el => index === currentIndex && (image = el)"
+          @load="() => index === currentIndex && reset()" 
+        />
+      </div>
+    </div>
+    
+    <template 
+      v-if="photos.length > 1"
+    >
+
+      <span class="pos-absolute pos-l-small bs-small pos-t-small radius-small pd-thin bg-white t-black t-medium">
+        {{ currentIndex + 1 }} / {{ photos.length }}
+      </span>
+      
+      <button 
+        v-if="currentIndex > 0" 
+        @click="goTo(currentIndex - 1)" 
+        class="cursor-pointer hover-scale-1 bs-small pos-absolute pos-t-50 pos-l-small bg-white radius-small pd-thin"
+      >
+        <IconChevronLeft fill="rgb(var(--black)" class="i-medium"/>
+      </button>
+
+      <button 
+        v-if="currentIndex < photos.length - 1" 
+        @click="goTo(currentIndex + 1)" 
+        class="cursor-pointer hover-scale-1 bs-small pos-absolute pos-t-50 pos-r-small bg-white radius-small pd-thin"
+      >
+        <IconChevronRight fill="rgb(var(--black)" class="i-medium"/>
+      </button>
+      
+      <div class="pos-absolute pos-b-small radius-small pd-thin bg-light  thumbnails-container">
+        <div class="thumbnails" ref="thumbnailsRef">
+          <img 
+            v-for="(photo, i) in photos" 
+            :key="i"
+            :src="photo"
+            @click="jumpTo(i)"
+            :class="['thumbnail', { active: i === currentIndex }]"
+            :ref="el => i === currentIndex && scrollToThumb(el)" 
+          />
+        </div>
+      </div>
+    </template>
+
+  </div>
+</template>
+
+<style scoped>
+.photo-viewer {
   width: 100%;
   height: 100%;
-  background: black;
-  overflow: hidden;
   position: relative;
-  cursor: grab;
+  background: #fff;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
 }
-.photo-container img {
+
+.slider-track {
+  display: flex;
+  height: 100%;
+  cursor: grab;
+  backface-visibility: hidden;
+}
+
+.slider-track:active {
+  cursor: grabbing;
+}
+
+.slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide img {
   width: 100%;
   height: 100%;
   object-fit: scale-down;
-  transition: transform 0.05s;
-  transform-origin: center center;
+  transform-origin: center;
+  pointer-events: none;
+  backface-visibility: hidden;
+}
+
+.thumbnails-container {
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 100%;
+  z-index: 1;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.thumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnail {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+}
+
+.thumbnail.active {
+  opacity: 1;
+  border: 1px solid rgb(var(--second));
+}
+
+
+@media (max-width: 768px) {
+  .nav-arrow { display: none; }
+  .thumbnail { width: 3rem; height: 3rem; }
 }
 </style>
