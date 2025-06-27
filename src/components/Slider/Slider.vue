@@ -1,21 +1,19 @@
 <template>
-  <div class="pos-relative">
-    <!-- Native Carousel -->
-    <div class="carousel" ref="carouselRef">
-      <div class="carousel__container" @scroll="handleScroll">
-        <slot></slot>
-      </div>
-      
-      <!-- Navigation Dots (optional) -->
-      <div class="carousel__dots" v-if="showDots && slideCount > 1">
-        <button 
-          v-for="index in slideCount" 
-          :key="index - 1"
-          class="carousel__dot"
-          :class="{ 'carousel__dot--active': selectedIndex === index - 1 }"
-          @click="scrollTo(index - 1)"
-        ></button>
-      </div>
+  <!-- Native Carousel -->
+  <div class="carousel" ref="carouselRef">
+    <div class="carousel__container" @scroll="handleScroll">
+      <slot></slot>
+    </div>
+    
+    <!-- Navigation Dots (optional) -->
+    <div class="carousel__dots" v-if="showDots && slideCount > 1">
+      <button 
+        v-for="index in slideCount" 
+        :key="index - 1"
+        class="carousel__dot"
+        :class="{ 'carousel__dot--active': selectedIndex === index - 1 }"
+        @click="scrollTo(index - 1)"
+      ></button>
     </div>
   </div>
 </template>

@@ -9,6 +9,13 @@
       :autofocus="search.autofocus"
     />
 
+    <FiltersBar
+      v-if="filter"
+      v-model="filter.selected"
+      :filters="filterConfig"
+      :class="filter.class || 'mobile-only'"
+    />
+
     <Dropdown 
       v-if="date"
       :label="{
@@ -180,6 +187,8 @@ import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/Bl
 import BlockSorting  from '@martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue'
 import BlockFilter  from '@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue'
 
+import FiltersBar from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
+
 import ButtonSort  from '@martyrs/src/modules/globals/views/components/elements/ButtonSort.vue'
 import ButtonDate  from '@martyrs/src/modules/globals/views/components/elements/ButtonDate.vue'
 
@@ -191,6 +200,20 @@ const sort = defineModel('sort')
 const filter = defineModel('filter')
 const date = defineModel('date')
 const items = defineModel('items')
+
+const filterConfig = computed(() => {
+  if (!filter.value?.options) return []
+  
+  // Преобразуем старый формат в новый
+  return filter.value.options.map(opt => ({
+    key: opt.value,
+    title: opt.title,
+    type: 'options', // или другой тип в зависимости от данных
+    options: opt.options || [],
+    defaultValue: null
+  }))
+})
+
 
 // Пропсы
 const props = defineProps({

@@ -19,7 +19,7 @@
       </transition>
     </router-view>
 
-    <section class="w-100 desktop-only o-hidden radius-big bg-grad-main">
+    <section class="w-100 desktop-only o-hidden radius-big bg-black t-white">
       <SliderFeatures/>  
     </section>
   </div>
