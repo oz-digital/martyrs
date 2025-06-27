@@ -21,13 +21,20 @@ import ResetPassword from './views/components/pages/ResetPassword.vue';
 import SignIn from './views/components/pages/SignIn.vue';
 import SignUp from './views/components/pages/SignUp.vue';
 
+
 // Importing sections components
 import FeaturedUsers from './views/components/sections/FeaturedUsers.vue';
 import SliderFeatures from './views/components/sections/SliderFeatures.vue';
 
+import { i18nManager }  from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+
+import locales from './locales/index.js';
+
 // Пример функции инициализации для модуля аутентификации
 function initializeAuth(app, store, router, options = {}) {
   const route = options.route || 'Home';
+
+  i18nManager.register('auth', locales);
 
   router.addRoute(route, routerAuth);
   router.addRoute(route, routerUsers);

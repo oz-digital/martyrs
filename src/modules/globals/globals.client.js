@@ -136,6 +136,7 @@ export {
   mixins,
   scrollBehavior,
   store,
+  i18nManager,
   // Store
   storeGlobals,
   websockets,

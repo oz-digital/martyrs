@@ -38,6 +38,7 @@ import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue';
 import IconMinus from '@martyrs/src/modules/icons/navigation/IconMinus.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
 import IconPlus from '@martyrs/src/modules/icons/navigation/IconPlus.vue';
+import IconHeart from '@martyrs/src/modules/icons/navigation/IconHeart.vue';
 import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue';
 import IconPause from '@martyrs/src/modules/icons/navigation/IconPause.vue';
 import IconAdd from '@martyrs/src/modules/icons/navigation/IconAdd.vue';
@@ -81,8 +82,11 @@ import IconProducts from '@martyrs/src/modules/icons/entities/IconProducts.vue';
 import IconCatalog from '@martyrs/src/modules/icons/entities/IconCatalog.vue';
 import IconShopcart from '@martyrs/src/modules/icons/entities/IconShopcart.vue';
 import IconRecent from '@martyrs/src/modules/icons/entities/IconRecent.vue';
+import IconList from '@martyrs/src/modules/icons/entities/IconList.vue';
+import IconSettings from '@martyrs/src/modules/icons/entities/IconSettings.vue';
 import IconEarn from '@martyrs/src/modules/icons/entities/IconEarn.vue';
 import IconPopular from '@martyrs/src/modules/icons/entities/IconPopular.vue';
+import IconDiscount from '@martyrs/src/modules/icons/entities/IconDiscount.vue';
 import IconDate from '@martyrs/src/modules/icons/entities/IconDate.vue';
 import IconFeatured from '@martyrs/src/modules/icons/entities/IconFeatured.vue';
 import IconLeftovers from '@martyrs/src/modules/icons/entities/IconLeftovers.vue';
@@ -112,6 +116,7 @@ import Line from '@martyrs/src/modules/icons/socials/line.vue';
 // Import actions icons
 import IconDuplicate from '@martyrs/src/modules/icons/actions/IconDuplicate.vue';
 import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.vue';
+import IconShow from '@martyrs/src/modules/icons/actions/IconShow.vue';
 
 // Import labels icons
 import LabelGooglePlay from '@martyrs/src/modules/icons/labels/LabelGooglePlay.vue';
@@ -126,6 +131,108 @@ import SkeletonBlogpost from '@martyrs/src/modules/icons/skeletons/SkeletonBlogp
 import SkeletonOrganization from '@martyrs/src/modules/icons/skeletons/SkeletonOrganization.vue';
 import SkeletonEvent from '@martyrs/src/modules/icons/skeletons/SkeletonEvent.vue';
 
+// Icons map to avoid duplication
+const iconsMap = {
+  navigation: {
+    IconInfo,
+    IconMinus,
+    IconEllipsis,
+    IconPlus,
+    IconHeart,
+    IconCheckmark,
+    IconPause,
+    IconAdd,
+    IconVolume,
+    IconUnMute,
+    IconCross,
+    IconDoubleCheck,
+    IconSearch,
+    IconChevronRight,
+    IconLike,
+    IconDelete,
+    IconCheck,
+    IconFilter,
+    IconAttach,
+    IconRefresh,
+    IconUpload,
+    IconSort,
+    IconChevronBottom,
+    IconChevronLeft,
+    IconEdit,
+    IconMute,
+    IconSend,
+    IconArrow,
+    IconPlay,
+    IconShuffle
+  },
+  entities: {
+    IconInfo: IconInfoEntities,
+    IconPrice,
+    IconCalendar,
+    IconPayments,
+    IconBell,
+    IconTime,
+    IconCommunity,
+    IconGallery,
+    IconFile,
+    IconFollowing,
+    IconEvents,
+    IconHome,
+    IconProducts,
+    IconCatalog,
+    IconShopcart,
+    IconRecent,
+    IconList,
+    IconSettings,
+    IconEarn,
+    IconPopular,
+    IconDiscount,
+    IconDate,
+    IconFeatured,
+    IconLeftovers,
+    IconOrders,
+    IconMusic,
+    IconProfile,
+    IconGroups
+  },
+  placeholders: {
+    PlaceholderOrganizationPic,
+    PlaceholderChat,
+    PlaceholderImage,
+    PlaceholderUserpic
+  },
+  socials: {
+    vk: Vk,
+    instagram: Instagram,
+    telegram: Telegram,
+    twitter: Twitter,
+    linkedin: Linkedin,
+    reddit: Reddit,
+    dribbble: Dribbble,
+    facebook: Facebook,
+    youtube: Youtube,
+    line: Line
+  },
+  actions: {
+    IconDuplicate,
+    IconShopcartAdd,
+    IconShow
+  },
+  labels: {
+    LabelGooglePlay,
+    LabelAppStore
+  },
+  logos: {
+    Logotype
+  },
+  skeletons: {
+    SkeletonEventShort,
+    SkeletonBlogpost,
+    SkeletonOrganization,
+    SkeletonEvent
+  }
+};
+
 const categories = ref([]);
 const copiedIcon = ref('');
 const displayNotification = ref(false);
@@ -136,125 +243,13 @@ onMounted(() => {
 });
 
 function loadIcons() {
-  categories.value = [
-    {
-      name: 'navigation',
-      icons: [
-        { name: 'IconInfo', component: IconInfo },
-        { name: 'IconMinus', component: IconMinus },
-        { name: 'IconEllipsis', component: IconEllipsis },
-        { name: 'IconPlus', component: IconPlus },
-        { name: 'IconCheckmark', component: IconCheckmark },
-        { name: 'IconPause', component: IconPause },
-        { name: 'IconAdd', component: IconAdd },
-        { name: 'IconVolume', component: IconVolume },
-        { name: 'IconUnMute', component: IconUnMute },
-        { name: 'IconCross', component: IconCross },
-        { name: 'IconDoubleCheck', component: IconDoubleCheck },
-        { name: 'IconSearch', component: IconSearch },
-        { name: 'IconChevronRight', component: IconChevronRight },
-        { name: 'IconLike', component: IconLike },
-        { name: 'IconDelete', component: IconDelete },
-        { name: 'IconCheck', component: IconCheck },
-        { name: 'IconFilter', component: IconFilter },
-        { name: 'IconAttach', component: IconAttach },
-        { name: 'IconRefresh', component: IconRefresh },
-        { name: 'IconUpload', component: IconUpload },
-        { name: 'IconSort', component: IconSort },
-        { name: 'IconChevronBottom', component: IconChevronBottom },
-        { name: 'IconChevronLeft', component: IconChevronLeft },
-        { name: 'IconEdit', component: IconEdit },
-        { name: 'IconMute', component: IconMute },
-        { name: 'IconSend', component: IconSend },
-        { name: 'IconArrow', component: IconArrow },
-        { name: 'IconPlay', component: IconPlay },
-        { name: 'IconShuffle', component: IconShuffle }
-      ]
-    },
-    {
-      name: 'entities',
-      icons: [
-        { name: 'IconInfo', component: IconInfoEntities },
-        { name: 'IconPrice', component: IconPrice },
-        { name: 'IconCalendar', component: IconCalendar },
-        { name: 'IconPayments', component: IconPayments },
-        { name: 'IconBell', component: IconBell },
-        { name: 'IconTime', component: IconTime },
-        { name: 'IconCommunity', component: IconCommunity },
-        { name: 'IconGallery', component: IconGallery },
-        { name: 'IconFile', component: IconFile },
-        { name: 'IconFollowing', component: IconFollowing },
-        { name: 'IconEvents', component: IconEvents },
-        { name: 'IconHome', component: IconHome },
-        { name: 'IconProducts', component: IconProducts },
-        { name: 'IconCatalog', component: IconCatalog },
-        { name: 'IconShopcart', component: IconShopcart },
-        { name: 'IconRecent', component: IconRecent },
-        { name: 'IconEarn', component: IconEarn },
-        { name: 'IconPopular', component: IconPopular },
-        { name: 'IconDate', component: IconDate },
-        { name: 'IconFeatured', component: IconFeatured },
-        { name: 'IconLeftovers', component: IconLeftovers },
-        { name: 'IconOrders', component: IconOrders },
-        { name: 'IconMusic', component: IconMusic },
-        { name: 'IconProfile', component: IconProfile },
-        { name: 'IconGroups', component: IconGroups }
-      ]
-    },
-    {
-      name: 'placeholders',
-      icons: [
-        { name: 'PlaceholderOrganizationPic', component: PlaceholderOrganizationPic },
-        { name: 'PlaceholderChat', component: PlaceholderChat },
-        { name: 'PlaceholderImage', component: PlaceholderImage },
-        { name: 'PlaceholderUserpic', component: PlaceholderUserpic }
-      ]
-    },
-    {
-      name: 'socials',
-      icons: [
-        { name: 'vk', component: Vk },
-        { name: 'instagram', component: Instagram },
-        { name: 'telegram', component: Telegram },
-        { name: 'twitter', component: Twitter },
-        { name: 'linkedin', component: Linkedin },
-        { name: 'reddit', component: Reddit },
-        { name: 'dribbble', component: Dribbble },
-        { name: 'facebook', component: Facebook },
-        { name: 'youtube', component: Youtube },
-        { name: 'line', component: Line }
-      ]
-    },
-    {
-      name: 'actions',
-      icons: [
-        { name: 'IconDuplicate', component: IconDuplicate },
-        { name: 'IconShopcartAdd', component: IconShopcartAdd }
-      ]
-    },
-    {
-      name: 'labels',
-      icons: [
-        { name: 'LabelGooglePlay', component: LabelGooglePlay },
-        { name: 'LabelAppStore', component: LabelAppStore }
-      ]
-    },
-    {
-      name: 'logos',
-      icons: [
-        { name: 'Logotype', component: Logotype }
-      ]
-    },
-    {
-      name: 'skeletons',
-      icons: [
-        { name: 'SkeletonEventShort', component: SkeletonEventShort },
-        { name: 'SkeletonBlogpost', component: SkeletonBlogpost },
-        { name: 'SkeletonOrganization', component: SkeletonOrganization },
-        { name: 'SkeletonEvent', component: SkeletonEvent }
-      ]
-    }
-  ];
+  categories.value = Object.entries(iconsMap).map(([categoryName, icons]) => ({
+    name: categoryName,
+    icons: Object.entries(icons).map(([name, component]) => ({
+      name,
+      component
+    }))
+  }));
 }
 
 function formatCategoryName(name) {
@@ -262,7 +257,6 @@ function formatCategoryName(name) {
 }
 
 function copyIconName(iconName, categoryName) {
-  // Copy the icon import to clipboard
   const importStatement = `import ${iconName} from '@martyrs/src/modules/icons/${categoryName}/${iconName}.vue';`;
   navigator.clipboard.writeText(importStatement);
   

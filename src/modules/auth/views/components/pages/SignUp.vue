@@ -2,7 +2,7 @@
 	<section class="t-left pd-medium">
 		<!-- Header -->
 		<!-- <img loading="lazy" src="@/assets/images/logo.svg" class="i-extra mn-b-small"> -->
-		<h3 class="mn-b-small">{{t('title')}}</h3>
+		<h3 class="mn-b-small">{{t('auth.signUp.title')}}</h3>
 		
 		<!-- Select -->
 		<div 
@@ -21,7 +21,7 @@
 		<!-- Phone -->
 			<transition name="slide-fade">
 				<div v-show="tabAuth === 'phone'" class="mn-b-semi radius-small">
-					<p class="mn-b-small t-transp">{{t('smsNotice')}}</p>
+					<p class="mn-b-small t-transp">{{t('auth.signUp.smsNotice')}}</p>
 					<FieldPhone
 						@change="(event) => auth.state.user.phone = event" 	
 						:dropdownOptions="{
@@ -31,7 +31,7 @@
 						}"
 						:validation="phoneValidation" 
 						mode="national"
-						:inputOptions="{placeholder: t('phonePlaceholder')}"
+						:inputOptions="{placeholder: t('auth.signUp.phonePlaceholder')}"
 						class="bg-light h-4r pd-small radius-small mn-b-thin" 
 					/>
 					
@@ -39,10 +39,10 @@
 			</transition>
 			<transition name="slide-fade">
 				<div v-show="tabAuth === 'email'" class="mn-b-semi radius-small o-hidden">
-					<p class="mn-b-small t-transp">{{t('emailNotice')}}</p>
+					<p class="mn-b-small t-transp">{{t('auth.signUp.emailNotice')}}</p>
 					<Field 
 						v-model:field="auth.state.user.email" 	
-						:placeholder="t('emailPlaceholder')" 	
+						:placeholder="t('auth.signUp.emailPlaceholder')" 	
 						:validation="emailValidation"
 						class="bg-light h-4r pd-medium radius-small" 
 					/>
@@ -51,11 +51,11 @@
 		</div>
 		
 		<!-- Button -->
-		<Button :submit="onSubmit" :callback="redirectTo" class="w-100 bg-main mn-b-big">{{t('sendCode')}}</Button>
+		<Button :submit="onSubmit" :callback="redirectTo" class="w-100 bg-main mn-b-big">{{t('auth.signUp.sendCode')}}</Button>
 			
 		<!-- Links -->
 		<div class="w-100">
-			<router-link :to="{name: 'Sign In', query: { returnUrl: route.query.returnUrl}}" class="underline mn-b-medium d-block t-blue">{{t('haveAccount')}}</router-link>
+			<router-link :to="{name: 'Sign In', query: { returnUrl: route.query.returnUrl}}" class="underline mn-b-medium d-block t-blue">{{t('auth.signUp.haveAccount')}}</router-link>
 		</div>
 
 	</section> 
@@ -71,8 +71,6 @@
 	import { computed, onMounted, ref } from 'vue'
 	import { useRoute, useRouter } from 'vue-router'
 	import { useI18n } from 'vue-i18n'
-	// Import localization
-	import text from '@martyrs/src/modules/auth/views/localization/SignUp.json'
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 	import * as twofa from '@martyrs/src/modules/auth/views/store/twofa.js'
@@ -82,7 +80,6 @@
 	// Localization
 	const { t } = useI18n({
 		useScope: 'global', 
-		...text
 	})
 	// Validation
 	const phoneValidation = ref(null)
@@ -94,8 +91,8 @@
 	// Accessing state
 	const availableTabs = computed(() => {
 	    const tabs = [
-	        { name: t('phone'), value: 'phone' },
-	        { name: t('email'), value: 'email' }
+	        { name: t('auth.signUp.phone'), value: 'phone' },
+	        { name: t('auth.signUp.email'), value: 'email' }
 	    ];
 	    return tabs.filter(tab => !globals.state.options.auth.authMethodsExclude.includes(tab.value));
 	});

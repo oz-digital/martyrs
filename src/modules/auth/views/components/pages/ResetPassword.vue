@@ -2,8 +2,8 @@
 	<section class="t-left pd-medium">
 		<!-- <img loading="lazy" src="@/assets/icons/password.png" class="i-extra mn-b-small"> -->
 		<!-- Header -->
-		<h3 class="mn-b-small">{{ t('forgotPasswordTitle') }}</h3>
-		<p class="mn-b-small t-transp">{{ t('instructions') }}</p>
+		<h3 class="mn-b-small">{{ t('auth.resetPassword.forgotPasswordTitle') }}</h3>
+		<p class="mn-b-small t-transp">{{ t('auth.resetPassword.instructions') }}</p>
 		
 		<!-- Select -->
 		<div 
@@ -22,7 +22,7 @@
 		<!-- Phone -->
 			<transition name="slide-fade">
 				<div v-if="tabAuth === 'phone'" class="mn-b-semi radius-small">
-					<p class="mn-b-small t-transp">{{ t('smsInfo') }}</p>
+					<p class="mn-b-small t-transp">{{ t('auth.resetPassword.smsInfo') }}</p>
 					<FieldPhone
 						@change="(event) => auth.state.user.phone = event" 	
 						:dropdownOptions="{
@@ -32,7 +32,7 @@
 						}"
 						:validation="phoneValidation" 
 						mode="national"
-						:inputOptions="{placeholder: t('phonePlaceholder')}"
+						:inputOptions="{placeholder: t('auth.resetPassword.phonePlaceholder')}"
 						class="bg-light h-4r pd-small radius-small mn-b-thin" 
 					/>
 				</div>
@@ -40,10 +40,10 @@
 			<!-- Email -->
 			<transition name="slide-fade">
 				<div v-if="tabAuth === 'email'" class="mn-b-semi radius-small o-hidden">
-					<p class="mn-b-small t-transp">{{ t('emailInfo') }}</p>
+					<p class="mn-b-small t-transp">{{ t('auth.resetPassword.emailInfo') }}</p>
 					<Field 
 						v-model:field="auth.state.user.email" 		
-						:placeholder="t('emailPlaceholder')" 	
+						:placeholder="t('auth.resetPassword.emailPlaceholder')" 	
 						:validation="emailValidation" 
 						class="bg-light h-4r pd-medium radius-small" 
 					/>
@@ -51,7 +51,7 @@
 			</transition>
 		</div>
 		<!-- Button -->
-		<Button :submit="onSubmit" :callback="redirectTo" class="w-100 bg-main">{{ t('sendCode') }}</Button>
+		<Button :submit="onSubmit" :callback="redirectTo" class="w-100 bg-main">{{ t('auth.resetPassword.sendCode') }}</Button>
 	</section> 
 </template>
 
@@ -65,8 +65,6 @@ import Button        from '@martyrs/src/components/Button/Button.vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-// Localization
-import text from '@martyrs/src/modules/auth/views/localization/ResetPassword.json'
 // Import state
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as twofa from '@martyrs/src/modules/auth/views/store/twofa.js'
@@ -76,7 +74,6 @@ import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/i
 // Localization
 const { t } = useI18n({
 	useScope: 'global', 
-	...text
 })
 // Validation
 const phoneValidation = ref(null)
@@ -87,8 +84,8 @@ const router = useRouter()
 // Accessing state
 const availableTabs = computed(() => {
     const tabs = [
-        { name: t('phone'), value: 'phone' },
-        { name: t('email'), value: 'email' }
+        { name: t('auth.resetPassword.phone'), value: 'phone' },
+        { name: t('auth.resetPassword.email'), value: 'email' }
     ];
     return tabs.filter(tab => !globals.state.options.auth.authMethodsExclude.includes(tab.value));
 });

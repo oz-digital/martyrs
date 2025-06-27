@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue'
+import IconShow from '@martyrs/src/modules/icons/actions/IconShow.vue';
+
 const emit = defineEmits(['update:field', 'focus', 'blur']);
+
 const props = defineProps({
   label: null,
   symbol: null,
@@ -13,33 +16,29 @@ const props = defineProps({
   tabindex: -1,
   autofocus: false
 });
+
 if (props.value) {
   emit('update:field', props.value)
 }
+
 const textarea = ref(null);
 const input = ref(null);
+const showPassword = ref(false);
 
 function resize() {
   if (!textarea.value) {
     textarea.value.style.height = '';
     return;
   }
-  
   const el = textarea.value;
-  
-  // Сначала сбрасываем высоту для правильного расчета scrollHeight
   el.style.height = '';
-  
   const scrollHeight = el.scrollHeight;
-  
-  // Теперь устанавливаем высоту на основе scrollHeight
   if (scrollHeight > 33) {
     el.style.height = scrollHeight + 'px';
   } else {
     el.style.height = '';
   }
 }
-
 
 function focus() {
   if (props.autofocus) {
@@ -51,14 +50,12 @@ function focus() {
   }
 }
 
-// Следим за изменениями поля
 watch(() => props.field, () => {
   if (props.type === 'textarea') {
     nextTick(resize);
   }
 });
 
-// Autofocus
 watch(() => props.autofocus, (newVal) => {
   if (newVal) {
     nextTick(focus);
@@ -72,32 +69,31 @@ onMounted(() => {
 
 const text = ref(props.field);
 </script>
+
 <template>
-  <div 
+  <div
     :class="[
-      $attrs.class, 
-      { 
-        'bg-fourth-nano': validation 
-      }
-    ]" 
+      $attrs.class,
+      { 'bg-fourth-nano': validation }
+    ]"
     class="flex-center flex-nowrap flex"
   >
-    <div 
-      v-if="label" 
+    <div
+      v-if="label"
       class="t-transp mn-r-small"
     >
       <span class="t-nowrap">
         {{label}}
       </span>
     </div>
-    <div class="w-100">
-      <input 
+    <div class="w-100 pos-relative">
+      <input
         v-if="type !== 'textarea'"
         ref="input"
         @input="event => text = emit('update:field', event.target.value)"
         @focus="event => emit('focus', event)"
         @blur="event => emit('blur', event)"
-        :type="type"
+        :type="type === 'password' && !showPassword ? 'password' : type === 'password' ? 'text' : type"
         class="w-100"
         :value="field"
         :placeholder="placeholder"
@@ -105,7 +101,7 @@ const text = ref(props.field);
         :disabled="disabled"
         :autofocus="autofocus"
       />
-      <textarea 
+      <textarea
         v-else
         ref="textarea"
         @input="event => text = emit('update:field', event.target.value)"
@@ -117,10 +113,16 @@ const text = ref(props.field);
         :tabindex="tabindex"
         :disabled="disabled"
       />
-    </div> 
+    </div>
+    <IconShow
+      v-if="type === 'password'"
+      :show="!showPassword"
+      @click="showPassword = !showPassword"
+      class="i-medium cursor-pointer"
+    />
     <slot></slot>
-    <div 
-      v-if="symbol" 
+    <div
+      v-if="symbol"
       class="t-transp mn-l-small"
     >
       <span>
@@ -135,21 +137,34 @@ const text = ref(props.field);
     </div>
   </transition>
 </template>
+
 <style scoped>
-input, textarea, span {
+input,
+textarea,
+span {
   line-height: 1;
   color: inherit;
 }
+
 textarea {
   resize: none;
   overflow: hidden;
-  height: 1rem; 
+  height: 1rem;
   line-height: 1rem;
 }
+
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Это инвертирует иконку, подходит при светлом фоне */
+  filter: invert(1);
   opacity: 1;
   color: inherit;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.pos-relative {
+  position: relative;
 }
 </style>

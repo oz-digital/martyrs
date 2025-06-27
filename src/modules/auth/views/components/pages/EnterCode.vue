@@ -3,10 +3,10 @@
 		<!-- <img loading="lazy" src="@/assets/icons/message1.png" class="i-extra mn-b-small"> -->
 
 		<h3 class="mn-b-medium">
-			{{ t('verifyNumberTitle') }}
+			{{ t('auth.enterCode.verifyNumberTitle') }}
 		</h3>
 
-		<p class="mn-b-big t-transp">{{ t('instructions') }}</p>
+		<p class="mn-b-big t-transp">{{ t('auth.enterCode.instructions') }}</p>
 
 		<div class="w-100 mn-b-big flex-nowrap flex">
       		<input 
@@ -49,18 +49,18 @@
     	</div>
 
 		<a v-if="resendTimer < 1" @click="sendAgain" class="t-blue">
-			{{ t('resendCode') }}
+			{{ t('auth.enterCode.resendCode') }}
 		</a>
 
 		<span v-else>
-			{{resendTimer}} {{ t('secondsResend') }}
+			{{resendTimer}} {{ t('auth.enterCode.secondsResend') }}
 		</span>
 	</section>
 </template>
 
 <script setup>
 	// Import components
-	import Field         from '@martyrs/src/components/Field/Field.vue'
+	import Field from '@martyrs/src/components/Field/Field.vue'
 	// Import libs
 	import { computed,reactive,ref, onMounted, onBeforeMount, watch } from 'vue'
 	import { useRoute,useRouter } from 'vue-router'
@@ -74,11 +74,9 @@
 	const router = useRouter()
 
 	// Localization
-	import text from '@martyrs/src/modules/auth/views/localization/EnterCode.json'
 	// Localization
 	const { t } = useI18n({
 		useScope: 'global', 
-		...text
 	})
 	
 	const state = reactive({

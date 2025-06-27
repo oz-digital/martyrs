@@ -2,9 +2,9 @@
 	<section class="t-left pd-medium">
 		<!-- Header -->
 		<!-- <img loading="lazy" src="@/assets/icons/password.png" class="i-extra mn-b-small"> -->
-		<h3 class="mn-b-small">{{ t('almostDone') }}</h3>
-		<p v-if="route.query.method === 'reset-password'" class="mn-b-semi t-transp">{{ t('newPasswordPrompt') }}</p>
-		<p v-else class="mn-b-semi t-transp">{{ t('registrationPasswordPrompt') }}</p>
+		<h3 class="mn-b-small">{{ t('auth.enterPassword.almostDone') }}</h3>
+		<p v-if="route.query.method === 'reset-password'" class="mn-b-semi t-transp">{{ t('auth.enterPassword.newPasswordPrompt') }}</p>
+		<p v-else class="mn-b-semi t-transp">{{ t('auth.enterPassword.registrationPasswordPrompt') }}</p>
 	
 		<!-- Form -->
 		<div class="mn-b-semi radius-small o-hidden">
@@ -12,13 +12,13 @@
 				v-model:field="auth.state.user.password"
 				type="password" 	
 				:validation="passswordValidation" 
-				:placeholder="t('passwordPlaceholder')"		
+				:placeholder="t('auth.enterPassword.passwordPlaceholder')"		
 				class="bg-light pd-small radius-small mn-b-thin"
 			/>
 			<Field 
 				v-model:field="auth.state.user.passwordRepeat"
 				type="password" 	
-				:placeholder="t('repeatPasswordPlaceholder')"
+				:placeholder="t('auth.enterPassword.repeatPasswordPlaceholder')"
 				class="bg-light pd-small radius-small mn-b-thin"
 			/>
 		</div>
@@ -30,8 +30,8 @@
 		</div>
 		<!-- Button -->
 		<Button :submit="onSubmit" :callback="redirectTo" class="w-100 bg-main mn-b-big">
-			<span  v-if="route.query.method === 'reset-password'">{{ t('changePasswordBtn') }}</span>
-			<span v-else>{{ t('registerBtn') }}</span>
+			<span  v-if="route.query.method === 'reset-password'">{{ t('auth.enterPassword.changePasswordBtn') }}</span>
+			<span v-else>{{ t('auth.enterPassword.registerBtn') }}</span>
 		</Button>
 	</section> 
 </template>
@@ -51,11 +51,8 @@ import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
 const passswordValidation = ref(null)
 // Localization
-import text from '@martyrs/src/modules/auth/views/localization/EnterPassword.json'
-// Localization
 const { t } = useI18n({
 	useScope: 'global', 
-	...text
 })
 // Accessing router
 const route = useRoute()

@@ -4,13 +4,13 @@
 		<img loading="lazy" :src="'/logo/logo.svg'" class="i-extra radius-small mn-b-small">
 
 		<h3 class="mn-b-medium">
-			{{ t('title') }}
+			{{ t('auth.signIn.title') }}
 			<br>
-			<span class="t-semi">{{ t('subtitle') }}</span>
+			<span class="t-semi">{{ t('auth.signIn.subtitle') }}</span>
 		</h3>
 
 		<p class="mn-b-big">
-			<router-link :to="{name: 'Sign Up', query: { returnUrl: route.query?.returnUrl}}" class="underline t-second">{{ t('signup') }}</router-link>
+			<router-link :to="{name: 'Sign Up', query: { returnUrl: route.query?.returnUrl}}" class="underline t-second">{{ t('auth.signIn.signup') }}</router-link>
 		</p>
 		
 		<!-- Select -->
@@ -40,7 +40,7 @@
 						:validCharactersOnly="true"
 						:validation="phoneValidation" 
 						mode="national"
-						:inputOptions="{placeholder: t('phonePlaceholder'), type: 'tel'}"
+						:inputOptions="{placeholder: t('auth.signIn.phonePlaceholder'), type: 'tel'}"
 						class="bg-light h-4r pd-small radius-small mn-b-thin" 
 					/>
 					
@@ -50,7 +50,7 @@
 				<div v-show="tabAuth === 'email'" class="mn-b-thin radius-small o-hidden">
 					<Field 
 						v-model:field="auth.state.user.email" 	
-						:placeholder="t('emailPlaceholder')" 	
+						:placeholder="t('auth.signIn.emailPlaceholder')" 	
 						:validation="emailValidation"
 						:tabIndex="-1"
 						class="bg-light h-4r pd-medium radius-small" 
@@ -64,7 +64,7 @@
 			v-model:field="auth.state.user.password"
 			type="password" 	
 			:validation="passswordValidation" 
-			:placeholder="t('passwordPlaceholder')" 
+			:placeholder="t('auth.signIn.passwordPlaceholder')" 
 			class="
         bg-light
         pd-medium
@@ -79,7 +79,7 @@
 				:to="{name: 'Reset Password', query: { returnUrl: route.query?.returnUrl}}"
 				class="underline d-block t-blue"
 			>
-				{{ t('forgotPassword') }}
+				{{ t('auth.signIn.forgotPassword') }}
 			</router-link>
 		</div>
 		<!-- Button -->
@@ -88,7 +88,7 @@
 			:callback="redirectTo" 
 			class="w-100 bg-main"
 		>
-			{{ t('signin') }}
+			{{ t('auth.signIn.signin') }}
 		</Button>
 		
 		<!-- <Button 
@@ -96,7 +96,7 @@
 			:callback="redirectTo" 
 			class="mn-b-thin bg-black t-white"
 		>
-			{{ t('signin_apple') }}
+			{{ t('auth.signIn.signin_apple') }}
 		</Button> -->
 	</section> 
 </template>
@@ -111,8 +111,6 @@ import Button        from '@martyrs/src/components/Button/Button.vue'
 import { computed, onMounted, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-// Import localization
-import text from '@martyrs/src/modules/auth/views/localization/SignIn.json'
 // Import state
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
@@ -127,14 +125,13 @@ const route = useRoute()
 const router = useRouter()
 // Localization
 const { t } = useI18n({
-	useScope: 'global', 
-	...text
+	useScope: 'global'
 })
 // Accessing state
 const availableTabs = computed(() => {
     const tabs = [
-        { name: t('phone'), value: 'phone' },
-        { name: t('email'), value: 'email' }
+        { name: t('auth.signIn.phone'), value: 'phone' },
+        { name: t('auth.signIn.email'), value: 'email' }
     ];
     return tabs.filter(tab => !globals.state.options.auth.authMethodsExclude.includes(tab.value));
 });
