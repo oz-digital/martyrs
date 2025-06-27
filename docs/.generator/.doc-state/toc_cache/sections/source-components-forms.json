@@ -1,0 +1,77 @@
+{
+  "section": {
+    "id": "source-components-forms",
+    "title": "Проект: Компоненты / Forms",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "column-settings",
+        "title": "Настройки столбцов",
+        "description": "Компоненты для настройки отображения столбцов.",
+        "files": [
+          {
+            "name": "ColumnSettingsMenu.vue",
+            "path": "forms/ColumnSettingsMenu.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "reorder-settings",
+        "title": "Настройки переупорядочивания",
+        "description": "Компоненты для настройки переупорядочивания элементов.",
+        "files": [
+          {
+            "name": "ReorderSettingsForm.vue",
+            "path": "forms/ReorderSettingsForm.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "stock-audit",
+        "title": "Аудит запасов",
+        "description": "Компоненты для аудита запасов.",
+        "files": [
+          {
+            "name": "StockAuditForm.vue",
+            "path": "forms/StockAuditForm.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "stock-history",
+        "title": "История запасов",
+        "description": "Компоненты для отображения истории запасов.",
+        "files": [
+          {
+            "name": "StockHistoryView.vue",
+            "path": "forms/StockHistoryView.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "0e6857c3c4fe193860f7d61ec8c49bf6",
+    "1d2d7be4689d24c2a2cd6288daf49a7c",
+    "d425a225e981a639acb2ade0d88d77e2",
+    "fa4362d4fa08c25ab05cdb533767e69c"
+  ],
+  "groupHash": "909ad18084aaec6139c4a9483a5922c5",
+  "generated": "2025-06-26T11:21:08.200Z"
+}

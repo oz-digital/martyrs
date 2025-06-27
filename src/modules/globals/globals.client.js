@@ -25,12 +25,26 @@ import datePickerPlugin from './views/plugins/date-picker.plugin.js';
 import storeDebuggerPlugin from './views/plugins/store-debugger/store-debugger.plugin.js';
 
 import store from './views/classes/store.js';
-
 import websockets from './views/classes/globals.websocket.js';
+import { i18nManager }  from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+
+import en from './locales/en.js';
+import ru from './locales/ru.js';
+
 
 // Пример функции инициализации для модуля заказов
 function initializeGlobals(app, store, router, config, options = {}) {
   const route = options.route || 'Home';
+
+  const locales = {
+    en: en,
+    ru: ru,
+    es: {}  // или es: undefined
+  };
+
+  i18nManager.register('globals', locales);
+
+  console.log('mesages is',  i18nManager.getAllMessages())
 
   const envVariables = ['NODE_ENV', 'PORT', 'APP_NAME', 'DOMAIN_URL', 'API_URL', 'WSS_URL', 'FILE_SERVER_URL', 'WDT_TOKEN', 'WDM_URL_PROD', 'GOOGLE_MAPS_API_KEY', 'MOBILE_APP'];
 

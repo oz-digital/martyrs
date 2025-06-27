@@ -92,6 +92,11 @@ class DocumentMemoryManager {
     const docPath = path.join(this.docsDir, `${sectionId}-${docHash}.md`);
     // Сохраняем контент в файл
     await fs.writeFile(docPath, content, 'utf8');
+    
+    // Анализируем зависимости файлов для создания связей
+    const dependencies = this.extractDependenciesFromMetadata(metadata);
+    const relatedSections = this.findRelatedSectionsFromDependencies(dependencies);
+    
     // Обновляем индекс
     this.docIndex.documents[sectionId] = {
       id: sectionId,
@@ -102,19 +107,145 @@ class DocumentMemoryManager {
       metadata: {
         ...metadata,
         wordCount: content.split(/\s+/).length,
+        dependencies,
+        relatedSections
       },
     };
+    
+    // Создаем связи между разделами
+    this.createSectionRelations(sectionId, relatedSections, dependencies);
+    
     // Обновляем статистику
     this.updateDocStats();
     // Сохраняем индекс
     await this.saveDocIndex();
     // Извлекаем и сохраняем концепции из документа
-    await this.extractAndSaveConcepts(sectionId, content);
+    await this.extractAndSaveConcepts(sectionId, content, metadata);
     return {
       sectionId,
       docHash,
       docPath,
+      relatedSections
     };
+  }
+  
+  /**
+   * Извлекает зависимости из метаданных файлов
+   */
+  extractDependenciesFromMetadata(metadata) {
+    const dependencies = new Set();
+    
+    if (metadata.fileAnalysis && Array.isArray(metadata.fileAnalysis)) {
+      metadata.fileAnalysis.forEach(file => {
+        if (file.dependencies && Array.isArray(file.dependencies)) {
+          file.dependencies.forEach(dep => {
+            // Нормализуем пути зависимостей
+            const normalizedDep = this.normalizeDependencyPath(dep);
+            if (normalizedDep) {
+              dependencies.add(normalizedDep);
+            }
+          });
+        }
+      });
+    }
+    
+    return Array.from(dependencies);
+  }
+  
+  /**
+   * Нормализует путь зависимости для поиска связанных разделов
+   */
+  normalizeDependencyPath(dependency) {
+    if (!dependency || typeof dependency !== 'string') return null;
+    
+    // Убираем префиксы типа @martyrs/src/, ./,../
+    let normalized = dependency
+      .replace(/^@martyrs\/src\//, '')
+      .replace(/^\.\.?\//, '')
+      .replace(/\.(js|vue|ts|tsx|jsx)$/, '');
+    
+    // Если это относительный путь модуля, извлекаем имя модуля
+    if (normalized.includes('/')) {
+      const parts = normalized.split('/');
+      if (parts.includes('modules')) {
+        const moduleIndex = parts.indexOf('modules');
+        if (moduleIndex < parts.length - 1) {
+          return parts.slice(moduleIndex + 1).join('/');
+        }
+      }
+    }
+    
+    return normalized;
+  }
+  
+  /**
+   * Находит связанные разделы на основе зависимостей
+   */
+  findRelatedSectionsFromDependencies(dependencies) {
+    const relatedSections = [];
+    
+    // Ищем разделы, которые могут соответствовать зависимостям
+    for (const [sectionId, doc] of Object.entries(this.docIndex.documents)) {
+      for (const dependency of dependencies) {
+        if (sectionId.includes(dependency.toLowerCase()) || 
+            dependency.toLowerCase().includes(sectionId.replace(/^(source|framework)-/, ''))) {
+          relatedSections.push({
+            sectionId,
+            dependency,
+            type: 'dependency'
+          });
+        }
+      }
+    }
+    
+    return relatedSections;
+  }
+  
+  /**
+   * Создает связи между разделами документации
+   */
+  createSectionRelations(fromSectionId, relatedSections, dependencies) {
+    if (!this.docIndex.sections[fromSectionId]) {
+      this.docIndex.sections[fromSectionId] = {
+        relations: [],
+        dependencies
+      };
+    }
+    
+    // Добавляем связи на основе зависимостей
+    relatedSections.forEach(relation => {
+      const existingRelation = this.docIndex.sections[fromSectionId].relations.find(
+        r => r.toSectionId === relation.sectionId
+      );
+      
+      if (!existingRelation) {
+        this.docIndex.sections[fromSectionId].relations.push({
+          toSectionId: relation.sectionId,
+          type: relation.type,
+          strength: 1,
+          dependency: relation.dependency
+        });
+      }
+    });
+  }
+  
+  /**
+   * Находит связанные разделы для раздела
+   */
+  findRelatedSections(sectionId, maxResults = 3) {
+    const section = this.docIndex.sections[sectionId];
+    if (!section || !section.relations) return [];
+    
+    // Сортируем связи по силе и возвращаем топ-N
+    return section.relations
+      .sort((a, b) => (b.strength || 0) - (a.strength || 0))
+      .slice(0, maxResults)
+      .map(relation => ({
+        sectionId: relation.toSectionId,
+        type: relation.type,
+        strength: relation.strength,
+        dependency: relation.dependency
+      }));
   }
   /**
    * Обновляет статистику индекса документации
@@ -566,6 +697,41 @@ async saveDocumentContent(sectionId, content, metadata = {}) {
       totalRelations: this.conceptsMap.relations.length,
     };
   }
+  /**
+   * Возвращает статистику памяти документации
+   */
+  getMemoryStats() {
+    const documents = Object.values(this.docIndex.documents);
+    const sections = Object.values(this.docIndex.sections);
+    const concepts = Object.keys(this.conceptsMap.concepts);
+    
+    // Подсчитываем общее количество связей
+    const totalRelations = sections.reduce((sum, section) => {
+      return sum + (section.relations ? section.relations.length : 0);
+    }, 0);
+    
+    // Подсчитываем связи по типам
+    const relationsByType = {};
+    sections.forEach(section => {
+      if (section.relations) {
+        section.relations.forEach(relation => {
+          relationsByType[relation.type] = (relationsByType[relation.type] || 0) + 1;
+        });
+      }
+    });
+    
+    return {
+      totalDocuments: documents.length,
+      totalSections: sections.length,
+      totalConcepts: concepts.length,
+      totalRelations,
+      relationsByType,
+      averageDocLength: this.docIndex.stats.averageLength,
+      memorySize: documents.reduce((sum, doc) => sum + doc.length, 0),
+      lastUpdated: this.docIndex.lastUpdated
+    };
+  }
+  
   /**
    * Сбрасывает память документации
    */

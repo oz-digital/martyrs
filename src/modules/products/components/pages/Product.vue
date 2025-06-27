@@ -1,5 +1,5 @@
 <template>
-  <div v-if="products.state.current" class="h-100 w-100 mobile:pd-thin pd-small bg-white">
+  <div v-if="products.state.current" class="w-100 mobile:pd-thin pd-small bg-white">
     <div class="cols-2 mobile:cols-1 w-100 gap-medium">
 
       <ProductImages

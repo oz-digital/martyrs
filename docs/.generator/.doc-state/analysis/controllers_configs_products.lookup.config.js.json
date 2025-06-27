@@ -1,0 +1,56 @@
+{
+  "path": "../../src/modules/products/controllers/configs/products.lookup.config.js",
+  "relativePath": "controllers/configs/products.lookup.config.js",
+  "type": "source",
+  "name": "products.lookup.config.js",
+  "extension": ".js",
+  "analysis": {
+    "Summary": "Этот файл определяет и экспортирует конфигурации для MongoDB lookup-агрегаций, используемых при работе с продуктами, их остатками, рекомендованными товарами и категориями. Конфигурации предназначены для построения сложных агрегационных запросов к коллекциям продуктов, остатков и категорий.",
+    "Purpose": "Основное назначение файла — централизованное хранение и предоставление конфигураций для агрегационных операций (lookup и дополнительных стадий) с продуктами, чтобы их можно было переиспользовать в контроллерах или сервисах, связанных с продуктами.",
+    "Components": [
+      {
+        "name": "leftovers",
+        "responsibility": "Конфигурация для агрегации остатков по продукту и его ингредиентам, включая расчет доступного количества."
+      },
+      {
+        "name": "recommended",
+        "responsibility": "Конфигурация для агрегации рекомендованных продуктов по их идентификаторам."
+      },
+      {
+        "name": "categories",
+        "responsibility": "Конфигурация для агрегации категорий продукта и преобразования их структуры."
+      }
+    ],
+    "Functions": [
+      {
+        "name": "leftovers.lookup",
+        "purpose": "Выполняет lookup из коллекции 'leftovers' с использованием productId и ingredientsIds, а также вычисляет количество остатков.",
+        "parameters": "Использует переменные агрегации MongoDB ($let, $expr, $unwind, $match, $addFields, $project)."
+      },
+      {
+        "name": "leftovers.additionalStages",
+        "purpose": "Выполняет дополнительные стадии агрегации для расчета количеств по ингредиентам и общего доступного количества.",
+        "parameters": "MongoDB pipeline stages ($addFields, $set, $cond, $map, $sum, $divide, $min, $floor)."
+      },
+      {
+        "name": "recommended.lookup",
+        "purpose": "Lookup для получения рекомендованных продуктов по их идентификаторам.",
+        "parameters": "from, localField, foreignField, as."
+      },
+      {
+        "name": "categories.lookup",
+        "purpose": "Lookup для получения категории продукта по идентификатору.",
+        "parameters": "from, localField, foreignField, as."
+      },
+      {
+        "name": "categories.additionalStages",
+        "purpose": "Преобразует структуру категории, оставляя только нужные поля.",
+        "parameters": "$addFields, $map."
+      }
+    ],
+    "Dependencies": [],
+    "Usage": "Этот файл импортируется в контроллерах или сервисах, связанных с продуктами, для получения готовых конфигураций lookup и дополнительных стадий агрегации. Обычно используется как import productLookupConfigs from './configs/products.lookup.config.js', после чего отдельные конфигурации (например, productLookupConfigs.leftovers) вставляются в MongoDB aggregation pipeline.",
+    "Importance": 4,
+    "Notes": "Файл не содержит прямых зависимостей (import/require), так как экспортирует только объект с конфигурациями. Все операции реализованы на уровне MongoDB aggregation pipeline, что делает файл критически важным для корректной работы сложных выборок по продуктам. Структура конфигураций позволяет легко расширять и поддерживать агрегационные запросы без дублирования кода."
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "section": {
+    "id": "source-components-elements",
+    "title": "Проект: Компоненты / Elements",
+    "description": "Модуль содержит различные элементы интерфейса, используемые в приложении.",
+    "subsections": [
+      {
+        "id": "image-components",
+        "title": "Компоненты изображений",
+        "description": "Компоненты, связанные с отображением изображений.",
+        "files": [
+          {
+            "name": "Image360.vue",
+            "path": "elements/Image360.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "price-components",
+        "title": "Компоненты цены",
+        "description": "Компоненты, отвечающие за отображение цен.",
+        "files": [
+          {
+            "name": "Price.vue",
+            "path": "elements/Price.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "quantity-selector",
+        "title": "Компонент выбора количества",
+        "description": "Компонент для выбора количества товара.",
+        "files": [
+          {
+            "name": "QuantitySelector.vue",
+            "path": "elements/QuantitySelector.vue",
+            "ext": ".vue",
+            "summary": "Не удалось разобрать анализ как JSON",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "thc-component",
+        "title": "Компонент THC",
+        "description": "Компонент, связанный с THC.",
+        "files": [
+          {
+            "name": "THC.vue",
+            "path": "elements/THC.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "2bc8bb9b9e7483182a33339e7b3bc56b",
+    "d89cef4ce8c824004a2af63ef83a1504",
+    "ed1b571a501e9ca885cf35515f253f43",
+    "fb743a918a0a6fba4e720b17c1c41617"
+  ],
+  "groupHash": "677473f64571811045da9f8e635c9be9",
+  "generated": "2025-06-26T11:20:59.128Z"
+}

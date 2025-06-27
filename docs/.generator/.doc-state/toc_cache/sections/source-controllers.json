@@ -1,0 +1,61 @@
+{
+  "section": {
+    "id": "source-controllers",
+    "title": "Проект: Контроллеры",
+    "description": "Модуль, содержащий контроллеры для управления различными сущностями.",
+    "subsections": [
+      {
+        "id": "categories-controller",
+        "title": "Контроллер категорий",
+        "description": "Контроллер для управления категориями продуктов.",
+        "files": [
+          {
+            "name": "categories.controller.js",
+            "path": "controllers/categories.controller.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "leftovers-controller",
+        "title": "Контроллер остатков",
+        "description": "Контроллер для управления остатками продуктов.",
+        "files": [
+          {
+            "name": "leftovers.controller.js",
+            "path": "controllers/leftovers.controller.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "products-controller",
+        "title": "Контроллер продуктов",
+        "description": "Контроллер для управления продуктами.",
+        "files": [
+          {
+            "name": "products.controller.js",
+            "path": "controllers/products.controller.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "7c47d497b0b42625ac390af95d2767a3",
+    "88759ef7308f4bbdebbefeb80b7a79f8",
+    "b9499209a0fe0f96d4b22e1b98a9afbc"
+  ],
+  "groupHash": "c9e3cf5f82b1d9eafc17092344046255",
+  "generated": "2025-06-26T11:19:45.573Z"
+}

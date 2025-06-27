@@ -1,0 +1,38 @@
+{
+  "section": {
+    "id": "source-middlewares",
+    "title": "Проект: Middlewares",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "verifiers",
+        "title": "Проверка категорий и вариантов",
+        "description": "Модули для валидации данных категорий и вариантов."
+      }
+    ],
+    "files": [
+      {
+        "name": "categories.verifier.js",
+        "path": "middlewares/categories.verifier.js",
+        "ext": ".js",
+        "summary": "Нет описания",
+        "purpose": "Неизвестно",
+        "importance": 1
+      },
+      {
+        "name": "variants.verifier.js",
+        "path": "middlewares/variants.verifier.js",
+        "ext": ".js",
+        "summary": "Нет описания",
+        "purpose": "Неизвестно",
+        "importance": 1
+      }
+    ]
+  },
+  "fileHashes": [
+    "270cbf6c6ef040fa4f5663f066676d50",
+    "de5c88b40369b2eb9d95cd4b74507e88"
+  ],
+  "groupHash": "c182cefc257355a9a414475e9b9146fc",
+  "generated": "2025-06-26T11:19:57.866Z"
+}

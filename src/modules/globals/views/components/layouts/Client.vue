@@ -114,37 +114,48 @@
 	    </component>
 		  <!-- rows-1-min0_max1 z-index-1 pos-relative w-100 h-100 -->
 		  <div class="rows-1-min0_max1 z-index-1 pos-relative w-100 h-100">
-  			<Status 
-					v-if="globals.state.error.show" 
-					:data="globals.state.error"
-					@close="globals.state.error.show = false"
-					class="z-index-7" 
-				/>
-				 <Suspense @resolve="onSuspenseResolved">
-					<router-view  
-						id="view"
-						v-slot="{ Component, route }" 
-						:class="{
-							'scroll-hide': MOBILE_APP,
-						}"
-						class="o-y-scroll o-x-hidden flex flex-column pos-relative h-100"
-					>
-						<transition @before-enter="scrollTop" name="scaleTransition" mode="out-in" appear>
-			      	<component 
-			      		ref="page"  
-			      		:is="Component" 
-			      		:key="route.path"
-			      		class="w-100 h-min-100"
-		      		 	@page-loading="handlePageLoading"
-	              @page-loaded="handlePageLoaded"
-			      	/>
-			      	<!-- Key пока выключил непонятно какие проблемы это вызовет -->
-			      	<!--  -->
-			      </transition>
-
-			      <!-- <Footer /> -->
-					</router-view>
-				</Suspense>
+		  	<div class="o-y-scroll o-x-hidden h-100">
+	  			<Status 
+	  				v-if="globals.state.error.show"
+						:data="globals.state.error"
+						@close="globals.state.error.show = false"
+						class="z-index-7" 
+					/>
+					<div class="h-min-100 pos-relative w-100">
+				 		<Suspense @resolve="onSuspenseResolved">
+							<router-view  
+								id="view"
+								v-slot="{ Component, route }" 
+								:class="{
+									'scroll-hide': MOBILE_APP,
+								}"
+								class="h-min-100 pos-relative w-100"
+							>
+								<transition @before-enter="scrollTop" name="scaleTransition" mode="out-in" appear>
+					      	<component 
+					      		ref="page"  
+					      		:is="Component" 
+					      		:key="route.path"
+					      		class="w-100 h-min-100"
+				      		 	@page-loading="handlePageLoading"
+			              @page-loaded="handlePageLoaded"
+					      	/>
+					      	<!-- Key пока выключил непонятно какие проблемы это вызовет -->
+					      	<!--  -->
+					      </transition>
+						  </router-view>
+						</Suspense>
+				  </div>
+			  
+	        <component
+						v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter"
+			      ref="footer" 
+			      :is="route.meta.footer"
+			      :theme="headerTheme"
+			      :logotype="route.meta.logotype"
+			      :location="route.meta.location"
+			    />
+				</div>
 			</div>
 		</section>
 
@@ -157,14 +168,7 @@
     	/>
 		</router-view>
 
-	  <component
-			v-if="!MOBILE_APP && route.meta.footer?.component && !route.meta.hideFooter"
-      ref="footer" 
-      :is="route.meta.footer.component"
-      :theme="headerTheme"
-      :logotype="route.meta.footer.logotype"
-      :location="route.meta.footer.location"
-    />
+	
 
     <component 
       v-if="MOBILE_APP && route.meta.title_hide"
@@ -190,7 +194,6 @@
 
 	import NavigationBar from '@martyrs/src/modules/globals/views/components/partials/NavigationBar.vue';
 	import LocationSelection from '@martyrs/src/modules/globals/views/components/partials/LocationSelection.vue';
-	// import Footer from '@martyrs/src/modules/globals/views/components/partials/Footer.vue'
 
 	import ShopCart from '@martyrs/src/modules/orders/components/partials/ShopCart.vue';
 	// PROPS

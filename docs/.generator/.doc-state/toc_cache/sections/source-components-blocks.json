@@ -1,0 +1,90 @@
+{
+  "section": {
+    "id": "source-components-blocks",
+    "title": "Проект: Компоненты / Blocks",
+    "description": "Модуль содержит компоненты для отображения различных карточек и продуктов.",
+    "subsections": [
+      {
+        "id": "card-components",
+        "title": "Компоненты карточек",
+        "description": "Компоненты для отображения карточек различных категорий и продуктов.",
+        "files": [
+          {
+            "name": "CardCategory.vue",
+            "path": "blocks/CardCategory.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "CardLeftover.vue",
+            "path": "blocks/CardLeftover.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "CardPosition.vue",
+            "path": "blocks/CardPosition.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "CardProduct.vue",
+            "path": "blocks/CardProduct.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "product-components",
+        "title": "Компоненты продуктов",
+        "description": "Компоненты для отображения информации о продуктах.",
+        "files": [
+          {
+            "name": "ProductDiscounts.vue",
+            "path": "blocks/ProductDiscounts.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "ProductImages.vue",
+            "path": "blocks/ProductImages.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "ProductVariants.vue",
+            "path": "blocks/ProductVariants.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "024661e1e55039671a427ca101d85536",
+    "26bdfdc492a21d25b39fc3f3a1db86dd",
+    "6f1b1c4753eefc83f13bea6ec927e2cd",
+    "aa93dffde3dd1798b06d194c3b5a4e36",
+    "acfb1b2bdeb0793bf6c36d1e40863d30",
+    "bc32a06c146fa096ddd72892cd2cb3e9",
+    "d3a6e7ee9aae0cec513b4c6707ab9142"
+  ],
+  "groupHash": "ef570b5b4418ee0322c520c7667ed032",
+  "generated": "2025-06-26T11:20:45.659Z"
+}

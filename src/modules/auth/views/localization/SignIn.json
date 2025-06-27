@@ -1,6 +1,6 @@
 {
   "messages": {
-    "en-default": {
+    "en": {
       "title": "Welcome to OZ DAO,",
       "subtitle": "Sign In to Continue",
       "signup": "Don't have an account?",
@@ -15,7 +15,7 @@
       "signin_apple": "Sign In with Apple",
       "soon": "SOON"
     },
-    "ru-default": {
+    "ru": {
       "title": "Приветствуем вас,",
       "subtitle": "Войдите для продолжения",
       "signup": "Нет аккаунта?",

@@ -1,0 +1,113 @@
+{
+  "section": {
+    "id": "source-components-sections",
+    "title": "Проект: Компоненты / Sections",
+    "description": "Модуль содержит компоненты для редактирования и отображения информации о продуктах.",
+    "subsections": [
+      {
+        "id": "edit-attributes",
+        "title": "Редактирование атрибутов",
+        "description": "Компоненты для редактирования различных атрибутов продуктов.",
+        "files": [
+          {
+            "name": "EditAttributes.vue",
+            "path": "sections/EditAttributes.vue"
+          },
+          {
+            "name": "EditCategories.vue",
+            "path": "sections/EditCategories.vue"
+          },
+          {
+            "name": "EditDiscounts.vue",
+            "path": "sections/EditDiscounts.vue"
+          },
+          {
+            "name": "EditIngredients.vue",
+            "path": "sections/EditIngredients.vue"
+          },
+          {
+            "name": "EditRecommended.vue",
+            "path": "sections/EditRecommended.vue"
+          },
+          {
+            "name": "EditVariants.vue",
+            "path": "sections/EditVariants.vue"
+          }
+        ]
+      },
+      {
+        "id": "product-filtering",
+        "title": "Фильтрация продуктов",
+        "description": "Компоненты для фильтрации и отображения продуктов.",
+        "files": [
+          {
+            "name": "FilterProducts.vue",
+            "path": "sections/FilterProducts.vue"
+          },
+          {
+            "name": "ProductsPopular.vue",
+            "path": "sections/ProductsPopular.vue"
+          },
+          {
+            "name": "ProductsRecommended.vue",
+            "path": "sections/ProductsRecommended.vue"
+          }
+        ]
+      },
+      {
+        "id": "product-display",
+        "title": "Отображение продуктов",
+        "description": "Компоненты для отображения информации о продуктах.",
+        "files": [
+          {
+            "name": "ProductInformationSection.vue",
+            "path": "sections/ProductInformationSection.vue"
+          },
+          {
+            "name": "SectionProduct.vue",
+            "path": "sections/SectionProduct.vue"
+          }
+        ]
+      },
+      {
+        "id": "hero-recommendation",
+        "title": "Рекомендации",
+        "description": "Компоненты для отображения рекомендаций.",
+        "files": [
+          {
+            "name": "HeroRecommendation.vue",
+            "path": "sections/HeroRecommendation.vue"
+          }
+        ]
+      },
+      {
+        "id": "product-configurator",
+        "title": "Конфигуратор продуктов",
+        "description": "Компоненты для настройки и конфигурации продуктов.",
+        "files": [
+          {
+            "name": "ProductConfigurator.vue",
+            "path": "sections/ProductConfigurator.vue"
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "1327e1d80b039cadb8dd6375618f59fe",
+    "3b224f070a5e69948645af3ba5a722a7",
+    "475385b87299787927d3c3e21d19baf7",
+    "493c82f9126e247400cf6de7e52f9882",
+    "88ea0162324348f61f398e83134bbb7b",
+    "890d548bbdc6d0f812452e6fa9485824",
+    "9eec83f70a10277cc63908295294bb84",
+    "b7e0417eaffda879891667342b2738d3",
+    "c2b0f24f58958af3d987bd046b51a35b",
+    "d7279edff77808265a65c1da09190d53",
+    "e879cd5cb48dc4132a1b9c5a96821bca",
+    "f46e1a70c408356c5e05c2b45358eaef",
+    "f9fbbfe498d6087705dd997e8b956b76"
+  ],
+  "groupHash": "c0e719bcb3650b5c977dd52d7d77709e",
+  "generated": "2025-06-26T11:21:28.950Z"
+}

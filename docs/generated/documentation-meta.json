@@ -1,0 +1,15 @@
+{
+  "path": "../generated/documentation.md",
+  "size": 2017,
+  "lastModified": "2025-06-26T16:23:39.926Z",
+  "memoryStats": {
+    "totalDocuments": 123,
+    "totalSections": 0,
+    "totalConcepts": 288,
+    "totalRelations": 0,
+    "relationsByType": {},
+    "averageDocLength": 1241,
+    "memorySize": 152651,
+    "lastUpdated": "2025-06-26T14:35:16.543Z"
+  }
+}

@@ -1,12 +1,12 @@
 {
   "messages": {
-    "en-default": {
+    "en": {
       "verifyNumberTitle": "Verify Number",
       "instructions": "We have sent a registration code to your phone number. Please enter it in the field below:",
       "resendCode": "Send the code again",
       "secondsResend": "seconds to the possibility of sending the code again."
     },
-    "ru-default": {
+    "ru": {
       "verifyNumberTitle": "Подтвердите номер",
       "instructions": "Мы отправили код регистрации на ваш номер телефона. Введите его в поле ниже:",
       "resendCode": "Отправить код еще раз",

@@ -1,6 +1,6 @@
 {
   "messages": {
-    "en-default": {
+    "en": {
       "wallet": {
         "title": "Your Wallet",
         "subtitle": "Earn WDT by purchasing our weed or contributing to the community.",
@@ -14,7 +14,7 @@
         "depositWithCrypto": "deposit with crypto"
       }
     },
-    "ru-default": {
+    "ru": {
       "wallet": {
         "title": "Ваш Кошелек",
         "subtitle": "Зарабатывайте WDT, покупая товары или внося вклад в сообщество.",

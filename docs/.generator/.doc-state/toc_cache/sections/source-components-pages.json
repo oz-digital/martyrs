@@ -1,0 +1,106 @@
+{
+  "section": {
+    "id": "source-components-pages",
+    "title": "Проект: Компоненты / Страницы",
+    "description": "Модуль содержит компоненты страниц для управления категориями и продуктами.",
+    "subsections": [
+      {
+        "id": "categories",
+        "title": "Категории",
+        "description": "Компоненты для отображения и редактирования категорий.",
+        "files": [
+          {
+            "name": "Categories.vue",
+            "path": "pages/Categories.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "CategoryEdit.vue",
+            "path": "pages/CategoryEdit.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "leftovers",
+        "title": "Остатки",
+        "description": "Компоненты для управления остатками продуктов.",
+        "files": [
+          {
+            "name": "Leftovers.vue",
+            "path": "pages/Leftovers.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "LeftoverEdit.vue",
+            "path": "pages/LeftoverEdit.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "products",
+        "title": "Продукты",
+        "description": "Компоненты для отображения и редактирования продуктов.",
+        "files": [
+          {
+            "name": "Products.vue",
+            "path": "pages/Products.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "Product.vue",
+            "path": "pages/Product.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "ProductEdit.vue",
+            "path": "pages/ProductEdit.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "ProductRecommmendation.vue",
+            "path": "pages/ProductRecommmendation.vue",
+            "ext": ".vue",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "122fb4114a8ae8992135b159f91fb28f",
+    "18dcdb5e3ae77a3cc2905b0ec4f34849",
+    "2c0a32f0d7c3c4734919bd1a4584042e",
+    "55c3a05a095a24256dd6dbf13ca39129",
+    "6d3cb21535f3b2233e4c1adac476877f",
+    "79267f03591317ab0f8329fc16e47bef",
+    "b448d30ee93f1a34ebc0002a115dbf45",
+    "bf668829ac8a0ba60c31b7e51b224793"
+  ],
+  "groupHash": "13dc2820d865e7592acbbb1df024a1f3",
+  "generated": "2025-06-26T11:21:19.152Z"
+}

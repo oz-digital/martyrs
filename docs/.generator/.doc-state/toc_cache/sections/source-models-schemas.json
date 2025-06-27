@@ -1,0 +1,45 @@
+{
+  "section": {
+    "id": "source-models-schemas",
+    "title": "Проект: Модели / Schemas",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "discount-schema",
+        "title": "Схема скидок",
+        "description": "Содержит определения для работы со скидками.",
+        "files": [
+          {
+            "name": "discount.schema.js",
+            "path": "schemas/discount.schema.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "ingredient-schema",
+        "title": "Схема ингредиентов",
+        "description": "Содержит определения для работы с ингредиентами.",
+        "files": [
+          {
+            "name": "ingredient.schema.js",
+            "path": "schemas/ingredient.schema.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "246e553fbc1df6ff6c4b0e45a57802b1",
+    "db874482779637b06f947f5917a04026"
+  ],
+  "groupHash": "5884ebecbf63c2777a2ce60f39daa3a0",
+  "generated": "2025-06-26T11:20:10.283Z"
+}

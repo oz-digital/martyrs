@@ -1,42 +1,38 @@
 <template>
-	<div style="min-height: 100%;" class="h-min-100">
-		
+	 <div class="cols-2-1_3 z-index-3 pos-relative radius-big">
 
-		 <div class="cols-2-1_3 h-100 z-index-3 pos-relative radius-big">
+		<div class="o-y-scroll br-r br-solid br-light  z-index-2 desktop-only h-100 pos-relative">
+     	<BlockFilter
+        v-model:filter="marketplace.state.filter"
+        :options="marketplace.state.filter.options"
+        class="h-100 w-100 pd-medium"
+	    />
+	  </div>
 
-			<div class="o-y-scroll br-r br-solid br-light  z-index-2 desktop-only h-100 pos-relative">
-	     	<BlockFilter
-          v-model:filter="marketplace.state.filter"
-          :options="marketplace.state.filter.options"
-          class="h-100 w-100 pd-medium"
-		    />
-		  </div>
+		<!-- Catalog wrapper -->
+		<div class="pd-thin">
+			<header class="pd-medium radius-medium bg-light mn-b-thin">
+	    	<h2 class="">
+	    		<span class="">Weed Deliveries in </span>
 
-			<!-- Catalog wrapper -->
-			<div class="pd-thin">
-				<header class="pd-medium radius-medium bg-light mn-b-thin">
-		    	<h2 class="">
-		    		<span class="">Weed Deliveries in </span>
+	    		<span 
+	    			v-if="localPosition.city || localPosition.state || localPosition.country"
+	    			@click="a => { globals.state.isOpenLocationPopup = true }" 
+	    			class="t-main t-semi cursor-pointer "
+	    		>
+	  				<template v-if="localPosition.city">{{localPosition.city}}, </template>
+	  				<template v-if="localPosition.state">{{localPosition.state}}, </template>
+	  				<template v-if="localPosition.country">{{localPosition.country}}</template>
+	    		</span>
 
-		    		<span 
-		    			v-if="localPosition.city || localPosition.state || localPosition.country"
-		    			@click="a => { globals.state.isOpenLocationPopup = true }" 
-		    			class="t-main t-semi cursor-pointer "
-		    		>
-		  				<template v-if="localPosition.city">{{localPosition.city}}, </template>
-		  				<template v-if="localPosition.state">{{localPosition.state}}, </template>
-		  				<template v-if="localPosition.country">{{localPosition.country}}</template>
-		    		</span>
+	    		<span v-else @click="a => { globals.state.isOpenLocationPopup = true }"  class="t-main t-semi cursor-pointer">The World</span>
+	    	</h2>
+			</header>
 
-		    		<span v-else @click="a => { globals.state.isOpenLocationPopup = true }"  class="t-main t-semi cursor-pointer">The World</span>
-		    	</h2>
-				</header>
-
-				<div class="rows-1">
-					<router-view  v-slot="{ Component, route }">
-						<component ref="page" :key="route" :localPosition="localPosition" :is="Component" />
-					</router-view>
-				</div>
+			<div class="rows-1">
+				<router-view  v-slot="{ Component, route }">
+					<component ref="page" :key="route" :localPosition="localPosition" :is="Component" />
+				</router-view>
 			</div>
 		</div>
 	</div>

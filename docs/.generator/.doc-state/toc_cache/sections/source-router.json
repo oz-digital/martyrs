@@ -1,0 +1,40 @@
+{
+  "section": {
+    "id": "source-router",
+    "title": "Проект: Маршрутизация",
+    "description": "Модуль отвечает за определение и обработку маршрутов для различных сущностей приложения, таких как категории, продукты, остатки и варианты.",
+    "subsections": [
+      {
+        "id": "categories-routing",
+        "title": "Маршруты категорий",
+        "description": "Обеспечивает маршрутизацию для операций с категориями. Включает файлы categories.router.js и categories.routes.js."
+      },
+      {
+        "id": "products-routing",
+        "title": "Маршруты продуктов",
+        "description": "Реализует маршруты для управления продуктами. Включает файлы products.router.js и products.routes.js."
+      },
+      {
+        "id": "leftovers-routing",
+        "title": "Маршруты остатков",
+        "description": "Отвечает за маршрутизацию, связанную с остатками товаров. Включает файлы leftovers.router.js и leftovers.routes.js."
+      },
+      {
+        "id": "variants-routing",
+        "title": "Маршруты вариантов",
+        "description": "Содержит маршруты для работы с вариантами продуктов. Включает файл variants.routes.js."
+      }
+    ]
+  },
+  "fileHashes": [
+    "0e8f27a747221430964ba289cd5770f8",
+    "1aabfac002762fad591ed900da9a06b1",
+    "41c37fc8190a49bbe3a850c2c50e9c6d",
+    "6c08827e5ddba762785c2e72a435f0bd",
+    "a0fe22c4ea7caabaf773d2ce289a56cb",
+    "ab68db34f7683be4a457e0d9fc92d3bf",
+    "f5c81ca0cd785772c41d3b47f880f0f9"
+  ],
+  "groupHash": "cdd0e7fad68e6ba35966b415e43a40df",
+  "generated": "2025-06-26T14:09:29.101Z"
+}

@@ -4,6 +4,7 @@ import config from './config.js';
 import ContextOptimizer from './contextOptimizer.js';
 import DocumentMemoryManager from './documentMemoryManager.js';
 import tocGenerator from './tocGenerator.js';
+import BatchDocumentationGenerator from './batchDocumentationGenerator.js';
 const fs = { promises }.promises;
 /**
  * Класс для построения документации на основе оглавления и аналитики файлов
@@ -35,122 +36,280 @@ class DocumentationBuilder {
     return await this.memoryManager.importExistingDocumentation(docsPath, logger);
   }
   /**
-   * Строит документацию на основе оглавления и анализа файлов
+   * Строит документацию на основе анализа зависимостей (новый подход)
+   */
+  async buildDocumentationFromDependencies(projectStructure, logger) {
+    logger.info('Запуск генерации документации на основе анализа зависимостей');
+    
+    // Инициализируем менеджер памяти документации
+    await this.initialize(logger);
+    
+    // Создаем генератор на основе батчей
+    const batchGenerator = new BatchDocumentationGenerator(this.stateManager, this.memoryManager);
+    
+    // Генерируем документацию
+    const outputDir = path.dirname(config.outputPath);
+    const documentation = await batchGenerator.generateDocumentation(projectStructure, outputDir, logger);
+    
+    // Возвращаем основное содержимое для совместимости
+    return this.createMainDocumentationContent(documentation);
+  }
+
+  /**
+   * Создает основное содержимое документации для совместимости
+   */
+  createMainDocumentationContent(documentation) {
+    let content = `# ${documentation.title}\n\n`;
+    
+    content += `## Оглавление\n\n`;
+    documentation.sections.forEach(section => {
+      content += `- [${section.title}](./sections/${section.id}.md)\n`;
+    });
+    content += `\n`;
+    
+    // Добавляем обзоры секций
+    documentation.sections.forEach(section => {
+      content += `## ${section.title}\n\n`;
+      content += `> [Подробная документация](./sections/${section.id}.md)\n\n`;
+      
+      // Краткий обзор
+      const preview = section.content.substring(0, 300);
+      content += preview + (section.content.length > 300 ? '...\n\n' : '\n\n');
+    });
+    
+    return content;
+  }
+
+  /**
+   * Строит документацию на основе оглавления и анализа файлов (старый подход)
    */
   async buildDocumentation(tocStructure, projectStructure, logger) {
     logger.info('Начало построения документации с использованием контекстной памяти');
     // Инициализируем менеджер памяти документации
     await this.initialize(logger);
-    let documentation = '';
+    
+    // Создаем директорию для документации
+    const docsOutputDir = path.join(path.dirname(config.outputPath), 'sections');
+    await fs.mkdir(docsOutputDir, { recursive: true });
+    
+    let mainDocumentation = '';
     // Добавляем заголовок документации
-    documentation += `# ${tocStructure.title}\n\n`;
+    mainDocumentation += `# ${tocStructure.title}\n\n`;
     const tocInstance = new tocGenerator(this.stateManager);
-    documentation += tocInstance.generateMarkdownToc(tocStructure);
+    mainDocumentation += tocInstance.generateMarkdownToc(tocStructure);
+    
     // Проходим по всем основным разделам и генерируем их содержимое
     for (const section of tocStructure.sections) {
       logger.info(`Генерация раздела: ${section.title}`);
-      // Проверяем, есть ли уже раздел в памяти
-      const existingContent = await this.memoryManager.getDocumentContent(section.id);
+      
       // Собираем контекст для раздела
-      const sectionFileAnalysis = this.collectRelevantFiles(section, projectStructure);
-      // Генерируем контент раздела с использованием контекстного оптимизатора
-      const sectionContent = await this.contextOptimizer.optimizeSectionGeneration(section, existingContent, sectionFileAnalysis, tocStructure, logger);
+      const sectionFileAnalysis = await this.collectRelevantFiles(section, projectStructure);
+      
+      // Генерируем контент раздела с использованием реального анализа
+      const sectionContent = await this.generateSectionFromAnalysis(section, sectionFileAnalysis, tocStructure, logger);
+      
+      // Сохраняем раздел в отдельный файл
+      const sectionFileName = `${section.id}.md`;
+      const sectionFilePath = path.join(docsOutputDir, sectionFileName);
+      
+      const fullSectionContent = `# ${section.title}\n\n${sectionContent}`;
+      await fs.writeFile(sectionFilePath, fullSectionContent, 'utf8');
+      logger.info(`Раздел ${section.title} сохранен в ${sectionFileName}`);
+      
       // Сохраняем сгенерированный контент в память
       await this.memoryManager.saveDocumentContent(section.id, sectionContent, {
         title: section.title,
         description: section.description,
         generated: true,
-        fileAnalysis: sectionFileAnalysis // Добавляем анализ файлов
+        fileAnalysis: sectionFileAnalysis,
+        filePath: sectionFilePath
       });
-      // Добавляем раздел в документацию
-      documentation += `\n\n## ${section.title}\n\n${sectionContent}`;
+      
+      // Добавляем ссылку на раздел в основную документацию
+      mainDocumentation += `\n\n## ${section.title}\n\n`;
+      mainDocumentation += `> [Подробная документация: ${section.title}](./sections/${sectionFileName})\n\n`;
+      mainDocumentation += sectionContent.substring(0, 500) + (sectionContent.length > 500 ? '...\n\n[Читать полностью](./sections/' + sectionFileName + ')' : '');
+      
       // Обновляем статус раздела в состоянии
       await this.stateManager.saveSection(section.id, {
         title: section.title,
         content: sectionContent,
+        filePath: sectionFilePath,
         lastUpdated: new Date().toISOString(),
       });
+      
       // Генерируем содержимое подразделов
       if (section.subsections && section.subsections.length > 0) {
-        documentation += await this.generateSubsections(section.subsections, 3, projectStructure, tocStructure, logger);
+        const subsectionsContent = await this.generateSubsections(section.subsections, 3, projectStructure, tocStructure, logger, docsOutputDir, section.id);
+        
+        // Добавляем подразделы в основную документацию
+        mainDocumentation += `\n\n### Подразделы:\n\n${subsectionsContent.summary}`;
       }
+      
       // Обновляем статус раздела
       section.metadata.status = 'completed';
       section.metadata.lastUpdated = new Date().toISOString();
     }
+    
     // Обновляем покрытие документацией
     this.stateManager.updateCoverageMetrics();
-    return documentation;
+    return mainDocumentation;
   }
+  
+  /**
+   * Генерирует раздел документации на основе реального анализа файлов
+   */
+  async generateSectionFromAnalysis(section, fileAnalysis, tocStructure, logger) {
+    if (!fileAnalysis || fileAnalysis.length === 0) {
+      return `## Обзор\n\nФайлы для данного раздела не найдены или еще не проанализированы.\n\n## Архитектура\n\nИнформация будет доступна после анализа файлов.\n\n## Примеры использования\n\nПримеры будут добавлены после анализа кода.\n\n## Зависимости\n\nГраф зависимостей будет построен после анализа файлов.`;
+    }
+
+    let content = '';
+    
+    // Обзор раздела - используем только реальные данные из анализа
+    content += `## Обзор\n\n`;
+    content += `Раздел содержит ${fileAnalysis.length} файл(ов):\n\n`;
+    
+    fileAnalysis.forEach(file => {
+      const summary = file.analysis?.Summary || file.summary || 'Анализ файла не завершен';
+      content += `- **${file.name}**: ${summary}\n`;
+    });
+    
+    content += `\n`;
+    
+    // Архитектура - на основе реального анализа
+    content += `## Архитектура\n\n`;
+    
+    fileAnalysis.forEach(file => {
+      const analysis = file.analysis;
+      if (!analysis) return;
+      
+      content += `### ${file.name}\n\n`;
+      
+      if (analysis.Purpose) {
+        content += `**Назначение**: ${analysis.Purpose}\n\n`;
+      }
+      
+      if (analysis.Components && analysis.Components.length > 0) {
+        content += `**Компоненты**:\n`;
+        analysis.Components.forEach(comp => {
+          const name = comp.name || 'Неизвестный компонент';
+          const responsibility = comp.responsibility || comp.description || 'Описание отсутствует';
+          content += `- **${name}**: ${responsibility}\n`;
+        });
+        content += `\n`;
+      }
+      
+      if (analysis.Functions && analysis.Functions.length > 0) {
+        content += `**Функции**:\n`;
+        analysis.Functions.forEach(func => {
+          const name = func.name || 'Неизвестная функция';
+          const purpose = func.purpose || func.description || 'Описание отсутствует';
+          content += `- **${name}**: ${purpose}\n`;
+          if (func.parameters && func.parameters.length > 0) {
+            const params = func.parameters.map(p => p.name || p).join(', ');
+            content += `  - Параметры: ${params}\n`;
+          }
+        });
+        content += `\n`;
+      }
+    });
+    
+    // Примеры использования - на основе реального анализа
+    content += `## Примеры использования\n\n`;
+    
+    const usageExamples = [];
+    fileAnalysis.forEach(file => {
+      if (file.analysis?.Usage) {
+        usageExamples.push({
+          file: file.name,
+          usage: file.analysis.Usage
+        });
+      }
+    });
+    
+    if (usageExamples.length > 0) {
+      usageExamples.forEach(example => {
+        content += `### ${example.file}\n\n`;
+        content += `${example.usage}\n\n`;
+      });
+    } else {
+      content += `Примеры использования будут добавлены после более детального анализа файлов.\n\n`;
+    }
+    
+    // Зависимости - только реальные зависимости из анализа
+    content += `## Зависимости\n\n`;
+    
+    const allDependencies = new Set();
+    fileAnalysis.forEach(file => {
+      if (file.analysis?.Dependencies && Array.isArray(file.analysis.Dependencies)) {
+        file.analysis.Dependencies.forEach(dep => allDependencies.add(dep));
+      }
+      if (file.dependencies && Array.isArray(file.dependencies)) {
+        file.dependencies.forEach(dep => allDependencies.add(dep));
+      }
+    });
+    
+    if (allDependencies.size > 0) {
+      const sortedDeps = Array.from(allDependencies).sort();
+      
+      // Группируем зависимости
+      const vueDeps = sortedDeps.filter(d => d.includes('vue') && !d.includes('@martyrs'));
+      const internalDeps = sortedDeps.filter(d => d.includes('@martyrs') || d.startsWith('./') || d.startsWith('../'));
+      const externalDeps = sortedDeps.filter(d => !vueDeps.includes(d) && !internalDeps.includes(d) && !d.startsWith('.'));
+      
+      if (vueDeps.length > 0) {
+        content += `### Vue экосистема\n`;
+        vueDeps.forEach(dep => content += `- ${dep}\n`);
+        content += `\n`;
+      }
+      
+      if (internalDeps.length > 0) {
+        content += `### Внутренние зависимости\n`;
+        internalDeps.forEach(dep => content += `- ${dep}\n`);
+        content += `\n`;
+      }
+      
+      if (externalDeps.length > 0) {
+        content += `### Внешние библиотеки\n`;
+        externalDeps.forEach(dep => content += `- ${dep}\n`);
+        content += `\n`;
+      }
+    } else {
+      content += `Зависимости еще не проанализированы или отсутствуют.\n\n`;
+    }
+    
+    return content;
+  }
+  
   /**
    * Рекурсивно генерирует содержимое подразделов с валидацией
    */
-  async generateSubsections(subsections, level, projectStructure, tocStructure, logger) {
+  async generateSubsections(subsections, level, projectStructure, tocStructure, logger, docsOutputDir, parentSectionId) {
     if (!subsections || subsections.length === 0) {
-      return '';
+      return { content: '', summary: '' };
     }
     
     let content = '';
+    let summary = '';
     const headingMarker = '#'.repeat(level);
     
     for (const subsection of subsections) {
       logger.info(`Генерация подраздела уровня ${level}: ${subsection.title}`);
       
-      // Проверяем, есть ли уже раздел в памяти
-      const existingContent = await this.memoryManager.getDocumentContent(subsection.id);
-      
       // Собираем контекст для подраздела
-      const subsectionFileAnalysis = this.collectRelevantFiles(subsection, projectStructure);
+      const subsectionFileAnalysis = await this.collectRelevantFiles(subsection, projectStructure);
       
-      let subsectionContent;
-      let retryCount = 0;
-      const maxRetries = 2;
+      // Генерируем контент подраздела на основе реального анализа
+      const subsectionContent = await this.generateSectionFromAnalysis(subsection, subsectionFileAnalysis, tocStructure, logger);
       
-      while (retryCount <= maxRetries) {
-        // Генерируем контент подраздела с использованием контекстного оптимизатора
-        subsectionContent = await this.contextOptimizer.optimizeSectionGeneration(
-          subsection, 
-          existingContent, 
-          subsectionFileAnalysis, 
-          tocStructure, 
-          logger
-        );
-        
-        // Валидируем сгенерированный контент
-        const validationResult = await this.contextOptimizer.validateGeneratedContent(
-          subsectionContent,
-          subsectionFileAnalysis,
-          logger
-        );
-        
-        if (validationResult.valid && validationResult.warnings.length === 0) {
-          logger.info(`Контент для ${subsection.title} прошел валидацию`);
-          break;
-        } else if (validationResult.valid && validationResult.warnings.length > 0) {
-          logger.warn(`Контент для ${subsection.title} сгенерирован с предупреждениями`);
-          break;
-        } else if (retryCount < maxRetries) {
-          logger.warn(`Контент для ${subsection.title} не прошел валидацию, повторная генерация...`);
-          
-          // Добавляем информацию об ошибках в контекст для повторной генерации
-          const errorContext = `
-  ВНИМАНИЕ: Предыдущая попытка генерации не прошла валидацию.
-  Ошибки: ${validationResult.errors.join('; ')}
-  Предупреждения: ${validationResult.warnings.join('; ')}
-
-  Пожалуйста, исправьте эти проблемы и сгенерируйте контент строго на основе анализа файлов.
-  `;
-          
-          // Обновляем существующий контент с информацией об ошибках
-          existingContent = errorContext + '\n\n' + subsectionContent;
-          retryCount++;
-        } else {
-          logger.error(`Не удалось сгенерировать валидный контент для ${subsection.title} после ${maxRetries} попыток`);
-          // Добавляем предупреждение в начало контента
-          subsectionContent = `> ⚠️ Внимание: Этот раздел может содержать неточности. Требуется ручная проверка.\n\n${subsectionContent}`;
-          break;
-        }
-      }
+      // Сохраняем подраздел в отдельный файл
+      const subsectionFileName = `${parentSectionId}-${subsection.id}.md`;
+      const subsectionFilePath = path.join(docsOutputDir, subsectionFileName);
+      
+      const fullSubsectionContent = `# ${subsection.title}\n\n${subsectionContent}`;
+      await fs.writeFile(subsectionFilePath, fullSubsectionContent, 'utf8');
+      logger.info(`Подраздел ${subsection.title} сохранен в ${subsectionFileName}`);
       
       // Сохраняем сгенерированный контент в память
       await this.memoryManager.saveDocumentContent(subsection.id, subsectionContent, {
@@ -158,31 +317,37 @@ class DocumentationBuilder {
         description: subsection.description,
         level,
         generated: true,
-        validationPassed: retryCount === 0,
-        fileAnalysisUsed: subsectionFileAnalysis.length,
-        fileAnalysis: subsectionFileAnalysis // Добавляем анализ файлов
+        fileAnalysis: subsectionFileAnalysis,
+        filePath: subsectionFilePath
       });
       
-      // Добавляем подраздел в документацию
+      // Добавляем ссылку в summary
+      summary += `- [${subsection.title}](./sections/${subsectionFileName})\n`;
+      
+      // Добавляем подраздел в полный контент
       content += `\n\n${headingMarker} ${subsection.title}\n\n${subsectionContent}`;
       
       // Обновляем статус подраздела в состоянии
       await this.stateManager.saveSection(subsection.id, {
         title: subsection.title,
         content: subsectionContent,
+        filePath: subsectionFilePath,
         lastUpdated: new Date().toISOString(),
-        validationStatus: retryCount === 0 ? 'passed' : retryCount <= maxRetries ? 'passed_with_warnings' : 'failed'
       });
       
       // Рекурсивно обрабатываем более глубокие подразделы
       if (subsection.subsections && subsection.subsections.length > 0) {
-        content += await this.generateSubsections(
+        const nestedSubsections = await this.generateSubsections(
           subsection.subsections, 
           level + 1, 
           projectStructure, 
           tocStructure, 
-          logger
+          logger,
+          docsOutputDir,
+          subsection.id
         );
+        content += nestedSubsections.content;
+        summary += nestedSubsections.summary;
       }
       
       // Обновляем статус подраздела
@@ -190,71 +355,60 @@ class DocumentationBuilder {
       subsection.metadata.lastUpdated = new Date().toISOString();
     }
     
-    return content;
+    return { content, summary };
   }
   /**
-   * Собирает релевантные файлы для раздела
+   * Собирает релевантные файлы для раздела на основе анализа и зависимостей
    */
-  collectRelevantFiles(section, projectStructure) {
+  async collectRelevantFiles(section, projectStructure) {
     const relevantFiles = [];
-    // Определяем, к какой части проекта относится раздел
-    const isFramework = section.id.startsWith('framework-');
-    const projectPart = isFramework ? projectStructure.framework : projectStructure.source;
-    // Если раздел относится к конкретному компоненту или директории,
-    // ищем соответствующие файлы
-    const sectionPath = isFramework ? section.id.replace('framework-', '').split('-') : section.id.replace('project-', '').split('-');
-    if (sectionPath[0]) {
-      // Ищем соответствующую часть структуры проекта
-      let currentLevel = projectPart;
-      let found = true;
-      for (const part of sectionPath) {
-        if (part && currentLevel[part]) {
-          currentLevel = currentLevel[part];
-        } else {
-          // Пробуем найти частичное соответствие
-          found = false;
-          for (const key in currentLevel) {
-            if (key !== '_files' && typeof currentLevel[key] === 'object' && key.toLowerCase().includes(part.toLowerCase())) {
-              currentLevel = currentLevel[key];
-              found = true;
-              break;
-            }
-          }
-          if (!found) break;
+    
+    // Получаем файлы для раздела на основе его метаданных
+    if (section.files && section.files.length > 0) {
+      // Если в разделе явно указаны файлы, используем их
+      for (const filePath of section.files) {
+        const file = this.findFileInStructure(projectStructure, filePath);
+        if (file) {
+          relevantFiles.push(file);
         }
-      }
-      // Если нашли соответствующую часть структуры, добавляем файлы
-      if (found) {
-        this.collectFilesFromStructure(currentLevel, relevantFiles);
       }
     } else {
-      // Если раздел общий, добавляем наиболее важные файлы верхнего уровня
-      if (projectPart._files) {
-        relevantFiles.push(...projectPart._files.filter(file => file.analysis && file.analysis.importance >= 4));
-      }
-      // Добавляем файлы из основных директорий
-      for (const key in projectPart) {
-        if (key !== '_files' && typeof projectPart[key] === 'object') {
-          if (projectPart[key]._files) {
-            relevantFiles.push(...projectPart[key]._files.filter(file => file.analysis && file.analysis.importance >= 4));
-          }
+      // Иначе ищем файлы по пути раздела в структуре проекта
+      const sectionPath = this.getSectionPath(section.id);
+      const files = this.findFilesByPath(projectStructure, sectionPath);
+      relevantFiles.push(...files);
+    }
+    
+    // Загружаем контент файлов, если он отсутствует
+    const filesWithContent = [];
+    for (const file of relevantFiles) {
+      let fileContent = file.content;
+      
+      // Если контент отсутствует, загружаем его из файловой системы
+      if (!fileContent && file.path) {
+        try {
+          fileContent = await fs.readFile(file.path, 'utf8');
+        } catch (err) {
+          console.warn(`Не удалось загрузить контент файла ${file.path}: ${err.message}`);
+          fileContent = '';
         }
       }
-    }
-    // Преобразуем информацию о файлах в формат для API
-    return relevantFiles.map(file => {
-      return {
+      
+      filesWithContent.push({
         name: file.name,
         path: file.relativePath,
-        summary: file.analysis.summary || '',
-        purpose: file.analysis.purpose || '',
-        importance: file.analysis.importance || '3',
-        components: file.analysis.components || [],
-        functions: file.analysis.functions || [],
-        dependencies: file.analysis.dependencies || [],
-        usage: file.analysis.usage || '',
-      };
-    });
+        content: fileContent, // Теперь гарантированно есть контент
+        summary: file.analysis?.summary || '',
+        purpose: file.analysis?.purpose || '',
+        importance: file.analysis?.importance || 3,
+        components: file.analysis?.components || [],
+        functions: file.analysis?.functions || [],
+        dependencies: file.analysis?.dependencies || [],
+        usage: file.analysis?.usage || '',
+      });
+    }
+    
+    return filesWithContent;
   }
   /**
    * Рекурсивно собирает файлы из структуры проекта
@@ -271,17 +425,105 @@ class DocumentationBuilder {
       }
     }
   }
+  
+  /**
+   * Собирает важные файлы из структуры проекта
+   */
+  collectAllImportantFiles(structure, files, minImportance = 4) {
+    // Добавляем важные файлы на текущем уровне
+    if (structure._files) {
+      const importantFiles = structure._files.filter(file => 
+        file.analysis && file.analysis.Importance >= minImportance
+      );
+      files.push(...importantFiles);
+    }
+    // Рекурсивно обходим поддиректории
+    for (const key in structure) {
+      if (key !== '_files' && typeof structure[key] === 'object') {
+        this.collectAllImportantFiles(structure[key], files, minImportance);
+      }
+    }
+  }
+  
+  /**
+   * Получает путь раздела из его ID
+   */
+  getSectionPath(sectionId) {
+    // Убираем префиксы и разбиваем по дефисам
+    const cleanId = sectionId.replace(/^(source-|framework-)/, '');
+    return cleanId.split('-');
+  }
+  
+  /**
+   * Находит файл в структуре проекта по пути
+   */
+  findFileInStructure(projectStructure, filePath) {
+    const searchInStructure = (structure) => {
+      if (structure._files) {
+        const file = structure._files.find(f => 
+          f.path === filePath || f.relativePath === filePath || f.name === filePath
+        );
+        if (file) return file;
+      }
+      
+      for (const key in structure) {
+        if (key !== '_files' && typeof structure[key] === 'object') {
+          const result = searchInStructure(structure[key]);
+          if (result) return result;
+        }
+      }
+      return null;
+    };
+    
+    return searchInStructure(projectStructure.source) || searchInStructure(projectStructure.framework);
+  }
+  
+  /**
+   * Находит файлы по пути в структуре проекта
+   */
+  findFilesByPath(projectStructure, pathParts) {
+    let currentLevel = projectStructure.source;
+    
+    // Навигируем по структуре согласно пути
+    for (const part of pathParts) {
+      if (currentLevel[part]) {
+        currentLevel = currentLevel[part];
+      } else {
+        // Если точного совпадения нет, ищем частичное
+        let found = false;
+        for (const key in currentLevel) {
+          if (key !== '_files' && typeof currentLevel[key] === 'object' && 
+              key.toLowerCase().includes(part.toLowerCase())) {
+            currentLevel = currentLevel[key];
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          return []; // Путь не найден
+        }
+      }
+    }
+    
+    // Собираем все файлы из найденной структуры
+    const files = [];
+    this.collectFilesFromStructure(currentLevel, files);
+    return files;
+  }
   /**
    * Сохраняет документацию в файл
    */
   async saveDocumentation(documentation, outputPath, logger) {
     logger.info(`Сохранение документации в ${outputPath}`);
+    console.log(`[DEBUG] Пытаюсь сохранить документацию в: ${outputPath}`);
     try {
       // Создаем директорию для документации, если ее нет
       const outputDir = path.dirname(outputPath);
+      console.log(`[DEBUG] Создаю директорию: ${outputDir}`);
       await fs.mkdir(outputDir, { recursive: true });
       // Записываем документацию в файл
       await fs.writeFile(outputPath, documentation, 'utf8');
+      console.log(`[DEBUG] Файл документации успешно записан.`);
       // Сохраняем метаданные о документации
       const stats = await fs.stat(outputPath);
       const metadata = {
@@ -296,6 +538,7 @@ class DocumentationBuilder {
       return true;
     } catch (err) {
       logger.error(`Ошибка при сохранении документации: ${err.message}`);
+      console.error(`[DEBUG] Ошибка при сохранении документации: ${err.message}`);
       throw err;
     }
   }

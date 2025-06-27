@@ -1,19 +1,68 @@
 {
   "section": {
     "id": "source-root",
-    "title": "Корневые файлы проекта",
-    "description": "Модуль 'source-root' содержит основные файлы, необходимые для запуска и конфигурации проекта.",
+    "title": "Проект: Корневые файлы",
+    "description": "Модуль содержит основные файлы для работы с продуктами, категориями, вариантами, скидками и ингредиентами. Включает клиентскую и серверную логику, схемы, мидлвары и хранилища данных.",
     "subsections": [
       {
-        "id": "main-js",
-        "title": "main.js",
-        "description": "Главный исполняемый файл проекта. Назначение и структура файла требуют уточнения."
+        "id": "products",
+        "title": "Продукты",
+        "description": "Файлы для работы с продуктами: клиентская и серверная логика, запросы и хранилище.",
+        "files": [
+          "products.client.js",
+          "products.server.js",
+          "queries/products.queries.js",
+          "store/products.js"
+        ]
+      },
+      {
+        "id": "categories",
+        "title": "Категории",
+        "description": "Файлы для работы с категориями и их валидацией.",
+        "files": [
+          "middlewares/categories.verifier.js",
+          "store/categories.js"
+        ]
+      },
+      {
+        "id": "variants",
+        "title": "Варианты",
+        "description": "Файл для валидации вариантов.",
+        "files": [
+          "middlewares/variants.verifier.js"
+        ]
+      },
+      {
+        "id": "schemas",
+        "title": "Схемы данных",
+        "description": "Схемы для скидок и ингредиентов.",
+        "files": [
+          "schemas/discount.schema.js",
+          "schemas/ingredient.schema.js"
+        ]
+      },
+      {
+        "id": "leftovers",
+        "title": "Остатки",
+        "description": "Файл для работы с остатками продуктов.",
+        "files": [
+          "store/leftovers.js"
+        ]
       }
     ]
   },
   "fileHashes": [
-    "ae86dc5ae0c2a0762a39c87e3a2b9c44"
+    "0ce4dcbaa091205e726dc2addb5ebf02",
+    "246e553fbc1df6ff6c4b0e45a57802b1",
+    "270cbf6c6ef040fa4f5663f066676d50",
+    "48211ba9aacc273010f28f118a3dcd01",
+    "9e38f008a254902b5f3064e38ccef66a",
+    "aeb155678cec87d3a34a1c24d5ddc028",
+    "bbde7d7956c87a47357df8e6944bba26",
+    "dad4750bc77459fdc0a125fa9ee07569",
+    "db874482779637b06f947f5917a04026",
+    "de5c88b40369b2eb9d95cd4b74507e88"
   ],
-  "groupHash": "0e059015ed932639aaa68dbfaa1a442a",
-  "generated": "2025-06-05T09:15:25.337Z"
+  "groupHash": "beffb9f93181e66435717532a651341c",
+  "generated": "2025-06-26T14:09:21.298Z"
 }

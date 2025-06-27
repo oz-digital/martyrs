@@ -1,0 +1,63 @@
+{
+  "section": {
+    "id": "source-models",
+    "title": "Проект: Модели",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "category-leftover",
+        "title": "Категории и Остатки",
+        "description": "Модели для работы с категориями и остатками товаров.",
+        "files": [
+          {
+            "name": "category.model.js",
+            "path": "models/category.model.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "leftover.model.js",
+            "path": "models/leftover.model.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "products-variants",
+        "title": "Продукты и Варианты",
+        "description": "Модели для работы с продуктами и их вариантами.",
+        "files": [
+          {
+            "name": "product.model.js",
+            "path": "models/product.model.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          },
+          {
+            "name": "variant.model.js",
+            "path": "models/variant.model.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "01f7701fbb4206a58f514ba31bff8c2b",
+    "1b16dea21e20ccea2d9c6a0c997970d0",
+    "bc26aea5172a999e7203addcb8bd5f11",
+    "c9b9dc6e4d025e4efc093d4a584ba407"
+  ],
+  "groupHash": "750ff573e0309056207c74d861edc9a1",
+  "generated": "2025-06-26T11:20:05.611Z"
+}

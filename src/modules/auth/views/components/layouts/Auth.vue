@@ -20,7 +20,7 @@
     </router-view>
 
     <section class="w-100 desktop-only o-hidden radius-big bg-grad-main">
-      <!-- <SliderFeatures/> -->  
+      <SliderFeatures/>  
     </section>
   </div>
 </template>

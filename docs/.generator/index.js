@@ -56,15 +56,10 @@ async function generateDocumentation(options = {}) {
     // Получаем структуру проекта из состояния
     const projectStructure = stateManager.documentationState.projectStructure;
     
-    // Генерация оглавления
-    const tocGenerator = new TocGenerator(stateManager);
-    const tocStructure = await tocGenerator.generateGlobalToc(projectStructure, logger);
-    
-    // Построение документации на основе оглавления и результатов анализа
-    // с использованием контекстной памяти
+    // Построение документации на основе анализа зависимостей (новый подход)
     const documentationBuilder = new DocumentationBuilder(stateManager);
     await documentationBuilder.initialize(logger);
-    const documentation = await documentationBuilder.buildDocumentation(tocStructure, projectStructure, logger);
+    const documentation = await documentationBuilder.buildDocumentationFromDependencies(projectStructure, logger);
     
     // Сохранение документации в файл
     await documentationBuilder.saveDocumentation(documentation, config.outputPath, logger);

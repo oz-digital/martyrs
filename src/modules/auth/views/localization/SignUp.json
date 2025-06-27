@@ -1,6 +1,6 @@
 {
   "messages": {
-    "en-default": {
+    "en": {
       "title": "Sign Up",
       "description": "Choose a convenient way to register via phone or email:",
       "phone": "Phone",
@@ -12,7 +12,7 @@
       "sendCode": "Send Code",
       "haveAccount": "Already have an account?"
     },
-    "ru-default": {
+    "ru": {
       "title": "Новая учетная запись",
       "description": "Выберите удобный способ регистрации через телефон или email:",
       "phone": "Телефон",

@@ -1,0 +1,77 @@
+{
+  "section": {
+    "id": "source-routes",
+    "title": "Проект: Routes",
+    "description": "Модуль, отвечающий за маршрутизацию в приложении.",
+    "subsections": [
+      {
+        "id": "categories",
+        "title": "Категории",
+        "description": "Маршруты, связанные с категориями товаров.",
+        "files": [
+          {
+            "name": "categories.routes.js",
+            "path": "routes/categories.routes.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "leftovers",
+        "title": "Остатки",
+        "description": "Маршруты, связанные с остатками товаров.",
+        "files": [
+          {
+            "name": "leftovers.routes.js",
+            "path": "routes/leftovers.routes.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "products",
+        "title": "Продукты",
+        "description": "Маршруты, связанные с продуктами.",
+        "files": [
+          {
+            "name": "products.routes.js",
+            "path": "routes/products.routes.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "variants",
+        "title": "Варианты",
+        "description": "Маршруты, связанные с вариантами продуктов.",
+        "files": [
+          {
+            "name": "variants.routes.js",
+            "path": "routes/variants.routes.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "0e8f27a747221430964ba289cd5770f8",
+    "6c08827e5ddba762785c2e72a435f0bd",
+    "ab68db34f7683be4a457e0d9fc92d3bf",
+    "f5c81ca0cd785772c41d3b47f880f0f9"
+  ],
+  "groupHash": "982730c3922ed5d25c23f3eaff37dfce",
+  "generated": "2025-06-26T11:20:26.430Z"
+}

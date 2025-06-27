@@ -1,0 +1,29 @@
+{
+  "section": {
+    "id": "source-controllers-configs",
+    "title": "Проект: Контроллеры / Конфигурации",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "products-lookup-config",
+        "title": "Конфигурация поиска продуктов",
+        "description": "Конфигурация для поиска продуктов в системе.",
+        "files": [
+          {
+            "name": "products.lookup.config.js",
+            "path": "configs/products.lookup.config.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "434f041fc7d96c29d9c106a8bf07fb67"
+  ],
+  "groupHash": "27a73a3cf1860da4784a16f84638d41c",
+  "generated": "2025-06-26T11:19:50.715Z"
+}

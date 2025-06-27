@@ -1,0 +1,29 @@
+{
+  "section": {
+    "id": "source-controllers-queries",
+    "title": "Проект: Контроллеры / Queries",
+    "description": "Краткое описание модуля",
+    "subsections": [
+      {
+        "id": "products-queries",
+        "title": "Запросы к продуктам",
+        "description": "Модуль для обработки запросов, связанных с продуктами.",
+        "files": [
+          {
+            "name": "products.queries.js",
+            "path": "queries/products.queries.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "0ce4dcbaa091205e726dc2addb5ebf02"
+  ],
+  "groupHash": "318ae9a5b95203366464e66b5743286e",
+  "generated": "2025-06-26T11:19:54.270Z"
+}

@@ -224,6 +224,128 @@ class ContextOptimizer {
       throw err;
     }
   }
+  
+  /**
+   * Валидирует сгенерированный контент против анализа файлов
+   */
+  async validateGeneratedContent(content, fileAnalysis, logger) {
+    const errors = [];
+    const warnings = [];
+    
+    if (!content || content.trim().length < 50) {
+      errors.push('Контент слишком короткий или пустой');
+      return { valid: false, errors, warnings };
+    }
+    
+    // Извлекаем все реальные компоненты, функции и т.д. из анализа
+    const realComponents = new Set();
+    const realFunctions = new Set();
+    const realFiles = new Set();
+    
+    fileAnalysis.forEach(file => {
+      realFiles.add(file.name);
+      
+      if (file.components && Array.isArray(file.components)) {
+        file.components.forEach(comp => {
+          if (comp.name) realComponents.add(comp.name);
+        });
+      }
+      
+      if (file.functions && Array.isArray(file.functions)) {
+        file.functions.forEach(func => {
+          if (func.name) realFunctions.add(func.name);
+        });
+      }
+    });
+    
+    // Проверяем упоминания компонентов в контенте
+    const componentPattern = /(?:компонент|component)\s+`?(\w+)`?/gi;
+    const functionPattern = /(?:функци[яи]|function|метод|method)\s+`?(\w+)`?/gi;
+    
+    let match;
+    const mentionedComponents = new Set();
+    const mentionedFunctions = new Set();
+    
+    // Ищем упомянутые компоненты
+    while ((match = componentPattern.exec(content)) !== null) {
+      const componentName = match[1];
+      mentionedComponents.add(componentName);
+      
+      // Проверяем, существует ли такой компонент
+      if (!realComponents.has(componentName) && 
+          !['MainComponent', 'ListComponent', 'DetailComponent', 'Component', 'App'].includes(componentName)) {
+        warnings.push(`Упомянут несуществующий компонент: ${componentName}`);
+      }
+    }
+    
+    // Ищем упомянутые функции
+    while ((match = functionPattern.exec(content)) !== null) {
+      const functionName = match[1];
+      mentionedFunctions.add(functionName);
+      
+      // Проверяем, существует ли такая функция
+      if (!realFunctions.has(functionName) && 
+          !['render', 'setup', 'mounted', 'created', 'computed', 'methods'].includes(functionName)) {
+        warnings.push(`Упомянута несуществующая функция: ${functionName}`);
+      }
+    }
+    
+    // Проверяем, упомянуты ли хотя бы некоторые реальные компоненты
+    if (realComponents.size > 0 && mentionedComponents.size > 0) {
+      const realMentioned = Array.from(mentionedComponents).filter(c => realComponents.has(c));
+      if (realMentioned.length === 0 && realComponents.size > 3) {
+        errors.push('Ни один из реальных компонентов не упомянут в документации');
+      }
+    }
+    
+    // Проверяем наличие выдуманной информации
+    const fakePatterns = [
+      /MainComponent|ListComponent|DetailComponent/g,
+      /компонент.*мучеников/gi,
+      /martyrs.*приложение/gi
+    ];
+    
+    fakePatterns.forEach(pattern => {
+      if (pattern.test(content)) {
+        warnings.push('Обнаружены возможные галлюцинации или выдуманные компоненты');
+      }
+    });
+    
+    // Проверяем структуру документации
+    const requiredSections = ['обзор', 'overview'];
+    const hasRequiredSection = requiredSections.some(section => 
+      content.toLowerCase().includes(`## ${section}`) || 
+      content.toLowerCase().includes(`# ${section}`)
+    );
+    
+    if (!hasRequiredSection) {
+      warnings.push('Отсутствует обязательный раздел "Обзор"');
+    }
+    
+    // Определяем валидность
+    const valid = errors.length === 0;
+    const coverage = realComponents.size > 0 
+      ? (Array.from(mentionedComponents).filter(c => realComponents.has(c)).length / realComponents.size) 
+      : 1;
+    
+    logger.info(`Валидация контента: ${valid ? 'успешно' : 'провалено'}, ` +
+                `ошибок: ${errors.length}, предупреждений: ${warnings.length}, ` +
+                `покрытие компонентов: ${Math.round(coverage * 100)}%`);
+    
+    return {
+      valid,
+      errors,
+      warnings,
+      stats: {
+        realComponents: realComponents.size,
+        mentionedComponents: mentionedComponents.size,
+        realFunctions: realFunctions.size,
+        mentionedFunctions: mentionedFunctions.size,
+        coverage
+      }
+    };
+  }
+  
   /**
    * Обрабатывает большие промпты с разделением на части
    */
@@ -286,77 +408,107 @@ class ContextOptimizer {
   async optimizeSectionGeneration(section, sectionContent, fileAnalysis, tocStructure, logger) {
     // Подготавливаем структурированную информацию из анализа файлов
     let fileAnalysisPrompt = '';
+    let hasFilesWithContent = false;
     
     if (fileAnalysis && fileAnalysis.length > 0) {
-      fileAnalysisPrompt = `
-  ## ВАЖНО: Используйте следующую КОНКРЕТНУЮ информацию из анализа файлов для генерации документации:
-
-  `;
+      // Проверяем, есть ли файлы с контентом
+      hasFilesWithContent = fileAnalysis.some(file => file.content && file.content.trim().length > 0);
       
-      for (const file of fileAnalysis) {
-        fileAnalysisPrompt += `
-  ### Файл: ${file.name} (${file.path})
-
-  **Назначение:** ${file.purpose}
-
-  **Краткое описание:** ${file.summary}
-
-  **Важность:** ${file.importance}/5
+      if (hasFilesWithContent) {
+        fileAnalysisPrompt = `
+  ## ИСХОДНЫЙ КОД ФАЙЛОВ ДЛЯ АНАЛИЗА:
 
   `;
         
-        // Добавляем компоненты, если есть
-        if (file.components && file.components.length > 0) {
-          fileAnalysisPrompt += '**Основные компоненты:**\n';
-          for (const component of file.components) {
-            fileAnalysisPrompt += `- **${component.name}**: ${component.description || component.purpose || 'Нет описания'}\n`;
+        for (const file of fileAnalysis) {
+          if (file.content && file.content.trim().length > 0) {
+            // Определяем тип языка для подсветки синтаксиса
+            const langMap = {
+              '.vue': 'vue',
+              '.js': 'javascript',
+              '.ts': 'typescript',
+              '.jsx': 'jsx',
+              '.tsx': 'tsx',
+              '.scss': 'scss',
+              '.css': 'css',
+              '.json': 'json'
+            };
+            const ext = file.path.substring(file.path.lastIndexOf('.'));
+            const lang = langMap[ext] || 'javascript';
+            
+            fileAnalysisPrompt += '\n  ### Файл: ' + file.path + '\n' +
+                                  '```' + lang + '\n' +
+                                  file.content + '\n' +
+                                  '```\n  ';
           }
-          fileAnalysisPrompt += '\n';
         }
+      } else {
+        // Если контента нет, используем анализ
+        fileAnalysisPrompt = `
+  ## АНАЛИЗ ФАЙЛОВ (исходный код недоступен):
+
+  `;
         
-        // Добавляем функции, если есть
-        if (file.functions && file.functions.length > 0) {
-          fileAnalysisPrompt += '**Ключевые функции:**\n';
-          for (const func of file.functions) {
-            fileAnalysisPrompt += `- **${func.name}**: ${func.description || func.purpose || 'Нет описания'}\n`;
+        for (const file of fileAnalysis) {
+          fileAnalysisPrompt += '\n  ### Файл: ' + file.path + '\n' +
+                                '  - Описание: ' + (file.summary || 'Нет описания') + '\n' +
+                                '  - Назначение: ' + (file.purpose || 'Неизвестно') + '\n';
+          
+          if (file.components && file.components.length > 0) {
+            fileAnalysisPrompt += '  - Компоненты:\n';
+            file.components.forEach(comp => {
+              fileAnalysisPrompt += `    - ${comp.name}: ${comp.responsibility || comp.description || ''}\n`;
+            });
           }
+          
+          if (file.functions && file.functions.length > 0) {
+            fileAnalysisPrompt += '  - Функции:\n';
+            file.functions.forEach(func => {
+              fileAnalysisPrompt += `    - ${func.name}: ${func.description || ''}\n`;
+            });
+          }
+          
           fileAnalysisPrompt += '\n';
-        }
-        
-        // Добавляем зависимости
-        if (file.dependencies && file.dependencies.length > 0) {
-          fileAnalysisPrompt += `**Зависимости:** ${file.dependencies.join(', ')}\n\n`;
-        }
-        
-        // Добавляем информацию об использовании
-        if (file.usage) {
-          fileAnalysisPrompt += `**Использование:** ${file.usage}\n\n`;
         }
       }
     }
     
     // Формируем базовый промпт с акцентом на конкретику
+    const basePromptText = hasFilesWithContent 
+      ? `Создайте подробный раздел документации "${section.title}" ${section.description ? '(' + section.description + ')' : ''} на основе ИСХОДНОГО КОДА указанных ниже файлов.`
+      : `Создайте раздел документации "${section.title}" ${section.description ? '(' + section.description + ')' : ''} на основе анализа файлов.`;
+    
+    const taskPromptText = hasFilesWithContent
+      ? `Проанализируй предоставленный ИСХОДНЫЙ КОД и создай на его основе техническую документацию.`
+      : `Создай документацию на основе предоставленного анализа файлов. Обрати внимание, что исходный код недоступен.`;
+    
     const prompt = `
-  Создайте раздел документации "${section.title}" ${section.description ? '(' + section.description + ')' : ''}.
+  ${basePromptText}
 
   ${fileAnalysisPrompt}
 
-  ## Требования к документации:
+  ## ЗАДАЧА:
 
-  1. **ОБЯЗАТЕЛЬНО базируйтесь на предоставленной информации из анализа файлов выше**
-  2. НЕ придумывайте общие фразы про React, SEO или другие технологии, если они не упомянуты в анализе
-  3. Используйте конкретные названия компонентов, функций и их описания из анализа
-  4. Структурируйте документацию согласно реальному содержимому файлов
+  ${taskPromptText}
 
-  ## Структура раздела должна включать:
+  ## ТРЕБОВАНИЯ К ДОКУМЕНТАЦИИ:
 
-  1. **Обзор** - краткое описание на основе summary и purpose из анализа
-  2. **Архитектура** - как компоненты взаимодействуют между собой
-  3. **API Reference** - документация по конкретным компонентам/функциям из анализа
-  4. **Примеры использования** - основанные на информации из поля usage
-  5. **Зависимости** - какие модули используются
+  1.  **ОБЯЗАТЕЛЬНО** основывайся **ТОЛЬКО** на предоставленной информации. **НЕ ПРИДУМЫВАЙ** компоненты, функции или детали.
+  ${hasFilesWithContent ? `2.  Для Vue компонентов, детально опиши:
+      *   **Props**: Извлеки из defineProps() - имя, тип, 'default', 'required'. Приведи пример использования.
+      *   **Emits**: Извлеки из defineEmits() - имя события и параметры.
+      *   **Slots**: Извлеки из defineSlots() или из template - имя слота и назначение.` : 
+  `2.  Опиши компоненты и функции на основе предоставленного анализа.`}
+  3.  ${hasFilesWithContent ? 'Создай раздел **Примеры использования** с работающим кодом из исходников.' : 'Если возможно, приведи примеры использования на основе анализа.'}
+  4.  Структура раздела должна быть следующей:
+      *   **Обзор**: Краткое описание назначения модуля/компонентов.
+      ${hasFilesWithContent ? '*   **API компонента**: Подробное описание props, emits и slots (если есть).' : '*   **Архитектура**: Описание компонентов и их взаимодействия.'}
+      *   **Примеры использования**: ${hasFilesWithContent ? 'Код из исходников.' : 'Если доступны из анализа.'}
+      *   **Зависимости**: Список импортируемых модулей.
 
-  Генерируйте ТОЛЬКО на основе предоставленных данных. Если информации недостаточно для какого-то раздела, укажите это явно.
+  ${hasFilesWithContent ? 'Используй ТОЛЬКО те компоненты, функции и детали, которые ЯВНО присутствуют в исходном коде.' : 'Используй ТОЛЬКО информацию из предоставленного анализа.'}
+  
+  Если информации недостаточно для какого-то подраздела, напиши "Информация недоступна" или пропусти подраздел.
 
   Стиль документации должен быть техническим и точным.
   `;
@@ -518,6 +670,62 @@ class ContextOptimizer {
         totalFunctions: functionNames.size
       }
     };
+  }
+
+  /**
+   * Генерирует документацию для батча файлов с учетом контекста
+   */
+  async generateDocumentationForBatch(files, prompt, logger) {
+    const openai = new OpenAI({
+      apiKey: config.openaiApiKey,
+      organization: config.openaiOrkKey,
+    });
+    
+    // Подготавливаем контент файлов для промпта (сокращенный формат)
+    const filesContent = files.map(file => {
+      const analysis = file.analysis || {};
+      
+      return `
+=== ${file.name} ===
+Назначение: ${analysis.Purpose || analysis.Summary || 'Не указано'}
+Компоненты: ${analysis.Components?.map(c => c.name).join(', ') || 'Нет'}
+Функции: ${analysis.Functions?.map(f => f.name).join(', ') || 'Нет'}
+Зависимости: ${analysis.Dependencies?.slice(0, 5).join(', ') || 'Нет'}${analysis.Dependencies?.length > 5 ? '...' : ''}
+`;
+    }).join('\n');
+
+    const fullPrompt = `${prompt}\n\nФАЙЛЫ:\n${filesContent}`;
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Создай краткую техническую документацию на основе предоставленного анализа файлов. Используй только факты из анализа.'
+          },
+          {
+            role: 'user',
+            content: fullPrompt
+          }
+        ],
+        max_tokens: 1500,
+        temperature: 0
+      });
+
+      const documentation = response.choices[0]?.message?.content || '';
+      
+      if (!documentation.trim()) {
+        throw new Error('Получен пустой ответ от OpenAI');
+      }
+
+      logger.info(`Сгенерирована документация для батча из ${files.length} файлов`);
+      return documentation;
+
+    } catch (error) {
+      logger.error(`Ошибка при генерации документации для батча: ${error.message}`);
+      throw error;
+    }
   }
 }
 export default ContextOptimizer;

@@ -8,6 +8,7 @@
     }"
     :text="{ title: 'No products available' }"
     :showDots="true"
+    class="popupar_products"
   >
     <template #default="{ item }">
       <router-link  
@@ -31,12 +32,12 @@ import * as products from '@martyrs/src/modules/products/store/products.js'
 </script>
 
 <style lang="scss">
-.carousel__slide {
+.popupar_products .carousel__slide {
   flex: 0 0 25%;
   min-width: 0;
 }
 @media screen and (max-width: 1025px) {
-  .carousel__slide {
+  .popupar_products .carousel__slide {
     flex: 0 0 75%;
     min-width: 0;
   }

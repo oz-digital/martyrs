@@ -3,18 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "node index.js",
+    "generate:reset": "node index.js --reset",
+    "generate:reset-all": "node index.js --reset --reset-memory",
+    "generate:improved": "node index-improved.js",
+    "generate:final": "node index-final.js",
+    "test:improved": "node test-improved.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.8.0",
   "dependencies": {
+    "@babel/parser": "^7.27.7",
+    "@babel/traverse": "^7.27.7",
+    "@vue/compiler-sfc": "^3.5.17",
     "crypto": "^1.0.1",
+    "dependency-cruiser": "^16.10.3",
     "dotenv": "^16.5.0",
     "glob": "^11.0.2",
+    "graphology": "^0.26.0",
+    "graphology-communities-louvain": "^2.0.2",
+    "madge": "^8.0.0",
     "openai": "^4.97.0",
+    "ts-morph": "^26.0.0",
     "winston": "^3.17.0"
   }
 }

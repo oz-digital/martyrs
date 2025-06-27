@@ -1,0 +1,77 @@
+{
+  "section": {
+    "id": "source-store",
+    "title": "Проект: Хранилище",
+    "description": "Модуль, отвечающий за управление данными хранилища.",
+    "subsections": [
+      {
+        "id": "categories",
+        "title": "Категории",
+        "description": "Файлы, связанные с категориями товаров.",
+        "files": [
+          {
+            "name": "categories.js",
+            "path": "store/categories.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "leftovers",
+        "title": "Остатки",
+        "description": "Файлы, связанные с остатками товаров.",
+        "files": [
+          {
+            "name": "leftovers.js",
+            "path": "store/leftovers.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "products",
+        "title": "Товары",
+        "description": "Файлы, связанные с товарами.",
+        "files": [
+          {
+            "name": "products.js",
+            "path": "store/products.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      },
+      {
+        "id": "variants",
+        "title": "Варианты товаров",
+        "description": "Файлы, связанные с вариантами товаров.",
+        "files": [
+          {
+            "name": "variants.store.js",
+            "path": "store/variants.store.js",
+            "ext": ".js",
+            "summary": "Нет описания",
+            "purpose": "Неизвестно",
+            "importance": 1
+          }
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "48211ba9aacc273010f28f118a3dcd01",
+    "86211bcb6004b758b56a52844d7d6728",
+    "aeb155678cec87d3a34a1c24d5ddc028",
+    "bbde7d7956c87a47357df8e6944bba26"
+  ],
+  "groupHash": "5f3c58949743dbffe5a005c21f885060",
+  "generated": "2025-06-26T11:20:35.545Z"
+}

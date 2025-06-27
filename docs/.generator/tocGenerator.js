@@ -111,38 +111,33 @@ class TocGenerator {
    * Проверяет, изменились ли файлы в группе
    */
   async checkGroupFilesChanged(groupPath, analyses, logger) {
-    // Собираем текущие хеши файлов из stateManager
-    const currentFileHashes = [];
-    
-    for (const analysis of analyses) {
-      const fileId = this.stateManager.getFileId({ relativePath: analysis.path });
-      const fileInfo = this.stateManager.documentationState.analyzedFiles[fileId];
-      
-      if (fileInfo && fileInfo.hash) {
-        currentFileHashes.push(fileInfo.hash);
-      } else {
-        // Если файл не найден или нет хеша, считаем что группа изменилась
-        logger.info(`Файл ${analysis.path} не имеет хеша, группа ${groupPath} требует регенерации`);
-        return { changed: true, fileHashes: currentFileHashes };
-      }
-    }
-    
-    // Загружаем кешированную информацию о секции
     const sectionId = this.createSlug(groupPath);
     const cachedSection = await this.loadSectionCache(sectionId, logger);
     
     if (!cachedSection) {
-      logger.info(`Нет кеша для секции ${sectionId}, требуется генерация`);
-      return { changed: true, fileHashes: currentFileHashes };
+      logger.info(`Нет кеша для секции ${sectionId}, требуется генерация.`);
+      return { changed: true, fileHashes: [], cachedSection: null };
     }
-    
-    // Сравниваем хеш группы
+
+    const currentFileHashes = analyses.map(analysis => {
+        const fileId = this.stateManager.getFileId({ relativePath: analysis.path });
+        const fileInfo = this.stateManager.documentationState.analyzedFiles[fileId];
+        return fileInfo ? fileInfo.hash : null;
+    }).filter(Boolean);
+
+    if (currentFileHashes.length !== analyses.length) {
+        logger.info(`Не для всех файлов в группе ${groupPath} есть хеши. Требуется регенерация.`);
+        return { changed: true, fileHashes: currentFileHashes, cachedSection: null };
+    }
+
     const currentGroupHash = this.generateGroupHash(currentFileHashes);
+
     if (cachedSection.groupHash !== currentGroupHash) {
-      logger.info(`Хеш группы ${groupPath} изменился, требуется регенерация`);
-      return { changed: true, fileHashes: currentFileHashes };
+        logger.info(`Хеш группы ${groupPath} изменился. Старый: ${cachedSection.groupHash}, новый: ${currentGroupHash}. Требуется регенерация.`);
+        return { changed: true, fileHashes: currentFileHashes, cachedSection: null };
     }
-    
+
+    logger.info(`Хеш группы ${groupPath} не изменился. Используем кеш.`);
     return { changed: false, fileHashes: currentFileHashes, cachedSection: cachedSection.section };
   }
 
@@ -324,9 +319,120 @@ class TocGenerator {
   }
 
   /**
-   * Группирует анализы по реальной структуре папок
+   * Группирует анализы по семантической структуре
    */
   groupAnalysesByFolderStructure(analyses, logger) {
+    // Сначала пробуем семантическую группировку
+    const semanticGroups = this.groupAnalysesBySemantic(analyses, logger);
+    
+    // Если семантическая группировка дала слишком много мелких групп,
+    // используем папочную структуру
+    if (Object.keys(semanticGroups).length > 20) {
+      logger.info('Семантическая группировка создала слишком много групп, используем папочную структуру');
+      return this.groupAnalysesByFolders(analyses, logger);
+    }
+    
+    return semanticGroups;
+  }
+
+  /**
+   * Группирует анализы по семантическому признаку (компоненты, контроллеры, модели и т.д.)
+   */
+  groupAnalysesBySemantic(analyses, logger) {
+    const groups = {};
+    
+    for (const analysis of analyses) {
+      const semanticType = this.getSemanticType(analysis);
+      const groupKey = `${analysis.type}/${semanticType}`;
+      
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      
+      groups[groupKey].push(analysis);
+    }
+    
+    // Объединяем мелкие группы
+    const consolidatedGroups = {};
+    for (const [groupKey, files] of Object.entries(groups)) {
+      if (files.length < 3) {
+        // Мелкие группы объединяем в misc
+        const [type, semantic] = groupKey.split('/');
+        const miscKey = `${type}/misc-${semantic.split('/')[0]}`;
+        if (!consolidatedGroups[miscKey]) {
+          consolidatedGroups[miscKey] = [];
+        }
+        consolidatedGroups[miscKey].push(...files);
+      } else {
+        consolidatedGroups[groupKey] = files;
+      }
+    }
+    
+    // Логируем размеры групп
+    for (const [groupPath, groupAnalyses] of Object.entries(consolidatedGroups)) {
+      logger.info(`Семантическая группа "${groupPath}": ${groupAnalyses.length} файлов`);
+    }
+    
+    return consolidatedGroups;
+  }
+  
+  /**
+   * Определяет семантический тип файла на основе пути и анализа
+   */
+  getSemanticType(analysis) {
+    const path = analysis.path.toLowerCase();
+    const fileName = analysis.name.toLowerCase();
+    
+    // Проверяем по пути
+    if (path.includes('/components/')) {
+      if (path.includes('/pages/')) return 'components/pages';
+      if (path.includes('/sections/')) return 'components/sections';
+      if (path.includes('/blocks/')) return 'components/blocks';
+      if (path.includes('/elements/')) return 'components/elements';
+      if (path.includes('/forms/')) return 'components/forms';
+      return 'components/misc';
+    }
+    
+    if (path.includes('/controllers/')) {
+      if (path.includes('/queries/')) return 'controllers/queries';
+      if (path.includes('/configs/')) return 'controllers/configs';
+      return 'controllers';
+    }
+    
+    if (path.includes('/models/')) {
+      if (path.includes('/schemas/')) return 'models/schemas';
+      return 'models';
+    }
+    
+    if (path.includes('/store/')) return 'store';
+    if (path.includes('/router/') || path.includes('/routes/')) return 'router';
+    if (path.includes('/middlewares/')) return 'middlewares';
+    if (path.includes('/views/')) return 'views';
+    if (path.includes('/services/')) return 'services';
+    if (path.includes('/utils/')) return 'utils';
+    if (path.includes('/config')) return 'config';
+    
+    // Проверяем по имени файла
+    if (fileName.includes('.controller.')) return 'controllers';
+    if (fileName.includes('.model.')) return 'models';
+    if (fileName.includes('.store.')) return 'store';
+    if (fileName.includes('.router.') || fileName.includes('.routes.')) return 'router';
+    if (fileName.includes('.service.')) return 'services';
+    if (fileName.includes('.util.')) return 'utils';
+    if (fileName.includes('.config.')) return 'config';
+    
+    // Проверяем по расширению и типу
+    if (analysis.extension === '.vue') return 'components/misc';
+    if (analysis.extension === '.scss' || analysis.extension === '.css') return 'styles';
+    
+    // По умолчанию группируем в root
+    return 'root';
+  }
+
+  /**
+   * Группирует анализы по реальной структуре папок (fallback)
+   */
+  groupAnalysesByFolders(analyses, logger) {
     const groups = {};
 
     for (const analysis of analyses) {
@@ -342,7 +448,7 @@ class TocGenerator {
 
     // Логируем размеры групп
     for (const [groupPath, groupAnalyses] of Object.entries(groups)) {
-      logger.info(`Группа "${groupPath}": ${groupAnalyses.length} файлов`);
+      logger.info(`Группа по папкам "${groupPath}": ${groupAnalyses.length} файлов`);
     }
 
     return groups;
@@ -565,6 +671,39 @@ ${JSON.stringify(batchData, null, 2)}
     
     if (pathParts.length === 0) {
       return type === 'framework' ? 'Фреймворк' : 'Проект';
+    }
+    
+    // Маппинг семантических типов на человекочитаемые названия
+    const semanticTitles = {
+      'components': 'Компоненты',
+      'components/pages': 'Компоненты / Страницы',
+      'components/sections': 'Компоненты / Секции',
+      'components/blocks': 'Компоненты / Блоки',
+      'components/elements': 'Компоненты / Элементы',
+      'components/forms': 'Компоненты / Формы',
+      'components/misc': 'Компоненты / Разное',
+      'controllers': 'Контроллеры',
+      'controllers/queries': 'Контроллеры / Запросы',
+      'controllers/configs': 'Контроллеры / Конфигурации',
+      'models': 'Модели',
+      'models/schemas': 'Модели / Схемы',
+      'store': 'Хранилище',
+      'router': 'Маршрутизация',
+      'middlewares': 'Промежуточное ПО',
+      'views': 'Представления',
+      'services': 'Сервисы',
+      'utils': 'Утилиты',
+      'config': 'Конфигурация',
+      'styles': 'Стили',
+      'root': 'Корневые файлы',
+      'misc-components': 'Разные компоненты',
+      'misc-controllers': 'Разные контроллеры',
+      'misc-models': 'Разные модели'
+    };
+    
+    const semanticPath = pathParts.join('/');
+    if (semanticTitles[semanticPath]) {
+      return (type === 'framework' ? 'Фреймворк: ' : 'Проект: ') + semanticTitles[semanticPath];
     }
     
     // Преобразуем имя папки в человекочитаемое название

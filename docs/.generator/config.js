@@ -3,7 +3,7 @@ import path from 'path';
 // doc-generator/config.js
 ({ config }).config();
 export const projectRootDir = process.env.PROJECT_DIR || path.resolve(process.cwd());
-export const outputPath = process.env.OUTPUT_PATH || path.join(process.cwd(), 'docs', 'documentation.md');
+export const outputPath = process.env.OUTPUT_PATH || path.join(process.cwd(), 'documentation.md');
 export const openaiApiKey = process.env.OPENAI_API_KEY;
 export const openaiOrgKey = process.env.OPENAI_ORG_KEY;
 export const openaiModel = process.env.OPENAI_MODEL || 'gpt-4-turbo-preview';

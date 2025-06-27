@@ -1,0 +1,155 @@
+{
+  "section": {
+    "id": "source-components-misc",
+    "title": "Проект: Компоненты / Разное",
+    "description": "Модуль содержит различные компоненты для отображения карточек, элементов управления, форм и страниц, связанных с товарами, категориями и остатками.",
+    "subsections": [
+      {
+        "id": "cards-blocks",
+        "title": "Карточки и блоки",
+        "description": "Компоненты для отображения карточек товаров, позиций, остатков и категорий.",
+        "files": [
+          "blocks/CardCategory.vue",
+          "blocks/CardLeftover.vue",
+          "blocks/CardPosition.vue",
+          "blocks/CardProduct.vue"
+        ]
+      },
+      {
+        "id": "product-details",
+        "title": "Детализация товара",
+        "description": "Компоненты для отображения информации о товарах: скидки, изображения, варианты.",
+        "files": [
+          "blocks/ProductDiscounts.vue",
+          "blocks/ProductImages.vue",
+          "blocks/ProductVariants.vue"
+        ]
+      },
+      {
+        "id": "elements-ui",
+        "title": "Элементы интерфейса",
+        "description": "Базовые элементы управления: цена, выбор количества, отображение THC, просмотр изображений.",
+        "files": [
+          "elements/Image360.vue",
+          "elements/Price.vue",
+          "elements/QuantitySelector.vue",
+          "elements/THC.vue"
+        ]
+      },
+      {
+        "id": "forms-management",
+        "title": "Формы и настройки",
+        "description": "Формы для управления настройками колонок, переупорядочиванием, аудитом и историей остатков.",
+        "files": [
+          "forms/ColumnSettingsMenu.vue",
+          "forms/ReorderSettingsForm.vue",
+          "forms/StockAuditForm.vue",
+          "forms/StockHistoryView.vue"
+        ]
+      },
+      {
+        "id": "pages-views",
+        "title": "Страницы",
+        "description": "Страницы для работы с категориями, остатками и товарами.",
+        "files": [
+          "pages/Categories.vue",
+          "pages/CategoryEdit.vue",
+          "pages/LeftoverEdit.vue",
+          "pages/Leftovers.vue",
+          "pages/Product.vue"
+        ]
+      },
+      {
+        "id": "product-pages",
+        "title": "Страницы товаров",
+        "description": "Компоненты для отображения и редактирования страниц товаров.",
+        "files": [
+          "pages/ProductEdit.vue",
+          "pages/ProductRecommmendation.vue",
+          "pages/Products.vue"
+        ]
+      },
+      {
+        "id": "edit-sections",
+        "title": "Секции редактирования",
+        "description": "Секции для редактирования атрибутов, категорий, скидок, ингредиентов, рекомендуемых товаров и вариантов.",
+        "files": [
+          "sections/EditAttributes.vue",
+          "sections/EditCategories.vue",
+          "sections/EditDiscounts.vue",
+          "sections/EditIngredients.vue",
+          "sections/EditRecommended.vue",
+          "sections/EditVariants.vue"
+        ]
+      },
+      {
+        "id": "product-filters",
+        "title": "Фильтрация товаров",
+        "description": "Компоненты для фильтрации и отбора товаров.",
+        "files": [
+          "sections/FilterProducts.vue"
+        ]
+      },
+      {
+        "id": "recommendations",
+        "title": "Рекомендации и популярные товары",
+        "description": "Секции для отображения рекомендуемых и популярных товаров, а также рекомендаций на главной странице.",
+        "files": [
+          "sections/HeroRecommendation.vue",
+          "sections/ProductsPopular.vue",
+          "sections/ProductsRecommended.vue"
+        ]
+      },
+      {
+        "id": "product-info",
+        "title": "Информация о товаре",
+        "description": "Секции для отображения информации о товаре и его конфигурации.",
+        "files": [
+          "sections/ProductConfigurator.vue",
+          "sections/ProductInformationSection.vue",
+          "sections/SectionProduct.vue"
+        ]
+      }
+    ]
+  },
+  "fileHashes": [
+    "024661e1e55039671a427ca101d85536",
+    "0e6857c3c4fe193860f7d61ec8c49bf6",
+    "122fb4114a8ae8992135b159f91fb28f",
+    "1327e1d80b039cadb8dd6375618f59fe",
+    "18dcdb5e3ae77a3cc2905b0ec4f34849",
+    "1d2d7be4689d24c2a2cd6288daf49a7c",
+    "26bdfdc492a21d25b39fc3f3a1db86dd",
+    "2bc8bb9b9e7483182a33339e7b3bc56b",
+    "2c0a32f0d7c3c4734919bd1a4584042e",
+    "3b224f070a5e69948645af3ba5a722a7",
+    "475385b87299787927d3c3e21d19baf7",
+    "493c82f9126e247400cf6de7e52f9882",
+    "55c3a05a095a24256dd6dbf13ca39129",
+    "6d3cb21535f3b2233e4c1adac476877f",
+    "6f1b1c4753eefc83f13bea6ec927e2cd",
+    "79267f03591317ab0f8329fc16e47bef",
+    "88ea0162324348f61f398e83134bbb7b",
+    "890d548bbdc6d0f812452e6fa9485824",
+    "9eec83f70a10277cc63908295294bb84",
+    "aa93dffde3dd1798b06d194c3b5a4e36",
+    "acfb1b2bdeb0793bf6c36d1e40863d30",
+    "b448d30ee93f1a34ebc0002a115dbf45",
+    "b7e0417eaffda879891667342b2738d3",
+    "bc32a06c146fa096ddd72892cd2cb3e9",
+    "bf668829ac8a0ba60c31b7e51b224793",
+    "c2b0f24f58958af3d987bd046b51a35b",
+    "d3a6e7ee9aae0cec513b4c6707ab9142",
+    "d425a225e981a639acb2ade0d88d77e2",
+    "d7279edff77808265a65c1da09190d53",
+    "d89cef4ce8c824004a2af63ef83a1504",
+    "e879cd5cb48dc4132a1b9c5a96821bca",
+    "ed1b571a501e9ca885cf35515f253f43",
+    "f46e1a70c408356c5e05c2b45358eaef",
+    "f9fbbfe498d6087705dd997e8b956b76",
+    "fa4362d4fa08c25ab05cdb533767e69c",
+    "fb743a918a0a6fba4e720b17c1c41617"
+  ],
+  "groupHash": "32d60a68331f15c5363163cb6bd98595",
+  "generated": "2025-06-26T14:26:57.569Z"
+}
