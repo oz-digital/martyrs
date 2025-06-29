@@ -15,4 +15,18 @@ export function setAuthToken(token) {
   }
 }
 
+// Функция для получения текущего базового URL
+export function getBaseURL() {
+  return $axios.defaults.baseURL;
+}
+
+// Функция для изменения базового URL
+export function setBaseURL(url) {
+  $axios.defaults.baseURL = url;
+}
+
+export function resetBaseURL() {
+  $axios.defaults.baseURL = process.env.API_URL;
+}
+
 export default $axios;

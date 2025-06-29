@@ -180,7 +180,7 @@ import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import Skeleton from '@martyrs/src/components/Skeleton/Skeleton.vue';
 import EmptyState from '@martyrs/src/components/EmptyState/EmptyState.vue';
 import Dropdown from "@martyrs/src/components/Dropdown/Dropdown.vue";
-import Calendar from '@martyrs/src/components/DatePicker/Calendar.vue'
+import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 import BottomSheet from '@martyrs/src/components/BottomSheet/BottomSheet.vue';
 
 import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'

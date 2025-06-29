@@ -122,7 +122,7 @@ import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'
 import Button from '@martyrs/src/components/Button/Button.vue'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
 import Tab from '@martyrs/src/components/Tab/Tab.vue'
-import Calendar from '@martyrs/src/components/DatePicker/Calendar.vue'
+import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
 import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue'

@@ -20,6 +20,7 @@ export const entry = {
   'modules/spots/spots.server': './src/modules/spots/spots.server.js',
   'modules/pages/pages.server': './src/modules/pages/pages.server.js',
   'modules/rents/rents.server': './src/modules/rents/rents.server.js',
+  'modules/music/music.server': './src/modules/music/music.server.js',
   'modules/notifications/notifications.server': './src/modules/notifications/notifications.server.js',
 };
 export const target = 'node';

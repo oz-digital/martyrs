@@ -25,6 +25,7 @@ const moduleEntries = {
   'modules/spots/spots.client': './src/modules/spots/spots.client.js',
   'modules/pages/pages.client': './src/modules/pages/pages.client.js',
   'modules/rents/rents.client': './src/modules/rents/rents.client.js',
+  'modules/music/music.client': './src/modules/music/music.client.js',
   'modules/notifications/notifications.client': './src/modules/notifications/notifications.client.js',
 };
 export const mode = 'production';

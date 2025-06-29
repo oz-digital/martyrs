@@ -7,11 +7,13 @@ import {
   Checkbox,
   Chips,
   Countdown,
+  Calendar,
   DatePicker,
   Dropdown,
   EmptyState,
   Error,
   Feed,
+  Carousel,
   Field,
   FieldBig,
   FieldPhone,
@@ -47,6 +49,7 @@ export default {
     app.component('Address', () => import('./components/Address/Address.vue'));
     app.component('Button', () => import('./components/Button/Button.vue'));
     app.component('Checkbox', () => import('./components/Checkbox/Checkbox.vue'));
+      app.component('Calendar', () => import('./components/Calendar/Calendar.vue'));
     app.component('Dropdown', () => import('./components/Dropdown/Dropdown.vue'));
     app.component('Error', () => import('./components/Error/Error.vue'));
     app.component('Field', () => import('./components/Field/Field.vue'));
@@ -72,6 +75,7 @@ export default {
     app.component('DatePicker', () => import('./components/DatePicker/DatePicker.vue'));
     app.component('EmptyState', () => import('./components/EmptyState/EmptyState.vue'));
     app.component('Feed', () => import('./components/Feed/Feed.vue'));
+    app.component('Carousel', () => import('./components/Feed/Carousel.vue'));
     app.component('FieldBig', () => import('./components/FieldBig/FieldBig.vue'));
     app.component('FieldTags', () => import('./components/FieldTags/FieldTags.vue'));
     // app.component('Footer',       () => import('./components/Footer/Footer.vue'));
@@ -91,6 +95,7 @@ export {
   Address,
   Breadcrumbs,
   Button,
+  Calendar,
   Checkbox,
   Chips,
   Countdown,
@@ -99,6 +104,7 @@ export {
   EmptyState,
   Error,
   Feed,
+  Carousel,
   Field,
   FieldBig,
   FieldPhone,

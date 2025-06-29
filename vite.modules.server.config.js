@@ -44,6 +44,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/spots/spots.server.js'),
         resolve(__dirname, './src/modules/pages/pages.server.js'),
         resolve(__dirname, './src/modules/rents/rents.server.js'),
+        resolve(__dirname, './src/modules/music/music.server.js'),
         resolve(__dirname, './src/modules/notifications/notifications.server.js'),
       ],
       formats: ['cjs', 'es'],

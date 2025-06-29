@@ -174,7 +174,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 
 
-import Calendar from '@martyrs/src/components/DatePicker/Calendar.vue'
+import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 
 import Block from '@martyrs/src/components/Block/Block.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';

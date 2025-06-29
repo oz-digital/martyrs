@@ -1,6 +1,7 @@
 export { default as Address } from './Address/Address.vue';
 export { default as Button } from './Button/Button.vue';
 export { default as Checkbox } from './Checkbox/Checkbox.vue';
+export { default as Calendar } from './Calendar/Calendar.vue';
 export { default as Dropdown } from './Dropdown/Dropdown.vue';
 export { default as Error } from './Error/Error.vue';
 export { default as Field } from './Field/Field.vue';
@@ -28,6 +29,7 @@ export { default as Countdown } from './Countdown/Countdown.vue';
 export { default as DatePicker } from './DatePicker/DatePicker.vue';
 export { default as EmptyState } from './EmptyState/EmptyState.vue';
 export { default as Feed } from './Feed/Feed.vue';
+export { default as Carousel } from './Feed/Carousel.vue';
 export { default as FieldBig } from './FieldBig/FieldBig.vue';
 export { default as FieldTags } from './FieldTags/FieldTags.vue';
 // export { default as Footer } from './Footer/Footer.vue';
