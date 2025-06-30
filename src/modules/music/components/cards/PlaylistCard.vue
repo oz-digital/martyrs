@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="playlist-info pd-small bg-dark-transp-20">
-      <h3 class="t-white t-medium t-truncate">{{ playlist.title }}</h3>
+      <h3 class=" t-medium t-truncate">{{ playlist.title }}</h3>
       <p class="t-grey t-small t-truncate">{{ playlistInfo }}</p>
     </div>
   </router-link>

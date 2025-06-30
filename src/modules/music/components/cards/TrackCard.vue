@@ -13,7 +13,7 @@
       </div>
       
       <div class="track-info flex-1">
-        <div class="track-name t-white t-truncate">{{ track.title }}</div>
+        <div class="track-name  t-truncate">{{ track.title }}</div>
         <div class="track-artist t-grey t-small t-truncate">{{ getArtistName(track) }}</div>
       </div>
       

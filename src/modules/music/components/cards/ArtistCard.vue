@@ -25,7 +25,7 @@
           'bg-grey': artist.status === 'draft'
         }"
       >
-        <span class="t-white p-small">{{ artist.status }}</span>
+        <span class=" p-small">{{ artist.status }}</span>
       </div>
     </div>
     

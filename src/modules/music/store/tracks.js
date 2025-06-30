@@ -35,10 +35,17 @@ export const actions = {
     }
   },
 
-  async fetchPopularTracks(limit = 10) {
+  async fetchPopularTracks(options = {}) {
     state.loadingPopular = true;
     try {
-      const response = await fetch(`${process.env.API_URL}/api/tracks/popular?limit=${limit}`);
+      // Обрабатываем options от Feed компонента
+      const queryParams = new URLSearchParams();
+      queryParams.append('limit', options.limit || 10);
+      
+      if (options.skip) queryParams.append('skip', options.skip);
+      if (options.search) queryParams.append('search', options.search);
+      
+      const response = await fetch(`${process.env.API_URL}/api/tracks/popular?${queryParams.toString()}`);
       const tracks = await response.json();
       state.popular = tracks;
       return tracks;

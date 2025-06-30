@@ -6,7 +6,7 @@
     </div>
     
     <div v-else-if="!playlist" class="t-center pd-big">
-      <h2 class="t-white">Playlist not found</h2>
+      <h2 class="">Playlist not found</h2>
       <p class="t-grey t-medium">The playlist you're looking for doesn't exist or has been removed.</p>
     </div>
     
@@ -21,8 +21,8 @@
         </div>
         
         <div class="playlist-info">
-          <div class="t-small t-uppercase t-white">Playlist</div>
-          <h1 class="t-white">{{ playlist.title }}</h1>
+          <div class="t-small t-uppercase ">Playlist</div>
+          <h1 class="">{{ playlist.title }}</h1>
           
           <div v-if="playlist.description" class="playlist-description t-grey mn-t-thin mn-b-small">
             {{ playlist.description }}
@@ -32,11 +32,11 @@
             <router-link 
               v-if="playlist.owner && playlist.owner.target"
               :to="getOwnerProfileLink(playlist.owner)"
-              class="t-white t-medium hover-t-main"
+              class=" t-medium hover-t-main"
             >
               {{ getPlaylistOwnerName(playlist) }}
             </router-link>
-            <span v-else class="t-white t-medium">{{ getPlaylistOwnerName(playlist) }}</span>
+            <span v-else class=" t-medium">{{ getPlaylistOwnerName(playlist) }}</span>
             
             <span class="t-grey mn-l-small mn-r-small">•</span>
             
@@ -81,7 +81,7 @@
               <li v-if="isOwner" class="mn-b-thin">
                 <Button 
                   @click="editPlaylist"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -91,7 +91,7 @@
               <li class="mn-b-thin">
                 <Button 
                   @click="addToQueue"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -101,7 +101,7 @@
               <li v-if="isOwner" class="mn-b-thin">
                 <Button 
                   @click="toggleCollaborative"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -121,7 +121,7 @@
               <li>
                 <Button 
                   @click="copyLink"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -136,13 +136,13 @@
       <!-- Playlist Tracks -->
       <div class="playlist-tracks">
         <div v-if="playlistTracks.length === 0" class="empty-tracks t-center pd-big bg-dark-transp-10 radius-medium">
-          <h3 class="t-white mn-b-small">This playlist is empty</h3>
+          <h3 class=" mn-b-small">This playlist is empty</h3>
           <p class="t-grey t-medium">Add some tracks to get started</p>
           
           <Button 
             v-if="isOwner || isCollaborator"
             @click="$router.push({ name: 'music-search' })"
-            class="bg-main t-white radius-small pd-small mn-t-medium hover-scale-1"
+            class="bg-main  radius-small pd-small mn-t-medium hover-scale-1"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -163,56 +163,56 @@
       <Popup 
         v-if="showEditModal && isOwner" 
         @close-popup="showEditModal = false" 
-        class="bg-dark pd-small w-m-25r radius-medium t-white"
+        class="bg-dark pd-small w-m-25r radius-medium "
       >
         <h3 class="mn-b-medium">Edit Playlist</h3>
         
         <form @submit.prevent="updatePlaylist">
           <div class="form-group mn-b-medium">
-            <label for="title" class="t-white t-medium mn-b-thin d-block">Playlist Name</label>
+            <label for="title" class=" t-medium mn-b-thin d-block">Playlist Name</label>
             <Field 
               v-model:field="editForm.title"
               id="title"
               type="text"
               placeholder="Playlist Name"
               :validation="validationErrors.title"
-              class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+              class="w-100 pd-small bg-dark-transp-25 radius-small "
             />
           </div>
           
           <div class="form-group mn-b-medium">
-            <label for="description" class="t-white t-medium mn-b-thin d-block">Description</label>
+            <label for="description" class=" t-medium mn-b-thin d-block">Description</label>
             <Field 
               v-model:field="editForm.description"
               id="description"
               type="textarea"
               placeholder="Add an optional description"
-              class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+              class="w-100 pd-small bg-dark-transp-25 radius-small "
             />
           </div>
           
           <div class="form-group mn-b-medium">
-            <label class="t-white t-medium mn-b-thin d-block">Privacy</label>
+            <label class=" t-medium mn-b-thin d-block">Privacy</label>
             <div class="flex gap-small">
               <Radio 
                 v-model:radio="editForm.isPublic"
                 :value="true"
                 name="privacy"
                 label="Public"
-                class="t-white"
+                class=""
               />
               <Radio 
                 v-model:radio="editForm.isPublic"
                 :value="false"
                 name="privacy"
                 label="Private"
-                class="t-white"
+                class=""
               />
             </div>
           </div>
           
           <div class="form-group mn-b-medium">
-            <label class="t-white t-medium mn-b-thin d-block">Cover Image</label>
+            <label class=" t-medium mn-b-thin d-block">Cover Image</label>
             <div class="playlist-cover-upload flex gap-medium">
               <div class="playlist-cover-preview bg-dark-transp-25 radius-small o-hidden">
                 <Media 
@@ -237,7 +237,7 @@
             <Button 
               @click="showEditModal = false"
               type="button"
-              class="bg-dark-transp-25 t-white pd-small radius-small mn-r-small hover-bg-dark"
+              class="bg-dark-transp-25  pd-small radius-small mn-r-small hover-bg-dark"
               :showLoader="false" 
               :showSucces="false"
             >
@@ -246,7 +246,7 @@
             
             <Button 
               type="submit"
-              class="bg-main t-white pd-small radius-small hover-scale-1"
+              class="bg-main  pd-small radius-small hover-scale-1"
               :submit="updatePlaylist"
               :showLoader="true" 
               :showSucces="true"
@@ -262,7 +262,7 @@
       <Popup 
         v-if="showDeleteModal" 
         @close-popup="showDeleteModal = false" 
-        class="bg-dark pd-small w-m-25r radius-medium t-white"
+        class="bg-dark pd-small w-m-25r radius-medium "
       >
         <h3 class="mn-b-medium">Delete Playlist</h3>
         <p class="t-grey mn-b-medium">Are you sure you want to delete this playlist? This action cannot be undone.</p>
@@ -270,7 +270,7 @@
         <div class="t-right">
           <Button 
             @click="showDeleteModal = false"
-            class="bg-dark-transp-25 t-white pd-small radius-small mn-r-small hover-bg-dark"
+            class="bg-dark-transp-25  pd-small radius-small mn-r-small hover-bg-dark"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -279,7 +279,7 @@
           
           <Button 
             @click="confirmDelete"
-            class="bg-fourth t-white pd-small radius-small hover-scale-1"
+            class="bg-fourth  pd-small radius-small hover-scale-1"
             :showLoader="true" 
             :showSucces="true"
           >

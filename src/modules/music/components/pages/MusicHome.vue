@@ -1,12 +1,6 @@
 <!-- components/pages/MusicHome.vue -->
 <template>
   <div class="music-home-page pd-medium mobile:pd-thin">
-    <!-- Hero Section -->
-    <section class="bg-gradient-dark pd-medium radius-medium mn-b-medium">
-      <h1 class="t-white mn-b-small">Welcome to Music</h1>
-      <p class="t-grey t-medium">Discover new tracks, albums, and playlists</p>
-    </section>
-    
     <!-- Featured Playlists Section -->
     <section class="mn-b-medium">
       <div class="flex-between flex mn-b-small">
@@ -15,9 +9,22 @@
       </div>
       
       <Feed
-        v-model:items="featuredPlaylists"
-        :isLoading="loadingFeatured"
         :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No Playlists',
+            description: 'No featured playlists available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => playlistsActions.fetchFeaturedPlaylists(options),
+          state: playlistsState
+        }"
+        :options="{
+          limit: 5,
+          featured: true
+        }"
         :skeleton="{
           structure: [
             { block: 'square', size: 'large', rounded: false },
@@ -26,13 +33,12 @@
           ],
           horizontal: false
         }"
+        v-slot="{ items }"
         class="cols-5 mobile:cols-2 gap-small"
       >
-        <template #default="{ items }">
-          <li v-for="playlist in items" :key="playlist._id">
-            <PlaylistCard :playlist="playlist" class="hover-scale-1 transition-cubic-in-out" />
-          </li>
-        </template>
+        <li v-for="playlist in items" :key="playlist._id">
+          <PlaylistCard :playlist="playlist" class="hover-scale-1 transition-cubic-in-out" />
+        </li>
       </Feed>
     </section>
     
@@ -44,9 +50,23 @@
       </div>
       
       <Feed
-        v-model:items="recentAlbums"
-        :isLoading="loadingRecentAlbums"
         :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No New Releases',
+            description: 'No new albums available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => albumsActions.fetchAlbums(options),
+          state: albumsState
+        }"
+        :options="{
+          limit: 4,
+          sortParam: 'releaseDate',
+          sortOrder: 'desc'
+        }"
         :skeleton="{
           structure: [
             { block: 'square', size: 'large', rounded: false },
@@ -55,13 +75,12 @@
           ],
           horizontal: false
         }"
-        class="cols-5 mobile:cols-2 gap-small"
+        v-slot="{ items }"
+        class="cols-4 mobile:cols-2 gap-small"
       >
-        <template #default="{ items }">
-          <li v-for="album in items" :key="album._id">
-            <AlbumCard :album="album" class="hover-scale-1 transition-cubic-in-out" />
-          </li>
-        </template>
+        <li v-for="album in items" :key="album._id">
+          <AlbumCard :album="album" class="hover-scale-1 transition-cubic-in-out" />
+        </li>
       </Feed>
     </section>
     
@@ -73,9 +92,22 @@
       </div>
       
       <Feed
-        v-model:items="popularTracks"
-        :isLoading="loadingPopularTracks"
         :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No Popular Tracks',
+            description: 'No popular tracks available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => tracksActions.fetchPopularTracks(options),
+          state: tracksState
+        }"
+        :options="{
+          limit: 10,
+          popular: true
+        }"
         :skeleton="{
           structure: [
             { block: 'text', size: 'medium' },
@@ -83,15 +115,14 @@
           ],
           horizontal: true
         }"
+        v-slot="{ items }"
       >
-        <template #default="{ items }">
-          <TrackList 
-            :tracks="items" 
-            :showAlbum="true" 
-            :showCover="true"
-            class="bg-dark-transp-10 radius-medium o-hidden"
-          />
-        </template>
+        <TrackList 
+          :tracks="items" 
+          :showAlbum="true" 
+          :showCover="true"
+          class="bg-dark-transp-10 radius-medium o-hidden"
+        />
       </Feed>
     </section>
     
@@ -103,9 +134,22 @@
       </div>
       
       <Feed
-        v-model:items="topArtists"
-        :isLoading="loadingTopArtists"
         :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No Artists',
+            description: 'No top artists available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => artistsActions.fetchTopArtists(options),
+          state: artistsState
+        }"
+        :options="{
+          limit: 6,
+          top: true
+        }"
         :skeleton="{
           structure: [
             { block: 'circle', size: 'large' },
@@ -113,13 +157,12 @@
           ],
           horizontal: false
         }"
+        v-slot="{ items }"
         class="cols-6 mobile:cols-3 gap-small"
       >
-        <template #default="{ items }">
-          <li v-for="artist in items" :key="artist._id">
-            <ArtistCard :artist="artist" class="hover-scale-1 transition-cubic-in-out" />
-          </li>
-        </template>
+        <li v-for="artist in items" :key="artist._id">
+          <ArtistCard :artist="artist" class="hover-scale-1 transition-cubic-in-out" />
+        </li>
       </Feed>
     </section>
   </div>
@@ -138,36 +181,6 @@ import { state as playlistsState, actions as playlistsActions } from '../../stor
 import { state as albumsState, actions as albumsActions } from '../../store/albums.js';
 import { state as tracksState, actions as tracksActions } from '../../store/tracks.js';
 import { state as artistsState, actions as artistsActions } from '../../store/artists.js';
-
-// Computed properties
-const featuredPlaylists = computed(() => playlistsState.featuredPlaylists);
-const recentAlbums = computed(() => albumsState.albums);
-const popularTracks = computed(() => tracksState.popular);
-const topArtists = computed(() => artistsState.topArtists);
-
-// Loading states
-const loadingFeatured = computed(() => playlistsState.loadingFeatured);
-const loadingRecentAlbums = computed(() => albumsState.isLoading);
-const loadingPopularTracks = computed(() => tracksState.loadingPopular);
-const loadingTopArtists = computed(() => artistsState.loadingTopArtists);
-
-onMounted(async () => {
-  // Fetch featured playlists
-  playlistsActions.fetchFeaturedPlaylists(5);
-  
-  // Fetch recent albums
-  albumsActions.fetchAlbums({
-    limit: 5,
-    sortParam: 'releaseDate',
-    sortOrder: 'desc'
-  });
-  
-  // Fetch popular tracks
-  tracksActions.fetchPopularTracks(10);
-  
-  // Fetch top artists
-  artistsActions.fetchTopArtists(6);
-});
 </script>
 
 <style scoped>

@@ -3,95 +3,95 @@
   <div class="upload-form">
     <!-- <form @submit.prevent="submitForm"> -->
       <div class="form-group mn-b-medium">
-        <label for="title" class="t-white t-medium mn-b-thin d-block">Track Title</label>
+        <label for="title" class=" t-medium mn-b-thin d-block">Track Title</label>
         <Field 
           v-model:field="form.title"
           id="title"
           type="text"
           placeholder="Track Title"
           :validation="validationErrors.title"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
 
       <div class="form-group mn-b-medium">
-        <label for="artist" class="t-white t-medium mn-b-thin d-block">Artist</label>
+        <label for="artist" class=" t-medium mn-b-thin d-block">Artist</label>
         <Select 
           v-model:select="form.artist"
           id="artist"
           :options="artistOptions"
           placeholder="Select an artist"
           :validation="validationErrors.artist"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
 
       <div class="form-group mn-b-medium">
-        <label for="album" class="t-white t-medium mn-b-thin d-block">Album (Optional)</label>
+        <label for="album" class=" t-medium mn-b-thin d-block">Album (Optional)</label>
         <Select 
           v-model:select="form.album"
           id="album"
           :options="albumOptions"
           placeholder="Select an album"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="genre" class="t-white t-medium mn-b-thin d-block">Genre</label>
+        <label for="genre" class=" t-medium mn-b-thin d-block">Genre</label>
         <Select 
           v-model:select="form.genre"
           id="genre"
           :options="genreOptions"
           placeholder="Select a genre"
           :validation="validationErrors.genre"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="releaseDate" class="t-white t-medium mn-b-thin d-block">Release Date</label>
+        <label for="releaseDate" class=" t-medium mn-b-thin d-block">Release Date</label>
         <Field 
           v-model:field="form.releaseDate"
           id="releaseDate"
           type="date"
           :validation="validationErrors.releaseDate"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="isExplicit" class="t-white t-medium mn-b-thin d-block">Explicit Content</label>
+        <label for="isExplicit" class=" t-medium mn-b-thin d-block">Explicit Content</label>
         <Checkbox 
           v-model:checkbox="form.isExplicit"
           id="isExplicit"
           label="This track contains explicit content"
-          class="t-white"
+          class=""
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="isPublic" class="t-white t-medium mn-b-thin d-block">Privacy</label>
+        <label for="isPublic" class=" t-medium mn-b-thin d-block">Privacy</label>
         <div class="flex gap-small">
           <Radio 
             v-model:radio="form.isPublic"
             :value="true"
             name="privacy"
             label="Public"
-            class="t-white"
+            class=""
           />
           <Radio 
             v-model:radio="form.isPublic"
             :value="false"
             name="privacy"
             label="Private"
-            class="t-white"
+            class=""
           />
         </div>
       </div>
       
       <div class="form-group mn-b-medium">
-        <label class="t-white t-medium mn-b-thin d-block">Cover Image</label>
+        <label class=" t-medium mn-b-thin d-block">Cover Image</label>
         <div class="track-cover-upload flex gap-medium">
           <div class="track-cover-preview bg-dark-transp-25 radius-small o-hidden">
             <Media 
@@ -113,24 +113,24 @@
       </div>
       
       <div class="form-group mn-b-medium">
-        <label class="t-white t-medium mn-b-thin d-block">Track Audio File</label>
+        <label class=" t-medium mn-b-thin d-block">Track Audio File</label>
         <Upload
           v-model:field="form.fileUrl"
           @file-change="(url) => form.fileUrl = url"
           type="file"
           uploadPath="tracks"
-          class="bg-dark-transp-25 radius-small pd-small t-white"
+          class="bg-dark-transp-25 radius-small pd-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="lyrics" class="t-white t-medium mn-b-thin d-block">Lyrics (Optional)</label>
+        <label for="lyrics" class=" t-medium mn-b-thin d-block">Lyrics (Optional)</label>
         <Field 
           v-model:field="form.lyrics"
           id="lyrics"
           type="textarea"
           placeholder="Add lyrics"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
@@ -138,7 +138,7 @@
         <Button 
           @click="resetForm"
           type="button"
-          class="bg-dark-transp-25 t-white pd-small radius-small mn-r-small hover-bg-dark"
+          class="bg-dark-transp-25  pd-small radius-small mn-r-small hover-bg-dark"
           :showLoader="false" 
           :showSucces="false"
         >
@@ -147,7 +147,7 @@
         
         <Button 
           type="submit"
-          class="bg-main t-white pd-small radius-small hover-scale-1"
+          class="bg-main  pd-small radius-small hover-scale-1"
           :submit="() => submitForm()"
           :showLoader="true" 
           :showSucces="true"

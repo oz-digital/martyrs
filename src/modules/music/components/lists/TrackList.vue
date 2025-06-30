@@ -48,17 +48,17 @@
           <div v-if="showCover" class="track-cover mn-r-small">
             <Media 
               :url="track.coverUrl || (track.album && track.album.coverUrl) || '/assets/placeholder-track.jpg'" 
-              class="w-3r h-3r object-fit-cover radius-small"
+              class="w-3r h-3r object-fit-cover o-hidden radius-small"
             />
           </div>
           
           <div class="track-info">
-            <div class="track-name t-white" :class="{'t-main': isPlaying(track)}">{{ track.title }}</div>
+            <div class="track-name " :class="{'t-main': isPlaying(track)}">{{ track.title }}</div>
             <div class="track-artist t-grey t-small">
               <router-link 
                 v-if="track.artist && track.artist._id"
                 :to="{ name: 'artist-detail', params: { url: track.artist.url } }"
-                class="t-grey hover-t-white"
+                class="t-grey hover-"
                 @click.stop
               >
                 {{ getArtistName(track) }}
@@ -72,7 +72,7 @@
           <router-link 
             v-if="track.album && track.album._id"
             :to="{ name: 'album-detail', params: { url: track.album.url } }"
-            class="t-grey hover-t-white"
+            class="t-grey hover-"
             @click.stop
           >
             {{ track.album.title }}

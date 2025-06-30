@@ -14,7 +14,7 @@
             <UploadImage
               v-model:photo="artist.photoUrl"
               uploadPath="artists/photos"
-              class="w-100 h-15r mn-b-small"
+              class="w-100 h-15r radius-small o-hidden mn-b-small"
               @error="handleUploadError"
             />
           </div>
@@ -25,7 +25,7 @@
             <UploadImage
               v-model:photo="artist.coverUrl"
               uploadPath="artists/covers"
-              class="w-100 h-15r mn-b-small"
+              class="w-100 h-15r radius-small o-hidden mn-b-small"
               @error="handleUploadError"
             />
           </div>
@@ -34,10 +34,17 @@
         <!-- Name -->
         <Field
           v-model:field="artist.name"
-          label="Artist Name"
+          label="Name"
           placeholder="Enter artist name"
-          class="mn-b-medium"
+          class="bg-white radius-small pd-small mn-b-thin"
           :validation="validation.name"
+        />
+          <!-- URL -->
+        <Field
+          v-model:field="artist.url"
+          label="URL"
+          placeholder="Leave blank for auto-generation based on the artist name"
+          class="bg-white radius-small pd-small  mn-b-small"
         />
         
         <!-- Bio -->
@@ -46,7 +53,7 @@
           label="Biography"
           type="textarea"
           placeholder="Enter artist biography"
-          class="mn-b-medium"
+          class="bg-white radius-small pd-small mn-b-thin"
           :validation="validation.bio"
         />
         
@@ -55,7 +62,7 @@
           v-model:field="artist.location"
           label="Location"
           placeholder="e.g., Los Angeles, CA"
-          class="mn-b-medium"
+          class="bg-white radius-small pd-small mn-b-thin"
         />
         
         <!-- Website -->
@@ -63,33 +70,23 @@
           v-model:field="artist.website"
           label="Website"
           placeholder="https://example.com"
-          class="mn-b-medium"
+          class="bg-white radius-small pd-small mn-b-thin"
         />
         
-        <!-- URL (if editable) -->
-        <Field
-          v-if="!artist.url && !editMode"
-          v-model:field="artist.url"
-          label="Custom URL"
-          placeholder="custom-artist-url"
-          class="mn-b-small"
-        />
-        <p v-if="!artist.url && !editMode" class="t-transp p-small mn-b-medium">
-          Leave blank for auto-generation based on the artist name
-        </p>
+      
       </div>
       
       <!-- Social Media Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Social Media</h3>
         
-        <div class="cols-2 mobile:cols-1 gap-medium">
+        <div class="cols-2 mobile:cols-1 gap-thin">
           <!-- Telegram -->
           <Field
             v-model:field="artist.socials.telegram"
             label="Telegram"
             placeholder="@username"
-            class="mn-b-medium"
+            class="bg-white radius-small pd-small"
           />
           
           <!-- Twitter -->
@@ -97,7 +94,7 @@
             v-model:field="artist.socials.twitter"
             label="Twitter"
             placeholder="@username"
-            class="mn-b-medium"
+            class="bg-white radius-small pd-small"
           />
           
           <!-- Facebook -->
@@ -105,7 +102,7 @@
             v-model:field="artist.socials.facebook"
             label="Facebook"
             placeholder="username or page-name"
-            class="mn-b-medium"
+            class="bg-white radius-small pd-small"
           />
           
           <!-- Instagram -->
@@ -113,32 +110,74 @@
             v-model:field="artist.socials.instagram"
             label="Instagram"
             placeholder="@username"
-            class="mn-b-medium"
+            class="bg-white radius-small pd-small"
           />
         </div>
       </div>
       
       <!-- Genres Section (assuming genres are available) -->
-      <div class="bg-light pd-medium radius-medium">
-        <h3 class="h3 mn-b-medium">Genres</h3>
-        <p class="t-transp mn-b-medium">
-          Select genres that best describe this artist
-        </p>
-        
-        <div v-if="isLoadingGenres" class="flex-center flex">
-          <Loader class="mn-b-medium" />
-        </div>
-        
-        <div v-else class="flex flex-wrap gap-small mn-b-medium">
-          <Checkbox
-            v-for="genre in availableGenres"
-            :key="genre._id"
-            v-model:active="selectedGenres[genre._id]"
-            :label="genre.name"
-            class="pd-small bg-white radius-medium"
-          />
-        </div>
-      </div>
+       <Block title="Genres">
+        <BlockMultiselect
+          v-model="artist.genres"
+          placeholder="Search genres..."
+          :multiple="true"
+          :transform="(item) => ({ _id: item._id, name: item.name })"
+          :store="{
+            read: (options) => artistsStore.actions.fetchArtists(options),
+            state: artistsStore.state
+          }"
+          :options="{
+            rootOnly: false,
+            excludeChildren: false,
+            limit: 50
+          }"
+          :skeleton="{
+            hide: false,
+            horizontal: true,
+            class: 'radius-small',
+            structure: [{ 
+              block: 'text', size: 'large'
+            }]
+          }"
+          :states="{
+            empty: {
+              title: 'No categories found',
+              description: 'Try different search terms or create a new category',
+              class: 'radius-small'
+            }
+          }"
+          key="_id"
+          :label="item => item.name"
+          classSearch="bg-white radius-small"
+          classSelected="bg-white pd-small radius-small"
+          classDropdown="bg-white pd-small radius-medium bs-small"
+          classItem="pd-small radius-small hover-bg-light cursor-pointer"
+          classFeed="h-max-30r gap-thin flex-column flex o-scroll"
+        >
+          <!-- Слот для выбранных категорий -->
+          <template #selected="{ item, clear }">
+            <div class="flex-nowrap flex-v-center flex gap-thin">
+              <span class="t-medium">{{ item?.name || item }}</span>
+              <button 
+                @click.stop="clear"
+                class="i-small pd-micro bg-red radius-extra flex-center flex aspect-1x1 hover-scale-1"
+              >
+                <IconCross class="i-micro fill-white" />
+              </button>
+            </div>
+          </template>
+          
+          <!-- Слот для элементов в списке -->
+          <template #item="{ item }">
+            <div class="flex-nowrap flex-v-center flex">
+              <div class="w-100">
+                <p class="t-medium">{{ item.name }}</p>
+                <p v-if="item.description" class="t-small t-transp">{{ item.description }}</p>
+              </div>
+            </div>
+          </template>
+        </BlockMultiselect>
+      </Block>
       
       <!-- Status Section -->
       <div class="bg-light pd-medium radius-medium">
@@ -148,13 +187,13 @@
           v-model:select="artist.status"
           :options="statusOptions"
           label="Status"
-          class="mn-b-medium w-m-20r"
+          class="bg-white radius-small pd-small mn-b-thin"
         />
         
         <Checkbox
           v-model:active="artist.isVerified"
           label="Verified Artist"
-          class="mn-b-medium"
+          class="bg-white radius-small pd-small mn-b-thin"
         />
       </div>
       
@@ -189,11 +228,15 @@ import { useRouter, useRoute } from 'vue-router';
 
 // Import Martyrs components
 import Field from '@martyrs/src/components/Field/Field.vue';
+import Block from '@martyrs/src/components/Block/Block.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue';
 import Select from '@martyrs/src/components/Select/Select.vue';
 import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
+
+
+import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
 
 // Import store
 import * as artistsStore from '../../store/artists';
@@ -249,46 +292,6 @@ const statusOptions = [
   'archived'
 ];
 
-// Genres
-const availableGenres = ref([]);
-const selectedGenres = reactive({});
-const isLoadingGenres = ref(false);
-
-// Computed
-const genreIds = computed(() => {
-  return Object.keys(selectedGenres).filter(id => selectedGenres[id]);
-});
-
-// Methods
-const fetchGenres = async () => {
-  isLoadingGenres.value = true;
-  try {
-    // Assuming genreStore has a fetchGenres method
-    // const genres = await genreStore.actions.fetchGenres();
-    // availableGenres.value = genres;
-  } catch (error) {
-    console.error('Error fetching genres:', error);
-    globals.actions.setError({
-      message: 'Failed to load genres'
-    });
-  } finally {
-    isLoadingGenres.value = false;
-  }
-};
-
-const initializeSelectedGenres = (genreIds) => {
-  if (!genreIds || !Array.isArray(genreIds)) return;
-  
-  // Reset selected genres
-  for (const key in selectedGenres) {
-    delete selectedGenres[key];
-  }
-  
-  // Set selected genres based on artist's genres
-  genreIds.forEach(id => {
-    selectedGenres[id] = true;
-  });
-};
 
 const fetchArtist = async () => {
   if (!props.url) return;

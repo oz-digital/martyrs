@@ -36,18 +36,28 @@ export const actions = {
     }
   },
 
-  async fetchTopArtists(limit = 10) {
+  async fetchTopArtists(options = {}) {
     state.loadingTopArtists = true;
     try {
-      // Assuming the backend sorts by popularity
-      const options = {
-        limit,
-        sortParam: 'popularity',
-        sortOrder: 'desc',
+      // Обрабатываем options от Feed компонента
+      const queryOptions = {
+        limit: options.limit || 10,
+        sortParam: options.sortParam || 'popularity',
+        sortOrder: options.sortOrder || 'desc',
         status: 'published',
       };
+      
+      // Добавляем дополнительные параметры если есть
+      if (options.skip) queryOptions.skip = options.skip;
+      if (options.search) queryOptions.search = options.search;
+      
+      // Если указан top=true, используем сортировку по популярности
+      if (options.top) {
+        queryOptions.sortParam = 'popularity';
+        queryOptions.sortOrder = 'desc';
+      }
 
-      const artists = await artistStore.read(options);
+      const artists = await artistStore.read(queryOptions);
       state.topArtists = artists;
       return artists;
     } catch (error) {

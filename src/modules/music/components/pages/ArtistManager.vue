@@ -4,7 +4,7 @@
       <h2 class="h2">Manage Artists</h2>
       <Button
         :submit="() => router.push({ name: 'artist-create' })"
-        class="bg-main t-white"
+        class="bg-main "
         :showSucces="false"
         :showLoader="false"
       >
@@ -34,7 +34,7 @@
       <p class="p-small t-transp mn-b-medium">Start by creating your first artist profile</p>
       <Button
         :submit="() => router.push({ name: 'artist-create' })"
-        class="bg-main t-white"
+        class="bg-main "
         :showSucces="false"
         :showLoader="false"
       >
@@ -85,7 +85,7 @@
           
           <Button
             :submit="() => editArtist(artist)"
-            class="bg-main t-white"
+            class="bg-main "
             :showSucces="false"
             :showLoader="false"
           >
@@ -94,7 +94,7 @@
           
           <Button
             :submit="() => confirmDelete(artist)"
-            class="bg-fourth t-white"
+            class="bg-fourth "
             :showSucces="false"
             :showLoader="false"
           >
@@ -130,7 +130,7 @@
         
         <Button
           :submit="deleteArtist"
-          class="bg-fourth t-white"
+          class="bg-fourth "
         >
           Confirm Delete
         </Button>

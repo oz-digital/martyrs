@@ -7,7 +7,7 @@
       v-model="searchQuery"
       type="text"
       :placeholder="placeholder"
-      class="bg-transparent border-none t-white flex-1"
+      class="bg-transparent border-none  flex-1"
       @keydown.enter="handleSearch"
     />
     <Button 

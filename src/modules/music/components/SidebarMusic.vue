@@ -10,7 +10,7 @@
   >
     <div class="pd-thin">
       <div class="music-logo mn-b-medium">
-        <h3 class="t-white mn-b-small">Music</h3>
+        <h3 class=" mn-b-small">Music</h3>
       </div>
       
       <nav class="music-nav mn-b-medium">
@@ -21,7 +21,7 @@
               :class="$route.name === 'music-home' ? 'bg-dark' : 'hover-bg-dark'"
             >
               <IconHome class="i-medium" :fill="$route.name === 'music-home' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
-              <span class="t-medium" :class="$route.name === 'music-home' ? 't-main' : 't-white'">Home</span>
+              <span class="t-medium" :class="$route.name === 'music-home' ? 't-main' : ''">Home</span>
             </router-link>
           </li>
           <li>
@@ -30,7 +30,7 @@
               :class="$route.name === 'music-search' ? 'bg-dark' : 'hover-bg-dark'"
             >
               <IconSearch class="i-medium" :fill="$route.name === 'music-search' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
-              <span class="t-medium" :class="$route.name === 'music-search' ? 't-main' : 't-white'">Search</span>
+              <span class="t-medium" :class="$route.name === 'music-search' ? 't-main' : ''">Search</span>
             </router-link>
           </li>
           <li>
@@ -39,7 +39,7 @@
               :class="$route.name === 'music-library' ? 'bg-dark' : 'hover-bg-dark'"
             >
               <IconLibrary class="i-medium" :fill="$route.name === 'music-library' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
-              <span class="t-medium" :class="$route.name === 'music-library' ? 't-main' : 't-white'">Your Library</span>
+              <span class="t-medium" :class="$route.name === 'music-library' ? 't-main' : ''">Your Library</span>
             </router-link>
           </li>
         </ul>
@@ -76,7 +76,7 @@
             <li v-for="playlist in items" :key="playlist._id" class="mn-b-thin">
               <router-link 
                 :to="{ name: 'playlist-detail', params: { url: playlist.url } }" 
-                class="t-white t-truncate d-block pd-thin radius-small hover-bg-dark"
+                class=" t-truncate d-block pd-thin radius-small hover-bg-dark"
                 :class="$route.params.url === playlist.url ? 'bg-dark t-main' : ''"
               >
                 {{ playlist.title }}
@@ -91,7 +91,7 @@
     <Popup 
       v-if="showCreatePlaylistModal" 
       @close-popup="showCreatePlaylistModal = false" 
-      class="bg-dark pd-small w-m-25r radius-medium t-white"
+      class="bg-dark pd-small w-m-25r radius-medium "
     >
       <h3 class="mn-b-medium">Create Playlist</h3>
       <PlaylistForm @created="onPlaylistCreated" />

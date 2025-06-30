@@ -1,5 +1,5 @@
 <template>
-  <div class="media-container">
+  <div class="media-container pos-relative">
     <!-- Изображение с ленивой загрузкой и placeholder -->
     <img
       v-if="isImage"

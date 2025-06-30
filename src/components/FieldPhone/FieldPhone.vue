@@ -9,7 +9,7 @@
     ]" 
     :style="[rootStyle, styles]" 
     ref="rootElement"
-    class="vue3-reactive-tel-input"
+    class="field-wrapper vue3-reactive-tel-input"
   >
     <div
       v-click-outside="clickedOutside"

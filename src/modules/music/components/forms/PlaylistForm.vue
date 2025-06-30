@@ -3,51 +3,51 @@
   <div class="playlist-form">
     <form @submit.prevent="submitForm">
       <div class="form-group mn-b-medium">
-        <label for="title" class="t-white t-medium mn-b-thin d-block">Playlist Name</label>
+        <label for="title" class=" t-medium mn-b-thin d-block">Playlist Name</label>
         <Field 
           v-model:field="form.title"
           id="title"
           type="text"
           placeholder="New Playlist"
           :validation="validationErrors.title"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label for="description" class="t-white t-medium mn-b-thin d-block">Description</label>
+        <label for="description" class=" t-medium mn-b-thin d-block">Description</label>
         <Field 
           v-model:field="form.description"
           id="description"
           type="textarea"
           placeholder="Add an optional description"
           :validation="validationErrors.description"
-          class="w-100 pd-small bg-dark-transp-25 radius-small t-white"
+          class="w-100 pd-small bg-dark-transp-25 radius-small "
         />
       </div>
       
       <div class="form-group mn-b-medium">
-        <label class="t-white t-medium mn-b-thin d-block">Privacy</label>
+        <label class=" t-medium mn-b-thin d-block">Privacy</label>
         <div class="flex gap-small">
           <Radio 
             v-model:radio="form.isPublic"
             :value="true"
             name="privacy"
             label="Public"
-            class="t-white"
+            class=""
           />
           <Radio 
             v-model:radio="form.isPublic"
             :value="false"
             name="privacy"
             label="Private"
-            class="t-white"
+            class=""
           />
         </div>
       </div>
       
       <div class="form-group mn-b-medium">
-        <label class="t-white t-medium mn-b-thin d-block">Cover Image</label>
+        <label class=" t-medium mn-b-thin d-block">Cover Image</label>
         <div class="playlist-cover-upload flex gap-medium">
           <div class="playlist-cover-preview bg-dark-transp-25 radius-small o-hidden">
             <Media 
@@ -72,7 +72,7 @@
         <Button 
           @click="$emit('cancel')"
           type="button"
-          class="bg-dark-transp-25 t-white pd-small radius-small mn-r-small hover-bg-dark"
+          class="bg-dark-transp-25  pd-small radius-small mn-r-small hover-bg-dark"
           :showLoader="false" 
           :showSucces="false"
         >
@@ -81,7 +81,7 @@
         
         <Button 
           type="submit"
-          class="bg-main t-white pd-small radius-small hover-scale-1"
+          class="bg-main  pd-small radius-small hover-scale-1"
           :submit="submitForm"
           :showLoader="true" 
           :showSucces="true"

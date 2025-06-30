@@ -6,7 +6,7 @@
     </div>
     
     <div v-else-if="!album" class="t-center pd-big">
-      <h2 class="t-white">Album not found</h2>
+      <h2 class="">Album not found</h2>
       <p class="t-grey t-medium">The album you're looking for doesn't exist or has been removed.</p>
     </div>
     
@@ -21,18 +21,18 @@
         </div>
         
         <div class="album-info">
-          <div class="t-small t-uppercase t-white">Album</div>
-          <h1 class="t-white">{{ album.title }}</h1>
+          <div class="t-small t-uppercase ">Album</div>
+          <h1 class="">{{ album.title }}</h1>
           
           <div class="album-meta mn-t-small flex flex-v-center">
             <router-link 
               v-if="album.artist && album.artist._id"
               :to="{ name: 'artist-detail', params: { url: album.artist.url } }"
-              class="t-white t-medium hover-t-main"
+              class=" t-medium hover-t-main"
             >
               {{ getArtistName(album) }}
             </router-link>
-            <span v-else class="t-white t-medium">{{ getArtistName(album) }}</span>
+            <span v-else class=" t-medium">{{ getArtistName(album) }}</span>
             
             <span class="t-grey mn-l-small mn-r-small">•</span>
             
@@ -81,7 +81,7 @@
               <li class="mn-b-thin">
                 <Button 
                   @click="addToQueue"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -91,7 +91,7 @@
               <li>
                 <Button 
                   @click="copyLink"
-                  class="bg-transparent border-none pd-thin t-white w-100 t-left hover-bg-dark radius-small"
+                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
                   :showLoader="false" 
                   :showSucces="false"
                 >
@@ -115,14 +115,14 @@
       
       <!-- Album Info -->
       <div v-if="album.description" class="album-description mn-t-medium pd-medium bg-dark-transp-10 radius-medium">
-        <h3 class="t-white mn-b-small">About</h3>
+        <h3 class=" mn-b-small">About</h3>
         <p class="t-grey">{{ album.description }}</p>
       </div>
       
       <!-- More from this artist if available -->
       <div v-if="moreFromArtist.length > 0" class="more-from-artist mn-t-medium">
         <div class="flex-between flex mn-b-small">
-          <h2 class="t-white">More by {{ getArtistName(album) }}</h2>
+          <h2 class="">More by {{ getArtistName(album) }}</h2>
           <router-link 
             v-if="album.artist && album.artist._id"
             :to="{ name: 'artist-detail', params: { url: album.artist.url } }" 

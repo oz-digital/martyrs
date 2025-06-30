@@ -2,7 +2,7 @@
 <template>
   <div class="search-results-page">
     <div class="search-header mn-b-medium">
-      <h1 class="t-white mn-b-small">Search</h1>
+      <h1 class=" mn-b-small">Search</h1>
       
       <SearchForm 
         :initialQuery="searchQuery"
@@ -17,7 +17,7 @@
           :key="filter.id"
           @click="setActiveFilter(filter.id)"
           :class="[
-            filter.id === activeFilter ? 'bg-white t-black' : 'bg-dark-transp-50 t-white hover-bg-dark',
+            filter.id === activeFilter ? 'bg-white t-black' : 'bg-dark-transp-50  hover-bg-dark',
           ]"
           class="radius-extra pd-small"
           :showLoader="false" 
@@ -37,19 +37,19 @@
     </div>
     
     <div v-else-if="!searchQuery" class="search-empty t-center pd-big">
-      <h2 class="t-white mn-b-small">Search for music</h2>
+      <h2 class=" mn-b-small">Search for music</h2>
       <p class="t-grey t-medium">Find your favorite songs, artists, albums, and playlists</p>
     </div>
     
     <div v-else-if="!hasResults" class="search-no-results t-center pd-big">
-      <h2 class="t-white mn-b-small">No results found for "{{ searchQuery }}"</h2>
+      <h2 class=" mn-b-small">No results found for "{{ searchQuery }}"</h2>
       <p class="t-grey t-medium">Please try different keywords or check your spelling</p>
     </div>
     
     <div v-else class="search-results">
       <!-- Top Results Section -->
       <section v-if="activeFilter === 'all'" class="search-section mn-b-medium">
-        <h2 class="t-white mn-b-small">Top Result</h2>
+        <h2 class=" mn-b-small">Top Result</h2>
         
         <div class="search-top-result bg-dark-transp-20 radius-medium p-medium">
           <div v-if="topResult.type === 'artist'" class="top-result-artist pd-medium">
@@ -59,11 +59,11 @@
                 class="w-10r h-10r object-fit-cover radius-round"
               />
             </div>
-            <h3 class="t-white t-semi">{{ topResult.item.name }}</h3>
+            <h3 class=" t-semi">{{ topResult.item.name }}</h3>
             <p class="t-grey">Artist</p>
             <Button 
               @click="playTopResult"
-              class="bg-main radius-round pd-small t-white mn-t-medium hover-scale-1"
+              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
               :showLoader="false" 
               :showSucces="false"
             >
@@ -78,11 +78,11 @@
                 class="w-10r h-10r object-fit-cover radius-small"
               />
             </div>
-            <h3 class="t-white t-semi">{{ topResult.item.title }}</h3>
+            <h3 class=" t-semi">{{ topResult.item.title }}</h3>
             <p class="t-grey">Album • {{ getArtistName(topResult.item) }}</p>
             <Button 
               @click="playTopResult"
-              class="bg-main radius-round pd-small t-white mn-t-medium hover-scale-1"
+              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
               :showLoader="false" 
               :showSucces="false"
             >
@@ -97,11 +97,11 @@
                 class="w-10r h-10r object-fit-cover radius-small"
               />
             </div>
-            <h3 class="t-white t-semi">{{ topResult.item.title }}</h3>
+            <h3 class=" t-semi">{{ topResult.item.title }}</h3>
             <p class="t-grey">Playlist • {{ getPlaylistOwner(topResult.item) }}</p>
             <Button 
               @click="playTopResult"
-              class="bg-main radius-round pd-small t-white mn-t-medium hover-scale-1"
+              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
               :showLoader="false" 
               :showSucces="false"
             >
@@ -113,7 +113,7 @@
       
       <!-- Songs Results -->
       <section v-if="activeFilter === 'all' || activeFilter === 'tracks'" class="search-section mn-b-medium">
-        <h2 class="t-white mn-b-small">Songs</h2>
+        <h2 class=" mn-b-small">Songs</h2>
         <TrackList 
           :tracks="trackResults"
           :showAlbum="true" 
@@ -134,7 +134,7 @@
       
       <!-- Artists Results -->
       <section v-if="activeFilter === 'all' || activeFilter === 'artists'" class="search-section mn-b-medium">
-        <h2 class="t-white mn-b-small">Artists</h2>
+        <h2 class=" mn-b-small">Artists</h2>
         
         <div class="artists-grid cols-6 mobile:cols-3 gap-small">
           <div v-for="artist in artistResults.slice(0, activeFilter === 'all' ? 6 : artistResults.length)" :key="artist._id">
@@ -155,7 +155,7 @@
       
       <!-- Albums Results -->
       <section v-if="activeFilter === 'all' || activeFilter === 'albums'" class="search-section mn-b-medium">
-        <h2 class="t-white mn-b-small">Albums</h2>
+        <h2 class=" mn-b-small">Albums</h2>
         
         <div class="albums-grid cols-5 mobile:cols-2 gap-small">
           <div v-for="album in albumResults.slice(0, activeFilter === 'all' ? 5 : albumResults.length)" :key="album._id">
@@ -176,7 +176,7 @@
       
       <!-- Playlists Results -->
       <section v-if="activeFilter === 'all' || activeFilter === 'playlists'" class="search-section mn-b-medium">
-        <h2 class="t-white mn-b-small">Playlists</h2>
+        <h2 class=" mn-b-small">Playlists</h2>
         
         <div class="playlists-grid cols-5 mobile:cols-2 gap-small">
           <div v-for="playlist in playlistResults.slice(0, activeFilter === 'all' ? 5 : playlistResults.length)" :key="playlist._id">
@@ -197,7 +197,7 @@
       
       <!-- Genres Results -->
       <section v-if="(activeFilter === 'all' || activeFilter === 'genres') && genreResults.length > 0" class="search-section">
-        <h2 class="t-white mn-b-small">Genres</h2>
+        <h2 class=" mn-b-small">Genres</h2>
         
         <div class="genres-grid cols-4 mobile:cols-2 gap-small">
           <router-link 
@@ -209,7 +209,7 @@
               '--gradient-color': getRandomGradient() 
             }"
           >
-            <h3 class="t-white">{{ genre.name }}</h3>
+            <h3 class="">{{ genre.name }}</h3>
           </router-link>
         </div>
         

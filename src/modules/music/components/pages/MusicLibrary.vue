@@ -1,7 +1,7 @@
 <!-- components/pages/MusicLibrary.vue -->
 <template>
   <div class="music-library-page">
-    <h1 class="t-white mn-b-medium">Your Library</h1>
+    <h1 class=" mn-b-medium">Your Library</h1>
     
     <!-- Filter Tabs -->
     <div class="library-tabs mn-b-medium">
@@ -11,7 +11,7 @@
           :key="tab.id"
           @click="activeTab = tab.id"
           :class="[
-            activeTab === tab.id ? 'bg-white t-black' : 'bg-dark-transp-50 t-white hover-bg-dark',
+            activeTab === tab.id ? 'bg-white t-black' : 'bg-dark-transp-50  hover-bg-dark',
           ]"
           class="radius-extra pd-small"
           :showLoader="false" 
@@ -30,10 +30,10 @@
     <!-- Playlists Tab -->
     <div v-else-if="activeTab === 'playlists'" class="playlists-tab">
       <div class="flex-between flex mn-b-small">
-        <h2 class="t-white">Your Playlists</h2>
+        <h2 class="">Your Playlists</h2>
         <Button 
           @click="showCreatePlaylistModal = true"
-          class="bg-main t-white radius-small pd-small hover-scale-1"
+          class="bg-main  radius-small pd-small hover-scale-1"
           :showLoader="false" 
           :showSucces="false"
         >
@@ -42,7 +42,7 @@
       </div>
       
       <div v-if="userPlaylists.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class="t-white mn-b-small">No playlists yet</h3>
+        <h3 class=" mn-b-small">No playlists yet</h3>
         <p class="t-grey t-medium">Create your first playlist to see it here</p>
       </div>
       
@@ -52,11 +52,11 @@
     <!-- Albums Tab -->
     <div v-else-if="activeTab === 'albums'" class="albums-tab">
       <div class="flex-between flex mn-b-small">
-        <h2 class="t-white">Your Albums</h2>
+        <h2 class="">Your Albums</h2>
       </div>
       
       <div v-if="userAlbums.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class="t-white mn-b-small">No albums yet</h3>
+        <h3 class=" mn-b-small">No albums yet</h3>
         <p class="t-grey t-medium">Upload your first album to see it here</p>
       </div>
       
@@ -67,11 +67,11 @@
     <div v-else-if="activeTab === 'artists'" class="artists-tab">
       <ArtistManager/>
       <!-- <div class="flex-between flex mn-b-small">
-        <h2 class="t-white">Your Artists</h2>
+        <h2 class="">Your Artists</h2>
       </div>
       
       <div v-if="userArtists.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class="t-white mn-b-small">No artists yet</h3>
+        <h3 class=" mn-b-small">No artists yet</h3>
         <p class="t-grey t-medium">Create your first artist profile to see it here</p>
       </div>
       
@@ -81,10 +81,10 @@
     <!-- Tracks Tab -->
     <div v-else-if="activeTab === 'tracks'" class="tracks-tab">
       <div class="flex-between flex mn-b-small">
-        <h2 class="t-white">Your Tracks</h2>
+        <h2 class="">Your Tracks</h2>
         <Button 
           @click="$router.push({ name: 'music-upload' })"
-          class="bg-main t-white radius-small pd-small hover-scale-1"
+          class="bg-main  radius-small pd-small hover-scale-1"
           :showLoader="false" 
           :showSucces="false"
         >
@@ -93,7 +93,7 @@
       </div>
       
       <div v-if="userTracks.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class="t-white mn-b-small">No tracks yet</h3>
+        <h3 class=" mn-b-small">No tracks yet</h3>
         <p class="t-grey t-medium">Upload your first track to see it here</p>
       </div>
       
@@ -110,7 +110,7 @@
     <Popup 
       v-if="showCreatePlaylistModal" 
       @close-popup="showCreatePlaylistModal = false" 
-      class="bg-dark pd-small w-m-25r radius-medium t-white"
+      class="bg-dark pd-small w-m-25r radius-medium "
     >
       <h3 class="mn-b-medium">Create Playlist</h3>
       <PlaylistForm @created="onPlaylistCreated" @cancel="showCreatePlaylistModal = false" />

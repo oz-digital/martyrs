@@ -1,6 +1,6 @@
 <!-- components/player/MusicPlayer.vue -->
 <template>
-  <div class="music-player pd-small flex-between flex-v-center flex bg-dark br-t br-solid br-dark-transp-20 t-white">
+  <div class="music-player pd-small flex-between flex-v-center flex bg-dark br-t br-solid br-dark-transp-20 ">
     <!-- Current Track Info -->
     <div class="player-track-info flex-v-center flex w-25r">
       <div v-if="currentTrack" class="player-track-cover mn-r-small">
@@ -11,7 +11,7 @@
       </div>
       
       <div class="player-track-details t-truncate">
-        <div class="player-track-title t-white t-medium t-truncate">
+        <div class="player-track-title  t-medium t-truncate">
           {{ currentTrack?.title || 'No track playing' }}
         </div>
         <div class="player-track-artist t-grey t-small t-truncate">

@@ -8,7 +8,7 @@
 
     <!-- Not Found -->
     <div v-else-if="!track" class="t-center pd-big">
-      <h2 class="t-white">Track not found</h2>
+      <h2 class="">Track not found</h2>
       <p class="t-grey t-medium">The track you're looking for doesn't exist or has been removed.</p>
     </div>
 
@@ -18,13 +18,13 @@
 
       <!-- Track Lyrics -->
       <div v-if="track.lyrics" class="track-lyrics mn-b-medium pd-medium bg-dark-transp-10 radius-medium">
-        <h2 class="t-white mn-b-small">Lyrics</h2>
+        <h2 class=" mn-b-small">Lyrics</h2>
         <pre class="t-grey">{{ track.lyrics }}</pre>
       </div>
 
       <!-- Related Tracks -->
       <section v-if="relatedTracks.length" class="related-tracks mn-b-medium">
-        <h2 class="t-white mn-b-small">Related Tracks</h2>
+        <h2 class=" mn-b-small">Related Tracks</h2>
         <TrackList 
           :tracks="relatedTracks"
           :showAlbum="true"
@@ -37,7 +37,7 @@
       <!-- <Popup 
         v-if="showAddToPlaylistModal" 
         @close-popup="showAddToPlaylistModal = false" 
-        class="bg-dark pd-small w-m-25r radius-medium t-white"
+        class="bg-dark pd-small w-m-25r radius-medium "
       >
         <h3 class="mn-b-medium">Add to Playlist</h3>
         <PlaylistSelector 

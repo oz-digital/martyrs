@@ -76,7 +76,7 @@ const text = ref(props.field);
       $attrs.class,
       { 'bg-fourth-nano': validation }
     ]"
-    class="flex-center flex-nowrap flex"
+    class="field-wrapper flex-center flex-nowrap flex"
   >
     <div
       v-if="label"
@@ -138,7 +138,7 @@ const text = ref(props.field);
   </transition>
 </template>
 
-<style scoped>
+<style>
 input,
 textarea,
 span {
@@ -148,9 +148,9 @@ span {
 
 textarea {
   resize: none;
-  overflow: hidden;
-  height: 1rem;
+  overflow: hidden; 
   line-height: 1rem;
+  height: 1rem;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -160,11 +160,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   color: inherit;
 }
 
-.cursor-pointer {
-  cursor: pointer;
+.field-wrapper {
+  transition: border-width .2s, box-shadow .2s ease;
 }
 
-.pos-relative {
-  position: relative;
+.field-wrapper:hover {
+  box-shadow: 0 0 6px 2px rgba(var(--dark), 0.1);
+}
+.field-wrapper:focus-within {
+  border: 1px solid rgba(var(--second), 1);
+  box-shadow: 0 0 6px 2px rgba(var(--second), 0.1);
 }
 </style>

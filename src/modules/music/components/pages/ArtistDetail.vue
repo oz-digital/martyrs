@@ -11,7 +11,7 @@
       <p class="p-medium t-transp mn-b-medium">The artist you are looking for doesn't exist or may have been removed.</p>
       <Button
         :submit="() => router.push({ name: 'music-home' })"
-        class="bg-main t-white"
+        class="bg-main "
         :showSucces="false"
         :showLoader="false"
       >
@@ -23,7 +23,7 @@
     <div v-else>
       <!-- Cover image -->
       <div 
-        class="w-100 h-50vh pos-relative"
+        class="w-100 t-white h-50vh pos-relative"
         :style="artist.coverUrl ? `background-image: url(${FILE_SERVER_URL + artist.coverUrl}); background-size: cover; background-position: center;` : ''"
       >
         <div class="pos-absolute pos-t-0 pos-l-0 w-100 h-100 bg-blur-small" :class="artist.coverUrl ? 'bg-black-transp-50' : 'bg-black'"></div>
@@ -32,7 +32,7 @@
         <div v-if="isOwner" class="pos-absolute pos-t-medium pos-r-medium z-index-1">
           <Button
             :submit="editArtist"
-            class="bg-main t-white mn-r-small"
+            class="bg-main  mn-r-small"
             :showSucces="false"
             :showLoader="false"
           >
@@ -50,7 +50,7 @@
         </div>
         
         <!-- Artist profile info -->
-        <div class="flex-v-center pos-absolute pos-b-0 pos-l-0 w-100 pd-medium z-index-1 flex mobile:flex-column mobile:flex-h-center">
+        <div class="flex-v-center t-white  pos-absolute pos-b-0 pos-l-0 w-100 pd-medium z-index-1 flex mobile:flex-column mobile:flex-h-center">
           <div class="w-15r h-15r radius-medium o-hidden mn-r-medium bs-black mobile:mn-r-0 mobile:mn-b-medium">
             <img
               v-if="artist.photoUrl"
@@ -63,7 +63,7 @@
             </div>
           </div>
           
-          <div class="t-white mobile:t-center">
+          <div class=" mobile:t-center">
             <div class="flex-v-center flex-nowrap flex mn-b-small mobile:flex-center">
               <h1 class="h1 mn-r-small">{{ artist.name }}</h1>
               <span v-if="artist.isVerified" class="bg-main-nano pd-micro radius-small">
@@ -245,7 +245,7 @@
               <Button
                 v-if="isOwner"
                 :submit="addRelease"
-                class="mn-t-medium bg-main t-white"
+                class="mn-t-medium bg-main "
                 :showSucces="false"
                 :showLoader="false"
               >

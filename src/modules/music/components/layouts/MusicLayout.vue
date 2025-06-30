@@ -1,47 +1,41 @@
 <!-- components/layouts/MusicLayout.vue -->
 <template>
-  <div class="music-layout flex flex-nowrap o-hidden w-100 h-100">
-    <!-- Main Content -->
-    <div class="flex-child-1 flex flex-column h-100 o-hidden">
-      <!-- Header Bar -->
-      <header class="flex-child-shrink-0 z-index-3 bg-dark flex-v-center flex-justify-between flex gap-small pd-small br-b br-solid br-dark-transp-20">
-        <div class="flex-v-center flex gap-small">
-          <div class="music-navigation-buttons flex gap-thin">
-            <button @click="$router.go(-1)" class="bg-black radius-extra flex-center flex aspect-1x1 i-medium cursor-pointer hover-bg-dark pd-micro">
-              <IconChevronLeft class="i-small" fill="rgb(var(--white))"/>
-            </button>
-            <button @click="$router.go(1)" class="bg-black radius-extra flex-center flex aspect-1x1 i-medium cursor-pointer hover-bg-dark pd-micro">
-              <IconChevronRight class="i-small" fill="rgb(var(--white))"/>
-            </button>
-          </div>
-          
-          <h2 v-if="$route.meta.title" class="t-white">{{ $route.meta.title }}</h2>
-        </div>
-        
-        <div class="music-search-bar flex-child-1 mn-l-medium mn-r-medium" v-if="$route.name !== 'music-search'">
-          <SearchForm @search="handleSearch" placeholder="Search music..." />
-        </div>
-        
-        <div class="music-user-menu flex-nowrap  flex pos-relative">
-   
-          <router-link :to="{ name: 'music-library' }" class="t-white pd-thin w-100 d-block hover-bg-dark radius-small">
-            My Library
-          </router-link>
-          <router-link :to="{ name: 'music-upload' }" class="t-white pd-thin w-100 d-block hover-bg-dark radius-small">
-            Upload Music
-          </router-link>
-          
-        </div>
-      </header>
+  <div class="music-layout flex flex-column flex-nowrap w-100 ">
+    <!-- Header Bar -->
+    <header class="flex-child-shrink-0 z-index-3 flex-v-center flex-justify-between flex gap-small pd-small bg-main">
+ 
+      <div class="music-navigation-buttons flex gap-thin">
+        <button @click="$router.go(-1)" class="bg-black radius-extra flex-center flex aspect-1x1 i-medium cursor-pointer hover-bg-dark pd-micro">
+          <IconChevronLeft class="i-small" fill="rgb(var(--white))"/>
+        </button>
+        <button @click="$router.go(1)" class="bg-black radius-extra flex-center flex aspect-1x1 i-medium cursor-pointer hover-bg-dark pd-micro">
+          <IconChevronRight class="i-small" fill="rgb(var(--white))"/>
+        </button>
+      </div>
+    
+      <div class="music-search-bar flex-child-1 mn-l-medium mn-r-medium" v-if="$route.name !== 'music-search'">
+        <SearchForm @search="handleSearch" placeholder="Search music..." />
+      </div>
       
-      <!-- Main Content Area -->
-      <main class="o-y-scroll o-x-hidden">
-        <router-view></router-view>
-      </main>
-      
-      <!-- Music Player Fixed at Bottom -->
-      <MusicPlayer v-if="currentTrack" class="flex-child-shrink-0"/>
-    </div>
+      <div class="music-user-menu flex-nowrap  flex pos-relative">
+ 
+        <router-link :to="{ name: 'music-library' }" class=" pd-thin w-100 d-block hover-bg-dark radius-small">
+          Library
+        </router-link>
+        <router-link :to="{ name: 'music-upload' }" class=" pd-thin w-100 d-block hover-bg-dark radius-small">
+          Upload
+        </router-link>
+        
+      </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="o-x-hidden">
+      <router-view></router-view>
+    </main>
+    
+    <!-- Music Player Fixed at Bottom -->
+    <MusicPlayer v-if="currentTrack" class="pos-fixed pos-b-0 w-100 "/>
   </div>
 </template>
 

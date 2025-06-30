@@ -32,17 +32,30 @@ export const actions = {
     }
   },
 
-  async fetchFeaturedPlaylists(limit = 10) {
+  async fetchFeaturedPlaylists(options = {}) {
     state.loadingFeatured = true;
     try {
-      // Assuming there's a status field for featured playlists
-      const options = {
-        status: 'featured',
+      // Обрабатываем options от Feed компонента
+      const queryOptions = {
+        limit: options.limit || 10,
         isPublic: true,
-        limit,
       };
+      
+      // Добавляем дополнительные параметры если есть
+      if (options.skip) queryOptions.skip = options.skip;
+      if (options.search) queryOptions.search = options.search;
+      if (options.sortParam) queryOptions.sortParam = options.sortParam;
+      if (options.sortOrder) queryOptions.sortOrder = options.sortOrder;
+      
+      // Если указан featured=true, добавляем соответствующий фильтр
+      if (options.featured) {
+        queryOptions.status = 'featured';
+        // Или можно использовать sortParam для featured плейлистов
+        queryOptions.sortParam = queryOptions.sortParam || 'followers';
+        queryOptions.sortOrder = queryOptions.sortOrder || 'desc';
+      }
 
-      const playlists = await playlistStore.read(options);
+      const playlists = await playlistStore.read(queryOptions);
       state.featuredPlaylists = playlists;
       return playlists;
     } catch (error) {
