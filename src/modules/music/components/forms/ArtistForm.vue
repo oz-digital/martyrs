@@ -123,8 +123,8 @@
           :multiple="true"
           :transform="(item) => ({ _id: item._id, name: item.name })"
           :store="{
-            read: (options) => artistsStore.actions.fetchArtists(options),
-            state: artistsStore.state
+            read: (options) => genresStore.actions.fetchGenres(options),
+            state: genresStore.state
           }"
           :options="{
             rootOnly: false,
@@ -141,8 +141,8 @@
           }"
           :states="{
             empty: {
-              title: 'No categories found',
-              description: 'Try different search terms or create a new category',
+              title: 'No genres found',
+              description: 'Try different search terms or create a new genre',
               class: 'radius-small'
             }
           }"
@@ -154,7 +154,7 @@
           classItem="pd-small radius-small hover-bg-light cursor-pointer"
           classFeed="h-max-30r gap-thin flex-column flex o-scroll"
         >
-          <!-- Слот для выбранных категорий -->
+          <!-- Слот для выбранных жанров -->
           <template #selected="{ item, clear }">
             <div class="flex-nowrap flex-v-center flex gap-thin">
               <span class="t-medium">{{ item?.name || item }}</span>
@@ -223,7 +223,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue';
+import { ref, reactive, onMounted, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 // Import Martyrs components
@@ -237,10 +237,11 @@ import Loader from '@martyrs/src/components/Loader/Loader.vue';
 
 
 import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
+import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 
 // Import store
 import * as artistsStore from '../../store/artists';
-// import * as genreStore from '../../store/genres'; // Assuming you have a genre store
+import * as genresStore from '../../store/genres';
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
@@ -277,12 +278,42 @@ const artist = reactive({
     instagram: ''
   },
   url: '',
-  genre: []
+  genres: []
 });
 
 const validation = reactive({
   name: false,
   bio: false
+});
+
+// Track if URL was manually entered
+const urlManuallySet = ref(false);
+
+// Function to generate URL-friendly slug from text
+const generateSlug = (text) => {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single
+    .trim('-'); // Remove leading/trailing hyphens
+};
+
+// Watch for changes in artist name to auto-generate URL
+watch(() => artist.name, (newName) => {
+  // Only auto-generate if URL hasn't been manually set and we're not in edit mode
+  if (!urlManuallySet.value && !props.editMode) {
+    artist.url = generateSlug(newName);
+  }
+});
+
+// Watch for manual changes to URL field
+watch(() => artist.url, (newUrl, oldUrl) => {
+  // If user manually changes URL, mark as manually set
+  if (newUrl !== generateSlug(artist.name)) {
+    urlManuallySet.value = true;
+  }
 });
 
 // Status options
@@ -317,7 +348,7 @@ const fetchArtist = async () => {
       isVerified: fetchedArtist.isVerified || false,
       status: fetchedArtist.status || 'draft',
       url: fetchedArtist.url || '',
-      genre: fetchedArtist.genre || [],
+      genres: fetchedArtist.genres || [],
       _id: fetchedArtist._id,
       socials: {
         telegram: fetchedArtist.socials?.telegram || '',
@@ -326,9 +357,6 @@ const fetchArtist = async () => {
         instagram: fetchedArtist.socials?.instagram || ''
       }
     });
-    
-    // Initialize selected genres
-    initializeSelectedGenres(fetchedArtist.genre);
     
   } catch (error) {
     console.error('Error fetching artist:', error);
@@ -373,7 +401,7 @@ const submitForm = async () => {
     // Prepare data for submission
     const formData = {
       ...artist,
-      genre: genreIds.value
+      genres: artist.genres.map(genre => genre._id || genre)
     };
     
     // Add ownership data if creating new artist
@@ -398,7 +426,7 @@ const submitForm = async () => {
     // Navigate to artist detail page
     setTimeout(() => {
       router.push({
-        name: 'artist-detail',
+        name: 'artist',
         params: { url: result.url }
       });
     }, 1000);
@@ -420,10 +448,10 @@ const handleUploadError = (error) => {
 
 // Lifecycle hooks
 onMounted(async () => {
-  await fetchGenres();
-  
   if (props.editMode) {
     await fetchArtist();
+    // Mark URL as manually set in edit mode to prevent auto-generation
+    urlManuallySet.value = true;
   }
 });
 </script>

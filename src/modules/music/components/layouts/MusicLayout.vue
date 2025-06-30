@@ -22,7 +22,7 @@
         <router-link :to="{ name: 'music-library' }" class=" pd-thin w-100 d-block hover-bg-dark radius-small">
           Library
         </router-link>
-        <router-link :to="{ name: 'music-upload' }" class=" pd-thin w-100 d-block hover-bg-dark radius-small">
+        <router-link :to="{ name: 'track-create' }" class=" pd-thin w-100 d-block hover-bg-dark radius-small">
           Upload
         </router-link>
         

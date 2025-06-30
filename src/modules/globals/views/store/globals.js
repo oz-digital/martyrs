@@ -31,6 +31,12 @@ const state = reactive({
     name: '',
     message: '',
   },
+  snack: {
+    show: false,
+    type: 'notification',
+    message: '',
+    duration: 3000
+  }
 });
 
 // Actions
@@ -157,6 +163,42 @@ function setError(error) {
   state.error.show = true;
 
   setTimeout(() => (state.error.show = false), 3000);
+}
+
+function setSnack(data) {
+  // Handle different input formats
+  let type = 'notification'
+  let message = ''
+  let duration = 3000
+
+  if (typeof data === 'string') {
+    message = data
+  } else if (data instanceof Error) {
+    type = 'error'
+    message = data.message
+  } else if (data?.response?.data) {
+    // Handle API errors
+    type = 'error'
+    const errorData = data.response.data
+    message = errorData.errorCode || errorData.message || 'Unknown error'
+  } else if (typeof data === 'object') {
+    type = data.type || 'notification'
+    message = data.message || ''
+    duration = data.duration || 3000
+  }
+
+  // Update state
+  state.snack = {
+    show: true,
+    type,
+    message,
+    duration
+  }
+
+  // Auto-hide
+  setTimeout(() => {
+    state.snack.show = false
+  }, duration)
 }
 
 function invertColors(variableNames, originalColors) {

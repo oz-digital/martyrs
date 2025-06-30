@@ -65,7 +65,7 @@ const handleClick = () => {
   if (!props.clickable) return;
   
   router.push({
-    name: 'artist-detail',
+    name: 'artist',
     params: { url: props.artist.url }
   });
 };

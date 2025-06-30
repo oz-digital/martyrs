@@ -1,7 +1,7 @@
 <!-- components/cards/AlbumCard.vue -->
 <template>
   <router-link 
-    :to="{ name: 'album-detail', params: { url: album.url } }" 
+    :to="{ name: 'album', params: { url: album.url } }" 
     class="album-card d-block radius-small o-hidden"
   >
     <div class="album-cover pos-relative">

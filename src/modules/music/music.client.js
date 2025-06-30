@@ -1,6 +1,7 @@
 // Store modules
 import * as storeAlbums from './store/albums.js';
 import * as storeArtists from './store/artists.js';
+import * as storeGenres from './store/genres.js';
 import * as storePlayer from './store/player.js';
 import * as storePlaylists from './store/playlists.js';
 import * as storeSearch from './store/search.js';
@@ -13,14 +14,14 @@ import routerMusic from './router/music.js';
 import MusicLayout from './components/layouts/MusicLayout.vue';
 
 // Pages
-import AlbumDetail from './components/pages/AlbumDetail.vue';
-import ArtistDetail from './components/pages/ArtistDetail.vue';
+import Album from './components/pages/Album.vue';
+import Artist from './components/pages/Artist.vue';
 import MusicHome from './components/pages/MusicHome.vue';
 import MusicLibrary from './components/pages/MusicLibrary.vue';
-import MusicUpload from './components/pages/MusicUpload.vue';
-import PlaylistDetail from './components/pages/PlaylistDetail.vue';
+import TrackCreate from './components/pages/TrackCreate.vue';
+import Playlist from './components/pages/Playlist.vue';
 import SearchResults from './components/pages/SearchResults.vue';
-import TrackDetail from './components/pages/TrackDetail.vue';
+import Track from './components/pages/Track.vue';
 
 // Components - Player
 import MusicPlayer from './components/player/MusicPlayer.vue';
@@ -32,17 +33,15 @@ import AlbumCard from './components/cards/AlbumCard.vue';
 import ArtistCard from './components/cards/ArtistCard.vue';
 import PlaylistCard from './components/cards/PlaylistCard.vue';
 import TrackCard from './components/cards/TrackCard.vue';
+import TrackListCard from './components/cards/TrackListCard.vue';
 
-// Components - Lists
-import AlbumList from './components/lists/AlbumList.vue';
-import ArtistList from './components/lists/ArtistList.vue';
-import PlaylistList from './components/lists/PlaylistList.vue';
-import TrackList from './components/lists/TrackList.vue';
 
 // Components - Forms
+import ArtistForm from './components/forms/ArtistForm.vue';
+import AlbumForm from './components/forms/AlbumForm.vue';
 import PlaylistForm from './components/forms/PlaylistForm.vue';
 import SearchForm from './components/forms/SearchForm.vue';
-import UploadForm from './components/forms/UploadForm.vue';
+import TrackForm from './components/forms/TrackForm.vue';
 
 // WebSocket integration for streaming
 import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
@@ -66,6 +65,7 @@ function initializeMusic(app, store, router, config, options = {}) {
   store.addStore('playlists', storePlaylists);
   store.addStore('albums', storeAlbums);
   store.addStore('artists', storeArtists);
+  store.addStore('genres', storeGenres);
   store.addStore('player', storePlayer);
   store.addStore('search', storeSearch);
 
@@ -103,6 +103,7 @@ const ModuleMusic = {
       storePlaylists,
       storeAlbums,
       storeArtists,
+      storeGenres,
       storePlayer,
       storeSearch,
     },
@@ -115,30 +116,28 @@ const ModuleMusic = {
       // Pages
       MusicHome,
       SearchResults,
-      ArtistDetail,
-      AlbumDetail,
-      PlaylistDetail,
-      TrackDetail,
+      Artist,
+      Album,
+      Playlist,
+      Track,
       MusicLibrary,
-      MusicUpload,
+      TrackCreate,
       // Player Components
       MusicPlayer,
       TrackProgress,
       VolumeControl,
       // Cards
       TrackCard,
+      TrackListCard,
       AlbumCard,
       PlaylistCard,
       ArtistCard,
-      // Lists
-      TrackList,
-      AlbumList,
-      PlaylistList,
-      ArtistList,
       // Forms
+      ArtistForm,
+      AlbumForm,
       PlaylistForm,
       SearchForm,
-      UploadForm,
+      TrackForm,
     },
   },
 };
@@ -146,11 +145,9 @@ const ModuleMusic = {
 // Named exports for direct component imports
 export {
   AlbumCard,
-  AlbumDetail,
-  AlbumList,
+  Album,
   ArtistCard,
-  ArtistDetail,
-  ArtistList,
+  Artist,
   // Pages
   MusicHome,
   // Layout
@@ -158,26 +155,27 @@ export {
   MusicLibrary,
   // Player Components
   MusicPlayer,
-  MusicUpload,
+  TrackCreate,
   PlaylistCard,
-  PlaylistDetail,
+  Playlist,
   // Forms
+  ArtistForm,
+  AlbumForm,
   PlaylistForm,
-  PlaylistList,
   SearchForm,
   SearchResults,
   // Cards
   TrackCard,
-  TrackDetail,
-  // Lists
-  TrackList,
+  TrackListCard,
+  Track,
+  TrackForm,
   TrackProgress,
-  UploadForm,
   VolumeControl,
   // Router
   routerMusic,
   storeAlbums,
   storeArtists,
+  storeGenres,
   storePlayer,
   storePlaylists,
   storeSearch,

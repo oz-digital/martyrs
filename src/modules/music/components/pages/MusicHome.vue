@@ -116,13 +116,18 @@
           horizontal: true
         }"
         v-slot="{ items }"
+        class="gap-zero"
       >
-        <TrackList 
-          :tracks="items" 
-          :showAlbum="true" 
-          :showCover="true"
-          class="bg-dark-transp-10 radius-medium o-hidden"
-        />
+        <div class="bg-dark-transp-10 radius-medium o-hidden">
+          <TrackListCard
+            v-for="(track, index) in items"
+            :key="track._id"
+            :track="track"
+            :index="index"
+            :showAlbum="true"
+            :showCover="true"
+          />
+        </div>
       </Feed>
     </section>
     
@@ -174,7 +179,8 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue';
 import PlaylistCard from '../cards/PlaylistCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
 import ArtistCard from '../cards/ArtistCard.vue';
-import TrackList from '../lists/TrackList.vue';
+import TrackCard from '../cards/TrackCard.vue';
+import TrackListCard from '../cards/TrackListCard.vue';
 
 // Store imports
 import { state as playlistsState, actions as playlistsActions } from '../../store/playlists.js';

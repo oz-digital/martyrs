@@ -1,6 +1,6 @@
-<!-- components/pages/AlbumDetail.vue -->
+<!-- components/pages/Album.vue -->
 <template>
-  <div class="album-detail-page">
+  <div class="album-page">
     <div v-if="isLoading" class="w-100 h-25r flex-center flex">
       <Loader />
     </div>
@@ -27,7 +27,7 @@
           <div class="album-meta mn-t-small flex flex-v-center">
             <router-link 
               v-if="album.artist && album.artist._id"
-              :to="{ name: 'artist-detail', params: { url: album.artist.url } }"
+              :to="{ name: 'artist', params: { url: album.artist.url } }"
               class=" t-medium hover-t-main"
             >
               {{ getArtistName(album) }}
@@ -105,12 +105,33 @@
       
       <!-- Album Tracks -->
       <div class="album-tracks">
-        <TrackList 
-          :tracks="albumTracks"
-          :showAlbum="false"
-          :showCover="false"
-          class="bg-dark-transp-10 radius-medium o-hidden"
-        />
+        <Feed
+          :store="{
+            read: () => Promise.resolve(albumTracks),
+            state: { isLoading: false }
+          }"
+          :external="true"
+          :items="albumTracks"
+          :states="{
+            empty: {
+              title: 'No tracks in album',
+              description: 'This album appears to be empty',
+              class: 'pd-medium bg-dark-transp-10 radius-medium'
+            }
+          }"
+          class="gap-thin"
+        >
+          <template #default="{ items }">
+            <TrackCard
+              v-for="track in items"
+              :key="track._id"
+              :track="track"
+              :showAlbum="false"
+              :showCover="false"
+              class="w-100 bg-dark-transp-10 radius-medium"
+            />
+          </template>
+        </Feed>
       </div>
       
       <!-- Album Info -->
@@ -125,7 +146,7 @@
           <h2 class="">More by {{ getArtistName(album) }}</h2>
           <router-link 
             v-if="album.artist && album.artist._id"
-            :to="{ name: 'artist-detail', params: { url: album.artist.url } }" 
+            :to="{ name: 'artist', params: { url: album.artist.url } }" 
             class="t-main t-small hover-opacity"
           >
             See all
@@ -145,7 +166,8 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import TrackList from '../lists/TrackList.vue';
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
+import TrackCard from '../cards/TrackCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';

@@ -10,12 +10,11 @@
       class="w-100 p-medium t-regular uppercase pd-small"
     />
     <button
-      v-if="action" 
       @click="emitAction" 
       class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-r-small pd-l-small w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main" 
     >
-      <span class="desktop-only mn-r-thin">{{action}}</span>
-      <IconArrow class="br-solid br-black-transp-10 br-1px radius-extra  i-semi pd-nano"/>
+      <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
+      <IconArrow class="i-medium"/>
     </button>
   </div>
 </template>
@@ -32,8 +31,7 @@
       type: String
     },
     action: {
-      type: String,
-      default: 'Action'
+      type: String
     },
     placeholderTexts: {
       type: Object,

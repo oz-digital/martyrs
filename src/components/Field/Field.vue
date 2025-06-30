@@ -165,10 +165,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .field-wrapper:hover {
-  box-shadow: 0 0 6px 2px rgba(var(--dark), 0.1);
+  box-shadow: inset 0 0 0 1px rgba(var(--dark), 0.2), 0 0 6px 2px rgba(var(--dark), 0.1);
 }
+
 .field-wrapper:focus-within {
-  border: 1px solid rgba(var(--second), 1);
-  box-shadow: 0 0 6px 2px rgba(var(--second), 0.1);
+  box-shadow: inset 0 0 0 1px rgba(var(--second), 1), 0 0 6px 2px rgba(var(--second), 0.1);
 }
+
 </style>

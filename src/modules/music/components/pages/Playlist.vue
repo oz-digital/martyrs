@@ -1,6 +1,6 @@
-<!-- components/pages/PlaylistDetail.vue -->
+<!-- components/pages/Playlist.vue -->
 <template>
-  <div class="playlist-detail-page">
+  <div class="playlist-page">
     <div v-if="isLoading" class="w-100 h-25r flex-center flex">
       <Loader />
     </div>
@@ -150,13 +150,34 @@
           </Button>
         </div>
         
-        <TrackList 
+        <Feed
           v-else
-          :tracks="playlistTracks"
-          :showAlbum="true" 
-          :showCover="true"
-          class="bg-dark-transp-10 radius-medium o-hidden"
-        />
+          :store="{
+            read: () => Promise.resolve(playlistTracks),
+            state: { isLoading: false }
+          }"
+          :external="true"
+          :items="playlistTracks"
+          :states="{
+            empty: {
+              title: 'No tracks in playlist',
+              description: 'Add some tracks to get started',
+              class: 'pd-medium bg-dark-transp-10 radius-medium'
+            }
+          }"
+          class="gap-thin"
+        >
+          <template #default="{ items }">
+            <TrackCard
+              v-for="track in items"
+              :key="track._id"
+              :track="track"
+              :showAlbum="true"
+              :showCover="true"
+              class="w-100 bg-dark-transp-10 radius-medium"
+            />
+          </template>
+        </Feed>
       </div>
       
       <!-- Edit Playlist Modal -->
@@ -294,7 +315,8 @@
 <script setup>
 import { ref, computed, reactive, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import TrackList from '../lists/TrackList.vue';
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
+import TrackCard from '../cards/TrackCard.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import Media from '@martyrs/src/components/Media/Media.vue';

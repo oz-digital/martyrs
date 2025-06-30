@@ -1,6 +1,6 @@
-<!-- components/pages/TrackDetail.vue -->
+<!-- components/pages/Track.vue -->
 <template>
-  <div class="track-detail-page">
+  <div class="track-page">
     <!-- Loading -->
     <div v-if="isLoading" class="w-100 h-25r flex-center flex">
       <Loader />
@@ -25,12 +25,33 @@
       <!-- Related Tracks -->
       <section v-if="relatedTracks.length" class="related-tracks mn-b-medium">
         <h2 class=" mn-b-small">Related Tracks</h2>
-        <TrackList 
-          :tracks="relatedTracks"
-          :showAlbum="true"
-          :showCover="true"
-          class="bg-dark-transp-10 radius-medium o-hidden"
-        />
+        <Feed
+          :store="{
+            read: () => Promise.resolve(relatedTracks.value),
+            state: { isLoading: false }
+          }"
+          :external="true"
+          :items="relatedTracks"
+          :states="{
+            empty: {
+              title: 'No related tracks',
+              description: 'Check back later for recommendations',
+              class: 'pd-medium bg-dark-transp-10 radius-medium'
+            }
+          }"
+          class="gap-thin"
+        >
+          <template #default="{ items }">
+            <TrackCard
+              v-for="relatedTrack in items"
+              :key="relatedTrack._id"
+              :track="relatedTrack"
+              :showAlbum="true"
+              :showCover="true"
+              class="w-100 bg-dark-transp-10 radius-medium"
+            />
+          </template>
+        </Feed>
       </section>
 
       <!-- Add to Playlist Modal -->
@@ -60,7 +81,8 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import IconPlay from '@martyrs/src/modules/icons/navigation/IconPlay.vue';
 import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
-import TrackList from '../lists/TrackList.vue';
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
+import TrackCard from '../cards/TrackCard.vue';
 // import PlaylistSelector from '../forms/PlaylistSelector.vue';
 
 import { state as tracksState, actions as tracksActions } from '../../store/tracks.js';
@@ -109,7 +131,7 @@ const addToQueue = () => {
 };
 
 const editTrack = () => {
-  router.push({ name: 'music-upload', query: { edit: track.value._id } });
+  router.push({ name: 'track-edit', params: { url: track.value.url } });
 };
 
 const deleteTrack = async () => {

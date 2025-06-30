@@ -1,6 +1,11 @@
 <template>
   <div class="pd-medium">
-    <h2 class="mn-b-medium">Martyrs Icons Gallery</h2>
+    <div class="flex-between mn-b-medium">
+      <h2>Martyrs Icons Gallery</h2>
+      <button @click="openAddIconPopup" class="pd-small pd-h-medium bg-primary t-white radius-medium hover-scale-1 cursor-pointer border-none">
+        Add New Icon
+      </button>
+    </div>
     
     <div v-for="(category, index) in categories" :key="index" class="mn-b-large">
       <h3 class="mn-b-medium t-medium">{{ formatCategoryName(category.name) }} ({{ category.icons.length }})</h3>
@@ -8,7 +13,7 @@
         <div 
           v-for="(icon, iconIndex) in category.icons" 
           :key="iconIndex" 
-          class="aspect-1x1 bg-light radius-medium flex-center flex-v-center flex-column flex hover-scale-1 cursor-pointer"
+          class="icon-card aspect-1x1 bg-light radius-medium flex-center flex-v-center flex-column flex hover-scale-1 cursor-pointer pos-relative"
           @click="copyIconName(icon.name, category.name)"
         >
           <div class="flex-center flex h-60">
@@ -20,6 +25,13 @@
           <div v-if="copiedIcon === icon.name" class="pd-thin bg-black radius-small t-small t-white pos-absolute pos-t-0 pos-r-0 mn-t-thin mn-r-thin">
             Copied!
           </div>
+          <button 
+            @click.stop="openReplaceIconPopup(icon, category.name)"
+            class="replace-btn pos-absolute pos-t-0 pos-r-0 mn-t-thin mn-r-thin pd-micro bg-second radius-small hover-scale-1 cursor-pointer border-none"
+            title="Replace icon"
+          >
+            <IconRefresh class="w-1r h-1r" :fill="'rgb(var(--white))'" />
+          </button>
         </div>
       </div>
     </div>
@@ -27,11 +39,20 @@
     <div v-if="displayNotification" class="notification bg-third pd-small radius-medium pos-fixed pos-b-0 pos-r-0 mn-b-large mn-r-large">
       {{ notificationMessage }}
     </div>
+
+    <IconSearchPopup 
+      :isOpen="showSearchPopup" 
+      :mode="popupMode"
+      :currentIcon="currentIconForReplace"
+      @close="showSearchPopup = false"
+      @icon-selected="handleIconSelected"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import IconSearchPopup from '../components/IconSearchPopup.vue';
 
 // Import navigation icons
 import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue';
@@ -92,6 +113,9 @@ import IconFeatured from '@martyrs/src/modules/icons/entities/IconFeatured.vue';
 import IconLeftovers from '@martyrs/src/modules/icons/entities/IconLeftovers.vue';
 import IconOrders from '@martyrs/src/modules/icons/entities/IconOrders.vue';
 import IconMusic from '@martyrs/src/modules/icons/entities/IconMusic.vue';
+import IconPhone from '@martyrs/src/modules/icons/entities/IconPhone.vue';
+import IconEmail from '@martyrs/src/modules/icons/entities/IconEmail.vue';
+import IconAddress from '@martyrs/src/modules/icons/entities/IconAddress.vue';
 import IconProfile from '@martyrs/src/modules/icons/entities/IconProfile.vue';
 import IconGroups from '@martyrs/src/modules/icons/entities/IconGroups.vue';
 
@@ -184,6 +208,9 @@ const iconsMap = {
     IconRecent,
     IconList,
     IconSettings,
+    IconPhone,
+    IconEmail,
+    IconAddress,
     IconEarn,
     IconPopular,
     IconDiscount,
@@ -237,6 +264,9 @@ const categories = ref([]);
 const copiedIcon = ref('');
 const displayNotification = ref(false);
 const notificationMessage = ref('');
+const showSearchPopup = ref(false);
+const popupMode = ref('add');
+const currentIconForReplace = ref(null);
 
 onMounted(() => {
   loadIcons();
@@ -271,6 +301,37 @@ function copyIconName(iconName, categoryName) {
     }, 2000);
   }, 1000);
 }
+
+function openAddIconPopup() {
+  popupMode.value = 'add';
+  currentIconForReplace.value = null;
+  showSearchPopup.value = true;
+}
+
+function openReplaceIconPopup(icon, categoryName) {
+  popupMode.value = 'replace';
+  currentIconForReplace.value = {
+    name: icon.name,
+    category: categoryName,
+    component: icon.component
+  };
+  showSearchPopup.value = true;
+}
+
+function handleIconSelected(data) {
+  // Reload icons after successful save
+  loadIcons();
+  
+  // Show success notification
+  notificationMessage.value = data.mode === 'add' 
+    ? `Added new icon: ${data.icon.name}` 
+    : `Replaced icon: ${data.icon.name}`;
+  displayNotification.value = true;
+  
+  setTimeout(() => {
+    displayNotification.value = false;
+  }, 3000);
+}
 </script>
 
 <style scoped>
@@ -288,5 +349,20 @@ function copyIconName(iconName, categoryName) {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.icon-card .replace-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.icon-card:hover .replace-btn {
+  opacity: 1;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

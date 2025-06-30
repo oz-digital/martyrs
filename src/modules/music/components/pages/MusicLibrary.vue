@@ -22,17 +22,12 @@
       </div>
     </div>
     
-    <!-- Content based on active tab -->
-    <div v-if="isLoading" class="flex-center flex pd-big">
-      <Loader />
-    </div>
-    
     <!-- Playlists Tab -->
-    <div v-else-if="activeTab === 'playlists'" class="playlists-tab">
+    <div v-if="activeTab === 'playlists'" class="playlists-tab">
       <div class="flex-between flex mn-b-small">
         <h2 class="">Your Playlists</h2>
         <Button 
-          @click="showCreatePlaylistModal = true"
+          @click="$router.push({ name: 'playlist-create' })"
           class="bg-main  radius-small pd-small hover-scale-1"
           :showLoader="false" 
           :showSucces="false"
@@ -41,49 +36,118 @@
         </Button>
       </div>
       
-      <div v-if="userPlaylists.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class=" mn-b-small">No playlists yet</h3>
-        <p class="t-grey t-medium">Create your first playlist to see it here</p>
-      </div>
-      
-      <PlaylistList v-else :playlists="userPlaylists" />
+      <Feed
+        :store="{
+          read: (options) => playlistsActions.fetchPlaylists({ ...options, owner: { type: 'user', target: authState.user._id } }),
+          state: playlistsState
+        }"
+        :options="{ owner: { type: 'user', target: authState.user._id } }"
+        :states="{
+          empty: {
+            title: 'No playlists yet',
+            description: 'Create your first playlist to see it here',
+            class: 'pd-big bg-dark-transp-10 radius-medium'
+          }
+        }"
+        class="gap-medium"
+      >
+        <template #default="{ items }">
+          <PlaylistCard
+            v-for="playlist in items"
+            :key="playlist._id"
+            :playlist="playlist"
+            class="w-100"
+          />
+        </template>
+      </Feed>
     </div>
     
     <!-- Albums Tab -->
-    <div v-else-if="activeTab === 'albums'" class="albums-tab">
+    <div v-if="activeTab === 'albums'" class="albums-tab">
       <div class="flex-between flex mn-b-small">
         <h2 class="">Your Albums</h2>
+        <Button 
+          @click="$router.push({ name: 'album-create' })"
+          class="bg-main  radius-small pd-small hover-scale-1"
+          :showLoader="false" 
+          :showSucces="false"
+        >
+          Create Album
+        </Button>
       </div>
       
-      <div v-if="userAlbums.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class=" mn-b-small">No albums yet</h3>
-        <p class="t-grey t-medium">Upload your first album to see it here</p>
-      </div>
-      
-      <AlbumList v-else :albums="userAlbums" />
+      <Feed
+        :store="{
+          read: (options) => albumsActions.fetchAlbums({ ...options, owner: { type: 'user', target: authState.user._id } }),
+          state: albumsState
+        }"
+        :options="{ owner: { type: 'user', target: authState.user._id } }"
+        :states="{
+          empty: {
+            title: 'No albums yet',
+            description: 'Upload your first album to see it here',
+            class: 'pd-big bg-dark-transp-10 radius-medium'
+          }
+        }"
+        class="gap-medium"
+      >
+        <template #default="{ items }">
+          <AlbumCard
+            v-for="album in items"
+            :key="album._id"
+            :album="album"
+            class="w-100"
+          />
+        </template>
+      </Feed>
     </div>
     
     <!-- Artists Tab -->
-    <div v-else-if="activeTab === 'artists'" class="artists-tab">
-      <ArtistManager/>
-      <!-- <div class="flex-between flex mn-b-small">
+    <div v-if="activeTab === 'artists'" class="artists-tab">
+      <div class="flex-between flex mn-b-small">
         <h2 class="">Your Artists</h2>
+        <Button 
+          @click="$router.push({ name: 'artist-create' })"
+          class="bg-main  radius-small pd-small hover-scale-1"
+          :showLoader="false" 
+          :showSucces="false"
+        >
+          Create Artist
+        </Button>
       </div>
       
-      <div v-if="userArtists.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class=" mn-b-small">No artists yet</h3>
-        <p class="t-grey t-medium">Create your first artist profile to see it here</p>
-      </div>
-      
-      <ArtistList v-else :artists="userArtists" /> -->
+      <Feed
+        :store="{
+          read: (options) => artistsActions.fetchArtists({ ...options, owner: { type: 'user', target: authState.user._id } }),
+          state: artistsState
+        }"
+        :options="{ owner: { type: 'user', target: authState.user._id } }"
+        :states="{
+          empty: {
+            title: 'No artists yet',
+            description: 'Create your first artist profile to see it here',
+            class: 'pd-big bg-dark-transp-10 radius-medium'
+          }
+        }"
+        class="gap-medium"
+      >
+        <template #default="{ items }">
+          <ArtistCard
+            v-for="artist in items"
+            :key="artist._id"
+            :artist="artist"
+            class="w-100"
+          />
+        </template>
+      </Feed>
     </div>
     
     <!-- Tracks Tab -->
-    <div v-else-if="activeTab === 'tracks'" class="tracks-tab">
+    <div v-if="activeTab === 'tracks'" class="tracks-tab">
       <div class="flex-between flex mn-b-small">
         <h2 class="">Your Tracks</h2>
         <Button 
-          @click="$router.push({ name: 'music-upload' })"
+          @click="$router.push({ name: 'track-create' })"
           class="bg-main  radius-small pd-small hover-scale-1"
           :showLoader="false" 
           :showSucces="false"
@@ -92,44 +156,46 @@
         </Button>
       </div>
       
-      <div v-if="userTracks.length === 0" class="empty-state t-center pd-big bg-dark-transp-10 radius-medium">
-        <h3 class=" mn-b-small">No tracks yet</h3>
-        <p class="t-grey t-medium">Upload your first track to see it here</p>
-      </div>
-      
-      <TrackList 
-        v-else
-        :tracks="userTracks"
-        :showAlbum="true" 
-        :showCover="true"
-        class="bg-dark-transp-10 radius-medium o-hidden"
-      />
+      <Feed
+        :store="{
+          read: (options) => tracksActions.fetchTracks({ ...options, owner: { type: 'user', target: authState.user._id } }),
+          state: tracksState
+        }"
+        :options="{ owner: { type: 'user', target: authState.user._id } }"
+        :states="{
+          empty: {
+            title: 'No tracks yet',
+            description: 'Upload your first track to see it here',
+            class: 'pd-big bg-dark-transp-10 radius-medium'
+          }
+        }"
+        class="gap-medium"
+      >
+        <template #default="{ items }">
+          <TrackCard
+            v-for="track in items"
+            :key="track._id"
+            :track="track"
+            :showAlbum="true"
+            :showCover="true"
+            class="w-100 bg-dark-transp-10 radius-medium"
+          />
+        </template>
+      </Feed>
     </div>
     
-        <!-- Create Playlist Modal -->
-    <Popup 
-      v-if="showCreatePlaylistModal" 
-      @close-popup="showCreatePlaylistModal = false" 
-      class="bg-dark pd-small w-m-25r radius-medium "
-    >
-      <h3 class="mn-b-medium">Create Playlist</h3>
-      <PlaylistForm @created="onPlaylistCreated" @cancel="showCreatePlaylistModal = false" />
-    </Popup>
-  </div>
+      </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import TrackList from '../lists/TrackList.vue';
-import AlbumList from '../lists/AlbumList.vue';
-import PlaylistList from '../lists/PlaylistList.vue';
-import ArtistList from '../lists/ArtistList.vue';
-import ArtistManager from '../pages/ArtistManager.vue';
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
+import TrackCard from '../cards/TrackCard.vue';
+import AlbumCard from '../cards/AlbumCard.vue';
+import PlaylistCard from '../cards/PlaylistCard.vue';
+import ArtistCard from '../cards/ArtistCard.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
-import Loader from '@martyrs/src/components/Loader/Loader.vue';
-import Popup from '@martyrs/src/components/Popup/Popup.vue';
-import PlaylistForm from '../forms/PlaylistForm.vue';
 
 // Import store modules
 import { state as authState } from '@martyrs/src/modules/auth/views/store/auth.js';
@@ -141,9 +207,7 @@ import { state as tracksState, actions as tracksActions } from '../../store/trac
 const router = useRouter();
 
 // State
-const isLoading = ref(true);
 const activeTab = ref('playlists');
-const showCreatePlaylistModal = ref(false);
 
 // Tabs configuration
 const tabs = [
@@ -153,37 +217,4 @@ const tabs = [
   { id: 'tracks', label: 'Tracks' }
 ];
 
-// Computed
-const userPlaylists = ref([]);
-const userAlbums = ref([]);
-const userArtists = ref([]);
-const userTracks = ref([]);
-
-// Methods
-const fetchLibraryData = async () => {
-  isLoading.value = true;
-  
-  try {
-    if (!authState.user || !authState.user._id) {
-      router.push({ name: 'Sign In', query: { redirect: router.currentRoute.value.fullPath } });
-      return;
-    }
-    
-    // Fetch user's content
-    await tracksActions.fetchUserTracks(authState.user._id).then(tracks => userTracks.value = tracks || []);
-  } catch (error) {
-    console.error('Error fetching library data:', error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const onPlaylistCreated = (playlist) => {
-  userPlaylists.value.unshift(playlist);
-  showCreatePlaylistModal.value = false;
-  router.push({ name: 'playlist-detail', params: { url: playlist.url } });
-};
-
-// Fetch library data when component mounts
-onMounted(fetchLibraryData);
 </script>

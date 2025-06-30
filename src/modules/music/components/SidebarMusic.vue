@@ -75,7 +75,7 @@
           <template #default="{ items }">
             <li v-for="playlist in items" :key="playlist._id" class="mn-b-thin">
               <router-link 
-                :to="{ name: 'playlist-detail', params: { url: playlist.url } }" 
+                :to="{ name: 'playlist', params: { url: playlist.url } }" 
                 class=" t-truncate d-block pd-thin radius-small hover-bg-dark"
                 :class="$route.params.url === playlist.url ? 'bg-dark t-main' : ''"
               >
@@ -144,7 +144,7 @@ const userPlaylists = computed(() => {
 
 const onPlaylistCreated = (playlist) => {
   showCreatePlaylistModal.value = false;
-  router.push({ name: 'playlist-detail', params: { url: playlist.url } });
+  router.push({ name: 'playlist', params: { url: playlist.url } });
 };
 
 // Fetch user playlists on component mount

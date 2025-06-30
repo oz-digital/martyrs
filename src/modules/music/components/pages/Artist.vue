@@ -386,21 +386,21 @@ const manageContent = () => {
 
 const navigateToAlbum = (album) => {
   router.push({
-    name: 'album-detail',
+    name: 'album',
     params: { url: album.url }
   });
 };
 
 const navigateToTrack = (track) => {
   router.push({
-    name: 'track-detail',
+    name: 'track',
     params: { url: track.url }
   });
 };
 
 const navigateToArtist = (artist) => {
   router.push({
-    name: 'artist-detail',
+    name: 'artist',
     params: { url: artist.url }
   });
 };

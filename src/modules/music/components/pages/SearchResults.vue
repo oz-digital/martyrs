@@ -114,12 +114,33 @@
       <!-- Songs Results -->
       <section v-if="activeFilter === 'all' || activeFilter === 'tracks'" class="search-section mn-b-medium">
         <h2 class=" mn-b-small">Songs</h2>
-        <TrackList 
-          :tracks="trackResults"
-          :showAlbum="true" 
-          :showCover="true"
-          class="bg-dark-transp-10 radius-medium o-hidden"
-        />
+        <Feed
+          :store="{
+            read: () => Promise.resolve(trackResults),
+            state: { isLoading: false }
+          }"
+          :external="true"
+          :items="trackResults"
+          :states="{
+            empty: {
+              title: 'No tracks found',
+              description: 'Try different search terms',
+              class: 'pd-medium bg-dark-transp-10 radius-medium'
+            }
+          }"
+          class="gap-thin"
+        >
+          <template #default="{ items }">
+            <TrackCard
+              v-for="track in items"
+              :key="track._id"
+              :track="track"
+              :showAlbum="true"
+              :showCover="true"
+              class="w-100 bg-dark-transp-10 radius-medium"
+            />
+          </template>
+        </Feed>
         
         <Button 
           v-if="trackResults.length > 4 && activeFilter === 'all'"
@@ -231,7 +252,8 @@
   import { ref, computed, onMounted, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import SearchForm from '../forms/SearchForm.vue';
-  import TrackList from '../lists/TrackList.vue';
+  import Feed from '@martyrs/src/components/Feed/Feed.vue';
+  import TrackCard from '../cards/TrackCard.vue';
   import AlbumCard from '../cards/AlbumCard.vue';
   import PlaylistCard from '../cards/PlaylistCard.vue';
   import ArtistCard from '../cards/ArtistCard.vue';
@@ -317,15 +339,15 @@
         break;
       case 'album':
         // Navigate to album page
-        router.push({ name: 'album-detail', params: { url: item.url } });
+        router.push({ name: 'album', params: { url: item.url } });
         break;
       case 'playlist':
         // Navigate to playlist page
-        router.push({ name: 'playlist-detail', params: { url: item.url } });
+        router.push({ name: 'playlist', params: { url: item.url } });
         break;
       case 'artist':
         // Navigate to artist page
-        router.push({ name: 'artist-detail', params: { url: item.url } });
+        router.push({ name: 'artist', params: { url: item.url } });
         break;
     }
   };

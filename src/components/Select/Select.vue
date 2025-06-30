@@ -4,7 +4,7 @@
     @click.stop="toggleMenu"  
     v-click-outside="clickedOutside" 
     :class="$attrs.class" 
-    class="cursor-pointer flex-v-center flex-nowrap flex pos-relative"
+    class="cursor-pointer field-wrapper flex-v-center flex-nowrap flex pos-relative"
   >
     <!-- Label -->
     <span v-if="label" class="t-transp mn-r-small">{{label}}</span>

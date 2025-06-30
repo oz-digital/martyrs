@@ -1,7 +1,7 @@
 <!-- components/cards/PlaylistCard.vue -->
 <template>
   <router-link 
-    :to="{ name: 'playlist-detail', params: { url: playlist.url } }" 
+    :to="{ name: 'playlist', params: { url: playlist.url } }" 
     class="playlist-card d-block radius-small o-hidden"
   >
     <div class="playlist-cover pos-relative">
