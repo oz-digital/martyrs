@@ -8,11 +8,11 @@
           dateStart: 0,
           dateEnd: 30
         }"
-        class="bs-black-small br-b br-solid br-black-transp-10 o-hidden bg-white  pd-l-zero pd-r-zero pd-medium"
+        class="bs-black-small br-b br-solid br-black-transp-10 o-hidden bg-white  pd-l-zero pd-r-zero pd-thin"
       />
     </div>
 
-   <section class="pd-big mobile:pd-thin radius-tr-medium radius-tl-medium bg-white"> 
+   <section class="pd-medium mobile:pd-thin radius-tr-medium radius-tl-medium bg-white"> 
 
     <div class="gap-medium radius-medium mn-b-semi">
       <h2
@@ -128,7 +128,7 @@
           :event="event" 
           :user="auth.state.user._id" 
           :type="'normal'"
-          class="bg-light radius-big"
+          class="bg-light radius-medium"
         >
         </CardEvent>
       </Feed>

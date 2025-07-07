@@ -28,7 +28,7 @@
           </router-link>
 
         </div>
-        <p class="t-transp p-big" v-html="departments.state.department.description"></p>
+        <p class="t-transp p-semi" v-html="departments.state.department.description"></p>
       </section>
 
      <section class="mn-b-medium radius-medium pd-semi bg-white">

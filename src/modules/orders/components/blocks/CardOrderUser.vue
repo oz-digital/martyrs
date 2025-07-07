@@ -38,7 +38,7 @@
         <!-- ID заказа и цена -->
         <div class="mn-b-thin">
           <Tooltip :text="orderId">
-			      <p class="p-big">
+			      <p class="p-semi">
 			        #{{ orderId.slice(0, 4) }}...{{ orderId.slice(-4) }}
 			      </p>
 			    </Tooltip>

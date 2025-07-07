@@ -1,5 +1,5 @@
 export default db => {
-  const VariantAvailabilitySchema = new db.mongoose.Schema({
+  const StockAvailabilitySchema = new db.mongoose.Schema({
     product: {
       type: db.mongoose.Schema.Types.ObjectId,
       ref: 'Product',
@@ -44,13 +44,13 @@ export default db => {
   });
 
   // Create indexes for efficient querying
-  VariantAvailabilitySchema.index(
+  StockAvailabilitySchema.index(
     { product: 1, variant: 1, storage: 1 },
     { unique: true }
   );
-  VariantAvailabilitySchema.index({ storage: 1 });
-  VariantAvailabilitySchema.index({ available: -1 }); 
+  StockAvailabilitySchema.index({ storage: 1 });
+  StockAvailabilitySchema.index({ available: -1 }); 
   
-  const VariantAvailability = db.mongoose.model('VariantAvailability', VariantAvailabilitySchema);
-  return VariantAvailability;
+  const StockAvailability = db.mongoose.model('StockAvailability', StockAvailabilitySchema);
+  return StockAvailability;
 };

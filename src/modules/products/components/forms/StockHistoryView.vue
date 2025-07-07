@@ -83,7 +83,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
-import * as leftovers from '@martyrs/src/modules/products/store/leftovers.js'
+import * as inventory from '@martyrs/src/modules/inventory/store/ inventory.store.js'
 
 const props = defineProps({
   product: {
@@ -104,9 +104,9 @@ onMounted(async () => {
 
 async function loadHistory() {
   try {
-    // Use the leftovers read action to get history for this product
-    const data = await leftovers.actions.read({ 
-      'positions._id': props.product._id 
+    // Use the inventory adjustments action to get history for this product
+    const data = await inventory.actions.fetchAdjustments({ 
+      productId: props.product._id 
     })
     
     history.value = data || []

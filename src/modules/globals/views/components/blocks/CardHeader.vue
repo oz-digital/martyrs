@@ -8,12 +8,12 @@
 		>
 
 			<div
-				class="w-100 p-medium t-nowrap flex-nowrap flex-v-center flex"
+				class="w-100 gap-thin p-medium t-nowrap flex-nowrap flex-v-center flex"
 			>
 				<img loading="lazy" 
 					v-if="owner.target?.profile?.photo?.length > 0 && type !== 'short'" 
 					:src="(FILE_SERVER_URL || '') + owner.target.profile.photo" 
-					class="radius-medium flex-child-default object-fit-cover mn-r-thin i-thin" 
+					class="radius-medium bg-white flex-child-default object-fit-cover i-thin" 
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
@@ -25,7 +25,7 @@
 				<component
 					v-if="!owner.target?.profile?.photo && type !== 'short'"
 					:is="owner.type === 'user' ? PlaceholderUserpic : PlaceholderOrganizationPic"
-					class="radius-medium flex-child-default cursor-pointer mn-r-thin i-thin"
+					class="radius-medium flex-child-default cursor-pointer i-thin"
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
@@ -37,7 +37,7 @@
 
 				<div 
 					v-if="type !== 'short'"
-					class="flex flex-nowrap t-medium w-100 pos-relative"
+					class="gap-thin  flex flex-nowrap t-medium w-100 pos-relative"
 				>
 					<span 
 						@click.stop="$router.push({
@@ -51,7 +51,7 @@
 						{{owner.target?.profile?.name || creator.target?.username || 'Anonymous'}}
 					</span>
 
-					<span v-if="!creator.hidden && owner.target?.profile?.name !== creator.target?.profile?.name"class="mn-l-micro mn-r-micro ">·</span> 
+					<span v-if="!creator.hidden && owner.target?.profile?.name !== creator.target?.profile?.name">·</span> 
 
 					<span
 						v-if="!creator.hidden && owner.target?.profile?.name !== creator.target?.profile?.name"
@@ -66,7 +66,7 @@
 						<div>by {{creator.target?.profile?.name || creator.target?.username || 'Anonymous'}}</div>
 					</span>
 
-					<span v-if="date" class="mn-l-micro mn-r-micro ">·</span> 
+					<span v-if="date">·</span> 
 
 					<span v-if="date" class="pos-relative w-max">
 						<Tooltip v-if="date" :text="formatDate(date)">
@@ -74,16 +74,14 @@
 					 	</Tooltip>
 					</span>
 
-					<span v-if="dateFormatted">
-						· {{dateFormatted}}
-					</span>
+					<span v-if="dateFormatted">·</span>
+
+					<span v-if="dateFormatted"> {{dateFormatted}}</span>
 				</div>
 				
 
 				<!-- Participaters avatar -->
-
 				<div class="d-block mn-l-auto flex-nowrap flex flex-v-center">
-					
 					<PhotoStack
 						v-if="members"
 						:number="members"

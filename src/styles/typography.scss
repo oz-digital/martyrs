@@ -49,12 +49,13 @@ span.text-box-trim-end {
 }
 
 
+
 // Font Styles
 h1,.h1  { font-family: var(--font-main); font-weight: 500; font-size: 3.250rem; 	line-height: 1.000; letter-spacing: -0.05rem; 	text-transform: none; }
-h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: 2.500rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
-h3,.h3  { font-family: var(--font-main); font-weight: 500; font-size: 1.750rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
-h4,.h4  { font-family: var(--font-main); font-weight: 500; font-size: 1.500rem; 	line-height: 1.000; letter-spacing: +0.0rem; 	text-transform: none; }
-h5,.h5 	{ font-family: var(--font-main); font-weight: 500; font-size: 1.375rem; 	line-height: 1.000;	letter-spacing: -0.0rem; 	text-transform: none; }
+h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: 2.250rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
+h3,.h3  { font-family: var(--font-main); font-weight: 500; font-size: 1.500rem; 	line-height: 1.000; letter-spacing: -0.05rem;	text-transform: none; }
+h4,.h4  { font-family: var(--font-main); font-weight: 500; font-size: 1.250rem; 	line-height: 1.000; letter-spacing: +0.0rem; 	text-transform: none; }
+h5,.h5 	{ font-family: var(--font-main); font-weight: 500; font-size: 1.000rem; 	line-height: 1.000;	letter-spacing: -0.0rem; 	text-transform: none; }
 
 // Typogragy Styles
 .p-nano        { font-family: var(--font-second); font-weight: 400; font-size: 0.50rem; line-height: 1.250; }
@@ -66,6 +67,7 @@ p,.p-regular   { font-family: var(--font-second); font-weight: 400; font-size: 1
 .p-big         { font-family: var(--font-second); font-weight: 400; font-size: 1.25rem; line-height: 1.250; }
 .p-extra       { font-family: var(--font-second); font-weight: 400; font-size: 2.00rem; line-height: 1.250; }
 
+.t-zero { font-size: 0; }
 b  { font-weight: 600}
 
 a, button { font-family: var(--font-main); }
@@ -73,7 +75,13 @@ a, button { font-family: var(--font-main); }
 a  				{	transition: all 0.233s ease; }
 a:hover   { cursor: pointer;} 
 /*a:active  { opacity: 0.75 }*/
+.t-noselect {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */  
+}
 // Text align
+
 .t-left   	{ text-align: left; 	}
 .t-center   { text-align: center; }
 .t-right  	{ text-align: right; 	}

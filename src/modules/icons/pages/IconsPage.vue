@@ -139,6 +139,7 @@ import Line from '@martyrs/src/modules/icons/socials/line.vue';
 
 // Import actions icons
 import IconDuplicate from '@martyrs/src/modules/icons/actions/IconDuplicate.vue';
+import IconOpenLink from '@martyrs/src/modules/icons/actions/IconOpenLink.vue';
 import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.vue';
 import IconShow from '@martyrs/src/modules/icons/actions/IconShow.vue';
 
@@ -242,6 +243,7 @@ const iconsMap = {
   },
   actions: {
     IconDuplicate,
+    IconOpenLink,
     IconShopcartAdd,
     IconShow
   },

@@ -37,6 +37,7 @@ import LabelGooglePlay from './labels/LabelGooglePlay.vue';
 
 // Actions
 import IconDuplicate from './actions/IconDuplicate.vue';
+import IconOpenLink from './actions/IconOpenLink.vue';
 import IconShow from './actions/IconShow.vue';
 import IconShopcartAdd from './actions/IconShopcartAdd.vue';
 
@@ -71,6 +72,9 @@ import IconSort from './navigation/IconSort.vue';
 import IconUnMute from './navigation/IconUnMute.vue';
 import IconUpload from './navigation/IconUpload.vue';
 import IconVolume from './navigation/IconVolume.vue';
+
+// Components
+import IconSearchPopup from './components/IconSearchPopup.vue';
 
 // Placeholders
 import PlaceholderChat from './placeholders/PlaceholderChat.vue';
@@ -146,6 +150,9 @@ export {
   IconUpload,
   IconVolume,
   
+  // Components
+  IconSearchPopup,
+  
   // Entities
   IconAddress,
   IconBell,
@@ -183,6 +190,7 @@ export {
   IconDuplicate,
   IconShow,
   IconShopcartAdd,
+  IconOpenLink,
   
   // Labels
   LabelAppStore,

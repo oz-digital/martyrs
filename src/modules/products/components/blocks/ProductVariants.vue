@@ -1,9 +1,5 @@
 <template>
   <div class="w-100">
-    <div v-if="selected" class="mn-b-small">
-      <span class="h2 t-bold">${{ selected.price.toFixed(2) }}</span>
-    </div>
-
     <div
       v-for="group in groups"
       :key="group.label"
@@ -115,7 +111,11 @@ watch(selectedAttributes, attrs => {
   const m = props.productVariants.find(v =>
     Object.entries(attrs).every(([k, x]) => v.attributes.find(a => a.name === k && a.value === x))
   );
-  m ? pick(m) : (selected.value = null);
+  if (m && selected.value?._id !== m._id) {
+    pick(m);
+  } else if (!m) {
+    selected.value = null;
+  }
 });
 
 onMounted(() => props.productVariants.length === 1 && pick(props.productVariants[0]));

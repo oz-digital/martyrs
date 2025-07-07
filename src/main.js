@@ -42,6 +42,7 @@ import {
   Upload,
   UploadImage,
   UploadImageMultiple,
+  Media
 } from './components';
 
 export default {
@@ -133,4 +134,5 @@ export {
   Upload,
   UploadImage,
   UploadImageMultiple,
+  Media
 };

@@ -3,7 +3,7 @@
     <section class="bg-black t-white mn-b-thin radius-big pd-big">
       <h1 class="mn-b-medium">{{ t('wallet.title') }}</h1>
 
-      <p class="mn-b-semi t-transp p-big">
+      <p class="mn-b-semi t-transp p-semi">
         {{ t('wallet.subtitle') }}
       </p>
 
@@ -35,7 +35,7 @@
       >
         <p class="t-transp t-medium mn-b-thin">You own:</p>
         <p class="h1 mn-b-small">{{state.share}}%</p>
-        <p class="t-white p-big t-medium mn-b-semi">of all shares</p>
+        <p class="t-white p-semi t-medium mn-b-semi">of all shares</p>
 
           <div
             class="flex-v-center mn-b-small flex-nowrap flex pd-small bg-black-transp-5 radius-extra"

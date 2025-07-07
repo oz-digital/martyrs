@@ -1,32 +1,42 @@
 <template>
   <div>
     <div 
-      class="w-100 scroller o-scroll scroll-snap-type-x-mandatory scroll-pd-regular scroll-hide flex-nowrap flex" 
+      class="w-100 scroller o-x-scroll o-y-visible scroll-snap-type-x-mandatory scroll-pd-regular scroll-hide flex-nowrap flex" 
       ref="scrollContainer"
     >
-      <div 
-        v-for="date in dates" 
-        :key="date.toString()" 
-        @click="selectDate(date)"
-        :class="{
-          'selected': selectedDate && selectedDate.toDateString() === date.toDateString(),
-          'highlighted': isHighlighted(date)
-        }"
-        class="cursor-pointer scroll-snap-align-start mn-r-small mn-l-small flex-column flex-center flex"
-      >
-        <span class="t-transp">
-          {{ dayLetter(date) }}
-        </span>
-        <span 
-          :class="{
-            'bg-main': selectedDate && selectedDate.toDateString() === date.toDateString(),
-             'br-1px br-solid br-main':isHighlighted(date),
-          }"
-          class="transition-ease-in-out t-semi flex-center flex radius-big i-semi day-number"
+      <template v-for="(date, index) in dates" :key="date.toString()">
+        <!-- Month separator -->
+        <div 
+          v-if="index === 0 || dates[index - 1].getMonth() !== date.getMonth()"
+          class="mn-r-thin mn-l-thin pd-thin radius-thin flex-column flex-center flex bg-light"
         >
-          {{ date.getDate() }}
-        </span>
-      </div>
+          <span class="t-transp t-noselect p-small mn-b-thin">
+            {{ String(date.getMonth() + 1).padStart(2, '0') }}/{{ date.getFullYear() }}
+          </span>
+          <span class="t-noselect t-semi">
+            {{ date.toLocaleDateString(props.locale || 'en', { month: 'short' }).toUpperCase() }}
+          </span>
+        </div>
+        
+        <!-- Date -->
+        <div 
+          @click="selectDate(date)"
+          :class="{
+            'bg-main t-white': selectedDate && selectedDate.toDateString() === date.toDateString(),
+            'bg-second t-white': isHighlighted(date)
+          }"
+          class="transition-ease-in-out hover-bg-light cursor-pointer o-y-visible scroll-snap-align-start mn-r-thin mn-l-thin pd-thin radius-thin flex-column flex-center flex"
+        >
+          <span class="t-transp t-noselect p-small mn-b-thin">
+            {{ dayLetter(date) }}
+          </span>
+          <span 
+            class="t-noselect t-semi  day-number"
+          >
+            {{ date.getDate() }}
+          </span>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -93,7 +103,7 @@ function formatDateForRouter(date) {
 
 function dayLetter(date) {
   return date.toLocaleDateString(props.locale ? props.locale : 'en', { 
-    weekday: 'narrow' 
+    weekday: 'short' 
   }).toUpperCase();
 }
 

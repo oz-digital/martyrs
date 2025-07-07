@@ -7,7 +7,7 @@
 
     <div class="pd-big flex flex-h-center flex-column z-index-1 w-1/2">
       <h2 class="mn-t-medium mn-b-semi w-m-40r">{{ t('title') }}</h2>
-      <p class="t-transp mn-b-big p-big w-m-33r">{{ t('description') }}</p>
+      <p class="t-transp mn-b-big p-semi w-m-33r">{{ t('description') }}</p>
       
       <div class="mn-b-big gap-medium cols-2">
         <div v-for="feature in tm('features')"  class="feature">

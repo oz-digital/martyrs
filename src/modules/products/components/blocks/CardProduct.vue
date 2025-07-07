@@ -68,7 +68,7 @@
 
 			<slot></slot>
 
-			<div class="flex-v-center flex-nowrap flex">
+			<div v-if="product.variants?.length > 0" class="flex-v-center flex-nowrap flex">
 				<Price 
 					:product="product" 
 					size="small" 

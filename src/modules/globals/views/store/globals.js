@@ -222,4 +222,4 @@ function invertColors(variableNames, originalColors) {
   });
 }
 
-export { actions, setError, state };
+export { actions, setError, setSnack, state };

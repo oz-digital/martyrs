@@ -50,7 +50,7 @@ router.beforeEach((to, from) => {
     :class="[
       stateSidebar
       ? `${width} w-min-10 tablet:w-min-100 tablet:w-100 mobile:w-min-100 mobile:w-100`
-      : `${widthHidden} mobile:w-0 br-zero`,
+      : `${widthHidden} mobile:w-0`,
       // 
       theme === 'light' 
       ? 't-black bg-white br-light'

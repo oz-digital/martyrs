@@ -34,7 +34,7 @@
         z-index-1
 
       "
-      tabClass="bg-light  uppercase pd-small radius-small w-100"
+      classTab="bg-light  uppercase pd-small radius-small w-100"
   />
 
   <div class="cols-2-1_3 br-1px br-solid br-light h-100 z-index-3 pos-relative radius-medium">
@@ -77,7 +77,8 @@
           prices: route.query.prices,
           delivery: route.query.delivery,
           search: route.query.search,
-          ...(tabProducts !== 'all' && { status: tabProducts })
+          ...(tabProducts !== 'all' && { status: tabProducts }),
+          lookup: ['variants']
           // user: user
         }"
         v-slot="{ 

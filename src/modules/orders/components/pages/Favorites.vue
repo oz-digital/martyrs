@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		<p class="mn-b-small t-semi p-big">Избранное</p>
+		<p class="mn-b-small t-semi p-semi">Избранное</p>
 		<hr class="mn-b-semi">
 		<div class="grid-layout">
 			 <p v-if="(favorites.length == 0)" style="padding-top: 1.5rem;"><i>У вас еще нет товаров в избранном. Может стоит что-нибудь добавить?</i></p>

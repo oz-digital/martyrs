@@ -5,24 +5,29 @@ export default (function (app, db, origins, publicPath) {
   const middleware = middlewareFactoryAuth(db);
   app.post(
     '/api/orders/create',
-    // [
-    //   middleware.authJwt.verifyToken
-    // ],
+    [
+      middleware.authJwt.verifyToken(true)
+    ],
     controller.create
   );
-  app.get('/api/orders/read', controller.read);
+  app.get('/api/orders/read', 
+    [
+      middleware.authJwt.verifyToken(true)
+    ],
+    controller.read
+  );
   app.post(
     '/api/orders/update',
-    // [
-    //   middleware.authJwt.verifyToken
-    // ],
+    [
+      middleware.authJwt.verifyToken()
+    ],
     controller.update
   );
   app.post(
     '/api/orders/delete',
-    // [
-    //   middleware.authJwt.verifyToken
-    // ],
+    [
+      middleware.authJwt.verifyToken()
+    ],
     controller.deleteOrder
   );
 });

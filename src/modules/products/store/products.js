@@ -14,7 +14,7 @@ const state = reactive({
   current: {
     recommendation: false,
     category: [],
-    status: 'unpublished',
+    status: 'draft',
     listing: 'sale',
     attributes: [],
     images: [],
@@ -28,7 +28,7 @@ const state = reactive({
     recommended: [],
     variants: [],
     discounts: [],
-    included: [],
+    included: null,
     ingredients: [],
     description: '',
   },
@@ -208,10 +208,10 @@ const actions = {
 const mutations = {
   resetProduct(product) {
     state.current = {
-      included: [],
+      included: null,
       recommendation: false,
       category: [],
-      status: 'unpublished',
+      status: 'draft',
       attributes: [],
       images: [],
       files: [],

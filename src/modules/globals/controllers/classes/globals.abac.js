@@ -108,7 +108,7 @@ class GlobalABAC {
       };
     }
     // Предзагрузка ресурса
-    if (data._id || data.params?._id || data.url) {
+    if ((action !== 'create') && (data._id || data.params?._id || data.url)) {
       try {
         const resourceModel = this.getResourceModel(resource);
         let currentResource;

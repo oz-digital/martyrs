@@ -1,108 +1,80 @@
 // @martyrs/src/modules/products/controllers/utils/productLookupConfigs.js
 export default  {
-  // Лукап для leftover-ов продукта
-  leftovers: {
+  // NEW: Лукап для availability продуктов из inventory модуля
+  inventory: {
     lookup: {
-      from: 'leftovers',
-      let: { productId: '$_id', ingredientsIds: '$ingredients._id' },
+      from: 'stockavailabilities',
+      let: { productId: '$_id' },
       pipeline: [
-        { $unwind: '$positions' },
         {
           $match: {
-            $expr: {
-              $or: [
-                { $eq: ['$positions._id', '$$productId'] },
-                { $in: ['$positions._id', { $ifNull: ['$$ingredientsIds', []] }] }
-              ]
-            }
+            $expr: { $eq: ['$product', '$$productId'] }
           }
         },
         {
-          $addFields: {
-            'positions.quantity': {
-              $cond: {
-                if: { $eq: ['$type', 'stock-in'] },
-                then: '$positions.quantity',
-                else: { $multiply: ['$positions.quantity', -1] }
-              }
-            }
+          $lookup: {
+            from: 'spots',
+            localField: 'storage',
+            foreignField: '_id',
+            as: 'storageInfo'
           }
+        },
+        {
+          $unwind: { path: '$storageInfo', preserveNullAndEmptyArrays: true }
         },
         {
           $project: {
-            _id: '$positions._id',
-            quantity: '$positions.quantity',
-            name: '$positions.name'
+            _id: 1,
+            storage: 1,
+            storageName: '$storageInfo.profile.name',
+            available: 1
           }
         }
       ],
-      as: 'leftovers'
+      as: 'availability'
     },
     additionalStages: [
-      // Этап для расчета количеств по ингредиентам
+      // Этап для расчета общего доступного количества
       {
         $addFields: {
-          ingredientsQuantities: {
-            $cond: {
-              if: { $isArray: '$ingredients' },
-              then: {
-                $map: {
-                  input: '$ingredients',
-                  as: 'ingredient',
-                  in: {
-                    $let: {
-                      vars: {
-                        ingredientId: '$$ingredient._id',
-                        ingredientQuantity: { $ifNull: ['$$ingredient.quantity', 0] }
-                      },
-                      in: {
-                        $divide: [
-                          {
-                            $sum: {
-                              $map: {
-                                input: '$leftovers',
-                                as: 'leftover',
-                                in: {
-                                  $cond: {
-                                    if: { $eq: ['$$leftover._id', '$$ingredientId'] },
-                                    then: '$$leftover.quantity',
-                                    else: 0
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          {
-                            $cond: {
-                              if: { $eq: ['$$ingredientQuantity', 0] },
-                              then: 1,
-                              else: '$$ingredientQuantity'
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              },
-              else: []
-            }
-          }
-        }
-      },
-      // Этап для расчета доступного количества
-      {
-        $set: {
+          availabilityDetails: '$availability',
           available: {
-            $cond: {
-              if: { $gt: [{ $size: { $ifNull: ['$ingredients', []] } }, 0] },
-              then: { $floor: { $min: '$ingredientsQuantities' } },
-              else: { $sum: '$leftovers.quantity' }
-            }  
+            $sum: '$availability.available'
+          },
+          totalStock: {
+            $sum: '$availability.quantity'
+          },
+          storageCount: {
+            $size: { $ifNull: ['$availability', []] }
           }
         }
       }
     ]
+  },
+  variants: {
+    lookup: {
+      from: 'variants',
+      localField: '_id',
+      foreignField: 'product',
+      as: 'variants',
+      pipeline: [
+        {
+          $lookup: {
+            from: 'stockavailabilities',
+            localField: '_id',
+            foreignField: 'variant',
+            as: 'availability'
+          }
+        },
+        {
+          $addFields: {
+            available: {
+              $sum: '$availability.available'
+            }
+          }
+        }
+      ]
+    }
   },
   recommended: {
     lookup: {

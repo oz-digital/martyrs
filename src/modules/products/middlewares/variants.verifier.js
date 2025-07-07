@@ -38,7 +38,7 @@ export default (function (db) {
       rule: 'optional',
       default: 1,
       validator: Validator.schema()
-        .integer()
+        .number()
         .min(0, 'Quantity cannot be negative')
     },
     unit: {

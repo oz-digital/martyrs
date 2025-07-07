@@ -47,7 +47,7 @@ function getBlockProps(block, index) {
     if (!prevTextarea) {
       return { innerHTML: block.content, class: props.notitle ? "h3" : "h2" };
     }
-    return { innerHTML: block.content, class: "p-big" };
+    return { innerHTML: block.content, class: "p-semi" };
   } else if (block.type === 'H2') {
     return { innerHTML: block.content, class: props.notitle ? "h3" : "h2" };
   } else if (block.type === 'Caption') {

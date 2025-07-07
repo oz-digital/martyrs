@@ -11,8 +11,8 @@
         class="bg-light radius-medium pd-medium cursor-pointer"
         @click="handleDateSelect(date)"
       >
-        <h4 class="t-medium">{{ date.label }}</h4>
-        <div class="text-small text-muted">{{ date.range }}</div>
+        <p class="mn-b-small p-semi t-medium">{{ date.label }}</p>
+        <div class="p-regular t-transp">{{ date.range }}</div>
       </div>
     </div>
   </div>

@@ -72,14 +72,17 @@ function addRoutes(router, config) {
     }
 
     if (basePath) {
+      console.log('addRoutes: Adding intermediate route', `${routeNamePrefix}${basePath.charAt(0).toUpperCase() + basePath.slice(1)}Intermediate`, 'to parent', parentName);
+      console.log('Routes before adding:', router.getRoutes().filter(r => r.name && r.name.includes('OrganizationOrders')).map(r => r.name));
       const intermediateRoute = {
         path: basePath,
         component,
-        name: `${routeNamePrefix}Intermediate`,
+        name: `${routeNamePrefix}${basePath.charAt(0).toUpperCase() + basePath.slice(1)}Intermediate`,
         meta,
         children: finalChildren,
       };
       router.addRoute(parentName, intermediateRoute);
+      console.log('Routes after adding:', router.getRoutes().filter(r => r.name && r.name.includes('OrganizationOrders')).map(r => r.name));
     } else {
       filteredRoutes.forEach(route => {
         router.addRoute(parentName, route);

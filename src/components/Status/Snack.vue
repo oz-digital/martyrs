@@ -23,10 +23,12 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+
 import IconInfo from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+import IconSuccess from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+import IconAlert from '@martyrs/src/modules/icons/navigation/IconInfo.vue'
+
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue'
-import IconSuccess from '@martyrs/src/modules/icons/navigation/IconSuccess.vue'
-import IconAlert from '@martyrs/src/modules/icons/navigation/IconAlert.vue'
 
 const { t, te } = useI18n({ useScope: 'global' })
 

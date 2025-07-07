@@ -209,6 +209,9 @@ class CRUDController {
   // Обработка ошибок
   _handleError(error, res) {
     if (res.headersSent) return;
+
+    
+    console.log(error)
     
     const statusCode = error.statusCode || error.code === 'NOT_FOUND' ? 404 : 500;
     const message = error.message || 'Internal Server Error';
@@ -250,10 +253,10 @@ class CRUDController {
   // Определение цели верификации
   _getVerificationTarget(method, actionName) {
     // Для стандартных CRUD операций
-    if (['create', 'update'].includes(actionName)) {
+    if (['create', 'update', 'delete'].includes(actionName)) {
       return 'body';
     }
-    if (['read', 'delete'].includes(actionName)) {
+    if (['read'].includes(actionName)) {
       return 'query';
     }
     

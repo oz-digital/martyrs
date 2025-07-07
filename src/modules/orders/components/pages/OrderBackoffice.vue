@@ -8,25 +8,25 @@
 		    </p>
 			</div>
 
-  	<div class="flex-nowrap flex gap-thin pos-relative ">
-	    <div v-for="(status, index) in globals.state.options.orders.statuses" :key="index" class="w-20">
-	      <div
-	      	class="bg-white br-anim br-glow radius-extra h-1r w-100"
-	        :class="
-				    { 'br-glow-anim': isActiveStatus(index) },
-				    { 't-transp': !isActiveStatus(index) },
-				    { 'blink': order.status === status.value && getNextStatus(order.status) }
-				  "
-	      />
-	      <div 
-	      	:class="{ 't-transp': !isActiveStatus(index) }"
-				  class="mn-t-thin p-small t-medium uppercase">{{ status.value }}</div>
-	    	</div>
-		  </div>
+	  	<div class="flex-nowrap flex gap-thin pos-relative ">
+		    <div v-for="(status, index) in globals.state.options.orders.statuses" :key="index" class="w-20">
+		      <div
+		      	class="bg-white br-anim br-glow radius-extra h-1r w-100"
+		        :class="
+					    { 'br-glow-anim': isActiveStatus(index) },
+					    { 't-transp': !isActiveStatus(index) },
+					    { 'blink': order.status === status.value && getNextStatus(order.status) }
+					  "
+		      />
+		      <div 
+		      	:class="{ 't-transp': !isActiveStatus(index) }"
+					  class="mn-t-thin p-small t-medium uppercase">{{ status.value }}</div>
+		    	</div>
+			  </div>
 	  </div>
 
-  	 <Popup 
-      title="Change payment" 
+  	<Popup 
+      title="Payment Status" 
       @close-popup="closePaymentPopup" 
       :isPopupOpen="isOpenPaymentPopup"
       class="bg-light w-min-25r w-max-25r radius-medium pd-big"
@@ -76,13 +76,22 @@
 
     	<ul class="flex gap-thin flex-column mn-b-thin">
   			<CardOrderItem
-  				v-for="(product, index) in order.positions" :key="product._id"
-  				:editable="true" 
-  				:product="product" 
-  				:increase="product => orders.mutations.incrementItemQuantity(order, product._id)"
-	        :decrease="product => orders.mutations.decrementItemQuantity(order, product._id)"
-	        :remove="product => orders.mutations.removeProduct(order, product._id)"
-	        @updateRentDates="(product, dates) => shopcart.actions.updateRentDates({ positions: order.positions, productId: product._id, dates })"
+  				v-for="(product, index) in order.positions" 
+  				:key="`${product._id}_${product.variant || 'no-variant'}_${index}`"
+  				:editable="!order.status_history || order.status_history.length <= 1" 
+  				:productId="product._id"
+  				:variantId="product.variant"
+  				:images="product.images"
+  				:name="product.name"
+  				:quantity="product.quantity"
+  				:unit="product.unit"
+  				:dates="product.date"
+  				:listing="product.listing"
+  				:price="product.price"
+  				:increase="() => orders.mutations.incrementItemQuantity(order, product._id, product.variant)"
+	        :decrease="() => orders.mutations.decrementItemQuantity(order, product._id, product.variant)"
+	        :remove="() => orders.mutations.removeProduct(order, product._id, product.variant)"
+	        @updateRentDates="(productId, variantId, dates) => shopcart.actions.updateRentDates({ positions: order.positions, productId, variantId, dates })"
   				class="bg-white radius-small pd-small"
   			/>
       </ul>
@@ -125,7 +134,7 @@
 			    	<div class="mn-r-auto">
 				    	<span class="d-block t-medium p-medium">Order is</span>
 					    <span class=" t-lh-075 h2 d-block mn-b-small">{{order.status}}</span>
-					    <p class="pd-t-nano pd-b-nano pd-r-thin pd-l-thin radius-extra bg-black t-white w-max">{{formatDate(order.updatedAt, {language: locale })}}</p>
+					    <p class="pd-thin radius-extra bg-black t-white w-max">{{formatDate(order.updatedAt, {language: locale })}}</p>
 					  </div>
 					 <!--  <div class="t-right">
 					  	Cancel order<br>
@@ -152,8 +161,17 @@
 			      </p>
 
 			      <p class="w-100 t-right">
-			        {{order.delivery.address || (order.delivery.spot[0].profile.name + ', ' + order.delivery.spot[0].address) || 'Not specified'}} 
+							{{order.delivery.address || (order.delivery.spot[0]?.profile.name + (order.delivery.spot[0]?.address ? ', ' + order.delivery.spot[0].address : '')) || 'Not specified'}}
 			      </p>
+
+
+
+			    </div>
+
+
+			    <div v-if="order.comment" class="pos-relative radius-thin mn-t-zero mn-thin bg-fifth-transp-10 pd-small">
+			      <p class="mn-b-thin t-transp uppercase p-small t-medium">Comment</p>
+			      <p>{{order.comment}}</p>
 			    </div>
 
 			    <div class="pd-small  flex flex-nowrap flex-v-center br-t br-black-transp-10 br-solid">
@@ -176,7 +194,7 @@
 			        {{order.payment.type ? order.payment.type : 'Not specified'}} 
 			      </p>
 
-			      <p @click="route.meta.context !== 'user' && route.meta.context !== 'root' ? openPaymentPopup : console.log('hello')" class="w-max pd-thin radius-small bg-second t-white mn-l-thin cursor-pointer hover-bg-black t-right">
+			      <p @click="route.meta.context !== 'user' && route.meta.context !== 'root' ? openPaymentPopup() : console.log('Context:', route.meta.context)" class="w-max pd-thin radius-small bg-second t-white mn-l-thin cursor-pointer hover-bg-black t-right">
 			        {{order.payment.status ? order.payment.status : 'Unpaid'}} 
 			      </p>
 			    </div>
@@ -230,9 +248,18 @@
 
 	  		<ul class="flex gap-thin flex-column mn-b-thin">
 	  			<CardOrderItem
-	  				v-for="(product, index) in order.positions" :key="product._id"
+	  				v-for="(product, index) in order.positions" 
+	  				:key="`${product._id}_${product.variant || 'no-variant'}_${index}`"
 	  				:editable="false" 
-	  				:product="product" 
+	  				:productId="product._id"
+	  				:variantId="product.variant"
+	  				:images="product.images"
+	  				:name="product.name"
+	  				:quantity="product.quantity"
+	  				:unit="product.unit"
+	  				:dates="product.date"
+	  				:listing="product.listing"
+	  				:price="product.price"
 	  				class="bg-white radius-small pd-small"
 	  			/>
 	      </ul>
@@ -417,6 +444,9 @@ const deliveryCost = computed(() => {
 
     if (nextStatus) {
       orders.state.current.status = nextStatus.value;
+      
+      // Обновляем позиции заказа из текущего состояния
+      orders.state.current.positions = order.value.positions;
 
       await orders.actions.update(orders.state.current)
     } else {

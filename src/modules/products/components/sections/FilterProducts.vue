@@ -6,7 +6,7 @@
         :status="true"
       >
         <template #header>
-          <p class="cursor-pointer mn-r-auto t-medium p-big">{{ t('categoriesTitle') }}</p>
+          <p class="cursor-pointer mn-r-auto t-medium p-semi">{{ t('categoriesTitle') }}</p>
           <!-- SVG Icon -->
         </template>
         <template #content>
@@ -30,7 +30,7 @@
         :status="false"
       >
         <template #header>
-          <p class="cursor-pointer  mn-r-auto t-medium p-big">{{ t('filters.price.title') }}</p>
+          <p class="cursor-pointer  mn-r-auto t-medium p-semi">{{ t('filters.price.title') }}</p>
           <!-- SVG Icon -->
         </template>
         <template #content>
@@ -54,7 +54,7 @@
         :status="false"
       >
         <template #header>
-          <p class="cursor-pointer  mn-r-auto t-medium p-big">Delivery</p>
+          <p class="cursor-pointer  mn-r-auto t-medium p-semi">Delivery</p>
         </template>
         <template #content>
           <Checkbox 

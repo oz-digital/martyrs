@@ -101,15 +101,15 @@ export const navigationItems = [
         )
       },
       {
-        title: 'Leftovers',
+        title: 'Inventory',
         iconComponent: IconLeftovers,
         route: (auth, route) => ({
-          name: 'Leftovers',
+          name: 'OrganizationInventoryList',
           params: { _id: route.params._id }
         }),
         visible: (auth, route) => hasAccess(
           route.params._id, 
-          'leftovers', 
+          'inventory', 
           'read', 
           auth.accesses, 
           auth.access.roles

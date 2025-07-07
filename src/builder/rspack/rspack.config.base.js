@@ -46,6 +46,7 @@ export default (projectRoot) => {
               template: {
                 preprocess: (content, { filename }) => {
                   const rewritten = content
+                    // Обработка существующего синтаксиса v-slot
                     .replace(
                       /<(\w+)\s+v-slot(:[\w\-]+)?=("|'){([^"'}]+)}("|')\s*>/g,
                       (_match, tag, slotName, _q1, slotProps, _q2) => {
@@ -56,6 +57,19 @@ export default (projectRoot) => {
                     .replace(
                       /<\/(\w+)>\s*<!--\s*v-slot-close\s*-->/g,
                       (_match, tag) => `</${tag}></template>`
+                    )
+                    // Новая обработка для сокращенного синтаксиса #slotname
+                    .replace(
+                      /<(\w+)(\s+#[\w\-]+)([^>]*)\/>/g,
+                      (_match, tag, slotDirective, attrs) => {
+                        return `<template${slotDirective}><${tag}${attrs}/></template>`;
+                      }
+                    )
+                    .replace(
+                      /<(\w+)(\s+#[\w\-]+)([^>]*)>(.*?)<\/\1>/gs,
+                      (_match, tag, slotDirective, attrs, content) => {
+                        return `<template${slotDirective}><${tag}${attrs}>${content}</${tag}></template>`;
+                      }
                     );
 
                   return { code: rewritten };

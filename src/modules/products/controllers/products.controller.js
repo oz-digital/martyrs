@@ -51,8 +51,8 @@ const controllerFactory = db => {
         // Удаление временных полей
         queryProcessorGlobals.removeTempPropeties(),
         
-        // Дополнительные очистки для leftovers (если был запрошен)
-        ...(requestedLookups.includes('leftovers') ? [{ $project: { ingredientsQuantities: 0 } }] : [])
+        // Дополнительные очистки для lookup-ов
+        ...(requestedLookups.includes('inventory') ? [{ $project: { availability: 0 } }] : [])
       ].filter(Boolean);
       
       // Выполнение агрегации

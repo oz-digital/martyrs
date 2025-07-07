@@ -61,19 +61,69 @@
           class=""
         >
           <CardOrderItem
-            v-for="(product, index) in items" :key="product._id"
+            v-for="(product, index) in items" 
+            :key="`${product._id}_${index}`"
             :editable="false" 
-            :product="product" 
-            @click="() => { 
-              let p = { ...product };
-              p.quantity = 1;
-              globals.actions.add(orders.state.current.positions, p) 
-              closeProductsPopup();
-            }"
+            :productId="product._id"
+            :images="product.images"
+            :name="product.name"
+            @click="() => selectProduct(product)"
             class="bg-white pd-thin radius-medium w-100 mn-b-thin"
           />
         </Feed>
       </div>
+    </Popup>
+
+    <!-- Popup for selecting variant of the product -->
+    <Popup 
+      title="Select variant" 
+      @close-popup="closeVariantsPopup" 
+      :isPopupOpen="isVariantsPopupOpen"
+      class="bg-white w-100 w-max-30r radius-medium pd-medium"
+    >
+      <Feed
+        :store="variants"
+        :options="{
+          product: selectedProduct?._id,
+        }"
+        :skeleton="{
+          structure: [
+            { block: 'text', size: 'small' },
+            { block: 'text', size: 'medium' },
+            { block: 'text', size: 'small' }
+          ]
+        }"
+        :states="{
+          empty: {
+            title: 'No variants',
+            description: 'Create your first variant'
+          }
+        }"
+         v-slot="{ items }"
+      >
+        <div class="gap-thin flex flex-column">
+          <div 
+            v-for="(variant, index) in items" 
+            :key="index"
+            @click="addVariantToOrder(variant)"
+            class="w-100 cursor-pointer hover-scale-1 bg-light pd-small radius-small flex-v-center flex-nowrap flex gap-thin"
+          >
+            <div v-if="variant.images && variant.images.length" class="aspect-1x1 h-3r radius-small o-hidden">
+              <img 
+                :src="(FILE_SERVER_URL || '') + variant.images[0]" 
+                class="w-100 h-100 object-fit-cover"
+              />
+            </div>
+            <div>
+              <p class="t-medium">{{ variant.name || 'Default variant' }}</p>
+              <p v-if="variant.attributes && variant.attributes.length" class="t-small t-transp">
+                {{ variant.attributes.map(attr => `${attr.name}: ${attr.value}`).join(', ') }}
+              </p>
+            </div>
+            <p class="mn-l-auto">{{ formatPrice(variant.price || variant.cost) }}</p>
+          </div>
+        </div>
+      </Feed>
     </Popup>
 
     <Block
@@ -94,13 +144,21 @@
 
       <CardOrderItem
         v-for="(product, index) in orders.state.current.positions" 
-        :key="product._id"
+        :key="`${product._id}_${product.variant || 'no-variant'}_${index}`"
         :editable="true" 
-        :product="product" 
-        @increase="() => { globals.actions.increment(orders.state.current.positions, product) }"
-        @decrease="() => { globals.actions.decrement(orders.state.current.positions, product) }"
-        @remove="() => { globals.actions.delete(orders.state.current.positions, product) }"э
-        @updateRentDates="(product, dates) => orders.mutations.updateRentDates({ positions: orders.state.current.positions, productId: product._id, dates })"
+        :productId="product._id"
+        :variantId="product.variant"
+        :images="product.images"
+        :name="product.name"
+        :quantity="product.quantity"
+        :unit="product.unit"
+        :dates="product.date"
+        :listing="product.listing"
+        :price="product.price"
+        :increase="() => incrementOrderItemQuantity(product._id, product.variant)"
+        :decrease="() => decrementOrderItemQuantity(product._id, product.variant)"
+        :remove="() => removeOrderItem(product._id, product.variant)"
+        @updateRentDates="(productId, variantId, dates) => updateOrderRentDates(productId, variantId, dates)"
         class="mn-b-thin pd-thin radius-medium bg-white"
       /> 
     </Block>
@@ -200,7 +258,7 @@
 </template>
 
 <script setup="props">
-  import { computed, ref, defineProps, onMounted, reactive, toRefs, watch } from 'vue'
+  import { computed, ref, defineProps, onMounted, reactive, toRefs, watch, getCurrentInstance } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
 
 
@@ -227,18 +285,30 @@
   import * as orders from '@martyrs/src/modules/orders/store/orders.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
+  import variants from '@martyrs/src/modules/products/store/variants.store.js';
 
   import customers from '@martyrs/src/modules/orders/store/customers.store';
+  
+  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 	
   // Accessing router
   const route = useRoute()
   const router = useRouter()
+  const { proxy } = getCurrentInstance()
+  const { formatPrice } = useGlobalMixins()
 
    orders.mutations.resetOrder(orders.state.current)
 
   let cartTotalPrice = computed(() => {
     return Number(orders.state.current.positions.reduce((total, product) => {
-      return total + product.price * product.quantity;
+      if (product.listing === 'rent' && product.date?.start && product.date?.end) {
+        const start = new Date(product.date.start);
+        const end = new Date(product.date.end);
+        const days = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
+        return total + product.price * product.quantity * days;
+      } else {
+        return total + product.price * product.quantity;
+      }
     }, 0));
   })
 
@@ -247,6 +317,8 @@
 
   // Popup
   const isOpenProductsPopup = ref(false);
+  const isVariantsPopupOpen = ref(false);
+  const selectedProduct = ref(null);
 
   function openProductsPopup() {
     isOpenProductsPopup.value = true;
@@ -254,6 +326,74 @@
 
   function closeProductsPopup() {
     isOpenProductsPopup.value = false;
+  }
+
+  function closeVariantsPopup() {
+    isVariantsPopupOpen.value = false;
+    selectedProduct.value = null;
+  }
+
+  function selectProduct(product) {
+    selectedProduct.value = product;
+    closeProductsPopup();
+    
+    // If product has only one variant, add it directly without showing popup
+    if (product.variants && product.variants.length === 1) {
+      addVariantToOrder(product.variants[0]);
+      return;
+    }
+    
+    // If product has multiple variants or no variants defined, show popup
+    isVariantsPopupOpen.value = true;
+  }
+
+  function formatProductName(product, variant) {
+    if (!variant || product.variants?.length === 1 && !(variant.attributes?.length))
+      return product.name;
+
+    const attrs = variant.attributes?.map(a => a.value).filter(Boolean);
+    return attrs?.length
+      ? `${product.name} / ${attrs.join(' / ')}`
+      : `${product.name} / ${variant.name}`;
+  }
+
+  async function addVariantToOrder(variant) {
+    try {
+      let selectedDates = null;
+      
+      // Если товар для аренды, сначала выбираем даты
+      if (selectedProduct.value.listing === 'rent') {
+        selectedDates = await proxy.$dateSelector(
+          selectedProduct.value._id,
+          variant._id,
+          1,
+          variant.price || selectedProduct.value.price
+        );
+        
+        if (!selectedDates) {
+          // Если отменили выбор дат, возвращаемся к выбору вариантов
+          return;
+        }
+      }
+      
+      const position = {
+        _id: selectedProduct.value._id,
+        images: variant.images?.length > 0 ? variant.images : selectedProduct.value.images,
+        name: formatProductName(selectedProduct.value, variant),
+        listing: selectedProduct.value.listing,
+        price: variant.price || selectedProduct.value.price,
+        quantity: 1,
+        unit: variant.unit || selectedProduct.value.unit,
+        date: selectedDates,
+        variant: variant._id,
+        org_id: route.params._id
+      };
+      
+      globals.actions.add(orders.state.current.positions, position);
+      closeVariantsPopup();
+    } catch (error) {
+      console.error('Error adding variant to order:', error);
+    }
   }
 
   const isOpenCustomerPopup = ref(false);
@@ -264,6 +404,51 @@
 
   function closeCustomerPopup() {
     isOpenCustomerPopup.value = false;
+  }
+
+  // Функции управления позициями заказа
+  function incrementOrderItemQuantity(productId, variantId) {
+    const orderItem = orders.state.current.positions.find(item => 
+      item._id === productId && item.variant === variantId
+    );
+    
+    if (orderItem) {
+      orderItem.quantity++;
+    }
+  }
+
+  function decrementOrderItemQuantity(productId, variantId) {
+    const orderItem = orders.state.current.positions.find(item => 
+      item._id === productId && item.variant === variantId
+    );
+    
+    if (orderItem) {
+      orderItem.quantity--;
+      
+      if (orderItem.quantity < 1) {
+        removeOrderItem(productId, variantId);
+      }
+    }
+  }
+
+  function removeOrderItem(productId, variantId) {
+    const itemIndex = orders.state.current.positions.findIndex(item => 
+      item._id === productId && item.variant === variantId
+    );
+    
+    if (itemIndex > -1) {
+      orders.state.current.positions.splice(itemIndex, 1);
+    }
+  }
+
+  function updateOrderRentDates(productId, variantId, dates) {
+    const orderItem = orders.state.current.positions.find(item => 
+      item._id === productId && item.variant === variantId
+    );
+    
+    if (orderItem) {
+      orderItem.date = dates;
+    }
   }
 
   // Data

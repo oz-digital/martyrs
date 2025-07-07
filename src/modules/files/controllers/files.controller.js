@@ -1,16 +1,22 @@
 const controllerFactory = (db, publicPath) => {
   const uploadMultipleFileController = async (req, res, next) => {
     if (!req.files || req.files.length === 0) {
-      return res.status(400).send({ message: 'No files uploaded.' });
+      return res.status(400).send({ 
+        errorCode: 'NO_FILES_UPLOADED',
+        message: 'No files uploaded.' 
+      });
     }
+    
     const convertToRelativePath = absolutePath => {
       if (!absolutePath.startsWith('/')) {
         absolutePath = '/' + absolutePath;
       }
       return absolutePath;
     };
+    
     req.files = req.files.map(file => convertToRelativePath(file));
     console.log(req.files);
+    
     try {
       const fileResponses = req.files.map(file => ({
         message: 'File uploaded successfully.',
@@ -19,11 +25,16 @@ const controllerFactory = (db, publicPath) => {
       res.status(200).send(fileResponses);
     } catch (error) {
       console.error('Error in uploadMultipleFileController:', error);
-      return res.status(500).send({ message: 'Error during files processing.' });
+      return res.status(500).send({ 
+        errorCode: 'FILE_PROCESSING_ERROR',
+        message: 'Error during files processing.' 
+      });
     }
   };
+  
   return {
     uploadMultipleFileController,
   };
 };
+
 export default controllerFactory;

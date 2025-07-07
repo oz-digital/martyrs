@@ -10,8 +10,8 @@ export default function(db) {
     reason: { rule: 'optional', validator: Validator.schema().string() },
     dateStart: { rule: 'optional', validator: Validator.schema().date() },
     dateEnd: { rule: 'optional', validator: Validator.schema().date() },
-    skip: { rule: 'optional', validator: Validator.schema().number().min(0), default: 0 },
-    limit: { rule: 'optional', validator: Validator.schema().number().min(1).max(100), default: 20 }
+    skip: { rule: 'optional', validator: Validator.schema().integer().min(0), default: 0 },
+    limit: { rule: 'optional', validator: Validator.schema().integer().min(1).max(100), default: 20 }
   };
   
   const adjustmentBodyConfig = {
@@ -29,7 +29,7 @@ export default function(db) {
       rule: 'required', 
       validator: Validator.schema().string().oneOf(['restock', 'sale', 'return', 'damage', 'transfer', 'custom'])
     },
-    quantity: { rule: 'required', validator: Validator.schema().number().integer() },
+    quantity: { rule: 'required', validator: Validator.schema().integer() },
     cost: { rule: 'optional', validator: Validator.schema().number().min(0) },
     comment: { rule: 'optional', validator: Validator.schema().string() }
   };
@@ -38,14 +38,19 @@ export default function(db) {
   const balanceQueryConfig = {
     product: { rule: 'optional', validator: Validator.schema().string() },
     storage: { rule: 'optional', validator: Validator.schema().string() },
-    skip: { rule: 'optional', validator: Validator.schema().number().min(0), default: 0 },
-    limit: { rule: 'optional', validator: Validator.schema().number().min(1).max(100), default: 50 }
+    skip: { rule: 'optional', validator: Validator.schema().integer().min(0), default: 0 },
+    limit: { rule: 'optional', validator: Validator.schema().integer().min(1).max(100), default: 50 },
+    details: { rule: 'optional', validator: Validator.schema().string() },
+    search: { rule: 'optional', validator: Validator.schema().string() },
+    sortParam: { rule: 'optional', validator: Validator.schema().string() },
+    sortOrder: { rule: 'optional', validator: Validator.schema().string().oneOf(['asc', 'desc']) }
   };
   
   // Inventory verifiers
   const inventoryBodyConfig = {
     storage: { rule: 'required', validator: Validator.schema().string() },
     comment: { rule: 'optional', validator: Validator.schema().string() },
+    status: { rule: 'optional', validator: Validator.schema().string().oneOf(['draft', 'published']), default: 'draft' },
     positions: { 
       rule: 'required', 
       validator: Validator.schema().array().items(
@@ -64,12 +69,63 @@ export default function(db) {
   const inventoryBodyVerifier = new Verifier(inventoryBodyConfig);
   
   return {
-    verifyAdjustmentQuery: adjustmentQueryVerifier.middleware(),
-    verifyAdjustmentBody: adjustmentBodyVerifier.middleware(),
-    verifyBalanceQuery: balanceQueryVerifier.middleware(),
-    verifyAvailabilityQuery: balanceQueryVerifier.middleware(),
-    verifyInventoryQuery: balanceQueryVerifier.middleware(),
-    verifyInventoryBody: inventoryBodyVerifier.middleware(),
+    verifyAdjustmentQuery: (req, res, next) => {
+      const verification = adjustmentQueryVerifier.verify(req.query);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      req.verifiedQuery = verification.verifiedData;
+      next();
+    },
+    verifyAdjustmentBody: (req, res, next) => {
+      const verification = adjustmentBodyVerifier.verify(req.body);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      req.verifiedBody = verification.verifiedData;
+      next();
+    },
+    verifyBalanceQuery: (req, res, next) => {
+      const verification = balanceQueryVerifier.verify(req.query);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      // Преобразуем числовые поля
+      verification.verifiedData.skip = parseInt(verification.verifiedData.skip) || 0;
+      verification.verifiedData.limit = parseInt(verification.verifiedData.limit) || 50;
+      req.verifiedQuery = verification.verifiedData;
+      next();
+    },
+    verifyAvailabilityQuery: (req, res, next) => {
+      const verification = balanceQueryVerifier.verify(req.query);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      // Преобразуем числовые поля
+      verification.verifiedData.skip = parseInt(verification.verifiedData.skip) || 0;
+      verification.verifiedData.limit = parseInt(verification.verifiedData.limit) || 50;
+      req.verifiedQuery = verification.verifiedData;
+      next();
+    },
+    verifyInventoryQuery: (req, res, next) => {
+      const verification = balanceQueryVerifier.verify(req.query);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      // Преобразуем числовые поля
+      verification.verifiedData.skip = parseInt(verification.verifiedData.skip) || 0;
+      verification.verifiedData.limit = parseInt(verification.verifiedData.limit) || 50;
+      req.verifiedQuery = verification.verifiedData;
+      next();
+    },
+    verifyInventoryBody: (req, res, next) => {
+      const verification = inventoryBodyVerifier.verify(req.body);
+      if (!verification.isValid) {
+        return res.status(400).json({ errors: verification.verificationErrors });
+      }
+      req.verifiedBody = verification.verifiedData;
+      next();
+    },
     verifyInventoryComplete: (req, res, next) => {
       if (!req.body._id) {
         return res.status(400).json({ message: 'Inventory ID required' });

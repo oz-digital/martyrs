@@ -8,7 +8,7 @@
       <IconBell class="notification-icon i-medium" :fill="fill"/>
       <div  
         v-if="unreadCount > 0" 
-        class="button-counter flex-center"
+        class="button-counter flex flex-center"
       >
         <span>{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
       </div>

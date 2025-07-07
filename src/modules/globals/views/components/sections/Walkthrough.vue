@@ -9,7 +9,7 @@
       >
         <img loading="lazy" class="w-100" :src="require(`@/assets/images/walkthrough/walkthrough_${index}.png`).default">
       	<h2 class="mn-b-small">{{slide.title}}</h2>
-      	<p class="p-big t-transp">{{slide.subtitle}}</p>
+      	<p class="p-semi t-transp">{{slide.subtitle}}</p>
       </div>
 
       <div
@@ -53,7 +53,7 @@
 	    >
 		  </div>
 
-		  <div @click.native="setFirstUseFalse()" class="h-100 w-6r pos-b-0r flex-nowrap flex flex-center pos-r-1r pos-relative radius-small br-solid br-main br-2px uppercase t-semi p-big t-main pos-absolute"> 
+		  <div @click.native="setFirstUseFalse()" class="h-100 w-6r pos-b-0r flex-nowrap flex flex-center pos-r-1r pos-relative radius-small br-solid br-main br-2px uppercase t-semi p-semi t-main pos-absolute"> 
 		  	skip
 		  </div>
 	  </div>

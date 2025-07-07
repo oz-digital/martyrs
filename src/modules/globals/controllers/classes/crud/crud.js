@@ -76,7 +76,7 @@ class CRUD {
     this.controller.registerRoute('post', '/create', 'create');
     this.controller.registerRoute('get', '/read', 'read');
     this.controller.registerRoute('put', '/update', 'update');
-    this.controller.registerRoute('delete', '/delete', 'delete');
+    this.controller.registerRoute('post', '/delete', 'delete');
   }
 
   // API методы для конфигурации

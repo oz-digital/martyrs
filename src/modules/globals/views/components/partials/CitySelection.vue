@@ -33,7 +33,7 @@
     </div>
     <!-- Description -->
     <p class="mn-b-small t-transp">{{t('helpus')}}</p> 
-    <div class="pd-small p-big radius-small bg-light">
+    <div class="pd-small p-semi radius-small bg-light">
       <a class="">hello@nms.network</a>
     </div>
   </div>

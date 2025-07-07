@@ -96,7 +96,7 @@
 							<router-link 
 								class=" uppercase t-nowrap t-semi  pd-thin"
 								:to="{
-									name:'Leftovers', 
+									name:'OrganizationInventoryList', 
 									params: {
 										_id: route.params._id
 									}
@@ -153,7 +153,7 @@
 		          :editAccess="hasAccess(route.params._id, 'spots', 'edit', auth.state.accesses, auth.state.access.roles)"
 		          :showDeliveryOptions="true"
 		          :showPaymentOptions="true"
-		          class="radius-medium bg-light mn-b-thin"
+		          class="radius-medium h-min-big bg-light mn-b-thin"
 		        />
 			    </Feed>
 

@@ -20,7 +20,8 @@
       </router-link>
     </Block>
 
-     <Feed
+    <div class="rows-1">
+      <Feed
         :search="true"
         :showLoadMore="false"
         :states="{
@@ -43,7 +44,7 @@
         v-slot="{ 
           items 
         }"
-        class="cols-1 pos-relative w-100 rows-1 gap-thin"
+        class="rows-1 gap-thin"
       >
         <Tree 
           v-if="items" 
@@ -58,6 +59,7 @@
           />
         </Tree>
       </Feed>
+    </div>
   </div>
 </template>
 

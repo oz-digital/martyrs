@@ -28,7 +28,7 @@
             {{event?.name}}
           </h1>
 
-          <div class="flex flex-wrap gap-micro t-medium p-big mn-b-semi justify-start align-center">
+          <div class="flex flex-wrap gap-micro t-medium p-semi mn-b-semi justify-start align-center">
             <span v-if="event.date?.start" class="mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
               <IconDate :fill="'rgb(var(--black))'" class="w-1r h-auto"/>
               {{formatDate(event.date.start)}}
@@ -44,7 +44,7 @@
             </span>
           </div>
 
-          <p class="z-index-1  p-big mn-b-semi">
+          <p class="z-index-1  p-semi mn-b-semi">
             {{event?.description}}
           </p>
 
@@ -70,7 +70,7 @@
               />
             </div>
             <div v-if="event?.ticketsTypes?.length > 0" v-for="ticketType in event.ticketsTypes" class="pd-medium w-100 radius-medium bg-white mn-b-small">
-              <div class="flex-nowrap mn-b-small p-big flex">
+              <div class="flex-nowrap mn-b-small p-semi flex">
                   <span class="mn-r-auto">{{ticketType.name}}</span>
                   <span class="t-medium">{{ticketType.price}} {{returnCurrency()}}</span>
               </div>
@@ -105,6 +105,7 @@
           :type="'event'" 
           :target="event._id" 
           :owner="auth.state.user._id"
+          class="bg-light radius-medium mobile:radius-zero pd-medium"
         />
 
       </div>

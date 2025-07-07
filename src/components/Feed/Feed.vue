@@ -1,5 +1,5 @@
 <template>
-  <div v-if="search || date || (sort && !sort.hideButton)" style="transform: scale(1);" class="mn-b-thin z-index-10 pos-relative flex-nowrap flex gap-thin">
+  <div v-if="search || date || (sort && !sort.hideButton)" style="transform: scale(1);" class="mn-b-thin pos-relative flex-nowrap flex gap-thin">
 
     <BlockSearch 
       v-if="search"
@@ -9,12 +9,12 @@
       :autofocus="search.autofocus"
     />
 
-    <FiltersBar
+   <!--  <FiltersBar
       v-if="filter"
       v-model="filter.selected"
       :filters="filterConfig"
       :class="filter.class || 'mobile-only'"
-    />
+    /> -->
 
     <Dropdown 
       v-if="date"
@@ -172,7 +172,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, shallowRef, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 
 import SkeletonEvent from '@martyrs/src/modules/icons/skeletons/SkeletonEvent.vue'
 
@@ -201,19 +201,32 @@ const filter = defineModel('filter')
 const date = defineModel('date')
 const items = defineModel('items')
 
+// Внутреннее хранилище для случая, когда v-model:items не передан
+const internalItems = ref([])
+
+// Элегантное решение через computed
+const itemsList = computed({
+  get: () => items.value ?? internalItems.value,
+  set: (val) => {
+    if (items.value !== undefined) {
+      items.value = val
+    } else {
+      internalItems.value = val
+    }
+  }
+})
+
 const filterConfig = computed(() => {
   if (!filter.value?.options) return []
   
-  // Преобразуем старый формат в новый
   return filter.value.options.map(opt => ({
     key: opt.value,
     title: opt.title,
-    type: 'options', // или другой тип в зависимости от данных
+    type: 'options',
     options: opt.options || [],
     defaultValue: null
   }))
 })
-
 
 // Пропсы
 const props = defineProps({
@@ -283,7 +296,6 @@ const props = defineProps({
   },
 });
   
-const itemsList = shallowRef(items.value || []);
 const hasMoreItems = ref(false);
 
 let isLoading = ref(true);
@@ -294,10 +306,8 @@ let currentSkip = ref(props.options.skip ? props.options.skip : 0);
 let currentLimit = ref(props.options.limit ? props.options.limit : 10);
 
 let currentSearch = ref('');
-// Флаг для определения поискового запроса
 let isSearching = ref(false);
 
-// Счетчик для отслеживания актуальности запросов
 let requestId = 0;
 
 function debounce(fn, delay) {
@@ -309,7 +319,6 @@ function debounce(fn, delay) {
 }
 
 const debouncedSearch = debounce((value) => {
-  // Устанавливаем флаг поиска
   isSearching.value = true;
   currentSearch.value = value;
   currentSkip.value = 0;
@@ -321,7 +330,6 @@ function updateSearch(search) {
   debouncedSearch(search);
 }
 
-// Вспомогательная функция для удаления null/undefined значений
 const removeNullValues = (obj) => {
   return Object.fromEntries(
     Object.entries(obj).filter(([_, value]) => value != null)
@@ -335,13 +343,11 @@ const loadMoreItems = async () => {
   
   isLoadingExtra.value = true;
   
-  // Увеличиваем счетчик запросов
   const currentRequestId = ++requestId;
 
   currentSkip.value += currentLimit.value;
   
   try {
-    // Собираем все параметры в один объект
     const allParams = {
       skip: currentSkip.value,
       limit: currentLimit.value,
@@ -353,12 +359,10 @@ const loadMoreItems = async () => {
       ...props.options
     };
 
-    // Фильтруем null/undefined значения для всего объекта
     const params = removeNullValues(allParams);
 
     const data = await props.store.read(params);
 
-    // Проверяем, актуален ли еще этот запрос
     if (currentRequestId !== requestId) {
       return;
     }
@@ -371,14 +375,12 @@ const loadMoreItems = async () => {
       hasMoreItems.value = true;
     }
 
+    // Элегантное обновление через computed setter
     itemsList.value = [...itemsList.value, ...data];
-    
-    if (items.value) items.value = itemsList.value;
     
   } catch (error) {
     console.error('Load more error:', error);
   } finally {
-    // Устанавливаем isLoadingExtra только для актуального запроса
     if (currentRequestId === requestId) {
       isLoadingExtra.value = false;
     }
@@ -388,17 +390,14 @@ const loadMoreItems = async () => {
 const fetchItems = async () => {
   isLoading.value = true;
   
-  // Увеличиваем счетчик при каждом новом запросе
   const currentRequestId = ++requestId;
   
-  // Очищаем список только при поиске
   if (isSearching.value) {
     itemsList.value = [];
-    isSearching.value = false; // Сбрасываем флаг после использования
+    isSearching.value = false;
   }
   
   try {
-    // Собираем все параметры в один объект
     const allParams = {
       skip: currentSkip.value,
       limit: currentLimit.value,
@@ -410,14 +409,11 @@ const fetchItems = async () => {
       ...props.options
     };
 
-    // Фильтруем null/undefined значения для всего объекта
     const params = removeNullValues(allParams);
 
     const data = await props.store.read(params);
 
-    // Проверяем, актуален ли еще этот запрос
     if (currentRequestId !== requestId) {
-      // Если нет - игнорируем результат
       return;
     }
 
@@ -429,13 +425,12 @@ const fetchItems = async () => {
       hasMoreItems.value = true;
     }
 
+    // Элегантное обновление через computed setter
     itemsList.value = data;
-    if (items.value) items.value = itemsList.value;
     
   } catch (error) {
     console.error('Fetch error:', error);
   } finally {
-    // Устанавливаем isLoading только для актуального запроса
     if (currentRequestId === requestId) {
       isLoading.value = false;
     }
@@ -483,7 +478,7 @@ onUnmounted(() => {
 </script>
 
 <style>
-.feed-move, /* apply transition to moving elements */
+.feed-move,
 .feed-enter-active,
 .feed-leave-active {
   transition: all 0.5s ease;
@@ -495,8 +490,6 @@ onUnmounted(() => {
   transform: translateY(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .feed-leave-active {
   position: absolute;
 }

@@ -16,6 +16,14 @@ export default {
       WRONG_CODE: 'You entered an incorrect code. Please try again.',
       POST_URL_ALREADY_IN_USE: 'Failed! Blogpost with this URL is already in use!',
       NAME_CANNOT_BE_EMPTY: 'Error: Name cannot be empty. Please enter a name.',
+      // File upload errors
+      NO_FILES_UPLOADED: 'No files were uploaded.',
+      FILE_PROCESSING_ERROR: 'Error processing files. Please try again.',
+      FILES_TOO_LARGE: 'One or more files exceed the size limit.',
+      FILES_WRONG_TYPE: 'One or more files have unsupported format.',
+      FILES_SIZE_AND_TYPE_ERROR: 'Some files are too large and have unsupported format.',
+      PREVIEW_GENERATION_ERROR: 'Error generating file previews.',
+      IMAGE_CONVERSION_ERROR: 'Error converting image format.'
     }
   }
 };

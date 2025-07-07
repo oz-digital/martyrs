@@ -117,7 +117,7 @@
 			<span v-else-if="error" class="t-center w-100 error">{{ error }}</span>
 		</transition>
 		<!-- Counter -->
-		<div v-if="counter" class="button-counter flex-center"><span>{{counter}}</span></div> 
+		<div v-if="counter" class="button-counter flex flex-center"><span>{{counter}}</span></div> 
 
 	</button> 
 </template>

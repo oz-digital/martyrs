@@ -12,18 +12,14 @@
           class="w-100 mn-b-thin h-100"
           fill="rgb(var(--main))"
         />
-
         <span v-if="options.showText || options.showTitle" class="mn-t-medium  mn-b-medium d-block h3 t-black">{{ text.title }}</span>
         <span v-if="options.showText" class="mn-b-small t-transp d-block ">{{ text.subtitle }}</span>
         <span  v-if="options.showText"class="mn-b-small uppercase p-small t-medium d-block">or</span>
-
         <button  v-if="options.showText" class="cursor-pointer mn-b-small br-2px br-main br-solid radius-extra pd-l-thin pd-r-thin  t-main">Browse Files</button>
-
         <span  v-if="options.showText" class="uppercase p-small t-medium d-block ">Maximum size: 2MB</span>
       </div>
       <Loader v-else class="pos-absolute"/>
     </transition>
-
     <input type="file" ref="fileInput" @change="onFileChange" multiple style="display: none"/>
   </div>
 </template>
@@ -31,10 +27,10 @@
 <script setup>
 import { ref, watch } from 'vue';
 import axios from 'axios';
-
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
 import IconUpload from '@martyrs/src/modules/icons/navigation/IconUpload.vue'
+import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
 
 const images = ref([]);
 const loading = ref(false);
@@ -71,30 +67,29 @@ function onComponentClick() {
 
 async function onFileChange(e) {
   loading.value = true;
-
   let files = e.target.files;
   let formData = new FormData();
-
+  
   for (const file of files) {
     formData.append("file", file);
   }
-
-
+  
   try {
     const $axios = axios.create({ baseURL: process.env.API_URL, withCredentials: true }); 
-
     let response = await $axios.post(`/api/upload/multiple?folderName=${encodeURIComponent(props.uploadPath)}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
     });
+    
     response.data.forEach(file => {
-      images.value.push(file.filepath); // push each file path to the images array
+      images.value.push(file.filepath);
     });
+    
     emit('update:images', images.value);
-    loading.value = false;
   } catch (error) {
-    console.error(error);
+    globals.setError(error);
+  } finally {
     loading.value = false;
   }
 }

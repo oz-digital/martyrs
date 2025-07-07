@@ -5,9 +5,14 @@
       <Loader />
     </div>
     <!-- Empty State -->
-    <div v-else-if="!entities.length" class="bg-light radius-semi flex flex-center w-100 h-20r">
-      <p class="text-gray-500">{{t('title')}}</p>
-    </div>
+    <EmptyState
+      v-if="!isLoading && !entities.length < 1"
+      :title="states.empty.title"
+      :description="states.empty.description"
+      :action="states.empty.action"
+      :callback="states.empty.callback"
+      :class="replaceClasses('pd-medium bg-light radius-medium', states.empty.class)"
+    />
     <!-- Slider with loaded entities -->
     <Slider v-else :showDots="showDots">
       <div 
@@ -31,10 +36,20 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Loader from '@martyrs/src/components/Loader/Loader.vue'
 import Slider from '@martyrs/src/components/Slider/Slider.vue'
+import EmptyState from '@martyrs/src/components/EmptyState/EmptyState.vue';
 
 const props = defineProps({
   showDots: Boolean,
   store: Object,
+  states: {
+    type: Object,
+    default: () => ({
+      empty: {
+        title: 'Nothing found',
+        description: 'Sorry, nothing found',
+      },
+    }),
+  },
   options: Object,
   text: Object,
   user: Object

@@ -54,14 +54,22 @@
 
 			<ul class="flex gap-thin flex-wrap mn-b-thin">
 				<CardOrderItem 
-					v-for="product in shopcart.state.positions" 
-					:key="product._id" 
+					v-for="(product, index) in shopcart.state.positions" 
+					:key="`${product._id}_${product.variant || 'no-variant'}_${index}`" 
 					:editable="true" 
-					:product="product" 
-	        :increase="product => shopcart.actions.incrementItemQuantity(product._id)"
-	        :decrease="product => shopcart.actions.decrementItemQuantity(product._id)"
-	        :remove="product => shopcart.actions.removeProduct(product._id)"
-					@updateRentDates="(product, dates) => shopcart.actions.updateRentDates({ productId: product._id, dates })"
+					:productId="product._id"
+					:variantId="product.variant"
+					:images="product.images"
+					:name="product.name"
+					:quantity="product.quantity"
+					:unit="product.unit"
+					:dates="product.date"
+					:listing="product.listing"
+					:price="product.price"
+	        :increase="() => shopcart.actions.incrementItemQuantity(product._id, product.variant)"
+	        :decrease="() => shopcart.actions.decrementItemQuantity(product._id, product.variant)"
+	        :remove="() => shopcart.actions.removeProduct(product._id, product.variant)"
+					@updateRentDates="(productId, variantId, dates) => shopcart.actions.updateRentDates({ productId, variantId, dates })"
 	        class="w-100 bg-white "
 	      />
 			</ul>

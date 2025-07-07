@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<div class="w-100 mn-b-small star-container flex-v-center flex">
-	       	<span class="p-big t-semi mn-r-small">{{rating}}</span>
+	       	<span class="p-semi t-semi mn-r-small">{{rating}}</span>
 
 	       	<svg 
 	       		v-for="i in 5" 

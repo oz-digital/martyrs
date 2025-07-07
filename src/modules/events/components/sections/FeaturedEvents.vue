@@ -1,6 +1,6 @@
 <template>
   <div class="columns-wrapper scroll-hide gap-thin">
-    <div class="column flex flex-column flex-child-default">
+    <div class="column w-100 flex flex-column flex-child-default">
       <h3
         class="mn-b-small"
       >
@@ -8,12 +8,14 @@
       </h3>
       <List
         :user="auth.state.user._id"
-        class="bg-light o-hidden h-100    pd-thin radius-medium"
+        class="bg-light o-hidden h-100 radius-medium"
+        sortParam="date.start"
+        sortOrder="desc"
         :phase="'planned'"
       />
     </div>
 
-    <div class="column flex flex-column flex-child-default">
+    <div class="column w-100 flex flex-column flex-child-default">
       <h3
         class="mn-b-small"
       >
@@ -21,7 +23,9 @@
       </h3>
       <List
         :user="auth.state.user._id"
-        class="bg-light o-hidden h-100  pd-thin radius-medium"
+        sortParam="date.start"
+        sortOrder="desc"
+        class="bg-light o-hidden h-100 radius-medium"
         :phase="'finished'"
       />
     </div>

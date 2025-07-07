@@ -180,7 +180,6 @@ export default class CRUDService {
       
       // Выполнение after хука
       await this.crud.core.executeHook('afterDelete', document, context);
-      
       return document;
     } catch (error) {
       await this.crud.events.logError('delete', error);

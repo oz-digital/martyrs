@@ -2,7 +2,7 @@
   <div class="pos-relative z-index-1">
     <header class="d-inline-block z-index-1 mn-b-big">
       <h2 class="mn-b-semi">{{ t('title') }}</h2>
-      <p class="t-transp p-big">{{ t('subtitle') }}</p>
+      <p class="t-transp p-semi">{{ t('subtitle') }}</p>
     </header>
 
     <FieldBig 

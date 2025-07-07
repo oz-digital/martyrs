@@ -10,7 +10,8 @@ const state = reactive({
   current: {
     storage: null,
     positions: [],
-    comment: ''
+    comment: '',
+    status: 'draft'
   },
   filters: {
     storage: null,
@@ -111,7 +112,8 @@ const mutations = {
     state.current = {
       storage: null,
       positions: [],
-      comment: ''
+      comment: '',
+      status: 'draft'
     };
   },
   

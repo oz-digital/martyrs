@@ -2,7 +2,7 @@
   <div class="">
     <div class="mn-b-big d-inline-block">
       <h2 class="mn-b-semi">{{t('title')}}</h2>
-      <p v-if="te('subtitle')" class="t-transp p-big w-m-60r">{{t('subtitle')}}</p>
+      <p v-if="te('subtitle')" class="t-transp p-semi w-m-60r">{{t('subtitle')}}</p>
     </div>
     <div class="cols-1">
       <Spoiler v-for="item in tm('FAQ')" :key="item.title" class="br-white-transp-10 br-solid br-1px radius-small o-hidden pd-big mn-b-thin">

@@ -82,7 +82,7 @@
 			/>
 
 			<p 
-				class="mn-b-big p-big t-transp" 
+				class="mn-b-big p-semi t-transp" 
 				v-html="t('description')"
 			/>
 			

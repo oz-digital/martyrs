@@ -59,9 +59,18 @@
         class=""
       >
         <CardOrderItem
-          v-for="(product, index) in items" :key="product._id"
+          v-for="(product, index) in items" 
+          :key="`${product._id}_${product.variant || 'no-variant'}_${index}`"
           :editable="false" 
-          :product="product" 
+          :productId="product._id"
+          :variantId="product.variant"
+          :images="product.images"
+          :name="product.name"
+          :quantity="product.quantity || 1"
+          :unit="product.unit"
+          :dates="product.date"
+          :listing="product.listing"
+          :price="product.price"
           @click="() => { 
             let p = { ...product };
             p.quantity = 1;

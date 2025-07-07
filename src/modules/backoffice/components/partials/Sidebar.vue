@@ -95,9 +95,9 @@ const menuItems = [
     icon: IconProducts
   },
   {
-    name: 'leftovers',
-    title: 'Leftovers',
-    routeName: 'Leftovers',
+    name: 'inventory',
+    title: 'Inventory',
+    routeName: 'BackofficeInventoryList',
     icon: IconLeftovers
   },
   {

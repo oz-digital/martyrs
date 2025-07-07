@@ -44,16 +44,16 @@
           :discounts="product.discounts"
           :regularPrice="100"
           @variant-selected="handleVariantSelected"
-          @add-to-cart="handleAddVariantToCart"
+          @add-to-cart="handleAddToCart"
           @update-images="handleUpdateImages"
         />
 
-        <div  v-if="product.included" class="mn-b-small flex-nowrap flex flex-v-center">
+        <div v-if="product.included" class="mn-b-small flex-nowrap flex flex-v-center">
           <IconList class="mn-r-micro i-medium"/>
           <p class="t-medium ">Included</p>
         </div>
 
-        <div   v-if="product.included" class="cols-1 mn-b-medium w-100 ">
+        <div v-if="product.included" class="cols-1 mn-b-medium w-100 ">
           <div
             class="w-100 pd-small radius-small flex flex-column gap-small bg-light"
           >
@@ -62,7 +62,7 @@
         </div>
 
 
-        <div class="mn-b-small flex-nowrap flex flex-v-center">
+        <div v-if="product.attributes && product.attributes.length > 0" class="mn-b-small flex-nowrap flex flex-v-center">
           <IconInfo class="mn-r-micro i-medium"/>
           <p class="t-medium ">Product Details</p>
         </div>
@@ -173,7 +173,7 @@ products.state.current = null
 onMounted(async () => {
   emits('page-loading');
   
-  await products.actions.read({ _id: route.params.product, lookup: ['recommended'] })
+  await products.actions.read({ _id: route.params.product, lookup: ['variants','recommended','inventory'] })
   
   // Инициализируем текущие изображения изображениями товара
   currentImages.value = [...productImages.value]
@@ -210,25 +210,33 @@ function handleUpdateImages(images) {
   }
 }
 
-// Обработчик добавления варианта в корзину
-async function handleAddVariantToCart(variantItem) {
+// Функция добавления товара в корзину - теперь требует выбранный вариант
+async function handleAddToCart({variant, quantity}) {
+  console.log('variant is', variant)
+   console.log('quantity is', quantity)
+  let selectedDates = null
+
   try {
+    if (!variant) {
+      throw new Error('Variant is required for adding product to cart')
+    }
+
     if (!shopcart.state.organization) {
       shopcart.state.organization = product.value.owner.target._id
     }
     
-    // Проверка на товар с арендой
     if (product.value.listing === 'rent') {
-      const selectedDates = await proxy.$dateSelector({
-        product: product.value
-      });
+      selectedDates = await proxy.$dateSelector(
+        product.value._id,
+        variant._id,
+        quantity,
+        variant.price || product.value.price
+      );
       
       if (!selectedDates) throw new Error('Date selection cancelled')
-      
-      variantItem.selectedDates = selectedDates
     }
     
-    // Проверка на разные организации в корзине
+    // Если организация товара отличается от текущей в корзине
     if (shopcart.state.organization !== product.value.owner.target._id) {
       const result = await proxy.$alert({
         title: 'Replace items in your cart?',
@@ -245,80 +253,22 @@ async function handleAddVariantToCart(variantItem) {
       shopcart.state.organization = product.value.owner.target._id
     }
 
-    // Аналитика: регистрируем добавление в корзину
     if (typeof gtag === 'function') {
       gtag('event', 'add_to_cart', {
         currency: returnCurrency(),
-        value: variantItem.price || 0,
+        value: variant.price || 0,
         items: [{
-          item_id: variantItem._id,
-          item_name: variantItem.name,
-          price: variantItem.price || 0,
+          item_id: product.value._id,
+          item_name: product.value.name,
+          price: variant.price || product.value.price || 0,
           quantity: 1,
           item_category: product.value.category || '',
           item_brand: product.value.owner?.target?.profile?.name || ''
         }]
       });
     }
-    
-    // Добавляем вариант в корзину
-    await shopcart.actions.addVariantToCart(variantItem, product.value.owner.target._id)
-    return true
-  } catch (error) {
-    console.error('Error while adding variant to cart:', error)
-    throw error
-  }
-}
-
-// Оригинальная функция добавления товара в корзину (для товаров без вариантов)
-async function addToCart(product) {
-  let selectedDates = null
-
-  try {
-    if (!shopcart.state.organization) {
-      shopcart.state.organization = product.owner.target._id
-    }
-    if (product.listing === 'rent') {
-      selectedDates = await proxy.$dateSelector({
-        product: product.value
-      });
-      
-      if (!selectedDates) throw new Error('Date selection cancelled')
-      
-    }
-    // Если организация товара отличается от текущей в корзине
-    if (shopcart.state.organization !== product.owner.target._id) {
-      const result = await proxy.$alert({
-        title: 'Replace items in your cart?',
-        message: `Your cart has items from another vendor. If you continue, we'll clear it so you can order from this one instead.`,
-        actions: [
-          { label: 'Cancel', value: false },
-          { label: 'Replace', value: true }
-        ]
-      })
-
-      if (!result) throw new Error('Cart replacement cancelled')
-
-      shopcart.state.positions = []
-      shopcart.state.organization = product.owner.target._id
-    }
-
-    if (typeof gtag === 'function') {
-      gtag('event', 'add_to_cart', {
-        currency: returnCurrency(),
-        value: product.price || 0,
-        items: [{
-          item_id: product._id,
-          item_name: product.name,
-          price: product.price || 0,
-          quantity: 1,
-          item_category: product.category || '',
-          item_brand: product.owner?.target?.profile?.name || ''
-        }]
-      });
-    }
-    
-    await shopcart.actions.addProductToCart(product, product.owner.target._id, selectedDates)
+ 
+    await shopcart.actions.addProductToCart(product.value, variant, product.value.owner.target._id, selectedDates, quantity)
     return true
   } catch (error) {
     console.error('Error while adding product to cart:', error)

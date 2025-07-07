@@ -1,8 +1,8 @@
-<template>
+	<template>
 	<div class="bg-white">
-		<section class="w-100 h-100 o-hidden flex-nowrap flex gap-thin mobile:pd-zero pd-thin pos-relative">
+		<section class="w-100  flex-nowrap flex gap-thin mobile:pd-zero pd-thin pos-relative">
 
-			<div style="flex: 1 1 auto" class="w-100 o-y-scroll h-100 pos-relative">
+			<div style="flex: 1 1 auto" class="w-100 h-100 pos-relative">
 				<header v-if="!route.params.url && route.name !== 'Create BlogPost'" class="bg-light pd-medium radius-medium mobile:radius-zero scroll-hide o-y-visible t-black pos-relative  mn-b-thin flex-v-center t-left flex-nowrap flex">
 		    	<h2 class="pos-relative t-nowrap flex-v-center flex-nowrap flex">
 		    		<span class="mn-r-thin">Posts for </span>
@@ -84,7 +84,7 @@
 				</router-view>
 			</div>
 
-			<div style="flex: 1 1 auto" class="desktop-only scroll-hide o-y-scroll h-100  w-40 h-100 pos-relative ">
+			<div style="flex: 1 1 auto" class="desktop-only pos-sticky pos-t-thin scroll-hide  h-100  w-40 h-100 pos-relative ">
 				<div class="radius-medium bg-light mn-b-thin pd-small">
 					<div class="gap-thin flex-nowrap flex">
 						<p class="t-medium mn-b-small">Latest Comments</p>
@@ -106,7 +106,7 @@
 		    </div>
 
 	      <div class="radius-medium bg-light pd-small">
-					<div class="gap-thin flex-nowrap flex  mn-b-small">
+					<div class="gap-thin flex-v-center flex-nowrap flex  mn-b-small">
 						<p class="text-box-trim-end t-medium">Popular Communities</p>
 						
 						<router-link 

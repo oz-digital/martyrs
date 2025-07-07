@@ -139,7 +139,7 @@ const accessesSchema = {
       default: false,
     },
   },
-  leftovers: {
+  inventory: {
     read: {
       type: Boolean,
       default: false,

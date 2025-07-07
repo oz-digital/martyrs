@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading"  class="pd-thin bg-white for-transition w-100">
+  <div v-if="!isLoading"  class="rows-auto pd-thin bg-white for-transition w-100">
     <Block v-if="!MOBILE_APP" class="radius-medium mn-b-thin flex-nowrap flex-v-center flex">
       <h1   class="mn-r-auto">
         {{route.params.category ? 'Edit Category' : 'Add Category'}}
@@ -17,21 +17,21 @@
       title="Profile"
       class="mn-b-thin"
     >
-      <div class="mn-b-medium w-100 flex-nowrap gap-thin flex">
+      <div  class="cols-auto-1fr mn-b-thin w-100 ">
         <UploadImage 
            v-model:photo="categories.state.current.photo"
           :uploadPath="'categories'"
-          class="w-8r aspect-1x1 o-hidden mn-r-small radius-extra" 
+          class="aspect-1x1 h-100 o-hidden mn-r-small radius-extra" 
         />
        <Field
             v-model:field="categories.state.current.name"
             label="Name"
             placeholder="Enter category name"
-            class="w-100 mn-b-small bg-white radius-small pd-medium"
+            class="w-100 bg-white radius-small pd-medium"
           />  
       </div>
 
-        <div class="mn-b-medium w-100 flex-nowrap gap-thin flex">
+        <div class="mn-b-thin w-100 flex-nowrap gap-thin flex">
 
 
          <Field
@@ -58,11 +58,11 @@
           'published',
           'removed'
         ]"
-        placeholder="Display product"
-        class="pos-relative w-100 mn-b-small bg-white radius-small pd-medium"
+        placeholder="Select category"
+        class="pos-relative w-100 bg-white radius-small pd-medium"
       />
 
-      <div class="flex-v-center flex-nowrap flex">
+      <!-- <div class="flex-v-center flex-nowrap flex">
         <h4  class="mn-r-thin t-medium">Localization</h4>
           
         <button 
@@ -71,7 +71,7 @@
         >
           +
         </button>
-      </div>
+      </div> -->
       <div 
         class="gap-thin mn-b-thin flex-nowrap flex" 
         v-for="(item, index) in categories.state.current.translations" 
@@ -247,5 +247,18 @@
 </script>
 
 <style lang="scss">
-  /* Your styles here */
+.container {
+  max-width: 100%;
+  margin: auto;
+}
+
+.grid {
+ 
+}
+
+.square {
+  aspect-ratio: 1 / 1;
+  height: 100%;
+  background: #ccc;
+}
 </style>

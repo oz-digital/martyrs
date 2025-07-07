@@ -6,6 +6,7 @@ export default (db, additionalFields = {}) => {
       default: null,
     },
     product: { type: db.mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+    variant: { type: db.mongoose.Schema.Types.ObjectId, ref: 'Variant', default: null },
     quantity: {
       type: Number,
       required: true,

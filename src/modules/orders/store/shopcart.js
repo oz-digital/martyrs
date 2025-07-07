@@ -4,7 +4,7 @@
 import { computed, reactive, watch } from 'vue';
 // Dependencies
 // Globals
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError, setSnack } from '@martyrs/src/modules/globals/views/store/globals.js';
 
 /////////////////////////////
 // State
@@ -19,19 +19,6 @@ const state = reactive({
 // Helpers
 /////////////////////////////
 const helpers = {
-  createCartItem(product, organization, type = 'sale') {
-    return {
-      _id: product._id,
-      images: product.images,
-      name: product.name,
-      price: product.price,
-      listing: product.listing,
-      quantity: 1,
-      org_id: organization,
-      type: type,
-    };
-  },
-
   saveToStorage() {
     localStorage.setItem(
       CART_STORAGE_KEY,
@@ -133,163 +120,99 @@ const actions = {
     }
   },
 
-  addProductToCart(product, organization, date) {
-    console.log('organization shopcart is', organization);
-    const cartItem = state.positions.find(item => item._id === product._id);
+  addProductToCart(product, variant, organization, date, quantity = 1) {
+    console.log('Adding product with variant to cart', { product: product._id, variant: variant._id, quantity });
+    
+    // Убедимся, что организация установлена
+    state.organization = organization;
+    
+    // Ищем позицию с таким же товаром и вариантом
+    const cartItem = state.positions.find(
+      item => item._id === product._id && item.variant === variant._id
+    );
 
     if (cartItem) {
-      cartItem.quantity++;
+      cartItem.quantity += quantity;
     } else {
       state.positions.push({
         _id: product._id,
-        images: product.images,
+        images: variant.images?.length > 0 ? variant.images : product.images,
         name: product.name,
         listing: product.listing,
-        price: product.price,
-        quantity: 1,
+        price: variant.price || product.price,
+        quantity: quantity,
+        unit: variant.unit || product.unit,
         date: date,
-        org_id: organization, // Добавляем _id организации к каждому продукту
+        variant: variant._id,
+        org_id: organization,
       });
     }
-    state.organization = organization;
 
-    // Обновляем объект корзины в localStorage, включая _id организации
-    localStorage.setItem(
-      'shopcart',
-      JSON.stringify({
-        positions: state.positions,
-        organization: organization, // Сохраняем _id организации в корне объекта корзины
-      })
-    );
+    // Сохраняем в localStorage
+    helpers.saveToStorage();
+    
+    // Отправляем уведомление
+    setSnack('Product added to cart');
   },
 
-  async addVariantToCart(variantItem, organizationId, selectedDates = null) {
-    try {
-      // Убедимся, что организация установлена 
-      state.organization = organizationId;
-      
-      // Проверим, есть ли этот вариант уже в корзине
-      const existingPosition = state.positions.find(
-        position => position.product._id === variantItem._id && position.variantId === variantItem.variantId
-      );
-      
-      if (existingPosition) {
-        // Обновляем существующую позицию
-        existingPosition.quantity += 1;
-        
-        // Если есть выбранные даты для аренды, обновляем их
-        if (selectedDates) {
-          existingPosition.selectedDates = selectedDates;
-        }
-      } else {
-        // Создаем новую позицию
-        const position = {
-          product: {
-            _id: variantItem._id,
-            name: variantItem.name,
-            price: variantItem.price,
-            sku: variantItem.sku
-          },
-          variantId: variantItem.variantId,
-          attributes: variantItem.attributes || [],
-          quantity: 1,
-          price: variantItem.price,
-        };
-        
-        // Добавляем даты для товаров с арендой
-        if (selectedDates) {
-          position.selectedDates = selectedDates;
-        }
-        
-        // Добавляем позицию в корзину
-        state.positions.push(position);
+
+
+  removeProduct(productId, variantId = null) {
+    const cartItemIndex = state.positions.findIndex(item => {
+      if (variantId) {
+        return item._id === productId && item.variant === variantId;
       }
-      
-      // Обновляем локальное хранилище
-      updateLocalStorage();
-      
-      // Отправляем уведомление о добавлении в корзину
-      showNotification('Product added to cart');
-      
-      return true;
-    } catch (error) {
-      console.error('Error adding variant to cart:', error);
-      return false;
-    }
-  },
-
-
-  removeProduct(_id) {
-    const cartItem = state.positions.find(item => item._id === _id);
-    const cartItemIndex = state.positions.indexOf(cartItem);
+      return item._id === productId;
+    });
 
     if (cartItemIndex > -1) {
       state.positions.splice(cartItemIndex, 1);
-
-      // Сохраняем весь объект корзины, а не только позиции
-      localStorage.setItem(
-        'shopcart',
-        JSON.stringify({
-          positions: state.positions,
-          organization: state.organization,
-        })
-      );
+      helpers.saveToStorage();
     }
   },
 
-  decrementItemQuantity(_id) {
-    const cartItem = state.positions.find(item => item._id === _id);
-    const cartItemIndex = state.positions.indexOf(cartItem);
+  decrementItemQuantity(productId, variantId = null) {
+    const cartItem = state.positions.find(item => {
+      if (variantId) {
+        return item._id === productId && item.variant === variantId;
+      }
+      return item._id === productId;
+    });
 
-    if (cartItemIndex > -1) {
+    if (cartItem) {
       cartItem.quantity--;
 
       if (cartItem.quantity < 1) {
-        state.positions.splice(cartItemIndex, 1);
+        const index = state.positions.indexOf(cartItem);
+        state.positions.splice(index, 1);
       }
 
-      // Сохраняем весь объект корзины, а не только позиции
-      localStorage.setItem(
-        'shopcart',
-        JSON.stringify({
-          positions: state.positions,
-          organization: state.organization,
-        })
-      );
+      helpers.saveToStorage();
     }
   },
 
-  incrementItemQuantity(_id) {
-    const cartItem = state.positions.find(item => item._id === _id);
+  incrementItemQuantity(productId, variantId = null) {
+    const cartItem = state.positions.find(item => {
+      if (variantId) {
+        return item._id === productId && item.variant === variantId;
+      }
+      return item._id === productId;
+    });
 
     if (cartItem) {
       cartItem.quantity++;
-
-      // Сохраняем весь объект корзины, а не только позиции
-      localStorage.setItem(
-        'shopcart',
-        JSON.stringify({
-          positions: state.positions,
-          organization: state.organization,
-        })
-      );
+      helpers.saveToStorage();
     }
   },
 
-  updateRentDates({ productId, dates }) {
-    const product = state.positions.find(p => p._id === productId);
+  updateRentDates({ productId, variantId, dates }) {
+    const product = state.positions.find(p => p._id === productId && p.variant === variantId);
 
     if (product) {
-      product.date = dates; // Предполагается, что dates — объект { start, end }
+      product.date = dates;
     }
 
-    localStorage.setItem(
-      'shopcart',
-      JSON.stringify({
-        positions: state.positions,
-        organization: state.organization,
-      })
-    );
+    helpers.saveToStorage();
   },
 
   resetShopcart() {

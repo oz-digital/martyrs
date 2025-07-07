@@ -83,14 +83,6 @@
 					'mobile:pd-t-extra': MOBILE_APP === 'ios',  
 				}"
 			/>
-
-			<!-- <section v-if="!route.meta?.breadcrumbs?.hide" class="pd-thin pd-b-zero">
-				<Breadcrumbs 
-					v-if="!MOBILE_APP"
-					class="bg-light pd-small radius-big"
-				/>
-			</section> -->
-
 	    <component
 	      v-if="route.meta?.sidebar && !MOBILE_APP"
 	      v-slot="{ Component }"
@@ -121,7 +113,20 @@
 						@close="globals.state.error.show = false"
 						class="z-index-7" 
 					/>
+					<Snack 
+	  				v-if="globals.state.snack.show"
+						:data="globals.state.snack"
+						@close="globals.state.snack.show = false"
+						class="z-index-7" 
+					/>
 					<div class="h-min-100 pos-relative w-100">
+						<!-- <section v-if="!route.meta?.breadcrumbs?.hide" class="pd-thin pd-b-zero">
+							<Breadcrumbs 
+								v-if="!MOBILE_APP"
+								class="bg-light pd-small radius-small"
+							/>
+						</section> -->
+
 				 		<Suspense @resolve="onSuspenseResolved">
 							<router-view  
 								id="view"
@@ -188,8 +193,9 @@
 	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
 	// Partials
 	import Status from '@martyrs/src/components/Status/Status.vue';
+	import Snack from '@martyrs/src/components/Status/Snack.vue';
 	import Popup from '@martyrs/src/components/Popup/Popup.vue';
-	// import Breadcrumbs from '@martyrs/src/components/Breadcrumbs/Breadcrumbs.vue'
+	import Breadcrumbs from '@martyrs/src/components/Breadcrumbs/Breadcrumbs.vue'
 	import Loader from '@martyrs/src/components/Loader/Loader.vue';
 
 	import NavigationBar from '@martyrs/src/modules/globals/views/components/partials/NavigationBar.vue';

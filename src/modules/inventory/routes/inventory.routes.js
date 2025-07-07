@@ -1,7 +1,8 @@
 import jwtFactory from '@martyrs/src/modules/auth/controllers/middlewares/authJwt.js';
 import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
-import controllerFactory from '../controllers/inventory.controller.js';
-import verifierFactory from '../middlewares/inventory.verifier.js';
+import controllerFactory from '../services/inventory.crud.js';
+import verifierFactory from '../services/inventory.verifier.js';
+import setupStockAlertsRoutes from './stock.alerts.routes.js';
 
 const { getInstance } = globalsabac;
 
@@ -48,14 +49,17 @@ export default function(app, db) {
   app.post('/api/inventory/audits/create', 
     jwt.verifyToken(), 
     verifier.verifyInventoryBody, 
-    abac.middleware('stockInventory', 'create'), 
+    abac.middleware('stockAudit', 'create'), 
     controller.inventory.create
   );
   
   app.post('/api/inventory/audits/complete', 
     jwt.verifyToken(), 
     verifier.verifyInventoryComplete, 
-    abac.middleware('stockInventory', 'edit'), 
+    abac.middleware('stockAudit', 'edit'), 
     controller.inventory.complete
   );
+  
+  // Initialize stock alerts routes
+  setupStockAlertsRoutes(app, db);
 }

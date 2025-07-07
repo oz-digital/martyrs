@@ -216,7 +216,6 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue'
 
-import EditArray from "@martyrs/src/modules/organizations/components/blocks/EditArray.vue";
 import DepartmentSub from "@martyrs/src/modules/organizations/components/blocks/DepartmentSub.vue";
 
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'

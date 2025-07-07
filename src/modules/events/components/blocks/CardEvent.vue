@@ -1,7 +1,8 @@
 <template>
   <article 
 	  :class="{
-	  	'flex-nowrap flex-v-center flex': type === 'short'
+	  	'flex-nowrap flex-v-center flex': type === 'short',
+	  	'flex flex-column': type !== 'short',
 	  }"
 	  class="pos-relative"
   >
@@ -23,16 +24,16 @@
     />
 
  		<div 
- 			v-if="event.cover && type !== 'short'" 
- 			class="o-hidden pos-relative bg-light mn-b-small w-100"
+ 			v-if="type !== 'short'" 
+ 			class="o-hidden flex-child-default pos-relative bg-black-transp-5 mn-b-small w-100"
  		>
-	    <img loading="lazy" 
+	    <img v-if="event.cover" loading="lazy" 
 	    	:src="(FILE_SERVER_URL || '') + event.cover" 
 	    	alt="Event image" 
 	    	class="pos-relative z-index-1 d-block mn-auto w-max-100 object-fit-contain h-20r"
 	    />
 
-	    <img loading="lazy" 
+	    <img v-if="event.cover"  loading="lazy" 
 	    	:src="(FILE_SERVER_URL || '') + event.cover" 
 	    	alt="Event Background" 
 	    	class="z-index-0 pos-absolute w-100 h-100 pos-t-0 pos-r-0"
@@ -41,12 +42,17 @@
 	    		filter: blur(2rem);
   				-webkit-filter: blur(2rem);"
 	    />
+	    <IconEvents
+	    	v-else
+				class="pos-relative z-index-1 d-block mn-auto w-max-100 object-fit-contain h-20r"
+				fill="rgb(var(--black)"
+			/>
 	  </div>
 
     <section 
     	class="pos-relative w-100"
     	:class="{
-    		'pd-t-zero pd-medium': type !== 'short',
+    		'pd-t-zero h-100 flex flex-column pd-medium': type !== 'short',
     		'flex-nowrap flex flex-v-center': type === 'short'
     	}"
     >
@@ -81,7 +87,7 @@
 
 				<h3 
 	      	v-if="type !== 'short'" 
-	      	class=""
+	      	class="t-trim-1"
 	      >
 	    		{{ event.name }}
 	    	</h3>
@@ -92,38 +98,35 @@
 				
 			</div>
 
-    	<p 
+    	<span 
     		v-if="type !== 'short'" 
-    		class="mn-b-small p-big t-trim-3"
+    		class="h-100 mn-b-regular p-regular t-trim-3"
     	>
     		{{ event.description }}
-    	</p>
+    	</span>
 
       <slot></slot>
       
       <div 
-      	class="flex-wrap flex-child-default gap-micro t-medium p-big justify-start align-center t-trim-2"
+      	class="flex-wrap mn-micro-negative flex-child-default gap-thin t-zero justify-start align-center t-trim-2"
       	:class="{
 	    		'order-1': type === 'short'
     		}"
       >
-        <span v-if="event.date?.start" class="mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
-          <!-- <IconDate :fill="'rgb(var(--black))'" class="w-1r h-auto"/> -->
-          <!-- {{formatDate(event.date.start)}} -->
-
-						<span 
-				     :class="{
-			    		'p-medium': type === 'short'
-		    		}"
-				    	class="t-semi"
-				    >
-				    	{{ formattedDate }}
-				    </span>
-				    <span 
-				    		v-if="type !== 'short'"
-				    	class="t-semi ">
-				        | {{ formattedTimeRange }}
-				    </span>
+       	<span
+       		v-if="event.date?.start"
+          :key="index"
+          class="d-inline-flex p-semi t-medium mn-nano pd-thin radius-small bg-white"
+          :class="{
+		    		'p-medium': type === 'short'
+	    		}"
+        >
+          {{ formattedDate }}
+          <template
+		    		v-if="type !== 'short'"
+			    >
+		        | {{ formattedTimeRange }}
+			    </template>
         </span>
 
 
@@ -131,7 +134,7 @@
         	v-if="type !== 'short'"
           v-for="(chip, index) in event.tags"
           :key="index"
-          class="d-inline-flex pd-b-micro   pd-t-micro pd-r-thin pd-l-thin radius-small bg-main"
+          class="d-inline-flex mn-nano pd-thin radius-small p-semi t-medium bg-main"
         >
           {{ chip }}
         </span>
@@ -154,6 +157,9 @@
 	import Chips  from '@martyrs/src/components/Chips/Chips.vue'
 
 	import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
+
+
+	import IconEvents from '@martyrs/src/modules/icons/entities/IconEvents.vue';
 
 	import CardHeader  from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue'
 	import CardFooter  from '@martyrs/src/modules/globals/views/components/blocks/CardFooter.vue'

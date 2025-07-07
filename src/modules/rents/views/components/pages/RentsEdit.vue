@@ -45,8 +45,16 @@
     >
       <CardOrderItem
         v-if="rents.state.current.product"
-        :key="rents.state.current.product" 
-        :product="rents.state.current.product"
+        :key="rents.state.current.product._id" 
+        :productId="rents.state.current.product._id"
+        :variantId="rents.state.current.product.variant"
+        :images="rents.state.current.product.images"
+        :name="rents.state.current.product.name"
+        :quantity="rents.state.current.product.quantity || 1"
+        :unit="rents.state.current.product.unit"
+        :dates="rents.state.current.product.date"
+        :listing="rents.state.current.product.listing"
+        :price="rents.state.current.product.price"
         :editable="false" 
         @click="() => rents.state.current.product = null"
         class="mn-b-small radius-medium bg-white pd-small"

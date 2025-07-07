@@ -100,7 +100,15 @@
           v-for="product in organization.products.slice(0,5)" 
           :key="product._id" 
           :editable="false" 
-          :product="product" 
+          :productId="product._id"
+          :variantId="product.variant"
+          :images="product.images"
+          :name="product.name"
+          :quantity="product.quantity || 1"
+          :unit="product.unit"
+          :dates="product.date"
+          :listing="product.listing"
+          :price="product.price"
           class="pd-thin w-15r radius-medium bg-white"
          
         />

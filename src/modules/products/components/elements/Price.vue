@@ -14,7 +14,7 @@
       :class="{
         'p-medium': !size,
         'p-small': size === 'small',
-        'p-big': size === 'big'
+        'p-semi': size === 'big'
       }"
       class="p-small mn-l-micro t-transp"
     >

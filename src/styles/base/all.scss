@@ -211,7 +211,12 @@ body {
 		> *:only-child {
 	    grid-column: 1 / -1;
 		}
-	}  
+	} 
+	.cols-auto-1fr {
+		display: grid;
+	  grid-template-columns: auto 1fr;
+		align-items: stretch;
+	} 
 	.cols-2-fit-content {display: grid; grid-template-columns: fit-content(100%) 1fr; }  
 	.cols-3 {display: grid; grid-template-columns: 1fr 1fr 1fr; } 
 	.cols-4 {display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }  	
@@ -254,6 +259,10 @@ body {
 	// Rows
 	.rows-1 {display: grid; grid-template-rows: auto 1fr; }
 	.rows-1-min0_max1 {display: grid; grid-template-rows: minmax(0, 1fr); }
+	.rows-auto {   grid-auto-flow: row;
+  grid-auto-columns: auto;
+  grid-template-rows: auto;
+  grid-auto-rows: auto;}
 	// REFACTOR THIS SHIT
 	.grid {
 	  display: grid;

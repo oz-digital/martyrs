@@ -15,7 +15,7 @@
 
        <p 
         @click="$router.push(`/app/organization/${props.organization._id}/spots/${spot._id}`)"
-        class="mn-b-small p-big w-100"
+        class="mn-b-small p-semi w-100"
         v-html="spot.address"
       />
 

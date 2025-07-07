@@ -49,7 +49,7 @@
 			
 			<p 
 				v-if="firstText && firstText.content && type !== 'blogpostPage' && !hideDescription" 
-				class='mn-b-medium t-transp p-big'
+				class='mn-b-medium t-transp p-semi'
 			>
 				{{firstText.content.slice(0,120)}}...
 			</p>

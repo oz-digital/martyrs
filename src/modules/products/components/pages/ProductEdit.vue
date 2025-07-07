@@ -1,7 +1,7 @@
 <template>
   <div v-if="isPageLoaded" class="w-100 bg-white pd-thin gap-thin">
     
-    <Block v-if="!MOBILE_APP" class="flex-nowrap gap-thin flex-v-center flex">
+    <Block v-if="!MOBILE_APP" class="flex-nowrap mn-b-thin gap-thin flex-v-center flex">
       <h2 class="t-truncate mn-r-auto">
         {{ route.params.product ? products.state.current.name : 'Create Product' }}
       </h2>
@@ -35,7 +35,8 @@
         { label: 'Recommended', value: 'recommended' },
         { label: 'Localization', value: 'localization' }
       ]"
-      class="flex-child-default bg-light radius-medium h-max pd-thin o-x-scroll"
+      class="flex-child-default gap-micro scroll-hide bg-light radius-medium h-max pd-thin mn-b-thin o-x-scroll"
+      classTab="bg-white"
     />
 
     <!-- Tab Content -->
@@ -239,7 +240,6 @@
       <Button 
         v-if="route.params.product"
         :submit="onDelete" 
-        :callback="redirectTo"
         class="bg-red t-white w-100"
       >
         Delete 
@@ -247,7 +247,6 @@
 
       <Button 
         :submit="onSubmit" 
-        :callback="redirectTo"
         class="w-100 bg-main"
       >
         Save
@@ -351,12 +350,6 @@ onMounted(async() => {
 
 async function onSubmit() {
   try {
-    // // Проверка на наличие хотя бы одного варианта
-    // if (!products.state.current.variants || products.state.current.variants.length === 0) {
-    //   setError({ response: { data: { errorCode: "PRODUCT_MUST_HAVE_VARIANT" }} })
-    //   return;
-    // }
-      console.log('product is',products.state.current)
     if (route.params.product) {
       await products.actions.update(route.params.product, products.state.current)
     } else {
@@ -364,13 +357,11 @@ async function onSubmit() {
         target: route.params._id || auth.state.user._id,
         type: route.params._id ? 'organization' : 'user'
       }
-      
       products.state.current.creator = {
         target: auth.state.user._id,
         type: 'user',
         hidden: false
       }
-
       await products.actions.create(products.state.current)
     }
     

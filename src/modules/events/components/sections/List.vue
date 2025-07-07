@@ -2,39 +2,28 @@
   <section 
     class="today-events"
   >
-    <!-- <transition name="fade">
-      <Loader v-if="isLoading" class="z-index-5 pos-t-50 left-t-50 pos-absolute"/>
-    </transition> -->
 
-    <TransitionGroup tag="ul" name="fade" class="o-hidden bg-white radius-medium">
+    <TransitionGroup tag="ul" name="fade" class="o-hidden bg-light radius-small">
       <SkeletonEventShort
         v-if="isLoading"
         v-for="i in limit" :key="i"
       />
-    </TransitionGroup>
-
-    <transition 
-      name="fade"
-    >
+    
       <EmptyState 
-        v-if="!isLoading && eventsList.length < 1"
+        v-else-if="eventsList.length < 1"
         title="No Planned Events "
         description="No events available. Please check back later."
-        class="pd-medium h-100 bg-white radius-medium"
+        class="pd-medium h-100 bg-light radius-small"
       />
-    </transition>
-
-
-    <TransitionGroup tag="ul" name="fade" class="container">
       <CardEvent 
-        v-if="!isLoading && eventsList.length > 0"
+        v-else
         @click="$router.push({name: 'Event', params: {url: event.url}})" 
         v-for="(event,index) in eventsList" 
         :key="event._id" 
         :event="event" 
         :owner="user" 
         :type="'short'"
-        class="pd-medium mobile:pd-thin"
+        class="pd-small mobile:pd-thin"
         :class="{
           'br-b br-solid br-black-transp-10': index !== eventsList.length - 1
         }"
@@ -86,6 +75,14 @@
     phase: {
       type: String,
       default: null
+    },
+    sortParam: {
+      type: String,
+      default: null
+    },
+    sortOrder: {
+      type: String,
+      default: null
     }
   });
 
@@ -106,7 +103,9 @@
       organization: props.organization,
       period: props.period,
       phase: props.phase,
-      status: props.status
+      status: props.status,
+      sortParam: props.sortParam,
+      sortOrder: props.sortOrder
     });
 
     eventsList.value = data;

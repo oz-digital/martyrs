@@ -15,7 +15,7 @@
 
 ::: info Examples
 
-<p class='p-big'>Big paragraph</p>
+<p class='p-semi'>Big paragraph</p>
 <p>Regular paragraph</p>
 <p class='p-small'>Small paragraph</p>
 :::

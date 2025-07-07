@@ -5,7 +5,7 @@ export default (function applyOwnershipSchema(schema, db) {
       type: {
         type: String,
         required: true,
-        enum: ['user', 'organization', 'platform'],
+        enum: ['user', 'organization', 'platform', 'User', 'Organization'],
       },
       target: {
         type: db.mongoose.Schema.Types.ObjectId,
@@ -23,7 +23,7 @@ export default (function applyOwnershipSchema(schema, db) {
       type: {
         type: String,
         required: true,
-        enum: ['user', 'organization', 'customer', 'platform'],
+        enum: ['user', 'organization', 'customer', 'platform', 'User', 'Organization'],
       },
       target: {
         type: db.mongoose.Schema.Types.ObjectId,

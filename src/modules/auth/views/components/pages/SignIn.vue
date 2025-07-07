@@ -21,7 +21,7 @@
 			<Tab 
 				v-model:selected="tabAuth"
 				:tabs="availableTabs"
-				tabClass="pd-small pd-r-medium pd-l-medium w-100 pd-small radius-small"
+				classTab="pd-small pd-r-medium pd-l-medium w-100 pd-small radius-small"
 			/>
 		</div>
 		<!-- Form -->

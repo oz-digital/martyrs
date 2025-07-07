@@ -67,9 +67,9 @@
 		  </MenuItem>
 
 		  <MenuItem 
-		  	v-if="hasAccess(route.params._id, 'leftovers', 'read', auth.state.accesses, auth.state.access.roles)"
+		  	v-if="hasAccess(route.params._id, 'inventory', 'read', auth.state.accesses, auth.state.access.roles)"
 		  	@click="router.push({
-		  		name: 'Leftovers', 
+		  		name: 'OrganizationInventoryList', 
 		  		params: {
 		  			_id: route.params._id
 		  		}
@@ -77,7 +77,7 @@
 		  	class="cursor-pointer">
 		  	<IconLeftovers class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
-		    	Leftovers
+		    	Inventory
 		    </span>
 		  </MenuItem>
 

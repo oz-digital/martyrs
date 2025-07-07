@@ -1,6 +1,6 @@
 <template>
 <div class="t-center order-finished">
-      <p class="mn-b-medium p-big">Order completed!</p>
+      <p class="mn-b-medium p-semi">Order completed!</p>
       <div class="mn-b-big pd-big order-number">
         <p class="mn-b-small t-semi small">#485792</p>
         <p class="t-lh-2">Our manager will contact you within 1 hour. If you have any questions - send us an email or call <br><span class="t-semi">+995 585 888 660</span></p>

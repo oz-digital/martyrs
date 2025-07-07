@@ -529,7 +529,7 @@ p {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.p-big {
+.p-semi {
   font-size: 1.25rem;
   line-height: 1.25;
   font-weight: 400;

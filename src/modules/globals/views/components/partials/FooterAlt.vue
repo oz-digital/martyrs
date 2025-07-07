@@ -135,7 +135,7 @@ const handleSubscribe = () => {
             class="cursor-pointer h-3r mn-b-medium"
           />
 
-          <p class="p-big t-medium mn-b-medium ">{{t('description')}}</p>
+          <p class="p-semi t-medium mn-b-medium ">{{t('description')}}</p>
           
           <div class="mn-b-medium flex flex-column gap-small">
             <a 

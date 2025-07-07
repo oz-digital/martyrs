@@ -2,9 +2,16 @@
   <div class="pd-thin">
     <!-- Header -->
     <header class="mn-b-medium flex-v-center flex-nowrap flex">
-      <h2>Leftovers</h2>
+      <h2>Inventory</h2>
       <button
-        @click="router.push({ name: 'LeftoverAdd' })"
+        v-if="route.meta.context === 'backoffice'"
+        @click="router.push({ name: 'BackofficeInventoryAudit' })"
+        class="mn-l-small radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second"
+        v-html="'+'"
+      />
+      <button
+        v-if="route.meta.context === 'organization'"
+        @click="router.push({ name: 'OrganizationInventoryAudit', params: { _id: route.params._id } })"
         class="mn-l-small radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second"
         v-html="'+'"
       />
@@ -29,7 +36,7 @@
       }]"
       :options="{
         limit: 15,
-        lookup: ['leftovers','categories'],
+        lookup: ['inventory','categories'],
         owner: route.params._id,
         sortParam: sort.param,
         sortOrder: sort.order
@@ -51,26 +58,36 @@
               class="w-3r h-3r radius-small bg-light object-fit-cover"
             />
             <PlaceholderImage v-else class="w-3r h-3r radius-small" />
-            <span class="t-nowrap">{{ row.name }}</span>
+            <span class="t-nowrap">{{ row.name || 'Unknown Product' }}</span>
           </div>
         </template>
 
         <!-- Categories -->
         <template #cell-category="{ row }">
           <span
-            v-if="row.category"
+            v-if="row.category?.length"
             v-for="cat in row.category"
             :key="cat._id"
             class="pd-nano mn-r-micro pd-r-small pd-l-small radius-small bg-light t-small"
           >
             {{ cat.name }}
           </span>
-          <span v-else>=</span>
+          <span v-else>-</span>
         </template>
 
-        <!-- Supplier -->
-        <template #cell-supplier="{ row }">
-          {{ row.owner?.target?.profile?.name || '-' }}
+        <!-- Storages -->
+        <template #cell-storages="{ row }">
+          <div v-if="row.availabilityDetails?.length" class="flex flex-column gap-micro">
+            <div 
+              v-for="avail in row.availabilityDetails" 
+              :key="avail._id"
+              class="flex gap-small flex-v-center"
+            >
+              <span class="t-small">{{ avail.storageName || avail.storage }}:</span>
+              <span class="t-medium">{{ avail.available || 0 }}</span>
+            </div>
+          </div>
+          <span v-else class="t-transp">No stock</span>
         </template>
 
         <!-- Available (replaces stock) -->
@@ -102,7 +119,7 @@
         </template>
         <!-- Price -->
         <template #cell-price="{ row }">
-          {{ formatPrice(row.price) }}
+          {{ formatPrice(row.price || 0) }}
         </template>
 
         <!-- Actions -->
@@ -135,7 +152,7 @@
       title="Audit Stock"
       class="bg-white radius-medium pd-medium w-min-40r"
     >
-      <StockAuditForm
+      <AdjustmentForm
         :product="selectedProduct"
         @close="showAuditModal = false"
         @save="handleAuditSave"
@@ -145,13 +162,13 @@
     <Popup
       :isPopupOpen="showReorderModal"
       @close-popup="showReorderModal = false"
-      title="Set Automatic Reorder"
+      title="Stock Level Alerts"
       class="bg-white radius-medium pd-medium w-min-30r"
     >
-      <ReorderSettingsForm
+      <StockAlertsForm
         :product="selectedProduct"
         @close="showReorderModal = false"
-        @save="handleReorderSave"
+        @save="handleAlertSave"
       />
     </Popup>
 
@@ -161,7 +178,7 @@
       title="Stock History"
       class="bg-white radius-medium pd-medium w-min-50r"
     >
-      <StockHistoryView
+      <HistoryView
         :product="selectedProduct"
         @close="showHistoryModal = false"
       />
@@ -185,6 +202,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
 
 // Components
 import Table from '@martyrs/src/components/Table/Table.vue'
@@ -198,18 +216,21 @@ import IconSettings from '@martyrs/src/modules/icons/entities/IconSettings.vue'
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue'
 
 // Forms
-import StockAuditForm from '../forms/StockAuditForm.vue'
-import ReorderSettingsForm from '../forms/ReorderSettingsForm.vue'
-import StockHistoryView from '../forms/StockHistoryView.vue'
+import AdjustmentForm from '../forms/AdjustmentForm.vue'
+import StockAlertsForm from '../forms/StockAlertsForm.vue'
+import HistoryView from '../forms/HistoryView.vue'
 import ColumnSettingsMenu from '../forms/ColumnSettingsMenu.vue'
 
 // Stores
+import * as inventory from '@martyrs/src/modules/inventory/store/ inventory.store.js'
 import * as products from '@martyrs/src/modules/products/store/products.js'
-import * as leftovers from '@martyrs/src/modules/products/store/leftovers.js'
+import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
+import stockAlerts from '@martyrs/src/modules/inventory/store/stock.alerts.store.js'
 
 // Router
 const route = useRoute()
 const router = useRouter()
+const { formatPrice } = useGlobalMixins()
 
 // Feed controls
 const sort = ref({
@@ -245,8 +266,8 @@ const filter = reactive({
 const columns = reactive([
   { key: 'name',     label: 'Product Name', component: true, visible: true },
   { key: 'category', label: 'Categories',   component: true, visible: true },
-  { key: 'supplier', label: 'Supplier',     visible: true },
-  { key: 'available',label: 'Available',    component: true, visible: true },
+  { key: 'storages', label: 'Storages',     component: true, visible: true },
+  { key: 'available',label: 'Total Available', component: true, visible: true },
   { key: 'price',    label: 'Unit Price',   component: true, visible: true },
   { key: 'actions',  label: '',             component: true, visible: true }
 ])
@@ -274,26 +295,17 @@ function openStockHistory(row) {
 function openViewSettings() {
   showSettingsModal.value = true
 }
-async function handleAuditSave(audit) {
+async function handleAuditSave(adjustmentData) {
   try {
-    await leftovers.actions.create({
-      organization: route.params._id,
-      type: audit.discrepancy > 0 ? 'stock-in' : 'stock-out',
-      comment: audit.note,
-      positions: [{
-        _id: selectedProduct.value._id,
-        name: selectedProduct.value.name,
-        quantity: Math.abs(audit.discrepancy),
-        price: selectedProduct.value.price || 0,
-        type: 'pcs'
-      }],
-      creator: {
-        type: 'user',
-        target: window.auth?.state?.user?._id
-      },
+    await inventory.actions.createAdjustment({
+      ...adjustmentData,
       owner: {
         type: 'organization',
         target: route.params._id
+      },
+      creator: {
+        type: 'user',
+        target: auth.state.user._id
       }
     })
     showAuditModal.value = false
@@ -301,12 +313,19 @@ async function handleAuditSave(audit) {
     console.error(err)
   }
 }
-async function handleReorderSave(settings) {
-  alert(`Reorder threshold set to ${settings.threshold} for ${selectedProduct.value?.name || 'all products'}`)
-  showReorderModal.value = false
+async function handleAlertSave(alertData) {
+  try {
+    await stockAlerts.create(alertData)
+    showReorderModal.value = false
+  } catch (err) {
+    console.error('Error saving alert:', err)
+  }
 }
 function handleColumnsUpdate(updated) {
-  leftovers.mutations.updateColumnSettings(updated)
+  // Update column visibility
+  columns.forEach(col => {
+    col.visible = updated.includes(col.key)
+  })
   showSettingsModal.value = false
 }
 </script>

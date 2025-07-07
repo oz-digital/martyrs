@@ -8,6 +8,7 @@
       :availabilityData="availabilityData"
       :showAvailability="true"
       :lowAvailabilityThreshold="3"
+      :requiredQuantity="quantity"
       class="bg-light radius-small"
       :disabled="isLoading"
     />
@@ -61,7 +62,10 @@ import PriceTotal from '@martyrs/src/modules/orders/components/elements/PriceTot
 import * as rents from '@martyrs/src/modules/rents/views/store/rents.store.js'
 
 const props = defineProps({
-  product: { type: Object, required: true },
+  productId: { type: String, required: true },
+  variantId: { type: String, required: true },
+  quantity: { type: Number, default: 1 },
+  price: { type: Number, required: true },
   isOpen: { type: Boolean, required: true },
   showFees: { type: Boolean, default: false },
   showVat: { type: Boolean, default: false },
@@ -89,7 +93,10 @@ const isAvailable = ref(true)
 
 // Load availability data for the current month and next month
 async function loadAvailabilityData() {
-  if (!props.product || !props.product._id) return;
+  if (!props.productId || !props.variantId) return;
+
+  console.log('productId', props.productId)
+  console.log('variantId', props.variantId)
   
   isLoading.value = true;
   availabilityError.value = null;
@@ -100,7 +107,8 @@ async function loadAvailabilityData() {
     const end = new Date(today.getFullYear(), today.getMonth() + 2, 0);
     
     const data = await rents.loadAvailability({
-      productId: props.product._id,
+      productId: props.productId,
+      variantId: props.variantId,
       startDate: start.toISOString().split('T')[0],
       endDate: end.toISOString().split('T')[0]
     });
@@ -118,7 +126,7 @@ async function loadAvailabilityData() {
 
 // Check availability for selected date range
 async function checkAvailability() {
-  if (!selectedDates.value.start || !selectedDates.value.end || !props.product || !props.product._id) {
+  if (!selectedDates.value.start || !selectedDates.value.end || !props.productId || !props.variantId) {
     isAvailable.value = false;
     return;
   }
@@ -128,15 +136,16 @@ async function checkAvailability() {
   
   try {
     const data = await rents.loadAvailability({
-      productId: props.product._id,
+      productId: props.productId,
+      variantId: props.variantId,
       startDate: selectedDates.value.start.split('T')[0],
       endDate: selectedDates.value.end.split('T')[0]
     });
     
-    isAvailable.value = data.available > 0;
+    isAvailable.value = data.available >= props.quantity;
     
     if (!isAvailable.value) {
-      availabilityError.value = 'Product is not available for the selected dates.';
+      availabilityError.value = `Insufficient quantity. Available: ${data.available}, needed: ${props.quantity}`;
     }
   } catch (error) {
     console.error('Error checking availability:', error);
@@ -157,7 +166,7 @@ function calculateDays(start, end) {
 }
 
 const numberOfDays = computed(() => calculateDays(selectedDates.value.start, selectedDates.value.end))
-const totalAmount = computed(() => props.product.price * numberOfDays.value)
+const totalAmount = computed(() => props.price * numberOfDays.value * props.quantity)
 
 function closePopup() {
   emit('close')
@@ -174,7 +183,8 @@ function cancelSelection() {
   if (props.onCancel) {
     props.onCancel()
   }
-  closePopup()
+  // Эмитим close-popup чтобы плагин закрыл попап
+  emit('close-popup')
 }
 
 watch([() => selectedDates.value.start, () => selectedDates.value.end], ([newStart, newEnd]) => {

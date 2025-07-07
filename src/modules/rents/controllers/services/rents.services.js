@@ -25,11 +25,13 @@ const queryValidatorConfig = {
     default: 10,
   },
   productId: { rule: 'optional', validator: Validator.schema().string(), default: null },
+  variantId: { rule: 'optional', validator: Validator.schema().string(), default: null },
 };
 const bodyValidatorConfig = {
   // _id: { rule: 'optional', validator: Validator.schema().string() },
   // order: { rule: 'optional', validator: Validator.schema().string() },
   product: { rule: 'optional', validator: Validator.schema().string().required() },
+  variant: { rule: 'optional', validator: Validator.schema().string() },
   // quantity: { rule: 'optional', validator: Validator.schema().number().integer().min(1).required() },
   startDate: { rule: 'optional', validator: Validator.schema().date().required() },
   endDate: { rule: 'optional', validator: Validator.schema().date().required() },
@@ -286,7 +288,7 @@ const controller = db => {
       const validationResult = queryVerifier.verify(req.query, {
         applyDefaults: true,
         removeInvalid: true,
-        only: ['productId', 'startDate', 'endDate'],
+        only: ['productId', 'variantId', 'startDate', 'endDate'],
       });
       if (!validationResult || !validationResult.isValid) {
         await logger.info(`Invalid query parameters: ${JSON.stringify(validationResult.verificationErrors)}`);
@@ -296,26 +298,46 @@ const controller = db => {
           details: validationResult.verificationErrors,
         });
       }
-      const { productId, startDate, endDate } = validationResult.verifiedData;
+      const { productId, variantId, startDate, endDate } = validationResult.verifiedData;
       if (!productId || !startDate || !endDate) {
         return res.status(400).json({
           errorCode: 'MISSING_REQUIRED_PARAMS',
           message: 'productId, startDate, and endDate are required parameters.',
         });
       }
-      const cacheKey = `availability:${productId}:${startDate}:${endDate}`;
+      const cacheKey = `availability:${productId}:${variantId || 'no-variant'}:${startDate}:${endDate}`;
       const cachedResult = await cache.get(cacheKey);
       if (cachedResult) {
         await logger.info(`Cache hit for availability: ${cacheKey}`);
         return res.status(200).json(cachedResult);
       }
-      // Получаем информацию о продукте
-      const product = await db.product.findById(productId);
-      if (!product) {
-        await logger.info(`Product not found: ${productId}`);
-        return res.status(404).json({ errorCode: 'PRODUCT_NOT_FOUND', message: 'Product not found.' });
+      // Получаем информацию о количестве из stockavailabilities
+      let totalAvailable = 0;
+      
+      if (variantId) {
+        // Если указан вариант, получаем quantity для этого варианта
+        const stockAvailabilities = await db.stockAvailability.find({ variant: variantId });
+        totalAvailable = stockAvailabilities.reduce((sum, stock) => sum + (stock.available || 0), 0);
+        
+        if (totalAvailable === 0) {
+          await logger.info(`Variant not found or no stock available: ${variantId}`);
+          return res.status(404).json({ errorCode: 'VARIANT_NOT_FOUND', message: 'Variant not found or no stock available.' });
+        }
+      } else {
+        // Если вариант не указан, получаем quantity для продукта
+        const stockAvailabilities = await db.stockAvailability.find({ product: productId, variant: { $exists: false } });
+        totalAvailable = stockAvailabilities.reduce((sum, stock) => sum + (stock.available || 0), 0);
+        
+        if (totalAvailable === 0) {
+          // Fallback на старую логику для совместимости
+          const product = await db.product.findById(productId);
+          if (!product) {
+            await logger.info(`Product not found: ${productId}`);
+            return res.status(404).json({ errorCode: 'PRODUCT_NOT_FOUND', message: 'Product not found.' });
+          }
+          totalAvailable = product.quantity || 1;
+        }
       }
-      const totalAvailable = product.quantity || 1;
       // Парсим даты как UTC
       const start = new Date(`${startDate}T00:00:00Z`);
       const end = new Date(`${endDate}T23:59:59Z`);
@@ -325,11 +347,18 @@ const controller = db => {
         dateRange.push(new Date(dt));
       }
       // Ищем активные ренты, пересекающиеся с диапазоном
-      const activeRents = await Rent.find({
+      const rentQuery = {
         product: productId,
         status: { $in: ['pending', 'confirmed', 'active'] },
         $or: [{ startDate: { $lte: end }, endDate: { $gte: start } }],
-      });
+      };
+      
+      // Если указан вариант, фильтруем по варианту
+      if (variantId) {
+        rentQuery.variant = variantId;
+      }
+      
+      const activeRents = await Rent.find(rentQuery);
       // Вычисляем доступность для каждой даты
       const availabilityByDate = dateRange.map(date => {
         const dateStr = date.toISOString().split('T')[0];
@@ -352,6 +381,7 @@ const controller = db => {
       });
       const result = {
         productId,
+        variantId: variantId || null,
         period: {
           startDate: start.toISOString().split('T')[0],
           endDate: end.toISOString().split('T')[0],

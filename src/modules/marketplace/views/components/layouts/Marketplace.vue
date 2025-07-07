@@ -165,23 +165,23 @@
 	  router.replace({ query });
 	}, { deep: true })
 
-	watch(() => globals.state.position, (newPosition) => {
-	  // get the current route
-	  const currentRoute = { ...router.currentRoute.value };
+	// watch(() => globals.state.position, (newPosition) => {
+	//   // get the current route
+	//   const currentRoute = { ...router.currentRoute.value };
 	  
-	  // create new parameters based on globals state position
-	  let newParams = {
-	    country: normalizeUrlParam(newPosition.country),
-	    state: normalizeUrlParam(newPosition.state),
-	    city: normalizeUrlParam(newPosition.city),
-	  };
+	//   // create new parameters based on globals state position
+	//   let newParams = {
+	//     country: normalizeUrlParam(newPosition.country),
+	//     state: normalizeUrlParam(newPosition.state),
+	//     city: normalizeUrlParam(newPosition.city),
+	//   };
 	  
-	  // update route params
-	  currentRoute.params = newParams;
+	//   // update route params
+	//   currentRoute.params = newParams;
 	  
-	  // replace the current route
-	  router.replace(currentRoute);
-	}, { deep: true });
+	//   // replace the current route
+	//   router.replace(currentRoute);
+	// }, { deep: true });
 
   const text = {
     locale: 'en',

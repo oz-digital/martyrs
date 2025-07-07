@@ -1,7 +1,9 @@
-import StockAdjustmentModel from './models/stockAdjustment.model.js';
-import StockBalanceModel from './models/stockBalance.model.js';
-import StockAvailabilityModel from './models/stockAvailability.model.js';
-import StockInventoryModel from './models/stockInventory.model.js';
+import StockAdjustmentModel from './models/stock.adjustment.model.js';
+import StockBalanceModel from './models/stock.balance.model.js';
+import StockAvailabilityModel from './models/stock.availability.model.js';
+import StockAuditModel from './models/stock.audit.model.js';
+import StockAlertModel from './models/stock.alerts.model.js';
+
 import inventoryRoutes from './routes/inventory.routes.js';
 import inventoryPolicies from './policies/inventory.policies.js';
 
@@ -10,7 +12,8 @@ function initializeInventory(app, db, origins, publicPath) {
   db.stockAdjustment = StockAdjustmentModel(db);
   db.stockBalance = StockBalanceModel(db);
   db.stockAvailability = StockAvailabilityModel(db);
-  db.stockInventory = StockInventoryModel(db);
+  db.stockAudit = StockAuditModel(db);
+  db.stockAlert = StockAlertModel(db);
   
   // Инициализация маршрутов
   if (app) {

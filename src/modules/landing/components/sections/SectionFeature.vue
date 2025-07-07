@@ -8,7 +8,7 @@
 				{{title}}
 	    </h2>
 	    
-	    <p class="p-big t-transp">
+	    <p class="p-semi t-transp">
 	    	{{description}}
 	    </p>
     </div>

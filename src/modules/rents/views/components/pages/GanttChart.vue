@@ -8,7 +8,7 @@
           :tabs="viewOptions"
           @tab-click="switchView($event.tab.value)"
           class="mn-r-auto h-100 flex-child-default o-hidden p-small pd-nano radius-small bg-white"
-          tabClass=" pd-thin radius-thin"
+          classTab=" pd-thin radius-thin"
         />
 
         <button @click="navigatePrevious" class="h-100 bg-white aspect-1x1 pd-x-small radius-small bg-light mn-r-x-small">

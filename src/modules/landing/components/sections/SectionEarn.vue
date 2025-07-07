@@ -5,7 +5,7 @@
         <img v-if="te('logo')" loading="lazy" class="mn-b-semi h-4r" :src="t('logo')">
 
         <h2 v-if="te('title')" class="mn-b-medium" v-html="t('title')"/>
-        <p v-if="te('description')" class="mn-b-medium p-big t-transp">{{ t('description') }}</p>  
+        <p v-if="te('description')" class="mn-b-medium p-semi t-transp">{{ t('description') }}</p>  
         <p v-if="te('subdescription')" class="mn-b-semi p-medium t-transp">{{ t('subdescription')}}</p>
 
       <div class="gap-thin cols-2">

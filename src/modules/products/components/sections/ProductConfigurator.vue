@@ -24,8 +24,7 @@
       <div class="">
         <p class="t-medium mn-b-thin">Price</p>
         <Price 
-          v-if="!selectedVariant"
-          :product="product"
+          :product="selectedVariant || productVariants[0]"
           :variants="productVariants" 
           size="big" 
           class="flex gap-micro flex-center pd-small bg-second t-white w-max mn-b-medium" 
@@ -56,7 +55,7 @@
     <!-- Add to cart button -->
     <div class="w-100 mn-b-medium">
       <Button
-        :submit="isVariantAvailable ? addVariantToCart : undefined"
+        :submit="isVariantAvailable ? addProductToCart : undefined"
         :disabled="!isVariantAvailable"
         class="cursor-pointer pd-medium radius-big w-100 bg-main button h-3r"
       >
@@ -124,20 +123,15 @@ function handleDiscountSelected(discount) {
   }
 }
 
-function addVariantToCart() {
+function addProductToCart() {
   const variant = selectedVariant.value || 
     (props.productVariants.length === 1 ? props.productVariants[0] : null);
   
   if (!variant || !variant.available || quantity.value > variant.available) return false;
   
   emits('add-to-cart', {
-    _id: props.productId,
-    variantId: variant._id,
-    sku: variant.sku,
-    name: props.productName,
-    price: variant.price,
-    quantity: quantity.value,
-    attributes: variant.attributes || []
+    variant: variant,
+    quantity: quantity.value
   });
   
   return true;

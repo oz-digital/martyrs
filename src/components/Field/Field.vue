@@ -1,9 +1,7 @@
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue'
 import IconShow from '@martyrs/src/modules/icons/actions/IconShow.vue';
-
 const emit = defineEmits(['update:field', 'focus', 'blur']);
-
 const props = defineProps({
   label: null,
   symbol: null,
@@ -14,20 +12,18 @@ const props = defineProps({
   validation: false,
   disabled: null,
   tabindex: -1,
-  autofocus: false
+  autofocus: false,
+  icon: null // Добавлен пропс для иконки
 });
-
 if (props.value) {
   emit('update:field', props.value)
 }
-
 const textarea = ref(null);
 const input = ref(null);
 const showPassword = ref(false);
 
 function resize() {
   if (!textarea.value) {
-    textarea.value.style.height = '';
     return;
   }
   const el = textarea.value;
@@ -39,7 +35,6 @@ function resize() {
     el.style.height = '';
   }
 }
-
 function focus() {
   if (props.autofocus) {
     if (props.type === 'textarea' && textarea.value) {
@@ -49,27 +44,22 @@ function focus() {
     }
   }
 }
-
 watch(() => props.field, () => {
   if (props.type === 'textarea') {
     nextTick(resize);
   }
 });
-
 watch(() => props.autofocus, (newVal) => {
   if (newVal) {
     nextTick(focus);
   }
 });
-
 onMounted(() => {
   nextTick(focus);
   nextTick(resize);
 });
-
 const text = ref(props.field);
 </script>
-
 <template>
   <div
     :class="[
@@ -78,6 +68,11 @@ const text = ref(props.field);
     ]"
     class="field-wrapper flex-center flex-nowrap flex"
   >
+    <!-- Слот для иконки -->
+    <slot name="icon" v-if="$slots.icon" />
+    <!-- Или компонент иконки через пропс -->
+    <component :is="icon" v-else-if="icon" class="i-medium t-transp mn-r-thin" />
+    
     <div
       v-if="label"
       class="t-transp mn-r-small"
@@ -137,39 +132,22 @@ const text = ref(props.field);
     </div>
   </transition>
 </template>
-
-<style>
+<style scoped>
 input,
 textarea,
 span {
-  line-height: 1;
   color: inherit;
+  line-height: 1;
 }
-
 textarea {
   resize: none;
   overflow: hidden; 
-  line-height: 1rem;
   height: 1rem;
 }
-
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
   opacity: 1;
   color: inherit;
 }
-
-.field-wrapper {
-  transition: border-width .2s, box-shadow .2s ease;
-}
-
-.field-wrapper:hover {
-  box-shadow: inset 0 0 0 1px rgba(var(--dark), 0.2), 0 0 6px 2px rgba(var(--dark), 0.1);
-}
-
-.field-wrapper:focus-within {
-  box-shadow: inset 0 0 0 1px rgba(var(--second), 1), 0 0 6px 2px rgba(var(--second), 0.1);
-}
-
 </style>

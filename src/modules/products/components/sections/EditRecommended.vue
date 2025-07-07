@@ -13,8 +13,7 @@
         :key="product._id" 
         :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
         :name="product.name"
-        :title="product.name"
-        :subtitle="`${returnCurrency()}${product.price}`"
+        :title="`${returnCurrency()}${product.price}`"
         :showThumbnail="true"
         :actions="[
           {
@@ -61,19 +60,9 @@
           v-for="(product, index) in items" :key="product._id"
           :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
           :name="product.name"
-          :title="product.name"
-          :subtitle="`${returnCurrency()}${product.price}`"
+          :title="`${returnCurrency()}${product.price}`"
           :showThumbnail="true"
-          :actions="[
-            {
-              label: 'Add',
-              class: 'bg-main t-white',
-              handler: () => {
-                globals.actions.add(recommended, product);
-                closeRecommendedPopup();
-              }
-            }
-          ]"
+          @click="globals.actions.add(recommended, product); closeRecommendedPopup();"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin cursor-pointer hover-scale-1"
         />
       </Feed>

@@ -39,7 +39,7 @@
 		/>
 
 		<p 
-			class="w-max-50r mn-b-big t-transp p-big" 
+			class="w-max-50r mn-b-big t-transp p-semi" 
 			v-html="t('DESCRIPTION')"
 		/>
 

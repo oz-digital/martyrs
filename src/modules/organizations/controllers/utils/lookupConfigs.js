@@ -4,6 +4,27 @@ const lookupConfigs = {
       from: 'products',
       localField: '_id',
       foreignField: 'owner.target',
+      pipeline: [
+        {
+          $lookup: {
+            from: 'variants',
+            localField: '_id',
+            foreignField: 'product',
+            pipeline: [
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  price: 1,
+                  quantity: 1,
+                  type: 1,
+                },
+              },
+            ],
+            as: 'variants',
+          },
+        },
+      ],
       as: 'products',
     },
     additionalStages: [

@@ -8,7 +8,7 @@
       :style="isSelected(index, tab) ? 'background: rgb(var(--main)) !important' : ''"
       :class="[
         isSelected(index, tab) ? 'bg-main' : '',
-        tabClass ? tabClass : 'pd-small pd-r-medium pd-l-medium w-max pd-small radius-small'
+        replaceClasses('pd-small pd-r-medium pd-l-medium w-max pd-small radius-small', classTab)
       ]"
     >
       {{tab.name || tab.label}}
@@ -23,7 +23,7 @@ const emit = defineEmits(['update:selected', 'tab-click']);
 
 const props = defineProps({
   tabs: Array,
-  tabClass: String,
+  classTab: String,
   selected: [String, Number],
   modelValue: [String, Number],
   callback: Function

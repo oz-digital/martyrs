@@ -5,7 +5,7 @@
     <!-- ---------------------------------------------------------------- -->
     <div class="pd-big mobile:pd-medium pd-b-zero mobile:pd-b-zero flex-nowrap flex">
       <div class="mn-b-medium w-100">
-        <h4 class="mn-b-thin p-big">{{t('title')}}</h4>
+        <h4 class="mn-b-thin p-semi">{{t('title')}}</h4>
         <p class="t-transp p-small">{{t('subtitle')}} {{ t('positions', { count: StoreCartAmount }) }}</p>
       </div>
       <IconCross @click="shopcart.actions.toggleShopcart" class="cursor-pointer i-medium button-icon"/>
@@ -17,15 +17,24 @@
       <!-- Empty State -->
       <p v-if="!(shopcart.state.positions.length > 0)" class="mn-t-medium"><i>{{t('emptystate')}}</i></p>
       <!-- Shopcart positions -->
+      <pre>{{shopcart.state.positions}}</pre>
       <CardOrderItem 
-        v-for="product in shopcart.state.positions" 
-        :key="product._id" 
+        v-for="(product, index) in shopcart.state.positions" 
+        :key="`${product._id}_${product.variant || 'no-variant'}_${index}`" 
         :editable="true" 
-        :product="product" 
-        :increase="product => shopcart.actions.incrementItemQuantity(product._id)"
-        :decrease="product => shopcart.actions.decrementItemQuantity(product._id)"
-        :remove="product => shopcart.actions.removeProduct(product._id)"
-        @updateRentDates="(product, dates) => shopcart.actions.updateRentDates({ productId: product._id, dates })"
+        :productId="product._id"
+        :variantId="product.variant"
+        :images="product.images"
+        :name="product.name"
+        :quantity="product.quantity"
+        :unit="product.unit"
+        :dates="product.date"
+        :listing="product.listing"
+        :price="product.price"
+        :increase="() => shopcart.actions.incrementItemQuantity(product._id, product.variant)"
+        :decrease="() => shopcart.actions.decrementItemQuantity(product._id, product.variant)"
+        :remove="() => shopcart.actions.removeProduct(product._id, product.variant)"
+        @updateRentDates="(productId, variantId, dates) => shopcart.actions.updateRentDates({ productId, variantId, dates })"
       />
     </div>
     <!-- ---------------------------------------------------------------- -->

@@ -30,7 +30,7 @@
         :key="item._id" 
         :blogpost="item" 
         :user="auth.state.user._id" 
-        class="h-max-40r bg-light mn-b-thin radius-medium mobile:radius-zero"
+        class="h-max-40r bg-light radius-medium mobile:radius-zero"
       />
     </Feed>
   </section>

@@ -1,7 +1,7 @@
 <template>
   <div class="pd-medium mobile:pd-thin">
     <header class="mn-b-medium gap-small flex-v-center flex-nowrap flex">
-      <h2 class="">{{route.params.leftover ? 'Edit ' : 'Add ' }} Inventory</h2>
+      <h2 class="">Create Inventory Audit</h2>
     </header>
     
     <Popup 
@@ -33,9 +33,18 @@
         class="flex-column flex gap-thin h-max-20r o-scroll"
       >
         <CardOrderItem
-          v-for="(product, index) in items" :key="product._id"
+          v-for="(product, index) in items" 
+          :key="`${product._id}_${product.variant || 'no-variant'}_${index}`"
           :editable="false" 
-          :product="product" 
+          :productId="product._id"
+          :variantId="product.variant"
+          :images="product.images"
+          :name="product.name"
+          :quantity="product.quantity || 1"
+          :unit="product.unit"
+          :dates="product.date"
+          :listing="product.listing"
+          :price="product.price"
           @click="() => selectProduct(product)"
           class="bg-light pd-small radius-small w-100"
         />
@@ -49,40 +58,61 @@
       :isPopupOpen="isVariantsPopupOpen"
       class="bg-white w-100 w-max-30r  radius-medium pd-medium"
     >
-      <div class="gap-thin flex flex-column">
-        <div 
-          v-for="(variant, index) in selectedProduct.variants" 
-          :key="index"
-          @click="addVariantToInventory(variant)"
-          class="w-100 cursor-pointer hover-scale-1 bg-light pd-small radius-small flex-v-center flex-nowrap flex gap-thin"
-        >
-          <div v-if="variant.images && variant.images.length" class="aspect-1x1 h-3r radius-small o-hidden">
-            <img 
-              :src="(FILE_SERVER_URL || '') + variant.images[0]" 
-              class="w-100 h-100 object-fit-cover"
-            />
+      <Feed
+        :store="variants"
+        :options="{
+          product: selectedProduct._id,
+        }"
+        :skeleton="{
+          structure: [
+            { block: 'text', size: 'small' },
+            { block: 'text', size: 'medium' },
+            { block: 'text', size: 'small' }
+          ]
+        }"
+        :states="{
+          empty: {
+            title: 'No variants',
+            description: 'Create your first variant'
+          }
+        }"
+         v-slot="{ items }"
+      >
+        <div class="gap-thin flex flex-column">
+          <div 
+            v-for="(variant, index) in items" 
+            :key="index"
+            @click="addVariantToInventory(variant)"
+            class="w-100 cursor-pointer hover-scale-1 bg-light pd-small radius-small flex-v-center flex-nowrap flex gap-thin"
+          >
+            <div v-if="variant.images && variant.images.length" class="aspect-1x1 h-3r radius-small o-hidden">
+              <img 
+                :src="(FILE_SERVER_URL || '') + variant.images[0]" 
+                class="w-100 h-100 object-fit-cover"
+              />
+            </div>
+            <div>
+              <p class="t-medium">{{ variant.name || 'Default variant' }}</p>
+              <p v-if="variant.attributes && variant.attributes.length" class="t-small t-transp">
+                {{ variant.attributes.map(attr => `${attr.name}: ${attr.value}`).join(', ') }}
+              </p>
+            </div>
+            <p class="mn-l-auto">{{ formatPrice(variant.cost) }}</p>
           </div>
-          <div>
-            <p class="t-medium">{{ variant.name || 'Default variant' }}</p>
-            <p v-if="variant.attributes && variant.attributes.length" class="t-small t-transp">
-              {{ variant.attributes.map(attr => `${attr.name}: ${attr.value}`).join(', ') }}
-            </p>
-          </div>
-          <p class="mn-l-auto">{{ formatPrice(variant.cost) }}</p>
         </div>
-      </div>
+      </Feed>
     </Popup>
 
     <Block
       class="mn-b-thin"
     >
        <Field
-        v-model:field="leftovers.state.current.comment"
-        placeholder="Describe details of the leftover"
+        v-model:field="inventory.state.current.comment"
+        placeholder="Describe details of the inventory audit"
         type="textarea"
         class="w-100 bg-white radius-small pd-medium"
       />  
-      <div class="t-medium mn-t-thin">Select Storage:</div>
+      <div class="t-medium mn-t-small mn-b-thin">Select Storage:</div>
       <Feed
         :states="{
           empty: {
@@ -92,7 +122,7 @@
         }"
         :store="{
           read: (options) => spots.actions.read(options),
-          state: leftovers.state.state
+          state: null
         }"
         :options="{
           user: auth.state.user._id,
@@ -109,9 +139,9 @@
           :key="index"
           :spot="spot"
           :organization="route.params._id"
-          :selected="leftovers.state.current.storage === spot._id"
-          @click="() => leftovers.state.current.storage = leftovers.state.current.storage === spot._id ? null : spot._id"
-          class="radius-medium bg-white"
+          :selected="inventory.state.current.storage === spot._id"
+          @click="() => inventory.state.current.storage = inventory.state.current.storage === spot._id ? null : spot._id"
+          class="radius-small h-min-big clickable bg-white"
         />
       </Feed>
 
@@ -128,7 +158,7 @@
       class="h-100 flex-column flex gap-thin mn-b-thin"
     >
       <CardPosition
-        v-for="(position, index) in leftovers.state.current.positions" 
+        v-for="(position, index) in inventory.state.current.positions" 
         :key="position._id || index" 
         :image="position.image"
         :name="position.name"
@@ -172,12 +202,20 @@
           In total: {{formatPrice(totalPrice)}}
         </span>
 
-         <!-- Save -->
+         <!-- Save Draft -->
         <Button
-          :submit="onSubmit"
-          class="bg-main w-min-5r  button"
+          :submit="onSaveDraft"
+          class="bg-second w-min-5r button"
         >
-          <span>Save</span>
+          <span>Save Draft</span>
+        </Button>
+
+         <!-- Publish -->
+        <Button
+          :submit="onPublish"
+          class="bg-main w-min-5r button"
+        >
+          <span>Publish</span>
         </Button>
 
         <!-- Reset -->
@@ -188,14 +226,7 @@
           <span>Reset</span>
         </Button>
 
-        <!-- Delete -->
-        <Button
-          v-if="route.params.leftover"
-          :submit="onDelete"
-          class="t-white w-min-5r bg-red button"
-        >
-          <span>Delete</span>
-        </Button>
+        <!-- Delete button removed - only create mode supported -->
       </section>
     </Block>
   </div>
@@ -214,8 +245,8 @@
   import CardOrderItem from '@martyrs/src/modules/orders/components/blocks/CardOrderItem.vue';
   import CardSpot from '@martyrs/src/modules/spots/components/blocks/CardSpot.vue'; 
 
-  import CardPosition from '../blocks/CardPosition.vue';
-  import QuantitySelector from '../elements/QuantitySelector.vue';
+  import CardPosition from '@martyrs/src/modules/products/components/blocks/CardPosition.vue';
+  import QuantitySelector from '@martyrs/src/modules/products/components/elements/QuantitySelector.vue';
 
   import { computed, onMounted, ref, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
@@ -223,9 +254,10 @@
  
   import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as leftovers from '@martyrs/src/modules/products/store/leftovers.js';
+  import * as inventory from '@martyrs/src/modules/inventory/store/ inventory.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
   import * as spots from '@martyrs/src/modules/spots/store/spots.js';
+  import variants from '@martyrs/src/modules/products/store/variants.store.js';
 
   import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue';
   import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
@@ -240,7 +272,7 @@
   const selectedProduct = ref(null);
 
   const totalPrice = computed(() => {
-    return leftovers.state.current.positions.reduce((sum, position) => {
+    return inventory.state.current.positions.reduce((sum, position) => {
       return Number(sum) + Number(position.cost || 0) * Number(position.quantity || 1);
     }, 0);
   });
@@ -300,61 +332,74 @@
         attributes: variant.attributes || []
       }
     };
-    // Add position to leftover state
-    globals.actions.add(leftovers.state.current.positions, position);
+    // Add position to inventory state
+    globals.actions.add(inventory.state.current.positions, position);
     closeVariantsPopup();
   }
 
   onMounted(async () => {
-    if (route.params.leftover) {
-      try {
-        await leftovers.actions.fetch(route.params.leftover);
-      } catch (error) {
-        console.error('Error fetching leftover:', error);
-      }
-    } else {
-      leftovers.state.current = { type: "stock-in", positions: [] };
-    }
+    // Reset inventory state for new audit
+    inventory.mutations.resetCurrent();
   });
 
   async function onReset() {
-    if (route.params.leftover) {
-      await leftovers.actions.fetch(route.params.leftover);
-    } else {
-      leftovers.state.current = { type: "stock-in", positions: [] };
-    }
-    return true
+    inventory.mutations.resetCurrent();
+    return true;
   }
 
-  function onSubmit() {
-    leftovers.state.current.organization = route.params._id;
 
-    if (route.params.leftover) {
-      leftovers.actions.update(leftovers.state.current).then(
-        () => router.push({ name: 'Leftovers', params: {_id: route.params._id} }),
-        (error) => console.error('Error updating leftover:', error)
-      );
-    } else {
-      leftovers.state.current.creator = {
+  function prepareInventoryData(status = 'draft') {
+    return {
+      storage: inventory.state.current.storage,
+      comment: inventory.state.current.comment,
+      status: status,
+      positions: inventory.state.current.positions.map(pos => ({
+        product: pos.product,
+        variant: pos.variant?._id,
+        storage: inventory.state.current.storage,
+        quantity: pos.quantity,
+        reason: 'custom',
+        comment: `Inventory audit: ${pos.name}`,
+        cost: pos.cost
+      })),
+      owner: {
+        type: 'organization',
+        target: route.params._id
+      },
+      creator: {
         type: 'user',
         target: auth.state.user._id
       }
-      leftovers.state.current.owner = {
-        type: 'organization',
-        target: route.params._id
-      }
+    };
+  }
 
-      leftovers.actions.create(leftovers.state.current).then(
-        () => router.push({ name: 'Leftovers', params: {_id: route.params._id} }),
-        (error) => console.error('Error creating leftover:', error)
-      );
+  function navigateBack() {
+    if (route.meta.context === 'backoffice') {
+      router.push({ name: 'BackofficeInventoryList' });
+    } else if (route.meta.context === 'organization') {
+      router.push({ name: 'OrganizationInventoryList', params: { _id: route.params._id } });
     }
   }
 
-  function onDelete() {
-    leftovers.actions.delete(route.params.leftover).then(
-      () => router.push({ name: 'Leftovers', params: {_id: route.params._id} }),
-      (error) => console.error('Error deleting leftover:', error)
-    );
+  async function onSaveDraft() {
+    try {
+      const inventoryData = prepareInventoryData('draft');
+      await inventory.actions.createInventory(inventoryData);
+      navigateBack();
+    } catch (error) {
+      console.error('Error creating draft inventory:', error);
+    }
   }
+
+  async function onPublish() {
+    try {
+      const inventoryData = prepareInventoryData('published');
+      await inventory.actions.createInventory(inventoryData);
+      navigateBack();
+    } catch (error) {
+      console.error('Error publishing inventory:', error);
+    }
+  }
+
+  // Remove delete function as we only support creation mode
 </script>

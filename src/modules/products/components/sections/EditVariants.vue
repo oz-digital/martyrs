@@ -7,8 +7,9 @@
       function: () => openVariantPopup()
     }]"
   >
+    <!-- is {{currentVariants}} -->
     <Feed
-      v-model:items="variants.state.all"
+      v-model:items="currentVariants"
       :store="variants"
       :options="{
         product: route.params.product,
@@ -44,24 +45,41 @@
           </div>
           
           <div class="w-100">
-            <p class="p-medium mn-b-nano t-medium d-block">{{ variant.name || 'Unnamed variant' }}</p>
-            <p class="t-medium t-transp">{{ returnCurrency() }}{{ variant.price }} / {{ variant.quantity }}{{ variant.unit }}</p>
+            <div class="flex-nowrap mn-b-nano flex-v-center flex">
+              <p class="p-medium t-medium d-block">{{ variant.name || 'Unnamed variant' }}</p>
+              <p v-if="variant.status" class="t-small pd-thin mn-l-thin radius-thin bg-light">{{ variant.status }}</p>
+            </div>
+
+            <p class="t-medium t-transp">{{ returnCurrency() }}{{ variant.price }} per {{ variant.quantity }}{{ variant.unit }}</p>
             <p v-if="variant.ingredients?.length" class="t-small t-transp">{{ variant.ingredients.length }} ingredients</p>
-            <p v-if="variant.status" class="t-small">
-              <span class="pd-nano pd-l-thin pd-r-thin radius-small bg-light">{{ variant.status }}</span>
-            </p>
+           
           </div>
           
           <div class="flex gap-thin">
-            <div @click="() => copyVariant(variant)" class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1">
+            <Button
+              :showSuccess="false"
+              :showLoader="true"
+              class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1"
+              :submit="() => copyVariant(variant)"
+            >
               <IconDuplicate class="i-regular" />
-            </div>
-            <div @click="() => openVariantPopup(variant)" class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1">
+            </Button>
+            <Button
+              :showSuccess="false"
+              :showLoader="false"
+              class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1"
+              :submit="() => openVariantPopup(variant)"
+            >
               <IconEdit class="i-regular" />
-            </div>
-            <div @click="() => deleteVariant(variant)" class="radius-small pd-small flex-center flex aspect-1x1 bg-red cursor-pointer hover-scale-1">
-              <IconDelete class="i-regular" />
-            </div>
+            </Button>
+            <Button
+              :showSuccess="false"
+              :showLoader="true"
+              class="radius-small pd-small flex-center flex aspect-1x1 bg-red cursor-pointer hover-scale-1"
+              :submit="() => deleteVariant(variant)"
+            >
+               <IconDelete class="i-regular" />
+            </Button>
           </div>
         </li>
       </template>
@@ -233,7 +251,8 @@ import IconDuplicate from '@martyrs/src/modules/icons/actions/IconDuplicate.vue'
 
 const route = useRoute();
 
-const productId = computed(() => route.params._id);
+const productId = computed(() => route.params.product);
+
 const productOwner = computed(() => {
   return products?.state?.current?.owner;
 });
@@ -241,6 +260,7 @@ const productOwner = computed(() => {
 // Локальное состояние
 const isVariantPopupOpen = ref(false);
 const editingVariant = ref(null);
+const currentVariants = ref([]);
 
 // Функция генерации SKU
 function generateSKU() {
@@ -385,22 +405,18 @@ async function copyVariant(variant) {
   
   try {
     const created = await variants.create(variantCopy);
-    variants.addItem(created, variants.state.all);
+    variants.addItem(created, currentVariants.value);
   } catch (error) {
     console.error('Error copying variant:', error);
   }
 }
 
 async function deleteVariant(variant) {
-  if (variants.state.all.length === 1) {
-    alert('Product must have at least one variant');
-    return;
-  }
-  
   if (confirm('Are you sure you want to delete this variant?')) {
     try {
+      console.log(variant)
       await variants.delete(variant);
-      variants.removeItem(variant, variants.state.all);
+      variants.removeItem(variant, currentVariants.value);
     } catch (error) {
       console.error('Error deleting variant:', error);
     }
@@ -427,21 +443,32 @@ async function saveVariant() {
     status: currentVariant.status,
     ingredients: currentVariant.ingredients.map(ing => ({ ...ing })),
     attributes: currentVariant.attributes.filter(attr => attr.name || attr.value),
-    owner: currentVariant.owner,
-    creator: currentVariant.creator,
     product: currentVariant.product
   };
+
+  // Добавляем owner и creator только при создании нового варианта
+  if (!editingVariant.value) {
+    variantToSave.owner = {
+      target: route.params._id || auth.state.user._id,
+      type: route.params._id ? 'organization' : 'user'
+    };
+    variantToSave.creator = {
+      target: auth.state.user._id,
+      type: 'user',
+      hidden: false
+    };
+  }
 
   try {
     if (editingVariant.value) {
       // Обновление существующего варианта
       variantToSave._id = editingVariant.value._id;
       const updated = await variants.update(variantToSave);
-      variants.updateItem(updated, variants.state.all);
+      variants.updateItem(updated, currentVariants.value);
     } else {
       // Создание нового варианта
       const created = await variants.create(variantToSave);
-      variants.addItem(created, variants.state.all);
+      variants.addItem(created, currentVariants.value);
     }
     
     closeVariantPopup();

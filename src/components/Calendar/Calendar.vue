@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar" :aria-disabled="disabled"> 
+  <div class="t-noselect calendar" :aria-disabled="disabled"> 
      <div v-if="allowRange && !disablePastDates" class="br-b br-solid br-grey-transp-25 gap-thin flex flex-nowrap pd-thin">
       <button @click="selectToday" class="font-second t-nowrap pd-thin bg-white radius-small">Today</button>
       <button @click="selectLastWeek" class="font-second t-nowrap pd-thin bg-white radius-small">Last Week</button>
@@ -40,7 +40,7 @@
             { 'calendar__date--low-availability': isLowAvailability(day.date) },
             { 'calendar__date--unavailable': !isAvailable(day.date) && !isPastDate(day.date) },
           ]"
-          @click.stop="selectDate(day.date)"
+          @click.stop="selectDate(day.date, $event)"
         >
           {{ day.day }}
           <span v-if="showAvailability && getAvailability(day.date)" class="availability-indicator">
@@ -48,6 +48,15 @@
           </span>
         </div>
       </div>
+    </div>
+    
+    <!-- Tooltip for insufficient quantity -->
+    <div 
+      v-if="tooltip.show" 
+      class="calendar-tooltip"
+      :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
+    >
+      {{ tooltip.message }}
     </div>
    
   </div>
@@ -75,6 +84,10 @@ const props = defineProps({
   lowAvailabilityThreshold: {
     type: Number,
     default: 3
+  },
+  requiredQuantity: {
+    type: Number,
+    default: 1
   }
 })
 
@@ -87,6 +100,7 @@ const currentDate = ref(today)
 const selectedDate = ref(null)
 const startDate = ref(null)
 const endDate = ref(null)
+const tooltip = ref({ show: false, message: '', x: 0, y: 0 })
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -251,10 +265,31 @@ const isInRange = (date) => {
   return false
 }
 
-const selectDate = (date) => {
+const selectDate = (date, event) => {
   // Don't allow selection of past dates or unavailable dates
   if (props.disablePastDates && isPastDate(date)) return;
   if (!isAvailable(date)) return;
+  
+  // Check if date has sufficient quantity for required amount
+  const availabilityInfo = getAvailabilityInfo(date);
+  if (availabilityInfo && availabilityInfo.availableQuantity < props.requiredQuantity) {
+    // Show tooltip with insufficient quantity message
+    if (event) {
+      tooltip.value = {
+        show: true,
+        message: `Insufficient quantity. Available: ${availabilityInfo.availableQuantity}, needed: ${props.requiredQuantity}`,
+        x: event.clientX,
+        y: event.clientY
+      };
+      setTimeout(() => {
+        tooltip.value.show = false;
+      }, 3000);
+    }
+    return;
+  }
+  
+  // Hide tooltip if it was showing
+  tooltip.value.show = false;
   
   // If selecting a date from another month, switch to that month
   if (!isSameMonth(date)) {
@@ -485,5 +520,20 @@ const selectLastYear = () => {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.calendar-tooltip {
+  position: fixed;
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+  max-width: 200px;
+  word-wrap: break-word;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  margin-top: -8px;
 }
 </style>

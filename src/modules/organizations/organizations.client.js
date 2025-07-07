@@ -20,7 +20,6 @@ import CardDepartment from './components/blocks/CardDepartment.vue';
 import CardOrganization from './components/blocks/CardOrganization.vue';
 import Contacts from './components/blocks/Contacts.vue';
 import DepartmentSub from './components/blocks/DepartmentSub.vue';
-import EditArray from './components/blocks/EditArray.vue';
 import EmptyState from './components/blocks/EmptyState.vue';
 import Rating from './components/blocks/Rating.vue';
 import Socials from './components/blocks/Socials.vue';
@@ -59,7 +58,6 @@ export {
   DepartmentSub,
   DetailsTabSection,
   Documents,
-  EditArray,
   EmptyState,
   MembersAdd,
   Organization,
@@ -98,7 +96,6 @@ const ModuleOrganization = {
       DepartmentEdit,
       // Blocks
       CardOrganization,
-      EditArray,
       Unit,
       DepartmentSub,
       CardDepartment,

@@ -1,22 +1,21 @@
 <template>
-  <div class="pd-thin radius-extra flex-nowrap flex">
-    <Field
-      v-model:field="inputField"
-      @update:field="updateInput"
-      :placeholder="typing ? '' : placeholder"
-      @input="handleInput"
-      @focus="handleFocus"
-      @blur="checkInput"
-      class="w-100 p-medium t-regular uppercase pd-small"
-    />
-    <button
-      @click="emitAction" 
-      class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-r-small pd-l-small w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main" 
-    >
-      <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
-      <IconArrow class="i-medium"/>
-    </button>
-  </div>
+  <Field
+    v-model:field="inputField"
+    @update:field="updateInput"
+    :placeholder="typing ? '' : placeholder"
+    @input="handleInput"
+    @focus="handleFocus"
+    @blur="checkInput"
+    class="pd-thin radius-extra flex-nowrap flex  w-100 p-medium t-regular uppercase pd-small"
+  >
+        <button
+    @click="emitAction" 
+    class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-thin w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main" 
+  >
+    <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
+    <IconArrow class="i-medium"/>
+  </button>
+</Field>
 </template>
 
 <script setup="props">

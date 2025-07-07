@@ -41,12 +41,18 @@ class Store {
 
     console.log(`→ ${finalOptions.method || 'GET'} ${url}`);
     const res = await fetch(url, finalOptions);
+
     if (!res.ok) {
       const err = new Error(`Status ${res.status}`);
       err.status = res.status;
       try { err.info = await res.json(); } catch {}
       throw err;
     }
+
+    if (res.status === 204) {
+      return null;
+    }
+
     return res.json();
   }
 
@@ -109,10 +115,10 @@ class Store {
     console.log('Deleting item:', item);
     try {
       const result = await this.request(`/delete`, {
-        method: 'DELETE',
+        method: 'POST',
         body: item,
       });
-      console.log('Delete operation succeeded');
+      console.log('Delete operation succeeded', result);
       return result;
     } catch (error) {
       console.error('Delete operation failed:', error);

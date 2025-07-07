@@ -39,7 +39,7 @@
 					gap-micro pd-t-thin pd-b-thin
 					br-b br-solid br-black-transp
 				"
-				tabClass="bg-light pd-small radius-small w-100"
+				classTab="bg-light pd-small radius-small w-100"
 			/>
 
 			<Feed
