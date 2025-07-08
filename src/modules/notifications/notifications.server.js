@@ -15,12 +15,12 @@ function initializeNotifications(app, db, wss, origins, publicPath) {
   db.notificationLog = NotificationLogModel(db);
   const abac = getInstance(db);
   // const notificationPolicies = initNotificationPolicies(abac, db);
-  // Set up routes if app is provided
-  if (app) {
-    notificationsRoutes(app, db, wss, origins, publicPath);
-  }
   // Initialize notification service and related background tasks
   const notificationService = NotificationService(db, wss);
+  // Set up routes if app is provided
+  if (app) {
+    notificationsRoutes(app, db, wss, origins, publicPath, notificationService);
+  }
   console.log('[DEBUG] WSS in notification init:', wss);
   // Set up a scheduler to process pending notifications
   setInterval(() => {

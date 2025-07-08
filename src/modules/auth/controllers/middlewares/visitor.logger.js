@@ -46,8 +46,30 @@ const modelsFactory = db => {
       next();
     }
   };
+  const findOrCreateVisitor = async (req) => {
+    const fingerprint = generateFingerprint(req);
+    try {
+      let visitor = await Visitor.findOne({ fingerprint: fingerprint });
+      if (!visitor) {
+        visitor = new Visitor({
+          ip: req.ip,
+          userAgent: req.headers['user-agent'],
+          acceptLanguage: req.headers['accept-language'],
+          fingerprint: fingerprint,
+        });
+        await visitor.save();
+      }
+      return visitor;
+    } catch (error) {
+      console.error('Error creating/finding visitor:', error);
+      throw error;
+    }
+  };
+
   return {
     visitorLogger,
+    generateFingerprint,
+    findOrCreateVisitor,
   };
 };
 export default modelsFactory;

@@ -191,7 +191,7 @@ class NotificationManager {
       return;
     }
 
-    const registration = await navigator.serviceWorker.register('/sw.js');
+    const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: 'BJtNnRrx05VQS0abnkHC-8gHJWpnmoqC_iQveENCmZOZIs-adWzqAiqFCdGVVd7CbiaLW-Q5iuIBDRgM9G-VnKg',

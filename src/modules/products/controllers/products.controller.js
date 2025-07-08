@@ -33,6 +33,10 @@ const controllerFactory = db => {
         ...queryProcessorGlobals.getSearchOptions(req.query.search, {
           fields: ['name', 'description']
         }),
+        ...queryProcessorGlobals.getFilterDate(req.query.dateStart, req.query.dateEnd, {
+          start: 'startDate',
+          end: 'endDate',
+        }),
         ...queryProcessorGlobals.getPriceConditions(req.query.prices),
         ...queryProcessorProducts.getCategoriesFilterStage(req.query.categories),
         ...queryProcessorProducts.getDeliveryFilterStage(req.query.delivery),

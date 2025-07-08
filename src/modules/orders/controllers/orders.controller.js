@@ -19,57 +19,6 @@ function formatOrderMessage(order) {
     🧑 Agent: ${order.referralCode}
   `;
 }
-async function findOrCreateCustomer(Customer, customerInfo, orderOwner, orderCreator) {
-  let searchCriteria = {};
-  if (customerInfo.phone) {
-    searchCriteria.phone = customerInfo.phone;
-  }
-  if (customerInfo.email) {
-    searchCriteria.email = customerInfo.email;
-  }
-  let customer = null;
-  // Проверяем, есть ли критерии для поиска
-  if (Object.keys(searchCriteria).length > 0) {
-    customer = await Customer.findOne({ $or: [searchCriteria] });
-  }
-  if (!customer) {
-    // Handle the case when creator.target is null
-    let creatorType = customerInfo.creator?.type || orderCreator.type;
-    let creatorTarget = customerInfo.creator?.target || orderCreator.target;
-    // If creator target is still null, use the organization as creator
-    if (!creatorTarget) {
-      creatorType = orderOwner.type;
-      creatorTarget = orderOwner.target;
-    }
-    // Create new customer with proper creator fields
-    const newCustomerData = {
-      ...customerInfo,
-      // Ensure we're not passing any null _id that might override MongoDB's auto-generation
-      _id: undefined, // Let MongoDB generate this
-      owner: orderOwner,
-      creator: {
-        type: creatorType,
-        target: creatorTarget,
-      },
-      identity: {
-        type: customerInfo.identity?.type || creatorType,
-        target: customerInfo.identity?.target || creatorTarget,
-      },
-    };
-    try {
-      customer = await Customer.create(newCustomerData);
-      // Verify the customer was created with an _id
-      if (!customer || !customer._id) {
-        console.error('Customer creation failed to generate _id:', customer);
-        throw new Error('Customer creation did not generate a valid _id');
-      }
-    } catch (err) {
-      console.error('Error creating customer:', err);
-      throw err;
-    }
-  }
-  return customer;
-}
 async function sendOrderMessage(orderData) {
   try {
     const formattedMessage = formatOrderMessage(orderData);
@@ -78,9 +27,183 @@ async function sendOrderMessage(orderData) {
     console.error(err);
   }
 }
+import visitorLoggerFactory from '@martyrs/src/modules/auth/controllers/middlewares/visitor.logger.js';
+
 const controllerFactory = db => {
   const Order = db.order;
   const Customer = db.customer;
+  const Department = db.department;
+  const { findOrCreateVisitor } = visitorLoggerFactory(db);
+
+  // Оптимизированная функция получения пользователей с доступом orders.confirm
+  const getUsersWithOrdersConfirmAccess = async (organizationId) => {
+    console.log('=== Getting users with orders.confirm access ===');
+    console.log('Organization ID:', organizationId);
+    
+    const pipeline = [
+      { $match: { 
+        organization: new db.mongoose.Types.ObjectId(organizationId),
+        'accesses.orders.confirm': true 
+      }},
+      { $unwind: '$members' },
+      { $group: {
+        _id: '$members.user'
+      }},
+      { $project: { userId: '$_id' }}
+    ];
+    
+    console.log('Pipeline:', JSON.stringify(pipeline, null, 2));
+    
+    const result = await Department.aggregate(pipeline);
+    const userIds = result.map(item => item.userId);
+    
+    console.log('Found departments with access:', result.length);
+    console.log('User IDs with access:', userIds);
+    console.log('=== End getting users ===');
+    
+    return userIds;
+  };
+
+  // Отправка уведомлений о заказах - только данные
+  const sendOrderNotifications = async (order, type, userIds, extraData = {}) => {
+    console.log('=== Sending order notifications ===');
+    console.log('Order ID:', order._id);
+    console.log('Type:', type);
+    console.log('User IDs:', userIds);
+    console.log('Extra data:', extraData);
+    
+    if (!userIds || userIds.length === 0) {
+      console.log('No users to notify, skipping...');
+      return;
+    }
+
+    const notifications = userIds.map(userId => ({
+      title: getNotificationTitle(type, order, extraData),
+      body: getNotificationBody(type, order, extraData),
+      type: type,
+      metadata: {
+        type: type,
+        orderId: order._id,
+        context: 'organization',
+        ...extraData
+      },
+      userId: userId
+    }));
+
+    // Функции для генерации заголовков и текста
+    function getNotificationTitle(type, order, extraData = {}) {
+      switch(type) {
+        case 'order_created':
+          return 'New Order';
+        case 'order_status':
+          return 'Order Status Updated';
+        default:
+          return 'Order Notification';
+      }
+    }
+
+    function getNotificationBody(type, order, extraData = {}) {
+      switch(type) {
+        case 'order_created':
+          return `New order #${order._id} created`;
+        case 'order_status':
+          return `Order #${order._id} changed from ${extraData.oldStatus} to ${extraData.newStatus}`;
+        default:
+          return `Order #${order._id} updated`;
+      }
+    }
+    
+    console.log('Prepared notifications:', JSON.stringify(notifications, null, 2));
+    console.log('API URL:', `${process.env.API_URL || ''}/api/notifications/batch`);
+    
+    try {
+      // ОДИН POST запрос со всеми уведомлениями
+      const response = await fetch(`${process.env.API_URL || ''}/api/notifications/batch`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Service-Key': process.env.SERVICE_KEY,
+        },
+        body: JSON.stringify({ notifications }),
+      });
+      
+      console.log('Notification response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Notification API error:', errorData);
+        throw new Error(`Notification API failed: ${response.status} - ${errorData}`);
+      }
+      
+      const result = await response.json();
+      console.log('Notification API success:', result);
+      console.log('=== End sending notifications ===');
+      
+      return result;
+    } catch (error) {
+      console.error('=== Notification sending failed ===');
+      console.error('Error:', error.message);
+      console.error('Stack:', error.stack);
+      throw error;
+    }
+  };
+
+  const findOrCreateCustomer = async (customerInfo, orderOwner, orderCreator, req) => {
+    let searchCriteria = {};
+    if (customerInfo.phone) {
+      searchCriteria.phone = customerInfo.phone;
+    }
+    if (customerInfo.email) {
+      searchCriteria.email = customerInfo.email;
+    }
+    let customer = null;
+    // Проверяем, есть ли критерии для поиска
+    if (Object.keys(searchCriteria).length > 0) {
+      customer = await Customer.findOne({ $or: [searchCriteria] });
+    }
+    if (!customer) {
+      // Create visitor for anonymous customer
+      const visitor = await findOrCreateVisitor(req);
+      
+      // Handle the case when creator.target is null
+      let creatorType = customerInfo.creator?.type || orderCreator.type;
+      let creatorTarget = customerInfo.creator?.target || orderCreator.target;
+      // If creator target is still null, use the organization as creator
+      if (!creatorTarget) {
+        creatorType = orderOwner.type;
+        creatorTarget = orderOwner.target;
+      }
+      
+      // Create new customer with proper creator fields
+      const newCustomerData = {
+        ...customerInfo,
+        // Ensure we're not passing any null _id that might override MongoDB's auto-generation
+        _id: undefined, // Let MongoDB generate this
+        owner: orderOwner,
+        creator: {
+          type: creatorType,
+          target: creatorTarget,
+        },
+        identity: {
+          type: 'Visitor',
+          target: visitor._id,
+        },
+      };
+      try {
+        customer = await Customer.create(newCustomerData);
+        // Verify the customer was created with an _id
+        if (!customer || !customer._id) {
+          console.error('Customer creation failed to generate _id:', customer);
+          throw new Error('Customer creation did not generate a valid _id');
+        }
+      } catch (err) {
+        console.error('Error creating customer:', err);
+        throw err;
+      }
+    }
+    return customer;
+  };
+
   // Создание заказа
   const create = async (req, res) => {
     const orderData = req.body;
@@ -100,7 +223,7 @@ const controllerFactory = db => {
     try {
       // In your create controller function
       if (!orderData.customer.target) {
-        const customer = await findOrCreateCustomer(Customer, orderData.customer, orderData.owner, orderData.creator);
+        const customer = await findOrCreateCustomer(orderData.customer, orderData.owner, orderData.creator, req);
         console.log('customer is', customer);
         // Make sure we have a valid customer ID
         if (!customer || !customer._id) {
@@ -126,8 +249,17 @@ const controllerFactory = db => {
       // Don't process positions during order creation - moved to update when status changes to confirmed
       // Commit the transaction
       await session.commitTransaction();
+      
+      // ПОСЛЕ транзакции - отправка уведомлений
+      try {
+        const usersWithAccess = await getUsersWithOrdersConfirmAccess(orderData.owner.target);
+        await sendOrderNotifications(createdOrder, 'order_created', usersWithAccess);
+      } catch (notificationError) {
+        console.error('Error sending notification:', notificationError);
+      }
+      
       // Send notification
-      sendOrderMessage(orderData).catch(console.error);
+      // sendOrderMessage(orderData).catch(console.error);
       // Return the created order
       res.status(201).send(createdOrder);
     } catch (err) {
@@ -364,44 +496,22 @@ const controllerFactory = db => {
       await session.commitTransaction();
       console.log('Transaction committed successfully');
       
-      // Send notification AFTER successful transaction
+      // ПОСЛЕ транзакции - отправка уведомлений
       if (statusChanged) {
         console.log('Sending notification for status change...');
         try {
-          // Prepare notification data
-          const notificationData = {
-            title: `Order Status Updated`,
-            body: `Order #${order._id} status changed from ${oldStatus} to ${order.status}`,
-            type: 'order_status',
-            metadata: {
-              orderId: order._id,
-              oldStatus: oldStatus,
-              newStatus: order.status,
-              positions: order.positions,
-            },
-            userId: order.creator.target, // Assuming creator.target holds the user ID
-          };
-          console.log('Notification data:', JSON.stringify(notificationData));
-          // Send notification using the notification service
-          const notificationResponse = await fetch(`${process.env.API_URL || ''}/api/notifications`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Service-Key': process.env.SERVICE_KEY,
-            },
-            body: JSON.stringify(notificationData),
+          const usersWithAccess = await getUsersWithOrdersConfirmAccess(order.owner.target);
+          const filteredUsers = usersWithAccess.filter(userId => 
+            userId.toString() !== order.creator.target.toString()
+          );
+          
+          await sendOrderNotifications(order, 'order_status', filteredUsers, {
+            oldStatus: oldStatus,
+            newStatus: order.status,
           });
-          console.log('Notification response status:', notificationResponse.status);
-          if (!notificationResponse.ok) {
-            const errorData = await notificationResponse.json();
-            console.error(`Failed to create notification: ${JSON.stringify(errorData)}`);
-            // Continue execution, don't fail the request if notification fails
-          } else {
-            console.log('Notification sent successfully');
-          }
+          console.log('Notification sent successfully');
         } catch (notificationError) {
           console.error('Error sending notification:', notificationError);
-          // Continue execution, don't fail the request if notification fails
         }
       }
       

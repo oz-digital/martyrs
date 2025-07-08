@@ -295,15 +295,16 @@
 	onMounted(async () => {
 	  await getFirstUse()
 
-		// if ('serviceWorker' in navigator) {
-	  //  	window.addEventListener('load', () => {
-	  //    	navigator.serviceWorker.register('/service-worker.js').then(registration => {
-	  //      	console.log('SW registered: ', registration);
-	  //    	}).catch(registrationError => {
-	  //      	console.log('SW registration failed: ', registrationError);
-	  //    	});
-	  //  });
-	 	// }
+		// Регистрация единого Service Worker (PWA + push notifications)
+		if ('serviceWorker' in navigator && !window.__MOBILE_APP__) {
+	   	window.addEventListener('load', () => {
+	     	navigator.serviceWorker.register('/sw.js').then(registration => {
+	       	console.log('Unified SW registered: ', registration);
+	     	}).catch(registrationError => {
+	       	console.log('SW registration failed: ', registrationError);
+	     	});
+	   });
+	 	}
 		
 		const savedPosition = localStorage.getItem('position');
 
