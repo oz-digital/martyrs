@@ -1,5 +1,5 @@
 <template>
-  <div class="circular-loader pos-relative z-index-1 w-100 h-100 w-max-2r h-max-2r" :class="{ 'circular-loader-centered': centered }">
+  <div class="circular-loader pos-relative z-index-1 w-100 h-100 w-max-2r h-max-2r h-min-1r w-min-1r" :class="{ 'circular-loader-centered': centered }">
     <svg viewBox="25 25 50 50">
       <circle class="circular-loader-fill" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10" />
       <circle class="circular-loader-circle" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10" />

@@ -237,24 +237,26 @@ const actions = {
   handleNotificationAction(data) {
     // Mark notification as read if ID is provided
     if (data.notificationId) {
-      this.markAsRead(data.notificationId);
+      actions.markAsRead(data.notificationId);
     }
 
-    // Navigate based on notification type and metadata
-    if (data.route) {
-      // router.push(data.route);
-      alert('1');
-    } else if (data.type === 'order') {
-      // router.push(`/orders/${data.orderId}`);
-      alert('2');
-    } else if (data.type === 'message') {
-      // router.push('/messages');
-      alert('3');
-    } else {
-      // Default to notifications page
-      // router.push('/notifications');
-      alert('4');
-    }
+    return true
+
+    // // Navigate based on notification type and metadata
+    // if (data.route) {
+    //   // router.push(data.route);
+    //   alert('1');
+    // } else if (data.type === 'order') {
+    //   // router.push(`/orders/${data.orderId}`);
+    //   alert('2');
+    // } else if (data.type === 'message') {
+    //   // router.push('/messages');
+    //   alert('3');
+    // } else {
+    //   // Default to notifications page
+    //   // router.push('/notifications');
+    //   alert('4');
+    // }
   },
 
   /**
@@ -268,7 +270,13 @@ const actions = {
         return;
       }
 
+      console.log('=== markAllAsRead API call ===');
+      console.log('URL:', `/api/notifications/user/${userId}/read-all`);
+      
       const response = await $axios.put(`/api/notifications/user/${userId}/read-all`);
+      
+      console.log('markAllAsRead response status:', response.status);
+      console.log('markAllAsRead response data:', response.data);
 
       // Update all notifications in local state
       state.notifications.forEach(notification => {
@@ -277,6 +285,7 @@ const actions = {
       });
 
       updateUnreadCount();
+      console.log('Local state updated, unread count:', state.unreadCount);
       return response.data;
     } catch (error) {
       setError(error);

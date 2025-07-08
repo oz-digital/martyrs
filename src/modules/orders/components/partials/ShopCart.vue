@@ -17,7 +17,6 @@
       <!-- Empty State -->
       <p v-if="!(shopcart.state.positions.length > 0)" class="mn-t-medium"><i>{{t('emptystate')}}</i></p>
       <!-- Shopcart positions -->
-      <pre>{{shopcart.state.positions}}</pre>
       <CardOrderItem 
         v-for="(product, index) in shopcart.state.positions" 
         :key="`${product._id}_${product.variant || 'no-variant'}_${index}`" 

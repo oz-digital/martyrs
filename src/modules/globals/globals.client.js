@@ -59,7 +59,7 @@ function initializeGlobals(app, store, router, config, options = {}) {
   app.use(alertPlugin);
   app.use(popupAuthPlugin);
   app.use(datePickerPlugin);
-  app.use(storeDebuggerPlugin, store);
+  // app.use(storeDebuggerPlugin, store);
 
   // Change Locale to Route Locale if available
   router.beforeEach((to, from, next) => {

@@ -1,13 +1,10 @@
 <template>
   <div class="notifications-layout">
-    <div >
-    </div>  
-    
     <div class="">
       <router-view></router-view>
     </div>
     
-    <div v-if="notificationManager && !isConnected" class="connection-status">
+    <div v-if="!wsConnected" class="connection-status">
       <div class="connection-warning">
         <span class="warning-icon">⚠️</span>
         <span class="warning-text">
@@ -20,16 +17,45 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { computed, inject, ref, onMounted, onUnmounted } from 'vue';
+import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
 
 // Get notification manager from store
 const store = inject('store');
 
 const notificationManager = computed(() => store.notificationManager || null);
 
-const isConnected = computed(() => {
-  return notificationManager.value?.wsHandler?.isConnected || false;
+// Реактивное состояние WebSocket
+const wsConnected = ref(globalWebSocket.isConnected);
+
+// ID слушателей для очистки
+const openListenerId = ref(null);
+const closeListenerId = ref(null);
+
+onMounted(() => {
+  // Подписываемся на события WebSocket
+  openListenerId.value = globalWebSocket.addEventListener('open', () => {
+    wsConnected.value = true;
+  });
+  
+  closeListenerId.value = globalWebSocket.addEventListener('close', () => {
+    wsConnected.value = false;
+  });
+  
+  // Устанавливаем начальное состояние
+  wsConnected.value = globalWebSocket.isConnected;
 });
+
+onUnmounted(() => {
+  // Очищаем слушатели
+  if (openListenerId.value) {
+    globalWebSocket.removeEventListener('open', openListenerId.value);
+  }
+  if (closeListenerId.value) {
+    globalWebSocket.removeEventListener('close', closeListenerId.value);
+  }
+});
+
 
 // Methods
 const reconnect = () => {
@@ -40,29 +66,4 @@ const reconnect = () => {
 </script>
 
 <style scoped>
-.notifications-layout {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.tabs {
-  display: flex;
-  gap: 1rem;
-}
-
-.tab-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
-}
-
-.tab-button.active {
-  border-bottom: 2px solid var(--primary-color, #0066cc);
-  color: var(--primary-color, #0066cc);
-}
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="notification-preferences">
-    <h2>Notification Preferences</h2>
+    <h2 class="mn-b-small">Notification Preferences</h2>
     <p class="description">Choose how you want to receive notifications</p>
     
     <div v-if="loading" class="preferences-loading">
@@ -155,16 +155,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.notification-preferences {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-h2 {
-  margin-top: 0;
-  margin-bottom: 8px;
-}
 
 .description {
   color: #666;

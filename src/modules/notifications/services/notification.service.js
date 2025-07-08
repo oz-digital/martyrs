@@ -17,7 +17,7 @@ export default (function (db, wss) {
       const userId = notification.userId.toString();
       // Get user preferences
       const preferences = await db.notificationPreference.find({
-        userId: userId,
+        userId: new ObjectId(userId),
         // notificationType: notification.type
       });
       console.log('userId', userId);
@@ -40,64 +40,135 @@ export default (function (db, wss) {
       };
       // Get all active devices for push notifications
       const userDevices = await db.userDevice.find({
-        userId,
+        userId: new ObjectId(userId),
         isActive: true,
       });
+      console.log('=== CHANNEL SELECTION DEBUG ===');
+      console.log('userDevices found:', userDevices.length);
+      console.log('userDevices:', userDevices);
+      console.log('user.email:', user.email);
+      console.log('user.phoneNumber:', user.phoneNumber);
+      console.log('preferences.length:', preferences.length);
+      
       // Default channels if no preferences set
       let channels = ['web']; // Web is always on by default
+      
+      // If user has devices, add push to default channels
+      if (userDevices.length > 0) {
+        channels.push('push');
+        console.log('Added push channel - devices found');
+      } else {
+        console.log('No push channel - no devices found');
+      }
+      
       // If user has email, add it to default channels
       if (user.email) {
         channels.push('email');
+        console.log('Added email channel');
       }
       // If user has phone, add SMS to default channels
       if (user.phoneNumber) {
         channels.push('sms');
+        console.log('Added SMS channel');
       }
       // Override with user preferences if they exist
       if (preferences.length > 0) {
         channels = preferences.filter(pref => pref.isEnabled).map(pref => pref.channelType);
+        console.log('Overridden with user preferences:', channels);
       }
-      console.log('channels', channels);
-      // Send to each enabled channel
+      console.log('=== FINAL CHANNELS ===', channels);
+      // Send to each enabled channel - parallel processing
+      const channelPromises = [];
+
       for (const channel of channels) {
+        console.log(`=== PREPARING CHANNEL: ${channel} ===`);
         const sendFunc = channelRouters[channel];
-        if (sendFunc) {
-          try {
-            // For push notifications, we need to send to all devices
-            if (channel === 'push') {
-              for (const device of userDevices) {
-                await sendFunc(notification, user, device);
-              }
-            } else {
-              await sendFunc(notification, user);
-            }
-            // Update notification status
-            await db.notification.findByIdAndUpdate(notification._id, {
-              status: 'sent',
-              updatedAt: Date.now(),
-            });
-            // Log the sent notification
-            await db.notificationLog.create({
-              notificationId: notification._id,
-              userId: notification.userId,
-              channelType: channel,
-              status: 'sent',
-              sentAt: Date.now(),
-            });
-          } catch (error) {
-            console.error(`Error sending ${channel} notification:`, error);
-            // Log the failed notification
-            await db.notificationLog.create({
-              notificationId: notification._id,
-              userId: notification.userId,
-              channelType: channel,
-              status: 'failed',
-              error: error.message,
-              sentAt: Date.now(),
-            });
+        if (!sendFunc) {
+          channelPromises.push(Promise.resolve({
+            channel,
+            success: false,
+            error: 'No send function'
+          }));
+          continue;
+        }
+
+        if (channel === 'push') {
+          console.log(`Preparing push to ${userDevices.length} devices`);
+          // Each device as separate promise for true parallelism
+          for (const device of userDevices) {
+            channelPromises.push(
+              sendFunc(notification, user, device)
+                .then(() => {
+                  console.log(`Push sent successfully to device ${device.deviceId}`);
+                  return { channel: 'push', deviceId: device.deviceId, success: true };
+                })
+                .catch(err => {
+                  console.error(`Push failed for device ${device.deviceId}:`, err);
+                  return { channel: 'push', deviceId: device.deviceId, success: false, error: err.message };
+                })
+            );
           }
+        } else {
+          channelPromises.push(
+            sendFunc(notification, user)
+              .then(() => {
+                console.log(`${channel} notification sent successfully`);
+                return { channel, success: true };
+              })
+              .catch(err => {
+                console.error(`${channel} notification failed:`, err);
+                return { channel, success: false, error: err.message };
+              })
+          );
         }
       }
+
+      console.log(`=== PROCESSING ${channelPromises.length} PARALLEL OPERATIONS ===`);
+      const results = await Promise.allSettled(channelPromises);
+      
+      // Process results and create batch logs
+      const logs = [];
+      const channelSuccessMap = new Map();
+
+      results.forEach(({ status, value }) => {
+        if (status === 'fulfilled' && value) {
+          const logEntry = {
+            notificationId: notification._id,
+            userId: notification.userId,
+            channelType: value.channel,
+            status: value.success ? 'sent' : 'failed',
+            sentAt: Date.now()
+          };
+          
+          if (!value.success) {
+            logEntry.error = value.error;
+          }
+          
+          logs.push(logEntry);
+          
+          // Mark channel success
+          if (value.success) {
+            channelSuccessMap.set(value.channel, true);
+          }
+        }
+      });
+
+      // Fire and forget batch log insertion
+      if (logs.length > 0) {
+        setImmediate(() => db.notificationLog.insertMany(logs).catch(console.error));
+        console.log(`Scheduled ${logs.length} logs for batch insertion`);
+      }
+
+      const hasSuccessfulSend = channelSuccessMap.size > 0;
+      console.log(`=== PROCESSING COMPLETE - Success: ${hasSuccessfulSend} ===`);
+      
+      // Fire and forget status update
+      setImmediate(() => {
+        db.notification.findByIdAndUpdate(notification._id, {
+          status: hasSuccessfulSend ? 'sent' : 'failed',
+          updatedAt: Date.now(),
+        }).catch(console.error);
+      });
     } catch (error) {
       console.error('Error processing notification:', error);
       // Update notification status to failed

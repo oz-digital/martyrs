@@ -154,7 +154,7 @@ const formatTime = (timestamp) => {
 // Lifecycle
 onMounted(() => {
   const userId = auth.state.user._id;
-  if (userId && notifications.value.length === 0) {
+  if (userId && notifications.value.length === 0 && !loading.value) {
     getNotifications(userId);
   }
 });

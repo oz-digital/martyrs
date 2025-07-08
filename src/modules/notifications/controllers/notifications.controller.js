@@ -11,6 +11,51 @@ const NotificationsController = (db, wss, notificationService) => {
       return res.status(500).json({ message: err.message });
     }
   };
+  
+  // Create multiple notifications at once
+  const createBatch = async (req, res) => {
+    console.log('=== Batch notifications endpoint ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    
+    try {
+      const { notifications } = req.body;
+      
+      if (!notifications || !Array.isArray(notifications)) {
+        console.error('Invalid request: notifications array is required');
+        return res.status(400).json({ message: 'notifications array is required' });
+      }
+
+      console.log('Creating notifications count:', notifications.length);
+
+      // Create all notifications
+      const createdNotifications = await db.notification.insertMany(notifications);
+      console.log('Created notifications:', createdNotifications.map(n => n._id));
+      
+      // Fire and forget with error tracking
+      setImmediate(() => {
+        Promise.allSettled(createdNotifications.map(notif =>
+          notificationService.processNotification(notif)
+        )).then(results => {
+          const failures = results.filter(r => r.status === 'rejected');
+          if (failures.length > 0) {
+            console.error('Batch notification processing errors:', 
+              failures.map(f => f.reason?.message || f.reason));
+          }
+          console.log(`Batch processing complete: ${results.length - failures.length}/${results.length} successful`);
+        });
+      });
+      
+      return res.status(201).json({ 
+        message: 'Batch notifications created',
+        count: createdNotifications.length 
+      });
+    } catch (err) {
+      console.error('=== Batch notifications error ===');
+      console.error('Error:', err.message);
+      console.error('Stack:', err.stack);
+      return res.status(500).json({ message: err.message });
+    }
+  };
   // Get all notifications for a user
   const getUserNotifications = async (req, res) => {
     try {
@@ -52,7 +97,7 @@ const NotificationsController = (db, wss, notificationService) => {
     try {
       const userId = req.params.userId;
       // Update all unread notifications for this user
-      const result = await db.notification.updateMany({ userId: userId, status: 'unread' }, { status: 'read', updatedAt: Date.now() });
+      const result = await db.notification.updateMany({ userId: userId, status: { $in: ['sent', 'unread'] } }, { status: 'read', updatedAt: Date.now() });
       // Get all updated notifications for logging
       const updatedNotifications = await db.notification.find({
         userId: userId,
@@ -135,42 +180,6 @@ const NotificationsController = (db, wss, notificationService) => {
       const updatedPreferences = await db.notificationPreference.find({ userId });
       return res.json(updatedPreferences);
     } catch (err) {
-      return res.status(500).json({ message: err.message });
-    }
-  };
-  // Create multiple notifications at once
-  const createBatch = async (req, res) => {
-    console.log('=== Batch notifications endpoint ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
-    try {
-      const { notifications } = req.body;
-      
-      if (!notifications || !Array.isArray(notifications)) {
-        console.error('Invalid request: notifications array is required');
-        return res.status(400).json({ message: 'notifications array is required' });
-      }
-
-      console.log('Creating notifications count:', notifications.length);
-
-      // Create all notifications
-      const createdNotifications = await db.notification.insertMany(notifications);
-      console.log('Created notifications:', createdNotifications.map(n => n._id));
-      
-      // Trigger notification sending process for each notification (fire and forget)
-      createdNotifications.forEach((notif, index) => {
-        console.log(`Processing notification ${index + 1}/${createdNotifications.length}:`, notif._id);
-        notificationService.processNotification(notif);
-      });
-      
-      return res.status(201).json({ 
-        message: 'Batch notifications created',
-        count: createdNotifications.length 
-      });
-    } catch (err) {
-      console.error('=== Batch notifications error ===');
-      console.error('Error:', err.message);
-      console.error('Stack:', err.stack);
       return res.status(500).json({ message: err.message });
     }
   };

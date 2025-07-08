@@ -22,10 +22,21 @@ function initializeNotifications(app, db, wss, origins, publicPath) {
     notificationsRoutes(app, db, wss, origins, publicPath, notificationService);
   }
   console.log('[DEBUG] WSS in notification init:', wss);
-  // Set up a scheduler to process pending notifications
-  setInterval(() => {
-    notificationService.processPendingNotifications();
-  }, 60000); // Every minute
+  // Set up a scheduler to process pending notifications with overlap protection
+  let isProcessing = false;
+
+  setInterval(async () => {
+    if (isProcessing) return;
+    isProcessing = true;
+
+    try {
+      await notificationService.processPendingNotifications();
+    } catch (error) {
+      console.error('Error in processPendingNotifications:', error);
+    } finally {
+      isProcessing = false;
+    }
+  }, 10000); // Every 10 seconds
 }
 export const models = {
   NotificationModel,
