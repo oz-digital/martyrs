@@ -1,13 +1,13 @@
 import baseConfig from './vite.config.base.js';
-import clientConfig from './vite.config.client.js';
-import serverConfig from './vite.config.server.js';
-import spaConfig from './vite.config.spa.js';
-import ssrConfig from './vite.config.ssr.js';
-export { baseConfig, clientConfig, serverConfig, spaConfig, ssrConfig };
+import ssrClientConfig from './vite.config.ssr.client.js';
+import apiConfig from './vite.config.api.js';
+import spaClientConfig from './vite.config.spa.client.js';
+import ssrServerConfig from './vite.config.ssr.server.js';
+export { baseConfig, ssrClientConfig, apiConfig, spaClientConfig, ssrServerConfig };
 export default {
   baseConfig,
-  clientConfig,
-  serverConfig,
-  spaConfig,
-  ssrConfig,
+  ssrClientConfig,
+  apiConfig,
+  spaClientConfig,
+  ssrServerConfig,
 };

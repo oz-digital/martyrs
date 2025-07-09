@@ -34,6 +34,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/globals/globals.server.js'),
         resolve(__dirname, './src/modules/organizations/organizations.server.js'),
         resolve(__dirname, './src/modules/products/products.server.js'),
+        resolve(__dirname, './src/modules/inventory/inventory.server.js'),
         resolve(__dirname, './src/modules/events/events.server.js'),
         resolve(__dirname, './src/modules/files/files.server.js'),
         resolve(__dirname, './src/modules/chats/chats.server.js'),

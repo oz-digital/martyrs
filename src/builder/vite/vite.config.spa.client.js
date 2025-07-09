@@ -23,7 +23,7 @@ export default projectRoot => {
     },
     // Add HTML plugin for SPA
     plugins: [
-      { createHtmlPlugin }.createHtmlPlugin({
+      createHtmlPlugin({
         minify: isProd,
         inject: {
           data: {

@@ -521,7 +521,7 @@ const submitForm = async () => {
     const formData = {
       ...form,
       artist: form.artists.length > 0 ? (form.artists[0]._id || form.artists[0]) : null,
-      album: form.albums.length > 0 ? (form.albums[0]._id || form.albums[0]) : null,
+      album: form.albums.length > 0 ?? form.albums.map(album => album._id || genre),
       genres: form.genres.map(genre => genre._id || genre)
     };
     

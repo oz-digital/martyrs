@@ -1,13 +1,13 @@
 import baseConfig from './webpack.config.base.js';
-import clientConfig from './webpack.config.client.js';
-import serverConfig from './webpack.config.server.js';
-import spaConfig from './webpack.config.spa.js';
-import ssrConfig from './webpack.config.ssr.js';
+import ssrClientConfig from './webpack.config.ssr.client.js';
+import apiConfig from './webpack.config.api.js';
+import spaClientConfig from './webpack.config.spa.client.js';
+import ssrServerConfig from './webpack.config.ssr.server.js';
 
 export default {
   baseConfig,
-  clientConfig,
-  serverConfig,
-  spaConfig,
-  ssrConfig,
+  ssrClientConfig,
+  apiConfig,
+  spaClientConfig,
+  ssrServerConfig,
 };

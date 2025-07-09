@@ -12,21 +12,35 @@ export function renderAndMountApp({ createApp }) {
       const initialStateElement = document.querySelector('[data-state]');
 
       if (initialStateElement && initialStateElement.innerHTML.trim() !== '') {
-        initialState = JSON.parse(initialStateElement.innerHTML.trim());
+        const stateContent = initialStateElement.innerHTML.trim();
+        
+        // Validate JSON format before parsing
+        if (stateContent.startsWith('{') && stateContent.endsWith('}')) {
+          initialState = JSON.parse(stateContent);
+          
+          // Basic validation of state structure
+          if (typeof initialState !== 'object' || initialState === null) {
+            throw new Error('Invalid state format');
+          }
+        } else {
+          throw new Error('Invalid JSON format');
+        }
       }
     } catch (error) {
       console.error('Failed to parse user state', error);
+      initialState = null;
     }
 
     if (initialState) {
       // Применяем начальное состояние ко всем модулям
       store.setInitialState(initialState);
-    }
-
-    console.log('auth', initialState.auth);
-    if (initialState?.auth?.access?.token) {
-      setAuthToken(initialState.auth.access.token);
+      
+      console.log('auth', initialState?.auth);
+      if (initialState?.auth?.access?.token) {
+        setAuthToken(initialState.auth.access.token);
+      }
     } else {
+      // Если нет initialState, сбрасываем авторизацию
       store.auth.actions.resetState();
       // await store.auth.removeCookie('user');
       await store.auth.actions.logout();
@@ -68,7 +82,12 @@ export async function render({ url, cookies, createApp }) {
   let user = null;
 
   if (cookies.user) {
-    user = JSON.parse(cookies.user);
+    try {
+      user = JSON.parse(cookies.user);
+    } catch (error) {
+      console.error('Failed to parse user cookie', error);
+      user = null;
+    }
   }
 
   if (user) {

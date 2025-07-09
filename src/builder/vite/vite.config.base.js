@@ -42,9 +42,8 @@ export default projectRoot => {
               name: 'bundle-analyzer',
               configResolved(config) {
                 // Динамически импортируем rollup-plugin-visualizer только когда нужно
-                const { visualizer } = rollupPluginVisualizer;
                 config.plugins.push(
-                  visualizer({
+                  rollupPluginVisualizer({
                     open: true,
                     filename: 'stats.html',
                     gzipSize: true,

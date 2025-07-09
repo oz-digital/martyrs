@@ -2,7 +2,7 @@ import compression from 'compression';
 import fs from 'fs';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { createHtmlRenderer } from '../ssr/ssr-render-html.js';
+import { createHtmlRenderer } from '../ssr/ssr-render-html.vite.js';
 // Цвета для консоли
 const colors = {
   reset: '\x1b[0m',
@@ -13,7 +13,7 @@ const colors = {
   yellow: '\x1b[33m',
   red: '\x1b[31m',
 };
-export default (function createSsrDevServer(projectRoot, { clientConfig, apiConfig, ssrConfig, createServer }) {
+export default (function createSsrDevServer(projectRoot, { clientConfig, apiConfig, ssrConfig }) {
   let serverInstance;
   let viteDevServer;
   let rendererInstance;
@@ -26,7 +26,8 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
       let ssrEntry;
       try {
         // Используем Vite для трансформации и загрузки SSR-скрипта
-        ssrEntry = await vite.ssrLoadModule(ssrConfig.entry);
+        const ssrEntryPath = ssrConfig.build.rollupOptions.input;
+        ssrEntry = await vite.ssrLoadModule(ssrEntryPath);
       } catch (error) {
         console.error(colors.red + 'SSR compilation error' + colors.reset);
         console.error(error);
@@ -43,8 +44,10 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
         const bodyTags = [];
         // Добавляем основной скрипт клиентской части
         bodyTags.push(`<script type="module" src="/@vite/client"></script>`);
-        bodyTags.push(`<script type="module" src="${clientConfig.entry}"></script>`);
-        const initialState = JSON.stringify(state);
+        const clientEntryPath = clientConfig.build.rollupOptions.input.main;
+        const relativePath = path.relative(projectRoot, clientEntryPath);
+        bodyTags.push(`<script type="module" src="/${relativePath}"></script>`);
+        const initialState = JSON.stringify(state).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
         // Рендерим финальный HTML
         const completeHtml = await renderHtml({
           appHtml: html,
@@ -69,10 +72,12 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
     if (serverInstance) {
       serverInstance.close();
     }
-    // Очистка кэша модулей
-    Object.keys(require.cache).forEach(id => {
-      delete require.cache[id];
-    });
+    // Очистка кэша модулей (для CJS модулей)
+    if (typeof require !== 'undefined' && require.cache) {
+      Object.keys(require.cache).forEach(id => {
+        delete require.cache[id];
+      });
+    }
     try {
       // Создаем Vite Dev Server
       if (!viteDevServer) {
@@ -80,14 +85,27 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
           root: projectRoot,
           server: {
             middlewareMode: true,
-            hmr: true,
+            hmr: {
+              port: 24678, // Используем отдельный порт для HMR
+            },
             watch: {
-              usePolling: true,
-              interval: 100,
+              usePolling: false, // Отключаем polling
+              ignored: ['**/node_modules/**', '**/builds/**'], // Игнорируем ненужные директории
             },
           },
           appType: 'custom',
           logLevel: 'info',
+          // Настройки для SSR
+          ssr: {
+            noExternal: [
+              // Обрабатываем только клиентские зависимости через Vite
+              'vue', 'vue-router', 'vuex', 'vue-meta', '@vue/server-renderer'
+            ],
+            external: [
+              // Исключаем серверные Node.js модули
+              'jsonwebtoken', 'bcryptjs', 'nodemailer', 'crypto'
+            ]
+          },
           // Используем настройки из клиентского конфига
           ...clientConfig,
         });
@@ -95,10 +113,19 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
       // Создаем рендерер, если его ещё нет
       if (!rendererInstance) {
         rendererInstance = createDevRenderer(() => {
-          console.log(colors.green + 'Client updated, triggering reload...' + colors.reset);
+          // Теперь этот callback не должен вызываться постоянно
+          console.log(colors.green + 'Template updated' + colors.reset);
         });
       }
-      let { app, server, env } = await createServer();
+      // Динамически импортируем серверный модуль через Vite
+      const serverPath = apiConfig.build.rollupOptions.input;
+      const serverModule = await viteDevServer.ssrLoadModule(serverPath);
+      
+      if (typeof serverModule.createServer !== 'function') {
+        throw new Error("Экспорт createServer не найден");
+      }
+      
+      let { app, server, env } = await serverModule.createServer();
       // Применяем Vite middleware
       app.use(viteDevServer.middlewares);
       // Middleware для SSR
@@ -125,16 +152,22 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
       await server.listen(port);
       console.log(`${colors.greenBright}Server started at localhost:${port}${colors.reset}\n`);
       // Настройка наблюдения за изменениями серверных файлов
-      const watcher = fs.watch(path.dirname(createServer), { recursive: true });
+      const watcher = fs.watch(path.dirname(serverPath), { recursive: true });
+      let debounceTimer;
       watcher.on('change', async (eventType, filename) => {
         if (filename && filename.endsWith('.js')) {
           console.log(`${colors.blue}Server file changed: ${filename}, updating...${colors.reset}`);
-          try {
-            await startServer();
-          } catch (err) {
-            console.error(colors.red + 'Server restart failed' + colors.reset);
-            console.error(err);
-          }
+          
+          // Debounce для предотвращения множественных перезагрузок
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(async () => {
+            try {
+              await startServer();
+            } catch (err) {
+              console.error(colors.red + 'Server restart failed' + colors.reset);
+              console.error(err);
+            }
+          }, 500);
         }
       });
     } catch (err) {

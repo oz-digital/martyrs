@@ -24,7 +24,7 @@ export default function(db) {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .pattern(/^https?:\/\/.+/, 'Invalid cover URL format')
+        .pattern(/^\/(?!\/)/, 'Only relative URLs starting with "/" are allowed'),
     },
     tracks: {
       rule: 'optional',

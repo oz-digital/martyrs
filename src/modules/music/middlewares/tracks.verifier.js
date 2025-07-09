@@ -32,13 +32,13 @@ export default function(db) {
       validator: Validator.schema()
         .string()
         .required('File URL is required')
-        .pattern(/^https?:\/\/.+/, 'Invalid file URL format')
+        .pattern(/^\/(?!\/)/, 'Only relative URLs starting with "/" are allowed'),
     },
     coverUrl: {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .pattern(/^https?:\/\/.+/, 'Invalid cover URL format')
+        .pattern(/^\/(?!\/)/, 'Only relative URLs starting with "/" are allowed'),
     },
     duration: {
       rule: 'optional',
@@ -122,21 +122,21 @@ export default function(db) {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .pattern(/^https?:\/\/.+/, 'Invalid file URL format')
+        .pattern(/^\/(?!\/)/, 'Only relative URLs starting with "/" are allowed'),
     },
     coverUrl: {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .pattern(/^https?:\/\/.+/, 'Invalid cover URL format')
+        .pattern(/^\/(?!\/)/, 'Only relative URLs starting with "/" are allowed'),
     },
-    duration: {
-      rule: 'optional',
-      validator: Validator.schema()
-        .number()
-        .min(0, 'Duration cannot be negative')
-        .max(3600, 'Duration cannot exceed 1 hour')
-    },
+    // duration: {
+    //   rule: 'optional',
+    //   validator: Validator.schema()
+    //     .number()
+    //     .min(0, 'Duration cannot be negative')
+    //     .max(3600, 'Duration cannot exceed 1 hour')
+    // },
     genre: {
       rule: 'optional',
       validator: Validator.schema()

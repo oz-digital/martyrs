@@ -18,17 +18,6 @@
       </div>
     </header>
 
-    <Tab
-      v-model:selected="tab"
-      :tabs="[
-        { name: 'All', value: 'all' },
-        { name: 'Active', value: 'active' },
-        { name: 'Completed', value: 'completed' },
-        { name: 'Canceled', value: 'canceled' }
-      ]"
-      class="mn-b-small o-hidden h5 radius-big bg-light"
-    />
-
     <Feed
       :search="true"
       :states="{
@@ -44,21 +33,18 @@
         ...(tab !== 'all' && { status: tab })
       }"
       v-slot="{ items }"
-    >
+    > 
       <GanttChart
-        :items="items"
-        :startDate="calendarStartDate"
-        :endDate="calendarEndDate"
-        startDateKey="startDate"
-        endDateKey="endDate"
-        titleKey="title"
-        statusKey="status"
-        idKey="_id"
-        class="mn-b-small"
-        @item-click="viewRentDetails"
-        @load-more="loadMoreData"
-      >
-      </GanttChart>
+        v-model:view="view"
+        v-model:date="date"
+        v-model:dateRange="dateRange"
+        :items="sampleData"
+        :loading="loading"
+        @load-more="handleLoadMore"
+        @item-click="handleItemClick"
+        @today="handleToday"
+      />
+      {{items}}
 
      <!--  <CardRent
         v-else
@@ -72,11 +58,14 @@
 </template>
 
 <script setup>
+import dayjs from 'dayjs'
+
 import Tab from '@martyrs/src/components/Tab/Tab.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 import CardRent from '@martyrs/src/modules/rents/views/components/blocks/CardRent.vue';
-import GanttChart from '@martyrs/src/modules/rents/views/components/pages/GanttChart.vue';
+
+import GanttChart from '@martyrs/src/modules/rents/views/components/pages/Gant/GanttChart.vue';
 
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -86,10 +75,109 @@ import * as rents from '@martyrs/src/modules/rents/views/store/rents.store';
 const route = useRoute();
 const router = useRouter();
 
-const tab = ref(route?.query ? route.query.tab : 'all');
 const isCalendarView = ref(true);
 
+// Sample data
+const sampleData = ref([
+  {
+    id: 2,
+    title: 'Product A',
+    startDate: dayjs().add(1, 'days').toDate(),
+    endDate: dayjs().add(5, 'days').toDate(),
+    status: 'active'
+  },
+  {
+    id: 3,
+    title: 'Product B',
+    startDate: dayjs().subtract(1, 'days').toDate(),
+    endDate: dayjs().add(2, 'days').toDate(),
+    status: 'completed'
+  },
+  {
+    id: 4,
+    title: 'Product C',
+    startDate: dayjs().toDate(),
+    endDate: dayjs().add(4, 'days').toDate(),
+    status: 'canceled'
+  },
+  // Additional test data for hour view
+  {
+    id: 5,
+    title: 'Product D',
+    startDate: dayjs().add(2, 'days').add(8, 'hours').toDate(),
+    endDate: dayjs().add(2, 'days').add(16, 'hours').toDate(),
+    status: 'active'
+  },
+  {
+    id: 6,
+    title: 'Product E',
+    startDate: dayjs().add(1, 'days').add(14, 'hours').toDate(),
+    endDate: dayjs().add(2, 'days').add(10, 'hours').toDate(),
+    status: 'completed'
+  }
+])
+
 // Set initial date range - current month plus 15 days before and 45 days after
+const view = ref('days')
+const date = ref(new Date())
+const loading = ref(false)
+
+const dateRange = computed(() => {
+  const d = dayjs(date.value)
+  
+  switch (view.value) {
+    case 'hours':
+      return {
+        start: d.subtract(1, 'days').startOf('day').toDate(),
+        end: d.add(6, 'days').endOf('day').toDate()
+      }
+      
+    case 'days':
+      return {
+        start: d.startOf('month').toDate(),
+        end: d.endOf('month').toDate()
+      }
+      
+    case 'weeks':
+      return {
+        start: d.subtract(1, 'month').startOf('week').toDate(),
+        end: d.add(2, 'months').endOf('week').toDate()
+      }
+      
+    default:
+      return {
+        start: d.startOf('month').toDate(),
+        end: d.endOf('month').toDate()
+      }
+  }
+})
+
+// Handle load more
+const handleLoadMore = async (direction) => {
+  console.log('Loading more:', direction)
+  
+  loading.value = true
+  
+  // Simulate API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Add more items if needed
+      loading.value = false
+      resolve()
+    }, 1000)
+  })
+}
+
+// Handle item click
+const handleItemClick = (item) => {
+  console.log('Item clicked:', item)
+}
+
+// Handle today
+const handleToday = () => {
+  date.value = new Date()
+}
+
 const today = new Date();
 const calendarStartDate = ref(new Date(today));
 calendarStartDate.value.setDate(today.getDate() - 30);

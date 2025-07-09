@@ -9,7 +9,7 @@ import { merge } from 'webpack-merge';
 import { StatsWriterPlugin } from 'webpack-stats-plugin';
 
 import template from '../templates/page.js';
-import getClientConfig from './webpack.config.client.js';
+import getClientConfig from './webpack.config.ssr.client.js';
 const fs = { promises }.promises;
 const isProd = process.env.NODE_ENV === 'production';
 

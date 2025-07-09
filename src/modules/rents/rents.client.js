@@ -6,7 +6,7 @@ import { createRentsRoutes } from './views/router/rents.router.js';
 
 // Views
 import CardRent from './views/components/blocks/CardRent.vue';
-import GanttChart from './views/components/pages/GanttChart.vue';
+import GanttChart from './views/components/pages/Gant/GanttChart.vue';
 import Rents from './views/components/pages/Rents.vue';
 import RentsEdit from './views/components/pages/RentsEdit.vue';
 

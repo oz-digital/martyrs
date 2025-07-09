@@ -68,12 +68,10 @@ function addRoutes(router, config) {
   if (parentName) {
     const parentRoute = router.getRoutes().find(route => route.name === parentName);
     if (!parentRoute) {
-      throw new Error(`Родительский маршрут "${parentName}" не найден`);
+      throw new Error(`Parent route "${parentName}" not found`);
     }
 
     if (basePath) {
-      console.log('addRoutes: Adding intermediate route', `${routeNamePrefix}${basePath.charAt(0).toUpperCase() + basePath.slice(1)}Intermediate`, 'to parent', parentName);
-      console.log('Routes before adding:', router.getRoutes().filter(r => r.name && r.name.includes('OrganizationOrders')).map(r => r.name));
       const intermediateRoute = {
         path: basePath,
         component,
@@ -82,7 +80,6 @@ function addRoutes(router, config) {
         children: finalChildren,
       };
       router.addRoute(parentName, intermediateRoute);
-      console.log('Routes after adding:', router.getRoutes().filter(r => r.name && r.name.includes('OrganizationOrders')).map(r => r.name));
     } else {
       filteredRoutes.forEach(route => {
         router.addRoute(parentName, route);
@@ -92,7 +89,7 @@ function addRoutes(router, config) {
     const rootRouteName = `${routeNamePrefix}Root`;
     const existingRoute = router.getRoutes().find(route => route.name === rootRouteName);
     if (existingRoute) {
-      throw new Error(`Маршрут "${rootRouteName}" уже существует`);
+      throw new Error(`Route "${rootRouteName}" is already existed`);
     }
 
     const rootRoute = {
@@ -104,7 +101,7 @@ function addRoutes(router, config) {
     };
     router.addRoute(rootRoute);
   } else {
-    throw new Error('Необходимо указать basePath');
+    throw new Error('Need to specify basePath');
   }
 }
 

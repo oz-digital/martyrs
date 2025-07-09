@@ -25,6 +25,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/organizations/organizations.client.js'),
         resolve(__dirname, './src/modules/events/events.client.js'),
         resolve(__dirname, './src/modules/products/products.client.js'),
+        resolve(__dirname, './src/modules/inventory/inventory.client.js'),
         resolve(__dirname, './src/modules/marketplace/marketplace.client.js'),
         resolve(__dirname, './src/modules/files/files.client.js'),
         resolve(__dirname, './src/modules/chats/chats.client.js'),

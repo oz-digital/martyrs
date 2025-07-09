@@ -2,10 +2,9 @@ import fs from 'fs';
 import lodash from 'lodash';
 import path from 'path';
 import * as purgecss from 'purgecss';
-import * as workboxBuild from 'workbox-build';
+import { InjectManifest } from 'workbox-webpack-plugin';
 import baseConfig from './vite.config.base.js';
 const { merge } = lodash;
-const { generateSW } = workboxBuild;
 export default projectRoot => {
   const isProd = process.env.NODE_ENV === 'production';
   // Базовая конфигурация для клиентской части
@@ -24,12 +23,38 @@ export default projectRoot => {
           entryFileNames: '[name].[hash].js',
           chunkFileNames: '[name].[hash].js',
           assetFileNames: '[name].[hash].[ext]',
-          // Настройки разделения кода
+          // Оптимизированное разделение кода для уменьшения размера бандла
           manualChunks(id) {
+            // Вендорные библиотеки
             if (id.includes('node_modules')) {
-              return 'vendors';
+              // Vue экосистема
+              if (id.includes('vue') || id.includes('@vue')) {
+                return 'vue-vendor';
+              }
+              // Martyrs модули
+              if (id.includes('@martyrs') || id.includes('@ozdao')) {
+                return 'martyrs-vendor';
+              }
+              // UI библиотеки
+              if (id.includes('datepicker') || id.includes('chart') || id.includes('ui')) {
+                return 'ui-vendor';
+              }
+              // Остальные вендорные пакеты
+              return 'vendor';
+            }
+            // Модули приложения
+            if (id.includes('src/modules/')) {
+              const match = id.match(/src\/modules\/([^\/]+)/);
+              if (match) {
+                return `module-${match[1]}`;
+              }
             }
           },
+        },
+        // Настройки tree-shaking
+        treeshake: {
+          preset: 'recommended',
+          moduleSideEffects: false,
         },
       },
       // Оптимизация в production
@@ -73,23 +98,36 @@ export default projectRoot => {
             const purged = await new purgecss.PurgeCSS().purge({
               content: [
                 path.join(projectRoot, 'src/**/*.vue'),
+                path.join(projectRoot, 'src/**/*.js'),
                 path.join(projectRoot, 'martyrs/src/**/*.vue'),
+                path.join(projectRoot, 'martyrs/src/**/*.js'),
+                path.join(projectRoot, '/node_modules/@ozdao/martyrs/**/*.css'),
+                path.join(projectRoot, '/node_modules/@ozdao/martyrs/**/*.scss'),
                 path.join(projectRoot, '/node_modules/@ozdao/martyrs/src/**/*.vue'),
+                path.join(projectRoot, '/node_modules/@ozdao/martyrs/src/**/*.js'),
                 path.join(projectRoot, '/node_modules/@vuepic/vue-datepicker/**/*.js'),
               ],
               css: [{ raw: content }],
               safelist: {
                 standard: ['safelisted', /^html/, /^:root/],
                 deep: [/^safelisted-deep-/, /^html/, /^:root/],
-                greedy: [/data-v-.*/],
+                greedy: [/^data-v-/, /\[data-v-.*\]/, /\[data-v-[a-zA-Z0-9]*\]/],
               },
+              rejected: true,
               extractors: [
                 {
-                  extractor: content => {
-                    // fix for escaped tailwind prefixes (sm:, lg:, etc)
-                    return content.match(/[A-Za-z0-9-_:/]+/g) || [];
+                  extractor: (content) => {
+                    // Ищем классы и селекторы с префиксами Tailwind
+                    const normalClasses = content.match(/[A-Za-z0-9-_:\/]+/g) || [];
+                    
+                    // Дополнительно ищем Vue атрибуты data-v-*
+                    // Это важно для правильного распознавания scoped стилей
+                    const scopedAttrs = content.match(/\[data-v-[a-zA-Z0-9]*\]/g) || [];
+                    
+                    // Объединяем результаты
+                    return [...normalClasses, ...scopedAttrs];
                   },
-                  extensions: ['vue'],
+                  extensions: ['vue', 'js', 'css', 'scss'],
                 },
               ],
             });
@@ -99,9 +137,9 @@ export default projectRoot => {
           }
         },
       },
-      // Workbox плагин для PWA
+      // Workbox плагин для PWA (InjectManifest как в rspack)
       {
-        name: 'vite-plugin-workbox',
+        name: 'vite-plugin-workbox-inject',
         apply: 'build',
         closeBundle: async () => {
           if (!isProd) {
@@ -113,17 +151,22 @@ export default projectRoot => {
             fs.writeFileSync(path.join(path.resolve(projectRoot, 'builds/web/client'), 'sw.js'), devSwContent);
             return;
           }
-          // Для продакшена используем полноценный Workbox
-          const { swDest, count, size, warnings } = await generateSW({
-            globDirectory: path.resolve(projectRoot, 'builds/web/client'),
+          // Для продакшена используем InjectManifest
+          const { InjectManifest } = await import('workbox-webpack-plugin');
+          const injectManifest = new InjectManifest({
+            swSrc: path.resolve(projectRoot, '../public/sw.js'),
             swDest: path.join(path.resolve(projectRoot, 'builds/web/client'), 'sw.js'),
-            clientsClaim: true,
-            skipWaiting: true,
+            exclude: [/\.html$/, /\.map$/],
+            manifestTransforms: [
+              (manifestEntries) => {
+                const manifest = manifestEntries.filter(entry => {
+                  return !entry.url.match(/\.(html|map)$/) && entry.size < 5 * 1024 * 1024;
+                });
+                return { manifest };
+              }
+            ]
           });
-          if (warnings.length > 0) {
-            console.warn('Workbox warnings: ', warnings);
-          }
-          console.log(`Generated service worker at ${swDest}, which will precache ${count} files (${size} bytes)`);
+          await injectManifest.apply();
         },
       },
       // Плагин для записи статистики сборки
@@ -155,6 +198,43 @@ export default projectRoot => {
           }
           // Записываем статистику в файл
           fs.writeFileSync(path.join(path.resolve(projectRoot, 'builds/web/client'), 'stats.json'), JSON.stringify(stats, null, 2));
+        },
+      },
+      // Плагин для генерации PWA манифеста
+      {
+        name: 'vite-plugin-pwa-manifest',
+        apply: 'build',
+        closeBundle: async () => {
+          if (!isProd) return;
+          
+          const manifest = {
+            name: process.env.APP_NAME || 'OZDAO App',
+            short_name: process.env.APP_SHORT_NAME || 'OZDAO',
+            description: process.env.APP_DESCRIPTION || 'OZDAO Progressive Web App',
+            theme_color: '#000000',
+            background_color: '#ffffff',
+            display: 'standalone',
+            orientation: 'portrait',
+            scope: '/',
+            start_url: '/',
+            icons: [
+              {
+                src: '/favicon/android-chrome-192x192.png',
+                sizes: '192x192',
+                type: 'image/png'
+              },
+              {
+                src: '/favicon/android-chrome-512x512.png',
+                sizes: '512x512',
+                type: 'image/png'
+              }
+            ]
+          };
+          
+          fs.writeFileSync(
+            path.join(path.resolve(projectRoot, 'builds/web/client'), 'manifest.json'),
+            JSON.stringify(manifest, null, 2)
+          );
         },
       },
     ],
