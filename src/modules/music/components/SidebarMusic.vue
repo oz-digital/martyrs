@@ -9,10 +9,6 @@
     class="flex-child-shrink-0"
   >
     <div class="pd-thin">
-      <div class="music-logo mn-b-medium">
-        <h3 class=" mn-b-small">Music</h3>
-      </div>
-      
       <nav class="music-nav mn-b-medium">
         <ul class="flex flex-column gap-small">
           <li>
@@ -47,7 +43,7 @@
       
       <div class="music-playlists" v-if="isAuthenticated">
         <div class="flex-between flex mn-b-small">
-          <h4 class="t-grey t-medium">YOUR PLAYLISTS</h4>
+          <h4 class="t-transp t-medium">YOUR PLAYLISTS</h4>
           <Button 
             @click="showCreatePlaylistModal = true" 
             class="bg-transparent cursor-pointer pd-micro radius-small hover-bg-dark"
@@ -108,17 +104,18 @@ import Sidebar from '@martyrs/src/modules/globals/views/components/partials/Side
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
-import PlaylistForm from '../forms/PlaylistForm.vue';
+
+import PlaylistForm from './forms/PlaylistForm.vue';
 
 // Icons 
-import IconHome from '@martyrs/src/modules/icons/navigation/IconHome.vue';
+import IconHome from '@martyrs/src/modules/icons/entities/IconHome.vue';
 import IconSearch from '@martyrs/src/modules/icons/navigation/IconSearch.vue';
-import IconLibrary from '@martyrs/src/modules/icons/entities/IconFolder.vue';
+import IconLibrary from '@martyrs/src/modules/icons/navigation/IconPlus.vue';
 import IconPlus from '@martyrs/src/modules/icons/navigation/IconPlus.vue';
 
 // Store
 import { state as authState } from '@martyrs/src/modules/auth/views/store/auth.js';
-import { state as playlistsState, actions as playlistsActions } from '../../store/playlists.js';
+import { state as playlistsState, actions as playlistsActions } from '..//store/playlists.js';
 
 const props = defineProps({
   stateSidebar: {

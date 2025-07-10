@@ -63,10 +63,14 @@ function initializeMusic({ app, db, wss, origins, publicPath }) {
   const { getInstance } = globalsabac;
   const abac = getInstance(db);
   musicPolicies(abac);
-  // Set up WebSocket handlers if WebSocketManager is available
-  const { WebSocketManager } = globalswebsocket;
-  if (global.webSocketManager && global.webSocketManager instanceof WebSocketManager) {
-    global.webSocketManager.registerModule('music-streaming', StreamingHandler(db).handleStreamingMessage);
+  // Set up WebSocket handlers if wss is provided
+  if (wss) {
+    console.log('Music Server: Registering music-streaming WebSocket handler');
+    const handler = StreamingHandler(db);
+    wss.registerModule('music-streaming', handler.handleStreamingMessage);
+    console.log('Music Server: WebSocket handler registered successfully');
+  } else {
+    console.log('Music Server: WebSocket server (wss) not provided, streaming handler not registered');
   }
   const musicCache = new Cache({ ttlSeconds: 60 * 15 }); // 15 minute cache
   const musicLogger = new Logger(db);

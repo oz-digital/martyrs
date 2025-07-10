@@ -60,6 +60,11 @@ export default  class CRUDPolicies {
       );
     }
     
+    // Проверяем еще раз, чтобы убедиться что не отключено
+    if (options.enabled === false) {
+      return null;
+    }
+    
     // Дефолтный ABAC middleware
     return this.abac.middleware(this.crud.modelName, action, options);
   }

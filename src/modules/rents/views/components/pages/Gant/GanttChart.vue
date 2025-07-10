@@ -7,18 +7,19 @@
       @update:view="$emit('update:view', $event)"
       @update:date="$emit('update:date', $event)"
       @today="$emit('today')"
+      @load-more="$emit('load-more', $event)"
     />
     
     <div 
-      class="gantt-container scroller o-scroll bg-white radius-small br-solid br-1px br-grey-transp"
+      class="gantt-container scroller o-scroll bg-white radius-small br-solid br-1px br-black-transp-10"
       ref="container"
       @scroll="handleScroll"
     >
       <div class="gantt-content">
         <!-- Header -->
-        <div class="gantt-header pos-sticky top-0 z-index-2 bg-white br-b br-solid br-grey-transp">
+        <div class="gantt-header pos-sticky top-0 z-index-2 bg-white br-b br-solid br-black-transp-10">
           <div class="flex">
-            <div class="gantt-product-col pos-sticky left-0 z-index-3 bg-light pd-small br-r br-solid br-grey-transp">
+            <div class="gantt-product-col pos-sticky left-0 z-index-3 bg-light pd-small br-r br-solid br-black-transp-10">
               Product
             </div>
             
@@ -26,7 +27,7 @@
               <div
                 v-for="(cell, i) in visibleCells"
                 :key="cell.key"
-                class="gantt-cell br-r br-solid br-grey-transp t-center pd-small"
+                class="gantt-cell br-r br-solid br-black-transp-10 t-center pd-small"
                 :class="getCellClass(cell)"
                 :style="{ width: cellWidth + 'px' }"
               >
@@ -41,11 +42,11 @@
           <div 
             v-for="(group, i) in groups" 
             :key="group.key" 
-            class="gantt-row flex br-b br-solid br-grey-transp"
+            class="gantt-row flex br-b br-solid br-black-transp-10"
             :class="i % 2 === 0 ? 'bg-light-transp' : ''"
             :style="{ height: rowHeight + 'px' }"
           >
-            <div class="gantt-product-col pos-sticky left-0 z-index-1 bg-white pd-small br-r br-solid br-grey-transp">
+            <div class="gantt-product-col pos-sticky left-0 z-index-1 bg-white pd-small br-r br-solid br-black-transp-10">
               <div class="t-medium mn-b-micro">{{ group.title }}</div>
               <div class="t-micro" :class="statusClass(group)">{{ group.status }}</div>
             </div>
@@ -56,7 +57,7 @@
                 <div
                   v-for="cell in visibleCells"
                   :key="cell.key + '-bg'"
-                  class="gantt-cell h-100 br-r br-solid br-grey-transp"
+                  class="gantt-cell h-100 br-r br-solid br-black-transp-10"
                   :class="getCellClass(cell)"
                   :style="{ width: cellWidth + 'px' }"
                 />
@@ -128,7 +129,6 @@ const emit = defineEmits([
 // State
 const container = ref(null)
 const scrollLeft = ref(0)
-const loadPromise = ref(null)
 
 // Cell width
 const cellWidth = computed(() => {
@@ -200,19 +200,24 @@ const visibleCells = computed(() => {
 // Cache for bars calculation
 const barsCache = new WeakMap()
 
+// Helper function to get nested property value
+const getNestedValue = (obj, path) => {
+  return path.split('.').reduce((current, key) => current?.[key], obj)
+}
+
 // Groups
 const groups = computed(() => {
   const map = new Map()
   
   props.items.forEach(item => {
-    const key = item[props.groupBy] || 'Ungrouped'
+    const key = getNestedValue(item, props.groupBy) || 'Ungrouped'
     
     if (!map.has(key)) {
       map.set(key, {
         key,
         title: key,
         items: [],
-        status: item[props.statusKey]
+        status: getNestedValue(item, props.statusKey)
       })
     }
     
@@ -271,8 +276,8 @@ const getBars = (group) => {
   
   group.items.forEach(item => {
     try {
-      const start = item[props.startKey]
-      const end = item[props.endKey]
+      const start = getNestedValue(item, props.startKey)
+      const end = getNestedValue(item, props.endKey)
       
       if (!start || !end) return
       
@@ -280,12 +285,22 @@ const getBars = (group) => {
       const e = end instanceof Date ? new Date(end) : dayjs(end).toDate()
       
       if (isNaN(s.getTime()) || isNaN(e.getTime())) {
-        console.warn(`Invalid dates for item ${item[props.idKey]}:`, { start, end })
+        console.warn(`Invalid dates for item ${getNestedValue(item, props.idKey)}:`, { start, end })
         return
       }
     
+    console.log('Processing item:', {
+      id: getNestedValue(item, props.idKey),
+      start: s,
+      end: e,
+      dateRange: props.dateRange
+    })
+    
     // Skip if completely outside visible range
-    if (e < props.dateRange.start || s > props.dateRange.end) return
+    if (e < props.dateRange.start || s > props.dateRange.end) {
+      console.log('Item skipped - outside visible range')
+      return
+    }
     
     // Calculate position
     let left = 0
@@ -410,18 +425,19 @@ const getBars = (group) => {
     }
     
       result.push({
-        key: `${item[props.idKey]}-${s.getTime()}`,
+        key: `${getNestedValue(item, props.idKey)}-${s.getTime()}`,
         item,
         left,
         width,
         row,
-        status: item[props.statusKey] || 'default'
+        status: getNestedValue(item, props.statusKey) || 'default'
       })
     } catch (error) {
-      console.error(`Error processing item ${item[props.idKey]}:`, error)
+      console.error(`Error processing item ${getNestedValue(item, props.idKey)}:`, error)
     }
   })
   
+  console.log('Final bars result:', result)
   return result
 }
 
@@ -463,36 +479,16 @@ const throttle = (fn, delay) => {
 }
 
 // Scroll handling
-const handleScroll = throttle(async (event) => {
+const handleScroll = (event) => {
   if (!container.value) return
   
   const el = event.target
   scrollLeft.value = el.scrollLeft
-  
-  const scrollWidth = el.scrollWidth
-  const clientWidth = el.clientWidth
-  const currentScrollLeft = el.scrollLeft
-  
-  const threshold = 100
-  
-  if (currentScrollLeft < threshold && !props.loading && !loadPromise.value) {
-    loadPromise.value = emit('load-more', 'backward')
-    if (loadPromise.value?.then) {
-      await loadPromise.value
-      loadPromise.value = null
-    }
-  } else if (scrollWidth - (currentScrollLeft + clientWidth) < threshold && !props.loading && !loadPromise.value) {
-    loadPromise.value = emit('load-more', 'forward')
-    if (loadPromise.value?.then) {
-      await loadPromise.value
-      loadPromise.value = null
-    }
-  }
-}, 100)
+}
 
 // Cleanup
 onUnmounted(() => {
-  handleScroll.cancel()
+  // No cleanup needed
 })
 
 // Center view on specific date
@@ -541,6 +537,12 @@ const centerOnDate = (targetDate) => {
 watch(() => props.view, () => {
   // Center on current date when view changes
   centerOnDate(props.date)
+})
+
+// Watch for date changes (e.g., when Today button is clicked)
+watch(() => props.date, (newDate) => {
+  // Center on the new date, especially important for hours view
+  centerOnDate(newDate)
 })
 
 watch(() => props.dateRange, () => {

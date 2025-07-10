@@ -167,7 +167,7 @@ export default function(db) {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .oneOf(['draft', 'published', 'archived'])
+        .oneOf(['draft', 'published', 'archived', 'featured'])
     },
     skip: {
       rule: 'optional',

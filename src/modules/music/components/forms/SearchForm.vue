@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, defineEmits } from 'vue';
+import { ref, watch, onMounted, defineEmits } from 'vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import IconSearch from '@martyrs/src/modules/icons/navigation/IconSearch.vue';
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
@@ -43,21 +43,44 @@ const emit = defineEmits(['search']);
 
 const searchInput = ref(null);
 const searchQuery = ref(props.initialQuery);
+let searchTimeout = null;
 
 const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    emit('search', searchQuery.value.trim());
-  }
+  emit('search', searchQuery.value.trim());
 };
 
 const clearSearch = () => {
   searchQuery.value = '';
-  searchInput.value.focus();
+  emit('search', '');
+  searchInput.value?.focus();
 };
 
-watchEffect(() => {
-  // Update search query when initialQuery prop changes
-  if (props.initialQuery !== searchQuery.value) {
+// Watch for changes in search query and emit search with debounce
+watch(searchQuery, (newQuery) => {
+  // Clear previous timeout
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  
+  if (newQuery.trim().length >= 2) {
+    // Set new timeout for debounce
+    searchTimeout = setTimeout(() => {
+      handleSearch();
+    }, 300);
+  } else if (newQuery.trim().length === 0) {
+    emit('search', '');
+  }
+});
+
+// Watch for changes in initialQuery prop
+watch(() => props.initialQuery, (newQuery) => {
+  if (newQuery !== searchQuery.value) {
+    searchQuery.value = newQuery;
+  }
+});
+
+onMounted(() => {
+  if (props.initialQuery) {
     searchQuery.value = props.initialQuery;
   }
 });

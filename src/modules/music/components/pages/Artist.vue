@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <!-- Loading state -->
-    <div v-if="isLoading" class="flex-center flex pd-extra">
-      <Loader />
-    </div>
-    
+  <div class="w-100 pos-relative">
+  
     <!-- Artist not found -->
-    <div v-else-if="!artist" class="flex-center flex-column flex pd-extra">
+    <div v-if="hasLoaded && !artist" class="flex-center flex-column flex pd-extra">
       <h2 class="h2 mn-b-medium">Artist Not Found</h2>
       <p class="p-medium t-transp mn-b-medium">The artist you are looking for doesn't exist or may have been removed.</p>
       <Button
@@ -20,7 +16,7 @@
     </div>
     
     <!-- Artist content -->
-    <div v-else>
+    <div v-if="artist">
       <!-- Cover image -->
       <div 
         class="w-100 t-white h-50vh pos-relative"
@@ -31,7 +27,7 @@
         <!-- Artist actions for edit/manage -->
         <div v-if="isOwner" class="pos-absolute pos-t-medium pos-r-medium z-index-1">
           <Button
-            :submit="editArtist"
+            @click="router.push({ name: 'artist-edit', params: { url: artist.url } })"
             class="bg-main  mn-r-small"
             :showSucces="false"
             :showLoader="false"
@@ -40,7 +36,7 @@
           </Button>
           
           <Button
-            :submit="manageContent"
+            @click="router.push({ name: 'artist-manage-content', params: { artistId: artist._id } })"
             class="bg-white t-black"
             :showSucces="false"
             :showLoader="false"
@@ -59,7 +55,7 @@
               class="w-100 h-100 object-fit-cover"
             />
             <div v-else class="w-100 h-100 bg-white flex-center flex">
-              <span class="h1">{{ artist.name[0] }}</span>
+              <span class="h1">{{ artist?.name?.[0] || 'A' }}</span>
             </div>
           </div>
           
@@ -161,7 +157,7 @@
                   v-for="album in discography.albums"
                   :key="album._id"
                   class="bg-white pd-small radius-medium flex-v-center flex cursor-pointer hover-bg-white"
-                  @click="navigateToAlbum(album)"
+                  @click="router.push({ name: 'album', params: { url: album.url } })"
                 >
                   <div class="w-3r h-3r radius-small o-hidden mn-r-small">
                     <img
@@ -184,7 +180,7 @@
               
               <Button
                 v-if="discography.albums.length > 4"
-                :submit="viewAllAlbums"
+                @click="router.push({ name: 'artist-albums', params: { artistId: artist._id } })"
                 class="mn-t-small w-100 bg-white t-black"
                 :showSucces="false"
                 :showLoader="false"
@@ -202,7 +198,7 @@
                   v-for="single in discography.singles"
                   :key="single._id"
                   class="bg-white pd-small radius-medium flex-v-center flex cursor-pointer hover-bg-white"
-                  @click="navigateToTrack(single)"
+                  @click="router.push({ name: 'track', params: { url: single.url } })"
                 >
                   <div class="w-3r h-3r radius-small o-hidden mn-r-small">
                     <img
@@ -225,13 +221,29 @@
               
               <Button
                 v-if="discography.singles.length > 5"
-                :submit="viewAllSingles"
+                @click="router.push({ name: 'artist-singles', params: { artistId: artist._id } })"
                 class="mn-t-small w-100 bg-white t-black"
                 :showSucces="false"
                 :showLoader="false"
               >
                 View All Singles & EPs
               </Button>
+            </div>
+            
+            <!-- Popular Tracks Section -->
+            <div v-if="artistTracks.length > 0" class="bg-light pd-medium radius-medium mn-b-medium">
+              <h2 class="h3 mn-b-medium">Popular Tracks</h2>
+              
+              <div class="bg-white radius-medium o-hidden">
+                <TrackListCard
+                  v-for="(track, index) in artistTracks"
+                  :key="track._id"
+                  :track="track"
+                  :index="index"
+                  :showAlbum="true"
+                  :showCover="true"
+                />
+              </div>
             </div>
             
             <!-- No discography yet -->
@@ -244,7 +256,7 @@
               
               <Button
                 v-if="isOwner"
-                :submit="addRelease"
+                @click="router.push({ name: 'release-create', query: { artistId: artist._id } })"
                 class="mn-t-medium bg-main "
                 :showSucces="false"
                 :showLoader="false"
@@ -264,7 +276,7 @@
               v-for="relatedArtist in relatedArtists"
               :key="relatedArtist._id"
               class="t-center cursor-pointer"
-              @click="navigateToArtist(relatedArtist)"
+              @click="router.push({ name: 'artist', params: { url: relatedArtist.url } })"
             >
               <div class="w-100 aspect-1x1 radius-medium o-hidden mn-b-small">
                 <img
@@ -274,7 +286,7 @@
                   class="w-100 h-100 object-fit-cover"
                 />
                 <div v-else class="w-100 h-100 bg-light flex-center flex">
-                  <span>{{ relatedArtist.name[0] }}</span>
+                  <span>{{ relatedArtist?.name?.[0] || 'A' }}</span>
                 </div>
               </div>
               
@@ -294,6 +306,7 @@ import { useRouter, useRoute } from 'vue-router';
 // Import Martyrs components
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
+import TrackListCard from '../cards/TrackListCard.vue';
 
 // Import store
 import * as artistsStore from '../../store/artists';
@@ -309,9 +322,12 @@ const { formatDate } = useGlobalMixins();
 const router = useRouter();
 const route = useRoute();
 
+// Emits
+const emits = defineEmits(['page-loading', 'page-loaded']);
+
 // State
-const isLoading = ref(true);
 const genres = ref([]);
+const hasLoaded = ref(false);
 
 // Computed
 const artist = computed(() => {
@@ -326,6 +342,10 @@ const relatedArtists = computed(() => {
   return artistsStore.state.relatedArtists;
 });
 
+const artistTracks = computed(() => {
+  return artistsStore.state.discography.tracks || [];
+});
+
 const isOwner = computed(() => {
   if (!artist.value || !auth.state.user._id) return false;
   
@@ -333,9 +353,18 @@ const isOwner = computed(() => {
   return artist.value.creator?.target?._id === auth.state.user._id;
 });
 
+// Clear current artist state
+artistsStore.state.currentArtist = null;
+// Clear discography state
+artistsStore.state.discography = {
+  albums: [],
+  singles: [],
+  tracks: []
+};
+artistsStore.state.relatedArtists = [];
+
 // Methods
 const fetchArtist = async () => {
-  isLoading.value = true;
   try {
     // Get URL from route params
     const url = route.params.url;
@@ -344,90 +373,21 @@ const fetchArtist = async () => {
     }
     
     await artistsStore.actions.fetchArtistByUrl(url);
-    
-    // Fetch genre details if we have genre IDs
-    if (artist.value?.genre && artist.value.genre.length > 0) {
-      await fetchGenres();
-    }
   } catch (error) {
     console.error('Error fetching artist:', error);
     globals.actions.setError({
       message: 'Failed to load artist'
     });
-  } finally {
-    isLoading.value = false;
   }
-};
-
-const fetchGenres = async () => {
-  try {
-    // Assuming genreStore has a method to fetch multiple genres by IDs
-    // const fetchedGenres = await genreStore.actions.fetchGenresByIds(artist.value.genre);
-    // genres.value = fetchedGenres;
-  } catch (error) {
-    console.error('Error fetching genres:', error);
-  }
-};
-
-const editArtist = () => {
-  router.push({
-    name: 'artist-edit',
-    params: { url: artist.value.url }
-  });
-};
-
-const manageContent = () => {
-  // Navigate to a page for managing artist content (albums, tracks, etc.)
-  router.push({
-    name: 'artist-manage-content',
-    params: { artistId: artist.value._id }
-  });
-};
-
-const navigateToAlbum = (album) => {
-  router.push({
-    name: 'album',
-    params: { url: album.url }
-  });
-};
-
-const navigateToTrack = (track) => {
-  router.push({
-    name: 'track',
-    params: { url: track.url }
-  });
-};
-
-const navigateToArtist = (artist) => {
-  router.push({
-    name: 'artist',
-    params: { url: artist.url }
-  });
-};
-
-const viewAllAlbums = () => {
-  router.push({
-    name: 'artist-albums',
-    params: { artistId: artist.value._id }
-  });
-};
-
-const viewAllSingles = () => {
-  router.push({
-    name: 'artist-singles',
-    params: { artistId: artist.value._id }
-  });
-};
-
-const addRelease = () => {
-  router.push({
-    name: 'release-create',
-    query: { artistId: artist.value._id }
-  });
 };
 
 // Lifecycle hooks
 onMounted(async () => {
+  emits('page-loading');
+  
   await fetchArtist();
+  
+  hasLoaded.value = true;
+  emits('page-loaded');
 });
 </script>

@@ -2,27 +2,27 @@
 <template>
   <router-link 
     :to="{ name: 'album', params: { url: album.url } }" 
-    class="album-card d-block radius-small o-hidden"
+    class="album-card d-block radius-medium o-hidden"
   >
     <div class="album-cover pos-relative">
       <Media 
-        :url="album.coverUrl || '/assets/placeholder-album.jpg'" 
+        :url="album.coverArt || album.coverUrl || '/logo/logo-placeholder.jpg'" 
         class="w-100 aspect-1x1 object-fit-cover"
       />
-      <div class="album-overlay pos-absolute pos-t-0 pos-l-0 w-100 h-100 flex-center flex transition-cubic-in-out">
+      <div v-if="album.totalTracks && album.totalTracks > 0" class="album-overlay pos-absolute pos-t-0 pos-l-0 w-100 h-100 flex-center flex transition-cubic-in-out">
         <Button 
-          @click.stop="playAlbum(album)" 
-          class="play-button bg-main radius-round flex-center flex aspect-1x1"
+          @click.stop.prevent="playAlbum(album)" 
+          class="play-button i-big bg-main radius-round flex-center flex aspect-1x1"
           :showLoader="false"
           :showSucces="false"
         >
-          <IconPlay class="i-small" fill="rgb(var(--black))" />
+          <IconPlay class="i-small" fill="rgb(var(--white))" />
         </Button>
       </div>
     </div>
-    <div class="album-info pd-small bg-dark-transp-20">
-      <h3 class=" t-medium t-truncate">{{ album.title }}</h3>
-      <p class="t-grey t-small t-truncate">{{ albumInfo }}</p>
+    <div class="album-info pd-medium bg-light">
+      <h3 class="mn-b-thin t-medium t-truncate">{{ album.title }}</h3>
+      <p class="t-transp t-small t-truncate">{{ albumInfo }}</p>
     </div>
   </router-link>
 </template>
@@ -49,10 +49,18 @@ const albumInfo = computed(() => {
   const releaseYear = props.album.releaseDate ? new Date(props.album.releaseDate).getFullYear() : '';
   let artistName = 'Unknown Artist';
   
-  if (props.album.artist?.name) {
+  // Handle artists array (model uses 'artists' not 'artist')
+  if (props.album.artists && props.album.artists.length > 0) {
+    // If populated, artists[0] will have name property
+    if (props.album.artists[0]?.name) {
+      artistName = props.album.artists.map(artist => artist.name).join(', ');
+    } else if (typeof props.album.artists[0] === 'string') {
+      // If not populated, it might be just IDs
+      artistName = 'Various Artists';
+    }
+  } else if (props.album.artist?.name) {
+    // Fallback for old data structure
     artistName = props.album.artist.name;
-  } else if (typeof props.album.artist === 'string') {
-    artistName = props.album.artist;
   }
   
   return releaseYear ? `${artistName} • ${releaseYear}` : artistName;
@@ -95,8 +103,6 @@ const playAlbum = async (album) => {
 }
 
 .play-button {
-  width: 48px;
-  height: 48px;
   transform: scale(0.8);
   transition: transform 0.3s ease;
 }

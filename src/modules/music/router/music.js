@@ -1,3 +1,7 @@
+import SidebarMusic from '../components/SidebarMusic.vue';
+import MusicBottomPlayer from '../components/layouts/MusicBottomPlayer.vue';
+
+
 // router/music.js
 import artistRoutes from './artists.js';
 import albumRoutes from './albums.js';
@@ -6,7 +10,10 @@ import playlistRoutes from './playlists.js';
 
 export default {
   path: 'music',
-  component: () => import('../components/layouts/MusicLayout.vue'),
+  meta: {
+    // sidebar_navigation: SidebarMusic,
+     player: MusicBottomPlayer, 
+  },
   children: [
     {
       path: '',

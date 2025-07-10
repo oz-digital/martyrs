@@ -1,287 +1,474 @@
 <!-- components/pages/Album.vue -->
 <template>
-  <div class="album-page">
+  <div class="album-page pd-small">
+    <!-- Loading -->
     <div v-if="isLoading" class="w-100 h-25r flex-center flex">
       <Loader />
     </div>
     
-    <div v-else-if="!album" class="t-center pd-big">
+    <!-- Not Found -->
+    <div v-if="hasLoaded && !album" class="t-center pd-big">
       <h2 class="">Album not found</h2>
-      <p class="t-grey t-medium">The album you're looking for doesn't exist or has been removed.</p>
+      <p class="t-transp t-medium">The album you're looking for doesn't exist or has been removed.</p>
     </div>
     
-    <div v-else>
-      <!-- Album Header -->
-      <div class="album-header mn-b-medium flex flex-v-center gap-medium">
-        <div class="album-cover">
+    <!-- Album Content -->
+    <div v-if="album" class="album-content cols-2-fit-content mobile:cols-1 gap-big">
+      <!-- Left Column - Cover & Stats -->
+      <div class="pos-sticky pos-t-0 mobile:pos-relative album-cover-section">
+        <!-- Cover -->
+        <div class="cover-container relative mn-b-medium radius-big overflow-hidden shadow-big">
           <Media 
-            :url="album.coverUrl || '/assets/placeholder-album.jpg'" 
-            class="w-15r h-15r object-fit-cover shadow-lg radius-small"
+            :url="album.coverArt || '/logo/logo-placeholder.jpg'"
+            :alt="album.title"
+            class="aspect-1x1 w-100 radius-medium o-hidden"
           />
         </div>
-        
-        <div class="album-info">
-          <div class="t-small t-uppercase ">Album</div>
-          <h1 class="">{{ album.title }}</h1>
-          
-          <div class="album-meta mn-t-small flex flex-v-center">
-            <router-link 
-              v-if="album.artist && album.artist._id"
-              :to="{ name: 'artist', params: { url: album.artist.url } }"
-              class=" t-medium hover-t-main"
-            >
-              {{ getArtistName(album) }}
-            </router-link>
-            <span v-else class=" t-medium">{{ getArtistName(album) }}</span>
-            
-            <span class="t-grey mn-l-small mn-r-small">•</span>
-            
-            <span class="t-grey">{{ formatReleaseYear(album.releaseDate) }}</span>
-            
-            <span class="t-grey mn-l-small mn-r-small">•</span>
-            
-            <span class="t-grey">{{ albumTracks.length }} {{ albumTracks.length === 1 ? 'song' : 'songs' }}</span>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid grid cols-2 gap-small">
+          <div class="stat-card bg-light pd-medium radius-medium t-center">
+            <div class=" mn-b-thin">{{ album.totalTracks || 0 }}</div>
+            <div class="t-small t-transp t-uppercase">Tracks</div>
+          </div>
+          <div class="stat-card bg-light pd-medium radius-medium t-center">
+            <div class=" mn-b-thin">{{ formatNumber(album.views) }}</div>
+            <div class="t-small t-transp t-uppercase">Views</div>
           </div>
         </div>
       </div>
-      
-      <!-- Album Actions -->
-      <div class="album-actions mn-b-medium flex flex-v-center gap-small">
-        <Button 
-          @click="playAlbum"
-          class="play-button bg-main radius-round pd-small flex-v-center flex gap-small hover-scale-1"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconPlay class="i-small" fill="rgb(var(--black))"/>
-          <span class="t-black t-medium">Play</span>
-        </Button>
-        
-        <Button 
-          @click="toggleFavorite"
-          class="bg-transparent border-none pd-zero"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconLike class="i-medium" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
-        </Button>
-        
-        <Dropdown class="pos-relative">
-          <Button 
-            @click="showDropdown = !showDropdown"
-            class="bg-transparent border-none pd-zero"
-            :showLoader="false" 
-            :showSucces="false"
+
+      <!-- Right Column - Album Details -->
+      <div class="album-details-section">
+        <!-- Album Type Badge -->
+        <div class="flex items-center gap-small mn-b-small">
+          <span class="badge bg-primary-transp-20 t-primary pd-thin-big radius-small t-small t-uppercase">
+            {{ album.type }}
+          </span>
+          <span v-if="album.status === 'published'" class="badge bg-success-transp-20 t-success pd-thin-big radius-small t-small">
+            Published
+          </span>
+        </div>
+
+        <!-- Album Title -->
+        <h1 class="h1 mn-b-medium">{{ album.title }}</h1>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-small mn-b-medium">
+          <Button
+            @click="playAlbum"
+            color="primary"
+            size="medium"
+            class="flex-1 flex-center gap-thin"
           >
-            <IconEllipsis class="i-medium" fill="rgb(var(--white))"/>
+            <IconPlay class="w-1r h-1r" />
+            Play All
           </Button>
           
-          <template #content>
-            <ul v-if="showDropdown" class="pd-small bg-dark radius-small pos-absolute pos-t-100 pos-r-0 z-index-3 w-max-15r mn-t-thin">
-              <li class="mn-b-thin">
-                <Button 
-                  @click="addToQueue"
-                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
-                  :showLoader="false" 
-                  :showSucces="false"
-                >
-                  <span>Add to Queue</span>
-                </Button>
-              </li>
-              <li>
-                <Button 
-                  @click="copyLink"
-                  class="bg-transparent border-none pd-thin  w-100 t-left hover-bg-dark radius-small"
-                  :showLoader="false" 
-                  :showSucces="false"
-                >
-                  <span>Copy Link</span>
-                </Button>
-              </li>
-            </ul>
-          </template>
-        </Dropdown>
-      </div>
-      
-      <!-- Album Tracks -->
-      <div class="album-tracks">
-        <Feed
-          :store="{
-            read: () => Promise.resolve(albumTracks),
-            state: { isLoading: false }
-          }"
-          :external="true"
-          :items="albumTracks"
-          :states="{
-            empty: {
-              title: 'No tracks in album',
-              description: 'This album appears to be empty',
-              class: 'pd-medium bg-dark-transp-10 radius-medium'
-            }
-          }"
-          class="gap-thin"
-        >
-          <template #default="{ items }">
-            <TrackCard
-              v-for="track in items"
-              :key="track._id"
-              :track="track"
-              :showAlbum="false"
-              :showCover="false"
-              class="w-100 bg-dark-transp-10 radius-medium"
-            />
-          </template>
-        </Feed>
-      </div>
-      
-      <!-- Album Info -->
-      <div v-if="album.description" class="album-description mn-t-medium pd-medium bg-dark-transp-10 radius-medium">
-        <h3 class=" mn-b-small">About</h3>
-        <p class="t-grey">{{ album.description }}</p>
-      </div>
-      
-      <!-- More from this artist if available -->
-      <div v-if="moreFromArtist.length > 0" class="more-from-artist mn-t-medium">
-        <div class="flex-between flex mn-b-small">
-          <h2 class="">More by {{ getArtistName(album) }}</h2>
-          <router-link 
-            v-if="album.artist && album.artist._id"
-            :to="{ name: 'artist', params: { url: album.artist.url } }" 
-            class="t-main t-small hover-opacity"
+          <Button
+            @click="toggleFavorite"
+            :color="isFavorite ? 'danger' : 'transp'"
+            size="medium"
+            class="w-3r h-3r radius-full"
           >
-            See all
-          </router-link>
+            <IconLike class="w-1-25r h-1-25r" :fill="isFavorite" />
+          </Button>
+          
+          <Button
+            @click="shufflePlay"
+            color="transp"
+            size="medium"
+            class="w-3r h-3r radius-full"
+          >
+            <IconShuffle class="w-1-25r h-1-25r" />
+          </Button>
+          
+          <Dropdown v-model="showDropdown" class="relative">
+            <template #trigger>
+              <Button color="transp" size="medium" class="w-3r h-3r radius-full">
+                <IconEllipsis class="w-1-25r h-1-25r" />
+              </Button>
+            </template>
+            <template #default>
+              <div class="dropdown-menu bg-dark pd-small radius-medium shadow-big mn-t-thin">
+                <Button @click="addToQueue" color="transp" size="small" class="w-100 justify-start">
+                  Add to Queue
+                </Button>
+                <Button @click="copyLink" color="transp" size="small" class="w-100 justify-start">
+                  Copy Link
+                </Button>
+                <template v-if="isOwner">
+                  <hr class="mn-v-thin border-dark-transp-10" />
+                  <Button @click="editAlbum" color="transp" size="small" class="w-100 justify-start">
+                    Edit Album
+                  </Button>
+                  <Button @click="deleteAlbum" color="danger" size="small" class="w-100 justify-start">
+                    Delete Album
+                  </Button>
+                </template>
+              </div>
+            </template>
+          </Dropdown>
         </div>
-        
-        <div class="albums-grid cols-5 mobile:cols-2 gap-small">
-          <div v-for="relatedAlbum in moreFromArtist" :key="relatedAlbum._id">
-            <AlbumCard :album="relatedAlbum" />
+
+        <!-- Artists Cards -->
+        <div class="artists-section mn-b-big">
+          <h3 class="t-medium mn-b-small" v-if="album.artists && album.artists.length > 1">Artists</h3>
+          <div class="flex flex-col gap-small">
+            <div 
+              v-for="artist in album.artists" 
+              :key="artist._id"
+              class="artist-card bg-light pd-medium radius-medium flex items-center gap-medium"
+            >
+              <router-link 
+                :to="`/artist/${artist.url}`"
+                class="flex items-center gap-medium flex-1 hover-opacity"
+              >
+                <div class="artist-avatar">
+                  <Media 
+                    v-if="artist.photoUrl"
+                    :url="artist.photoUrl"
+                    :alt="artist.name"
+                    class="w-4r h-4r radius-full object-cover"
+                  />
+                  <div v-else class="w-4r h-4r radius-full bg-primary flex-center ">
+                    {{ artist.name.charAt(0) }}
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center gap-thin">
+                    <span class="t-large ">{{ artist.name }}</span>
+                    <IconVerified v-if="artist.isVerified" class="w-1r h-1r t-primary" />
+                  </div>
+                  <span class="t-small t-transp">Artist</span>
+                </div>
+              </router-link>
+              <Button 
+                v-if="!isOwner"
+                @click="() => toggleFollowArtist(artist._id)"
+                :color="followedArtists.includes(artist._id) ? 'primary' : 'transp'"
+                size="small"
+              >
+                {{ followedArtists.includes(artist._id) ? 'Following' : 'Follow' }}
+              </Button>
+            </div>
           </div>
+        </div>
+
+        <!-- Metadata Cards -->
+        <div class="metadata-grid grid cols-2 gap-small mn-b-big">
+          <!-- Release Date -->
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
+              <IconCalendar class="w-1-5r h-1-5r t-primary" />
+            </div>
+            <div>
+              <div class="t-small t-transp t-uppercase">Released</div>
+              <div class="t-medium ">{{ formatDate(album.releaseDate) }}</div>
+            </div>
+          </div>
+
+          <!-- Total Duration -->
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
+              <IconClock class="w-1-5r h-1-5r t-primary" />
+            </div>
+            <div>
+              <div class="t-small t-transp t-uppercase">Duration</div>
+              <div class="t-medium ">{{ totalDuration }}</div>
+            </div>
+          </div>
+
+          <!-- Label -->
+          <div v-if="album.label" class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
+              <IconDisc class="w-1-5r h-1-5r t-primary" />
+            </div>
+            <div>
+              <div class="t-small t-transp t-uppercase">Label</div>
+              <div class="t-medium ">{{ album.label }}</div>
+            </div>
+          </div>
+
+          <!-- Visibility -->
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
+              <IconEye class="w-1-5r h-1-5r t-primary" />
+            </div>
+            <div>
+              <div class="t-small t-transp t-uppercase">Visibility</div>
+              <div class="t-medium ">{{ album.isPublic ? 'Public' : 'Private' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Genres & Tags -->
+        <div v-if="(album.genres && album.genres.length) || (album.tags && album.tags.length)" class="tags-section mn-b-medium">
+          <h3 class="t-medium mn-b-small">Genres & Tags</h3>
+          <div class="flex gap-thin flex-wrap">
+            <span 
+              v-for="genre in album.genres" 
+              :key="genre"
+              class="tag bg-primary-transp-20 t-primary pd-thin-big radius-small t-small hover-bg-primary-transp-30 cursor-pointer"
+            >
+              {{ genre }}
+            </span>
+            <span 
+              v-for="tag in album.tags" 
+              :key="tag"
+              class="tag bg-light t-transp pd-thin-big radius-small t-small hover-bg-light cursor-pointer"
+            >
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div v-if="album.description" class="description-section bg-light pd-medium radius-medium mn-b-medium">
+          <h3 class="t-medium mn-b-small">About</h3>
+          <p class="t-transp">{{ album.description }}</p>
         </div>
       </div>
     </div>
+
+    <!-- Album Tracks -->
+    <section v-if="!isLoading && album && albumTracks.length" class="tracks-section mn-t-big">
+      <h2 class="h2 mn-b-medium">Tracklist</h2>
+      <Feed
+        :store="{
+          read: () => Promise.resolve(albumTracks),
+          state: { isLoading: false }
+        }"
+        :external="true"
+        :items="albumTracks"
+        :states="{
+          empty: {
+            title: 'No tracks in album',
+            description: 'This album appears to be empty',
+            class: 'pd-medium t-center'
+          }
+        }"
+      >
+        <template #default="{ items }">
+          <div class="bg-light radius-medium o-hidden">
+            <TrackListCard
+              v-for="(track, index) in items"
+              :key="track._id"
+              :track="track"
+              :index="index + 1"
+              :showAlbum="false"
+              :showCover="false"
+            />
+          </div>
+        </template>
+      </Feed>
+    </section>
+
+    <!-- More from Artists -->
+    <section v-if="!isLoading && album && moreAlbums.length" class="more-albums-section mn-t-big">
+      <div class="flex justify-between items-center mn-b-medium">
+        <h2 class="h2">More Albums</h2>
+        <router-link 
+          v-if="album.artists && album.artists[0]"
+          :to="`/artist/${album.artists[0].url}`" 
+          class="t-primary hover-opacity"
+        >
+          See all
+        </router-link>
+      </div>
+      <div  class="flex flex-nowrap gap-small o-x-scroll overscroll-behavior-x-contain scroll-behavior-smooth scroll-snap-type-x-mandatory scroll-hide"
+      >
+        <li v-for="relatedAlbum in moreAlbums"  :key="album._id" class="flex-none scroll-snap-align-start">
+          <AlbumCard :album="relatedAlbum" class="w-min-15r transition-cubic-in-out" />
+        </li>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Feed from '@martyrs/src/components/Feed/Feed.vue';
-import TrackCard from '../cards/TrackCard.vue';
-import AlbumCard from '../cards/AlbumCard.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import Media from '@martyrs/src/components/Media/Media.vue';
 import Dropdown from '@martyrs/src/components/Dropdown/Dropdown.vue';
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
-// Import icons
+// Icons
 import IconPlay from '@martyrs/src/modules/icons/navigation/IconPlay.vue';
 import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
+import IconShuffle from '@martyrs/src/modules/icons/navigation/IconShuffle.vue';
+import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue';
+import IconClock from '@martyrs/src/modules/icons/entities/IconTime.vue';
+import IconEye from '@martyrs/src/modules/icons/actions/IconShow.vue';
+import IconDisc from '@martyrs/src/modules/icons/entities/IconMusic.vue';
+import IconVerified from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue';
 
-// Import store modules
+// Components
+import TrackListCard from '../cards/TrackListCard.vue';
+import AlbumCard from '../cards/AlbumCard.vue';
+
+// Store
 import { state as albumsState, actions as albumsActions } from '../../store/albums.js';
 import { actions as playerActions } from '../../store/player.js';
+import { state as authState } from '@martyrs/src/modules/auth/views/store/auth.js';
 
 const route = useRoute();
 const router = useRouter();
 
+// Emits
+const emits = defineEmits(['page-loading', 'page-loaded']);
+
 // State
-const isLoading = ref(true);
+const hasLoaded = ref(false);
 const isFavorite = ref(false);
 const showDropdown = ref(false);
-const moreFromArtist = ref([]);
+const followedArtists = ref([]);
+const moreAlbums = ref([]);
 
-// Computed properties
+// Clear state
+albumsState.currentAlbum = null;
+albumsState.currentAlbumTracks = [];
+
+// Computed
 const album = computed(() => albumsState.currentAlbum);
-const albumTracks = computed(() => albumsState.currentAlbumTracks);
+const albumTracks = computed(() => albumsState.currentAlbumTracks || []);
 
-// Methods
-const getArtistName = (albumItem) => {
-  if (!albumItem) return 'Unknown Artist';
+const isOwner = computed(() => {
+  return album.value?.owner?.target === authState.user?._id;
+});
+
+const totalDuration = computed(() => {
+  if (!albumTracks.value.length) return '0:00';
+  const totalSeconds = albumTracks.value.reduce((sum, track) => sum + (track.duration || 0), 0);
+  return formatDuration(totalSeconds);
+});
+
+// Format helpers
+const formatDate = (dateString) => {
+  if (!dateString) return 'Unknown';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+const formatDuration = (seconds) => {
+  if (!seconds) return '0:00';
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
   
-  if (albumItem.artist) {
-    if (typeof albumItem.artist === 'object') {
-      return albumItem.artist.name || 'Unknown Artist';
-    }
-    return albumItem.artist;
+  if (h > 0) {
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
-  return 'Unknown Artist';
+  return `${m}:${s.toString().padStart(2, '0')}`;
 };
 
-const formatReleaseYear = (dateString) => {
-  if (!dateString) return '';
-  return new Date(dateString).getFullYear();
+const formatNumber = (num) => {
+  if (!num) return '0';
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
 };
 
+// Actions
 const playAlbum = () => {
   if (albumTracks.value && albumTracks.value.length > 0) {
     playerActions.setQueue(albumTracks.value);
   }
 };
 
+const shufflePlay = () => {
+  if (albumTracks.value && albumTracks.value.length > 0) {
+    const shuffled = [...albumTracks.value].sort(() => Math.random() - 0.5);
+    playerActions.setQueue(shuffled);
+  }
+};
+
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value;
-  // Implement favorite album logic here
+  // TODO: Implement actual saving
+};
+
+const toggleFollowArtist = (artistId) => {
+  const index = followedArtists.value.indexOf(artistId);
+  if (index > -1) {
+    followedArtists.value.splice(index, 1);
+  } else {
+    followedArtists.value.push(artistId);
+  }
+  // TODO: Implement actual following
 };
 
 const addToQueue = () => {
-  if (albumTracks.value && albumTracks.value.length > 0) {
-    // Add all tracks to queue
+  if (albumTracks.value.length > 0) {
     albumTracks.value.forEach(track => {
       playerActions.addToQueue(track);
     });
-    
     showDropdown.value = false;
+  }
+};
+
+const editAlbum = () => {
+  router.push({ name: 'album-edit', params: { url: album.value.url } });
+};
+
+const deleteAlbum = async () => {
+  if (confirm('Are you sure you want to delete this album?')) {
+    try {
+      await albumsActions.deleteAlbum(album.value._id);
+      router.push({ name: 'music-library' });
+    } catch (error) {
+      console.error('Failed to delete album:', error);
+    }
   }
 };
 
 const copyLink = () => {
-  const url = window.location.href;
-  navigator.clipboard.writeText(url).then(() => {
-    // Could show a success notification here
-    showDropdown.value = false;
-  });
+  navigator.clipboard.writeText(window.location.href);
+  showDropdown.value = false;
 };
 
+// Data fetching
 const fetchAlbumData = async () => {
-  isLoading.value = true;
-  
   try {
-    // Fetch album data
     await albumsActions.fetchAlbumByUrl(route.params.url);
     
-    // If artist is available, fetch more albums from the same artist
-    if (album.value?.artist?._id) {
-      const artistAlbums = await albumsActions.fetchAlbums({
-        artist: album.value.artist._id,
+    // Fetch more albums from the same artists
+    if (album.value?.artists?.length) {
+      const artistIds = album.value.artists.map(a => a._id);
+      const albums = await albumsActions.fetchAlbums({
+        artist: { $in: artistIds },
         status: 'published',
         isPublic: true,
-        limit: 5
+        limit: 6
       });
       
-      // Filter out the current album
-      moreFromArtist.value = artistAlbums.filter(a => a._id !== album.value._id);
+      // Filter out current album
+      moreAlbums.value = albums.filter(a => a._id !== album.value._id).slice(0, 5);
     }
   } catch (error) {
     console.error('Error fetching album data:', error);
-  } finally {
-    isLoading.value = false;
   }
 };
 
-// Fetch data when component mounts or URL changes
-onMounted(fetchAlbumData);
-
-watch(() => route.params.url, (newUrl) => {
-  if (newUrl) {
-    fetchAlbumData();
-  }
+// Lifecycle
+onMounted(async () => {
+  emits('page-loading');
+  
+  await fetchAlbumData();
+  
+  hasLoaded.value = true;
+  emits('page-loaded');
 });
 </script>
 
 <style scoped>
-.album-cover {
-  box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
-}
 </style>

@@ -6,7 +6,7 @@
     @click="$emit('click')"
   >
     <div class="pd-micro t-micro t-white t-truncate">
-      {{ bar.item.title || bar.item.name || 'Task' }}
+      {{ bar.item.productDetails.name || 'Task' }}
     </div>
   </div>
 </template>
@@ -25,9 +25,10 @@ const emit = defineEmits(['click'])
 const barClass = computed(() => {
   const statusMap = {
     active: 'bg-main',
-    completed: 'bg-second',
+    completed: 'bg-green',
     canceled: 'bg-red',
-    default: 'bg-gray'
+    pending : 'bg-grey',
+    default: 'bg-second'
   }
   
   return statusMap[props.bar.status] || statusMap.default

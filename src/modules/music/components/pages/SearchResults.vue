@@ -1,14 +1,14 @@
 <!-- components/pages/SearchResults.vue -->
 <template>
-  <div class="search-results-page">
+  <div class="search-results-page pd-medium">
     <div class="search-header mn-b-medium">
-      <h1 class=" mn-b-small">Search</h1>
+      <h1 class="mn-b-small">Search</h1>
       
-      <SearchForm 
-        :initialQuery="searchQuery"
+      <BlockSearch 
+        :placeholder="'What do you want to listen to?'"
+        class="bg-light w-m-40r"
         @search="handleSearch"
-        placeholder="What do you want to listen to?"
-        class="w-m-40r"
+        :autofocus="true"
       />
       
       <div v-if="searchQuery" class="search-filters flex gap-small mn-t-medium">
@@ -17,7 +17,7 @@
           :key="filter.id"
           @click="setActiveFilter(filter.id)"
           :class="[
-            filter.id === activeFilter ? 'bg-white t-black' : 'bg-dark-transp-50  hover-bg-dark',
+            filter.id === activeFilter ? 'bg-white t-black' : 'bg-dark-transp-50 hover-bg-dark',
           ]"
           class="radius-extra pd-small"
           :showLoader="false" 
@@ -37,192 +37,127 @@
     </div>
     
     <div v-else-if="!searchQuery" class="search-empty t-center pd-big">
-      <h2 class=" mn-b-small">Search for music</h2>
-      <p class="t-grey t-medium">Find your favorite songs, artists, albums, and playlists</p>
+      <h2 class="mn-b-small">Search for music</h2>
+      <p class="t-transp t-medium">Find your favorite songs, artists, albums, and playlists</p>
     </div>
     
     <div v-else-if="!hasResults" class="search-no-results t-center pd-big">
-      <h2 class=" mn-b-small">No results found for "{{ searchQuery }}"</h2>
-      <p class="t-grey t-medium">Please try different keywords or check your spelling</p>
+      <h2 class="mn-b-small">No results found for "{{ searchQuery }}"</h2>
+      <p class="t-transp t-medium">Please try different keywords or check your spelling</p>
     </div>
     
     <div v-else class="search-results">
-      <!-- Top Results Section -->
-      <section v-if="activeFilter === 'all'" class="search-section mn-b-medium">
-        <h2 class=" mn-b-small">Top Result</h2>
-        
-        <div class="search-top-result bg-dark-transp-20 radius-medium p-medium">
-          <div v-if="topResult.type === 'artist'" class="top-result-artist pd-medium">
-            <div class="top-artist-photo mn-b-medium">
-              <Media 
-                :url="topResult.item.photoUrl || '/assets/placeholder-artist.jpg'" 
-                class="w-10r h-10r object-fit-cover radius-round"
-              />
-            </div>
-            <h3 class=" t-semi">{{ topResult.item.name }}</h3>
-            <p class="t-grey">Artist</p>
-            <Button 
-              @click="playTopResult"
-              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
-              :showLoader="false" 
-              :showSucces="false"
-            >
-              PLAY
-            </Button>
-          </div>
-          
-          <div v-else-if="topResult.type === 'album'" class="top-result-album pd-medium">
-            <div class="top-album-cover mn-b-medium">
-              <Media 
-                :url="topResult.item.coverUrl || '/assets/placeholder-album.jpg'" 
-                class="w-10r h-10r object-fit-cover radius-small"
-              />
-            </div>
-            <h3 class=" t-semi">{{ topResult.item.title }}</h3>
-            <p class="t-grey">Album • {{ getArtistName(topResult.item) }}</p>
-            <Button 
-              @click="playTopResult"
-              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
-              :showLoader="false" 
-              :showSucces="false"
-            >
-              PLAY
-            </Button>
-          </div>
-          
-          <div v-else-if="topResult.type === 'playlist'" class="top-result-playlist pd-medium">
-            <div class="top-playlist-cover mn-b-medium">
-              <Media 
-                :url="topResult.item.coverUrl || '/assets/placeholder-playlist.jpg'" 
-                class="w-10r h-10r object-fit-cover radius-small"
-              />
-            </div>
-            <h3 class=" t-semi">{{ topResult.item.title }}</h3>
-            <p class="t-grey">Playlist • {{ getPlaylistOwner(topResult.item) }}</p>
-            <Button 
-              @click="playTopResult"
-              class="bg-main radius-round pd-small  mn-t-medium hover-scale-1"
-              :showLoader="false" 
-              :showSucces="false"
-            >
-              PLAY
-            </Button>
-          </div>
-        </div>
-      </section>
-      
       <!-- Songs Results -->
-      <section v-if="activeFilter === 'all' || activeFilter === 'tracks'" class="search-section mn-b-medium">
-        <h2 class=" mn-b-small">Songs</h2>
-        <Feed
-          :store="{
-            read: () => Promise.resolve(trackResults),
-            state: { isLoading: false }
-          }"
-          :external="true"
-          :items="trackResults"
-          :states="{
-            empty: {
-              title: 'No tracks found',
-              description: 'Try different search terms',
-              class: 'pd-medium bg-dark-transp-10 radius-medium'
-            }
-          }"
-          class="gap-thin"
-        >
-          <template #default="{ items }">
-            <TrackCard
-              v-for="track in items"
-              :key="track._id"
-              :track="track"
-              :showAlbum="true"
-              :showCover="true"
-              class="w-100 bg-dark-transp-10 radius-medium"
-            />
-          </template>
-        </Feed>
+      <section v-if="(activeFilter === 'all' || activeFilter === 'tracks') && trackResults.length > 0" class="search-section mn-b-medium">
+        <div class="flex-between flex mn-b-small">
+          <h2 class="">Songs</h2>
+          <Button 
+            v-if="trackResults.length > 5 && activeFilter === 'all'"
+            @click="setActiveFilter('tracks')"
+            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            See all
+          </Button>
+        </div>
         
-        <Button 
-          v-if="trackResults.length > 4 && activeFilter === 'all'"
-          @click="setActiveFilter('tracks')"
-          class="t-main bg-transparent border-none t-center w-100 mn-t-small hover-bg-dark-transp-10 pd-thin"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          See all songs
-        </Button>
+        <div class="bg-light radius-medium o-hidden">
+          <TrackListCard
+            v-for="(track, index) in (activeFilter === 'all' ? trackResults.slice(0, 5) : trackResults)"
+            :key="track._id"
+            :track="track"
+            :index="index"
+            :showAlbum="true"
+            :showCover="true"
+          />
+        </div>
       </section>
       
       <!-- Artists Results -->
-      <section v-if="activeFilter === 'all' || activeFilter === 'artists'" class="search-section mn-b-medium">
-        <h2 class=" mn-b-small">Artists</h2>
+      <section v-if="(activeFilter === 'all' || activeFilter === 'artists') && artistResults.length > 0" class="search-section mn-b-medium">
+        <div class="flex-between flex mn-b-small">
+          <h2 class="">Artists</h2>
+          <Button 
+            v-if="artistResults.length > 6 && activeFilter === 'all'"
+            @click="setActiveFilter('artists')"
+            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            See all
+          </Button>
+        </div>
         
         <div class="artists-grid cols-6 mobile:cols-3 gap-small">
-          <div v-for="artist in artistResults.slice(0, activeFilter === 'all' ? 6 : artistResults.length)" :key="artist._id">
+          <div v-for="artist in (activeFilter === 'all' ? artistResults.slice(0, 6) : artistResults)" :key="artist._id">
             <ArtistCard :artist="artist" />
           </div>
         </div>
-        
-        <Button 
-          v-if="artistResults.length > 6 && activeFilter === 'all'"
-          @click="setActiveFilter('artists')"
-          class="t-main bg-transparent border-none t-center w-100 mn-t-small hover-bg-dark-transp-10 pd-thin"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          See all artists
-        </Button>
       </section>
       
       <!-- Albums Results -->
-      <section v-if="activeFilter === 'all' || activeFilter === 'albums'" class="search-section mn-b-medium">
-        <h2 class=" mn-b-small">Albums</h2>
+      <section v-if="(activeFilter === 'all' || activeFilter === 'albums') && albumResults.length > 0" class="search-section mn-b-medium">
+        <div class="flex-between flex mn-b-small">
+          <h2 class="">Albums</h2>
+          <Button 
+            v-if="albumResults.length > 5 && activeFilter === 'all'"
+            @click="setActiveFilter('albums')"
+            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            See all
+          </Button>
+        </div>
         
         <div class="albums-grid cols-5 mobile:cols-2 gap-small">
-          <div v-for="album in albumResults.slice(0, activeFilter === 'all' ? 5 : albumResults.length)" :key="album._id">
+          <div v-for="album in (activeFilter === 'all' ? albumResults.slice(0, 5) : albumResults)" :key="album._id">
             <AlbumCard :album="album" />
           </div>
         </div>
-        
-        <Button 
-          v-if="albumResults.length > 5 && activeFilter === 'all'"
-          @click="setActiveFilter('albums')"
-          class="t-main bg-transparent border-none t-center w-100 mn-t-small hover-bg-dark-transp-10 pd-thin"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          See all albums
-        </Button>
       </section>
       
       <!-- Playlists Results -->
-      <section v-if="activeFilter === 'all' || activeFilter === 'playlists'" class="search-section mn-b-medium">
-        <h2 class=" mn-b-small">Playlists</h2>
+      <section v-if="(activeFilter === 'all' || activeFilter === 'playlists') && playlistResults.length > 0" class="search-section mn-b-medium">
+        <div class="flex-between flex mn-b-small">
+          <h2 class="">Playlists</h2>
+          <Button 
+            v-if="playlistResults.length > 5 && activeFilter === 'all'"
+            @click="setActiveFilter('playlists')"
+            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            See all
+          </Button>
+        </div>
         
         <div class="playlists-grid cols-5 mobile:cols-2 gap-small">
-          <div v-for="playlist in playlistResults.slice(0, activeFilter === 'all' ? 5 : playlistResults.length)" :key="playlist._id">
+          <div v-for="playlist in (activeFilter === 'all' ? playlistResults.slice(0, 5) : playlistResults)" :key="playlist._id">
             <PlaylistCard :playlist="playlist" />
           </div>
         </div>
-        
-        <Button 
-          v-if="playlistResults.length > 5 && activeFilter === 'all'"
-          @click="setActiveFilter('playlists')"
-          class="t-main bg-transparent border-none t-center w-100 mn-t-small hover-bg-dark-transp-10 pd-thin"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          See all playlists
-        </Button>
       </section>
       
       <!-- Genres Results -->
       <section v-if="(activeFilter === 'all' || activeFilter === 'genres') && genreResults.length > 0" class="search-section">
-        <h2 class=" mn-b-small">Genres</h2>
+        <div class="flex-between flex mn-b-small">
+          <h2 class="">Genres</h2>
+          <Button 
+            v-if="genreResults.length > 4 && activeFilter === 'all'"
+            @click="setActiveFilter('genres')"
+            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            See all
+          </Button>
+        </div>
         
         <div class="genres-grid cols-4 mobile:cols-2 gap-small">
           <router-link 
-            v-for="genre in genreResults.slice(0, activeFilter === 'all' ? 4 : genreResults.length)" 
+            v-for="genre in (activeFilter === 'all' ? genreResults.slice(0, 4) : genreResults)" 
             :key="genre._id"
             :to="{ name: 'genre-detail', params: { url: genre.url } }"
             class="genre-card bg-gradient-color pd-medium radius-medium t-center hover-scale-1 transition-cubic-in-out"
@@ -233,85 +168,64 @@
             <h3 class="">{{ genre.name }}</h3>
           </router-link>
         </div>
-        
-        <Button 
-          v-if="genreResults.length > 4 && activeFilter === 'all'"
-          @click="setActiveFilter('genres')"
-          class="t-main bg-transparent border-none t-center w-100 mn-t-small hover-bg-dark-transp-10 pd-thin"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          See all genres
-        </Button>
       </section>
     </div>
   </div>
-  </template>
+</template>
 
-  <script setup>
-  import { ref, computed, onMounted, watch } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import SearchForm from '../forms/SearchForm.vue';
-  import Feed from '@martyrs/src/components/Feed/Feed.vue';
-  import TrackCard from '../cards/TrackCard.vue';
-  import AlbumCard from '../cards/AlbumCard.vue';
-  import PlaylistCard from '../cards/PlaylistCard.vue';
-  import ArtistCard from '../cards/ArtistCard.vue';
-  import Button from '@martyrs/src/components/Button/Button.vue';
-  import Loader from '@martyrs/src/components/Loader/Loader.vue';
-  import Media from '@martyrs/src/components/Media/Media.vue';
+<script setup>
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue';
+import TrackListCard from '../cards/TrackListCard.vue';
+import AlbumCard from '../cards/AlbumCard.vue';
+import PlaylistCard from '../cards/PlaylistCard.vue';
+import ArtistCard from '../cards/ArtistCard.vue';
+import Button from '@martyrs/src/components/Button/Button.vue';
+import Loader from '@martyrs/src/components/Loader/Loader.vue';
 
-  // Import search store
-  import { state as searchState, actions as searchActions, computed as searchComputed } from '../../store/search.js';
-  import { actions as playerActions } from '../../store/player.js';
+// Import search store
+import { state as searchState, actions as searchActions } from '../../store/search.js';
 
-  const route = useRoute();
-  const router = useRouter();
+const route = useRoute();
+const router = useRouter();
 
-  // State
-  const searchQuery = ref('');
-  const activeFilter = ref('all');
+// State
+const searchQuery = ref('');
+const activeFilter = ref('all');
 
-  // Array of search filters
-  const searchFilters = [
-    { id: 'all', label: 'All' },
-    { id: 'tracks', label: 'Songs' },
-    { id: 'artists', label: 'Artists' },
-    { id: 'albums', label: 'Albums' },
-    { id: 'playlists', label: 'Playlists' },
-    { id: 'genres', label: 'Genres' }
-  ];
+// Array of search filters
+const searchFilters = [
+  { id: 'all', label: 'All' },
+  { id: 'tracks', label: 'Songs' },
+  { id: 'artists', label: 'Artists' },
+  { id: 'albums', label: 'Albums' },
+  { id: 'playlists', label: 'Playlists' },
+  { id: 'genres', label: 'Genres' }
+];
 
-  // Computed properties
-  const isLoading = computed(() => searchState.isLoading);
-  const searchError = computed(() => searchState.error);
-  const hasResults = computed(() => searchComputed.hasResults());
+// Computed properties
+const isLoading = computed(() => searchState.isLoading);
+const searchError = computed(() => searchState.error);
+const hasResults = computed(() => {
+  return trackResults.value.length > 0 || 
+         artistResults.value.length > 0 || 
+         albumResults.value.length > 0 || 
+         playlistResults.value.length > 0 || 
+         genreResults.value.length > 0;
+});
 
-  const trackResults = computed(() => searchState.results.tracks || []);
-  const artistResults = computed(() => searchState.results.artists || []);
-  const albumResults = computed(() => searchState.results.albums || []);
-  const playlistResults = computed(() => searchState.results.playlists || []);
-  const genreResults = computed(() => searchState.results.genres || []);
+const trackResults = computed(() => searchState.results.tracks || []);
+const artistResults = computed(() => searchState.results.artists || []);
+const albumResults = computed(() => searchState.results.albums || []);
+const playlistResults = computed(() => searchState.results.playlists || []);
+const genreResults = computed(() => searchState.results.genres || []);
 
-  // Top result determination
-  const topResult = computed(() => {
-    // Determine which result to show as top result based on relevance
-    if (artistResults.value.length > 0) {
-      return { type: 'artist', item: artistResults.value[0] };
-    } else if (albumResults.value.length > 0) {
-      return { type: 'album', item: albumResults.value[0] };
-    } else if (playlistResults.value.length > 0) {
-      return { type: 'playlist', item: playlistResults.value[0] };
-    } else if (trackResults.value.length > 0) {
-      return { type: 'track', item: trackResults.value[0] };
-    }
-    return null;
-  });
-
-  // Methods
-  const handleSearch = (query) => {
-    searchQuery.value = query;
-    
+// Methods
+const handleSearch = (query) => {
+  searchQuery.value = query;
+  
+  if (query.trim()) {
     // Update URL without reloading the page
     router.push({ 
       name: 'music-search', 
@@ -321,99 +235,57 @@
     
     // Perform search
     searchActions.search(query);
-  };
-
-  const setActiveFilter = (filter) => {
-    activeFilter.value = filter;
-    searchActions.setFilter(filter);
-  };
-
-  const playTopResult = () => {
-    if (!topResult.value) return;
-    
-    const { type, item } = topResult.value;
-    
-    switch (type) {
-      case 'track':
-        playerActions.playTrack(item);
-        break;
-      case 'album':
-        // Navigate to album page
-        router.push({ name: 'album', params: { url: item.url } });
-        break;
-      case 'playlist':
-        // Navigate to playlist page
-        router.push({ name: 'playlist', params: { url: item.url } });
-        break;
-      case 'artist':
-        // Navigate to artist page
-        router.push({ name: 'artist', params: { url: item.url } });
-        break;
-    }
-  };
-
-  const getArtistName = (item) => {
-    if (!item) return 'Unknown Artist';
-    
-    if (item.artist) {
-      if (typeof item.artist === 'object') {
-        return item.artist.name || 'Unknown Artist';
-      }
-      return item.artist;
-    }
-    return 'Unknown Artist';
-  };
-
-  const getPlaylistOwner = (playlist) => {
-    if (!playlist) return 'Unknown';
-    
-    if (playlist.owner?.target) {
-      if (typeof playlist.owner.target === 'object') {
-        if (playlist.owner.target.profile?.name) {
-          return playlist.owner.target.profile.name;
-        }
-        return playlist.owner.target.name || 'Unknown';
-      }
-    }
-    return 'Unknown';
-  };
-
-  // Generate random gradient for genre cards
-  const getRandomGradient = () => {
-    const colors = [
-      'linear-gradient(135deg, #1DB954, #1ED760)',
-      'linear-gradient(135deg, #FF6B6B, #FFE66D)',
-      'linear-gradient(135deg, #4776E6, #8E54E9)',
-      'linear-gradient(135deg, #FF8008, #FFC837)',
-      'linear-gradient(135deg, #7F00FF, #E100FF)',
-      'linear-gradient(135deg, #11998E, #38EF7D)'
-    ];
-    
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
-  // Watch for URL query parameter changes
-  onMounted(() => {
-    const query = route.query.q;
-    if (query) {
-      searchQuery.value = query;
-      searchActions.search(query);
-    }
-  });
-
-  watch(() => route.query.q, (newQuery) => {
-    if (newQuery && newQuery !== searchQuery.value) {
-      searchQuery.value = newQuery;
-      searchActions.search(newQuery);
-    } else if (!newQuery) {
-      searchQuery.value = '';
-      searchActions.clearSearch();
-    }
-  });
-  </script>
-
-  <style scoped>
-  .bg-gradient-color {
-    background: var(--gradient-color, linear-gradient(135deg, #1DB954, #1ED760));
+  } else {
+    // Clear search when query is empty
+    router.push({ 
+      name: 'music-search',
+      replace: true
+    });
+    searchActions.clearSearch();
   }
-  </style>
+};
+
+const setActiveFilter = (filter) => {
+  activeFilter.value = filter;
+  searchActions.setFilter(filter);
+};
+
+// Generate random gradient for genre cards
+const getRandomGradient = () => {
+  const colors = [
+    'linear-gradient(135deg, #1DB954, #1ED760)',
+    'linear-gradient(135deg, #FF6B6B, #FFE66D)',
+    'linear-gradient(135deg, #4776E6, #8E54E9)',
+    'linear-gradient(135deg, #FF8008, #FFC837)',
+    'linear-gradient(135deg, #7F00FF, #E100FF)',
+    'linear-gradient(135deg, #11998E, #38EF7D)'
+  ];
+  
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+
+// Watch for URL query parameter changes
+onMounted(() => {
+  const query = route.query.q;
+  if (query) {
+    searchQuery.value = query;
+    searchActions.search(query);
+  }
+});
+
+watch(() => route.query.q, (newQuery) => {
+  if (newQuery && newQuery !== searchQuery.value) {
+    searchQuery.value = newQuery;
+    searchActions.search(newQuery);
+  } else if (!newQuery) {
+    searchQuery.value = '';
+    searchActions.clearSearch();
+  }
+});
+</script>
+
+<style scoped>
+.bg-gradient-color {
+  background: var(--gradient-color, linear-gradient(135deg, #1DB954, #1ED760));
+}
+</style>

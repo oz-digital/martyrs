@@ -1,11 +1,104 @@
 <!-- components/pages/MusicHome.vue -->
 <template>
   <div class="music-home-page pd-medium mobile:pd-thin">
+    
+    
+    <!-- New Releases Section -->
+    <section class="mn-b-semi">
+      <div class="flex-between flex mn-b-small">
+        <h3 class="">New Releases</h3>
+        <!-- <router-link :to="{ path: '/music/albums' }" class="t-main t-small hover-opacity">See all</router-link> -->
+      </div>
+      
+      <Feed
+        :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No New Releases',
+            description: 'No new albums available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => albumsActions.fetchFeaturedAlbums(options),
+          state: albumsState
+        }"
+        :options="{
+          limit: 4,
+          sortParam: 'releaseDate',
+          sortOrder: 'desc'
+        }"
+        :skeleton="{
+          structure: [
+            { block: 'square', size: 'large', rounded: false },
+            { block: 'text', size: 'medium' },
+            { block: 'text', size: 'small' }
+          ],
+          horizontal: false,
+          class: 'h-max-15r'
+        }"
+        v-slot="{ items }"
+        class="flex flex-nowrap gap-small o-x-scroll overscroll-behavior-x-contain scroll-behavior-smooth scroll-snap-type-x-mandatory scroll-hide"
+      >
+          <li v-for="album in items" :key="album._id" class="flex-none scroll-snap-align-start">
+            <AlbumCard :album="album" class="w-min-15r transition-cubic-in-out" />
+          </li>
+
+      </Feed>
+    </section>
+    
+    <!-- Popular Tracks Section -->
+    <section class="mn-b-medium">
+      <div class="flex-between flex mn-b-small">
+        <h3 class="">Popular Tracks</h3>
+        <!-- <router-link :to="{ path: '/music/tracks' }" class="t-main t-small hover-opacity">See all</router-link> -->
+      </div>
+      
+      <Feed
+        :showLoadMore="false"
+        :LoadMore="false"
+        :states="{
+          empty: {
+            title: 'No Popular Tracks',
+            description: 'No popular tracks available at the moment.'
+          }
+        }"
+        :store="{
+          read: (options) => tracksActions.fetchPopularTracks(options),
+          state: tracksState
+        }"
+        :options="{
+          limit: 10,
+          popular: true
+        }"
+        :skeleton="{
+          structure: [
+            { block: 'text', size: 'medium' },
+            { block: 'text', size: 'small' }
+          ],
+          horizontal: true
+        }"
+        v-slot="{ items }"
+        class="gap-zero"
+      >
+        <div class="bg-light radius-medium o-hidden">
+          <TrackListCard
+            v-for="(track, index) in items"
+            :key="track._id"
+            :track="track"
+            :index="index"
+            :showAlbum="true"
+            :showCover="true"
+          />
+        </div>
+      </Feed>
+    </section>
+
     <!-- Featured Playlists Section -->
     <section class="mn-b-medium">
       <div class="flex-between flex mn-b-small">
         <h2 class="">Featured Playlists</h2>
-        <router-link :to="{ path: '/music/playlists' }" class="t-main t-small hover-opacity">See all</router-link>
+        <!-- <router-link :to="{ path: '/music/playlists' }" class="t-main t-small hover-opacity">See all</router-link> -->
       </div>
       
       <Feed
@@ -42,100 +135,11 @@
       </Feed>
     </section>
     
-    <!-- New Releases Section -->
-    <section class="mn-b-medium">
-      <div class="flex-between flex mn-b-small">
-        <h2 class="">New Releases</h2>
-        <router-link :to="{ path: '/music/albums' }" class="t-main t-small hover-opacity">See all</router-link>
-      </div>
-      
-      <Feed
-        :showLoadMore="false"
-        :LoadMore="false"
-        :states="{
-          empty: {
-            title: 'No New Releases',
-            description: 'No new albums available at the moment.'
-          }
-        }"
-        :store="{
-          read: (options) => albumsActions.fetchAlbums(options),
-          state: albumsState
-        }"
-        :options="{
-          limit: 4,
-          sortParam: 'releaseDate',
-          sortOrder: 'desc'
-        }"
-        :skeleton="{
-          structure: [
-            { block: 'square', size: 'large', rounded: false },
-            { block: 'text', size: 'medium' },
-            { block: 'text', size: 'small' }
-          ],
-          horizontal: false
-        }"
-        v-slot="{ items }"
-        class="cols-4 mobile:cols-2 gap-small"
-      >
-        <li v-for="album in items" :key="album._id">
-          <AlbumCard :album="album" class="hover-scale-1 transition-cubic-in-out" />
-        </li>
-      </Feed>
-    </section>
-    
-    <!-- Popular Tracks Section -->
-    <section class="mn-b-medium">
-      <div class="flex-between flex mn-b-small">
-        <h2 class="">Popular Tracks</h2>
-        <router-link :to="{ path: '/music/tracks' }" class="t-main t-small hover-opacity">See all</router-link>
-      </div>
-      
-      <Feed
-        :showLoadMore="false"
-        :LoadMore="false"
-        :states="{
-          empty: {
-            title: 'No Popular Tracks',
-            description: 'No popular tracks available at the moment.'
-          }
-        }"
-        :store="{
-          read: (options) => tracksActions.fetchPopularTracks(options),
-          state: tracksState
-        }"
-        :options="{
-          limit: 10,
-          popular: true
-        }"
-        :skeleton="{
-          structure: [
-            { block: 'text', size: 'medium' },
-            { block: 'text', size: 'small' }
-          ],
-          horizontal: true
-        }"
-        v-slot="{ items }"
-        class="gap-zero"
-      >
-        <div class="bg-dark-transp-10 radius-medium o-hidden">
-          <TrackListCard
-            v-for="(track, index) in items"
-            :key="track._id"
-            :track="track"
-            :index="index"
-            :showAlbum="true"
-            :showCover="true"
-          />
-        </div>
-      </Feed>
-    </section>
-    
     <!-- Top Artists Section -->
     <section>
       <div class="flex-between flex mn-b-small">
         <h2 class="">Top Artists</h2>
-        <router-link :to="{ path: '/music/artists' }" class="t-main t-small hover-opacity">See all</router-link>
+        <!-- <router-link :to="{ path: '/music/artists' }" class="t-main t-small hover-opacity">See all</router-link> -->
       </div>
       
       <Feed
@@ -165,8 +169,8 @@
         v-slot="{ items }"
         class="cols-6 mobile:cols-3 gap-small"
       >
-        <li v-for="artist in items" :key="artist._id">
-          <ArtistCard :artist="artist" class="hover-scale-1 transition-cubic-in-out" />
+        <li class="flex-child-default w-100" v-for="artist in items" :key="artist._id">
+          <ArtistCard :artist="artist" class="hover-scale-1 flex-child-default transition-cubic-in-out" />
         </li>
       </Feed>
     </section>
@@ -179,7 +183,6 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue';
 import PlaylistCard from '../cards/PlaylistCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
 import ArtistCard from '../cards/ArtistCard.vue';
-import TrackCard from '../cards/TrackCard.vue';
 import TrackListCard from '../cards/TrackListCard.vue';
 
 // Store imports

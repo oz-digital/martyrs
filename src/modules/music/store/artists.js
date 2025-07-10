@@ -14,6 +14,7 @@ export const state = reactive({
   discography: {
     albums: [],
     singles: [],
+    tracks: [],
   },
   relatedArtists: [],
   isLoading: false,
@@ -72,13 +73,15 @@ export const actions = {
     try {
       const response = await fetch(`${process.env.API_URL}/api/artists/url/${url}`);
       const artist = await response.json();
-      state.currentArtist = artist;
 
       // Fetch artist discography
       await this.fetchArtistDiscography(artist._id);
 
       // Fetch related artists
       await this.fetchRelatedArtists(artist._id);
+
+      // Set artist only after all data is loaded
+      state.currentArtist = artist;
 
       return artist;
     } catch (error) {
@@ -94,11 +97,12 @@ export const actions = {
       state.discography = {
         albums: discography.albums || [],
         singles: discography.singles || [],
+        tracks: discography.tracks || [],
       };
       return discography;
     } catch (error) {
       console.error('Error fetching artist discography:', error);
-      return { albums: [], singles: [] };
+      return { albums: [], singles: [], tracks: [] };
     }
   },
 

@@ -17,7 +17,7 @@ export default function setupArtistsRoutes(app, db) {
     modelName: 'artist',
     basePath: '/api/artists',
     
-    auth: true,
+    auth: { read: false },
     
     verifiers: {
       create: verifier.createVerifier,
@@ -27,6 +27,10 @@ export default function setupArtistsRoutes(app, db) {
     },
     
     abac: abac,
+    
+    policies: {
+      read: { enabled: false }
+    },
     
     cache: {
       enabled: true,
@@ -47,6 +51,7 @@ export default function setupArtistsRoutes(app, db) {
     method: 'get',
     path: '/url/:url',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const artist = await db.artist.findOne({ url: req.params.url });
@@ -66,6 +71,7 @@ export default function setupArtistsRoutes(app, db) {
     method: 'get',
     path: '/:artistId/discography',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const { artistId } = req.params;
@@ -76,19 +82,22 @@ export default function setupArtistsRoutes(app, db) {
           .populate('artists', 'name')
           .sort({ releaseDate: -1 });
         
-        // Получаем треки артиста (включая те, которые не в альбомах)
+        // Получаем популярные треки артиста (включая те, которые не в альбомах)
         const tracks = await db.track
           .find({ 
             artist: artistId,
             status: 'published',
             isPublic: true 
           })
-          .populate('album', 'title')
-          .sort({ releaseDate: -1 });
+          .populate('album', 'title url coverArt')
+          .populate('genre', 'name')
+          .sort({ playCount: -1 })
+          .limit(10);
         
         res.json({
           albums,
           tracks,
+          singles: tracks.filter(track => !track.album), // треки без альбома считаем синглами
           artist: artistId
         });
       } catch (error) {
@@ -138,6 +147,7 @@ export default function setupArtistsRoutes(app, db) {
     method: 'get',
     path: '/:artistId/related',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const { artistId } = req.params;

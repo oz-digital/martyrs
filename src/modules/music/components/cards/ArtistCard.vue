@@ -30,7 +30,7 @@
     </div>
     
     <div class="pd-small">
-      <h4 class="mn-b-micro t-trim-2">{{ artist.name }}</h4>
+      <h4 class="t-medium mn-b-small t-truncate">{{ artist.name }}</h4>
       <p v-if="artist.genres && artist.genres.length" class="p-small t-transp t-trim">
         {{ artist.genres.join(', ') }}
       </p>

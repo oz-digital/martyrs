@@ -106,7 +106,7 @@
   </div>
 
   <TransitionGroup 
-    v-if="isLoading"
+    v-if="isLoading && !keepSlotVisible"
     tag="ul" 
     name="scaleTransition" 
     class="pos-relative z-index-1"
@@ -140,7 +140,7 @@
    </TransitionGroup>
 
   <TransitionGroup 
-    v-else
+    v-else-if="!keepSlotVisible || !isLoading"
     tag="ul" 
     name="feed"
     :class="$attrs.class"
@@ -150,6 +150,28 @@
     >
     </slot>
   </TransitionGroup>
+
+  <!-- Slot visible with overlay loader -->
+  <div v-else class="pos-relative">
+    <TransitionGroup 
+      tag="ul" 
+      name="feed"
+      :class="$attrs.class"
+    >
+      <slot
+        :items="itemsList"
+      >
+      </slot>
+    </TransitionGroup>
+    
+    <!-- Overlay loader -->
+    <div 
+      v-if="isLoading && keepSlotVisible"
+      class="pos-absolute pos-t-0 pos-l-0 w-100 h-100 flex-center bg-white-transp-90 z-index-10"
+    >
+      <Loader />
+    </div>
+  </div>
 
   <button
     v-if="showLoadMore && hasMoreItems && itemsList.length > 0 && !isLoadingExtra"
@@ -293,6 +315,10 @@ const props = defineProps({
       period:  null,
       contain:  null,
     }),
+  },
+  keepSlotVisible: {
+    type: Boolean,
+    default: false
   },
 });
   

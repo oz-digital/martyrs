@@ -30,7 +30,6 @@ export default (function (app, db, publicPath) {
       }
       // Extract file path from fileUrl
       const fileUrl = track.fileUrl;
-      console.log('public is', publicPath);
       const filePath = path.join(publicPath, fileUrl);
       // Check if file exists
       if (!fs.existsSync(filePath)) {
@@ -41,7 +40,10 @@ export default (function (app, db, publicPath) {
       const stat = fs.statSync(filePath);
       const fileSize = stat.size;
       const range = req.headers.range;
-      // Log play history if user is authenticated
+      
+      // Only count play on first request (not range requests)
+      const isFirstRequest = !range || range === 'bytes=0-';
+      
       if (req.userId) {
         try {
           await db.playHistory.create({
@@ -53,9 +55,15 @@ export default (function (app, db, publicPath) {
             contextId: req.query.contextId || null,
           });
           // Increment playCount
-          await db.track.findByIdAndUpdate(trackId, { $inc: { playCount: 1 } });
+          const updatedTrack = await db.track.findByIdAndUpdate(trackId, { $inc: { playCount: 1 } }, { new: true });
         } catch (error) {
           logger.error(`Error logging play history: ${error.message}`);
+        }
+      } else {
+        try {
+          const updatedTrack = await db.track.findByIdAndUpdate(trackId, { $inc: { playCount: 1 } }, { new: true });
+        } catch (error) {
+          logger.error(`Error incrementing playCount: ${error.message}`);
         }
       }
       // Handle range requests for audio streaming

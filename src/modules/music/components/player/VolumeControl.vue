@@ -1,27 +1,30 @@
 <!-- components/player/VolumeControl.vue -->
 <template>
-  <div 
-    ref="volumeBarContainer"
-    class="volume-bar-container w-100 h-thin bg-grey-transp-50 radius-extra pos-relative cursor-pointer"
-    @click="setVolume"
-    @mousedown="startVolumeChange"
-    @mousemove="updateVolumePosition"
-    @mouseup="endVolumeChange"
-    @mouseleave="endVolumeChange"
-  >
+  <div class="volume-control">
     <div 
-      class="volume-bar h-100 bg-white radius-extra" 
-      :style="{ width: volumePercentage + '%' }"
-      :class="{ 'muted': muted }"
-    ></div>
-    <div 
-      class="volume-handle w-thin h-thin bg-white radius-round pos-absolute pos-t-50 pos-l-0"
-      :style="{ 
-        left: `calc(${volumePercentage}% - 4px)`, 
-        transform: 'translateY(-50%)',
-        opacity: muted ? 0 : 1
-      }"
-    ></div>
+      ref="volumeBarContainer"
+      class="volume-bar-container"
+      @click="setVolume"
+      @mousedown="startVolumeChange"
+      @mousemove="updateVolumePosition"
+      @mouseup="endVolumeChange"
+      @mouseleave="endVolumeChange"
+    >
+      <div 
+        class="volume-track"
+        :style="{ 
+          background: `linear-gradient(to right, rgb(var(--main)) 0%, rgb(var(--main)) ${volumePercentage}%, rgb(79, 79, 79) ${volumePercentage}%, rgb(79, 79, 79) 100%)`
+        }"
+      >
+        <div 
+          class="volume-thumb"
+          :style="{ 
+            left: `${volumePercentage}%`,
+            opacity: muted ? 0 : 1
+          }"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,19 +83,49 @@ const endVolumeChange = () => {
 </script>
 
 <style scoped>
-.volume-bar-container:hover .volume-bar:not(.muted) {
-  background-color: rgb(var(--main));
+.volume-control {
+  width: 100%;
 }
 
-.volume-handle {
-  display: none;
+.volume-bar-container {
+  width: 100%;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 0;
 }
 
-.volume-bar-container:hover .volume-handle {
-  display: block;
+.volume-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  transition: height 0.2s ease;
 }
 
-.muted {
+.volume-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: rgb(var(--white));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.volume-bar-container:hover .volume-track {
+  height: 6px;
+}
+
+.volume-bar-container:hover .volume-thumb {
+  opacity: 1 !important;
+}
+
+/* Muted state */
+.volume-track.muted {
   opacity: 0.5;
 }
 </style>

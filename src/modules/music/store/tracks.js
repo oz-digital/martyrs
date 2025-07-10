@@ -13,6 +13,7 @@ export const state = reactive({
   featured: [],
   userTracks: [],
   currentTrack: null,
+  relatedTracks: [],
   isLoading: false,
   loadingPopular: false,
   loadingRecent: false,
@@ -226,6 +227,36 @@ export const actions = {
       return tracks;
     } catch (error) {
       console.error('Error fetching user tracks:', error);
+      return [];
+    }
+  },
+
+  async fetchRelatedTracks(trackUrl) {
+    try {
+      // Если есть currentTrack, ищем треки того же артиста
+      if (state.currentTrack && state.currentTrack.artist) {
+        const artistId = typeof state.currentTrack.artist === 'object' 
+          ? state.currentTrack.artist._id 
+          : state.currentTrack.artist;
+          
+        const queryParams = new URLSearchParams();
+        queryParams.append('artist', artistId);
+        queryParams.append('limit', '5');
+        
+        const response = await fetch(`${process.env.API_URL}/api/tracks/read?${queryParams.toString()}`);
+        const tracks = await response.json();
+        
+        // Исключаем текущий трек
+        const relatedTracks = tracks.filter(track => track._id !== state.currentTrack._id);
+        state.relatedTracks = relatedTracks;
+        return relatedTracks;
+      }
+      
+      state.relatedTracks = [];
+      return [];
+    } catch (error) {
+      console.error('Error fetching related tracks:', error);
+      state.relatedTracks = [];
       return [];
     }
   },

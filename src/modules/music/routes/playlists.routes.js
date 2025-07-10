@@ -17,7 +17,7 @@ export default function setupPlaylistsRoutes(app, db) {
     modelName: 'playlist',
     basePath: '/api/playlists',
     
-    auth: true,
+    auth: { read: false },
     
     verifiers: {
       create: verifier.createVerifier,
@@ -27,6 +27,10 @@ export default function setupPlaylistsRoutes(app, db) {
     },
     
     abac: abac,
+    
+    policies: {
+      read: { enabled: false }
+    },
     
     cache: {
       enabled: true,
@@ -47,6 +51,7 @@ export default function setupPlaylistsRoutes(app, db) {
     method: 'get',
     path: '/url/:url',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const playlist = await db.playlist
@@ -54,23 +59,38 @@ export default function setupPlaylistsRoutes(app, db) {
           .populate({
             path: 'tracks.track',
             select: '-lyrics',
+            populate: [
+              {
+                path: 'artist',
+                select: 'name url photoUrl isVerified'
+              },
+              {
+                path: 'album', 
+                select: 'title url coverArt'
+              },
+              {
+                path: 'genre',
+                select: 'name url'
+              }
+            ]
           });
         
         if (!playlist) {
           return res.status(404).json({ error: 'Playlist not found' });
         }
         
-        // If not public, check permissions
-        if (!playlist.isPublic) {
-          if (!req.userId) {
-            return res.status(403).json({ error: 'Access denied to private playlist' });
-          }
-          
+        // Only return public playlists if no auth
+        if (!playlist.isPublic && !req.userId) {
+          return res.status(404).json({ error: 'Playlist not found' });
+        }
+        
+        // If private and authenticated, check permissions
+        if (!playlist.isPublic && req.userId) {
           const isOwner = playlist.owner.target.toString() === req.userId;
           const isCollaborator = playlist.collaborators.some(collab => collab.toString() === req.userId);
           
           if (!isOwner && !isCollaborator) {
-            return res.status(403).json({ error: 'Access denied to private playlist' });
+            return res.status(404).json({ error: 'Playlist not found' });
           }
         }
         
@@ -99,7 +119,20 @@ export default function setupPlaylistsRoutes(app, db) {
         
         const playlists = await db.playlist
           .find(query)
-          .populate('tracks.track', 'title artist')
+          .populate({
+            path: 'tracks.track',
+            select: 'title artist album genre duration',
+            populate: [
+              {
+                path: 'artist',
+                select: 'name url photoUrl isVerified'
+              },
+              {
+                path: 'album', 
+                select: 'title url coverArt'
+              }
+            ]
+          })
           .sort({ updatedAt: -1 });
         
         res.json(playlists);

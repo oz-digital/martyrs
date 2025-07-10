@@ -1,33 +1,33 @@
 <!-- components/player/TrackProgress.vue -->
 <template>
-  <div class="track-progress flex flex-v-center gap-small">
-    <div class="current-time t-grey t-small">{{ formatTime(currentTime) }}</div>
-    
+  <div class="progress-section">
+    <span class="time-current">{{ formatTime(currentTime) }}</span>
     <div 
       ref="progressBarContainer"
-      class="progress-bar-container flex-1 h-thin bg-grey radius-extra pos-relative cursor-pointer"
+      class="progress-bar"
       @click="seek"
       @mousedown="startSeek"
       @mousemove="updateSeekPosition"
       @mouseup="endSeek"
       @mouseleave="endSeek"
     >
-      <div 
-        class="progress-bar h-100 bg-white radius-extra" 
-        :style="{ width: progressPercentage + '%' }"
-      ></div>
-      <div 
-        class="progress-handle w-thin h-thin bg-white radius-round pos-absolute pos-t-50 pos-l-0"
-        :style="{ left: `calc(${progressPercentage}% - 4px)`, transform: 'translateY(-50%)' }"
-      ></div>
+      <div class="progress-track">
+        <div 
+          class="progress-fill" 
+          :style="{ width: progressPercentage + '%' }"
+        ></div>
+        <div 
+          class="progress-thumb"
+          :style="{ left: progressPercentage + '%' }"
+        ></div>
+      </div>
     </div>
-    
-    <div class="total-time t-grey t-small">{{ formatTime(duration) }}</div>
+    <span class="time-total">{{ formatTime(duration) }}</span>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 
 // Import player store
 import { state as playerState, actions as playerActions } from '../../store/player.js';
@@ -95,16 +95,70 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.progress-bar-container:hover .progress-bar {
-  background-color: rgb(var(--main));
+/* Progress Section */
+.progress-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
-.progress-handle {
-  display: none;
+.time-current,
+.time-total {
+  font-size: 11px;
+  color: rgb(var(--grey));
+  font-weight: 400;
+  min-width: 32px;
+  text-align: center;
 }
 
-.progress-bar-container:hover .progress-handle {
-  display: block;
-  transform: translateY(-50%) scale(1.3);
+.progress-bar {
+  flex: 1;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.progress-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgb(79, 79, 79);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: height 0.2s ease;
+}
+
+.progress-fill {
+  height: 100%;
+  background: rgb(var(--white));
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: rgb(var(--white));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.progress-bar:hover .progress-thumb {
+  opacity: 1;
+}
+
+.progress-bar:hover .progress-track {
+  height: 6px;
+}
+
+.progress-bar:hover .progress-fill {
+  background: rgb(var(--main));
 }
 </style>

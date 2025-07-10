@@ -1,103 +1,105 @@
 <!-- components/player/MusicPlayer.vue -->
 <template>
-  <div class="music-player pd-small flex-between flex-v-center flex bg-dark br-t br-solid br-dark-transp-20 ">
-    <!-- Current Track Info -->
-    <div class="player-track-info flex-v-center flex w-25r">
-      <div v-if="currentTrack" class="player-track-cover mn-r-small">
-        <Media 
-          :url="currentTrack.coverUrl || (currentTrack.album && currentTrack.album.coverUrl) || '/assets/placeholder-track.jpg'" 
-          class="w-3r h-3r object-fit-cover radius-small"
-        />
-      </div>
-      
-      <div class="player-track-details t-truncate">
-        <div class="player-track-title  t-medium t-truncate">
-          {{ currentTrack?.title || 'No track playing' }}
+  <div class="player-container">
+    <div class="player">
+      <!-- Track Info Section -->
+      <div class="track-info">
+        <div class="track-image">
+          <Media 
+            :url="currentTrack?.coverUrl || (currentTrack?.album && currentTrack.album.coverUrl) || '/assets/placeholder-track.jpg'" 
+            class="track-image-media"
+          />
         </div>
-        <div class="player-track-artist t-grey t-small t-truncate">
-          {{ getArtistName(currentTrack) }}
+        <div class="track-details">
+          <h3 class="track-title">{{ currentTrack?.title || 'No track playing' }}</h3>
+          <p class="track-artist">{{ getArtistName(currentTrack) }}</p>
         </div>
-      </div>
-      
-      <div class="player-favorite mn-l-small">
         <Button 
           @click="toggleFavorite" 
-          class="bg-transparent border-none pd-zero"
+          class="like-btn"
+          :class="{ liked: isFavorite }"
           :showLoader="false" 
           :showSucces="false"
         >
-          <IconLike class="i-small" :fill="isFavorite ? 'rgb(var(--main))' : 'rgb(var(--grey))'"/>
+          <IconLike fill="rgb(var(--white))" class="like-icon"/>
         </Button>
       </div>
-    </div>
-    
-    <!-- Player Controls -->
-    <div class="player-controls flex-1 flex flex-column items-center">
-      <div class="player-buttons flex-v-center flex gap-small">
-        <Button 
-          @click="toggleShuffle" 
-          class="bg-transparent border-none pd-zero"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconShuffle class="i-small" :fill="shuffle ? 'rgb(var(--main))' : 'rgb(var(--grey))'"/>
-        </Button>
+
+      <!-- Control Section -->
+      <div class="controls">
+        <div class="control-buttons">
+          <Button 
+            @click="toggleShuffle" 
+            class="control-btn secondary"
+            :class="{ active: shuffle }"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            <IconShuffle fill="rgb(var(--white))" class="control-icon"/>
+          </Button>
+          
+          <Button 
+            @click="playPrevious" 
+            class="control-btn secondary"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            <IconPrevious fill="rgb(var(--white))" class="control-icon"/>
+          </Button>
+          
+          <Button 
+            @click="togglePlay" 
+            class="control-btn primary"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            <IconPause v-if="isPlaying" class="play-icon"/>
+            <IconPlay v-else class="play-icon"/>
+          </Button>
+          
+          <Button 
+            @click="playNext" 
+            class="control-btn secondary"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            <IconNext fill="rgb(var(--white))" class="control-icon"/>
+          </Button>
+          
+          <Button 
+            @click="toggleRepeat" 
+            class="control-btn secondary"
+            :class="{ active: repeat !== 'off' }"
+            :showLoader="false" 
+            :showSucces="false"
+          >
+            <IconRepeat fill="rgb(var(--white))" class="control-icon"/>
+          </Button>
+        </div>
         
-        <Button 
-          @click="playPrevious" 
-          class="bg-transparent border-none pd-zero"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconPrevious class="i-small" fill="rgb(var(--white))"/>
-        </Button>
-        
-        <Button 
-          @click="togglePlay" 
-          class="play-pause-btn bg-white radius-round pd-micro flex-center flex"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconPause v-if="isPlaying" class="i-medium" fill="rgb(var(--black))"/>
-          <IconPlay v-else class="i-medium" fill="rgb(var(--black))"/>
-        </Button>
-        
-        <Button 
-          @click="playNext" 
-          class="bg-transparent border-none pd-zero"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconNext class="i-small" fill="rgb(var(--white))"/>
-        </Button>
-        
-        <Button 
-          @click="toggleRepeat" 
-          class="bg-transparent border-none pd-zero"
-          :showLoader="false" 
-          :showSucces="false"
-        >
-          <IconRepeat class="i-small" :fill="repeatIcon"/>
-        </Button>
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <TrackProgress />
+        </div>
       </div>
-      
-      <TrackProgress class="w-100 mn-t-thin" />
-    </div>
-    
-    <!-- Volume Control -->
-    <div class="player-volume flex-v-center flex w-15r">
-      <Button 
-        @click="toggleMute" 
-        class="bg-transparent border-none pd-zero mn-r-small"
-        :showLoader="false" 
-        :showSucces="false"
-      >
-        <IconVolume v-if="!muted && volume > 0.5" class="i-small" fill="rgb(var(--white))"/>
-        <IconVolumeHalf v-else-if="!muted && volume > 0" class="i-small" fill="rgb(var(--white))"/>
-        <IconVolumeMute v-else class="i-small" fill="rgb(var(--white))"/>
-      </Button>
-      
-      <VolumeControl />
+
+      <!-- Volume Section -->
+      <div class="volume-section">
+        <Button 
+          @click="toggleMute" 
+          class="volume-btn"
+          :showLoader="false" 
+          :showSucces="false"
+        >
+          <IconVolume fill="rgb(var(--white))" v-if="!muted && volume > 0.5" class="volume-icon"/>
+          <IconVolumeHalf fill="rgb(var(--white))" v-else-if="!muted && volume > 0" class="volume-icon"/>
+          <IconVolumeMute  fill="rgb(var(--white))" v-else class="volume-icon"/>
+        </Button>
+        
+        <div class="volume-slider">
+          <VolumeControl />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -118,7 +120,7 @@ import IconShuffle from '@martyrs/src/modules/icons/navigation/IconShuffle.vue';
 import IconRepeat from '@martyrs/src/modules/icons/navigation/IconRefresh.vue';
 import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconVolume from '@martyrs/src/modules/icons/navigation/IconVolume.vue';
-// import IconVolumeHalf from '@martyrs/src/modules/icons/navigation/IconVolume.vue'; // Using same icon but we'd style it differently
+import IconVolumeHalf from '@martyrs/src/modules/icons/navigation/IconVolume.vue';
 import IconVolumeMute from '@martyrs/src/modules/icons/navigation/IconMute.vue';
 
 // Import player store
@@ -134,17 +136,6 @@ const volume = computed(() => playerState.volume);
 const muted = computed(() => playerState.muted);
 const shuffle = computed(() => playerState.shuffle);
 const repeat = computed(() => playerState.repeat);
-
-const repeatIcon = computed(() => {
-  switch(repeat.value) {
-    case 'one':
-      return 'rgb(var(--main))';
-    case 'all':
-      return 'rgb(var(--main))';
-    default:
-      return 'rgb(var(--grey))';
-  }
-});
 
 // Methods
 const togglePlay = () => {
@@ -190,13 +181,293 @@ const getArtistName = (track) => {
 </script>
 
 <style scoped>
-.play-pause-btn {
-  width: 32px;
-  height: 32px;
-  transition: transform 0.2s ease;
+.player-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgb(24, 24, 24) 0%, rgb(18, 18, 18) 100%);
+  border-top: 1px solid rgb(40, 40, 40);
+  backdrop-filter: blur(10px);
 }
 
-.play-pause-btn:hover {
-  transform: scale(1.1);
+.player {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 16px;
+  height: 90px;
+  max-width: 100%;
+}
+
+/* Track Info Section */
+.track-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.track-image {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.track-image-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.track-image:hover .track-image-media {
+  transform: scale(1.05);
+}
+
+.track-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.track-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(var(--white));
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.track-artist {
+  font-size: 12px;
+  color: rgb(var(--grey));
+  margin: 2px 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  color: rgb(var(--grey));
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.like-btn:hover {
+  color: rgb(var(--white));
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.like-btn.liked {
+  color: rgb(var(--main));
+}
+
+.like-btn.liked .like-icon {
+  fill: rgb(var(--main));
+}
+
+.like-btn.liked:hover {
+  color: rgb(var(--main));
+  opacity: 0.8;
+}
+
+/* Controls Section */
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: rgb(var(--grey));
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.control-btn.primary {
+  background: rgb(var(--white));
+  color: rgb(var(--black));
+  width: 32px;
+  height: 32px;
+}
+
+.play-icon {
+  width: 14px;
+  height: 14px;
+  fill: rgb(var(--black));
+}
+
+.control-btn.primary:hover {
+  background: rgb(240, 240, 240);
+  transform: scale(1.06);
+}
+
+.control-btn.secondary:hover {
+  color: rgb(var(--white));
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.control-btn.secondary:hover .control-icon {
+  fill: rgb(var(--white));
+}
+
+.control-btn.active {
+  color: rgb(var(--main));
+}
+
+.control-btn.active .control-icon {
+  fill: rgb(var(--main));
+}
+
+.control-btn.active:hover {
+  color: rgb(var(--main));
+  opacity: 0.8;
+}
+
+/* Progress Section */
+.progress-section {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Volume Section */
+.volume-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.volume-btn {
+  background: none;
+  border: none;
+  color: rgb(var(--grey));
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volume-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.volume-btn:hover {
+  color: rgb(var(--white));
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.volume-btn:hover .volume-icon {
+  fill: rgb(var(--white));
+}
+
+.volume-slider {
+  width: 100px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .player {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+    padding: 8px 12px 12px;
+    gap: 12px;
+  }
+
+  .track-info {
+    order: 1;
+  }
+
+  .controls {
+    order: 2;
+  }
+
+  .volume-section {
+    order: 3;
+    justify-content: center;
+  }
+
+  .volume-slider {
+    width: 120px;
+  }
+
+  .progress-section {
+    max-width: 100%;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.player-container {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.control-btn.primary:active {
+  animation: pulse 0.3s ease;
 }
 </style>

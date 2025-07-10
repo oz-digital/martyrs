@@ -17,7 +17,7 @@ export default function setupTracksRoutes(app, db) {
     modelName: 'track',
     basePath: '/api/tracks',
     
-    auth: true,
+    auth: { read: false },
     
     verifiers: {
       create: verifier.createVerifier,
@@ -27,6 +27,10 @@ export default function setupTracksRoutes(app, db) {
     },
     
     abac: abac,
+    
+    policies: {
+      read: { enabled: false }
+    },
     
     cache: {
       enabled: true,
@@ -40,6 +44,12 @@ export default function setupTracksRoutes(app, db) {
     }
   });
 
+  // Отключаем ABAC для кастомных действий
+  tracksCRUD.policies.disableForAction('get-by-url');
+  tracksCRUD.policies.disableForAction('recent');
+  tracksCRUD.policies.disableForAction('popular');
+  tracksCRUD.policies.disableForAction('by-genre');
+
   // Перенос кастомных роутов через addAction для обратной совместимости
 
   // Get track by URL - /api/tracks/url/:url
@@ -47,9 +57,15 @@ export default function setupTracksRoutes(app, db) {
     method: 'get',
     path: '/url/:url',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
-        const track = await db.track.findOne({ url: req.params.url });
+        const track = await db.track
+          .findOne({ url: req.params.url })
+          .populate('artist', 'name url photoUrl isVerified')
+          .populate('album', 'title url coverArt')
+          .populate('genre', 'name url');
+        
         if (!track) {
           return res.status(404).json({ error: 'Track not found' });
         }
@@ -82,6 +98,7 @@ export default function setupTracksRoutes(app, db) {
     method: 'get',
     path: '/recent',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const limit = parseInt(req.query.limit) || 10;
@@ -90,6 +107,8 @@ export default function setupTracksRoutes(app, db) {
             status: 'published',
             isPublic: true,
           })
+          .populate('artist', 'name url photoUrl isVerified')
+          .populate('album', 'title url coverArt')
           .sort({ createdAt: -1 })
           .limit(limit);
         res.json(recentTracks);
@@ -105,6 +124,7 @@ export default function setupTracksRoutes(app, db) {
     method: 'get',
     path: '/popular',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const limit = parseInt(req.query.limit) || 10;
@@ -113,6 +133,8 @@ export default function setupTracksRoutes(app, db) {
             status: 'published',
             isPublic: true,
           })
+          .populate('artist', 'name url photoUrl isVerified')
+          .populate('album', 'title url coverArt')
           .sort({ playCount: -1 })
           .limit(limit);
         res.json(popularTracks);
@@ -128,6 +150,7 @@ export default function setupTracksRoutes(app, db) {
     method: 'get',
     path: '/genre/:genreId',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const tracks = await db.track
@@ -136,6 +159,8 @@ export default function setupTracksRoutes(app, db) {
             status: 'published',
             isPublic: true,
           })
+          .populate('artist', 'name url photoUrl isVerified')
+          .populate('album', 'title url coverArt')
           .sort({ releaseDate: -1 });
         res.json(tracks);
       } catch (error) {

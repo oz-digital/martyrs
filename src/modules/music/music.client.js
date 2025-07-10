@@ -11,7 +11,7 @@ import * as storeTracks from './store/tracks.js';
 import routerMusic from './router/music.js';
 
 // Layouts
-import MusicLayout from './components/layouts/MusicLayout.vue';
+import MusicBottomPlayer from './components/layouts/MusicBottomPlayer.vue';
 
 // Pages
 import Album from './components/pages/Album.vue';
@@ -32,7 +32,6 @@ import VolumeControl from './components/player/VolumeControl.vue';
 import AlbumCard from './components/cards/AlbumCard.vue';
 import ArtistCard from './components/cards/ArtistCard.vue';
 import PlaylistCard from './components/cards/PlaylistCard.vue';
-import TrackCard from './components/cards/TrackCard.vue';
 import TrackListCard from './components/cards/TrackListCard.vue';
 
 
@@ -112,7 +111,7 @@ const ModuleMusic = {
     },
     components: {
       // Layouts
-      MusicLayout,
+      MusicBottomPlayer,
       // Pages
       MusicHome,
       SearchResults,
@@ -127,7 +126,6 @@ const ModuleMusic = {
       TrackProgress,
       VolumeControl,
       // Cards
-      TrackCard,
       TrackListCard,
       AlbumCard,
       PlaylistCard,
@@ -151,7 +149,7 @@ export {
   // Pages
   MusicHome,
   // Layout
-  MusicLayout,
+  MusicBottomPlayer,
   MusicLibrary,
   // Player Components
   MusicPlayer,
@@ -165,7 +163,6 @@ export {
   SearchForm,
   SearchResults,
   // Cards
-  TrackCard,
   TrackListCard,
   Track,
   TrackForm,

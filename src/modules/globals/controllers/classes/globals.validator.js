@@ -98,7 +98,14 @@ class Validator {
   boolean(message) {
     this.rules.push({
       type: 'boolean',
-      check: value => typeof value === 'boolean',
+      check: value => {
+        if (typeof value === 'boolean') return true;
+        if (typeof value === 'string') {
+          const lowered = value.toLowerCase();
+          return lowered === 'true' || lowered === 'false';
+        }
+        return false;
+      },
       message,
     });
     return this;

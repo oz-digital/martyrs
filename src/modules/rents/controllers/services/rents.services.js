@@ -21,8 +21,8 @@ const queryValidatorConfig = {
   skip: { rule: 'optional', validator: Validator.schema().number().integer().min(0), default: 0 },
   limit: {
     rule: 'optional',
-    validator: Validator.schema().number().integer().min(1).max(100),
-    default: 10,
+    validator: Validator.schema().number().integer().min(1).max(1000),
+    default: 1000,
   },
   productId: { rule: 'optional', validator: Validator.schema().string(), default: null },
   variantId: { rule: 'optional', validator: Validator.schema().string(), default: null },

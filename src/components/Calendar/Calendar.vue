@@ -1,3 +1,381 @@
+<script setup>
+  import { computed, ref, watch } from 'vue'
+
+  const props = defineProps({
+    modelValue: [Date, Object],
+    allowRange: Boolean,
+    disabled: Boolean,
+    disablePastDates: {
+      type: Boolean,
+      default: false
+    },
+    availabilityData: {
+      type: Array,
+      default: () => []
+    },
+    showAvailability: {
+      type: Boolean,
+      default: false
+    },
+    lowAvailabilityThreshold: {
+      type: Number,
+      default: 3
+    },
+    requiredQuantity: {
+      type: Number,
+      default: 1
+    }
+  })
+
+  const emit = defineEmits(['update:modelValue'])
+
+  const dateCalendar = defineModel('date')
+
+  const today = new Date()
+  const currentDate = ref(today)
+  const selectedDate = ref(null)
+  const startDate = ref(null)
+  const endDate = ref(null)
+  const tooltip = ref({ show: false, message: '', x: 0, y: 0 })
+
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+  // Watch for availability data updates
+  watch(() => props.availabilityData, (newData) => {
+    // You could perform additional processing when availability data changes
+  }, { deep: true })
+
+  const toUTC = (date) => {
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  }
+
+  const toEndOfDayUTC = (date) => {
+    const endOfDay = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59));
+    return endOfDay;
+  }
+
+  const dateToString = (date) => {
+    return date.toISOString().split('T')[0];
+  }
+
+  const monthYear = computed(() => {
+    const month = currentDate.value.toLocaleString('default', { month: 'long', timeZone: 'UTC' })
+    const year = currentDate.value.getUTCFullYear()
+    return `${month} ${year}`
+  })
+
+  const isPrevMonthDisabled = computed(() => {
+    if (!props.disablePastDates) return false;
+    
+    // Check if current view month is the current month
+    return currentDate.value.getUTCMonth() === today.getUTCMonth() && 
+           currentDate.value.getUTCFullYear() === today.getUTCFullYear();
+  })
+
+  const daysInMonth = computed(() => {
+    const days = []
+    const firstDay = new Date(Date.UTC(
+      currentDate.value.getUTCFullYear(),
+      currentDate.value.getUTCMonth(),
+      1
+    ))
+    const lastDay = new Date(Date.UTC(
+      currentDate.value.getUTCFullYear(),
+      currentDate.value.getUTCMonth() + 1,
+      0
+    ))
+
+    const firstDayOfWeek = firstDay.getUTCDay()
+
+    let date = new Date(firstDay)
+
+    date.setUTCDate(date.getUTCDate() - firstDayOfWeek)
+
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      days.push({
+        date: new Date(date),
+        day: date.getUTCDate(),
+        isToday: isToday(date),
+      })
+      date.setUTCDate(date.getUTCDate() + 1)
+    }
+
+    let day = 1
+
+    for (date = firstDay; date <= lastDay; date.setUTCDate(date.getUTCDate() + 1)) {
+      days.push({
+        date: new Date(date),
+        day,
+        isToday: isToday(date),
+      })
+      day++
+    }
+
+    const lastDayOfWeek = days[days.length - 1].date.getUTCDay()
+
+    for (let i = lastDayOfWeek + 1; i <= 6; i++) {
+      days.push({
+        date: new Date(date),
+        day: date.getUTCDate(),
+        isToday: isToday(date),
+      })
+      date.setUTCDate(date.getUTCDate() + 1)
+    }
+
+    return days
+  })
+
+  const isToday = (date) => {
+    const today = new Date()
+    return (
+      date.getUTCDate() === today.getUTCDate() &&
+      date.getUTCMonth() === today.getUTCMonth() &&
+      date.getUTCFullYear() === today.getUTCFullYear()
+    )
+  }
+
+  const isSameMonth = (date) => {
+    return (
+      date.getUTCMonth() === currentDate.value.getUTCMonth() &&
+      date.getUTCFullYear() === currentDate.value.getUTCFullYear()
+    )
+  }
+
+  const isPastDate = (date) => {
+    if (!props.disablePastDates) return false;
+    
+    const now = new Date();
+    // Compare only dates without time
+    const todayDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    const compareDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    
+    return compareDate < todayDate;
+  }
+
+  const getAvailabilityInfo = (date) => {
+    if (!props.availabilityData || props.availabilityData.length === 0) return null;
+    
+    const dateStr = dateToString(date);
+    return props.availabilityData.find(item => item.date === dateStr);
+  }
+
+  const isAvailable = (date) => {
+    if (!props.availabilityData || props.availabilityData.length === 0) return true;
+    
+    const availabilityInfo = getAvailabilityInfo(date);
+    return !availabilityInfo || availabilityInfo.availableQuantity > 0;
+  }
+
+  const isLowAvailability = (date) => {
+    if (!props.availabilityData || props.availabilityData.length === 0) return false;
+    
+    const availabilityInfo = getAvailabilityInfo(date);
+    return availabilityInfo && 
+           availabilityInfo.availableQuantity > 0 && 
+           availabilityInfo.availableQuantity <= props.lowAvailabilityThreshold;
+  }
+
+  const getAvailability = (date) => {
+    if (!props.showAvailability) return null;
+    
+    const availabilityInfo = getAvailabilityInfo(date);
+    return availabilityInfo ? availabilityInfo.availableQuantity : null;
+  }
+
+  const isSelected = (date) => {
+    if (props.allowRange) {
+      if (startDate.value && endDate.value) {
+        return date >= new Date(startDate.value) && toEndOfDayUTC(date) <= new Date(endDate.value);
+      } else if (startDate.value) {
+        return date.getTime() === new Date(startDate.value).getTime();
+      }
+    } else {
+      return selectedDate.value && date.getTime() === new Date(selectedDate.value).getTime();
+    }
+  }
+
+  const isInRange = (date) => {
+    if (startDate.value && endDate.value) {
+      return date > startDate.value && toEndOfDayUTC(date) < endDate.value
+    }
+    return false
+  }
+
+  const selectDate = (date, event) => {
+    // Don't allow selection of past dates or unavailable dates
+    if (props.disablePastDates && isPastDate(date)) return;
+    if (!isAvailable(date)) return;
+    
+    // Check if date has sufficient quantity for required amount
+    const availabilityInfo = getAvailabilityInfo(date);
+    if (availabilityInfo && availabilityInfo.availableQuantity < props.requiredQuantity) {
+      // Show tooltip with insufficient quantity message
+      if (event) {
+        tooltip.value = {
+          show: true,
+          message: `Insufficient quantity. Available: ${availabilityInfo.availableQuantity}, needed: ${props.requiredQuantity}`,
+          x: event.clientX,
+          y: event.clientY
+        };
+        setTimeout(() => {
+          tooltip.value.show = false;
+        }, 3000);
+      }
+      return;
+    }
+    
+    // Hide tooltip if it was showing
+    tooltip.value.show = false;
+    
+    // If selecting a date from another month, switch to that month
+    if (!isSameMonth(date)) {
+      // currentDate.value = new Date(Date.UTC(
+      //   date.getUTCFullYear(),
+      //   date.getUTCMonth(),
+      //   1
+      // ));
+    }
+    
+    const formattedDate = toUTC(date)
+    
+    if (!props.allowRange) {
+      selectedDate.value = formattedDate
+      dateCalendar.value = formattedDate
+    } else if (!startDate.value && !endDate.value) {
+      startDate.value = formattedDate
+      dateCalendar.value = { start: formattedDate, end: null }
+    } else if (!endDate.value) {
+      endDate.value = toEndOfDayUTC(date)
+      if (formattedDate < startDate.value) {
+        const temp = toEndOfDayUTC(startDate.value)
+        startDate.value = formattedDate
+        endDate.value = temp
+      }
+      // Verify all dates in the range are available
+      if (props.availabilityData && props.availabilityData.length > 0) {
+        let allDatesAvailable = true;
+        let currentDate = new Date(startDate.value);
+        
+        while (currentDate <= endDate.value) {
+          if (!isAvailable(currentDate)) {
+            allDatesAvailable = false;
+            break;
+          }
+          currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+        }
+        if (!allDatesAvailable) {
+          // Instead of resetting the end date, start a new range
+          startDate.value = formattedDate
+          endDate.value = null
+          dateCalendar.value = { start: formattedDate, end: null }
+          return;
+        }
+      }
+      dateCalendar.value = { start: startDate.value, end: endDate.value }
+    } else {
+      startDate.value = formattedDate
+      endDate.value = null
+      dateCalendar.value = { start: formattedDate, end: null }
+    }
+  }
+
+  const prevMonth = () => {
+    // Prevent navigating to past months if disablePastDates is true
+    if (props.disablePastDates) {
+      const newDate = new Date(Date.UTC(
+        currentDate.value.getUTCFullYear(),
+        currentDate.value.getUTCMonth() - 1,
+        1
+      ));
+      
+      if (newDate.getUTCFullYear() < today.getUTCFullYear() || 
+          (newDate.getUTCFullYear() === today.getUTCFullYear() && 
+           newDate.getUTCMonth() < today.getUTCMonth())) {
+        return;
+      }
+    }
+    
+    currentDate.value = new Date(Date.UTC(
+      currentDate.value.getUTCFullYear(),
+      currentDate.value.getUTCMonth() - 1,
+      1
+    ));
+  }
+
+  const nextMonth = () => {
+    currentDate.value = new Date(Date.UTC(
+      currentDate.value.getUTCFullYear(),
+      currentDate.value.getUTCMonth() + 1,
+      1
+    ))
+  }
+
+  const selectToday = () => {
+    const today = new Date();  
+    const todayStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 0, 0, 0, 0)); 
+    const todayEnd = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 23, 59, 59, 999)); 
+
+    // Check if today is available
+    if (props.disablePastDates || isAvailable(todayStart)) {
+      startDate.value = todayStart.toISOString();
+      endDate.value = todayEnd.toISOString();
+      dateCalendar.value = { start: startDate.value, end: endDate.value };
+    }
+  }
+
+  const selectLastWeek = () => {
+    const today = new Date();
+    const lastWeek = new Date(today);
+    lastWeek.setUTCDate(today.getUTCDate() - 7);
+    lastWeek.setUTCHours(0, 0, 0, 0);
+
+    // Skip if disablePastDates is true
+    if (props.disablePastDates) return;
+
+    startDate.value = lastWeek;
+    endDate.value = toEndOfDayUTC(today);
+    
+    today.setUTCHours(23, 59, 59, 999);
+
+    const start = lastWeek.toISOString();
+    const end = today.toISOString();
+    
+    dateCalendar.value = { start: start, end: end };
+  }
+
+  const selectLastMonth = () => {
+    const today = new Date();
+    
+    // Skip if disablePastDates is true
+    if (props.disablePastDates) return;
+    
+    // Create date for last month
+    const lastMonth = new Date(today);
+    lastMonth.setUTCMonth(today.getUTCMonth() - 1);
+    lastMonth.setUTCHours(0, 0, 0, 0);
+    
+    startDate.value = lastMonth;
+    endDate.value = toEndOfDayUTC(today);
+
+    today.setUTCHours(23, 59, 59, 999);
+    
+    const start = lastMonth.toISOString();
+    const end = today.toISOString();
+    
+    dateCalendar.value = { start: start, end: end };
+  }
+
+  const selectLastYear = () => {
+    // Skip if disablePastDates is true
+    if (props.disablePastDates) return;
+
+    startDate.value = null;
+    endDate.value = null;
+    dateCalendar.value = { start: null, end: null };
+  }
+</script>
+
+
 <template>
   <div class="t-noselect calendar" :aria-disabled="disabled"> 
      <div v-if="allowRange && !disablePastDates" class="br-b br-solid br-grey-transp-25 gap-thin flex flex-nowrap pd-thin">
@@ -61,383 +439,6 @@
    
   </div>
 </template>
-
-<script setup>
-import { computed, ref, watch } from 'vue'
-
-const props = defineProps({
-  modelValue: [Date, Object],
-  allowRange: Boolean,
-  disabled: Boolean,
-  disablePastDates: {
-    type: Boolean,
-    default: false
-  },
-  availabilityData: {
-    type: Array,
-    default: () => []
-  },
-  showAvailability: {
-    type: Boolean,
-    default: false
-  },
-  lowAvailabilityThreshold: {
-    type: Number,
-    default: 3
-  },
-  requiredQuantity: {
-    type: Number,
-    default: 1
-  }
-})
-
-const emit = defineEmits(['update:modelValue'])
-
-const dateCalendar = defineModel('date')
-
-const today = new Date()
-const currentDate = ref(today)
-const selectedDate = ref(null)
-const startDate = ref(null)
-const endDate = ref(null)
-const tooltip = ref({ show: false, message: '', x: 0, y: 0 })
-
-const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-// Watch for availability data updates
-watch(() => props.availabilityData, (newData) => {
-  // You could perform additional processing when availability data changes
-}, { deep: true })
-
-const toUTC = (date) => {
-  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-}
-
-const toEndOfDayUTC = (date) => {
-  const endOfDay = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59));
-  return endOfDay;
-}
-
-const dateToString = (date) => {
-  return date.toISOString().split('T')[0];
-}
-
-const monthYear = computed(() => {
-  const month = currentDate.value.toLocaleString('default', { month: 'long', timeZone: 'UTC' })
-  const year = currentDate.value.getUTCFullYear()
-  return `${month} ${year}`
-})
-
-const isPrevMonthDisabled = computed(() => {
-  if (!props.disablePastDates) return false;
-  
-  // Check if current view month is the current month
-  return currentDate.value.getUTCMonth() === today.getUTCMonth() && 
-         currentDate.value.getUTCFullYear() === today.getUTCFullYear();
-})
-
-const daysInMonth = computed(() => {
-  const days = []
-  const firstDay = new Date(Date.UTC(
-    currentDate.value.getUTCFullYear(),
-    currentDate.value.getUTCMonth(),
-    1
-  ))
-  const lastDay = new Date(Date.UTC(
-    currentDate.value.getUTCFullYear(),
-    currentDate.value.getUTCMonth() + 1,
-    0
-  ))
-
-  const firstDayOfWeek = firstDay.getUTCDay()
-
-  let date = new Date(firstDay)
-
-  date.setUTCDate(date.getUTCDate() - firstDayOfWeek)
-
-  for (let i = 0; i < firstDayOfWeek; i++) {
-    days.push({
-      date: new Date(date),
-      day: date.getUTCDate(),
-      isToday: isToday(date),
-    })
-    date.setUTCDate(date.getUTCDate() + 1)
-  }
-
-  let day = 1
-
-  for (date = firstDay; date <= lastDay; date.setUTCDate(date.getUTCDate() + 1)) {
-    days.push({
-      date: new Date(date),
-      day,
-      isToday: isToday(date),
-    })
-    day++
-  }
-
-  const lastDayOfWeek = days[days.length - 1].date.getUTCDay()
-
-  for (let i = lastDayOfWeek + 1; i <= 6; i++) {
-    days.push({
-      date: new Date(date),
-      day: date.getUTCDate(),
-      isToday: isToday(date),
-    })
-    date.setUTCDate(date.getUTCDate() + 1)
-  }
-
-  return days
-})
-
-const isToday = (date) => {
-  const today = new Date()
-  return (
-    date.getUTCDate() === today.getUTCDate() &&
-    date.getUTCMonth() === today.getUTCMonth() &&
-    date.getUTCFullYear() === today.getUTCFullYear()
-  )
-}
-
-const isSameMonth = (date) => {
-  return (
-    date.getUTCMonth() === currentDate.value.getUTCMonth() &&
-    date.getUTCFullYear() === currentDate.value.getUTCFullYear()
-  )
-}
-
-const isPastDate = (date) => {
-  if (!props.disablePastDates) return false;
-  
-  const now = new Date();
-  // Compare only dates without time
-  const todayDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  const compareDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-  
-  return compareDate < todayDate;
-}
-
-const getAvailabilityInfo = (date) => {
-  if (!props.availabilityData || props.availabilityData.length === 0) return null;
-  
-  const dateStr = dateToString(date);
-  return props.availabilityData.find(item => item.date === dateStr);
-}
-
-const isAvailable = (date) => {
-  if (!props.availabilityData || props.availabilityData.length === 0) return true;
-  
-  const availabilityInfo = getAvailabilityInfo(date);
-  return !availabilityInfo || availabilityInfo.availableQuantity > 0;
-}
-
-const isLowAvailability = (date) => {
-  if (!props.availabilityData || props.availabilityData.length === 0) return false;
-  
-  const availabilityInfo = getAvailabilityInfo(date);
-  return availabilityInfo && 
-         availabilityInfo.availableQuantity > 0 && 
-         availabilityInfo.availableQuantity <= props.lowAvailabilityThreshold;
-}
-
-const getAvailability = (date) => {
-  if (!props.showAvailability) return null;
-  
-  const availabilityInfo = getAvailabilityInfo(date);
-  return availabilityInfo ? availabilityInfo.availableQuantity : null;
-}
-
-const isSelected = (date) => {
-  if (props.allowRange) {
-    if (startDate.value && endDate.value) {
-      return date >= new Date(startDate.value) && toEndOfDayUTC(date) <= new Date(endDate.value);
-    } else if (startDate.value) {
-      return date.getTime() === new Date(startDate.value).getTime();
-    }
-  } else {
-    return selectedDate.value && date.getTime() === new Date(selectedDate.value).getTime();
-  }
-}
-
-const isInRange = (date) => {
-  if (startDate.value && endDate.value) {
-    return date > startDate.value && toEndOfDayUTC(date) < endDate.value
-  }
-  return false
-}
-
-const selectDate = (date, event) => {
-  // Don't allow selection of past dates or unavailable dates
-  if (props.disablePastDates && isPastDate(date)) return;
-  if (!isAvailable(date)) return;
-  
-  // Check if date has sufficient quantity for required amount
-  const availabilityInfo = getAvailabilityInfo(date);
-  if (availabilityInfo && availabilityInfo.availableQuantity < props.requiredQuantity) {
-    // Show tooltip with insufficient quantity message
-    if (event) {
-      tooltip.value = {
-        show: true,
-        message: `Insufficient quantity. Available: ${availabilityInfo.availableQuantity}, needed: ${props.requiredQuantity}`,
-        x: event.clientX,
-        y: event.clientY
-      };
-      setTimeout(() => {
-        tooltip.value.show = false;
-      }, 3000);
-    }
-    return;
-  }
-  
-  // Hide tooltip if it was showing
-  tooltip.value.show = false;
-  
-  // If selecting a date from another month, switch to that month
-  if (!isSameMonth(date)) {
-    // currentDate.value = new Date(Date.UTC(
-    //   date.getUTCFullYear(),
-    //   date.getUTCMonth(),
-    //   1
-    // ));
-  }
-  
-  const formattedDate = toUTC(date)
-  
-  if (!props.allowRange) {
-    selectedDate.value = formattedDate
-    dateCalendar.value = formattedDate
-  } else if (!startDate.value && !endDate.value) {
-    startDate.value = formattedDate
-    dateCalendar.value = { start: formattedDate, end: null }
-  } else if (!endDate.value) {
-    endDate.value = toEndOfDayUTC(date)
-    if (formattedDate < startDate.value) {
-      const temp = toEndOfDayUTC(startDate.value)
-      startDate.value = formattedDate
-      endDate.value = temp
-    }
-    // Verify all dates in the range are available
-    if (props.availabilityData && props.availabilityData.length > 0) {
-      let allDatesAvailable = true;
-      let currentDate = new Date(startDate.value);
-      
-      while (currentDate <= endDate.value) {
-        if (!isAvailable(currentDate)) {
-          allDatesAvailable = false;
-          break;
-        }
-        currentDate.setUTCDate(currentDate.getUTCDate() + 1);
-      }
-      if (!allDatesAvailable) {
-        // Instead of resetting the end date, start a new range
-        startDate.value = formattedDate
-        endDate.value = null
-        dateCalendar.value = { start: formattedDate, end: null }
-        return;
-      }
-    }
-    dateCalendar.value = { start: startDate.value, end: endDate.value }
-  } else {
-    startDate.value = formattedDate
-    endDate.value = null
-    dateCalendar.value = { start: formattedDate, end: null }
-  }
-}
-
-const prevMonth = () => {
-  // Prevent navigating to past months if disablePastDates is true
-  if (props.disablePastDates) {
-    const newDate = new Date(Date.UTC(
-      currentDate.value.getUTCFullYear(),
-      currentDate.value.getUTCMonth() - 1,
-      1
-    ));
-    
-    if (newDate.getUTCFullYear() < today.getUTCFullYear() || 
-        (newDate.getUTCFullYear() === today.getUTCFullYear() && 
-         newDate.getUTCMonth() < today.getUTCMonth())) {
-      return;
-    }
-  }
-  
-  currentDate.value = new Date(Date.UTC(
-    currentDate.value.getUTCFullYear(),
-    currentDate.value.getUTCMonth() - 1,
-    1
-  ));
-}
-
-const nextMonth = () => {
-  currentDate.value = new Date(Date.UTC(
-    currentDate.value.getUTCFullYear(),
-    currentDate.value.getUTCMonth() + 1,
-    1
-  ))
-}
-
-const selectToday = () => {
-  const today = new Date();  
-  const todayStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 0, 0, 0, 0)); 
-  const todayEnd = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 23, 59, 59, 999)); 
-
-  // Check if today is available
-  if (props.disablePastDates || isAvailable(todayStart)) {
-    startDate.value = todayStart.toISOString();
-    endDate.value = todayEnd.toISOString();
-    dateCalendar.value = { start: startDate.value, end: endDate.value };
-  }
-}
-
-const selectLastWeek = () => {
-  const today = new Date();
-  const lastWeek = new Date(today);
-  lastWeek.setUTCDate(today.getUTCDate() - 7);
-  lastWeek.setUTCHours(0, 0, 0, 0);
-
-  // Skip if disablePastDates is true
-  if (props.disablePastDates) return;
-
-  startDate.value = lastWeek;
-  endDate.value = toEndOfDayUTC(today);
-  
-  today.setUTCHours(23, 59, 59, 999);
-
-  const start = lastWeek.toISOString();
-  const end = today.toISOString();
-  
-  dateCalendar.value = { start: start, end: end };
-}
-
-const selectLastMonth = () => {
-  const today = new Date();
-  
-  // Skip if disablePastDates is true
-  if (props.disablePastDates) return;
-  
-  // Create date for last month
-  const lastMonth = new Date(today);
-  lastMonth.setUTCMonth(today.getUTCMonth() - 1);
-  lastMonth.setUTCHours(0, 0, 0, 0);
-  
-  startDate.value = lastMonth;
-  endDate.value = toEndOfDayUTC(today);
-
-  today.setUTCHours(23, 59, 59, 999);
-  
-  const start = lastMonth.toISOString();
-  const end = today.toISOString();
-  
-  dateCalendar.value = { start: start, end: end };
-}
-
-const selectLastYear = () => {
-  // Skip if disablePastDates is true
-  if (props.disablePastDates) return;
-
-  startDate.value = null;
-  endDate.value = null;
-  dateCalendar.value = { start: null, end: null };
-}
-</script>
 
 <style lang='scss' scoped>
 .calendar[aria-disabled="true"] {

@@ -17,7 +17,7 @@ export default function setupGenresRoutes(app, db) {
     modelName: 'genre',
     basePath: '/api/genres',
     
-    auth: true,
+    auth: { read: false },
     
     verifiers: {
       create: verifier.createVerifier,
@@ -27,6 +27,10 @@ export default function setupGenresRoutes(app, db) {
     },
     
     abac: abac,
+    
+    policies: {
+      read: { enabled: false }
+    },
     
     cache: {
       enabled: true,

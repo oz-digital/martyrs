@@ -5,9 +5,11 @@ export default (function (db) {
     // Handle WebSocket messages for music streaming
     handleStreamingMessage: async (ws, message) => {
       try {
+        console.log('StreamingHandler: Received message:', { action: message.action, data: message.data });
         const { action, data } = message;
         switch (action) {
           case 'startPlaying':
+            console.log('StreamingHandler: Processing startPlaying event for track:', data.trackId, 'user:', ws.userId);
             // Log play event
             if (ws.userId && data.trackId) {
               await db.playHistory.create({
@@ -18,8 +20,12 @@ export default (function (db) {
                 playedFrom: data.from || 'other',
                 contextId: data.contextId || null,
               });
+              console.log('StreamingHandler: Created play history record');
+              
               // Increment play count
-              await db.track.findByIdAndUpdate(data.trackId, { $inc: { playCount: 1 } });
+              const trackUpdate = await db.track.findByIdAndUpdate(data.trackId, { $inc: { playCount: 1 } }, { new: true });
+              console.log('StreamingHandler: Updated track playCount to:', trackUpdate?.playCount);
+              
               // Acknowledge
               ws.send(
                 JSON.stringify({

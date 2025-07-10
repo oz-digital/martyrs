@@ -21,7 +21,7 @@
         <Dropdown 
           :label="dateLabel"
           align="left"
-          class="pos-relative h-100 bg-white radius-small pd-thin"
+          class="pos-relative z-index-3 h-100 bg-white radius-small pd-thin"
         >
           <Calendar 
             v-model:date="selectedDate"
@@ -153,6 +153,8 @@ const updateDate = (newSelectedDate) => {
   if (newSelectedDate) {
     const newDate = new Date(newSelectedDate)
     emit('update:date', newDate)
+    // Emit load-more event to trigger data loading for new date
+    emit('load-more', 'refresh')
   }
 }
 

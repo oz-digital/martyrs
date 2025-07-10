@@ -38,10 +38,10 @@
       
       <Feed
         :store="{
-          read: (options) => playlistsActions.fetchPlaylists({ ...options, owner: { type: 'user', target: authState.user._id } }),
+          read: (options) => playlistsActions.fetchPlaylists(options),
           state: playlistsState
         }"
-        :options="{ owner: { type: 'user', target: authState.user._id } }"
+        :options="{ creator: authState.user._id  }"
         :states="{
           empty: {
             title: 'No playlists yet',
@@ -172,14 +172,16 @@
         class="gap-medium"
       >
         <template #default="{ items }">
-          <TrackCard
-            v-for="track in items"
-            :key="track._id"
-            :track="track"
-            :showAlbum="true"
-            :showCover="true"
-            class="w-100 bg-dark-transp-10 radius-medium"
-          />
+          <div class="bg-light radius-medium o-hidden">
+            <TrackListCard
+              v-for="(track, index) in items"
+              :key="track._id"
+              :track="track"
+              :index="index"
+              :showAlbum="true"
+              :showCover="true"
+            />
+          </div>
         </template>
       </Feed>
     </div>
@@ -191,7 +193,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
-import TrackCard from '../cards/TrackCard.vue';
+import TrackListCard from '../cards/TrackListCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
 import PlaylistCard from '../cards/PlaylistCard.vue';
 import ArtistCard from '../cards/ArtistCard.vue';

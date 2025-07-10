@@ -17,7 +17,7 @@ export default function setupAlbumsRoutes(app, db) {
     modelName: 'album',
     basePath: '/api/albums',
     
-    auth: true,
+    auth: { read: false },
     
     verifiers: {
       create: verifier.createVerifier,
@@ -27,6 +27,10 @@ export default function setupAlbumsRoutes(app, db) {
     },
     
     abac: abac,
+    
+    policies: {
+      read: { enabled: false }
+    },
     
     cache: {
       enabled: true,
@@ -47,14 +51,26 @@ export default function setupAlbumsRoutes(app, db) {
     method: 'get',
     path: '/url/:url',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const album = await db.album
           .findOne({ url: req.params.url })
-          .populate('artists', 'name url');
+          .populate('artists', 'name url photoUrl isVerified');
         
         if (!album) {
           return res.status(404).json({ error: 'Album not found' });
+        }
+
+        // Update totalTracks count if needed
+        const trackCount = await db.track.countDocuments({ 
+          album: album._id,
+          status: 'published'
+        });
+        
+        if (album.totalTracks !== trackCount) {
+          album.totalTracks = trackCount;
+          await album.save();
         }
         
         res.json(album);
@@ -70,6 +86,7 @@ export default function setupAlbumsRoutes(app, db) {
     method: 'get',
     path: '/:albumId/tracks',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const { albumId } = req.params;
@@ -80,8 +97,9 @@ export default function setupAlbumsRoutes(app, db) {
             status: 'published',
             isPublic: true
           })
-          .populate('artist', 'name url')
-          .populate('genre', 'name')
+          .populate('artist', 'name url photoUrl isVerified')
+          .populate('album', 'title url coverArt')
+          .populate('genre', 'name url')
           .sort({ trackNumber: 1, createdAt: 1 });
         
         res.json(tracks);
@@ -97,6 +115,7 @@ export default function setupAlbumsRoutes(app, db) {
     method: 'get',
     path: '/featured',
     auth: false,
+    abac: { enabled: false },
     handler: async (req, res) => {
       try {
         const limit = parseInt(req.query.limit) || 10;
@@ -110,9 +129,22 @@ export default function setupAlbumsRoutes(app, db) {
               $gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // последние 90 дней
             }
           })
-          .populate('artists', 'name url')
+          .populate('artists', 'name url photoUrl isVerified')
           .sort({ createdAt: -1 })
           .limit(limit);
+
+        // Update totalTracks count for each album
+        for (const album of featuredAlbums) {
+          const trackCount = await db.track.countDocuments({ 
+            album: album._id,
+            status: 'published'
+          });
+          
+          if (album.totalTracks !== trackCount) {
+            album.totalTracks = trackCount;
+            await album.save();
+          }
+        }
         
         res.json(featuredAlbums);
       } catch (error) {

@@ -28,6 +28,9 @@ export default (function (app, db) {
               status: 'published',
               isPublic: true,
             })
+            .populate('artist', 'name url photoUrl isVerified')
+            .populate('album', 'title url coverArt')
+            .populate('genre', 'name url')
             .limit(limitNum);
         }
         if (types.includes('albums') || types.includes('all')) {

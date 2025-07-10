@@ -4,6 +4,37 @@
     <h2 class="h2 mn-b-medium">{{ editMode ? 'Edit Track' : 'Upload Track' }}</h2>
     
     <form @submit.prevent="submitForm" class="cols-1 gap-medium">
+       <!-- Media Section -->
+      <div class="bg-light pd-medium radius-medium">
+        <h3 class="h3 mn-b-medium">Media</h3>
+        
+        <div class="cols-2-fit-content mobile:cols-1 gap-medium">
+          <!-- Track Cover -->
+          <div>
+            <p class="p-semi mn-b-small">Cover Image</p>
+            <UploadImage
+              v-model:photo="form.coverUrl"
+              uploadPath="tracks/covers"
+              class="aspect-1x1 h-15r radius-small o-hidden mn-b-small"
+              @error="handleUploadError"
+            />
+          </div>
+          
+          <!-- Audio File -->
+          <div>
+            <p class="p-semi mn-b-small">Audio File</p>
+            <Upload
+              v-model:field="form.fileUrl"
+              @file-change="(url) => form.fileUrl = url"
+              type="file"
+              uploadPath="tracks/audio"
+              class="w-100 h-15r bg-white radius-small pd-small"
+              :validation="validationErrors.fileUrl"
+            />
+          </div>
+        </div>
+      </div>
+      
       <!-- Basic Info Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Basic Information</h3>
@@ -257,36 +288,7 @@
         />
       </div>
       
-      <!-- Media Section -->
-      <div class="bg-light pd-medium radius-medium">
-        <h3 class="h3 mn-b-medium">Media</h3>
-        
-        <div class="cols-2 mobile:cols-1 gap-medium">
-          <!-- Track Cover -->
-          <div>
-            <p class="p-semi mn-b-small">Cover Image</p>
-            <UploadImage
-              v-model:photo="form.coverUrl"
-              uploadPath="tracks/covers"
-              class="w-100 h-15r radius-small o-hidden mn-b-small"
-              @error="handleUploadError"
-            />
-          </div>
-          
-          <!-- Audio File -->
-          <div>
-            <p class="p-semi mn-b-small">Audio File</p>
-            <Upload
-              v-model:field="form.fileUrl"
-              @file-change="(url) => form.fileUrl = url"
-              type="file"
-              uploadPath="tracks/audio"
-              class="w-100 h-15r bg-white radius-small pd-small"
-              :validation="validationErrors.fileUrl"
-            />
-          </div>
-        </div>
-      </div>
+     
       
       <!-- Additional Info Section -->
       <div class="bg-light pd-medium radius-medium">
@@ -517,13 +519,29 @@ const submitForm = async () => {
   }
   
   try {
+    console.log('=== FORM DATA DEBUG ===');
+    console.log('form.artists:', form.artists);
+    console.log('form.albums:', form.albums);
+    console.log('form.albums.length:', form.albums.length);
+    console.log('form.albums[0]:', form.albums[0]);
+    console.log('form.albums[0]?._id:', form.albums[0]?._id);
+    
     // Prepare data for submission
     const formData = {
       ...form,
       artist: form.artists.length > 0 ? (form.artists[0]._id || form.artists[0]) : null,
-      album: form.albums.length > 0 ?? form.albums.map(album => album._id || genre),
-      genres: form.genres.map(genre => genre._id || genre)
+      album: form.albums && form.albums._id ? form.albums._id : null,
+      genre: form.genres.map(genre => genre._id || genre)
     };
+    
+    // Remove the original arrays/objects to avoid conflicts
+    delete formData.artists;
+    delete formData.albums;
+    delete formData.genres;
+    
+    console.log('formData after preparation:', formData);
+    console.log('formData.album:', formData.album);
+    console.log('typeof formData.album:', typeof formData.album);
     
     // Add ownership data if creating new track
     if (!props.editMode) {

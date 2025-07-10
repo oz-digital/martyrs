@@ -97,7 +97,11 @@ export const actions = {
     }
 
     // Log play via WebSocket if connected
+    console.log('Player: Attempting to log play event for track:', track._id);
+    console.log('Player: WebSocket connected?', globalWebSocket.isSocketConnected());
+    
     if (globalWebSocket.isSocketConnected()) {
+      console.log('Player: Sending startPlaying event via WebSocket');
       globalWebSocket.send({
         module: 'music-streaming',
         action: 'startPlaying',
@@ -107,6 +111,8 @@ export const actions = {
           deviceInfo: navigator.userAgent,
         },
       });
+    } else {
+      console.log('Player: WebSocket not connected, play count will not be incremented');
     }
   },
 

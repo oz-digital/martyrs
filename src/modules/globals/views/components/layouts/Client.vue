@@ -151,6 +151,12 @@
 						  </router-view>
 						</Suspense>
 				  </div>
+
+				 	<component 
+			      v-if="route.meta.player"
+			      class="z-index-2"
+			    	:is="route.meta.player"
+			    />
 			  
 	        <component
 						v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter"
@@ -174,6 +180,7 @@
 		</router-view>
 
 	
+
 
     <component 
       v-if="MOBILE_APP && route.meta.title_hide"

@@ -20,6 +20,7 @@
 
     <Feed
       :search="true"
+      :keepSlotVisible="true"
       :states="{
         empty: {
           title: 'No Rents Found',
@@ -28,9 +29,9 @@
       }"
       :store="{ read: (options) => rents.actions.read(options) }"
       :options="{
-        limit: 15,
         owner: route.params._id,
-        ...(tab !== 'all' && { status: tab })
+        startDate: dateRange.start.toISOString(),
+        endDate: dateRange.end.toISOString()
       }"
       v-slot="{ items }"
     > 
@@ -38,13 +39,18 @@
         v-model:view="view"
         v-model:date="date"
         v-model:dateRange="dateRange"
-        :items="sampleData"
+        :items="items"
         :loading="loading"
+        :title-key="'productDetails.name'"
+        :start-key="'startDate'"
+        :end-key="'endDate'"
+        :status-key="'status'"
+        :id-key="'_id'"
+        :group-by="'productDetails.name'"
         @load-more="handleLoadMore"
         @item-click="handleItemClick"
         @today="handleToday"
       />
-      {{items}}
 
      <!--  <CardRent
         v-else
@@ -77,45 +83,6 @@ const router = useRouter();
 
 const isCalendarView = ref(true);
 
-// Sample data
-const sampleData = ref([
-  {
-    id: 2,
-    title: 'Product A',
-    startDate: dayjs().add(1, 'days').toDate(),
-    endDate: dayjs().add(5, 'days').toDate(),
-    status: 'active'
-  },
-  {
-    id: 3,
-    title: 'Product B',
-    startDate: dayjs().subtract(1, 'days').toDate(),
-    endDate: dayjs().add(2, 'days').toDate(),
-    status: 'completed'
-  },
-  {
-    id: 4,
-    title: 'Product C',
-    startDate: dayjs().toDate(),
-    endDate: dayjs().add(4, 'days').toDate(),
-    status: 'canceled'
-  },
-  // Additional test data for hour view
-  {
-    id: 5,
-    title: 'Product D',
-    startDate: dayjs().add(2, 'days').add(8, 'hours').toDate(),
-    endDate: dayjs().add(2, 'days').add(16, 'hours').toDate(),
-    status: 'active'
-  },
-  {
-    id: 6,
-    title: 'Product E',
-    startDate: dayjs().add(1, 'days').add(14, 'hours').toDate(),
-    endDate: dayjs().add(2, 'days').add(10, 'hours').toDate(),
-    status: 'completed'
-  }
-])
 
 // Set initial date range - current month plus 15 days before and 45 days after
 const view = ref('days')
@@ -127,9 +94,10 @@ const dateRange = computed(() => {
   
   switch (view.value) {
     case 'hours':
+      // Show only the current day in hours view
       return {
-        start: d.subtract(1, 'days').startOf('day').toDate(),
-        end: d.add(6, 'days').endOf('day').toDate()
+        start: d.startOf('day').toDate(),
+        end: d.endOf('day').toDate()
       }
       
     case 'days':
@@ -158,14 +126,44 @@ const handleLoadMore = async (direction) => {
   
   loading.value = true
   
-  // Simulate API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Add more items if needed
-      loading.value = false
-      resolve()
-    }, 1000)
-  })
+  try {
+    // Only update date if it's navigation (not refresh)
+    if (direction !== 'refresh') {
+      const d = dayjs(date.value)
+      let newDate
+      
+      switch (view.value) {
+        case 'hours':
+          newDate = direction === 'forward' 
+            ? d.add(1, 'day').toDate()
+            : d.subtract(1, 'day').toDate()
+          break
+        case 'days':
+          newDate = direction === 'forward'
+            ? d.add(1, 'month').toDate()
+            : d.subtract(1, 'month').toDate()
+          break
+        case 'weeks':
+          newDate = direction === 'forward'
+            ? d.add(1, 'month').toDate()
+            : d.subtract(1, 'month').toDate()
+          break
+      }
+      
+      date.value = newDate
+    }
+    
+    // Load data for the current date range
+    await rents.actions.read({
+      owner: route.params._id,
+      startDate: dateRange.value.start.toISOString(),
+      endDate: dateRange.value.end.toISOString()
+    })
+  } catch (error) {
+    console.error('Error loading more data:', error)
+  } finally {
+    loading.value = false
+  }
 }
 
 // Handle item click
@@ -175,7 +173,14 @@ const handleItemClick = (item) => {
 
 // Handle today
 const handleToday = () => {
-  date.value = new Date()
+  const now = new Date()
+  date.value = now
+  
+  // For hours view, ensure we're showing the current hour
+  if (view.value === 'hours') {
+    // Update date to current time to trigger proper centering
+    date.value = new Date()
+  }
 }
 
 const today = new Date();
@@ -218,8 +223,7 @@ const loadMoreData = async ({ direction, date }) => {
     await rents.actions.read({
       owner: route.params._id,
       startDate: startDateParam.toISOString(),
-      endDate: endDateParam.toISOString(),
-      ...(tab.value !== 'all' && { status: tab.value })
+      endDate: endDateParam.toISOString()
     });
   } catch (error) {
     console.error('Error loading additional rent data:', error);

@@ -2,49 +2,60 @@
 <template>
   <div 
     class="track-item pd-small hover-bg-dark-transp-25 flex-v-center flex cursor-pointer"
-    :class="{'bg-dark-transp-25': isPlaying(track)}"
+    :class="{'bg-main-transp-10': isPlaying(track)}"
     @click="playTrack(track)"
     @dblclick="playTrack(track, true)"
     @mouseenter="hoveredIndex = props.index"
     @mouseleave="hoveredIndex = -1"
   >
     <div class="track-number w-3r t-center pos-relative">
-      <span v-if="!isPlaying(track) && hoveredIndex !== props.index" class="t-grey">{{ props.index + 1 }}</span>
+      <span v-if="!isPlaying(track) && hoveredIndex !== props.index" class="t-transp">{{ props.index + 1 }}</span>
       <Button 
         v-else-if="!isPlaying(track) && hoveredIndex === props.index"
         @click.stop="playTrack(track)"
-        class="bg-transparent border-none pd-zero"
+        class="bg-main  pd-thin"
         :showLoader="false"
         :showSucces="false"
       >
-        <IconPlay class="i-small" fill="rgb(var(--white))"/>
+        <IconPlay @click.stop="playTrack(track)" class="i-small" fill="rgb(var(--white))"/>
       </Button>
       <Button 
         v-else
         @click.stop="pauseTrack()"
-        class="bg-transparent border-none pd-zero"
+        class="bg-main pd-thin"
         :showLoader="false"
         :showSucces="false"
       >
-        <IconPause class="i-small" fill="rgb(var(--main))"/>
+        <IconPause @click.stop="pauseTrack()" class="i-small" fill="rgb(var(--white))"/>
       </Button>
     </div>
     
     <div class="track-title flex-child-1 flex flex-v-center">
       <div v-if="showCover" class="track-cover mn-r-small">
         <Media 
-          :url="track.coverUrl || (track.album && track.album.coverUrl) || '/assets/placeholder-track.jpg'" 
+          :url="track.coverUrl || (track.album && track.album.coverUrl) || '/logo/logo-placeholder.jpg'" 
           class="w-3r h-3r object-fit-cover o-hidden radius-small"
         />
       </div>
       
       <div class="track-info">
-        <div class="track-name " :class="{'t-main': isPlaying(track)}">{{ track.title }}</div>
-        <div class="track-artist t-grey t-small">
+        <div class="track-name " :class="{'t-main': isPlaying(track)}">
+          <router-link 
+            v-if="track.url"
+            :to="{ name: 'track', params: { url: track.url } }"
+            class="hover-t-main"
+            :class="{'t-main': isPlaying(track)}"
+            @click.stop
+          >
+            {{ track.title }}
+          </router-link>
+          <span v-else>{{ track.title }}</span>
+        </div>
+        <div :class="{'t-main': isPlaying(track)}" class="track-artist t-transp t-small">
           <router-link 
             v-if="track.artist && track.artist._id"
             :to="{ name: 'artist', params: { url: track.artist.url } }"
-            class="t-grey hover-"
+            class="t-transp hover-"
             @click.stop
           >
             {{ getArtistName(track) }}
@@ -54,11 +65,11 @@
       </div>
     </div>
     
-    <div v-if="showAlbum" class="track-album w-15r mobile:w-0 mobile:hidden t-grey t-truncate">
+    <div v-if="showAlbum" class="track-album  w-15r mobile:w-0 mobile:hidden t-transp t-truncate">
       <router-link 
         v-if="track.album && track.album._id"
         :to="{ name: 'album', params: { url: track.album.url } }"
-        class="t-grey hover-"
+        class="t-transp hover-"
         @click.stop
       >
         {{ track.album.title }}
@@ -66,7 +77,7 @@
       <span v-else>{{ track.album?.title || 'Single' }}</span>
     </div>
     
-    <div class="track-duration w-5r t-right t-grey">{{ formatDuration(track.duration) }}</div>
+    <div class="track-duration w-5r t-right t-transp">{{ formatDuration(track.duration) }}</div>
   </div>
 </template>
 
