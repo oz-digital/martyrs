@@ -66,31 +66,33 @@
             @click="playTrack"
             color="primary"
             size="medium"
-            class="flex-1 flex-center gap-thin"
+            class="flex-1 t-white bg-black radius-thin flex-center gap-thin"
           >
-            <IconPlay class="w-1r h-1r" />
+            <IconPlay fill="rgb(var(--white))" class="i-medium" />
             Play
           </Button>
-          
-          <Button
-            @click="toggleFavorite"
-            :color="isFavorite ? 'danger' : 'transp'"
-            size="medium"
-            class="w-3r h-3r radius-full"
-          >
-            <IconLike class="w-1-25r h-1-25r" :fill="isFavorite" />
-          </Button>
-          
+
           <Button
             @click="addToQueue"
-            color="transp"
+            color="primary"
             size="medium"
-            class="w-3r h-3r radius-full"
+            class="flex-1 bg-light radius-thin flex-center gap-thin"
           >
-            <IconAdd class="w-1-25r h-1-25r" />
+            <IconAdd class="i-medium" />
+            Add to Queue
           </Button>
-          
-          <Dropdown v-model="showDropdown" class="relative">
+
+          <Button
+            @click="toggleFavorite"
+            color="primary"
+            size="medium"
+            class="flex-1 bg-light radius-thin flex-center gap-thin"
+          >
+            <IconLike class="i-medium" :fill="isFavorite" />
+            {{isFavorite ? 'Liked' : 'Like'}}
+          </Button>
+
+          <Dropdown :label="{component: IconEllipsis, class: 'bg-light radius-thin pd-thin i-big' }" v-model="showDropdown" class="relative">
             <template #trigger>
               <Button color="transp" size="medium" class="w-3r h-3r radius-full">
                 <IconEllipsis class="w-1-25r h-1-25r" />
@@ -121,7 +123,7 @@
         <!-- Artist Card -->
         <div class="artist-card bg-light pd-medium radius-medium flex items-center gap-medium mn-b-big">
           <router-link 
-            :to="`/artist/${track.artist.url}`"
+            :to="{ name: 'artist', params: { url: track.artist.url } }"
             class="flex items-center gap-medium flex-1 hover-opacity"
           >
             <div class="artist-avatar">
@@ -160,7 +162,7 @@
           <!-- Duration -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
             <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconClock class="w-1-5r h-1-5r t-primary" />
+              <IconClock class="i-regular t-primary" />
             </div>
             <div>
               <div class="t-small t-transp t-uppercase">Duration</div>
@@ -171,7 +173,7 @@
           <!-- Release Date -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
             <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconCalendar class="w-1-5r h-1-5r t-primary" />
+              <IconCalendar class="i-regular t-primary" />
             </div>
             <div>
               <div class="t-small t-transp t-uppercase">Released</div>
@@ -182,7 +184,7 @@
           <!-- Status -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
             <div class="icon-wrapper bg-success-transp-20 w-3r h-3r radius-small flex-center">
-              <IconCheck class="w-1-5r h-1-5r t-success" />
+              <IconCheck class="i-regular t-success" />
             </div>
             <div>
               <div class="t-small t-transp t-uppercase">Status</div>
@@ -193,7 +195,7 @@
           <!-- Visibility -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
             <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconEye class="w-1-5r h-1-5r t-primary" />
+              <IconEye class="i-regular t-primary" />
             </div>
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>
@@ -292,7 +294,7 @@
     <Popup 
       v-if="showAddToPlaylistModal" 
       @close-popup="showAddToPlaylistModal = false" 
-      class="bg-dark pd-medium w-m-25r radius-medium"
+      class="bg-white pd-medium w-m-25r radius-medium"
     >
       <h3 class="h3 mn-b-medium">Add to Playlist</h3>
       <!-- <PlaylistSelector 

@@ -14,7 +14,7 @@
           <li>
             <router-link :to="{ name: 'music-home' }" 
               class="flex-v-center flex gap-small pd-thin radius-small" 
-              :class="$route.name === 'music-home' ? 'bg-dark' : 'hover-bg-dark'"
+              :class="$route.name === 'music-home' ? 'bg-white' : 'hover-bg-white'"
             >
               <IconHome class="i-medium" :fill="$route.name === 'music-home' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
               <span class="t-medium" :class="$route.name === 'music-home' ? 't-main' : ''">Home</span>
@@ -23,7 +23,7 @@
           <li>
             <router-link :to="{ name: 'music-search' }" 
               class="flex-v-center flex gap-small pd-thin radius-small"
-              :class="$route.name === 'music-search' ? 'bg-dark' : 'hover-bg-dark'"
+              :class="$route.name === 'music-search' ? 'bg-white' : 'hover-bg-white'"
             >
               <IconSearch class="i-medium" :fill="$route.name === 'music-search' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
               <span class="t-medium" :class="$route.name === 'music-search' ? 't-main' : ''">Search</span>
@@ -32,7 +32,7 @@
           <li>
             <router-link :to="{ name: 'music-library' }" 
               class="flex-v-center flex gap-small pd-thin radius-small"
-              :class="$route.name === 'music-library' ? 'bg-dark' : 'hover-bg-dark'"
+              :class="$route.name === 'music-library' ? 'bg-white' : 'hover-bg-white'"
             >
               <IconLibrary class="i-medium" :fill="$route.name === 'music-library' ? 'rgb(var(--main))' : 'rgb(var(--white))'"/>
               <span class="t-medium" :class="$route.name === 'music-library' ? 't-main' : ''">Your Library</span>
@@ -46,7 +46,7 @@
           <h4 class="t-transp t-medium">YOUR PLAYLISTS</h4>
           <Button 
             @click="showCreatePlaylistModal = true" 
-            class="bg-transparent cursor-pointer pd-micro radius-small hover-bg-dark"
+            class="bg-transparent cursor-pointer pd-micro radius-small hover-bg-white"
             :showLoader="false"
             :showSucces="false"
           >
@@ -72,8 +72,8 @@
             <li v-for="playlist in items" :key="playlist._id" class="mn-b-thin">
               <router-link 
                 :to="{ name: 'playlist', params: { url: playlist.url } }" 
-                class=" t-truncate d-block pd-thin radius-small hover-bg-dark"
-                :class="$route.params.url === playlist.url ? 'bg-dark t-main' : ''"
+                class=" t-truncate d-block pd-thin radius-small hover-bg-white"
+                :class="$route.params.url === playlist.url ? 'bg-white t-main' : ''"
               >
                 {{ playlist.title }}
               </router-link>
@@ -87,7 +87,7 @@
     <Popup 
       v-if="showCreatePlaylistModal" 
       @close-popup="showCreatePlaylistModal = false" 
-      class="bg-dark pd-small w-m-25r radius-medium "
+      class="bg-white pd-small w-m-25r radius-medium "
     >
       <h3 class="mn-b-medium">Create Playlist</h3>
       <PlaylistForm @created="onPlaylistCreated" />

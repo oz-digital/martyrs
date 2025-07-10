@@ -44,12 +44,11 @@ function initializeGlobals(app, store, router, config, options = {}) {
 
   i18nManager.register('globals', locales);
 
-  console.log('mesages is',  i18nManager.getAllMessages())
-
   const envVariables = ['NODE_ENV', 'PORT', 'APP_NAME', 'DOMAIN_URL', 'API_URL', 'WSS_URL', 'FILE_SERVER_URL', 'WDT_TOKEN', 'WDM_URL_PROD', 'GOOGLE_MAPS_API_KEY', 'MOBILE_APP'];
 
   app.config.globalProperties.DOMAIN_URL = process.env.DOMAIN_URL;
   app.config.globalProperties.API_URL = process.env.API_URL;
+  app.config.globalProperties.WSS_URL = process.env.WSS_URL;
   app.config.globalProperties.MOBILE_APP = process.env.MOBILE_APP;
   app.config.globalProperties.FILE_SERVER_URL = process.env.FILE_SERVER_URL;
   app.config.globalProperties.GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;

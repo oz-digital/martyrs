@@ -16,7 +16,7 @@ export default async function scrollBehavior(to, from, savedPosition) {
 
     if (to.hash) {
       let el = await findEl(to.hash);
-      let screen = await findEl('#screen');
+      let screen = await findEl('#scrollview');
 
       if ('scrollBehavior' in document.documentElement.style) {
         return screen.scrollTo({ top: el.offsetTop, behavior: 'smooth' });

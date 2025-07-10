@@ -11,7 +11,7 @@
           :key="tab.id"
           @click="activeTab = tab.id"
           :class="[
-            activeTab === tab.id ? 'bg-white t-black' : 'bg-dark-transp-50  hover-bg-dark',
+            activeTab === tab.id ? 'bg-white t-black' : 'bg-white-transp-50  hover-bg-white',
           ]"
           class="radius-extra pd-small"
           :showLoader="false" 
@@ -46,7 +46,7 @@
           empty: {
             title: 'No playlists yet',
             description: 'Create your first playlist to see it here',
-            class: 'pd-big bg-dark-transp-10 radius-medium'
+            class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
         class="gap-medium"
@@ -86,7 +86,7 @@
           empty: {
             title: 'No albums yet',
             description: 'Upload your first album to see it here',
-            class: 'pd-big bg-dark-transp-10 radius-medium'
+            class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
         class="gap-medium"
@@ -126,7 +126,7 @@
           empty: {
             title: 'No artists yet',
             description: 'Create your first artist profile to see it here',
-            class: 'pd-big bg-dark-transp-10 radius-medium'
+            class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
         class="gap-medium"
@@ -166,7 +166,7 @@
           empty: {
             title: 'No tracks yet',
             description: 'Upload your first track to see it here',
-            class: 'pd-big bg-dark-transp-10 radius-medium'
+            class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
         class="gap-medium"

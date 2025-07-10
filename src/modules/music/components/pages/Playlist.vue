@@ -56,9 +56,9 @@
             @click="playPlaylist"
             color="primary"
             size="medium"
-            class="flex-1 flex-center gap-thin"
+            class="flex-1 t-white bg-black radius-thin flex-center gap-thin"
           >
-            <IconPlay class="i-medium" />
+            <IconPlay fill="rgb(var(--white))" class="i-medium" />
             Play All
           </Button>
 
@@ -66,7 +66,7 @@
             @click="shufflePlay"
             color="primary"
             size="medium"
-            class="flex-1 flex-center gap-thin"
+            class="flex-1   bg-light radius-thin flex-center gap-thin"
           >
             <IconShuffle class="i-medium" />
             Shuffle
@@ -76,20 +76,20 @@
             @click="toggleFollow"
             color="primary"
             size="medium"
-            class="flex-1 flex-center gap-thin"
+            class="flex-1  bg-light radius-thin flex-center gap-thin"
           >
             {{isFollowing ? 'Follow' : 'Unfollow'}}
           </Button>
 
           
-          <Dropdown :label="{component: IconEllipsis, class: 'i-medium' }" v-model="showDropdown" class="relative">
+          <Dropdown :label="{component: IconEllipsis, class: 'bg-light radius-thin pd-thin i-big' }" v-model="showDropdown" class="relative">
             <template #trigger>
               <Button color="transp" size="medium" class="w-3r h-3r radius-full">
                 <IconEllipsis class="w-1-25r h-1-25r" />
               </Button>
             </template>
             <template #default>
-              <div class="dropdown-menu bg-dark pd-small radius-medium shadow-big mn-t-thin">
+              <div class="dropdown-menu bg-white pd-small radius-medium shadow-big mn-t-thin">
                 <Button @click="addToQueue" color="transp" size="small" class="w-100 justify-start">
                   Add to Queue
                 </Button>
@@ -163,7 +163,7 @@
               <Media 
                 v-if="collaborator.photoUrl"
                 :url="collaborator.photoUrl"
-                class="w-1-5r h-1-5r radius-full object-cover"
+                class="i-regular radius-full object-cover"
               />
               <span class="t-small">{{ collaborator.name || collaborator.profile?.name || 'User' }}</span>
             </div>
@@ -306,7 +306,7 @@
     <Popup 
       :isPopupOpen="showEditModal && (isOwner || isCollaborator)"
       @close-popup="showEditModal = false" 
-      class="bg-dark pd-medium w-m-30r radius-medium"
+      class="bg-white pd-medium w-m-30r radius-medium"
     >
       <PlaylistForm 
         :editMode="true"
@@ -320,7 +320,7 @@
     <Popup 
       :isPopupOpen="showDeleteModal"
       @close-popup="showDeleteModal = false" 
-      class="bg-dark pd-medium w-m-25r radius-medium"
+      class="bg-white pd-medium w-m-25r radius-medium"
     >
       <h3 class="mn-b-medium">Delete Playlist</h3>
       <p class="t-transp mn-b-medium">Are you sure you want to delete "{{ playlist.title }}"? This action cannot be undone.</p>

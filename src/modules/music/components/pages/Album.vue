@@ -59,43 +59,48 @@
             @click="playAlbum"
             color="primary"
             size="medium"
-            class="flex-1 flex-center gap-thin"
+            class="flex-1 t-white bg-black radius-thin flex-center gap-thin"
           >
-            <IconPlay class="w-1r h-1r" />
+            <IconPlay fill="rgb(var(--white))" class="i-medium" />
             Play All
           </Button>
-          
-          <Button
-            @click="toggleFavorite"
-            :color="isFavorite ? 'danger' : 'transp'"
-            size="medium"
-            class="w-3r h-3r radius-full"
-          >
-            <IconLike class="w-1-25r h-1-25r" :fill="isFavorite" />
-          </Button>
-          
+
           <Button
             @click="shufflePlay"
-            color="transp"
+            color="primary"
             size="medium"
-            class="w-3r h-3r radius-full"
+            class="flex-1 bg-light radius-thin flex-center gap-thin"
           >
-            <IconShuffle class="w-1-25r h-1-25r" />
+            <IconShuffle class="i-medium" />
+            Shuffle
           </Button>
-          
-          <Dropdown v-model="showDropdown" class="relative">
+
+          <Button
+            @click="toggleFavorite"
+            color="primary"
+            size="medium"
+            class="flex-1 bg-light radius-thin flex-center gap-thin"
+          >
+            <IconLike class="i-medium" :fill="isFavorite" />
+            {{isFavorite ? 'Liked' : 'Like'}}
+          </Button>
+
+          <Dropdown :label="{component: IconEllipsis, class: 'bg-light radius-thin pd-thin i-big' }" v-model="showDropdown" class="relative">
             <template #trigger>
               <Button color="transp" size="medium" class="w-3r h-3r radius-full">
                 <IconEllipsis class="w-1-25r h-1-25r" />
               </Button>
             </template>
             <template #default>
-              <div class="dropdown-menu bg-dark pd-small radius-medium shadow-big mn-t-thin">
+              <div class="dropdown-menu bg-white pd-small radius-medium shadow-big mn-t-thin">
                 <Button @click="addToQueue" color="transp" size="small" class="w-100 justify-start">
                   Add to Queue
                 </Button>
                 <Button @click="copyLink" color="transp" size="small" class="w-100 justify-start">
                   Copy Link
+                </Button>
+                <Button @click="addToPlaylist" color="transp" size="small" class="w-100 justify-start">
+                  Add to Playlist
                 </Button>
                 <template v-if="isOwner">
                   <hr class="mn-v-thin border-dark-transp-10" />
@@ -121,7 +126,7 @@
               class="artist-card bg-light pd-medium radius-medium flex items-center gap-medium"
             >
               <router-link 
-                :to="`/artist/${artist.url}`"
+                :to="{ name: 'artist', params: { url: artist.url } }"
                 class="flex items-center gap-medium flex-1 hover-opacity"
               >
                 <div class="artist-avatar">
@@ -159,9 +164,7 @@
         <div class="metadata-grid grid cols-2 gap-small mn-b-big">
           <!-- Release Date -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconCalendar class="w-1-5r h-1-5r t-primary" />
-            </div>
+            <IconCalendar class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Released</div>
               <div class="t-medium ">{{ formatDate(album.releaseDate) }}</div>
@@ -170,9 +173,7 @@
 
           <!-- Total Duration -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconClock class="w-1-5r h-1-5r t-primary" />
-            </div>
+            <IconClock class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Duration</div>
               <div class="t-medium ">{{ totalDuration }}</div>
@@ -181,9 +182,7 @@
 
           <!-- Label -->
           <div v-if="album.label" class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconDisc class="w-1-5r h-1-5r t-primary" />
-            </div>
+            <IconDisc class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Label</div>
               <div class="t-medium ">{{ album.label }}</div>
@@ -192,9 +191,7 @@
 
           <!-- Visibility -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconEye class="w-1-5r h-1-5r t-primary" />
-            </div>
+            <IconEye class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>
               <div class="t-medium ">{{ album.isPublic ? 'Public' : 'Private' }}</div>
@@ -270,7 +267,7 @@
         <h2 class="h2">More Albums</h2>
         <router-link 
           v-if="album.artists && album.artists[0]"
-          :to="`/artist/${album.artists[0].url}`" 
+          :to="{ name: 'artist', params: { url: album.artists[0].url } }" 
           class="t-primary hover-opacity"
         >
           See all

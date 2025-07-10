@@ -106,7 +106,7 @@
 	    </component>
 		  <!-- rows-1-min0_max1 z-index-1 pos-relative w-100 h-100 -->
 		  <div class="rows-1-min0_max1 z-index-1 pos-relative w-100 h-100">
-		  	<div class="o-y-scroll o-x-hidden h-100">
+		  	<div id="scrollview" ref="scrollview" class="o-y-scroll o-x-hidden h-100">
 	  			<Status 
 	  				v-if="globals.state.error.show"
 						:data="globals.state.error"
@@ -157,15 +157,16 @@
 			      class="z-index-2"
 			    	:is="route.meta.player"
 			    />
-			  
-	        <component
-						v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter"
-			      ref="footer" 
-			      :is="route.meta.footer"
-			      :theme="headerTheme"
-			      :logotype="route.meta.logotype"
-			      :location="route.meta.location"
-			    />
+			  	<transition @before-enter="scrollTop" name="scaleTransition" mode="out-in" appear>
+		        <component
+							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !isPageLoading"
+				      ref="footer" 
+				      :is="route.meta.footer"
+				      :theme="headerTheme"
+				      :logotype="route.meta.logotype"
+				      :location="route.meta.location"
+				    />
+			   	</transition>
 				</div>
 			</div>
 		</section>
@@ -232,6 +233,7 @@
   let show = ref(false)
   // Preloader
   const page = ref(null)
+   const scrollview = ref(null)
 
   const isPageLoading = ref(true);
   
@@ -265,7 +267,7 @@
 	  globals.state.isOpenLocationPopup = false;
 	}
 	function scrollTop(){
-		document.getElementById('app').scrollIntoView();
+		scrollview.value.scrollTop = 0;
 	}
 	// Scrolling header
 	const scrollOffset = ref(0)

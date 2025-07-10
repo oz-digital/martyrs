@@ -1,7 +1,7 @@
 <!-- components/cards/TrackListCard.vue -->
 <template>
   <div 
-    class="track-item pd-small hover-bg-dark-transp-25 flex-v-center flex cursor-pointer"
+    class="track-item pd-small hover-bg-white-transp-25 flex-v-center flex cursor-pointer"
     :class="{'bg-main-transp-10': isPlaying(track)}"
     @click="playTrack(track)"
     @dblclick="playTrack(track, true)"

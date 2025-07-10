@@ -22,7 +22,7 @@
         class="w-100 t-white h-50vh pos-relative"
         :style="artist.coverUrl ? `background-image: url(${FILE_SERVER_URL + artist.coverUrl}); background-size: cover; background-position: center;` : ''"
       >
-        <div class="pos-absolute pos-t-0 pos-l-0 w-100 h-100 bg-blur-small" :class="artist.coverUrl ? 'bg-black-transp-50' : 'bg-black'"></div>
+        <div class="pos-absolute pos-t-0 pos-l-0 w-100 h-100 bg-blur-small" :class="artist.coverUrl ? 'bg-black-transp-50' : 'bg-dark'"></div>
         
         <!-- Artist actions for edit/manage -->
         <div v-if="isOwner" class="pos-absolute pos-t-medium pos-r-medium z-index-1">
@@ -50,12 +50,12 @@
           <div class="w-15r h-15r radius-medium o-hidden mn-r-medium bs-black mobile:mn-r-0 mobile:mn-b-medium">
             <img
               v-if="artist.photoUrl"
-              :src="FILE_SERVER_URL + artist.photoUrl"
+              :src="FILE_SERVER_URL + (artist.photoUrl  || '/logo/logo-placeholder.jpg')"
               alt="Artist photo"
               class="w-100 h-100 object-fit-cover"
             />
-            <div v-else class="w-100 h-100 bg-white flex-center flex">
-              <span class="h1">{{ artist?.name?.[0] || 'A' }}</span>
+            <div v-else class="w-100 h-100 bg-black flex-center flex">
+              <span class="h1 t-white">{{ artist?.name?.[0] || 'A' }}</span>
             </div>
           </div>
           

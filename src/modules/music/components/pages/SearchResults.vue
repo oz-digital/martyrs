@@ -17,7 +17,7 @@
           :key="filter.id"
           @click="setActiveFilter(filter.id)"
           :class="[
-            filter.id === activeFilter ? 'bg-white t-black' : 'bg-dark-transp-50 hover-bg-dark',
+            filter.id === activeFilter ? 'bg-white t-black' : 'bg-white-transp-50 hover-bg-white',
           ]"
           class="radius-extra pd-small"
           :showLoader="false" 
@@ -54,7 +54,7 @@
           <Button 
             v-if="trackResults.length > 5 && activeFilter === 'all'"
             @click="setActiveFilter('tracks')"
-            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            class="t-main bg-transparent border-none hover-bg-white-transp-10 pd-thin"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -81,7 +81,7 @@
           <Button 
             v-if="artistResults.length > 6 && activeFilter === 'all'"
             @click="setActiveFilter('artists')"
-            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            class="t-main bg-transparent border-none hover-bg-white-transp-10 pd-thin"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -103,7 +103,7 @@
           <Button 
             v-if="albumResults.length > 5 && activeFilter === 'all'"
             @click="setActiveFilter('albums')"
-            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            class="t-main bg-transparent border-none hover-bg-white-transp-10 pd-thin"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -125,7 +125,7 @@
           <Button 
             v-if="playlistResults.length > 5 && activeFilter === 'all'"
             @click="setActiveFilter('playlists')"
-            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            class="t-main bg-transparent border-none hover-bg-white-transp-10 pd-thin"
             :showLoader="false" 
             :showSucces="false"
           >
@@ -147,7 +147,7 @@
           <Button 
             v-if="genreResults.length > 4 && activeFilter === 'all'"
             @click="setActiveFilter('genres')"
-            class="t-main bg-transparent border-none hover-bg-dark-transp-10 pd-thin"
+            class="t-main bg-transparent border-none hover-bg-white-transp-10 pd-thin"
             :showLoader="false" 
             :showSucces="false"
           >

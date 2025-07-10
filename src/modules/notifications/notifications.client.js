@@ -288,7 +288,7 @@ function initializeNotifications(app, store, router, options = {}) {
 
   // Initialize global WebSocket if needed
   if (options.wsUrl) {
-    globalWebSocket.initialize({ wsUrl: options.wsUrl });
+    globalWebSocket.initialize({ wsUrl:   app.config.globalProperties.WSS_URL });
   }
 
   // Create notification manager

@@ -1,6 +1,6 @@
 <!-- components/forms/SearchForm.vue -->
 <template>
-  <div class="search-form flex-v-center flex bg-dark-transp-50 pd-thin radius-extra">
+  <div class="search-form flex-v-center flex bg-white-transp-50 pd-thin radius-extra">
     <IconSearch class="i-small mn-r-small" fill="rgb(var(--grey))"/>
     <input 
       ref="searchInput"
