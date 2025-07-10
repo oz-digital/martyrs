@@ -56,50 +56,6 @@ export default projectRoot => {
       //     { from: path.resolve(projectRoot, "../public/icons"), to: 'icons' }
       //   ]
       // })
-      // PWA: инжектим манифест в существующий sw.js (унифицированно с SSR)
-      new InjectManifest({
-        swSrc: path.resolve(projectRoot, '../public/sw.js'),
-        swDest: 'sw.js',
-        exclude: [/\.html$/, /\.map$/],
-        manifestTransforms: [
-          (manifestEntries) => {
-            const manifest = manifestEntries.filter(entry => {
-              return !entry.url.match(/\.(html|map)$/) && entry.size < 5 * 1024 * 1024;
-            });
-            return { manifest };
-          }
-        ]
-      }),
-      // PWA Manifest
-      new RspackManifestPlugin({
-        fileName: 'manifest.json',
-        seed: {
-          name: process.env.APP_NAME || 'OZDAO App',
-          short_name: process.env.APP_SHORT_NAME || 'OZDAO',
-          description: process.env.APP_DESCRIPTION || 'OZDAO Progressive Web App',
-          theme_color: '#000000',
-          background_color: '#ffffff',
-          display: 'standalone',
-          orientation: 'portrait',
-          scope: '/',
-          start_url: '/',
-          icons: [
-            {
-              src: '/favicon/android-chrome-192x192.png',
-              sizes: '192x192',
-              type: 'image/png'
-            },
-            {
-              src: '/favicon/android-chrome-512x512.png', 
-              sizes: '512x512',
-              type: 'image/png'
-            }
-          ]
-        },
-        generate: (seed, files, entrypoints) => {
-          return seed;
-        }
-      }),
     ],
     optimization: {
       minimizer: [new rspack.SwcJsMinimizerRspackPlugin(), , new rspack.LightningCssMinimizerRspackPlugin()],
