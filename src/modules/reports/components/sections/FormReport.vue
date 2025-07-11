@@ -32,7 +32,7 @@
 		        	'other'
 		        ]"
 		        :placeholder="'Select reason'"
-				class="mn-b-small bg-white br-solid br-black-transp br-1px uppercase pd-medium t-semi bg-white t-black radius-medium"
+				class="mn-b-small bg-white br-solid br-black-transp-10 br-1px uppercase pd-medium t-semi bg-white t-black radius-medium"
 		      />
 		    
 		    <p class="p-medium mn-b-small">Our moderators will review your report within 24 hours and take action if it violates our policies.</p>

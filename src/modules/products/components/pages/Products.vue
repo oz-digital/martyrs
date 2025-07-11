@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 pos-relative">
+  <div class="pos-relative">
     <header 
       v-if="route.name !== 'Organization' && !MOBILE_APP"
       class="pd-medium flex-v-center flex-nowrap flex"
@@ -37,7 +37,7 @@
       classTab="bg-light  uppercase pd-small radius-small w-100"
   />
 
-  <div class="cols-2-1_3 br-1px br-solid br-light h-100 z-index-3 pos-relative radius-medium">
+  <div class="cols-2-1_3 br-1px br-solid br-light z-index-3 pos-relative radius-medium">
 
   <div class="o-y-scroll br-r br-solid br-light pd-medium z-index-2 desktop-only h-100 pos-relative">
     <BlockFilter

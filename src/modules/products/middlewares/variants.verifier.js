@@ -13,6 +13,12 @@ export default (function (db) {
         .min(2, 'Name must be at least 2 characters')
         .max(100, 'Name must not exceed 100 characters')
     },
+    description: {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(5000, 'Description must not exceed 5000 characters')
+    },
     sku: {
       rule: 'optional',
       validator: Validator.schema()
@@ -101,6 +107,12 @@ export default (function (db) {
         .string()
         .min(2, 'Name must be at least 2 characters')
         .max(100, 'Name must not exceed 100 characters')
+    },
+    description: {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(5000, 'Description must not exceed 5000 characters')
     },
     sku: {
       rule: 'optional',

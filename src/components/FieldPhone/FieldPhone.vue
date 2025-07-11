@@ -17,7 +17,7 @@
       :style="[dropdownStyle]"
       :tabindex="dropdownOptions.tabindex"
       @keydown.esc="reset"
-      class="br-solid br-black-transp br-1px radius-thin"
+      class="br-solid br-black-transp-10 br-1px radius-thin"
     >
       <span class="flex-nowrap flex flex-v-center p-medium vti__selection">
         <span v-if="dropdownOptions.showFlags" v-html="activeCountryFlag" class="mn-r-nano" />

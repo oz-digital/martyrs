@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 flex flex-column pd-thin">
+  <div class="flex flex-column pd-thin">
     <Block class="mn-b-thin">
       <header class="flex-v-center flex-nowrap flex">
         <h2 class="mn-r-auto">Create Order</h2>

@@ -188,6 +188,15 @@
         class="w-100 bg-light radius-small pd-small"
       />
 
+      <Field
+        v-model:field="currentVariant.description"
+        label="Description"
+        placeholder="Enter variant description"
+        class="w-100 bg-light radius-small pd-small"
+        style="resize: vertical"
+        type="textarea"
+      />
+
       <!-- Ingredients Section -->
       <div class="mn-t-medium">
         <EditIngredients 
@@ -290,6 +299,7 @@ function generateNameFromAttributes() {
 // Реактивный объект для текущего варианта
 const currentVariant = reactive({
   name: '',
+  description: '',
   sku: '',
   images: [],
   price: 0,
@@ -322,6 +332,7 @@ function openVariantPopup(variant = null) {
   if (variant) {
     // Обновляем реактивный объект через Vue реактивность
     currentVariant.name = variant.name || '';
+    currentVariant.description = variant.description || '';
     currentVariant.sku = variant.sku || '';
     currentVariant.images = [...(variant.images || [])];
     currentVariant.price = variant.price || 0;
@@ -361,6 +372,7 @@ function closeVariantPopup() {
   
   // Сбрасываем значения к дефолтным
   currentVariant.name = '';
+  currentVariant.description = '';
   currentVariant.sku = '';
   currentVariant.images = [];
   currentVariant.price = 0;
@@ -382,6 +394,7 @@ function addAttribute() {
 async function copyVariant(variant) {
   const variantCopy = {
     name: `${variant.name} (Copy)`,
+    description: variant.description || '',
     sku: generateSKU(), // Генерируем новый SKU для копии
     images: [...(variant.images || [])],
     price: variant.price || 0,
@@ -434,6 +447,7 @@ async function saveVariant() {
 
   const variantToSave = {
     name: currentVariant.name,
+    description: currentVariant.description,
     sku: currentVariant.sku,
     images: [...currentVariant.images],
     price: parseFloat(currentVariant.price) || 0,

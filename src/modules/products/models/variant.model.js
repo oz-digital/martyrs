@@ -26,6 +26,9 @@ export default db => {
     name: {
       type: String,
     },
+    description: {
+      type: String,
+    },
     price: {
       type: Number,
     },

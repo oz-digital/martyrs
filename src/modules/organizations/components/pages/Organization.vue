@@ -23,7 +23,7 @@
 			class="mn-b-thin o-x-scroll scroll-hide flex-child-default o-hidden t-medium p-medium radius-medium pd-thin bg-light"
 		/>
 
-		<div class="h-100 pos-relative">
+		<div class="pos-relative">
 
 			<transition name="slide-fade">
 		    <Feed
