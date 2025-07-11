@@ -218,7 +218,6 @@ class NotificationManager {
     
     console.log('Connecting to websockets via notifications');
     globalWebSocket.initialize({
-      wsUrl:   app.config.globalProperties.WSS_URL,
       maxReconnectAttempts: 10,
       reconnectDelay: 2000,
     });

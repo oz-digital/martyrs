@@ -253,7 +253,9 @@ const controllerFactory = db => {
       // ПОСЛЕ транзакции - отправка уведомлений
       try {
         const usersWithAccess = await getUsersWithOrdersConfirmAccess(orderData.owner.target);
-        await sendOrderNotifications(createdOrder, 'order_created', usersWithAccess);
+        await sendOrderNotifications(createdOrder, 'order_created', usersWithAccess, {
+          organization: order.owner.target
+        });
       } catch (notificationError) {
         console.error('Error sending notification:', notificationError);
       }
@@ -344,6 +346,7 @@ const controllerFactory = db => {
     const session = await db.mongoose.startSession();
     session.startTransaction();
     console.log('Transaction started');
+    console.log('url order notifi', `${process.env.API_URL || ''}/api/inventory/adjustments/create`)
     
     try {
       console.log('Finding order with ID:', req.body._id);
@@ -419,7 +422,7 @@ const controllerFactory = db => {
               const adjustmentData = {
                 product: position._id,
                 variant: position.variant,
-                storage: order.delivery?.spot || process.env.DEFAULT_STORAGE_ID,
+                storage: order.delivery?.spot,
                 source: { type: 'Order', target: order._id },
                 reason: 'sale',
                 quantity: -position.quantity, // Negative for stock-out
@@ -428,6 +431,7 @@ const controllerFactory = db => {
                 creator: { type: 'User', target: req.userId }
               };
               
+
               const adjustmentPromise = fetch(`${process.env.API_URL || ''}/api/inventory/adjustments/create`, {
                 method: 'POST',
                 headers: {
@@ -508,6 +512,7 @@ const controllerFactory = db => {
           await sendOrderNotifications(order, 'order_status', filteredUsers, {
             oldStatus: oldStatus,
             newStatus: order.status,
+            organization: order.owner.target
           });
           console.log('Notification sent successfully');
         } catch (notificationError) {

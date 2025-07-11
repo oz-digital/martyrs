@@ -71,7 +71,7 @@ function initializeMusic(app, store, router, config, options = {}) {
   // Set up WebSocket subscription for music streaming
   if (options.enableStreaming !== false && app.config.globalProperties.WSS_URL) {
     globalWebSocket.initialize({
-      wsUrl:   app.config.globalProperties.WSS_URL,
+      // wsUrl:   app.config.globalProperties.WSS_URL,
       maxReconnectAttempts: 10,
       reconnectDelay: 2000,
     });
