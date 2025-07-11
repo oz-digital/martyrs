@@ -22,8 +22,8 @@ class GlobalWebSocket {
   initialize(options = {}) {
     console.log('WSS initialize options:', options);
     console.log('options.wsUrl:', options.wsUrl);
-    if (typeof window === 'undefined') console.log('window.location.protocol:', window.location.protocol);
-    if (typeof window === 'undefined') console.log('window.location.host:', window.location.host);
+    if (typeof window !== 'undefined') console.log('window.location.protocol:', window.location.protocol);
+    if (typeof window !== 'undefined') console.log('window.location.host:', window.location.host);
 
     this.maxReconnectAttempts = options.maxReconnectAttempts || this.maxReconnectAttempts;
     this.reconnectDelay = options.reconnectDelay || this.reconnectDelay;
