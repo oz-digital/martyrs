@@ -267,7 +267,7 @@
 	  globals.state.isOpenLocationPopup = false;
 	}
 	function scrollTop(){
-		scrollview.value.scrollTop = 0;
+		if (scrollview.value) scrollview.value.scrollTop = 0;
 	}
 	// Scrolling header
 	const scrollOffset = ref(0)
