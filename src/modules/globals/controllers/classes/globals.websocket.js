@@ -136,7 +136,7 @@ class WebSocketManager {
   }
   // Метод для запуска сервера
   listen(port, callback) {
-    this.app.listen(port, listenSocket => {
+    this.app.listen('0.0.0.0', port, listenSocket => {
       if (listenSocket) {
         this.listenSocket = listenSocket;
         if (callback) callback(null, this.app);
