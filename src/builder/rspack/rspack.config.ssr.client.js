@@ -70,7 +70,17 @@ export default (projectRoot) => {
       new InjectManifest({
         swSrc: path.resolve(projectRoot, '../public/sw.js'),
         swDest: 'sw.js',
-        exclude: [/\.html$/, /\.map$/],
+        exclude: [
+          /\.html$/,
+          /\.map$/,
+          /\.js$/,  // Исключаем JS из прекэша для SSR
+          /\.css$/, // Исключаем CSS из прекэша для SSR
+        ],
+        include: [
+          /\.(png|jpg|jpeg|gif|webp|svg|ico)$/,
+          /\.(woff|woff2|ttf|eot|otf)$/,
+          /favicon/
+        ],
         manifestTransforms: [
           (manifestEntries) => {
             const manifest = manifestEntries.filter(entry => {

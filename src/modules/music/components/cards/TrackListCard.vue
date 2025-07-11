@@ -43,7 +43,7 @@
           <router-link 
             v-if="track.url"
             :to="{ name: 'track', params: { url: track.url } }"
-            class="hover-t-main"
+            class="hover-t-main hover-t-underline"
             :class="{'t-main': isPlaying(track)}"
             @click.stop
           >
@@ -55,7 +55,7 @@
           <router-link 
             v-if="track.artist && track.artist._id"
             :to="{ name: 'artist', params: { url: track.artist.url } }"
-            class="t-transp hover-"
+            class="t-transp hover-t-underline"
             @click.stop
           >
             {{ getArtistName(track) }}
@@ -69,7 +69,7 @@
       <router-link 
         v-if="track.album && track.album._id"
         :to="{ name: 'album', params: { url: track.album.url } }"
-        class="t-transp hover-"
+        class="t-transp hover-t-underline"
         @click.stop
       >
         {{ track.album.title }}
