@@ -17,22 +17,23 @@
       <!-- Left Column - Cover & Stats -->
       <div class="pos-sticky pos-t-0 mobile:pos-relative track-cover-section">
         <!-- Cover with Play Overlay -->
-        <div class="cover-container relative mn-b-medium radius-big overflow-hidden shadow-big">
+        <div class="cover-container pos-relative mn-b-medium radius-big o-hidden">
           <Media 
             :url="track.coverUrl || (track.album && track.album.coverUrl) || '/logo/logo-placeholder.jpg'" 
             :alt="track.title"
             class="aspect-1x1 w-100 radius-medium o-hidden"
           />
-          <!-- <div class="cover-overlay absolute inset-0 bg-black-transp-40 flex-center opacity-0 hover-opacity-100 transition">
+          <div class="cover-overlay w-100 h-100 pos-absolute pos-t-0 pos-r-0 bg-black-transp-40 flex flex-center">
             <Button
               @click="playTrack"
               color="white"
               size="big"
-              class="w-5r h-5r radius-full shadow-big hover-scale-110"
+              class="w-5r h-5r radius-big bg-main shadow-big hover-scale-110"
             >
-              <IconPlay class="w-2r h-2r" />
+              <IconPlay v-if="!isPlaying" fill="rgb(var(--white))" class="i-medium" />
+              <IconPause v-else fill="rgb(var(--white))" class="i-medium" />
             </Button>
-          </div> -->
+          </div>
         </div>
 
           
@@ -54,8 +55,8 @@
       <div class="track-details-section">
         <!-- Track Type Badge -->
         <div class="flex items-center gap-small mn-b-small">
-          <span class="badge bg-primary-transp-20 t-primary pd-thin-big radius-small t-small t-uppercase">Single</span>
-          <span v-if="track.isExplicit" class="badge bg-danger-transp-20 t-danger pd-thin-big radius-small t-small">Explicit</span>
+           <span class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">Single</span>
+           <span class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">Explicit</span>
         </div>
 
         <!-- Track Title -->
@@ -68,8 +69,9 @@
             size="medium"
             class="flex-1 t-white bg-black radius-thin flex-center gap-thin"
           >
-            <IconPlay fill="rgb(var(--white))" class="i-medium" />
-            Play
+            <IconPlay v-if="!isPlaying" fill="rgb(var(--white))" class="i-medium" />
+            <IconPause v-else fill="rgb(var(--white))" class="i-medium" />
+            {{ !isPlaying ? 'Play' : 'Pause'}}
           </Button>
 
           <Button
@@ -88,7 +90,7 @@
             size="medium"
             class="flex-1 bg-light radius-thin flex-center gap-thin"
           >
-            <IconLike class="i-medium" :fill="isFavorite" />
+            <IconLike class="i-medium" :fill="isFavorite ? 'rgb(var(--main)':'rgb(var(--black)'" />
             {{isFavorite ? 'Liked' : 'Like'}}
           </Button>
 
@@ -121,82 +123,52 @@
         </div>
 
         <!-- Artist Card -->
-        <div class="artist-card bg-light pd-medium radius-medium flex items-center gap-medium mn-b-big">
-          <router-link 
-            :to="{ name: 'artist', params: { url: track.artist.url } }"
-            class="flex items-center gap-medium flex-1 hover-opacity"
-          >
-            <div class="artist-avatar">
-              <Media 
-                v-if="track.artist.photoUrl"
-                :src="track.artist.photoUrl"
-                :alt="track.artist.name"
-                class="w-4r h-4r radius-full object-cover"
-              />
-              <div v-else class="w-4r h-4r radius-full bg-primary flex-center ">
-                {{ track.artist.name.charAt(0) }}
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center gap-thin">
-                <span class="t-large ">{{ track.artist.name }}</span>
-                <IconVerified v-if="track.artist.isVerified" class="w-1r h-1r t-primary" />
-              </div>
-              <span class="t-small t-transp">Artist</span>
-            </div>
-          </router-link>
-          <Button 
-            v-if="!isOwner"
-            @click="toggleFollowArtist"
-            :color="isFollowingArtist ? 'primary' : 'transp'"
-            size="small"
-          >
-            {{ isFollowingArtist ? 'Following' : 'Follow' }}
-          </Button>
+        <div class="artists-section mn-b-medium">
+          <h3 class="t-medium mn-b-small" v-if="track.artist">Artist</h3>
+          <div class="flex flex-col gap-small">
+            <ArtistCardSmall 
+              :key="track.artist._id"
+              :artist="track.artist"
+              :is-following="isFollowingArtist"
+              :show-follow-button="!isOwner"
+              @toggle-follow="toggleFollowArtist"
+            />
+          </div>
         </div>
 
-
-
         <!-- Metadata Cards -->
-        <div class="metadata-grid grid cols-2 gap-small mn-b-big">
-          <!-- Duration -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconClock class="i-regular t-primary" />
-            </div>
-            <div>
-              <div class="t-small t-transp t-uppercase">Duration</div>
-              <div class="t-medium ">{{ formatDuration(track.duration) }}</div>
-            </div>
-          </div>
-
+        <h3 class="t-medium mn-b-small">Metadata</h3>
+        <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Release Date -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconCalendar class="i-regular t-primary" />
-            </div>
+            <IconCalendar class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Released</div>
               <div class="t-medium ">{{ formatDate(track.releaseDate) }}</div>
             </div>
           </div>
 
-          <!-- Status -->
+          <!-- Total Duration -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-success-transp-20 w-3r h-3r radius-small flex-center">
-              <IconCheck class="i-regular t-success" />
+            <IconClock class="i-regular t-primary" />
+            <div>
+              <div class="t-small t-transp t-uppercase">Duration</div>
+              <div class="t-medium ">{{ formatDuration(track.duration) }}</div>
             </div>
+          </div>
+
+          <!-- Label -->
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+            <IconCheck class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Status</div>
-              <div class="t-medium t-success">{{ track.status }}</div>
+              <div class="t-medium ">{{ track.status }}</div>
             </div>
           </div>
 
           <!-- Visibility -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <div class="icon-wrapper bg-primary-transp-20 w-3r h-3r radius-small flex-center">
-              <IconEye class="i-regular t-primary" />
-            </div>
+            <IconEye class="i-regular t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>
               <div class="t-medium ">{{ track.isPublic ? 'Public' : 'Private' }}</div>
@@ -204,18 +176,19 @@
           </div>
         </div>
 
+
         <!-- Album Info -->
+        <h3 v-if="track.album" class="t-medium mn-b-small">From Album</h3>
         <div v-if="track.album" class="album-card bg-light pd-medium radius-medium mn-b-medium">
-          <div class="t-small t-transp t-uppercase mn-b-thin">From Album</div>
+         
           <router-link 
             :to="`/album/${track.album.url}`"
-            class="flex items-center gap-medium hover-opacity"
+            class="flex flex-v-center gap-thin hover-opacity"
           >
             <Media 
-              v-if="track.album.coverUrl"
-              :src="track.album.coverUrl"
+              :url="track.album.coverArt || '/logo/logo-placeholder.jpg'"
               :alt="track.album.title"
-              class="w-3r h-3r radius-small object-cover"
+              class="w-3r h-3r radius-thin o-hidden object-cover"
             />
             <span class="t-medium ">{{ track.album.title }}</span>
           </router-link>
@@ -228,16 +201,16 @@
             <span 
               v-for="genre in track.genre" 
               :key="genre"
-              class="tag bg-primary-transp-20 t-primary pd-thin-big radius-small t-small hover-bg-primary-transp-30 cursor-pointer"
+              class="tag bg-main t-medium pd-thin radius-thin t-small cursor-pointer"
             >
-              {{ genre }}
+              {{ genre.name || genre }}
             </span>
             <span 
               v-for="tag in track.tags" 
               :key="tag"
               class="tag bg-light t-transp pd-thin-big radius-small t-small hover-bg-light cursor-pointer"
             >
-              #{{ tag }}
+              #{{ tag.name || tag }}
             </span>
           </div>
         </div>
@@ -318,6 +291,7 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 // Icons
 import IconPlay from '@martyrs/src/modules/icons/navigation/IconPlay.vue';
+import IconPause from '@martyrs/src/modules/icons/navigation/IconPause.vue';
 import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue';
 import IconAdd from '@martyrs/src/modules/icons/navigation/IconAdd.vue';
@@ -329,12 +303,15 @@ import IconVerified from '@martyrs/src/modules/icons/navigation/IconCheckmark.vu
 
 // Components
 import TrackListCard from '../cards/TrackListCard.vue';
+import ArtistCardSmall from '../cards/ArtistCardSmall.vue';
 // import PlaylistSelector from '../forms/PlaylistSelector.vue';
 
 // Store
 import { state as tracksState, actions as tracksActions } from '../../store/tracks.js';
-import { actions as playerActions } from '../../store/player.js';
+import { state as playerState, actions as playerActions } from '../../store/player.js';
 import { state as authState } from '@martyrs/src/modules/auth/views/store/auth.js';
+
+const isPlaying = computed(() => playerState.isPlaying);
 
 const route = useRoute();
 const router = useRouter();

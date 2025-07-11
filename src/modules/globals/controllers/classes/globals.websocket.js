@@ -2,9 +2,18 @@ import * as cookie from 'cookie';
 import jwt from 'jsonwebtoken';
 import uWS from 'uWebSockets.js';
 class WebSocketManager {
-  constructor() {
+  constructor(options = {}) {
     // Создаем uWebSockets.js приложение внутри класса
-    this.app = uWS.App();
+    if (options.ssl) {
+      this.app = uWS.SSLApp({
+        key_file_name: options.ssl.key,      // путь к private key
+        cert_file_name: options.ssl.cert,    // путь к certificate
+        passphrase: options.ssl.passphrase   // если ключ защищен паролем
+      });
+    } else {
+      // Fallback на обычный HTTP для разработки
+      this.app = uWS.App();
+    };
     this.modules = new Map();
     this.userConnections = new Map();
     // Добавляем контейнер для RPC методов

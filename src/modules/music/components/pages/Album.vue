@@ -17,14 +17,11 @@
       <!-- Left Column - Cover & Stats -->
       <div class="pos-sticky pos-t-0 mobile:pos-relative album-cover-section">
         <!-- Cover -->
-        <div class="cover-container relative mn-b-medium radius-big overflow-hidden shadow-big">
-          <Media 
-            :url="album.coverArt || '/logo/logo-placeholder.jpg'"
-            :alt="album.title"
-            class="aspect-1x1 w-100 radius-medium o-hidden"
-          />
-        </div>
-
+        <Media 
+          :url="album.coverArt || '/logo/logo-placeholder.jpg'"
+          :alt="album.title"
+          class="aspect-1x1 w-100 w-max-30r mn-b-small radius-medium o-hidden"
+        />
         <!-- Quick Stats -->
         <div class="stats-grid grid cols-2 gap-small">
           <div class="stat-card bg-light pd-medium radius-medium t-center">
@@ -42,10 +39,10 @@
       <div class="album-details-section">
         <!-- Album Type Badge -->
         <div class="flex items-center gap-small mn-b-small">
-          <span class="badge bg-primary-transp-20 t-primary pd-thin-big radius-small t-small t-uppercase">
+          <span class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">
             {{ album.type }}
           </span>
-          <span v-if="album.status === 'published'" class="badge bg-success-transp-20 t-success pd-thin-big radius-small t-small">
+          <span v-if="album.status === 'published'" class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">
             Published
           </span>
         </div>
@@ -81,7 +78,7 @@
             size="medium"
             class="flex-1 bg-light radius-thin flex-center gap-thin"
           >
-            <IconLike class="i-medium" :fill="isFavorite" />
+            <IconLike class="i-medium" :fill="isFavorite ? 'rgb(var(--main)':'rgb(var(--black)'" />
             {{isFavorite ? 'Liked' : 'Like'}}
           </Button>
 
@@ -117,51 +114,23 @@
         </div>
 
         <!-- Artists Cards -->
-        <div class="artists-section mn-b-big">
-          <h3 class="t-medium mn-b-small" v-if="album.artists && album.artists.length > 1">Artists</h3>
+        <div class="artists-section mn-b-medium">
+          <h3 class="t-medium mn-b-small" v-if="album.artists">Artists</h3>
           <div class="flex flex-col gap-small">
-            <div 
+            <ArtistCardSmall 
               v-for="artist in album.artists" 
               :key="artist._id"
-              class="artist-card bg-light pd-medium radius-medium flex items-center gap-medium"
-            >
-              <router-link 
-                :to="{ name: 'artist', params: { url: artist.url } }"
-                class="flex items-center gap-medium flex-1 hover-opacity"
-              >
-                <div class="artist-avatar">
-                  <Media 
-                    v-if="artist.photoUrl"
-                    :url="artist.photoUrl"
-                    :alt="artist.name"
-                    class="w-4r h-4r radius-full object-cover"
-                  />
-                  <div v-else class="w-4r h-4r radius-full bg-primary flex-center ">
-                    {{ artist.name.charAt(0) }}
-                  </div>
-                </div>
-                <div>
-                  <div class="flex items-center gap-thin">
-                    <span class="t-large ">{{ artist.name }}</span>
-                    <IconVerified v-if="artist.isVerified" class="w-1r h-1r t-primary" />
-                  </div>
-                  <span class="t-small t-transp">Artist</span>
-                </div>
-              </router-link>
-              <Button 
-                v-if="!isOwner"
-                @click="() => toggleFollowArtist(artist._id)"
-                :color="followedArtists.includes(artist._id) ? 'primary' : 'transp'"
-                size="small"
-              >
-                {{ followedArtists.includes(artist._id) ? 'Following' : 'Follow' }}
-              </Button>
-            </div>
+              :artist="artist"
+              :is-following="followedArtists.includes(artist._id)"
+              :show-follow-button="!isOwner"
+              @toggle-follow="toggleFollowArtist"
+            />
           </div>
         </div>
 
         <!-- Metadata Cards -->
-        <div class="metadata-grid grid cols-2 gap-small mn-b-big">
+        <h3 class="t-medium mn-b-small">Metadata</h3>
+        <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Release Date -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
             <IconCalendar class="i-regular t-primary" />
@@ -206,7 +175,7 @@
             <span 
               v-for="genre in album.genres" 
               :key="genre"
-              class="tag bg-primary-transp-20 t-primary pd-thin-big radius-small t-small hover-bg-primary-transp-30 cursor-pointer"
+              class="tag bg-main t-medium pd-thin radius-thin t-small cursor-pointer"
             >
               {{ genre }}
             </span>
@@ -218,12 +187,6 @@
               #{{ tag }}
             </span>
           </div>
-        </div>
-
-        <!-- Description -->
-        <div v-if="album.description" class="description-section bg-light pd-medium radius-medium mn-b-medium">
-          <h3 class="t-medium mn-b-small">About</h3>
-          <p class="t-transp">{{ album.description }}</p>
         </div>
       </div>
     </div>
@@ -306,6 +269,7 @@ import IconVerified from '@martyrs/src/modules/icons/navigation/IconCheckmark.vu
 // Components
 import TrackListCard from '../cards/TrackListCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
+import ArtistCardSmall from '../cards/ArtistCardSmall.vue';
 
 // Store
 import { state as albumsState, actions as albumsActions } from '../../store/albums.js';

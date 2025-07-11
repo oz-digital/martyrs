@@ -190,7 +190,7 @@
             </div>
             
             <!-- Singles section -->
-            <div v-if="discography.singles.length > 0" class="bg-light pd-medium radius-medium">
+            <div v-if="discography.singles.length > 0" class="bg-light pd-medium mn-b-medium radius-medium">
               <h2 class="h3 mn-b-medium">Singles & EPs</h2>
               
               <div class="cols-1 gap-small">

@@ -9,7 +9,7 @@
     <!-- Playlist Content -->
     <div v-if="playlist" class="playlist-content cols-2-fit-content mobile:cols-1 gap-big">
       <!-- Left Column - Cover & Stats -->
-      <div class="pos-sticky pos-t-0 mobile:pos-relative playlist-cover-section">
+      <div class="pos-sticky w-max-30r pos-t-0 mobile:pos-relative playlist-cover-section">
         <!-- Cover -->
         <div class="cover-container relative mn-b-medium radius-big overflow-hidden shadow-big">
           <Media 
@@ -36,13 +36,13 @@
       <div class="playlist-details-section">
         <!-- Playlist Type Badge -->
         <div class="flex items-center gap-small mn-b-small">
-          <span class="badge bg-primary-transp-20 t-primary pd-thin-big radius-small t-small t-uppercase">
+          <span class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">
             Playlist
           </span>
-          <span v-if="playlist.isCollaborative" class="badge bg-secondary-transp-20 t-secondary pd-thin-big radius-small t-small">
+          <span v-if="playlist.isCollaborative" class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">
             Collaborative
           </span>
-          <span v-if="playlist.status === 'published'" class="badge bg-success-transp-20 t-success pd-thin-big radius-small t-small">
+          <span v-if="playlist.status === 'published'" class="bg-light t-medium pd-thin radius-thin uppercase t-small t-uppercase">
             Published
           </span>
         </div>
@@ -90,21 +90,21 @@
             </template>
             <template #default>
               <div class="dropdown-menu bg-white pd-small radius-medium shadow-big mn-t-thin">
-                <Button @click="addToQueue" color="transp" size="small" class="w-100 justify-start">
+                <Button @click="addToQueue" color="transp" size="small" class="w-100 t-nowrap justify-start">
                   Add to Queue
                 </Button>
-                <Button @click="copyLink" color="transp" size="small" class="w-100 justify-start">
+                <Button @click="copyLink" color="transp" size="small" class="w-100 t-nowrap  justify-start">
                   Copy Link
                 </Button>
                 <template v-if="isOwner || isCollaborator">
                   <hr class="mn-v-thin border-dark-transp-10" />
-                  <Button @click="editPlaylist" color="transp" size="small" class="w-100 justify-start">
+                  <Button @click="editPlaylist" color="transp" size="small" class="w-100 t-nowrap  justify-start">
                     Edit Playlist
                   </Button>
-                  <Button v-if="isOwner" @click="toggleCollaborative" color="transp" size="small" class="w-100 justify-start">
+                  <Button v-if="isOwner" @click="toggleCollaborative" color="transp" size="small" class="t-nowrap  w-100 justify-start">
                     {{ playlist.isCollaborative ? 'Make Private' : 'Make Collaborative' }}
                   </Button>
-                  <Button v-if="isOwner" @click="deletePlaylist" color="danger" size="small" class="w-100 justify-start">
+                  <Button v-if="isOwner" @click="deletePlaylist" color="danger" size="small" class="t-nowrap  w-100 justify-start">
                     Delete Playlist
                   </Button>
                 </template>
@@ -113,41 +113,21 @@
           </Dropdown>
         </div>
 
-        <!-- Owner/Creator Card -->
-        <div class="owner-section mn-b-big">
+        <div class="artists-section mn-b-medium">
           <h3 class="t-medium mn-b-small">Created by</h3>
-          <div class="owner-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <router-link 
-              :to="getOwnerProfileLink(playlist.creator || playlist.owner)"
-              class="flex items-center gap-medium flex-1 hover-opacity"
-            >
-              <div class="owner-avatar">
-                <Media 
-                  v-if="getOwnerData(playlist)?.photoUrl"
-                  :url="getOwnerData(playlist).photoUrl"
-                  :alt="getOwnerData(playlist)?.name"
-                  class="w-4r h-4r radius-full object-cover"
-                />
-                <div v-else class="w-4r h-4r radius-full bg-primary flex-center ">
-                  {{ getPlaylistOwnerName(playlist).charAt(0) }}
-                </div>
-              </div>
-              <div>
-                <div class="flex items-center gap-thin">
-                  <span class="t-large ">{{ getPlaylistOwnerName(playlist) }}</span>
-                  <IconVerified v-if="getOwnerData(playlist)?.isVerified" class="w-1r h-1r t-primary" />
-                </div>
-                <span class="t-small t-transp">{{ playlist.creator?.type || 'User' }}</span>
-              </div>
-            </router-link>
-            <Button 
-              v-if="!isOwner && authState.user"
-              @click="() => toggleFollowUser(getOwnerId(playlist))"
-              :color="followedUsers.includes(getOwnerId(playlist)) ? 'primary' : 'transp'"
-              size="small"
-            >
-              {{ followedUsers.includes(getOwnerId(playlist)) ? 'Following' : 'Follow' }}
-            </Button>
+          <div class="flex flex-col gap-small">
+            <ArtistCardSmall 
+              :artist="{
+                _id: playlist.creator.target,
+                to: { name: 'User Profile', params: { _id: playlist.creator.target } },
+                photoUrl: null,
+                name: playlist.creator.target,
+                isVerified: false
+              }"
+              :is-following="followedUsers.includes(playlist.creator.target)"
+              :show-follow-button="!isOwner"
+              @toggle-follow="toggleFollowUser(playlist.creator.target)"
+            />
           </div>
         </div>
 
@@ -171,7 +151,8 @@
         </div>
 
         <!-- Metadata Cards -->
-        <div class="metadata-grid grid cols-2 gap-small mn-b-big">
+        <h3 class="t-medium mn-b-small">Metadata</h3>
+        <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Created Date -->
           <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
               <IconCalendar class="i-medium t-primary" />
@@ -371,6 +352,7 @@ import IconVerified from '@martyrs/src/modules/icons/navigation/IconCheckmark.vu
 import TrackListCard from '../cards/TrackListCard.vue';
 import PlaylistCard from '../cards/PlaylistCard.vue';
 import PlaylistForm from '../forms/PlaylistForm.vue';
+import ArtistCardSmall from '../cards/ArtistCardSmall.vue';
 
 // Store
 import { state as playlistsState, actions as playlistsActions } from '../../store/playlists.js';

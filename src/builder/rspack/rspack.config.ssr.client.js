@@ -80,7 +80,7 @@ export default (projectRoot) => {
       //     }
       //   ]
       // }),
-      // // // PWA Manifest
+      // // PWA Manifest
       // new RspackManifestPlugin({
       //   fileName: 'manifest.json',
       //   seed: {
