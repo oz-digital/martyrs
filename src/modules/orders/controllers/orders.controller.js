@@ -254,7 +254,7 @@ const controllerFactory = db => {
       try {
         const usersWithAccess = await getUsersWithOrdersConfirmAccess(orderData.owner.target);
         await sendOrderNotifications(createdOrder, 'order_created', usersWithAccess, {
-          organization: order.owner.target
+          organization: createdOrder.owner.target
         });
       } catch (notificationError) {
         console.error('Error sending notification:', notificationError);
