@@ -215,7 +215,14 @@ class NotificationManager {
       return;
     }
 
+    
     console.log('Connecting to websockets via notifications');
+    globalWebSocket.initialize({
+      wsUrl:   app.config.globalProperties.WSS_URL,
+      maxReconnectAttempts: 10,
+      reconnectDelay: 2000,
+    });
+
     await globalWebSocket.connect(userId);
 
     globalWebSocket.removeModuleListeners('notification');
