@@ -1,7 +1,7 @@
 <!-- components/player/TrackProgress.vue -->
 <template>
   <div class="progress-section">
-    <span class="time-current">{{ formatTime(currentTime) }}</span>
+    <span class="time-current t-transp">{{ formatTime(currentTime) }}</span>
     <div 
       ref="progressBarContainer"
       class="progress-bar"
@@ -22,7 +22,7 @@
         ></div>
       </div>
     </div>
-    <span class="time-total">{{ formatTime(duration) }}</span>
+    <span class="time-total  ">{{ formatTime(duration) }}</span>
   </div>
 </template>
 
@@ -106,7 +106,7 @@ onUnmounted(() => {
 .time-current,
 .time-total {
   font-size: 11px;
-  color: rgb(var(--grey));
+  color: rgb(var(--black));
   font-weight: 400;
   min-width: 32px;
   text-align: center;
@@ -125,15 +125,15 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   height: 4px;
-  background: rgb(79, 79, 79);
+  background:  rgb(var(--grey));
   border-radius: 2px;
-  overflow: hidden;
+/*  overflow: hidden;*/
   transition: height 0.2s ease;
 }
 
 .progress-fill {
   height: 100%;
-  background: rgb(var(--white));
+  background: rgb(var(--second));
   border-radius: 2px;
   transition: width 0.1s ease;
 }
@@ -143,7 +143,8 @@ onUnmounted(() => {
   top: 50%;
   width: 12px;
   height: 12px;
-  background: rgb(var(--white));
+  background: rgb(var(--second));
+  border: 1px solid rgba(var(--black),0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
@@ -159,6 +160,6 @@ onUnmounted(() => {
 }
 
 .progress-bar:hover .progress-fill {
-  background: rgb(var(--main));
+  background: rgba(var(--second),0.9);
 }
 </style>

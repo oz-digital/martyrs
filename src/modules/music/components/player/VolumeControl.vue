@@ -13,7 +13,7 @@
       <div 
         class="volume-track"
         :style="{ 
-          background: `linear-gradient(to right, rgb(var(--main)) 0%, rgb(var(--main)) ${volumePercentage}%, rgb(79, 79, 79) ${volumePercentage}%, rgb(79, 79, 79) 100%)`
+          background: `linear-gradient(to right, rgb(var(--black)) 0%, rgb(var(--black)) ${volumePercentage}%, rgb(var(--grey)) ${volumePercentage}%, rgb(var(--grey)) 100%)`
         }"
       >
         <div 
@@ -109,7 +109,8 @@ const endVolumeChange = () => {
   top: 50%;
   width: 12px;
   height: 12px;
-  background: rgb(var(--white));
+   background: rgb(var(--black));
+  border: 1px solid rgba(var(--white),0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: opacity 0.2s ease;

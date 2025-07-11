@@ -21,7 +21,7 @@
           :showLoader="false" 
           :showSucces="false"
         >
-          <IconLike fill="rgb(var(--white))" class="like-icon"/>
+          <IconLike class="like-icon"/>
         </Button>
       </div>
 
@@ -35,7 +35,7 @@
             :showLoader="false" 
             :showSucces="false"
           >
-            <IconShuffle fill="rgb(var(--white))" class="control-icon"/>
+            <IconShuffle fill="rgb(var(--black))" class="control-icon"/>
           </Button>
           
           <Button 
@@ -44,7 +44,7 @@
             :showLoader="false" 
             :showSucces="false"
           >
-            <IconPrevious fill="rgb(var(--white))" class="control-icon"/>
+            <IconPrevious fill="rgb(var(--black))" class="control-icon"/>
           </Button>
           
           <Button 
@@ -53,8 +53,8 @@
             :showLoader="false" 
             :showSucces="false"
           >
-            <IconPause v-if="isPlaying" class="play-icon"/>
-            <IconPlay v-else class="play-icon"/>
+            <IconPause v-if="isPlaying" fill="white" class="play-icon"/>
+            <IconPlay fill="white"  v-else class="play-icon"/>
           </Button>
           
           <Button 
@@ -63,7 +63,7 @@
             :showLoader="false" 
             :showSucces="false"
           >
-            <IconNext fill="rgb(var(--white))" class="control-icon"/>
+            <IconNext fill="rgb(var(--black))" class="control-icon"/>
           </Button>
           
           <Button 
@@ -73,7 +73,7 @@
             :showLoader="false" 
             :showSucces="false"
           >
-            <IconRepeat fill="rgb(var(--white))" class="control-icon"/>
+            <IconRepeat fill="rgb(var(--black))" class="control-icon"/>
           </Button>
         </div>
         
@@ -91,9 +91,9 @@
           :showLoader="false" 
           :showSucces="false"
         >
-          <IconVolume fill="rgb(var(--white))" v-if="!muted && volume > 0.5" class="volume-icon"/>
-          <IconVolumeHalf fill="rgb(var(--white))" v-else-if="!muted && volume > 0" class="volume-icon"/>
-          <IconVolumeMute  fill="rgb(var(--white))" v-else class="volume-icon"/>
+          <IconVolumeMute fill="rgb(var(--black))" v-if="muted || volume < 0.005" class="volume-icon"/>
+          <!-- <IconVolumeHalf fill="rgb(var(--black))" v-else-if="!muted && volume > 0" class="volume-icon"/> -->
+          <IconUnMute  fill="rgb(var(--black))" v-else class="volume-icon"/>
         </Button>
         
         <div class="volume-slider">
@@ -120,6 +120,7 @@ import IconShuffle from '@martyrs/src/modules/icons/navigation/IconShuffle.vue';
 import IconRepeat from '@martyrs/src/modules/icons/navigation/IconRefresh.vue';
 import IconLike from '@martyrs/src/modules/icons/navigation/IconLike.vue';
 import IconVolume from '@martyrs/src/modules/icons/navigation/IconVolume.vue';
+import IconUnMute from '@martyrs/src/modules/icons/navigation/IconUnMute.vue';
 import IconVolumeHalf from '@martyrs/src/modules/icons/navigation/IconVolume.vue';
 import IconVolumeMute from '@martyrs/src/modules/icons/navigation/IconMute.vue';
 
@@ -186,8 +187,8 @@ const getArtistName = (track) => {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: linear-gradient(135deg, rgb(24, 24, 24) 0%, rgb(18, 18, 18) 100%);
-  border-top: 1px solid rgb(40, 40, 40);
+  background: linear-gradient(135deg, rgb(var(--white)) 0%, rgb(var(--light)));
+  border-top: 1px solid rgb(var(--light));
   backdrop-filter: blur(10px);
 }
 
@@ -236,7 +237,7 @@ const getArtistName = (track) => {
 .track-title {
   font-size: 14px;
   font-weight: 600;
-  color: rgb(var(--white));
+  color: rgb(var(--black));
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -272,8 +273,8 @@ const getArtistName = (track) => {
 }
 
 .like-btn:hover {
-  color: rgb(var(--white));
-  background: rgba(255, 255, 255, 0.1);
+  color: rgb(var(--black));
+  background: rgba(var(--black),0.1);
 }
 
 .like-btn.liked {
@@ -323,8 +324,8 @@ const getArtistName = (track) => {
 }
 
 .control-btn.primary {
-  background: rgb(var(--white));
-  color: rgb(var(--black));
+  background: rgb(var(--second));
+  color: rgb(var(--white));
   width: 32px;
   height: 32px;
 }
@@ -332,17 +333,17 @@ const getArtistName = (track) => {
 .play-icon {
   width: 14px;
   height: 14px;
-  fill: rgb(var(--black));
+  fill: rgb(var(--white));
 }
 
 .control-btn.primary:hover {
-  background: rgb(240, 240, 240);
+  background: rgb(var(--second));
   transform: scale(1.06);
 }
 
 .control-btn.secondary:hover {
   color: rgb(var(--white));
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(var(--black),0.1);
 }
 
 .control-btn.secondary:hover .control-icon {
@@ -351,6 +352,7 @@ const getArtistName = (track) => {
 
 .control-btn.active {
   color: rgb(var(--main));
+  background: rgba(var(--second),0.1);
 }
 
 .control-btn.active .control-icon {
@@ -360,6 +362,7 @@ const getArtistName = (track) => {
 .control-btn.active:hover {
   color: rgb(var(--main));
   opacity: 0.8;
+   background: rgba(var(--second),0.2);
 }
 
 /* Progress Section */
@@ -396,7 +399,7 @@ const getArtistName = (track) => {
 
 .volume-btn:hover {
   color: rgb(var(--white));
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(var(--white),0.1);
 }
 
 .volume-btn:hover .volume-icon {
