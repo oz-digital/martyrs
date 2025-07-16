@@ -116,7 +116,7 @@
         <!-- Artists Cards -->
         <div class="artists-section mn-b-medium">
           <h3 class="t-medium mn-b-small" v-if="album.artists">Artists</h3>
-          <div class="flex flex-col gap-small">
+          <div class="flex flex-column gap-small">
             <ArtistCardSmall 
               v-for="artist in album.artists" 
               :key="artist._id"

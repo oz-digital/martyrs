@@ -1,197 +1,337 @@
-<!-- FiltersBar.vue -->
 <template>
   <div class="flex gap-thin">
     <!-- All Filters Button -->
     <button
       @click="showAllFilters = true"
-      class="btn-filter radius-medium pd-thin bg-light"
-      :class="{ 'bg-primary t-white': hasActiveFilters }"
+      class="pd-thin radius-medium bg-light flex-v-center flex gap-micro cursor-pointer"
+      :class="{ 'bg-main': activeFiltersCount > 0 }"
     >
-      <IconFilter class="w-1r h-auto" />
-      <span v-if="activeFiltersCount" class="ml-thin">{{ activeFiltersCount }}</span>
+      <IconFilter class="i-small" />
+      <span v-if="activeFiltersCount">{{ activeFiltersCount }}</span>
     </button>
 
     <!-- Individual Filter Buttons -->
     <button
-      v-for="(filter, idx) in filters"
-      :key="idx"
-      @click="() => openFilter(idx)"
-      class="btn-filter radius-medium pd-thin bg-light"
-      :class="{ 'bg-primary t-white': getFilterActiveState(filter) }"
+      v-for="filter in filters"
+      :key="filter.value"
+      @click="openFilter(filter.value)"
+      class="pd-thin radius-medium bg-light cursor-pointer"
+      :class="{ 'selected bg-main': isFilterActive(filter) }"
     >
-      {{ getFilterLabel(filter) }}
+      {{ filter.title }}
+      <span v-if="getFilterValue(filter)" class="mn-l-micro">
+        {{ formatFilterValue(filter) }}
+      </span>
     </button>
 
     <!-- All Filters Popup -->
     <Popup
-      v-model:show="showAllFilters"
-      align="bottom center"
-      class="w-100 max-h-80vh"
+      :isPopupOpen="showAllFilters"
+      @close-popup="showAllFilters = false"
+      :align="isPhone() ? 'bottom center' : 'center center'"
+      class="w-min-20r bg-white radius-medium mobile:radius-zero mobile:radius-tr-medium mobile:radius-tl-medium mobile:w-100 pd-medium"
     >
-      <div class="pd-medium bg-white radius-top-medium">
-        <div class="flex justify-between align-center mb-medium">
-          <h3 class="t-h3">Filters</h3>
-          <IconCross @click="showAllFilters = false" class="w-1r h-auto cursor-pointer" />
-        </div>
-        
-        <div class="filters-container">
-          <div v-for="(filter, idx) in filters" :key="idx" class="mb-medium">
-            <h4 class="t-h4 mb-thin">{{ filter.title }}</h4>
-            <component
-              :is="getFilterComponent(filter.type)"
-              v-model="appliedFilters[filter.key]"
-              :options="filter.options"
-              :config="filter.config"
+      <div class="flex-v-center flex-nowrap flex mn-b-medium">
+        <h3 class="flex-child-full">Filters</h3>
+        <IconCross 
+          @click="showAllFilters = false" 
+          class="i-regular cursor-pointer"
+        />
+      </div>
+
+      <div class="filters-content">
+        <div 
+          v-for="filter in filters" 
+          :key="filter.value"
+          class="mn-b-medium"
+        >
+          <h4 class="mn-b-thin">{{ filter.title }}</h4>
+          
+          <!-- Checkbox Filter -->
+          <div v-if="filter.type === 'checkbox'">
+            <Checkbox
+              v-for="option in filter.options"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+              v-model:radio="tempSelected[filter.value]"
+              mode="checkbox"
+              class="mn-b-micro"
+            />
+          </div>
+
+          <!-- Radio Filter -->
+          <div v-else-if="filter.type === 'radio'">
+            <div
+              v-for="option in filter.options"
+              :key="option.value"
+              @click="tempSelected[filter.value] = option.value"
+              class="pd-small radius-small cursor-pointer mn-b-micro"
+              :class="{ 
+                'bg-main': tempSelected[filter.value] === option.value,
+                'bg-light': tempSelected[filter.value] !== option.value
+              }"
+            >
+              {{ option.label }}
+            </div>
+          </div>
+
+          <!-- Range Filter -->
+          <div v-else-if="filter.type === 'range'" class="flex gap-thin">
+            <Field
+              v-model:field="tempSelected[filter.value].min"
+              :placeholder="filter.minPlaceholder || 'Min'"
+              type="number"
+              class="w-50 bg-light radius-small"
+            />
+            <Field
+              v-model:field="tempSelected[filter.value].max"
+              :placeholder="filter.maxPlaceholder || 'Max'"
+              type="number"
+              class="w-50 bg-light radius-small"
             />
           </div>
         </div>
+      </div>
 
-        <div class="flex gap-thin mt-medium">
-          <button @click="applyFilters" class="btn btn-primary flex-1">Apply</button>
-          <button @click="resetFilters" class="btn btn-secondary">Reset</button>
-        </div>
+      <div class="flex gap-thin mn-t-medium">
+        <button 
+          @click="applyAllFilters" 
+          class="button bg-main flex-child-full"
+        >
+          Apply
+        </button>
+        <button 
+          @click="resetFilters" 
+          class="button bg-light"
+        >
+          Reset Filters
+        </button>
       </div>
     </Popup>
 
     <!-- Individual Filter Popups -->
     <Popup
-      :isPopupOpen="individualPopups[idx]" 
-      v-for="(filter, idx) in filters"
-      :key="`popup-${idx}`"
-      align="bottom center"
-      class="min-w-200"
+      v-for="filter in filters"
+      :key="`popup-${filter.value}`"
+      :isPopupOpen="individualPopups[filter.value]"
+      @close-popup="individualPopups[filter.value] = false"
+      :align="isPhone() ? 'bottom center' : 'center center'"
+      class="bg-white radius-medium mobile:radius-zero mobile:radius-tr-medium mobile:radius-tl-medium mobile:w-100 pd-medium"
     >
-      <div class="pd-medium bg-white radius-medium">
-        <h4 class="t-h4 mb-thin">{{ filter.title }}</h4>
-        <component
-          :is="getFilterComponent(filter.type)"
-          v-model="appliedFilters[filter.key]"
-          :options="filter.options"
-          :config="filter.config"
-          @update:modelValue="() => updateFilter(filter.key)"
+      <h4 class="mn-b-medium">{{ filter.title }}</h4>
+      
+      <!-- Checkbox Filter -->
+      <div v-if="filter.type === 'checkbox'">
+        <Checkbox
+          v-for="option in filter.options"
+          :key="option.value"
+          :label="option.label"
+          :value="option.value"
+          v-model:radio="tempSelected[filter.value]"
+          mode="checkbox"
+          class="mn-b-micro"
         />
+      </div>
+
+      <!-- Radio Filter -->
+      <div v-else-if="filter.type === 'radio'">
+        <div
+          v-for="option in filter.options"
+          :key="option.value"
+          @click="tempSelected[filter.value] = option.value"
+          class="pd-small radius-small cursor-pointer mn-b-micro"
+          :class="{ 
+            'bg-main': tempSelected[filter.value] === option.value,
+            'bg-light': tempSelected[filter.value] !== option.value
+          }"
+        >
+          {{ option.label }}
+        </div>
+      </div>
+
+      <!-- Range Filter -->
+      <div v-else-if="filter.type === 'range'" class="flex gap-thin">
+        <Field
+          v-model:field="tempSelected[filter.value].min"
+          :placeholder="filter.minPlaceholder || 'Min'"
+          type="number"
+          class="w-50 bg-light radius-small"
+        />
+        <Field
+          v-model:field="tempSelected[filter.value].max"
+          :placeholder="filter.maxPlaceholder || 'Max'"
+          type="number"
+          class="w-50 bg-light radius-small"
+        />
+      </div>
+
+      <div class="flex gap-thin mn-t-medium">
+        <button 
+          @click="cancelFilter(filter.value)" 
+          class="w-100 button bg-light"
+        >
+          Cancel
+        </button>
+        <button 
+          @click="applyFilter(filter.value)" 
+          class="w-100 button bg-main"
+        >
+          Apply
+        </button>
+        
       </div>
     </Popup>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
-import Field from '@martyrs/src/components/Field/Field.vue';
-import Popup from '@martyrs/src/components/Popup/Popup.vue';
-import Select from '@martyrs/src/components/Select/Select.vue';
+import { ref, computed, reactive, watch } from 'vue'
+import Popup from '@martyrs/src/components/Popup/Popup.vue'
+import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue'
+import Field from '@martyrs/src/components/Field/Field.vue'
 import IconFilter from '@martyrs/src/modules/icons/navigation/IconFilter.vue'
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue'
 
-// Import filter components
-import FilterOptions from './filters/FilterOptions.vue'
-import FilterRange from './filters/FilterRange.vue'
-import FilterPrice from './filters/FilterPrice.vue'
-
-const props = defineProps({
-  filters: {
-    type: Array,
-    required: true
-  }
+const filters = defineModel('filters', {
+  type: Array,
+  required: true
 })
 
-const model = defineModel({
+const selected = defineModel('selected', {
   type: Object,
   default: () => ({})
 })
 
+const emit = defineEmits(['select'])
+
 // State
 const showAllFilters = ref(false)
 const individualPopups = reactive({})
-const appliedFilters = reactive({})
+const tempSelected = reactive({})
 
-// Initialize filters
-props.filters.forEach(filter => {
-  individualPopups[props.filters.indexOf(filter)] = false
-  if (!appliedFilters[filter.key]) {
-    appliedFilters[filter.key] = filter.defaultValue || null
-  }
-})
+// Initialize popups and temp values
+watch(filters, (newFilters) => {
+  newFilters.forEach(filter => {
+    individualPopups[filter.value] = false
+    
+    if (!tempSelected[filter.value]) {
+      if (filter.type === 'checkbox') {
+        tempSelected[filter.value] = selected.value[filter.value] || []
+      } else if (filter.type === 'range') {
+        tempSelected[filter.value] = selected.value[filter.value] || { min: '', max: '' }
+      } else {
+        tempSelected[filter.value] = selected.value[filter.value] || null
+      }
+    }
+  })
+}, { immediate: true, deep: true })
+
+// Sync selected to tempSelected
+watch(selected, (newSelected) => {
+  Object.keys(newSelected).forEach(key => {
+    tempSelected[key] = newSelected[key]
+  })
+}, { deep: true })
 
 // Computed
-const hasActiveFilters = computed(() => {
-  return Object.values(appliedFilters).some(v => v !== null && v !== undefined)
-})
-
 const activeFiltersCount = computed(() => {
-  return Object.values(appliedFilters).filter(v => v !== null && v !== undefined).length
+  return Object.entries(selected.value).filter(([key, value]) => {
+    if (Array.isArray(value)) return value.length > 0
+    if (typeof value === 'object' && value !== null) {
+      return value.min || value.max
+    }
+    return value !== null && value !== undefined
+  }).length
 })
 
 // Methods
-const getFilterComponent = (type) => {
-  if (typeof type === 'object') return type
+const openFilter = (filterValue) => {
+  individualPopups[filterValue] = true
+}
+
+const isFilterActive = (filter) => {
+  const value = selected.value[filter.value]
+  if (!value) return false
+  if (Array.isArray(value)) return value.length > 0
+  if (filter.type === 'range') return value.min || value.max
+  return true
+}
+
+const getFilterValue = (filter) => {
+  return selected.value[filter.value]
+}
+
+const formatFilterValue = (filter) => {
+  const value = selected.value[filter.value]
+  if (!value) return ''
   
-  const components = {
-    options: FilterOptions,
-    range: FilterRange,
-    price: FilterPrice
+  if (Array.isArray(value)) {
+    return `(${value.length})`
   }
   
-  return components[type] || FilterOptions
-}
-
-const getFilterLabel = (filter) => {
-  const value = appliedFilters[filter.key]
-  if (!value) return filter.title
-  
-  if (Array.isArray(value) && value.length) {
-    return `${filter.title} (${value.length})`
+  if (filter.type === 'range') {
+    if (!value.min && !value.max) return ''
+    return `${value.min || '0'}-${value.max || '∞'}`
   }
   
-  if (typeof value === 'object' && (value.min || value.max)) {
-    return `${filter.title}: ${value.min || 0}-${value.max || '∞'}`
+  if (filter.type === 'radio') {
+    const option = filter.options.find(o => o.value === value)
+    return option ? `(${option.label})` : ''
   }
   
-  return `${filter.title}: ${value}`
+  return ''
 }
 
-const getFilterActiveState = (filter) => {
-  const value = appliedFilters[filter.key]
-  return value !== null && value !== undefined
+const applyFilter = (filterValue) => {
+  selected.value[filterValue] = tempSelected[filterValue]
+  individualPopups[filterValue] = false
+  emit('select', { filter: filterValue, value: tempSelected[filterValue] })
 }
 
-const openFilter = (idx) => {
-  individualPopups[idx] = true
+const cancelFilter = (filterValue) => {
+  const filter = filters.value.find(f => f.value === filterValue)
+  if (filter) {
+    if (filter.type === 'checkbox') {
+      tempSelected[filterValue] = selected.value[filterValue] || []
+    } else if (filter.type === 'range') {
+      tempSelected[filterValue] = selected.value[filterValue] || { min: '', max: '' }
+    } else {
+      tempSelected[filterValue] = selected.value[filterValue] || null
+    }
+  }
+  individualPopups[filterValue] = false
 }
 
-const updateFilter = (key) => {
-  model.value = { ...appliedFilters }
-}
-
-const applyFilters = () => {
-  model.value = { ...appliedFilters }
+const applyAllFilters = () => {
+  Object.entries(tempSelected).forEach(([key, value]) => {
+    if (selected.value[key] !== value) {
+      selected.value[key] = value
+      emit('select', { filter: key, value })
+    }
+  })
   showAllFilters.value = false
 }
 
 const resetFilters = () => {
-  Object.keys(appliedFilters).forEach(key => {
-    appliedFilters[key] = null
+  filters.value.forEach(filter => {
+    if (filter.type === 'checkbox') {
+      tempSelected[filter.value] = []
+      selected.value[filter.value] = []
+    } else if (filter.type === 'range') {
+      tempSelected[filter.value] = { min: '', max: '' }
+      selected.value[filter.value] = { min: '', max: '' }
+    } else {
+      tempSelected[filter.value] = null
+      selected.value[filter.value] = null
+    }
+    emit('select', { filter: filter.value, value: null })
   })
-  model.value = {}
 }
 </script>
 
-<style>
-.btn-filter {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.btn-filter:hover {
-  opacity: 0.8;
-}
-
-.filters-container {
+<style scoped>
+.filters-content {
   max-height: 60vh;
   overflow-y: auto;
 }

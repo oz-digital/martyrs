@@ -14,16 +14,18 @@ const state = reactive({
   },
   current: {
     order: 1,
-    photo: null,
+    photo: '',
     name: '',
+    slug: '',
     url: '',
+    level: 0,
     status: 'draft',
     creator: null,
     owner: null,
     parent: null,
     children: [],
     filters: [],
-    localization: [],
+    translations: [],
   },
 });
 
@@ -33,7 +35,7 @@ const actions = {
     try {
       const response = await $axios.get('/api/categories', { params: options });
 
-      if (options.url) {
+      if (options._id) {
         state.current = { ...response.data[0] };
         return Promise.resolve(response.data[0]);
       } else {
@@ -80,10 +82,22 @@ const actions = {
     }
   },
 
-  async delete(url) {
+  async delete(id) {
     try {
-      await $axios.post('/api/categories/delete', { url });
-      state.all = state.all.filter(c => c.url !== url);
+      await $axios.post('/api/categories/delete', { _id: id });
+      // Рекурсивная функция для удаления категории и её детей из дерева
+      function removeFromTree(items) {
+        return items.filter(item => {
+          if (item._id === id) {
+            return false;
+          }
+          if (item.children && item.children.length > 0) {
+            item.children = removeFromTree(item.children);
+          }
+          return true;
+        });
+      }
+      state.all = removeFromTree(state.all);
       return Promise.resolve();
     } catch (error) {
       setError(error);
@@ -94,13 +108,18 @@ const actions = {
   clean() {
     state.current = {
       order: 1,
+      photo: '',
       name: '',
+      slug: '',
       url: '',
+      level: 0,
       status: 'draft',
+      creator: null,
+      owner: null,
       parent: null,
       children: [],
       filters: [],
-      localization: [],
+      translations: [],
     };
   },
 };

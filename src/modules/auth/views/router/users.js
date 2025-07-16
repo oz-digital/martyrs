@@ -42,10 +42,6 @@ const users = {
               component: () => import('../components/pages/ProfileEdit.vue'),
               children: [
                 {
-                  path: '',
-                  redirect: { name: 'Profile Edit Profile' }
-                },
-                {
                   path: 'profile',
                   name: 'Profile Edit Profile',
                   component: () => import('../components/pages/ProfileEditProfile.vue')

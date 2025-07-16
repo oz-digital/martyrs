@@ -2,10 +2,32 @@ import Validator from '@martyrs/src/modules/globals/controllers/classes/globals.
 import Verifier from '@martyrs/src/modules/globals/controllers/classes/globals.verifier.js';
 
 export default (function (db) {
+  // Функция для генерации slug из имени
+  const generateSlug = (name, existingSlugs = []) => {
+    let baseSlug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim('-');
+    
+    let slug = baseSlug;
+    let counter = 1;
+    
+    while (existingSlugs.includes(slug)) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    
+    return slug;
+  };
+
   // Конфигурация валидатора для запросов
   const queryValidatorConfig = {
     parent: { rule: 'optional', validator: Validator.schema().string() },
+    slug: { rule: 'optional', validator: Validator.schema().string() },
     url: { rule: 'optional', validator: Validator.schema().string() },
+    parentUrl: { rule: 'optional', validator: Validator.schema().string() },
     search: { rule: 'optional', validator: Validator.schema().string() },
     sortParam: {
       rule: 'optional',
@@ -54,7 +76,7 @@ export default (function (db) {
       validator: Validator.schema().string().oneOf(['draft', 'internal', 'published', 'removed']),
       default: 'draft',
     },
-    url: { rule: 'optional', validator: Validator.schema().string().required() },
+    slug: { rule: 'optional', validator: Validator.schema().string() },
     parent: { rule: 'optional', validator: Validator.schema().oneOfTypes(['string', 'null']) },
     localization: { rule: 'optional' },
     filters: { rule: 'optional' },
@@ -83,7 +105,7 @@ export default (function (db) {
     },
   };
   const deleteBodyValidatorConfig = {
-    url: {
+    _id: {
       rule: 'optional',
       validator: Validator.schema().string().required(),
     },
@@ -143,19 +165,40 @@ export default (function (db) {
       req.verifiedBody = verification.verifiedData;
       next();
     },
-    // Проверка на существование категории с тем же URL (для создания)
+    // Проверка на существование категории с тем же slug в рамках parent
     async checkCategoryExistOrNot(req, res, next) {
       try {
-        if (!req.verifiedBody.url) {
-          return res.status(400).json({ message: 'URL is required' });
+        const { name, parent, slug } = req.verifiedBody;
+        
+        if (!name) {
+          return res.status(400).json({ message: 'Name is required' });
         }
-        const existingCategory = await db.category.findOne({ url: req.verifiedBody.url });
-        if (existingCategory) {
-          return res.status(409).json({
-            message: 'Category with this URL already exists',
-            category: existingCategory,
+
+        // Генерируем slug если не передан
+        let categorySlug = slug;
+        if (!categorySlug) {
+          // Получаем существующие slug в рамках parent
+          const existingSlugs = await db.category.find({
+            parent: parent || null
+          }).distinct('slug');
+          
+          categorySlug = generateSlug(name, existingSlugs);
+          req.verifiedBody.slug = categorySlug;
+        } else {
+          // Проверяем уникальность переданного slug
+          const existingCategory = await db.category.findOne({ 
+            slug: categorySlug, 
+            parent: parent || null 
           });
+          
+          if (existingCategory) {
+            return res.status(409).json({
+              message: 'Category with this slug already exists in this parent',
+              category: existingCategory,
+            });
+          }
         }
+        
         next();
       } catch (error) {
         res.status(500).json({ message: error.message });
@@ -178,14 +221,14 @@ export default (function (db) {
         res.status(500).json({ message: error.message });
       }
     },
-    // Загрузка категории по URL для удаления
+    // Загрузка категории по _id для удаления
     async loadCategoryForDelete(req, res, next) {
       try {
-        const url = req.verifiedBody.url;
-        if (!url) {
-          return res.status(400).json({ message: 'Category URL is required' });
+        const _id = req.verifiedBody._id;
+        if (!_id) {
+          return res.status(400).json({ message: 'Category _id is required' });
         }
-        const category = await db.category.findOne({ url }).lean();
+        const category = await db.category.findById(_id).lean();
         if (!category) {
           return res.status(404).json({ message: 'Category not found' });
         }

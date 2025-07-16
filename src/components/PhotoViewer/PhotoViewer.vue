@@ -187,7 +187,7 @@
 </script>
 
 <template>
-  <div class="photo-viewer" @wheel.prevent="handleWheel">
+  <div class="photo-viewer w-min-100" @wheel.prevent="handleWheel">
     <div 
       class="slider-track" 
       :style="sliderStyle"

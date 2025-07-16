@@ -100,9 +100,9 @@
       />
     </div>
 
-    <p class="w-max-50r mn-t-regular mn-b-medium p-semi">
+    <!-- <p class="w-max-50r mn-t-regular mn-b-medium p-semi">
    		<Text :text="organization.profile.description || ''" :showToggleText="true" :maxLen="320" />
-  	</p>  
+  	</p>   -->
 
   	<Chips 
     	v-if="organization.profile?.tags?.length > 0" 

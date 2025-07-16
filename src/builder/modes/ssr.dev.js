@@ -7,16 +7,16 @@ import { transformDevStats } from "../ssr/ssr-transform-webpack-stats.js";
 export default function createSsrDevServer(projectRoot, { clientConfig, apiConfig, ssrConfig, createServer }) {
   // Добавляем HMR плагины в клиентскую конфигурацию
   const addHmrToClientConfig = (config) => {
-    config.plugins = config.plugins || [];
-    // Встроенный HMR плагин от Rspack
-    config.plugins.push(new rspack.HotModuleReplacementPlugin());
-    // Добавляем HMR entry
-    config.entry = {
-      main: [
-        "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-        ...(Array.isArray(config.entry.main) ? config.entry.main : [config.entry.main])
-      ]
-    };
+    // config.plugins = config.plugins || [];
+    // // Встроенный HMR плагин от Rspack
+    // config.plugins.push(new rspack.HotModuleReplacementPlugin());
+    // // Добавляем HMR entry
+    // config.entry = {
+    //   main: [
+    //     "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+    //     ...(Array.isArray(config.entry.main) ? config.entry.main : [config.entry.main])
+    //   ]
+    // };
     return config;
   };
 

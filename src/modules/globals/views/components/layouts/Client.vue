@@ -140,13 +140,12 @@
 					      	<component 
 					      		ref="page"  
 					      		:is="Component" 
-					      		:key="route.path"
 					      		class="w-100 h-min-100"
 				      		 	@page-loading="handlePageLoading"
 			              @page-loaded="handlePageLoaded"
 					      	/>
 					      	<!-- Key пока выключил непонятно какие проблемы это вызовет -->
-					      	<!--  -->
+					      	<!-- :key="route.path"  -->
 					      </transition>
 						  </router-view>
 						</Suspense>

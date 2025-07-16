@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Button from '@martyrs/src/components/Button/Button.vue'
@@ -14,6 +14,7 @@ import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.
 import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'
 
 const router = useRouter()
+const { proxy } = getCurrentInstance()
 
 // Props
 const props = defineProps({
@@ -26,6 +27,9 @@ const props = defineProps({
 
 // Состояние выбранных товаров - массив id товаров с вариантами
 const selectedProducts = ref(props.products.filter(p => p.variants?.length > 0).map(p => p._id))
+
+// Состояние для хранения выбранных дат для товаров типа rent
+const selectedDates = ref(null)
 
 // Вычисляемая общая цена
 const totalPrice = computed(() => {
@@ -70,20 +74,60 @@ const addSelectedToCart = async () => {
     // Проверяем, что в корзине товары той же организации
     if (shopcart.state.organization && shopcart.state.organization !== organizationId) {
       // Можно добавить подтверждение замены корзины
+      const result = await proxy.$alert({
+        title: 'Replace items in your cart?',
+        message: `Your cart has items from another vendor. If you continue, we'll clear it so you can order from this one instead.`,
+        actions: [
+          { label: 'Cancel', value: false },
+          { label: 'Replace', value: true }
+        ]
+      })
+
+      if (!result) return
+      
       shopcart.state.positions = []
     }
     
     shopcart.state.organization = organizationId
+    
+    // Проверяем, есть ли товары типа rent среди выбранных
+    const rentProducts = selected.filter(p => p.listing === 'rent')
+    let rentalDates = null
+    
+    // Если есть товары типа rent, получаем даты для первого товара
+    if (rentProducts.length > 0) {
+      const firstRentProduct = rentProducts[0]
+      const firstVariant = firstRentProduct.variants?.[0]
+      
+      if (firstVariant) {
+        rentalDates = await proxy.$dateSelector(
+          firstRentProduct._id,
+          firstVariant._id,
+          1,
+          firstVariant.price || firstRentProduct.price
+        )
+        
+        if (!rentalDates) return // Пользователь отменил выбор дат
+      }
+    }
     
     // Добавляем каждый выбранный товар
     for (const product of selected) {
       // Проверяем наличие варианта
       if (!product.variants || product.variants.length === 0) continue
       
+      // Используем первый вариант по умолчанию
+      const variant = product.variants[0]
+      
+      // Для товаров типа rent используем полученные даты
+      const datesToUse = product.listing === 'rent' ? rentalDates : null
+      
       await shopcart.actions.addProductToCart(
         product, 
+        variant,
         organizationId,
-        null // selectedDates для rent листинга
+        datesToUse,
+        1 // quantity
       )
     }
   } catch (error) {

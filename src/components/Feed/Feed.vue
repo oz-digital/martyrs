@@ -9,12 +9,12 @@
       :autofocus="search.autofocus"
     />
 
-   <!--  <FiltersBar
+    <FiltersBar
       v-if="filter"
       v-model="filter.selected"
       :filters="filterConfig"
       :class="filter.class || 'mobile-only'"
-    /> -->
+    />
 
     <Dropdown 
       v-if="date"
@@ -35,7 +35,7 @@
       />
     </Dropdown> 
 
-    <template
+    <!-- <template
       v-if="filter"
     >
       <div 
@@ -62,7 +62,7 @@
           class="h-max w-100 pd-small pd-b-5r bg-light"
         />
       </BottomSheet>  
-    </template>
+    </template> -->
 
     <Dropdown 
       v-if="sort && !sort.hideButton"

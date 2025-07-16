@@ -19,6 +19,18 @@ export function createProductRoutes(prefix = '', options = {}) {
         component: () => import(/* webpackChunkName: 'Products' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
       },
       {
+        path: 'categories/:categoryPath(.*)',
+        name: nameWithPrefix('ProductsCategory'),
+        meta: {
+          title: {
+            en: 'Products',
+            ru: 'Товары',
+          },
+          authorize: options.productsAuthorize || [],
+        },
+        component: () => import(/* webpackChunkName: 'Products' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
+      },
+      {
         path: 'add',
         name: nameWithPrefix('ProductAdd'),
         meta: {

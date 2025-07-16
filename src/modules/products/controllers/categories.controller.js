@@ -1,356 +1,395 @@
 import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
 import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
 import globalsQuery from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+
 const controllerFactory = db => {
   const Category = db.category;
   const logger = new Logger(db);
   const cache = new Cache();
+
+  // Генерация уникального slug
+  const generateSlug = async (name, parentId = null) => {
+    const baseSlug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim('-');
+    
+    let slug = baseSlug;
+    let counter = 1;
+    
+    while (await Category.exists({ slug, parent: parentId })) {
+      slug = `${baseSlug}-${counter++}`;
+    }
+    
+    return slug;
+  };
+
+  // Построение дерева из плоского массива используя url
+  const buildTreeFromUrl = (categories, sortParam = 'order', sortOrder = 'asc') => {
+    console.log('cat buildtree', categories)
+    // Сортируем по url для правильного порядка обработки
+    categories.sort((a, b) => a.url.localeCompare(b.url));
+    
+    const tree = [];
+    const nodeMap = new Map();
+      console.log('cat buildtree', categories)
+    categories.forEach(cat => {
+      const node = { ...cat, children: [] };
+      nodeMap.set(cat.url, node);
+      
+
+      // Находим родителя по url
+      const parentUrl = cat.url.substring(0, cat.url.lastIndexOf('/'));
+          console.log('cat parent buildtree', parentUrl)
+      
+      if (parentUrl && nodeMap.has(parentUrl)) {
+        nodeMap.get(parentUrl).children.push(node);
+            console.log('cat nodeMap buildtree', nodeMap)
+      } else if (cat.level === 0) {
+        tree.push(node);
+      }
+    });
+    
+    // Рекурсивная сортировка
+    const sortNodes = nodes => {
+      nodes.sort((a, b) => {
+        const va = a[sortParam] ?? Number.MAX_SAFE_INTEGER;
+        const vb = b[sortParam] ?? Number.MAX_SAFE_INTEGER;
+        const diff = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb));
+        return sortOrder === 'asc' ? diff : -diff;
+      });
+      nodes.forEach(n => n.children?.length && sortNodes(n.children));
+    };
+    
+    sortNodes(tree);
+    return tree;
+  };
+
+  // Обновление пути категории и всех потомков
+  const updateCategoryPaths = async (categoryId, newParentId = null) => {
+    const category = await Category.findById(categoryId);
+    if (!category) return;
+    
+    let newPath = [];
+    let newLevel = 0;
+    let newUrl = `/${category.slug}`;
+    
+    if (newParentId) {
+      const parent = await Category.findById(newParentId);
+      if (parent) {
+        newPath = [...parent.path, newParentId];
+        newLevel = parent.level + 1;
+        newUrl = `${parent.url}/${category.slug}`;
+      }
+    }
+    
+    // Обновляем категорию
+    await Category.updateOne(
+      { _id: categoryId },
+      { path: newPath, level: newLevel, url: newUrl }
+    );
+    
+    // Обновляем всех потомков одним запросом
+    const oldUrlPattern = new RegExp(`^${category.url}/`);
+    
+    await Category.updateMany(
+      { url: oldUrlPattern },
+      [{
+        $set: {
+          url: { $concat: [newUrl, { $substr: ['$url', { $strLenCP: category.url }, -1] }] },
+          level: { $add: ['$level', newLevel - category.level] }
+        }
+      }]
+    );
+  };
+
   return {
     async read(req, res) {
       try {
-        // Используем верифицированные данные из middleware
-        let { parent, url, search, sortParam, sortOrder, skip, limit, excludeChildren, rootOnly, type } = req.verifiedQuery;
-        // Формируем ключ кэша
-        const cacheKey = JSON.stringify(req.verifiedQuery);
-        // Проверяем наличие данных в кэше
-        let cachedResult = await cache.get(cacheKey);
+        const { 
+          _id,
+          parent, 
+          url, 
+          status, 
+          search, 
+          sortParam = 'order',
+          sortOrder = 'asc', 
+          skip,
+          limit, 
+          root = false,
+          owner, 
+          type,
+          tree,
+          depth = -1
+        } = req.query;
+        
+        // Преобразуем depth в число
+        const depthNum = parseInt(depth, 10);
+        const isTree = tree === 'true' || tree === true;
+        const isRoot = root === 'true' || root === true;
+        
+        console.log('🚀 Read categories params:', { url, depth: depthNum, tree: isTree, root });
+        
+        const cacheKey = JSON.stringify(req.query);
+        const cached = await cache.get(cacheKey);
+        if (cached) return res.json(cached);
 
-        if (cachedResult) {
-          return res.status(200).json(cachedResult);
-        }
-        // Создаем условия для выборки категорий
-        const matchStage = {
-          ...(req.query.status && { status: req.query.status }),
-          ...(url && { url: url }),
+        // Базовая фильтрация
+        const match = {
+          ...(_id && { _id: new db.mongoose.Types.ObjectId(_id) }),
+          ...(status && { status }),
           ...(search && { name: { $regex: search, $options: 'i' } }),
-          ...(parent ? { parent: new db.mongoose.Types.ObjectId(parent) } : {}),
-          ...(rootOnly === 'true' && !search ? { parent: null } : {}),
+          ...(type && { 'owner.type': type }),
+          ...(owner && { 'owner.target': new db.mongoose.Types.ObjectId(owner) }),
+          ...(parent && { parent: new db.mongoose.Types.ObjectId(parent) }), // Исправлено: было owner вместо parent
         };
-        // Добавляем фильтрацию по типу владельца
-        if (type === 'platform') {
-          matchStage['owner.type'] = 'platform';
-        } else if (type === 'organization' && req.query.organizationId) {
-          matchStage['owner.type'] = 'organization';
-          matchStage['owner.target'] = new db.mongoose.Types.ObjectId(req.query.organizationId);
-        }
-        if (search) {
-          excludeChildren = 'true';
-        }
-        // Базовый пайплайн для получения категорий
-        let pipeline = [
-          { $match: matchStage },
-          globalsQuery.getCreatorUserLookupStage(),
-          globalsQuery.getCreatorOrganizationLookupStage(),
-          // For owner
-          globalsQuery.getOwnerUserLookupStage(),
-          globalsQuery.getOwnerOrganizationLookupStage(),
-          globalsQuery.getAddFieldsCreatorOwnerStage(),
-          { $sort: { [sortParam]: sortOrder === 'asc' ? 1 : -1 } },
-          { $skip: Number(skip) },
-          { $limit: Number(limit) },
-          globalsQuery.removeTempPropeties(),
-        ];
-        // Если дочерние категории не исключаются, добавляем этап для получения потомков
-        if (excludeChildren !== 'true') {
-          pipeline.push({
-            $graphLookup: {
-              from: 'categories',
-              startWith: '$_id',
-              connectFromField: '_id',
-              connectToField: 'parent',
-              as: 'allDescendants',
-              maxDepth: 10,
-            },
-          });
-        }
-        // Выполняем агрегацию
-        const results = await Category.aggregate(pipeline);
-        let response;
-        // Если исключаем дочерние категории, просто возвращаем результаты
-        if (excludeChildren === 'true') {
-          response = results;
-        } else {
-          // Объединяем все категории и их потомков в один массив
-          let allCategories = [];
-          results.forEach(doc => {
-            // Добавляем текущую категорию (без allDescendants)
-            let category = { ...doc };
-            delete category.allDescendants;
-            allCategories.push(category);
-            // Добавляем потомков, если они есть
-            if (doc.allDescendants && doc.allDescendants.length > 0) {
-              allCategories.push(...doc.allDescendants);
-            }
-          });
-          // Удаляем дубликаты категорий по ID
-          let uniqueCategories = Array.from(new Map(allCategories.map(item => [item._id.toString(), item])).values());
-          // Строим дерево категорий
-          let tree = buildAdjacencyTree(uniqueCategories, sortParam, sortOrder);
-          // Если rootOnly=true, возвращаем все корневые категории из дерева
-          if (rootOnly === 'true') {
-            response = tree;
+
+        // Обработка URL параметра (только если не ищем по _id)
+        if (url && !_id) {
+          if (depth === 0) {
+            // Только точное совпадение
+            match.url = url;
+          } else if (depth === 1) {
+            // Категория + прямые дети
+            match.$or = [
+              { url: url },
+              { url: { $regex: '^${url}/[^/]+$' } }
+            ];
           } else {
-            // Иначе возвращаем только те корневые категории, которые соответствуют запросу
-            const requestedCategoryIds = results.map(r => r._id.toString());
-            response = tree.filter(category => requestedCategoryIds.includes(category._id.toString()));
+            // Категория + все потомки (или ограничено depth)
+            match.$or = [
+              { url: url },
+              { url: { $regex: `^${url}/` } }
+            ];
+          }
+        } else if (isRoot && !_id) {
+          // Только корневые категории
+          match.url = { $regex: '^/[^/]+$' };
+        }
+
+        console.log('🔎 Match object:', JSON.stringify(match, null, 2));
+
+        const pipeline = [
+          { $match: match },
+          ...globalsQuery.getSortingOptions(sortParam, sortOrder),
+          // ...(skip || limit ? globalsQuery.getPaginationOptions(skip, limit) : []),
+        ];
+        
+        console.log('🔧 Pipeline:', JSON.stringify(pipeline, null, 2));
+
+        let results = await Category.aggregate(pipeline);
+        console.log('🔍 Aggregate results:', results.length, 'categories found');
+        console.log('🔍 Results URLs:', results.map(r => r.url));
+
+        // Фильтрация по глубине если указан depth > 1 и url
+        if (url && depthNum > 1) {
+          const maxLevel = url.split('/').filter(Boolean).length + depthNum - 1;
+          results = results.filter(cat => {
+            const catLevel = cat.url.split('/').filter(Boolean).length;
+            return cat.url === url || catLevel <= maxLevel;
+          });
+          console.log('🔍 After depth filter:', results.length, 'categories');
+        }
+
+        // Построение дерева
+        if (isTree && results.length > 0) {
+          console.log('🌳 Building tree from results');
+          results = buildTreeFromUrl(results, sortParam, sortOrder);
+        } else if (!isTree && depthNum === 1 && url && results.length > 0) {
+          console.log('📋 Processing tree=false, depth=1');
+          console.log('📋 Looking for main category with url:', url);
+          
+          const mainCategory = results.find(c => c.url === url);
+          console.log('📋 Main category found:', !!mainCategory, mainCategory?.url);
+          
+          if (mainCategory) {
+            const children = results.filter(c => 
+              c.url !== url && c.url.startsWith(url + '/')
+            );
+            console.log('📋 Children found:', children.length, children.map(c => c.url));
+            
+            mainCategory.children = children;
+            results = [mainCategory];
+            console.log('📋 Final result with children:', results[0].url, 'children:', results[0].children.length);
+          } else {
+            console.log('❌ Main category not found in results!');
           }
         }
-        // Кэшируем результат с тегами для каждой категории
-        let tags = ['categories'];
-        // Добавляем тег для категорий организации, если применимо
-        if (type === 'organization' && req.query.organizationId) {
-          tags.push(`organization_${req.query.organizationId}`);
-        }
-        // Добавляем теги для отдельных категорий
-        for (const cat of response) {
-          if (cat._id) {
-            tags.push(`category_${cat._id}`);
-          }
-        }
-        await cache.setWithTags(cacheKey, response, tags);
-        res.status(200).json(response);
+
+        // Кеширование
+        const tags = ['categories'];
+        if (owner) tags.push(`organization_${owner}`);
+        await cache.setWithTags(cacheKey, results, tags);
+        
+        console.log('✅ Final results count:', results.length);
+        res.json(results);
       } catch (err) {
-        console.log(err)
         logger.error(`Error reading categories: ${err.message}`);
         res.status(500).json({ message: err.message });
       }
     },
+
     async create(req, res) {
       try {
-        // Используем верифицированные данные из middleware
-        const categoryData = req.verifiedBody;
-        // Если creator не задан, используем текущего пользователя
-        if (!categoryData.creator && req.userId) {
-          categoryData.creator = {
-            type: 'user',
-            target: req.userId,
-          };
+        const data = req.verifiedBody;
+        
+        // Установка creator и owner
+        data.creator ||= { type: 'user', target: req.userId };
+        data.owner ||= req.query.owner 
+          ? { type: 'organization', target: req.query.owner }
+          : { type: 'platform', target: null };
+
+        // Генерация slug
+        const slug = await generateSlug(data.name, data.parent);
+
+        // Определение path, level, url
+        let path = [];
+        let level = 0;
+        let url = `/${slug}`;
+
+        if (data.parent) {
+          const parent = await Category.findById(data.parent);
+          if (!parent) throw new Error('Parent category not found');
+          
+          path = [...parent.path, data.parent];
+          level = parent.level + 1;
+          url = `${parent.url}/${slug}`;
         }
-        // Если owner не задан, определяем по типу
-        if (!categoryData.owner) {
-          // Если задан organizationId, то владельцем будет организация
-          if (req.query.organizationId) {
-            categoryData.owner = {
-              type: 'organization',
-              target: req.query.organizationId,
-            };
-          } else {
-            // Иначе это платформенная категория
-            categoryData.owner = {
-              type: 'platform',
-              target: null,
-            };
-          }
-        }
-        const highestOrder = await Category.findOne().sort('-order');
-        const order = highestOrder ? highestOrder.order + 1 : 1;
-        // Создаем категорию
-        const category = new Category({
-          ...categoryData,
+
+        // Определение order
+        const maxOrder = await Category.findOne({ parent: data.parent || null })
+          .sort('-order')
+          .select('order');
+        const order = (maxOrder?.order || 0) + 1;
+
+        const category = await Category.create({
+          ...data,
+          slug,
+          url,
+          path,
+          level,
           order,
         });
-        // Обрабатываем родительскую категорию
-        if (categoryData.parent) {
-          const parent = await Category.findByIdAndUpdate(categoryData.parent, { $push: { children: category._id } }, { new: true });
-          if (!parent) throw new Error('Parent category not found');
-          category.parent = parent._id;
-        }
-        // Обрабатываем дочерние категории
-        if (categoryData.children && categoryData.children.length > 0) {
-          await Category.updateMany({ _id: { $in: categoryData.children } }, { $set: { parent: category._id } });
-        }
-        await category.save();
-        // Очищаем кэш для категорий
+
+        // Очистка кеша
         await cache.delByTags(['categories']);
-        // Если категория принадлежит организации, очищаем ее кэш
         if (category.owner.type === 'organization') {
           await cache.delByTag(`organization_${category.owner.target}`);
         }
+
         logger.info(`Category created: ${category._id}`);
         res.status(201).json(category);
       } catch (err) {
         logger.error(`Error creating category: ${err.message}`);
-        res.status(err.message === 'Parent category not found' ? 404 : 500).json({ message: err.message });
+        res.status(err.message.includes('not found') ? 404 : 500)
+          .json({ message: err.message });
       }
     },
+
     async update(req, res) {
       try {
-        // Используем верифицированные данные из middleware
-        const category = req.verifiedBody;
-        const updatedCategory = await Category.findByIdAndUpdate(category._id, { $set: category }, { new: true }).lean();
-        // Категория уже проверена middleware, но на всякий случай перепроверим
-        if (!updatedCategory) {
+        const data = req.verifiedBody;
+        const oldCategory = await Category.findById(data._id);
+        
+        if (!oldCategory) {
           return res.status(404).json({ message: 'Category not found' });
         }
-        // Очищаем кэш для этой категории
-        await cache.delByTag(`category_${category._id}`);
-        // Очищаем кэш для категорий
-        await cache.delByTags(['categories']);
-        // Если категория принадлежит организации, очищаем ее кэш
-        if (updatedCategory.owner && updatedCategory.owner.type === 'organization') {
-          await cache.delByTag(`organization_${updatedCategory.owner.target}`);
+
+        // Если меняется parent, обновляем пути
+        if (data.parent !== undefined && data.parent != oldCategory.parent) {
+          await updateCategoryPaths(data._id, data.parent);
         }
-        logger.info(`Category updated: ${category._id}`);
-        res.status(200).json(updatedCategory);
+
+        const updated = await Category.findByIdAndUpdate(
+          data._id, 
+          { $set: data }, 
+          { new: true }
+        ).lean();
+
+        // Очистка кеша
+        await cache.delByTags(['categories']);
+        if (updated.owner?.type === 'organization') {
+          await cache.delByTag(`organization_${updated.owner.target}`);
+        }
+
+        logger.info(`Category updated: ${data._id}`);
+        res.json(updated);
       } catch (err) {
         logger.error(`Category update error: ${err.message}`);
         res.status(500).json({ message: 'Failed to update category' });
       }
     },
+
     async updateOrder(req, res) {
       try {
-        // Используем верифицированные данные из middleware
         const { categories } = req.verifiedBody;
-        const bulkOps = categories.map(category => ({
+        
+        const bulkOps = categories.map(cat => ({
           updateOne: {
-            filter: { _id: category._id },
-            update: {
-              $set: {
-                order: category.order,
-                parent: category.parent ? new db.mongoose.Types.ObjectId(category.parent) : null,
-              },
-            },
-          },
-        }));
-        await Category.bulkWrite(bulkOps);
-        // Собираем ID категорий и организаций для очистки кэша
-        const categoryIds = categories.map(cat => cat._id);
-        const organizationIds = new Set();
-        // Получаем категории, чтобы выяснить, к каким организациям они принадлежат
-        const updatedCategories = await Category.find({ _id: { $in: categoryIds } }).lean();
-        // Собираем ID организаций
-        updatedCategories.forEach(cat => {
-          if (cat.owner && cat.owner.type === 'organization') {
-            organizationIds.add(cat.owner.target.toString());
+            filter: { _id: cat._id },
+            update: { $set: { order: cat.order } }
           }
-        });
-        // Очищаем кэш для категорий
+        }));
+
+        // Обработка смены parent
+        const movedCategories = categories.filter(cat => cat.parent !== undefined);
+
+        for (const cat of movedCategories) {
+          await updateCategoryPaths(cat._id, cat.parent);
+        }
+
+        await Category.bulkWrite(bulkOps);
         await cache.delByTags(['categories']);
-        // Очищаем кэш для отдельных категорий
-        for (const catId of categoryIds) {
-          await cache.delByTag(`category_${catId}`);
-        }
-        // Очищаем кэш для организаций
-        for (const orgId of organizationIds) {
-          await cache.delByTag(`organization_${orgId}`);
-        }
-        // Получаем обновленные категории с учетом типа владельца
-        let query = {};
-        if (req.query.type === 'platform') {
-          query = { 'owner.type': 'platform' };
-        } else if (req.query.type === 'organization' && req.query.organizationId) {
-          query = {
-            'owner.type': 'organization',
-            'owner.target': new db.mongoose.Types.ObjectId(req.query.organizationId),
-          };
-        }
-        const result = await Category.find(query).sort({ order: 'asc' }).lean();
-        logger.info(`Categories order updated: ${categoryIds.join(', ')}`);
-        res.status(200).json(result);
+
+        logger.info(`Categories order updated: ${categories.map(c => c._id).join(', ')}`);
+        res.json({ message: 'Order updated successfully' });
       } catch (err) {
         logger.error(`Category order update error: ${err.message}`);
         res.status(500).json({ message: 'Failed to update categories order' });
       }
     },
+
     async delete(req, res) {
       try {
-        // Категория уже загружена middleware
         const category = req.currentResource;
-        // Сохраняем организацию владельца для очистки кэша
-        let ownerOrgId = null;
-        if (category.owner && category.owner.type === 'organization') {
-          ownerOrgId = category.owner.target;
+        
+        // Переносим дочерние категории к родителю удаляемой
+        await Category.updateMany(
+          { parent: category._id },
+          { 
+            $set: { parent: category.parent },
+            $inc: { level: -1 }
+          }
+        );
+
+        // Обновляем url потомков если есть
+        if (category.parent) {
+          const parent = await Category.findById(category.parent);
+          const children = await Category.find({ parent: category.parent });
+          
+          for (const child of children) {
+            await updateCategoryPaths(child._id, category.parent);
+          }
         }
-        // Используем $graphLookup для поиска всех потомков
-        const result = await Category.aggregate([
-          { $match: { _id: category._id } },
-          {
-            $graphLookup: {
-              from: 'categories',
-              startWith: '$_id',
-              connectFromField: '_id',
-              connectToField: 'parent',
-              as: 'descendants',
-            },
-          },
-          {
-            $project: { descendants: 1 },
-          },
-        ]);
-        // Собираем id текущей категории и всех найденных потомков
-        const idsToDelete = [category._id, ...(result[0]?.descendants || []).map(({ _id }) => _id)];
-        // Собираем ID для очистки кэша
-        const categoryIdsTags = idsToDelete.map(id => `category_${id}`);
-        // Удаляем все категории одним запросом
-        await Category.deleteMany({ _id: { $in: idsToDelete } });
-        // Очищаем кэш для категорий
+
+        await Category.deleteOne({ _id: category._id });
+
+        // Очистка кеша
         await cache.delByTags(['categories']);
-        // Очищаем кэш для отдельных категорий
-        await cache.delByTags(categoryIdsTags);
-        // Очищаем кэш для организации, если категория ей принадлежала
-        if (ownerOrgId) {
-          await cache.delByTag(`organization_${ownerOrgId}`);
+        if (category.owner?.type === 'organization') {
+          await cache.delByTag(`organization_${category.owner.target}`);
         }
-        logger.info(`Category and its subcategories deleted: ${category.url}`);
-        res.status(200).json({ message: 'Category and its subcategories deleted successfully' });
+
+        logger.info(`Category deleted: ${category.slug}`);
+        res.json({ message: 'Category deleted successfully' });
       } catch (err) {
         logger.error(`Error deleting category: ${err.message}`);
-        res.status(500).json({ message: err.message || 'Internal server error' });
+        res.status(500).json({ message: err.message });
       }
     },
   };
-  // Вспомогательная функция для построения дерева категорий
-  function buildAdjacencyTree(categories, sortParam, sortOrder) {
-    // Создаем карту категорий по ID для быстрого доступа
-    const categoryMap = new Map();
-    // Инициализируем каждую категорию с пустым массивом children
-    categories.forEach(category => {
-      categoryMap.set(category._id.toString(), {
-        ...category,
-        children: [],
-      });
-    });
-    // Строим дерево, связывая родительские и дочерние категории
-    const rootCategories = [];
-    categories.forEach(category => {
-      const categoryWithChildren = categoryMap.get(category._id.toString());
-      // Если у категории есть родитель и этот родитель есть в нашей карте
-      if (category.parent && categoryMap.has(category.parent.toString())) {
-        const parentCategory = categoryMap.get(category.parent.toString());
-        parentCategory.children.push(categoryWithChildren);
-      }
-      // Иначе это корневая категория
-      else if (!category.parent) {
-        rootCategories.push(categoryWithChildren);
-      }
-    });
-    // Рекурсивная функция для сортировки категорий на всех уровнях
-    function sortCategories(nodes) {
-      if (!nodes || nodes.length === 0) {
-        return nodes;
-      }
-      // Сортируем текущий уровень
-      nodes.sort((a, b) => {
-        const valueA = a[sortParam] ?? (sortParam === 'order' ? Number.MAX_SAFE_INTEGER : '');
-        const valueB = b[sortParam] ?? (sortParam === 'order' ? Number.MAX_SAFE_INTEGER : '');
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-          return sortOrder === 'asc' ? valueA - valueB : valueB - valueA;
-        } else {
-          const stringA = String(valueA);
-          const stringB = String(valueB);
-          return sortOrder === 'asc' ? stringA.localeCompare(stringB) : stringB.localeCompare(stringA);
-        }
-      });
-      // Рекурсивно сортируем дочерние категории
-      nodes.forEach(node => {
-        if (node.children && node.children.length > 0) {
-          sortCategories(node.children);
-        }
-      });
-      return nodes;
-    }
-    // Сортируем категории на всех уровнях и возвращаем результат
-    return sortCategories(rootCategories);
-  }
 };
+
 export default controllerFactory;

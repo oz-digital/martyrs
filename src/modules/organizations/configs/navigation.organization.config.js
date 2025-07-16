@@ -10,6 +10,7 @@ import IconDate from '@martyrs/src/modules/icons/entities/IconDate.vue';
 import IconPrice from '@martyrs/src/modules/icons/entities/IconPrice.vue';
 import IconSettings from '@martyrs/src/modules/icons/entities/IconSettings.vue';
 import IconHome from '@martyrs/src/modules/icons/entities/IconHome.vue';
+import IconAddress from '@martyrs/src/modules/icons/entities/IconAddress.vue';
 
 // Import global mixins for access control
 import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
@@ -19,6 +20,7 @@ const { hasAccess } = useGlobalMixins();
 export const navigationItems = [
   {
     category: 'Organization',
+    visible: () => true, // Always visible - has both public and private items
     items: [
       {
         title: 'Profile',
@@ -27,13 +29,7 @@ export const navigationItems = [
           name: 'Organization',
           params: { _id: route.params._id }
         }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'members', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        visible: () => true // Public access
       },
       {
         title: 'Members',
@@ -42,13 +38,7 @@ export const navigationItems = [
           name: 'Organization Members',
           params: { _id: route.params._id }
         }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'members', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        visible: () => true // Public access
       },
       {
         title: 'Settings',
@@ -68,7 +58,8 @@ export const navigationItems = [
     ]
   },
   {
-    category: 'Shop',
+    category: 'Discover',
+    visible: () => true, // Always visible - public category
     items: [
       {
         title: 'Products',
@@ -77,14 +68,50 @@ export const navigationItems = [
           name: 'Organization_Products',
           params: { _id: route.params._id }
         }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'products', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        visible: () => true // Public access
       },
+      {
+        title: 'Events',
+        iconComponent: IconEvents,
+        route: (auth, route) => ({
+          name: 'Organization_Events',
+          params: { _id: route.params._id }
+        }),
+        visible: () => true // Public access
+      },
+      {
+        title: 'Posts',
+        iconComponent: IconCommunity,
+        route: (auth, route) => ({
+          name: 'Organization_Posts',
+          params: { _id: route.params._id }
+        }),
+        visible: () => true // Public access
+      },
+      {
+        title: 'Spots',
+        iconComponent: IconAddress,
+        route: (auth, route) => ({
+          name: 'Organization_Spots',
+          params: { _id: route.params._id }
+        }),
+        visible: () => true // Public access
+      },
+      {
+        title: 'Gallery',
+        iconComponent: IconGallery,
+        route: (auth, route) => ({
+          name: 'Backoffice Gallery',
+          params: { _id: route.params._id }
+        }),
+        visible: () => true // Public access
+      },
+    ]
+  },
+  {
+    category: 'Management',
+    visible: (auth, route) => auth.state && auth.state.user && auth.state.user._id, // Only for authenticated users
+    items: [
       {
         title: 'Categories',
         iconComponent: IconPrice,
@@ -115,26 +142,6 @@ export const navigationItems = [
           auth.access.roles
         )
       },
-    ]
-  },
-  {
-    category: 'Orders & Sales',
-    items: [
-      {
-        title: 'Orders',
-        iconComponent: IconOrders,
-        route: (auth, route) => ({
-          name: 'OrganizationOrdersList',
-          params: { _id: route.params._id }
-        }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'orders', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
-      },
       {
         title: 'Rents',
         iconComponent: IconEvents,
@@ -153,79 +160,56 @@ export const navigationItems = [
     ]
   },
   {
-    category: 'Content',
+    category: 'Orders & Sales',
+    visible: (auth, route) => auth.state && auth.state.user && auth.state.user._id, // Only for authenticated users
     items: [
       {
-        title: 'Gallery',
-        iconComponent: IconGallery,
+        title: 'Orders',
+        iconComponent: IconOrders,
         route: (auth, route) => ({
-          name: 'Backoffice Gallery',
+          name: 'OrganizationOrdersList',
           params: { _id: route.params._id }
         }),
         visible: (auth, route) => hasAccess(
           route.params._id, 
-          'gallery', 
+          'orders', 
           'read', 
           auth.accesses, 
           auth.access.roles
         )
       },
       {
-        title: 'Events',
-        iconComponent: IconEvents,
+        title: 'Customers',
+        iconComponent: IconCommunity,
         route: (auth, route) => ({
-          name: 'Organization_Events Backoffice',
+          name: 'OrganizationCustomers',
           params: { _id: route.params._id }
         }),
         visible: (auth, route) => hasAccess(
           route.params._id, 
-          'events', 
+          'orders', 
           'read', 
           auth.accesses, 
           auth.access.roles
         )
       },
-      // Закомментированные пункты меню из оригинала также можно добавить при необходимости
-      // {
-      //   title: 'Community',
-      //   iconComponent: IconCommunity,
-      //   route: (auth, route) => ({
-      //     name: 'Backoffice Community',
-      //     params: { _id: route.params._id }
-      //   }),
-      // },
-      // {
-      //   title: 'Payments',
-      //   icon: '💰',
-      //   route: (auth, route) => ({
-      //     name: 'Payments',
-      //     params: { _id: route.params._id }
-      //   }),
-      // },
+      {
+        title: 'Applications',
+        iconComponent: IconOrders,
+        route: (auth, route) => ({
+          name: 'OrganizationApplications',
+          params: { _id: route.params._id }
+        }),
+        visible: (auth, route) => hasAccess(
+          route.params._id, 
+          'orders', 
+          'read', 
+          auth.accesses, 
+          auth.access.roles
+        )
+      },
     ]
   },
-  // Закомментированное меню из оригинала
-  // {
-  //   category: 'System',
-  //   items: [
-  //     {
-  //       title: 'Organizations',
-  //       iconComponent: IconGroups,
-  //       route: (auth, route) => ({
-  //         name: 'Backoffice Organizations',
-  //         params: { _id: route.params._id }
-  //       }),
-  //     },
-  //     {
-  //       title: 'Reports',
-  //       icon: '📊',
-  //       route: (auth, route) => ({
-  //         name: 'Backoffice Reports',
-  //         params: { _id: route.params._id }
-  //       }),
-  //     },
-  //   ]
-  // },
 ];
 
 export default navigationItems;

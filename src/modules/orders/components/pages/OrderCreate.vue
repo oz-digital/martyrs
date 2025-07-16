@@ -30,7 +30,7 @@
 			class="rows-1 gap-thin"
 		>
 			<FormCustomerDetails
-				:customer="orders.state.current.customer"
+				v-model:customer="orders.state.current.customer"
 			/>
 			<FormPayment 	
 				v-if="orders.state.current.status !== true && shopcart.state.positions.length > 0"
@@ -138,7 +138,7 @@ import EmptyState from '@martyrs/src/modules/orders/components/sections/EmptySta
 
 import PriceTotal from '@martyrs/src/modules/orders/components/elements/PriceTotal.vue';
 
-import FormCustomerDetails from '@martyrs/src/modules/orders/components/sections/FormCustomerDetails.vue'
+import FormCustomerDetails from '@martyrs/src/modules/orders/components/forms/FormCustomerDetails.vue'
 import FormDelivery from '@martyrs/src/modules/orders/components/sections/FormDelivery.vue'
 import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPayment.vue'
 ///////////////////////////////////////////////////////////////////////////////////////////////////

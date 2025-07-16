@@ -3,6 +3,21 @@ import layoutSpots from '../components/layouts/Spots.vue';
 
 import * as validationAuth from '@martyrs/src/modules/auth/views/middlewares/auth.validation.js';
 
+// Function to create organization spots routes
+export const createSpotsRoutes = (prefix = '') => {
+  return {
+    path: 'spots',
+    name: `${prefix}Spots`,
+    meta: {
+      title: {
+        en: 'Spots',
+        ru: 'Точки',
+      },
+    },
+    component: () => import(/* webpackChunkName: "organization-spots" */ '../components/pages/Spots.vue'),
+  };
+};
+
 const spots = {
   path: 'spots',
   component: layoutEmpty,

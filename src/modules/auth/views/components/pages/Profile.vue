@@ -198,7 +198,7 @@
 			  </MenuItem>
 			  <MenuItem 
 			  	@click="router.push({
-			  		name: 'User Edit Profile', 
+			  		name: 'Profile Edit Profile', 
 			  		params: {
 			  			_id: route.params._id
 			  		}

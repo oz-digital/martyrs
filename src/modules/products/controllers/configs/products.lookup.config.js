@@ -108,5 +108,14 @@ export default  {
         }
       }
     }]
+  },
+  // Лукап для аренд продукта
+  rents: {
+    lookup: {
+      from: 'rents',
+      localField: '_id',
+      foreignField: 'product',
+      as: 'rents'
+    }
   }
 };

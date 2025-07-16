@@ -48,9 +48,9 @@ body {
 	.w-m-66r { width: min(100%, 66rem); }
 	.w-m-60r { width: min(100%, 60rem); }
 	.w-m-50r { width: min(100%, 50rem); }
+	.h-m-40r { height: min(100%, 40rem); }
 	.w-m-40r { width: min(100%, 40rem); }
 	.w-m-33r { width: min(100%, 33rem); }
-	.w-minmax-33r-100 { width: max(33rem, 100%); }
 	.w-m-25r { width: min(100%, 25rem); }
 	.w-m-20r { width: min(100%, 20rem); }
 	.w-m-15r { width: min(100%, 15rem); }
@@ -257,8 +257,7 @@ body {
 	.col-w-100 {
 		grid-column: 1 / -1
 	}
-	// Rows
-	.rows-1 {display: grid; grid-template-rows: auto 1fr; }
+	.rows-1 {display: grid;  grid-template-columns: 100%; grid-auto-rows: minmax(auto, max-content); }
 	.rows-1-min0_max1 {display: grid; grid-template-rows: minmax(0, 1fr); }
 	.rows-auto {   grid-auto-flow: row;
   grid-auto-columns: auto;

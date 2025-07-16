@@ -9,7 +9,7 @@
           name: 'Category Edit', 
           params: { 
             _id: route.params._id,
-            category: category.url
+            category: category._id
           } 
         }"
         class="

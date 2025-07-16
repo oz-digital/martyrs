@@ -13,7 +13,9 @@ const props = defineProps({
   disabled: null,
   tabindex: -1,
   autofocus: false,
-  icon: null // Добавлен пропс для иконки
+  icon: null, // Добавлен пропс для иконки
+  name: null, // Имя поля для автозаполнения
+  id: null // ID поля
 });
 if (props.value) {
   emit('update:field', props.value)
@@ -95,6 +97,8 @@ const text = ref(props.field);
         :tabindex="tabindex"
         :disabled="disabled"
         :autofocus="autofocus"
+        :name="name"
+        :id="id"
       />
       <textarea
         v-else
@@ -107,6 +111,8 @@ const text = ref(props.field);
         :placeholder="placeholder"
         :tabindex="tabindex"
         :disabled="disabled"
+        :name="name"
+        :id="id"
       />
     </div>
     <IconShow

@@ -22,7 +22,7 @@
 
     <div  v-if="!isMenuOpen" class="cols-2-1_3 h-100 bg-light z-index-0 pos-relative">
 
-      <div v-if="pageParent.url !== page.url" class="desktop-only h-100 bg-white o-scroll z-index-0  pos-relative">
+      <div class="desktop-only h-100 bg-white o-scroll z-index-0  pos-relative">
         <ul 
           class="transition-ease-in-out w-100  bg-light"
         >

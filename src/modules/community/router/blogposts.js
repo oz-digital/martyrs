@@ -2,6 +2,21 @@ import layoutCommunity from '../components/layouts/Community.vue';
 
 import * as validationAuth from '@martyrs/src/modules/auth/views/middlewares/auth.validation.js';
 
+// Function to create organization posts routes
+export const createPostsRoutes = (prefix = '') => {
+  return {
+    path: 'posts',
+    name: `${prefix}Posts`,
+    meta: {
+      title: {
+        en: 'Posts',
+        ru: 'Посты',
+      },
+    },
+    component: () => import(/* webpackChunkName: "organization-posts" */ '../components/pages/Posts.vue'),
+  };
+};
+
 const community = {
   path: 'community',
   component: layoutCommunity,

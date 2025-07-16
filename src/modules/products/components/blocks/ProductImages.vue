@@ -44,7 +44,7 @@
     </div>
     
     <!-- Popup with photo viewer -->
-    <Popup @close-popup="closePopup" :isPopupOpen="isPopupVisible" class="radius-zero o-hidden">
+    <Popup @close-popup="closePopup" :isPopupOpen="isPopupVisible" class="radius-zero w-100 o-hidden">
       <PhotoViewer
         :photos="images.map(img => (FILE_SERVER_URL || '') + img)"
         :initialIndex="selectedImageIndex"

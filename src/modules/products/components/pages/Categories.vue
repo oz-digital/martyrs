@@ -36,8 +36,7 @@
         }"
         :options="{
           user: auth.state.user._id,
-          rootOnly: true,
-          excludeChildren: false
+          tree: true
         }"
         v-model:sort="sort"
         v-model:items="categories.state.all"
@@ -117,35 +116,43 @@
     
   });
 
-  // Функция для преобразования иерархического дерева категорий в плоский массив
-  function flattenCategoryTree(categories) {
+  // Функция для преобразования дерева в плоский массив для API (materialised path)
+  function flattenTreeForAPI(treeData, parentUrl = '') {
     let flatCategories = [];
     
-    function flatten(category) {
-      const { children, ...categoryWithoutChildren } = category;
-      flatCategories.push(categoryWithoutChildren);
+    function processNode(node, index, parentUrl) {
+      const { children, ...nodeData } = node;
       
-      if (children && Array.isArray(children)) {
-        children.forEach(child => flatten(child));
+      // Для materialised path отправляем order и parent (если есть)
+      flatCategories.push({
+        _id: nodeData._id,
+        order: index,
+        ...(nodeData.parent && { parent: nodeData.parent })
+      });
+      
+      if (children && children.length > 0) {
+        children.forEach((child, childIndex) => {
+          processNode(child, childIndex, nodeData.url);
+        });
       }
     }
     
-    categories.forEach(category => flatten(category));
+    treeData.forEach((node, index) => {
+      processNode(node, index, parentUrl);
+    });
+    
     return flatCategories;
   }
 
-
   // Функция для обновления порядка категорий
-  async function updateCategoriesOrder(updatedCategories) {
-    alert('helo')
+  async function updateCategoriesOrder(event) {
+    console.log('updateCategoriesOrder called with event:', event);
+    
     try {
-      // Преобразуем категории в плоский массив
-      const flattenedCategories = flattenCategoryTree(categories.state.all);
+      // Игнорируем события drag-and-drop, используем актуальное состояние
+      const flatCategories = flattenTreeForAPI(categories.state.all);
       
-      console.log(flattenedCategories)
-      console.log( categories.state.all)
-      await categories.actions.updateOrder(flattenedCategories);
-        
+      await categories.actions.updateOrder(flatCategories);
       console.log('Categories order updated successfully');
     } catch (error) {
       console.error('Error updating categories order:', error);
@@ -159,9 +166,7 @@
     
     // Если пользователь подтвердил удаление, продолжаем процесс
     if (isConfirmed) {
-      await categories.actions.delete(category.url);
-    } else {
-      alert('Category deletion cancelled'); 
+      await categories.actions.delete(category._id);
     }
   }
 </script>

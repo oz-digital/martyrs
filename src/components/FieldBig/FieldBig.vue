@@ -6,23 +6,35 @@
     @input="handleInput"
     @focus="handleFocus"
     @blur="checkInput"
-    class="pd-thin radius-extra flex-nowrap flex  w-100 p-medium t-regular uppercase pd-small"
+    :name="fieldName"
+    :id="fieldId"
+    :validation="validation"
+    class="pd-l-medium radius-extra flex-nowrap flex  w-100 p-medium t-regular uppercase pd-thin"
   >
-        <button
-    @click="emitAction" 
-    class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-thin w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main" 
-  >
-    <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
-    <IconArrow class="i-medium"/>
-  </button>
+    <slot></slot>
+    <Button
+      :submit="handleAction"
+      :showSucces="showSuccess"
+      :showLoader="showLoader"
+      :callback="callback"
+      :callbackDelay="callbackDelay"
+      class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-thin w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main"
+    >
+      <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
+      <IconArrow class="i-medium"/>
+    </Button>
 </Field>
 </template>
 
 <script setup="props">
   import { ref, watchEffect, onMounted } from 'vue'
   import Field from '@martyrs/src/components/Field/Field.vue'
+  import Button from '@martyrs/src/components/Button/Button.vue'
   import IconArrow from '@martyrs/src/modules/icons/navigation/IconArrow.vue'
   import { useI18n } from 'vue-i18n'
+
+  // Генерируем уникальный ID для каждого экземпляра
+  const uniqueId = Math.random().toString(36).substr(2, 9)
 
   const props = defineProps({
     input: String,
@@ -58,8 +70,40 @@
     enableTyping: {
       type: Boolean,
       default: false
+    },
+    showLoader: {
+      type: Boolean,
+      default: true
+    },
+    showSuccess: {
+      type: Boolean,
+      default: true
+    },
+    callback: {
+      type: Function,
+      default: null
+    },
+    callbackDelay: {
+      type: Number,
+      default: 750
+    },
+    name: {
+      type: String,
+      default: null
+    },
+    id: {
+      type: String,
+      default: null
+    },
+    validation: {
+      type: [Object, Boolean],
+      default: false
     }
   });
+
+  // Уникальные имена для полей
+  const fieldName = props.name || `field-big-${uniqueId}`
+  const fieldId = props.id || `field-big-${uniqueId}`
 
   const { t, locale } = useI18n()
 
@@ -77,6 +121,16 @@
 
   function emitAction() {
     emit('action')
+  }
+
+  async function handleAction() {
+    const result = emit('action')
+    // Если обработчик вернул промис, ждем его
+    if (result && typeof result.then === 'function') {
+      return result
+    }
+    // Иначе возвращаем resolved промис
+    return Promise.resolve(result)
   }
   
   function updateInput(event) {

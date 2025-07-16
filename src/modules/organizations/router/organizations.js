@@ -8,6 +8,9 @@ import { createRentsRoutes } from '@martyrs/src/modules/rents/views/router/rents
 import categoriesRoutes from '@martyrs/src/modules/products/router/categories.router.js';
 import { createProductRoutes } from '@martyrs/src/modules/products/router/products.router.js';
 
+import { createSpotsRoutes } from '@martyrs/src/modules/spots/router/spots.js';
+import { createPostsRoutes } from '@martyrs/src/modules/community/router/blogposts.js';
+
 import galleryBackofficeRoutes from '@martyrs/src/modules/gallery/router/gallery.backoffice.router.js';
 import paymentsRoutes from '@martyrs/src/modules/wallet/views/router/payments.router.js';
 
@@ -71,6 +74,8 @@ const organizations = {
         createProductRoutes('Organization_'),
         createEventRoutes('Organization_'),
         createRentsRoutes('Organization_'),
+        createSpotsRoutes('Organization_'),
+        createPostsRoutes('Organization_'),
         ...categoriesRoutes,
         ...paymentsRoutes,
         ...galleryBackofficeRoutes,

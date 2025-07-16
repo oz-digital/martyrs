@@ -37,10 +37,11 @@ const controllerFactory = db => {
           start: 'startDate',
           end: 'endDate',
         }),
-        ...queryProcessorGlobals.getPriceConditions(req.query.prices),
         ...queryProcessorProducts.getCategoriesFilterStage(req.query.categories),
         ...queryProcessorProducts.getDeliveryFilterStage(req.query.delivery),
         ...queryProcessorProducts.getAttributeFiltersStage(req.query.filters),
+        ...queryProcessorProducts.getVariantPriceFilterStage(req.query.prices),
+        ...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd),
         ...queryProcessorGlobals.getLookupStages(requestedLookups, productLookupConfigs),
         
         queryProcessorGlobals.getCreatorUserLookupStage(),

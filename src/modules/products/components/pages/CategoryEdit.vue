@@ -32,8 +32,6 @@
       </div>
 
         <div class="mn-b-thin w-100 flex-nowrap gap-thin flex">
-
-
          <Field
             v-model:field="categories.state.current.order"
             label="Order"
@@ -41,13 +39,21 @@
             class="w-40 bg-white radius-small pd-medium"
           />  
          <Field
-            v-model:field="categories.state.current.url"
-            label="URL"
-            placeholder="Enter category URL"
+            v-model:field="categories.state.current.slug"
+            label="Slug"
+            placeholder="Enter category slug"
+            :disabled="route.params.category ? true : false"
             class="w-100 bg-white radius-small pd-medium"
           />  
-         
       </div>
+      
+      <Field
+        v-if="route.params.category"
+        v-model:field="categories.state.current.url"
+        label="URL Path"
+        :disabled="true"
+        class="w-100 bg-white radius-small pd-medium mn-b-thin"
+      />
 
       <Select 
         v-model:select="categories.state.current.status"
@@ -105,7 +111,7 @@
       placeholder="No filters added yet"
       :actions="[{
         label: '+',
-        function: () => categories.state.current.filters.push({name: '', url: ''})
+        function: () => categories.state.current.filters.push({name: '', options: []})
       }]"
     >
       <div 
@@ -118,9 +124,9 @@
           placeholder="Filter name"
           class="w-100 bg-white radius-small pd-medium"
         />  
-        <Field
-          v-model:field="item.options"
-          placeholder="Filter options divided by ,"
+        <FieldTags
+          v-model:tags="item.options"
+          placeholder="Add filter options"
           class="w-100 bg-white radius-small pd-medium"
         />
         <div
@@ -148,6 +154,7 @@
   import Select from "@martyrs/src/components/Select/Select.vue";
   import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue';
   import Field from "@martyrs/src/components/Field/Field.vue";
+  import FieldTags from "@martyrs/src/components/FieldTags/FieldTags.vue";
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
 
@@ -170,7 +177,7 @@
   onMounted(async () => {
     emits('page-loading');
     if (route.params.category) {
-      await categories.actions.read({url: route.params.category})
+      await categories.actions.read({_id: route.params.category})
     } else {
       categories.actions.clean() // Adjusted based on the new store's method to reset the category state
     }
@@ -206,12 +213,16 @@
       categories.state.current.creator = {
         type: categories.state.current.creator.type,
         hidden: categories.state.current.creator.hidden,
-        target: categories.state.current.creator.target._id
+        target: typeof categories.state.current.creator.target === 'object' 
+          ? categories.state.current.creator.target._id 
+          : categories.state.current.creator.target
       }
 
       categories.state.current.owner = {
         type: categories.state.current.owner.type,
-        target: categories.state.current.owner.target._id
+        target: typeof categories.state.current.owner.target === 'object' 
+          ? categories.state.current.owner.target._id 
+          : categories.state.current.owner.target
       }
 
       await categories.actions.update(categories.state.current)

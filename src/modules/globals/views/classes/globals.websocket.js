@@ -20,11 +20,6 @@ class GlobalWebSocket {
   }
 
   initialize(options = {}) {
-    console.log('WSS initialize options:', options);
-    console.log('options.wsUrl:', options.wsUrl);
-    if (typeof window !== 'undefined') console.log('window.location.protocol:', window.location.protocol);
-    if (typeof window !== 'undefined') console.log('window.location.host:', window.location.host);
-
     this.maxReconnectAttempts = options.maxReconnectAttempts || this.maxReconnectAttempts;
     this.reconnectDelay = options.reconnectDelay || this.reconnectDelay;
     this.baseUrl = options.wsUrl || this._getDefaultWsUrl();
@@ -32,11 +27,15 @@ class GlobalWebSocket {
     this.rpcTimeout = options.rpcTimeout || this.rpcTimeout;
   }
 
-  _getDefaultWsUrl() {
+   _getDefaultWsUrl() {
     if (typeof window === 'undefined') return '/api/ws';
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    
+    const isSecure = window.location.protocol === 'https:';
+    const protocol = isSecure ? 'wss:' : 'ws:';
     const host = window.location.hostname;
-    return `${protocol}//${host}/api/ws`;
+    const port = isSecure ? '' : ':8020';
+
+    return `${protocol}//${host}${port}/api/ws`;
   }
 
   connect(userId) {

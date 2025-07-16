@@ -56,12 +56,11 @@
       class="cursor-pointer mn-l-thin flex-center"
       :class="{
         'transition-elastic pd-thin h-2r w-4r radius-extra': mode === 'switch',
-        'w-2r h-2r radius-small br-solid br-1px': mode === 'checkbox',
+        'w-2r h-2r radius-small': mode === 'checkbox',
         'bg-dark': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'dark' && mode === 'switch',
-        'bg-light': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'light' && mode === 'switch',
         'br-dark': theme === 'dark' && mode === 'checkbox',
-        'br-light': theme === 'light' && mode === 'checkbox',
-        'bg-main': (Array.isArray(radio) ? radio.includes(value) : radio) && mode === 'switch',
+        'bg-light': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'light' && mode === 'switch',
+        'bg-light': !(Array.isArray(radio) ? radio.includes(value) : radio) && theme === 'light' && mode === 'checkbox','bg-main': (Array.isArray(radio) ? radio.includes(value) : radio) && mode === 'switch',
         'bg-main br-main': (Array.isArray(radio) ? radio.includes(value) : radio) && mode === 'checkbox',
       }"
     >

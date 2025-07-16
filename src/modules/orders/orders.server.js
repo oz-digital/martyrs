@@ -6,6 +6,7 @@ import ModelOrder from './models/order.model.js';
 import ModelTestimonial from './models/testimonial.model.js';
 import RoutesApplications from './routes/applications.routes.js';
 import RoutesOrder from './routes/orders.routes.js';
+import RoutesCustomers from './routes/customers.routes.js';
 function initializeOrders(app, db, origins, publicPath) {
   // Setup models in the database object
   db.order = ModelOrder(db);
@@ -16,7 +17,7 @@ function initializeOrders(app, db, origins, publicPath) {
   if (app) {
     RoutesOrder(app, db, origins, publicPath);
     RoutesApplications(app, db, origins, publicPath);
-    new CRUD('/api/customers', app, db, db.customer);
+    RoutesCustomers(app, db);
   }
 }
 export const models = {
@@ -25,6 +26,7 @@ export const models = {
 };
 export const routes = {
   RoutesOrder,
+  RoutesCustomers,
 };
 export const controllers = {
   FactoryOrder,

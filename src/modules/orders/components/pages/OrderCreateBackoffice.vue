@@ -163,63 +163,11 @@
       /> 
     </Block>
 
-    <Block
+    <FormSelectCustomer
       v-if="tabOrderCreate === 'customer'"
-      title="Customer"
+      v-model:customer="orders.state.current.customer"
       class="mn-b-semi"
-      :actions="[{
-        label: '+',
-        function: () => openCustomerPopup()
-      }]"
-    >
-      <CardUser
-        v-if="orders.state.current.customer._id"
-        :user="orders.state.current.customer"
-        :photo="orders.state.current.customer.profile.photo"
-        :name="orders.state.current.customer.profile.name || orders.state.current.customer.phone || orders.state.current.customer.email"
-        @click="() => { 
-          orders.mutations.resetCustomer(orders.state.current.customer)
-        }"
-        class="bg-white pd-thin h-4r radius-medium w-100 mn-b-thin"
-      />
-      <Feed
-        v-else
-        :search="{
-          placeholder: 'Search customer...',
-          class: 'bg-white mn-b-thin'
-        }"
-        :states="{
-          empty: {
-            title: 'No Products Found',
-            description: 'Currently, there are no such products available.'
-          }
-        }"
-        :store="{
-          read: (options) => customers.read(options),
-          state: null
-        }"
-        :options="{
-          owner: route.params._id
-        }"
-        v-slot="{ 
-          items 
-        }"
-        class="bg-light h-max-20r o-scroll"
-      >
-        <CardUser
-          v-for="(user, index) in items" 
-          :key="user._id"
-          :user="user"
-          :photo="user.profile.photo"
-          :name="user.profile.name || user.phone || user.email"
-          @click="() => { 
-            orders.state.current.customer = user
-          }"
-          class="bg-white pd-thin h-4r radius-medium w-100 mn-b-thin"
-        />
-      </Feed>
-      
-    </Block>
+    />
 
     <FormDelivery  
       v-if="tabOrderCreate === 'delivery'" 
@@ -233,16 +181,6 @@
       :organization="orderOrganization[0]" 
     />
 
-    <Popup 
-      title="Add customer" 
-      @close-popup="closeCustomerPopup" 
-      :isPopupOpen="isOpenCustomerPopup"
-      :class="'bg-white w-min-30r w-max-30r radius-big pd-medium'"
-    >
-      <FormAddCustomer 
-        @callbackCustomer="closeCustomerPopup"
-      />
-    </Popup>
 
     <Block
       class="mn-b-semi"
@@ -275,7 +213,7 @@
 
   import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
 
-  import FormAddCustomer from '@martyrs/src/modules/orders/components/sections/FormAddCustomer.vue'
+  import FormSelectCustomer from '@martyrs/src/modules/orders/components/forms/FormSelectCustomer.vue'
   import FormDelivery from '@martyrs/src/modules/orders/components/sections/FormDelivery.vue'
   import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPayment.vue'
 
@@ -396,15 +334,6 @@
     }
   }
 
-  const isOpenCustomerPopup = ref(false);
-
-  function openCustomerPopup() {
-    isOpenCustomerPopup.value = true;
-  }
-
-  function closeCustomerPopup() {
-    isOpenCustomerPopup.value = false;
-  }
 
   // Функции управления позициями заказа
   function incrementOrderItemQuantity(productId, variantId) {

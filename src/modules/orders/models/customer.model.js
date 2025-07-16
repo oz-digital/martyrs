@@ -16,10 +16,34 @@ export default db => {
           refPath: 'target.type',
         },
       },
+      source: {
+        type: String,
+        enum: ['web', 'mobile', 'api', 'import', 'manual', 'referral', 'social', 'email'],
+        default: 'web',
+      },
       referral: {
         code: {
           type: String,
         },
+        source: {
+          type: db.mongoose.Schema.Types.ObjectId,
+          ref: 'Customer',
+        },
+      },
+      tags: [{
+        type: String,
+      }],
+      notes: {
+        type: String,
+      },
+      lastActivity: {
+        type: Date,
+        default: Date.now,
+      },
+      status: {
+        type: String,
+        enum: ['active', 'inactive', 'blocked'],
+        default: 'active',
       },
     },
     {
@@ -31,6 +55,8 @@ export default db => {
   applyCredentialsSchema(CustomerSchema, db);
   applyProfileSchema(CustomerSchema, db);
   applyOwnershipSchema(CustomerSchema, db);
+ 
+
   CustomerSchema.index(
     {
       owner: 1,

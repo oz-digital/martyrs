@@ -22,7 +22,7 @@
           v-else-if="placeholder"
           :is="placeholder"
         />
-        <PlaceholderUserpic v-else />
+        <PlaceholderUserpic class="h-100" v-else />
       </slot>
 
       <!-- Контент -->
@@ -47,6 +47,7 @@
             v-if="action.label?.is" 
             :is="action.label.is" 
             v-bind="action.label.props"
+            class="i-medium"
           />
           <template v-else>
             {{ action.label }}

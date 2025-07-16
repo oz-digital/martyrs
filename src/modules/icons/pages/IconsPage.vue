@@ -2,7 +2,7 @@
   <div class="pd-medium">
     <div class="flex-between mn-b-medium">
       <h2>Martyrs Icons Gallery</h2>
-      <button @click="openAddIconPopup" class="pd-small pd-h-medium bg-primary t-white radius-medium hover-scale-1 cursor-pointer border-none">
+      <button @click="openAddIconPopup" class="pd-small pd-medium bg-second t-white radius-medium hover-scale-1 cursor-pointer border-none">
         Add New Icon
       </button>
     </div>
@@ -118,6 +118,7 @@ import IconEmail from '@martyrs/src/modules/icons/entities/IconEmail.vue';
 import IconAddress from '@martyrs/src/modules/icons/entities/IconAddress.vue';
 import IconProfile from '@martyrs/src/modules/icons/entities/IconProfile.vue';
 import IconGroups from '@martyrs/src/modules/icons/entities/IconGroups.vue';
+import IconLock from '@martyrs/src/modules/icons/entities/IconLock.vue';
 
 // Import placeholders icons
 import PlaceholderOrganizationPic from '@martyrs/src/modules/icons/placeholders/PlaceholderOrganizationPic.vue';
@@ -221,7 +222,8 @@ const iconsMap = {
     IconOrders,
     IconMusic,
     IconProfile,
-    IconGroups
+    IconGroups,
+    IconLock
   },
   placeholders: {
     PlaceholderOrganizationPic,

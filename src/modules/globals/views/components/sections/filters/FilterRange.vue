@@ -1,74 +1,75 @@
-<!-- filters/FilterRange.vue -->
+<!-- FilterRange.vue -->
 <template>
   <div class="filter-range">
-    <div class="range-slider">
-      <input
-        type="range"
-        v-model.number="localValue"
-        :min="config?.min || 0"
-        :max="config?.max || 100"
-        :step="config?.step || 1"
-        @input="updateValue"
-        class="w-100"
+    <div class="flex gap-thin mn-b-small">
+      <Field
+        v-model="localValue.min"
+        :placeholder="minPlaceholder"
+        type="number"
+        class="w-50 bg-light pd-small radius-small"
+        @keypress.enter="applyRange"
       />
-      <div class="flex justify-between mt-thin">
-        <span class="t-small">{{ config?.min || 0 }}{{ config?.unit || '' }}</span>
-        <span class="t-bold">{{ localValue }}{{ config?.unit || '' }}</span>
-        <span class="t-small">{{ config?.max || 100 }}{{ config?.unit || '' }}</span>
-      </div>
+      <Field
+        v-model="localValue.max"
+        :placeholder="maxPlaceholder"
+        type="number"
+        class="w-50 bg-light pd-small radius-small"
+        @keypress.enter="applyRange"
+      />
     </div>
+    <button 
+      @click="applyRange"
+      class="button bg-main t-white w-100 pd-small radius-small"
+    >
+      Apply
+    </button>
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
+import Field from '@martyrs/src/components/Field/Field.vue'
 
 const props = defineProps({
-  config: Object
+  minPlaceholder: {
+    type: String,
+    default: 'From'
+  },
+  maxPlaceholder: {
+    type: String,
+    default: 'To'
+  }
 })
 
 const model = defineModel({
-  type: Number,
-  default: 0
+  type: Object,
+  default: () => ({ min: '', max: '' })
 })
 
-const localValue = ref(model.value)
+const emit = defineEmits(['update:modelValue', 'apply'])
 
-watch(model, (val) => {
-  localValue.value = val
+const localValue = ref({ 
+  min: model.value?.min || '', 
+  max: model.value?.max || '' 
 })
 
-const updateValue = () => {
-  model.value = localValue.value
+const applyRange = () => {
+  model.value = { ...localValue.value }
+  emit('apply')
 }
+
+watch(() => model.value, (newVal) => {
+  if (newVal) {
+    localValue.value = { 
+      min: newVal.min || '', 
+      max: newVal.max || '' 
+    }
+  }
+}, { deep: true })
 </script>
 
-<style>
-.range-slider input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  background: var(--color-light);
-  border-radius: 3px;
-  outline: none;
-}
-
-.range-slider input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.range-slider input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
+<style scoped>
+.filter-range {
+  width: 100%;
 }
 </style>

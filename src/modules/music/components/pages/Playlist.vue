@@ -115,7 +115,7 @@
 
         <div class="artists-section mn-b-medium">
           <h3 class="t-medium mn-b-small">Created by</h3>
-          <div class="flex flex-col gap-small">
+          <div class="flex flex-column gap-small">
             <ArtistCardSmall 
               :artist="{
                 _id: playlist.creator.target,

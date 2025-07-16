@@ -30,7 +30,7 @@ import IconRecent from './entities/IconRecent.vue';
 import IconSettings from './entities/IconSettings.vue';
 import IconShopcart from './entities/IconShopcart.vue';
 import IconTime from './entities/IconTime.vue';
-
+import IconLock from './entities/IconLock.vue';
 // Labels
 import LabelAppStore from './labels/LabelAppStore.vue';
 import LabelGooglePlay from './labels/LabelGooglePlay.vue';
@@ -185,6 +185,7 @@ export {
   IconSettings,
   IconShopcart,
   IconTime,
+  IconLock,
   
   // Actions
   IconDuplicate,

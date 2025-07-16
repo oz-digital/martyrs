@@ -1,6 +1,6 @@
 <template>
-  <div v-if="show" class="for-transition w-100">
-    <div class="bg-white mn-b-thin pd-medium">
+  <div class="for-transition w-100">
+    <div class="bg-white mn-b-thin">
       <h4 class="mn-b-small">Profile</h4>
 
       <div class="mn-b-thin radius-small w-100 h-10r bg-light flex-center flex-column flex">
@@ -39,7 +39,7 @@
       />
     </div>
 
-    <div class="bg-white mn-b-thin pd-medium">
+    <div class="bg-white mn-b-thin">
       <h3 class="mn-b-small">Socials</h3>
       <p class="mn-b-thin">Please provide only the username for social media profiles, without full links.</p>
 
@@ -84,20 +84,18 @@
   import Button from '@martyrs/src/components/Button/Button.vue'
   import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue'
   
-  import { ref, onMounted } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router'
   
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
   import * as users from '@martyrs/src/modules/auth/views/store/users.js'
   
-  const route = useRoute()
   const router = useRouter()
-  const show = ref(false)
   
-  onMounted(async () => {
-    const userId = route.params._id || auth.state.user._id
-    await users.actions.read({ _id: userId, user: auth.state.user._id })
-    show.value = true
+  defineProps({
+    userData: {
+      type: Object,
+      required: true
+    }
   })
   
   async function onSubmit() {

@@ -4,12 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 // Martyrs Components
-import FieldBig from "@martyrs/src/components/FieldBig/FieldBig.vue";
-
-
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
-import * as applications from '@martyrs/src/modules/orders/store/applications.js';
-
+import FieldSubscribeNewsletter from '@martyrs/src/modules/orders/components/elements/FieldSubscribeNewsletter.vue'
 
 import LabelGooglePlay from '@martyrs/src/modules/icons/labels/LabelGooglePlay.vue';
 import LabelAppStore from '@martyrs/src/modules/icons/labels/LabelAppStore.vue';
@@ -40,7 +35,6 @@ const props = defineProps({
 // State
 const router = useRouter()
 const route = useRoute()
-const email = ref('')
 
 // Localization
 const text = {
@@ -56,32 +50,7 @@ const text = {
       email: 'Email',
       hours: 'Hours',
       hours_text: 'Mon–Sun, 10:00–19:00',
-       app: 'Get Our App',
-      
-      // Navigation
-      equipment: 'Equipment',
-      cameras: 'Cameras',
-      lighting: 'Lighting',
-      stabilizers: 'Stabilizers',
-      accessories: 'Accessories',
-      
-      services: 'Services',
-      kits: 'Kits & Packages',
-      studio: 'Studio Hire',
-      delivery: 'Delivery',
-      production: 'Production Help',
-      
-      company: 'Company',
-      about: 'About Us',
-      contact_us: 'Contact',
-      faq: 'FAQ',
-      blog: 'Blog',
-      
-      legal: 'Legal',
-      privacy: 'Privacy Policy',
-      cookies: 'Cookie Policy',
-      terms: 'Terms of Use',
-      gdpr: 'GDPR / CCPA',
+      app: 'Get Our App',
       
       // Subscribe
       subscribe: 'Subscribe',
@@ -93,20 +62,87 @@ const text = {
       year: '2025 ',
       heart: "❤",
       copyright: 'Three Steps Studio Ltd. ',
-      ozdao: 'Builded with love in'
+      ozdao: 'Builded with love in',
+      
+      // Contact info
+      phoneNumber: '+44 77 7878 4893',
+      emailAddress: 'info@3stepsprod.com',
+      
+      // Navigation columns
+      navigationColumns: [
+        {
+          sections: [
+            {
+              title: 'Equipment',
+              items: [
+                { name: 'Cameras', url: 'cameras' },
+                { name: 'Lighting', url: 'lighting' },
+                { name: 'Stabilizers', url: 'stabilizers' },
+                { name: 'Accessories', url: 'accessories' }
+              ]
+            },
+            {
+              title: 'Services',
+              items: [
+                { name: 'Kits & Packages', url: 'kits-packages' },
+                { name: 'Studio Hire', url: 'studio-hire' },
+                { name: 'Delivery', url: 'delivery' },
+                { name: 'Production Help', url: 'production-help' }
+              ]
+            }
+          ]
+        },
+        {
+          sections: [
+            {
+              title: 'Company',
+              items: [
+                { name: 'About Us', url: 'about' },
+                { name: 'Contact', url: 'contact' },
+                { name: 'FAQ', url: 'faq' },
+                { name: 'Blog', url: 'blog' }
+              ]
+            },
+            {
+              title: 'Legal',
+              items: [
+                { name: 'Privacy Policy', url: 'privacy-policy' },
+                { name: 'Cookie Policy', url: 'cookie-policy' },
+                { name: 'Terms of Use', url: 'terms-of-use' },
+                { name: 'EULA', url: 'eula' }
+              ]
+            }
+          ]
+        }
+      ],
+      
+      // Social links
+      socialLinks: [
+        { 
+          name: 'Instagram',
+          url: 'https://www.instagram.com/3stepsprod',
+          icon: instagram
+        },
+        { 
+          name: 'Youtube',
+          url: 'https://www.youtube.com/@threestepsproduction',
+          icon: youtube
+        },
+        { 
+          name: 'WhatsApp',
+          url: 'https://api.whatsapp.com/send/?phone=447778784893&text&type=phone_number&app_absent=0',
+          icon: whatsapp
+        }
+      ]
     }
   }
 }
 
-const { t, te } = useI18n(text)
+const { t, te, tm } = useI18n(text)
 
-// Methods
-const handleSubscribe = () => {
-  if (email.value) {
-    console.log('Subscribe:', email.value)
-    email.value = ''
-  }
-}
+// Get columns and social links from translations
+const navigationColumns = computed(() => tm('navigationColumns'))
+const socialLinks = computed(() => tm('socialLinks'))
 </script>
 
 <template>
@@ -123,196 +159,130 @@ const handleSubscribe = () => {
   >
     <!-- Top Section -->
     <div class="container-wide">
-      <div class="grid cols-4 tablet:cols-2 mobile:cols-1 gap-big mn-b-big">
+      <component
+        v-if="logotype"
+        :is="logotype"
+        @click="router.push({ path: '/' })" 
+        :theme="theme"
+        class="cursor-pointer h-3r mn-b-medium"
+      />
+
+      <div class="grid cols-4-footer tablet:cols-2 mobile:cols-1 gap-extra mn-b-big">
         
         <!-- Contact Block -->
-        <div class="col">
-          <component
-            v-if="logotype"
-            :is="logotype"
-            @click="router.push({ path: '/' })" 
-            :theme="theme"
-            class="cursor-pointer h-3r mn-b-medium"
-          />
-
-          <p class="p-semi t-medium mn-b-medium ">{{t('description')}}</p>
+        <div class="col w-max-15r">
+          <p class="p-semi t-medium mn-b-semi">{{ t('description') }}</p>
           
-          <div class="mn-b-medium flex flex-column gap-small">
+          <div class="mn-b-semi flex flex-column gap-small">
             <a 
-              href="tel:+447778784893" 
-              class="flex gap-micro flex-v-center transition-opacity hover-opacity-70"
+              :href="`tel:${t('phoneNumber').replace(/\s/g, '')}`" 
+              class="flex mn-b-micro gap-micro flex-v-center transition-opacity hover-opacity-70"
               :class="theme === 'light' ? 't-black' : 't-white'"
             >
               <IconPhone class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
-              <span class="t-small">+44 77 7878 4893</span>
+              <span class="t-small">{{ t('phoneNumber') }}</span>
             </a>
             
             <a 
-              href="mailto:info@3stepsprod.com" 
-              class="flex gap-micro flex-v-center transition-opacity hover-opacity-70"
+              :href="`mailto:${t('emailAddress')}`" 
+              class="flex mn-b-micro gap-micro flex-v-center transition-opacity hover-opacity-70"
               :class="theme === 'light' ? 't-black' : 't-white'"
             >
               <IconEmail class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
-              <span class="t-small">info@3stepsprod.com</span>
+              <span class="t-small">{{ t('emailAddress') }}</span>
             </a>
             
-            <div class="flex gap-micro flex-v-center">
+            <div class="flex mn-b-micro gap-micro flex-v-center">
               <IconTime class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
               <span class="t-small">{{ t('hours_text') }}</span>
             </div>
           </div>
 
-           <h4 class="h5 t-medium mn-b-small">{{t('app')}}</h4>
+          <h4 class="h5 t-medium mn-b-regular">{{ t('app') }}</h4>
           <div class="w-100 flex-nowrap flex gap-thin">
-          <a 
-             v-if="te('linkAppStore') || te('label')"
-            :href="te('linkAppStore') ? t('linkAppStore') : null" 
-            :target="te('linkAppStore') ? '_blank' : null" 
-            class="pos-relative w-100 h-100"
-          > 
-            <span 
-              v-if="te('label')"
-              class="z-index-2 radius-medium bg-main t-medium uppercase pd-thin pos-absolute pos-r-10-negative pos-t-10-negative"
-            >
-              {{ t('label') }}
-            </span>
-            <LabelAppStore class="w-100 h-max" alt="Download on App Store"/>
-          </a>
+            <a 
+              v-if="te('linkAppStore') || te('label')"
+              :href="te('linkAppStore') ? t('linkAppStore') : null" 
+              :target="te('linkAppStore') ? '_blank' : null" 
+              class="pos-relative w-100 h-100"
+            > 
+              <span 
+                v-if="te('label')"
+                class="z-index-2 radius-medium bg-main t-medium uppercase pd-thin pos-absolute pos-r-10-negative pos-t-10-negative"
+              >
+                {{ t('label') }}
+              </span>
+              <LabelAppStore class="w-100 h-max" alt="Download on App Store"/>
+            </a>
 
-          <a 
-             v-if="te('linkGooglePlay') || te('label')"
-            :href="te('linkGooglePlay') ? t('linkGooglePlay') : null" 
-            :target="te('linkGooglePlay') ? '_blank' : null" 
-            class="pos-relative w-100 h-100"
-          > 
-            <span 
-              v-if="te('label')"
-              class="z-index-2 pd-thin radius-medium bg-main t-medium uppercase pos-absolute pos-r-10-negative pos-t-10-negative"
-            >
-              {{ t('label') }}
-            </span>
-            <LabelGooglePlay class="w-100 h-max" alt="Download on Google Play"/>
-          </a>
-
-        </div>
-        </div>
-
-        <!-- Equipment Navigation -->
-        <div class="col">
-           <h4 class="h5 t-medium mn-b-small">{{ t('equipment') }}</h4>
-          <nav>
-            <ul class="flex flex-column gap-micro">
-              <li><router-link :to="{name: 'Page', params: {url: 'cameras'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('cameras') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'lighting'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('lighting') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'stabilizers'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('stabilizers') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'accessories'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('accessories') }}</router-link></li>
-            </ul>
-          </nav>
-          
-          <h4 class="h5 t-medium mn-t-medium mn-b-small">{{ t('services') }}</h4>
-          <nav>
-            <ul class="flex flex-column gap-micro">
-              <li><router-link :to="{name: 'Page', params: {url: 'kits-packages'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('kits') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'studio-hire'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('studio') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'delivery'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('delivery') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'production-help'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('production') }}</router-link></li>
-            </ul>
-          </nav>
+            <a 
+              v-if="te('linkGooglePlay') || te('label')"
+              :href="te('linkGooglePlay') ? t('linkGooglePlay') : null" 
+              :target="te('linkGooglePlay') ? '_blank' : null" 
+              class="pos-relative w-100 h-100"
+            > 
+              <span 
+                v-if="te('label')"
+                class="z-index-2 pd-thin radius-medium bg-main t-medium uppercase pos-absolute pos-r-10-negative pos-t-10-negative"
+              >
+                {{ t('label') }}
+              </span>
+              <LabelGooglePlay class="w-100 h-max" alt="Download on Google Play"/>
+            </a>
+          </div>
         </div>
 
-        <!-- Company & Legal Navigation -->
-        <div class="col">
-           <h4 class="h5 t-medium mn-b-small">{{ t('company') }}</h4>
-          <nav>
-            <ul class="flex flex-column gap-micro">
-              <li><router-link :to="{name: 'Page', params: {url: 'about'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('about') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'contact'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('contact_us') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'faq'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('faq') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'blog'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('blog') }}</router-link></li>
-            </ul>
-          </nav>
-           <h4 class="h5 t-medium mn-t-medium mn-b-small">{{ t('legal') }}</h4>
-          <nav>
-            <ul class="flex flex-column gap-micro">
-              <li><router-link :to="{name: 'Page', params: {url: 'privacy'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('privacy') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'cookies'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('cookies') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'terms'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('terms') }}</router-link></li>
-              <li><router-link :to="{name: 'Page', params: {url: 'gdpr-ccpa'}}" class="t-small transition-opacity hover-opacity-70" :class="theme === 'light' ? 't-black' : 't-white'">{{ t('gdpr') }}</router-link></li>
-            </ul>
-          </nav>
+        <!-- Navigation Columns -->
+        <div v-for="(column, colIndex) in navigationColumns" :key="colIndex" class="col">
+          <div v-for="(section, sectionIndex) in column.sections" :key="sectionIndex">
+            <h4 class="h5 t-medium mn-b-regular" :class="sectionIndex > 0 ? 'mn-t-medium' : ''">{{ section.title }}</h4>
+            <nav>
+              <ul class="flex flex-column gap-thin">
+                <li v-for="item in section.items" :key="item.url">
+                  <router-link 
+                    :to="`/${item.url}`" 
+                    class="t-small transition-opacity hover-opacity-70" 
+                    :class="theme === 'light' ? 't-black' : 't-white'"
+                  >
+                    {{ item.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
 
         <!-- Subscribe Block -->
         <div class="col">
-          <h4 class="h5 t-medium mn-b-small">{{ t('subscribe') }}</h4>
+          <h4 class="h5 t-medium mn-b-regular">{{ t('subscribe') }}</h4>
           <p class="t-small mn-b-small t-transp">{{ t('subscribe_text') }}</p>
           
-          <FieldBig 
-            :input="email" 
-            :typingSpeed="75"
-            :loopTyping="false"
-            :enableTyping="false"
-            :placeholder="t('email_placeholder')"
-            @update:input="email = $event"
-            @action="sendApplication"
+          <FieldSubscribeNewsletter
+            :action="false"
+            fieldName="footer-newsletter"
+            fieldId="footer-newsletter-email"
             class="d-inline-flex mn-b-medium bg-light t-black w-100"
           />
 
-          <h4 class="h5 t-medium mn-b-small">{{ t('follow') }}</h4>
+          <h4 class="h5 t-medium mn-b-regular">{{ t('follow') }}</h4>
           <!-- Social Links -->
           <div class="flex gap-small mn-b-medium">
             <a 
-              href="https://instagram.com/3stepsprod" 
+              v-for="social in socialLinks"
+              :key="social.name"
+              :href="social.url" 
               target="_blank"
               class="
-                w-2r h-2r 
+                w-3r h-3r 
                 flex flex-center 
-                radius-thin
+                radius-small
                 bg-light 
                 transition-opacity
                 hover-opacity-70
               "
             >
               <component
-                :is="instagram"
-                class="i-semi"
-                :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'"
-              />
-            </a>
-            
-            <a 
-              href="https://linkedin.com/company/3stepsprod" 
-              target="_blank"
-              class="
-                w-2r h-2r 
-                flex flex-center 
-                radius-thin
-                bg-light 
-                transition-opacity
-                hover-opacity-70
-              "
-            >
-              <component
-                :is="linkedin"
-                class="i-semi"
-                :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'"
-              />
-            </a>
-            
-            <a 
-              href="https://youtube.com/@3stepsprod" 
-              target="_blank"
-              class="
-                w-2r h-2r 
-                flex flex-center 
-                radius-thin
-                bg-light 
-                transition-opacity
-                hover-opacity-70
-              "
-            >
-              <component
-                :is="whatsapp"
+                :is="social.icon"
                 class="i-semi"
                 :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'"
               />
@@ -339,7 +309,7 @@ const handleSubscribe = () => {
           <span class="t-main copyleft">{{ t('heart') }}</span> 
           {{ t('copyright') }} 
           {{ t('ozdao') }}
-          <a href="https://ozdao.dev" class="t-main" target="_blank" rel="noopener" >OZ DAO.</a>
+          <a href="https://ozdao.dev" class="t-main" target="_blank" rel="noopener">OZ DAO.</a>
         </p>
       </div>
     </div>
@@ -347,6 +317,9 @@ const handleSubscribe = () => {
 </template>
 
 <style lang="scss" scoped>
+.cols-4-footer {
+  grid-template-columns: 5fr 3fr 3fr 4fr;
+}
 footer {
   transition: background-color 0.3s ease, color 0.3s ease;
   
