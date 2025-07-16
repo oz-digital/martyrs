@@ -12,7 +12,7 @@
     })"
     title="Edit Profile"
     align="center center"
-    class="w-m-33r h-40r mobile:h-100 h-m-40r bg-white radius-medium pd-medium"
+    class="w-m-50r h-40r mobile:h-100 h-m-40r bg-white mobile:radius-zero radius-medium pd-medium"
   >
     <div v-if="loading" class="flex-center h-100">
       <Loader />

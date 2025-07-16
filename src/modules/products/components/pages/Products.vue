@@ -152,6 +152,7 @@
           <Filters
             v-model:filters="availableFilters"
             v-model:selected="selectedFilters"
+            class="mn-b-thin mobile-only"
           />
           <slot></slot>
           <!-- <div class="pos-relative w-100  z-index-3 radius-tl-big radius-tr-big">
@@ -161,7 +162,8 @@
               class="bg-light mn-b-thin h-4r"
             />
           </div> -->
-          <div class="mn-b-thin w-100 o-y-scroll scroll-hide scroll-snap-type-x-mandatory scroll-pd-regular">
+
+          <div class="mn-b-thin mobile-only w-100 o-y-scroll scroll-hide scroll-snap-type-x-mandatory scroll-pd-regular">
             <div class="gap-thin flex-nowrap flex">
               <div
                 v-for="category in currentCategories"
@@ -173,6 +175,8 @@
               </div>
             </div>
           </div>
+
+
           <Feed
             :search="true"
             v-model:filter="products.state.filter"

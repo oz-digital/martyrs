@@ -26,7 +26,6 @@ import Socials from './components/blocks/Socials.vue';
 import Unit from './components/blocks/Unit.vue';
 
 // Sections
-import DetailsTabSection from './components/sections/DetailsTabSection.vue';
 import Documents from './components/sections/Documents.vue';
 import MembersAdd from './components/sections/MembersAdd.vue';
 import OrganizationsSection from './components/sections/Organizations.vue';
@@ -56,7 +55,6 @@ export {
   Department,
   DepartmentEdit,
   DepartmentSub,
-  DetailsTabSection,
   Documents,
   EmptyState,
   MembersAdd,
@@ -105,7 +103,6 @@ const ModuleOrganization = {
       Socials,
       // Sections
       MembersAdd,
-      DetailsTabSection,
       OrganizationsSection,
       Publics,
       Documents,

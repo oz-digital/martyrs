@@ -14,6 +14,7 @@ import Header from '@martyrs/src/modules/globals/views/components/partials/Heade
 import Navigation from '@martyrs/src/modules/globals/views/components/partials/Navigation.vue';
 import NavigationBar from '@martyrs/src/modules/globals/views/components/partials/NavigationBar.vue';
 import Sidebar from '@martyrs/src/modules/globals/views/components/partials/Sidebar.vue';
+import Footer from '@martyrs/src/modules/globals/views/components/partials/Footer.vue';
 
 import * as mixins from './views/mixins/mixins.js';
 import * as storeGlobals from './views/store/globals.js';
@@ -113,6 +114,7 @@ const ModuleGlobals = {
       layoutApp,
       Header,
       Navigation,
+      Footer,
       Sidebar,
       BottomNavigationBar,
       NavigationBar,
@@ -123,6 +125,7 @@ const ModuleGlobals = {
 export {
   BlockSearch,
   Header,
+  Footer,
   Navigation,
   NavigationBar,
   Sidebar,

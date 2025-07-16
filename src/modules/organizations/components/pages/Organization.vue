@@ -4,11 +4,133 @@
 		<!-- <Breadcrumbs class="mn-b-thin pd-medium bg-light radius-big"/> -->
 		<!-- <pre>{{organization.state.current}}</pre> -->
 
-		<DetailsTabSection 	
-			:organization="organization.state.current" 
-			:user="auth.state.user"
-			class="mn-b-thin"
-		/>
+		<section class="flex-center flex flex-column t-center pd-medium radius-medium bg-light mn-b-thin">
+
+			<Dropdown 
+				v-if="auth.state.user._id !== organization.state.current.owner"
+				:label="{ component: IconEllipsis, class: 'i-regular t-transp' }"
+				:align="'right'"
+				class="cursor-pointer pos-absolute pos-r-regular pos-t-regular pd-thin radius-extra "
+			>
+				<section 
+					class="bg-black pd-thin radius-small"
+				>
+					<FormReport 
+						:user="auth.state.user._id"
+						:type="'organization'" 
+						:target="organization.state.current._id" 
+						:text="'Report'" 
+						class="w-100"
+					>
+						<button 
+							class="w-100 bg-black br-solid br-1px br-white-transp-20 t-white button-small button"
+						>
+							Report
+						</button>
+					</FormReport>
+
+					<ButtonToggleMembership
+						v-if="auth.state.user._id && auth.state.user._id !== organization.state.current.owner"
+			      :user="auth.state.user._id"
+			      :type="'organization'" 
+	      	:role="'blocked'" 
+			      :target="organization.state.current._id" 
+			      :status="organization.state.current.isBlocked" 
+			      :text="{create: 'Block', remove: 'Unblock'}"
+			      @updateMembership="event => handleMembershipUpdate(event, 'isBlocked')"
+			       class="t-white w-100 mn-t-thin bg-red" 
+	    	/>
+				</section>
+	    </Dropdown>
+
+	   <router-link
+				v-if="auth.state.user._id === organization.state.current.owner"
+	      :to="{
+					name: 'Organization Edit', 
+					params: {
+						_id: organization.state.current._id
+					}
+				}" 
+	      class="
+	      	z-index-2
+	        cursor-pointer 
+	        pos-absolute pos-t-regular pos-r-regular
+	        radius-extra pd-thin bg-second
+	      "
+	    >
+	      <IconEdit
+	        class="i-regular"
+	        classes="fill-white"
+	      />
+	    </router-link>
+
+
+			<img loading="lazy" 
+				v-if="organization.state.current.profile.photo" 
+				:src="(FILE_SERVER_URL || '') + organization.state.current.profile.photo" 
+				class="radius-big bg-light flex-center flex mn-b-small w-8r" 
+			/>
+
+			<PlaceholderOrganizationPic
+				v-else
+				class="radius-medium mn-b-small i-extra"
+			/>
+
+	    <h1
+	    	class="mn-b-thin"
+	    >
+	  		{{ organization.state.current.profile.name }}
+	  	</h1>
+
+	   	<div class="flex-center  pd-r-thin pd-l-thin flex-nowrap flex mn-t-thin bg-white radius-extra w-max">
+	   		<IconFollowing class="i-medium mn-r-micro t-transp"/>
+
+	      <p class="mn-t-thin p-medium t-medium uppercase mn-b-thin">{{organization.state.current.numberOfSubscribers}} followers</p>
+
+	      <ButtonToggleMembership
+	        v-if="
+		      	auth.state.user._id 
+		      	&& route.params._id 
+		      	&& route.params._id !== auth.state.user._id
+		      	&& organization.state.current.owner !== auth.state.user._id
+		      "
+	        :user="auth.state.user._id"
+	        :type="'organization'" 
+	        :role="'subscriber'" 
+	        :target="organization.state.current._id" 
+	        :status="organization.state.current.isSubscriber" 
+	        :text="{create: '+', remove: '-'}"
+	        @updateMembership="event => handleMembershipUpdate(event, 'isSubscriber', 'numberOfSubscribers')"
+	        class=" mn-l-thin p-medium t-medium radius-extra i-semi" 
+	      />
+	    </div>
+
+	    <!-- <p class="w-max-50r mn-t-regular mn-b-medium p-semi">
+	   		<Text :text="organization.profile.description || ''" :showToggleText="true" :maxLen="320" />
+	  	</p>   -->
+
+	  	<Chips 
+	    	v-if="organization.state.current.profile?.tags?.length > 0" 
+	    	:chips="organization.state.current.profile.tags"
+	    	class="p-medium"
+	   	/>
+
+
+	    <h4 
+	    	v-if="Object.values(organization.state.current.socials).some(value => value)" 
+	    	class="mn-t-small mn-b-thin"
+	    >
+	  		Find us in socials
+	  	</h4>
+	  	
+	   	<Socials 
+	   		:telegram="organization.state.current.socials.telegram"
+	   		:facebook="organization.state.current.socials.facebook"
+	   		:instagram="organization.state.current.socials.instagram"
+	   		:twitter="organization.state.current.socials.twitter"
+	   		:youtube="organization.state.current.socials.youtube"
+	   	/>
+		</section>
 
 		<!-- Organization Info Section -->
 		<div class="pos-relative">
@@ -31,13 +153,26 @@
 	// Import components
 	import Breadcrumbs 	from '@martyrs/src/components/Breadcrumbs/Breadcrumbs.vue'
 	import Block  		from '@martyrs/src/components/Block/Block.vue'
+	import Dropdown from "@martyrs/src/components/Dropdown/Dropdown.vue";
+	import Text  		from '@martyrs/src/components/Text/Text.vue'
+	import Chips  from '@martyrs/src/components/Chips/Chips.vue'
 	// Mobile Module
 	import Menu from '@martyrs/src/components/Menu/Menu.vue'
 	import MenuItem from '@martyrs/src/components/Menu/MenuItem.vue'
+	// Icons
+	import IconFollowing from '@martyrs/src/modules/icons/entities/IconFollowing.vue'
+	import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
+	import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue'
+	import PlaceholderOrganizationPic from '@martyrs/src/modules/icons/placeholders/PlaceholderOrganizationPic.vue'
 	// Organizations
 	import DepartmentSub from '@martyrs/src/modules/organizations/components/blocks/DepartmentSub.vue';
-	import DetailsTabSection from '@martyrs/src/modules/organizations/components/sections/DetailsTabSection.vue'
+	import ButtonToggleMembership from '@martyrs/src/modules/organizations/components/elements/ButtonToggleMembership.vue'
+	import Contacts from '@martyrs/src/modules/organizations/components/blocks/Contacts.vue'
+	import Rating from '@martyrs/src/modules/organizations/components/blocks/Rating.vue'
+	import Socials from '@martyrs/src/modules/organizations/components/blocks/Socials.vue'
 	import User from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
+	// Report Module
+	import FormReport from '@martyrs/src/modules/reports/components/sections/FormReport.vue'
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
@@ -69,6 +204,11 @@
 			});
 		}
 	})
+
+	// Methods
+	const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
+	  memberships.mutations.handleMembershipUpdate(organization.state.current, membership, status, target, statusName, statusNumber)
+	};
 </script>
 
 <style lang="scss">
