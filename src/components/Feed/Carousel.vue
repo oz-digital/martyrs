@@ -6,7 +6,7 @@
     </div>
     <!-- Empty State -->
     <EmptyState
-      v-if="!isLoading && !entities.length < 1"
+      v-else-if="entities.length < 1"
       :title="states.empty.title"
       :description="states.empty.description"
       :action="states.empty.action"
@@ -65,9 +65,11 @@ const { t } = useI18n({
 onMounted(async() => {
   try {
     entities.value = await props.store.read(props.options)
+    isLoading.value = false
   } catch (error) {
     console.error('Error loading entities:', error)
     entities.value = []
+    isLoading.value = false
   } finally {
     isLoading.value = false
   }

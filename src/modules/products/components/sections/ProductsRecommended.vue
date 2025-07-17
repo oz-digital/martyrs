@@ -139,7 +139,7 @@ const addSelectedToCart = async () => {
 <template>
   <div>
     <h3 class="mn-b-small">Frequently Bought Together</h3>
-    <div class="recommended-products cols-4 mobile:cols-2 gap-thin">
+    <div class="recommended-products cols-4 rows-auto-1fr mobile:cols-2 gap-thin">
       
       <CardProduct  
         v-for="(product, index) in products" 
@@ -166,7 +166,10 @@ const addSelectedToCart = async () => {
         <p class="mn-b-small">Total price:</p>
         <p class="mn-b-medium h3 t-medium">${{ totalPrice }}</p>
         <Button 
+          :disabled="selectedProducts.length < 1"
           class="bg-main gap-micro"
+          :showSuccess="false"
+          :showLoader="false"
           :submit="canAddToCart ? addSelectedToCart : undefined"
         >
           <IconShopcartAdd class="i-semi"/>

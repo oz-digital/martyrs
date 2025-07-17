@@ -1,6 +1,6 @@
 <template>
   <div v-if="products.state.current" class="w-100 mobile:pd-thin pd-small bg-white">
-    <div class="cols-2 mobile:cols-1 w-100 gap-medium">
+    <div class="cols-2 mobile:cols-1 tablet:cols-1 w-100 gap-medium">
 
       <ProductImages
         :images="currentImages"

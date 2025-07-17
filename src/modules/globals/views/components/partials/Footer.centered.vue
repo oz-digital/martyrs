@@ -44,8 +44,8 @@ const text = {
   locale: 'en',
   messages: {
     en: {
-      linkAppStore: 'https://play.google.com/store/apps/details?id=com.threestepsrental.app',
-      linkGooglePlay: 'https://play.google.com/store/apps/details?id=com.threestepsrental.app',
+      linkAppStore: '2',
+      linkGooglePlay: '1',
       // Contact
       description: "3SR – Premium Video Gear Rentals for Filmmakers and Content Creators",
       contact: 'Contact',
@@ -158,6 +158,7 @@ const iconComponents = {
     class="
       w-100
       br-t br-solid
+      mobile:t-center
     "
     :class="{
       't-black bg-white br-light': theme === 'light',
@@ -177,10 +178,10 @@ const iconComponents = {
       <div class="grid cols-3-footer tablet:cols-2 mobile:cols-1 gap-extra mobile:gap-big">
         
         <!-- Contact Block -->
-        <div class="col w-max-15r">
+        <div class="flex flex-column mobile:flex-h-center w-max-15r mobile:mn-auto">
           <p class="p-semi t-medium mn-b-semi">{{ t('description') }}</p>
           
-          <div class="mn-b-semi flex flex-column gap-small">
+          <div class="mn-b-semi mobile:flex-v-center flex flex-column gap-small">
             <a 
               :href="`tel:${t('phoneNumber').replace(/\s/g, '')}`" 
               class="flex mn-b-micro gap-micro flex-v-center transition-opacity hover-opacity-70"
@@ -275,7 +276,7 @@ const iconComponents = {
 
           <h4 class="h5 t-medium mn-b-regular">{{ t('follow') }}</h4>
           <!-- Social Links -->
-          <div class="flex gap-thin">
+          <div class="flex mobile:flex-h-center gap-thin">
             <a 
               v-for="social in tm('socialLinks')"
               :key="social.name"
@@ -304,15 +305,11 @@ const iconComponents = {
     <!-- Bottom Section -->
     <div class="
       pd-medium 
-      br-t 
-      br-solid
-      flex 
-      flex-justify-between 
-      flex-v-center
+      br-t br-solid
+      flex flex-justify-between flex-v-center
       flex-nowrap
-      mobile:flex-column 
-      mobile:flex-align-start
-      mobile:gap-small
+      mobile:flex-column mobile:gap-small
+      mobile:t-center
     "
     :class="{
       'br-light': theme === 'light',
@@ -320,7 +317,7 @@ const iconComponents = {
     }"
     >
       <!-- Copyright -->
-      <p class="t-small t-medium uppercase">
+      <p class="t-small t-medium uppercase mobile:t-center">
         {{ t('year') }} 
         <span class="t-main copyleft">{{ t('heart') }}</span> 
         {{ t('copyright') }} 

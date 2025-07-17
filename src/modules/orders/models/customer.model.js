@@ -45,6 +45,24 @@ export default db => {
         enum: ['active', 'inactive', 'blocked'],
         default: 'active',
       },
+      address: {
+        country: {
+          type: String,
+        },
+        addressLine1: {
+          type: String,
+          required: true,
+        },
+        addressLine2: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        postalCode: {
+          type: String,
+        },
+      },
     },
     {
       timestamps: {

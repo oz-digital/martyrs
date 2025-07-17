@@ -184,44 +184,42 @@ function initializeOrders(app, store, router, options = {}) {
 
 const ModuleOrder = {
   initialize: initializeOrders,
-  views: {
-    store: {
-      storeOrders,
-      storeShopcart,
-      storeTestimonials,
-      storeCustomers,
-      storeApplications,
-    },
-    router: {
-      routerOrders,
-      routerCustomers,
-      routerApplications,
-    },
-    components: {
-      // Pages
-      Orders,
-      Customers,
-      Applications,
-      // Order,
-      OrderCreate,
-      OrderCreateBackoffice,
-      // Favorites,
-      // Blocks
-      CardOrderItem,
-      CardOrder,
-      CardOrderUser,
-      CardCustomer,
-      StatusHistory,
-      // Sections
-      FormCustomerDetails,
-      AskToLogin,
-      FormDelivery,
-      EmptyState,
-      Succes,
-      FormPayment,
-      // Partials
-      ShopCart,
-    },
+  store: {
+    storeOrders,
+    storeShopcart,
+    storeTestimonials,
+    storeCustomers,
+    storeApplications,
+  },
+  router: {
+    routerOrders,
+    routerCustomers,
+    routerApplications,
+  },
+  components: {
+    // Pages
+    Orders,
+    Customers,
+    Applications,
+    // Order,
+    OrderCreate,
+    OrderCreateBackoffice,
+    // Favorites,
+    // Blocks
+    CardOrderItem,
+    CardOrder,
+    CardOrderUser,
+    CardCustomer,
+    StatusHistory,
+    // Sections
+    FormCustomerDetails,
+    AskToLogin,
+    FormDelivery,
+    EmptyState,
+    Succes,
+    FormPayment,
+    // Partials
+    ShopCart,
   },
 };
 

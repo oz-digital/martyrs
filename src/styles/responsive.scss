@@ -65,7 +65,8 @@ $xxl-desktop-min:                   1921px;
     }
     
      // Cols
-    .cols-1, .cols-2, .cols-4,  .cols-2-2_1, .cols-2-1_2, .cols-2-1_3, .cols-2-golden-ration   { display: grid !important; grid-template-columns: 1fr !important;  }
+/*     .cols-2,*/
+    .cols-1,  .cols-4,  .cols-2-2_1, .cols-2-1_2, .cols-2-1_3, .cols-2-golden-ration   { display: grid !important; grid-template-columns: 1fr !important;  }
     .cols-4.no-responsive { grid-template-columns: 1fr 1fr 1fr 1fr !important }
     .cols-2 { >.col { width: 100% !important;  } }
 

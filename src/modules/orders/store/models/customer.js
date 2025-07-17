@@ -36,6 +36,13 @@ const customerInitState = {
     telegram: null,
     whatsapp: null,
   },
+  address: {
+    country: null,
+    addressLine1: null,
+    addressLine2: null,
+    city: null,
+    postalCode: null,
+  },
 };
 
 export default customerInitState;

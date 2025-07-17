@@ -94,6 +94,36 @@ export default (function (db) {
         type: Validator.schema().string().oneOf(['user', 'organization', 'User', 'Organization']),
         target: Validator.schema().string().pattern(/^[0-9a-fA-F]{24}$/)
       })
+    },
+    'address.country': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(100, 'Country must not exceed 100 characters')
+    },
+    'address.addressLine1': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(255, 'Address line 1 must not exceed 255 characters')
+    },
+    'address.addressLine2': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(255, 'Address line 2 must not exceed 255 characters')
+    },
+    'address.city': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(100, 'City must not exceed 100 characters')
+    },
+    'address.postalCode': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(20, 'Postal code must not exceed 20 characters')
     }
   });
 
@@ -174,6 +204,36 @@ export default (function (db) {
       validator: Validator.schema()
         .string()
         .oneOf(['active', 'inactive', 'blocked'])
+    },
+    'address.country': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(100, 'Country must not exceed 100 characters')
+    },
+    'address.addressLine1': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(255, 'Address line 1 must not exceed 255 characters')
+    },
+    'address.addressLine2': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(255, 'Address line 2 must not exceed 255 characters')
+    },
+    'address.city': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(100, 'City must not exceed 100 characters')
+    },
+    'address.postalCode': {
+      rule: 'optional',
+      validator: Validator.schema()
+        .string()
+        .max(20, 'Postal code must not exceed 20 characters')
     }
   });
 

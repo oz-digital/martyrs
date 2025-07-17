@@ -9,7 +9,7 @@
     :name="fieldName"
     :id="fieldId"
     :validation="validation"
-    class="pd-l-medium radius-extra flex-nowrap flex  w-100 p-medium t-regular uppercase pd-thin"
+    class="radius-medium flex-nowrap flex  w-100 p-medium t-regular uppercase pd-thin"
   >
     <slot></slot>
     <Button
@@ -18,7 +18,7 @@
       :showLoader="showLoader"
       :callback="callback"
       :callbackDelay="callbackDelay"
-      class="t-nowrap t-medium radius-big uppercase cursor-pointer flex flex-v-center pd-thin w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main"
+      class="t-nowrap t-medium radius-small uppercase cursor-pointer flex flex-v-center pd-thin w-max hover-bg-fifth t-semi transition-linear transition-timing-1 t-black bg-main"
     >
       <span v-if="action" class="desktop-only mn-r-thin">{{action}}</span>
       <IconArrow class="i-medium"/>

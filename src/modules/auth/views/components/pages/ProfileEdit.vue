@@ -1,15 +1,7 @@
 <template>
   <Popup 
-    :isPopupOpen="true" 
-    @close-popup="router.push({ 
-      name: 'User Profile', 
-      params: { 
-        _id: auth.state.user._id 
-      },
-      query: { 
-        afterAuth: 'true' 
-      }
-    })"
+    :isPopupOpen="isOpen" 
+    @close-popup="closeProfileEdit()"
     title="Edit Profile"
     align="center center"
     class="w-m-50r h-40r mobile:h-100 h-m-40r bg-white mobile:radius-zero radius-medium pd-medium"
@@ -42,8 +34,23 @@
   
   const loading = ref(true)
   const userData = ref(null)
+  const isOpen = ref(false)
+
+  function closeProfileEdit () {
+    isOpen.value = false
+    router.push({ 
+      name: 'User Profile', 
+      params: { 
+        _id: auth.state.user._id 
+      },
+      query: { 
+        afterAuth: 'true' 
+      }
+    })
+  }
   
   onMounted(async () => {
+    isOpen.value = true
     try {
       const userId = route.params._id || auth.state.user._id
       await users.actions.read({ _id: userId, user: auth.state.user._id })

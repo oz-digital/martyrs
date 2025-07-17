@@ -63,6 +63,48 @@
       class="bg-white pd-small radius-small mn-b-thin"
     />
 
+    <!-- Address Fields -->
+    <div class="mn-t-small">
+      <h3 class="t-medium mn-b-thin">Address Information</h3>
+      
+      <Field 
+        v-model:field="customer.address.country"   
+        label="Country"  
+        placeholder="Enter country"  
+        class="bg-white pd-small radius-small mn-b-thin"
+      />
+      
+      <Field 
+        v-model:field="customer.address.addressLine1"   
+        label="Address Line 1"  
+        placeholder="Enter address line 1"  
+        class="bg-white pd-small radius-small mn-b-thin"
+        required
+      />
+      
+      <Field 
+        v-model:field="customer.address.addressLine2"   
+        label="Address Line 2"  
+        placeholder="Enter address line 2"  
+        class="bg-white pd-small radius-small mn-b-thin"
+      />
+      
+      <div class="gap-thin flex-justify-between flex-nowrap flex">
+        <Field 
+          v-model:field="customer.address.city"   
+          label="City"  
+          placeholder="Enter city"  
+          class="bg-white pd-small radius-small w-100"
+        />
+        <Field 
+          v-model:field="customer.address.postalCode"   
+          label="Postal Code"  
+          placeholder="Enter postal code"  
+          class="bg-white pd-small radius-small w-100"
+        />
+      </div>
+    </div>
+
     <Select 
       :select="statusSelected"
       :options="[
@@ -151,6 +193,15 @@ watch(customer, (newCustomer) => {
     }
     if (!newCustomer.socials) {
       newCustomer.socials = { instagram: null, telegram: null, whatsapp: null };
+    }
+    if (!newCustomer.address) {
+      newCustomer.address = { 
+        country: null, 
+        addressLine1: null, 
+        addressLine2: null, 
+        city: null, 
+        postalCode: null 
+      };
     }
   }
 }, { immediate: true, deep: true });

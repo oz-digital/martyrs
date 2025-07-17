@@ -69,7 +69,6 @@
             </template>
           </Spoiler>
          
-
           <!-- Цена за сутки -->
           <Spoiler 
             class="o-hidden mn-b-medium"

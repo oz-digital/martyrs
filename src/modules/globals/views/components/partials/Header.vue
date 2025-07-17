@@ -105,7 +105,7 @@
 		  :is="logotype"
 		  @click="router.push({ path: '/' })" 
 		  :theme="theme"
-		  class="cursor-pointer"
+		  class="cursor-pointer h-2r"
 		/>
 
 		<button

@@ -18,133 +18,138 @@
     </header>
 
     <!-- Products Feed -->
-    <Feed
-      :search="true"
-      v-model:filter="filter"
-      v-model:sort="sort"
-      :store="{
-        read: (options) => products.actions.read(options),
-        state: products.state
-      }"
-      :actions="[{
-        key: 'settings',
-        component: IconSettings,
-        props: {
-          class: 'h-3r pd-r-small pd-l-small flex-center flex bg-light t-black radius-small hover-scale-1 cursor-pointer'
-        },
-        handler: openViewSettings
-      }]"
-      :options="{
-        limit: 15,
-        lookup: ['inventory','categories'],
-        owner: route.params._id,
-        sortParam: sort.param,
-        sortOrder: sort.order
-      }"
-      v-slot="{ items }"
-    >
-      <Table
-        :columns="columns.filter(col => col.visible)"
-        :items="items"
-        class="bg-white z-index-1 br-solid br-1px br-light radius-medium"
+    <div class="rows-1">
+      <Feed
+        :search="true"
+        v-model:filter="filter"
+        v-model:sort="sort"
+        :store="{
+          read: (options) => products.actions.read(options),
+          state: products.state
+        }"
+        :actions="[{
+          key: 'settings',
+          component: IconSettings,
+          props: {
+            class: 'h-3r pd-r-small pd-l-small flex-center flex bg-light t-black radius-small hover-scale-1 cursor-pointer'
+          },
+          handler: openViewSettings
+        }]"
+        :options="{
+          limit: 15,
+          lookup: ['inventory','categories'],
+          owner: route.params._id,
+          sortParam: sort.param,
+          sortOrder: sort.order
+        }"
+        v-slot="{ items }"
       >
-        <!-- Name column (was "product") -->
-        <template #cell-name="{ row }">
-          <div class="flex gap-small flex-nowrap flex-v-center">
-            <img
-              v-if="row.images?.length"
-              :src="(FILE_SERVER_URL || '') + row.images[0]"
-              alt="Product"
-              class="w-3r h-3r radius-small bg-light object-fit-cover"
-            />
-            <PlaceholderImage v-else class="w-3r h-3r radius-small" />
-            <span class="t-nowrap">{{ row.name || 'Unknown Product' }}</span>
-          </div>
-        </template>
-
-        <!-- Categories -->
-        <template #cell-category="{ row }">
-          <span
-            v-if="row.category?.length"
-            v-for="cat in row.category"
-            :key="cat._id"
-            class="pd-nano mn-r-micro pd-r-small pd-l-small radius-small bg-light t-small"
-          >
-            {{ cat.name }}
-          </span>
-          <span v-else>-</span>
-        </template>
-
-        <!-- Storages -->
-        <template #cell-storages="{ row }">
-          <div v-if="row.availabilityDetails?.length" class="flex flex-column gap-micro">
-            <div 
-              v-for="avail in row.availabilityDetails" 
-              :key="avail._id"
-              class="flex gap-small flex-v-center"
-            >
-              <span class="t-small">{{ avail.storageName || avail.storage }}:</span>
-              <span class="t-medium">{{ avail.available || 0 }}</span>
-            </div>
-          </div>
-          <span v-else class="t-transp">No stock</span>
-        </template>
-
-        <!-- Available (replaces stock) -->
-        <template #cell-available="{ row }">
-          <div class="flex-column flex">
-            <span class="d-block mn-b-thin">
-              {{ row.available }} ·
-              {{ row.available <= 5 ? 'Low' : row.available <= 10 ? 'Medium' : 'High' }}
-            </span>
-            <div class="w-100 h-micro radius-thin bg-light">
-              <div
-                class="h-100 radius-thin"
-                :class="
-                  row.available <= 1
-                    ? 'bg-red t-white'
-                    : row.available <= 2
-                    ? 'bg-orange t-white'
-                    : 'bg-green t-white'
-                "
-                :style="`width: ${
-                  Math.min(
-                    (row.available / (row.alert !== undefined ? row.alert : 50)) * 100,
-                    100
-                  )
-                }%`"
+        <Table
+          :columns="columns.filter(col => col.visible)"
+          :items="items"
+          class="bg-white z-index-1 br-solid br-1px br-light radius-medium"
+        >
+          <!-- Name column (was "product") -->
+          <template #cell-name="{ row }">
+            <div class="w-max-20r t-trim flex gap-small flex-nowrap flex-v-center">
+              <img
+                v-if="row.images?.length"
+                :src="(FILE_SERVER_URL || '') + row.images[0]"
+                alt="Product"
+                class="w-3r h-3r radius-small bg-light object-fit-cover"
               />
+              <PlaceholderImage v-else class="w-3r h-3r radius-small" />
+              <p class="t-trim t-nowrap">{{ row.name || 'Unknown Product' }}</p>
             </div>
-          </div>
-        </template>
-        <!-- Price -->
-        <template #cell-price="{ row }">
-          {{ formatPrice(row.price || 0) }}
-        </template>
+          </template>
 
-        <!-- Actions -->
-        <template #cell-actions="{ row }">
-          <Dropdown
-            :label="{ component: IconEllipsis, class: 't-transp i-medium' }"
-            class="cursor-pointer aspect-1x1 pd-nano radius-small hover-bg-light"
-            align="right"
-          >
-            <div class="bg-white radius-small">
-              <button @click="openStockAudit(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
-                Audit Stock
-              </button>
-              <button @click="openStockHistory(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
-                Stock History
-              </button>
-              <button @click="openReorderSettings(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
-                Set Alerts
-              </button>
+          <!-- Categories -->
+          <template #cell-category="{ row }">
+            <div class="w-max-10r flex-nowrap flex  t-trim">
+              <p
+                v-if="row.category?.length"
+                v-for="cat in row.category"
+                :key="cat._id"
+                class="w-max t-trim pd-small mn-r-micro radius-small bg-light t-small"
+              >
+                {{ cat.name }}
+              </p>
+              <p v-else>-</p>
             </div>
-          </Dropdown>
-        </template>
-      </Table>
-    </Feed>
+          </template>
 
+          <!-- Storages -->
+          <template #cell-storages="{ row }">
+            <div class="w-max-10r flex-nowrap flex  t-trim">
+              <p
+                v-if="row.availabilityDetails?.length"
+                v-for="avail in row.availabilityDetails" 
+                :key="avail._id"
+                class="w-max t-trim pd-small mn-r-micro radius-small bg-light t-small"
+              >
+
+                <span class="t-medium">{{ avail.available || 0 }}</span> ·  
+                <span class="t-small">{{ avail.storageName || avail.storage }}:</span>
+              </p>
+              <p v-else>No stock</p>
+            </div>
+          </template>
+
+          <!-- Available (replaces stock) -->
+          <template #cell-available="{ row }">
+            <div class="flex-column flex">
+              <span class="d-block mn-b-thin">
+                {{ row.available }} ·
+                {{ row.available <= 5 ? 'Low' : row.available <= 10 ? 'Medium' : 'High' }}
+              </span>
+              <div class="w-100 h-micro radius-thin bg-light">
+                <div
+                  class="h-100 radius-thin"
+                  :class="
+                    row.available <= 1
+                      ? 'bg-red t-white'
+                      : row.available <= 2
+                      ? 'bg-orange t-white'
+                      : 'bg-green t-white'
+                  "
+                  :style="`width: ${
+                    Math.min(
+                      (row.available / (row.alert !== undefined ? row.alert : 50)) * 100,
+                      100
+                    )
+                  }%`"
+                />
+              </div>
+            </div>
+          </template>
+          <!-- Price -->
+          <template #cell-price="{ row }">
+            {{ formatPrice(row.price || 0) }}
+          </template>
+
+          <!-- Actions -->
+          <template #cell-actions="{ row }">
+            <Dropdown
+              :label="{ component: IconEllipsis, class: 't-transp i-medium' }"
+              class="cursor-pointer aspect-1x1 pd-nano radius-small hover-bg-light"
+              align="right"
+            >
+              <div class="bg-white radius-small">
+                <button @click="openStockAudit(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
+                  Audit Stock
+                </button>
+                <button @click="openStockHistory(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
+                  Stock History
+                </button>
+                <button @click="openReorderSettings(row)" class="cursor-pointer t-left t-nowrap w-100 pd-small">
+                  Set Alerts
+                </button>
+              </div>
+            </Dropdown>
+          </template>
+        </Table>
+      </Feed>
+    </div>
     <!-- Modals -->
     <Popup
       :isPopupOpen="showAuditModal"
@@ -210,6 +215,8 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue'
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
 import Dropdown from '@martyrs/src/components/Dropdown/Dropdown.vue'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
+import Chips  from '@martyrs/src/components/Chips/Chips.vue'
+
 
 // Icons
 import IconSettings from '@martyrs/src/modules/icons/entities/IconSettings.vue'

@@ -8,15 +8,15 @@
     >
       <span class="i-regular">-</span>
     </button>
-
     <div class="radius-small br-solid br-1px br-light w-3r pd-small">
-    <input
-      type="number"
-      v-model.number="modelValue"
-      class="w-100 h-1r t-center"
-      :min="1"
-      :max="maxValue"
-    />
+      <input
+        type="number"
+        v-model.number="modelValue"
+        @input="validateInput"
+        class="w-100 h-1r t-center"
+        :min="1"
+        :max="maxValue"
+      />
     </div>
     <button 
       @click="incrementQuantity" 
@@ -37,6 +37,14 @@ const props = defineProps({
 });
 
 const modelValue = defineModel();
+
+function validateInput() {
+  if (modelValue.value < 1) {
+    modelValue.value = 1;
+  } else if (modelValue.value > props.maxValue) {
+    modelValue.value = props.maxValue;
+  }
+}
 
 function incrementQuantity() {
   if (modelValue.value < props.maxValue) {

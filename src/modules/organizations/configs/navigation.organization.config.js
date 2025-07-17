@@ -110,7 +110,13 @@ export const navigationItems = [
   },
   {
     category: 'Management',
-    visible: (auth, route) => auth.state && auth.state.user && auth.state.user._id, // Only for authenticated users
+    visible: (auth, route) => hasAccess(
+      route.params._id, 
+      'products', 
+      'read', 
+      auth.accesses, 
+      auth.access.roles
+    ),
     items: [
       {
         title: 'Categories',
@@ -161,7 +167,13 @@ export const navigationItems = [
   },
   {
     category: 'Orders & Sales',
-    visible: (auth, route) => auth.state && auth.state.user && auth.state.user._id, // Only for authenticated users
+    visible: (auth, route) => hasAccess(
+      route.params._id, 
+      'orders', 
+      'read', 
+      auth.accesses, 
+      auth.access.roles
+    ),
     items: [
       {
         title: 'Orders',
@@ -169,14 +181,7 @@ export const navigationItems = [
         route: (auth, route) => ({
           name: 'OrganizationOrdersList',
           params: { _id: route.params._id }
-        }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'orders', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        })
       },
       {
         title: 'Customers',
@@ -184,14 +189,7 @@ export const navigationItems = [
         route: (auth, route) => ({
           name: 'OrganizationCustomers',
           params: { _id: route.params._id }
-        }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'orders', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        })
       },
       {
         title: 'Applications',
@@ -199,14 +197,7 @@ export const navigationItems = [
         route: (auth, route) => ({
           name: 'OrganizationApplications',
           params: { _id: route.params._id }
-        }),
-        visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'orders', 
-          'read', 
-          auth.accesses, 
-          auth.access.roles
-        )
+        })
       },
     ]
   },

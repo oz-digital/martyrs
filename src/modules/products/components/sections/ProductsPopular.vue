@@ -1,18 +1,23 @@
 <template>
   <Carousel
     :store="{
-      read: products.actions.read
+      read: (options) => products.actions.read(options)
     }"
     :options="{ 
-      limit: 10 
+      limit: 16,
+      sortParam: 'popularity',
+      owner: $route.name?.includes('Organization') ? $route.params._id : null,
+      lookup: ['variants'],
     }"
     :text="{ title: 'No products available' }"
     :showDots="true"
     class="popupar_products"
+    v-slot="{ 
+      item
+    }"
   >
-    <template #default="{ item }">
       <router-link  
-        :to="{ name: 'Organization_Product', params: { _id: item.owner.target, product: item._id } }"
+        :to="{ name: 'Organization_Product', params: { _id: item.owner.target._id || item.owner.target, product: item._id } }"
         class="h-100 pos-relative block"
       >
         <CardProduct  
@@ -20,7 +25,6 @@
           class="h-max-40r h-100 bg-light"
         />
       </router-link>
-    </template>
   </Carousel>
 </template>
 

@@ -259,10 +259,15 @@ body {
 	}
 	.rows-1 {display: grid;  grid-template-columns: 100%; grid-auto-rows: minmax(auto, max-content); }
 	.rows-1-min0_max1 {display: grid; grid-template-rows: minmax(0, 1fr); }
-	.rows-auto {   grid-auto-flow: row;
-  grid-auto-columns: auto;
-  grid-template-rows: auto;
-  grid-auto-rows: auto;}
+	.rows-auto {   
+		grid-auto-flow: row;
+	  grid-auto-columns: auto;
+	  grid-template-rows: auto;
+	  grid-auto-rows: auto;
+	}
+	.rows-auto-1fr {
+		grid-auto-rows: 1fr;
+	}
 	// REFACTOR THIS SHIT
 	.grid {
 	  display: grid;

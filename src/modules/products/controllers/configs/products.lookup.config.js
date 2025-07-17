@@ -81,7 +81,17 @@ export default  {
       from: 'products',
       localField: 'recommended',
       foreignField: '_id',
-      as: 'recommended'
+      as: 'recommended',
+      pipeline: [
+        {
+          $lookup: {
+            from: 'variants',
+            localField: '_id',
+            foreignField: 'product',
+            as: 'variants'
+          }
+        }
+      ]
     }
   },
   // Лукап для категорий продукта
