@@ -91,7 +91,6 @@ function initializeOrders(app, store, router, options = {}) {
 
   // Organization routes
   if (!options.withOrganizationRoutes) {
-    console.log('Adding organization routes, parentName:', routeOrganizations);
     addRoutes(router, {
       parentName: routeOrganizations,
       basePath: 'orders', // Промежуточный маршрут /organization/orders
@@ -104,11 +103,6 @@ function initializeOrders(app, store, router, options = {}) {
         context: 'organization',
       },
     });
-    console.log('Router routes after adding organization orders:', router.getRoutes().map(r => r.name));
-    const orgOrdersList = router.getRoutes().find(r => r.name === 'OrganizationOrdersList');
-    console.log('OrganizationOrdersList route details:', orgOrdersList);
-    console.log('Route params:', orgOrdersList?.params);
-    console.log('Route keys:', orgOrdersList?.keys);
   }
 
   // Customer routes for backoffice

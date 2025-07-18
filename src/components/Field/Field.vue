@@ -150,6 +150,11 @@ textarea {
   overflow: hidden; 
   height: 1rem;
 }
+
+input {
+  height: 1rem;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);

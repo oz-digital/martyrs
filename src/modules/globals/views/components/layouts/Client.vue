@@ -143,6 +143,7 @@
 					      		class="w-100 h-min-100"
 				      		 	@page-loading="handlePageLoading"
 			              @page-loaded="handlePageLoaded"
+			              :key="componentKey"
 					      	/>
 					      	<!-- Key пока выключил непонятно какие проблемы это вызовет -->
 					      	<!-- :key="route.path"  -->
@@ -193,7 +194,7 @@
 
 
 <script setup>
-	import { computed, ref, onMounted, watch  } from 'vue';
+	import { computed, ref, onMounted  } from 'vue';
 	// Router
 	import { useRoute } from 'vue-router';
 	// Store
@@ -329,6 +330,16 @@
 		}
 
 		if (page.value) show.value = true
+	});
+
+	const componentKey = computed(() => {
+	  // Собираем только значимые параметры (ID сущностей)
+	  const significantParams = ['_id', 'product', 'organization', 'categoryPath']
+	    .map(param => route.params[param])
+	    .filter(Boolean)
+	    .join('-');
+	  
+	  return significantParams || route.name;
 	});
 </script>
 

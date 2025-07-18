@@ -5,7 +5,7 @@
     }"
     :options="{ 
       limit: 16,
-      sortParam: 'popularity',
+      sortParam: 'views',
       owner: $route.name?.includes('Organization') ? $route.params._id : null,
       lookup: ['variants'],
     }"

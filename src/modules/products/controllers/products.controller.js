@@ -28,6 +28,17 @@ const controllerFactory = db => {
     try {
       const requestedLookups = queryProcessorGlobals.getRequestedLookups(req.query);
       
+      if (req.query.dateStart || req.query.dateEnd) {
+          console.log('Availability filter params:', {
+              dateStart: req.query.dateStart,
+              dateEnd: req.query.dateEnd,
+              dateStartType: typeof req.query.dateStart,
+              dateEndType: typeof req.query.dateEnd
+          });
+      }
+
+     console.log('availability variant',  JSON.stringify(...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd), null, 2))
+
       const stages = [
         ...queryProcessorGlobals.getBasicOptions(req.query),
         ...queryProcessorGlobals.getSearchOptions(req.query.search, {
@@ -40,9 +51,10 @@ const controllerFactory = db => {
         ...queryProcessorProducts.getCategoriesFilterStage(req.query.categories),
         ...queryProcessorProducts.getDeliveryFilterStage(req.query.delivery),
         ...queryProcessorProducts.getAttributeFiltersStage(req.query.filters),
-        ...queryProcessorProducts.getVariantPriceFilterStage(req.query.prices),
-        ...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd),
         ...queryProcessorGlobals.getLookupStages(requestedLookups, productLookupConfigs),
+
+        ...queryProcessorProducts.getVariantPriceFilterStage(req.query.priceMin, req.query.priceMax),
+        ...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd),
         
         queryProcessorGlobals.getCreatorUserLookupStage(),
         queryProcessorGlobals.getCreatorOrganizationLookupStage(),

@@ -13,11 +13,10 @@
         :key="product._id" 
         :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
         :name="product.name"
-        :title="`${returnCurrency()}${product.price}`"
         :showThumbnail="true"
         :actions="[
           {
-            icon: IconDelete,
+            component: IconDelete,
             class: 'bg-red',
             handler: () => {
               globals.actions.delete(recommended, product, index);
@@ -60,7 +59,6 @@
           v-for="(product, index) in items" :key="product._id"
           :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
           :name="product.name"
-          :title="`${returnCurrency()}${product.price}`"
           :showThumbnail="true"
           @click="globals.actions.add(recommended, product); closeRecommendedPopup();"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin cursor-pointer hover-scale-1"

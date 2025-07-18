@@ -49,20 +49,20 @@ const state = reactive({
     ],
   },
   sort: {
-    param: 'distance',
+    param: 'popularity',
     order: 'asc',
     options: [
       {
-        label: 'Distance',
-        value: 'distance',
+        label: 'Price',
+        value: 'variants.price',
       },
       {
         label: 'Popularity',
         value: 'views',
       },
       {
-        label: 'Products',
-        value: 'numberOfProducts',
+        label: 'New',
+        value: 'createdAt',
       },
     ],
   },

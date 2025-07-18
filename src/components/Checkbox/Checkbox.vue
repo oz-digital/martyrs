@@ -53,7 +53,7 @@
       :checked="Array.isArray(radio) ? radio.includes(value) : radio"
     > 
     <div 
-      class="cursor-pointer mn-l-thin flex-center"
+      class="cursor-pointer mn-l-thin flex-center field-wrapper"
       :class="{
         'transition-elastic pd-thin h-2r w-4r radius-extra': mode === 'switch',
         'w-2r h-2r radius-small': mode === 'checkbox',

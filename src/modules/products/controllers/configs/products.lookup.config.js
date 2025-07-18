@@ -119,13 +119,30 @@ export default  {
       }
     }]
   },
-  // Лукап для аренд продукта
+  // Лукап для аренд продуктов (статичный без дат)
   rents: {
     lookup: {
       from: 'rents',
       localField: '_id',
       foreignField: 'product',
-      as: 'rents'
+      as: 'rents',
+      pipeline: [
+        {
+          $match: {
+            status: { $in: ['confirmed', 'active'] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            product: 1,
+            startDate: 1,
+            endDate: 1,
+            quantity: 1,
+            status: 1
+          }
+        }
+      ]
     }
-  }
+  },
 };

@@ -21,7 +21,7 @@
         <div class="w-100 o-y-scroll h-100">
           <!-- Категории -->
           <div class="mn-b-medium" v-if="currentCategories.length > 0">
-            <h4 class="mn-b-small">
+            <h4 class="mn-b-medium">
               {{ route.params.categoryPath ? 'Subcategories' : 'Categories' }}
             </h4>
             <div class="gap-micro">
@@ -29,7 +29,7 @@
                 v-for="category in currentCategories"
                 :key="category._id"
                 @click="selectCategory(category)"
-                class="pd-small radius-small cursor-pointer hover-bg-light transition-all"
+                class="cursor-pointer hover-t-underline mn-b-regular transition-all"
               >
                 {{ category.name }}
                 <br>
@@ -86,15 +86,17 @@
             <template #content>
               <div class="mn-t-small flex gap-thin">
                 <Field
-                  v-model="priceRange.min"
+                  v-model:field="selectedFilters.price.min"
                   placeholder="From"
                   type="number"
+                  :label="returnCurrency()"
                   class="w-50 bg-light pd-small radius-small"
                 />
                 <Field
-                  v-model="priceRange.max"
+                  v-model:field="selectedFilters.price.max"
                   placeholder="To"
                   type="number"
+                 :label="returnCurrency()"
                   class="w-50 bg-light pd-small radius-small"
                 />
               </div>
@@ -118,21 +120,12 @@
             <template #content>
               <div class="mn-t-small">
                 <div 
-                  v-for="option in availabilityOptions"
-                  :key="option.value"
-                  @click="selectAvailabilityOption(option.value)"
-                  :class="{ 'bg-light': selectedAvailability === option.value }"
-                  class="pd-small radius-small cursor-pointer hover-bg-light transition-all mn-b-micro"
+                  @click="() => { tempSelectedDates = selectedFilters.availability; showDatePickerPopup = true; }"
+                  :class="{ 'bg-light': selectedFilters?.availability }"
+                  class="pd-small field-wrapper radius-small bg-light cursor-pointer hover-bg-light transition-all  flex-v-center flex gap-thin"
                 >
-                  {{ option.label }}
-                </div>
-                
-                <div 
-                  @click="() => { tempSelectedDates = selectedDates; showDatePickerPopup = true; }"
-                  :class="{ 'bg-light': selectedAvailability === 'custom' }"
-                  class="pd-small radius-small cursor-pointer hover-bg-light transition-all mn-b-micro"
-                >
-                  {{ selectedDates ? `${formatDate(selectedDates.start, { dayMonth: true, language: 'en' })} - ${formatDate(selectedDates.end, { dayMonth: true, language: 'en' })}` : 'Select dates'}} 
+                  <IconCalendar class="i-regular" />
+                  <span class="h-1r">{{ selectedFilters.availability ? `${formatDate(selectedFilters.availability.start, { dayMonth: true, language: 'en' })} - ${formatDate(selectedFilters.availability.end, { dayMonth: true, language: 'en' })}` : 'Select dates'}}</span>
                 </div>
               </div>
             </template>
@@ -140,6 +133,7 @@
 
           <!-- Кнопка очистки фильтров -->
           <button 
+            @click="clearAllFilters"
             class="bg-main w-100 button mn-t-medium"
           >
             Clear Filters
@@ -147,72 +141,67 @@
         </div>
       </div>
 
-        <div class="w-100 rows-1 pd-thin  pos-relative o-hidden">
-          <Filters
-            v-model:filters="availableFilters"
-            v-model:selected="selectedFilters"
-            class="mn-b-thin mobile-only"
-          />
-          <slot></slot>
-          <!-- <div class="pos-relative w-100  z-index-3 radius-tl-big radius-tr-big">
-            <BlockSearch 
-              @search="debouncedSearch"
-              placeholder="Enter product name"
-              class="bg-light mn-b-thin h-4r"
-            />
-          </div> -->
+      <div class="w-100 rows-1 pd-thin  pos-relative o-hidden">
+        
+        <slot></slot>
 
-          <div class="mn-b-thin mobile-only w-100 o-y-scroll scroll-hide scroll-snap-type-x-mandatory scroll-pd-regular">
-            <div class="gap-thin flex-nowrap flex">
-              <div
-                v-for="category in currentCategories"
-                :key="category._id"
-                @click="selectCategory(category)"
-                class=" flex-child-default bg-light flex t-nowrap pd-medium radius-medium cursor-pointer hover-bg-light transition-all"
-              >
-                {{ category.name }}
-              </div>
+        <div class="mn-b-thin mobile-only w-100 o-y-scroll scroll-hide scroll-snap-type-x-mandatory scroll-pd-regular">
+          <div class="gap-thin flex-nowrap flex">
+            <div
+              v-for="category in currentCategories"
+              :key="category._id"
+              @click="selectCategory(category)"
+              class=" flex-child-default bg-light flex t-nowrap pd-medium radius-medium cursor-pointer hover-bg-light transition-all"
+            >
+              {{ category.name }}
             </div>
           </div>
-
-
-          <Feed
-            :search="true"
-            v-model:filter="products.state.filter"
-            v-model:sort="products.state.sort"
-            :showLoadMore="false"
-            :states="{
-              empty: {
-                title: 'No Products Found',
-                description: 'Currently, there are no products available.'
-              }
-            }"
-            :store="{
-              read: (options) => products.actions.read(options),
-              state: products.state
-            }"
-            :options="{
-              limit: 16,
-              owner: route.name?.includes('Organization') ? route.params._id : null,
-              search: route.query.search,
-              lookup: ['variants','rents'],
-              categories: route.params.categoryPath ? `/${route.params.categoryPath}` : null,
-              filters: processedFilters,
-              prices: processedPrices,
-              dateStart: selectedDates?.start,
-              dateEnd: selectedDates?.end
-            }"
-            v-slot="{ 
-              items 
-            }"
-            class="cols-4 pos-relative w-100 rows-1 gap-thin"
-           
-          >
+        </div>
+        <Feed
+          :search="true"
+          v-model:sort="products.state.sort"
+          :showLoadMore="false"
+          :states="{
+            empty: {
+              title: 'No Products Found',
+              description: 'Currently, there are no products available.'
+            }
+          }"
+          :store="{
+            read: (options) => products.actions.read(options),
+            state: products.state
+          }"
+          :options="{
+            limit: 16,
+            owner: route.name?.includes('Organization') ? route.params._id : null,
+            search: route.query.search,
+            lookup: ['variants','rents'],
+            categories: route.params.categoryPath ? `/${route.params.categoryPath}` : null,
+            filters: processedFilters,
+            priceMin: selectedFilters.price?.min,
+            priceMax: selectedFilters.price?.max,
+            dateStart: selectedFilters.availability?.start,
+            dateEnd: selectedFilters.availability?.end
+          }"
+          v-slot="{ 
+            items 
+          }"
+          class=""
+         
+        >
+          <div class="mn-b-thin mobile-only">
+            <Filters
+              v-model:filters="availableFilters"
+              v-model:selected="selectedFilters"
+              class=""
+            />
+          </div>
+          <div class="cols-4 pos-relative w-100 rows-1 gap-thin">
             <router-link  
               v-for="product in items" 
               :to="route.params._id ? { name: 'Organization_Product', params: { _id: route.params._id, product: product._id  } } : { name: 'Product', params: { product: product._id  } }"
-               class="pos-relative h-100 w-100"
-              >
+              class="pos-relative h-100 w-100"
+            >
               <CardProduct
                 :key="product._id"
                 :product="product"
@@ -222,9 +211,10 @@
                 class="pos-relative  h-100 w-100 bg-light"
               />
             </router-link>
-          </Feed>
+          </div>
+        </Feed>
 
-        </div>
+      </div>
     </div>
   
     <!-- Date Picker Popup -->
@@ -240,7 +230,7 @@
         v-model:date="tempSelectedDates"
         :allowRange="true"
         :disablePastDates="true"
-        class="mn-b-medium"
+        class="mn-b-medium bg-light"
       />
       
       <div class="flex gap-small">
@@ -286,6 +276,8 @@
 
   import IconPlus from '@martyrs/src/modules/icons/navigation/IconPlus.vue'
   import IconChevronBottom from '@martyrs/src/modules/icons/navigation/IconChevronBottom.vue'
+  import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue'
+
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
@@ -304,74 +296,61 @@
   const categoryFilters = ref([]);
   // const selectedFilters = ref({});
 
-const availableFilters = ref([
-  {
-    title: 'Price',
-    value: 'price',
-    type: 'range',
-    minPlaceholder: 'From',
-    maxPlaceholder: 'To'
-  },
-  {
-    title: 'Delivery',
-    value: 'delivery',
-    type: 'checkbox',
-    options: [
-      { label: 'Pickup', value: 'pickup' },
-      { label: 'Courier', value: 'courier' },
-      { label: 'Post', value: 'post' }
-    ]
-  },
-  {
-    title: 'Status',
-    value: 'status',
-    type: 'radio',
-    options: [
-      { label: 'Available', value: 'available' },
-      { label: 'Out of Stock', value: 'out_of_stock' },
-      { label: 'Coming Soon', value: 'coming_soon' }
-    ]
-  }
-])
+  const availableFilters = ref([
+    {
+      title: 'Price',
+      value: 'price',
+      type: 'range',
+      minPlaceholder: 'From',
+      maxPlaceholder: 'To'
+    },
+    {
+      title: 'Availability',
+      value: 'availability',
+      type: 'date'
+    }
+  ])
 
-const selectedFilters = ref({
-  price: { min: '', max: '' },
-  delivery: [],
-  status: null
-})
+  const selectedFilters = ref({
+    price: { min: '', max: '' },
+    availability: null
+  })
 
-    
-  // Переменные фильтров
-  const availabilityOptions = ref([
-    { label: 'Available today', value: 'today' },
-    { label: 'This week', value: 'week' },
-    { label: 'This month', value: 'month' }
-  ]);
-  
-  const selectedAvailability = ref('all');
   const showDatePickerPopup = ref(false);
-  const selectedPeriod = ref(null);
-  const selectedDates = ref(null);
   const tempSelectedDates = ref(null);
-  
-  const priceRange = ref({
-    min: '',
-    max: ''
-  });
 
   // Computed property for processed filters
   const processedFilters = computed(() => {
-    return generateFilters(selectedFilters.value);
+    const filters = [];
+    
+    // Обрабатываем фильтры категорий
+    Object.entries(selectedFilters.value).forEach(([key, value]) => {
+      if (key === 'price' || key === 'availability') return; // эти обрабатываются отдельно
+      
+      if (Array.isArray(value) && value.length > 0) {
+        filters.push({
+          parameter: key,
+          values: value,
+          caseSensitive: false
+        });
+      } else if (value && typeof value === 'string' && value.trim() !== '') {
+        filters.push({
+          parameter: key,
+          values: [value],
+          caseSensitive: false
+        });
+      }
+    });
+    
+    return filters.length > 0 ? JSON.stringify(filters) : '';
   });
 
-  const processedPrices = computed(() => {
-    return priceRange.value.min || priceRange.value.max ? `${priceRange.value.min || 0}-${priceRange.value.max || 999999}` : null;
-  });
+
 
 
   const processedLookups = computed(() => {
     const lookups = ['variants'];
-    if (processedDates.value) {
+    if (selectedFilters.value.availability) {
       lookups.push('rents');
     }
     return lookups;
@@ -379,6 +358,9 @@ const selectedFilters = ref({
 
   const loadCategoryData = async () => {
     const categoryPath = route.params.categoryPath;
+    
+    // Очищаем фильтры категории из предыдущей загрузки
+    availableFilters.value = availableFilters.value.filter(f => f.value === 'price' || f.value === 'availability');
     
     try {
       if (categoryPath) {
@@ -394,12 +376,22 @@ const selectedFilters = ref({
           currentCategories.value = result[0].children || [];
           categoryFilters.value = result[0].filters || [];
           
-          // Initialize selected filters object
-          const filtersObj = {};
+          // Добавляем фильтры категории в availableFilters
           (result[0].filters || []).forEach(filter => {
-            filtersObj[filter.name] = [];
+            availableFilters.value.push({
+              title: filter.name,
+              value: filter.name,
+              type: 'checkbox',
+              options: (filter.options || []).map(option => ({
+                label: typeof option === 'string' ? option : option.text,
+                value: typeof option === 'string' ? option : option.text
+              }))
+            });
+            // Инициализируем массив для фильтра
+            if (!selectedFilters.value[filter.name]) {
+              selectedFilters.value[filter.name] = [];
+            }
           });
-          selectedFilters.value = filtersObj;
         }
       } else {
         // Загружаем только корневые категории
@@ -409,10 +401,12 @@ const selectedFilters = ref({
         });
         
         currentCategories.value = result;
+        categoryFilters.value = [];
       }
     } catch (error) {
       console.error('Error loading categories:', error);
       currentCategories.value = [];
+      categoryFilters.value = [];
     }
   };
 
@@ -433,42 +427,22 @@ const selectedFilters = ref({
     }
   };
 
-  // Функция выбора опции доступности
-  const selectAvailabilityOption = (value) => {
-    selectedAvailability.value = value;
-    const today = new Date();
-    
-    switch(value) {
-      case 'today':
-        selectedDates.value = {
-          start: today,
-          end: today
-        };
-        break;
-      case 'week':
-        const weekEnd = new Date(today);
-        weekEnd.setDate(today.getDate() + 7);
-        selectedDates.value = {
-          start: today,
-          end: weekEnd
-        };
-        break;
-      case 'month':
-        const monthEnd = new Date(today);
-        monthEnd.setMonth(today.getMonth() + 1);
-        selectedDates.value = {
-          start: today,
-          end: monthEnd
-        };
-        break;
-    }
-  };
 
   // Функция применения фильтра дат
   const applyDateFilter = () => {
-    selectedDates.value = tempSelectedDates.value;
-    selectedAvailability.value = 'custom';
+    selectedFilters.value.availability = tempSelectedDates.value;
     showDatePickerPopup.value = false;
+  };
+  
+  // Функция очистки всех фильтров
+  const clearAllFilters = () => {
+    selectedFilters.value.price = { min: '', max: '' };
+    selectedFilters.value.availability = null;
+    
+    // Очищаем фильтры категорий
+    categoryFilters.value.forEach(filter => {
+      selectedFilters.value[filter.name] = [];
+    });
   };
 
   globals.state.navigation_bar.actions = [{

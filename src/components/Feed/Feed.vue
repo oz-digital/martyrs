@@ -1,5 +1,5 @@
 <template>
-  <div v-if="search || date || (sort && !sort.hideButton)" style="transform: scale(1);" class="mn-b-thin pos-relative flex-nowrap flex gap-thin">
+  <div v-if="search || date || (sort && !sort.hideButton)" style="transform: scale(1);" class="mn-b-thin pos-relative z-index-2 pos-relative flex-nowrap flex gap-thin">
 
     <BlockSearch 
       v-if="search"

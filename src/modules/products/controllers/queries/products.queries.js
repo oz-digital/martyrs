@@ -122,48 +122,41 @@ function getAttributeFiltersStage(filtersString) {
 
 /**
  * Обрабатывает фильтрацию по цене вариантов
- * @param {string} prices - строка с ценовыми диапазонами
+ * @param {string} priceMin - минимальная цена
+ * @param {string} priceMax - максимальная цена
  * @returns {Array} этапы агрегации для фильтрации по ценам вариантов
  */
-function getVariantPriceFilterStage(prices) {
-  if (!prices) return [];
+function getVariantPriceFilterStage(priceMin, priceMax) {
+  // Проверяем что хотя бы одно значение существует и не пустое
+  const hasValidMin = priceMin && priceMin.trim() !== '';
+  const hasValidMax = priceMax && priceMax.trim() !== '';
+  
+  if (!hasValidMin && !hasValidMax) return [];
   
   try {
-    const priceRanges = prices.split(',');
-    const priceConditions = [];
-    
-    priceRanges.forEach(priceRange => {
-      if (priceRange.startsWith('<')) {
-        priceConditions.push({
-          variants: {
-            $elemMatch: {
-              price: { $lt: parseFloat(priceRange.slice(1)) }
-            }
-          }
-        });
-      } else if (priceRange.startsWith('>')) {
-        priceConditions.push({
-          variants: {
-            $elemMatch: {
-              price: { $gt: parseFloat(priceRange.slice(1)) }
-            }
-          }
-        });
-      } else {
-        const [min, max] = priceRange.split('-').map(Number);
-        if (!isNaN(min) && !isNaN(max)) {
-          priceConditions.push({
-            variants: {
-              $elemMatch: {
-                price: { $gte: min, $lte: max }
-              }
-            }
-          });
+    const priceCondition = {
+      variants: {
+        $elemMatch: {
+          price: {}
         }
       }
-    });
+    };
     
-    return priceConditions.length > 0 ? [{ $match: { $or: priceConditions } }] : [];
+    if (hasValidMin) {
+      const minPrice = parseFloat(priceMin);
+      if (!isNaN(minPrice)) {
+        priceCondition.variants.$elemMatch.price.$gte = minPrice;
+      }
+    }
+    
+    if (hasValidMax) {
+      const maxPrice = parseFloat(priceMax);
+      if (!isNaN(maxPrice)) {
+        priceCondition.variants.$elemMatch.price.$lte = maxPrice;
+      }
+    }
+    
+    return [{ $match: priceCondition }];
   } catch (error) {
     console.error('Error parsing price filters:', error);
     return [];
@@ -182,11 +175,21 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
   const startDate = new Date(dateStart);
   const endDate = new Date(dateEnd);
   
+  // Проверяем валидность дат
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    console.warn('Invalid dates provided for availability filter:', { dateStart, dateEnd });
+    return [];
+  }
+  
   return [
     {
       $lookup: {
         from: 'rents',
-        let: { productId: '$_id' },
+        let: { 
+          productId: '$_id',
+          dateStart: startDate,
+          dateEnd: endDate
+        },
         pipeline: [
           {
             $match: {
@@ -198,20 +201,20 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
                     $or: [
                       {
                         $and: [
-                          { $gte: ['$startDate', startDate] },
-                          { $lte: ['$startDate', endDate] }
+                          { $gte: ['$startDate', '$$dateStart'] },
+                          { $lte: ['$startDate', '$$dateEnd'] }
                         ]
                       },
                       {
                         $and: [
-                          { $gte: ['$endDate', startDate] },
-                          { $lte: ['$endDate', endDate] }
+                          { $gte: ['$endDate', '$$dateStart'] },
+                          { $lte: ['$endDate', '$$dateEnd'] }
                         ]
                       },
                       {
                         $and: [
-                          { $lte: ['$startDate', startDate] },
-                          { $gte: ['$endDate', endDate] }
+                          { $lte: ['$startDate', '$$dateStart'] },
+                          { $gte: ['$endDate', '$$dateEnd'] }
                         ]
                       }
                     ]

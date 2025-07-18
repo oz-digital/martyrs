@@ -1,7 +1,10 @@
 import applyCommonSchema from '@martyrs/src/modules/globals/models/schemas/common.schema.js';
 import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+import applyEngagementSchema from '@martyrs/src/modules/globals/models/schemas/engagement.schema.js';
 
 import discountschema from './schemas/discount.schema.js';
+
+
 
 export default db => {
   const DiscountSchema = discountschema(db);
@@ -51,6 +54,7 @@ export default db => {
 
   applyCommonSchema(ProductSchema, db);
   applyOwnershipSchema(ProductSchema, db);
+  applyEngagementSchema(ProductSchema, db);
 
    // Текстовый индекс для поиска
   ProductSchema.index({ name: 'text', description: 'text' });

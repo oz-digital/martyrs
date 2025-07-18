@@ -1,12 +1,13 @@
 <template>
-  <div class="flex gap-thin">
+  <div class="flex t-nowrap  gap-thin">
     <!-- All Filters Button -->
     <button
       @click="showAllFilters = true"
-      class="pd-thin radius-medium bg-light flex-v-center flex gap-micro cursor-pointer"
+      class="pd-small radius-medium bg-light flex-v-center flex gap-micro cursor-pointer"
       :class="{ 'bg-main': activeFiltersCount > 0 }"
     >
-      <IconFilter class="i-small" />
+      <IconFilter class="i-medium" />
+      <span class="h-1r"></span>
       <span v-if="activeFiltersCount">{{ activeFiltersCount }}</span>
     </button>
 
@@ -15,10 +16,11 @@
       v-for="filter in filters"
       :key="filter.value"
       @click="openFilter(filter.value)"
-      class="pd-thin radius-medium bg-light cursor-pointer"
+      class="pd-small radius-medium bg-light cursor-pointer flex-v-center flex gap-micro"
       :class="{ 'selected bg-main': isFilterActive(filter) }"
     >
-      {{ filter.title }}
+      <IconCalendar v-if="filter.type === 'date'" class="i-medium" />
+      <span class="t-nowrap h-1r">{{ filter.title }}</span>
       <span v-if="getFilterValue(filter)" class="mn-l-micro">
         {{ formatFilterValue(filter) }}
       </span>
@@ -45,7 +47,7 @@
           :key="filter.value"
           class="mn-b-medium"
         >
-          <h4 class="mn-b-thin">{{ filter.title }}</h4>
+          <h4 class="mn-b-small">{{ filter.title }}</h4>
           
           <!-- Checkbox Filter -->
           <div v-if="filter.type === 'checkbox'">
@@ -82,13 +84,23 @@
               v-model:field="tempSelected[filter.value].min"
               :placeholder="filter.minPlaceholder || 'Min'"
               type="number"
-              class="w-50 bg-light radius-small"
+              class="w-50 bg-light pd-small radius-small"
             />
             <Field
               v-model:field="tempSelected[filter.value].max"
               :placeholder="filter.maxPlaceholder || 'Max'"
               type="number"
-              class="w-50 bg-light radius-small"
+              class="w-50 bg-light pd-small  radius-small"
+            />
+          </div>
+
+          <!-- Date Filter -->
+          <div v-else-if="filter.type === 'date'">
+            <Calendar
+              v-model:date="tempSelected[filter.value]"
+              :allowRange="true"
+              :disablePastDates="true"
+              class="bg-light  radius-small"
             />
           </div>
         </div>
@@ -156,14 +168,33 @@
           v-model:field="tempSelected[filter.value].min"
           :placeholder="filter.minPlaceholder || 'Min'"
           type="number"
-          class="w-50 bg-light radius-small"
+          class="w-50 bg-light pd-small radius-small"
         />
         <Field
           v-model:field="tempSelected[filter.value].max"
           :placeholder="filter.maxPlaceholder || 'Max'"
           type="number"
-          class="w-50 bg-light radius-small"
+          class="w-50 bg-light pd-small radius-small"
         />
+      </div>
+
+      <!-- Date Filter -->
+      <div v-else-if="filter.type === 'date'">
+        <div 
+          @click="() => { tempDateRange = tempSelected[filter.value]; tempSelected[filter.value] = tempSelected[filter.value] || null; }"
+          class="pd-small radius-small bg-light cursor-pointer flex-v-center flex gap-micro"
+        >
+          <IconCalendar class="i-small" />
+          <span>{{ tempSelected[filter.value] ? `${formatDate(tempSelected[filter.value].start, { dayMonth: true, language: 'en' })} - ${formatDate(tempSelected[filter.value].end, { dayMonth: true, language: 'en' })}` : 'Select dates'}}</span>
+        </div>
+        <div class="mn-t-small">
+          <Calendar
+            v-model:date="tempSelected[filter.value]"
+            :allowRange="true"
+            :disablePastDates="true"
+            class="bg-light radius-small"
+          />
+        </div>
       </div>
 
       <div class="flex gap-thin mn-t-medium">
@@ -187,11 +218,14 @@
 
 <script setup>
 import { ref, computed, reactive, watch } from 'vue'
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
 import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue'
 import Field from '@martyrs/src/components/Field/Field.vue'
+import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 import IconFilter from '@martyrs/src/modules/icons/navigation/IconFilter.vue'
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue'
+import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue'
 
 const filters = defineModel('filters', {
   type: Array,
@@ -205,10 +239,13 @@ const selected = defineModel('selected', {
 
 const emit = defineEmits(['select'])
 
+const { formatDate } = useGlobalMixins()
+
 // State
 const showAllFilters = ref(false)
 const individualPopups = reactive({})
 const tempSelected = reactive({})
+const tempDateRange = ref(null)
 
 // Initialize popups and temp values
 watch(filters, (newFilters) => {
@@ -217,9 +254,11 @@ watch(filters, (newFilters) => {
     
     if (!tempSelected[filter.value]) {
       if (filter.type === 'checkbox') {
-        tempSelected[filter.value] = selected.value[filter.value] || []
+        tempSelected[filter.value] = [...(selected.value[filter.value] || [])]
       } else if (filter.type === 'range') {
-        tempSelected[filter.value] = selected.value[filter.value] || { min: '', max: '' }
+        tempSelected[filter.value] = { ...(selected.value[filter.value] || { min: '', max: '' }) }
+      } else if (filter.type === 'date') {
+        tempSelected[filter.value] = selected.value[filter.value] || null
       } else {
         tempSelected[filter.value] = selected.value[filter.value] || null
       }
@@ -230,7 +269,16 @@ watch(filters, (newFilters) => {
 // Sync selected to tempSelected
 watch(selected, (newSelected) => {
   Object.keys(newSelected).forEach(key => {
-    tempSelected[key] = newSelected[key]
+    const filter = filters.value.find(f => f.value === key)
+    if (filter) {
+      if (filter.type === 'checkbox') {
+        tempSelected[key] = [...(newSelected[key] || [])]
+      } else if (filter.type === 'range') {
+        tempSelected[key] = { ...(newSelected[key] || { min: '', max: '' }) }
+      } else {
+        tempSelected[key] = newSelected[key]
+      }
+    }
   })
 }, { deep: true })
 
@@ -275,6 +323,11 @@ const formatFilterValue = (filter) => {
     return `${value.min || '0'}-${value.max || '∞'}`
   }
   
+  if (filter.type === 'date') {
+    if (!value || !value.start || !value.end) return ''
+    return `${formatDate(value.start, { dayMonth: true, language: 'en' })} - ${formatDate(value.end, { dayMonth: true, language: 'en' })}`
+  }
+  
   if (filter.type === 'radio') {
     const option = filter.options.find(o => o.value === value)
     return option ? `(${option.label})` : ''
@@ -293,9 +346,11 @@ const cancelFilter = (filterValue) => {
   const filter = filters.value.find(f => f.value === filterValue)
   if (filter) {
     if (filter.type === 'checkbox') {
-      tempSelected[filterValue] = selected.value[filterValue] || []
+      tempSelected[filterValue] = [...(selected.value[filterValue] || [])]
     } else if (filter.type === 'range') {
-      tempSelected[filterValue] = selected.value[filterValue] || { min: '', max: '' }
+      tempSelected[filterValue] = { ...(selected.value[filterValue] || { min: '', max: '' }) }
+    } else if (filter.type === 'date') {
+      tempSelected[filterValue] = selected.value[filterValue] || null
     } else {
       tempSelected[filterValue] = selected.value[filterValue] || null
     }
@@ -321,6 +376,9 @@ const resetFilters = () => {
     } else if (filter.type === 'range') {
       tempSelected[filter.value] = { min: '', max: '' }
       selected.value[filter.value] = { min: '', max: '' }
+    } else if (filter.type === 'date') {
+      tempSelected[filter.value] = null
+      selected.value[filter.value] = null
     } else {
       tempSelected[filter.value] = null
       selected.value[filter.value] = null
