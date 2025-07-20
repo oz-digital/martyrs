@@ -25,6 +25,9 @@ export default db => {
       text: {
         type: String,
       },
+      data: {
+        type: Object,
+      },
       chat: {
         type: String,
       },

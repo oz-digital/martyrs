@@ -1,14 +1,13 @@
-import * as history from 'connect-history-api-fallback';
-import * as express from 'express';
+import history from 'connect-history-api-fallback';
+import express from 'express';
 import fs from 'fs';
 import path from 'path';
-export default (function createSpaProdServer(projectRoot, { createServer }) {
+export default function createSpaProdServer(projectRoot, config, createServer) {
   let serverInstance;
   const port = process.env.PORT || 8080;
   // Функция для запуска сервера
   const startServer = async () => {
-    const { createServer } = createServer;
-    let { app, server } = await createServer();
+    let { app, server } = await createServer.createServer();
     // Включаем сжатие ответов
     // app.use(compression());
     // Статическое обслуживание сбилженных файлов
@@ -45,4 +44,4 @@ export default (function createSpaProdServer(projectRoot, { createServer }) {
     }
   };
   return startServer;
-});
+}

@@ -3,10 +3,10 @@
 		<!-- <img loading="lazy" src="@/assets/icons/message1.png" class="i-extra mn-b-small"> -->
 
 		<h3 class="mn-b-medium">
-			{{ t('auth.enterCode.verifyNumberTitle') }}
+			{{ route.query.type === 'email' ? t('auth.enterCode.verifyEmailTitle') : t('auth.enterCode.verifyNumberTitle') }}
 		</h3>
 
-		<p class="mn-b-big t-transp">{{ t('auth.enterCode.instructions') }}</p>
+		<p class="mn-b-big t-transp">{{ route.query.type === 'email' ? t('auth.enterCode.instructionsEmail') : t('auth.enterCode.instructions') }}</p>
 
 		<div class="w-100 mn-b-big flex-nowrap flex">
       		<input 

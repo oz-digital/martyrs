@@ -1,5 +1,6 @@
 import createSpaDevServer from './modes/spa.dev.js';
 import createSpaProdServer from './modes/spa.prod.js';
+import createSpaRspackDevServer from './modes/spa.rspack.dev.js';
 import createSsrDevServer from './modes/ssr.dev.js';
 import createSsrProdServer from './modes/ssr.prod.js';
 import createSsrRspackDevServer from './modes/ssr.rspack.dev.js';
@@ -17,6 +18,7 @@ export {
   createSsrViteDevServer,
   createSsrProdServer,
   createSpaDevServer,
+  createSpaRspackDevServer,
   createSpaProdServer,
 };
 
@@ -29,6 +31,7 @@ export default {
   createSsrViteDevServer,
   createSsrProdServer,
   createSpaDevServer,
+  createSpaRspackDevServer,
   createSpaProdServer,
 };
 

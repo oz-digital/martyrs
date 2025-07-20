@@ -14,7 +14,7 @@ const controllerFactory = db => {
         res.status(500).send('Failed to send email');
       }
     }
-    if (type === 'phone') {
+    else if (type === 'phone') {
       const smsSent = await sendSms(req.body.phone, `Your ${process.env.APP_NAME} verification code: ${code}`);
       if (smsSent) {
         res.send({ code, type, method });

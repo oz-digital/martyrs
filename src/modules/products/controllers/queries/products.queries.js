@@ -181,6 +181,7 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
     return [];
   }
   
+  
   return [
     {
       $lookup: {
@@ -196,7 +197,7 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
               $expr: {
                 $and: [
                   { $eq: ['$product', '$$productId'] },
-                  { $in: ['$status', ['confirmed', 'active']] },
+                  { $in: ['$status', ['pending', 'confirmed', 'active']] },
                   {
                     $or: [
                       {
@@ -226,7 +227,7 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
           {
             $group: {
               _id: null,
-              totalRented: { $sum: { $ifNull: ['$quantity', 1] } }
+              totalRented: { $sum: { $ifNull: ['$available', 1] } }
             }
           }
         ],
@@ -240,21 +241,25 @@ function getAvailabilityFilterStage(dateStart, dateEnd) {
         },
         availableQuantity: {
           $subtract: [
-            { $ifNull: ['$quantity', 1] },
+            { $ifNull: ['$available', 0] },
             { $ifNull: [{ $arrayElemAt: ['$rentInfo.totalRented', 0] }, 0] }
           ]
-        }
+        },
       }
     },
     {
       $match: {
-        availableQuantity: { $gt: 0 }
+        $or: [
+          { availableQuantity: { $gt: 0 } },
+          { $and: [{ rentedQuantity: 0 }, { $or: [{ available: { $gt: 0 } }, { available: { $exists: false } }] }] }
+        ]
       }
     },
     {
       $project: {
         rentInfo: 0,
-        rentedQuantity: 0
+        rentedQuantity: 0,
+        availableQuantity: 0
       }
     }
   ];

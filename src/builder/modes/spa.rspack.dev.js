@@ -1,27 +1,27 @@
-import history from 'connect-history-api-fallback';
+import * as history from 'connect-history-api-fallback';
 import path from 'path';
-import webpack from 'webpack';
+import chalk from 'chalk';
+import { rspack, ProgressPlugin } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
+
 export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }) {
-  const spaCompiler = webpack(spaConfig);
-  const serverCompiler = webpack(apiConfig);
+  const spaCompiler = rspack(spaConfig);
+  const serverCompiler = rspack(apiConfig);
+
   const createDevRenderer = () => {
-    // Нативные ANSI escape коды для цветов
-    const colors = {
-      reset: '\x1b[0m',
-      greenBright: '\x1b[92;1m', // яркий зеленый + жирный
-      blueBright: '\x1b[94m', // яркий синий
-      yellow: '\x1b[33m', // желтый
-    };
-    const progressPlugin = new webpack.ProgressPlugin((percentage, message, ...args) => {
-      // readline.clearLine(process.stdout, 0);
-      // readline.cursorTo(process.stdout, 0);
-      process.stdout.write(
-        colors.greenBright + `${(percentage * 100).toFixed(2)}% ` + colors.reset + colors.blueBright + message + colors.reset + ' ' + args.map(arg => colors.yellow + arg + colors.reset).join(' ')
+    const progressPlugin = new ProgressPlugin((percentage, message, ...args) => {
+      console.log(
+        chalk.greenBright(`${(percentage * 100).toFixed(2)}% `) +
+        chalk.blueBright(message) +
+        " " +
+        args.map((arg) => chalk.yellow(arg)).join(" ")
       );
     });
+
+    spaConfig.plugins = spaConfig.plugins || [];
     spaConfig.plugins.push(progressPlugin);
   };
+
   let serverInstance;
   let serverModule;
 
@@ -29,10 +29,10 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
     publicPath: spaConfig.output.publicPath,
     stats: false,
   });
-  
+
   const port = process.env.PORT || 8080;
 
-  // Функция для запуска сервера
+  // Function to start the server
   const startServer = async () => {
     if (serverInstance) {
       serverInstance.close();
@@ -45,13 +45,12 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
     }
 
     let { app, server, env } = await serverModule.createServer();
+
     // Используем connect-history-api-fallback перед другими middleware
     app.use(history());
+    
     app.use(clientDevMiddleware);
-    // app.use(clientHotMiddleware);
-    // app.use(compression());
-    // Удаляем статическое обслуживание файлов
-    // app.use(express.static(path.resolve(projectRoot, "builds/web/client")));
+
     // Обрабатываем все маршруты
     app.get('*', (req, res, next) => {
       const filename = path.join(spaCompiler.outputPath, 'index.html');
@@ -64,7 +63,9 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
         res.end();
       });
     });
+
     serverInstance = server;
+
     try {
       await server.listen(port);
       console.log(`Server started at http://localhost:${port}\n`);
@@ -73,6 +74,7 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
       process.exit(1);
     }
   };
+
   // Настройка наблюдения за изменениями
   serverCompiler.watch({}, async (err, stats) => {
     if (err) {
@@ -101,6 +103,8 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
       console.error("Ошибка при загрузке серверного модуля:", error);
     }
   });
+
   createDevRenderer();
+
   return startServer;
 }

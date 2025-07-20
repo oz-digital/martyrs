@@ -36,21 +36,15 @@ const controllerFactory = db => {
               dateEndType: typeof req.query.dateEnd
           });
       }
-
-     console.log('availability variant',  JSON.stringify(...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd), null, 2))
-
       const stages = [
         ...queryProcessorGlobals.getBasicOptions(req.query),
         ...queryProcessorGlobals.getSearchOptions(req.query.search, {
           fields: ['name', 'description']
         }),
-        ...queryProcessorGlobals.getFilterDate(req.query.dateStart, req.query.dateEnd, {
-          start: 'startDate',
-          end: 'endDate',
-        }),
         ...queryProcessorProducts.getCategoriesFilterStage(req.query.categories),
         ...queryProcessorProducts.getDeliveryFilterStage(req.query.delivery),
         ...queryProcessorProducts.getAttributeFiltersStage(req.query.filters),
+        
         ...queryProcessorGlobals.getLookupStages(requestedLookups, productLookupConfigs),
 
         ...queryProcessorProducts.getVariantPriceFilterStage(req.query.priceMin, req.query.priceMax),
@@ -72,8 +66,10 @@ const controllerFactory = db => {
         ...(requestedLookups.includes('inventory') ? [{ $project: { availability: 0 } }] : [])
       ].filter(Boolean);
       
+      
       // Выполнение агрегации
       const products = await Product.aggregate(stages);
+      
       
       // Возвращаем только количество, если запрошено
       if (req.query.count) {

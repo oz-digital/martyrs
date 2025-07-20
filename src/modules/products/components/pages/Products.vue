@@ -4,7 +4,7 @@
       v-if="route.name !== 'Organization' && !MOBILE_APP"
       class="pd-medium flex-v-center flex-nowrap flex"
     >
-      <h2 class="mn-r-medium">Products</h2>
+      <h2 class="mn-r-medium">{{ currentCategory ? currentCategory.name : 'All Products' }}</h2>
       <button 
         v-if="hasAccess(route.params._id, 'products', 'create', auth.state.accesses, auth.state.access.roles)"
         @click="$router.push({
@@ -157,6 +157,7 @@
             </div>
           </div>
         </div>
+
         <Feed
           :search="true"
           v-model:sort="products.state.sort"
@@ -175,7 +176,7 @@
             limit: 16,
             owner: route.name?.includes('Organization') ? route.params._id : null,
             search: route.query.search,
-            lookup: ['variants','rents'],
+            lookup: ['variants','rents','inventory'],
             categories: route.params.categoryPath ? `/${route.params.categoryPath}` : null,
             filters: processedFilters,
             priceMin: selectedFilters.price?.min,
@@ -230,22 +231,23 @@
         v-model:date="tempSelectedDates"
         :allowRange="true"
         :disablePastDates="true"
-        class="mn-b-medium bg-light"
+        class="mn-b-medium radius-small bg-light"
       />
       
       <div class="flex gap-small">
-        <button 
-          @click="applyDateFilter"
-          class="bg-main button flex-child-full"
-        >
-          Apply
-        </button>
-        <button 
+         <button 
           @click="showDatePickerPopup = false"
           class="bg-light button flex-child-full"
         >
           Cancel
         </button>
+        <button 
+          @click="applyDateFilter"
+          class="bg-main button w-100 flex-child-full"
+        >
+          Apply
+        </button>
+       
       </div>
     </Popup>
 </div>

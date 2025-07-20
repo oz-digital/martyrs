@@ -19,9 +19,9 @@
       class="pd-small radius-medium bg-light cursor-pointer flex-v-center flex gap-micro"
       :class="{ 'selected bg-main': isFilterActive(filter) }"
     >
-      <IconCalendar v-if="filter.type === 'date'" class="i-medium" />
-      <span class="t-nowrap h-1r">{{ filter.title }}</span>
-      <span v-if="getFilterValue(filter)" class="mn-l-micro">
+      <IconCalendar v-if="filter.type === 'date'" class="mn-r-micro i-medium" />
+      <span class="t-nowrap">{{ filter.type === 'date' && getFilterValue(filter) ? formatFilterValue(filter) : filter.title }}</span>
+      <span v-if="getFilterValue(filter) && filter.type !== 'date'" class="mn-l-micro">
         {{ formatFilterValue(filter) }}
       </span>
     </button>
@@ -100,7 +100,7 @@
               v-model:date="tempSelected[filter.value]"
               :allowRange="true"
               :disablePastDates="true"
-              class="bg-light  radius-small"
+              class="bg-light radius-small"
             />
           </div>
         </div>
@@ -180,13 +180,6 @@
 
       <!-- Date Filter -->
       <div v-else-if="filter.type === 'date'">
-        <div 
-          @click="() => { tempDateRange = tempSelected[filter.value]; tempSelected[filter.value] = tempSelected[filter.value] || null; }"
-          class="pd-small radius-small bg-light cursor-pointer flex-v-center flex gap-micro"
-        >
-          <IconCalendar class="i-small" />
-          <span>{{ tempSelected[filter.value] ? `${formatDate(tempSelected[filter.value].start, { dayMonth: true, language: 'en' })} - ${formatDate(tempSelected[filter.value].end, { dayMonth: true, language: 'en' })}` : 'Select dates'}}</span>
-        </div>
         <div class="mn-t-small">
           <Calendar
             v-model:date="tempSelected[filter.value]"
@@ -198,19 +191,20 @@
       </div>
 
       <div class="flex gap-thin mn-t-medium">
-        <button 
+         <button 
           @click="cancelFilter(filter.value)" 
-          class="w-100 button bg-light"
+          class="bg-light button flex-child-full"
         >
           Cancel
         </button>
-        <button 
+         <button 
           @click="applyFilter(filter.value)" 
-          class="w-100 button bg-main"
+          class="bg-main w-100 button flex-child-full"
         >
           Apply
         </button>
-        
+       
+       
       </div>
     </Popup>
   </div>
@@ -307,7 +301,22 @@ const isFilterActive = (filter) => {
 }
 
 const getFilterValue = (filter) => {
-  return selected.value[filter.value]
+  const value = selected.value[filter.value]
+  if (!value) return false
+  
+  if (filter.type === 'range') {
+    return value.min || value.max
+  }
+  
+  if (filter.type === 'date') {
+    return value && value.start && value.end
+  }
+  
+  if (Array.isArray(value)) {
+    return value.length > 0
+  }
+  
+  return value
 }
 
 const formatFilterValue = (filter) => {

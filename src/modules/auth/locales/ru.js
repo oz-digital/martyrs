@@ -30,7 +30,9 @@ export default {
     },
     enterCode: {
       verifyNumberTitle: "Подтвердите номер",
+      verifyEmailTitle: "Подтвердите email",
       instructions: "Мы отправили код регистрации на ваш номер телефона. Введите его в поле ниже:",
+      instructionsEmail: "Мы отправили код регистрации на ваш email. Введите его в поле ниже:",
       resendCode: "Отправить код еще раз",
       secondsResend: "секунд до возможности отправить код еще раз."
     },
