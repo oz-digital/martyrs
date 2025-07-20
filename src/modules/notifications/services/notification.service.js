@@ -251,8 +251,101 @@ export default (function (db, wss) {
       await processNotification(notification);
     }
   };
+  // Send notification to a specific device token
+  const sendToDeviceToken = async ({ deviceToken, deviceType, title, body, data = {} }) => {
+    const pushService = getPushServiceByDeviceType(deviceType);
+    return pushService.send({
+      token: deviceToken,
+      title,
+      body,
+      data,
+    });
+  };
+
+  // Send notification to multiple device tokens
+  const sendToDeviceTokens = async ({ tokens, title, body, data = {} }) => {
+    const results = [];
+    
+    for (const token of tokens) {
+      try {
+        // Find device by token to get device type
+        const device = await db.userDevice.findOne({ deviceToken: token, isActive: true });
+        if (!device) {
+          results.push({ token, success: false, error: 'Device not found' });
+          continue;
+        }
+        
+        await sendToDeviceToken({
+          deviceToken: token,
+          deviceType: device.deviceType,
+          title,
+          body,
+          data
+        });
+        
+        results.push({ token, success: true });
+      } catch (error) {
+        results.push({ token, success: false, error: error.message });
+      }
+    }
+    
+    return results;
+  };
+
+  // Send notification to anonymous devices
+  const sendToAnonymousDevices = async ({ anonymousIds = null, title, body, data = {} }) => {
+    let devices;
+    
+    if (anonymousIds && Array.isArray(anonymousIds)) {
+      // Send to specific anonymous IDs
+      devices = await db.userDevice.find({
+        anonymousId: { $in: anonymousIds },
+        isAnonymous: true,
+        isActive: true
+      });
+    } else {
+      // Send to all anonymous devices
+      devices = await db.userDevice.find({
+        isAnonymous: true,
+        isActive: true
+      });
+    }
+    
+    const results = [];
+    
+    for (const device of devices) {
+      try {
+        await sendToDeviceToken({
+          deviceToken: device.deviceToken,
+          deviceType: device.deviceType,
+          title,
+          body,
+          data
+        });
+        
+        results.push({ 
+          anonymousId: device.anonymousId, 
+          deviceToken: device.deviceToken, 
+          success: true 
+        });
+      } catch (error) {
+        results.push({ 
+          anonymousId: device.anonymousId, 
+          deviceToken: device.deviceToken, 
+          success: false, 
+          error: error.message 
+        });
+      }
+    }
+    
+    return results;
+  };
+
   return {
     processNotification,
     processPendingNotifications,
+    sendToDeviceToken,
+    sendToDeviceTokens,
+    sendToAnonymousDevices,
   };
 });

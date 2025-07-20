@@ -17,6 +17,7 @@
 	    name="moveFromTop" 
 	    mode="out-in"
 	  >
+	  	
 	    <section 
 	      v-if="FirstUse && route.meta.walkthrough"
 	      class="w-100 h-100" 

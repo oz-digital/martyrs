@@ -158,8 +158,8 @@ a.button {
 
 .button {
   display: flex;
-  padding: 0.5rem;
-  border-radius: 3rem;
+  padding: var(--small);
+  border-radius: var(--small);
   text-box: trim-both cap alphabetic;
   transform: scale(1);
   opacity: 1;

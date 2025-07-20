@@ -138,9 +138,6 @@ const migrateCategoriesToMaterializedPath = async (db, testMode = false) => {
               path: ancestors,
               level: level
             },
-            $unset: {
-              url: "" // Удаляем старое поле url
-            }
           }
         );
         

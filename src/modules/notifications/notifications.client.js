@@ -6,6 +6,8 @@ import * as storeNotifications from './store/notifications.store.js';
 // Auth store import
 // Global WebSocket import
 import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+// Capacitor Preferences
+import { Preferences } from '@capacitor/preferences';
 // Layouts
 import NotificationsLayout from './components/layouts/NotificationsLayout.vue';
 // Sections
@@ -124,6 +126,30 @@ class CapacitorPushHandler {
         deviceToken: token.value,
       };
 
+      // For anonymous users, add anonymousId
+      if (!this.store.auth.state.user?._id) {
+        let anonymousId = null;
+        try {
+          const result = await Preferences.get({ key: 'notifications_anonymous_id' });
+          anonymousId = result.value;
+        } catch (error) {
+          console.warn('Could not get anonymous ID from preferences:', error);
+        }
+        
+        if (!anonymousId) {
+          anonymousId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          try {
+            await Preferences.set({
+              key: 'notifications_anonymous_id',
+              value: anonymousId
+            });
+          } catch (error) {
+            console.warn('Could not save anonymous ID to preferences:', error);
+          }
+        }
+        deviceData.anonymousId = anonymousId;
+      }
+
       // Register device with backend
       await this.store.notifications.actions.registerDevice(deviceData);
     } catch (error) {
@@ -199,53 +225,114 @@ class NotificationManager {
 
     console.log('New subscription:', JSON.stringify(subscription));
 
-    // Отправь подписку на сервер
-    await store.notifications.actions.registerDevice({
-      deviceToken: JSON.stringify(subscription),
+    const deviceToken = JSON.stringify(subscription);
+    const deviceId = await this.generateDeviceId();
+    
+    // Store device data for re-registration after login
+    try {
+      await Preferences.set({
+        key: 'notifications_device_token',
+        value: deviceToken
+      });
+    } catch (error) {
+      console.warn('Could not save device token to preferences:', error);
+    }
+
+    const deviceData = {
+      deviceToken,
       deviceType: 'web',
-    });
+      deviceId
+    };
+
+    // For anonymous users, get or generate anonymousId
+    if (!store.auth.state.user?._id) {
+      let anonymousId = null;
+      try {
+        const result = await Preferences.get({ key: 'notifications_anonymous_id' });
+        anonymousId = result.value;
+      } catch (error) {
+        console.warn('Could not get anonymous ID from preferences:', error);
+      }
+      
+      if (!anonymousId) {
+        anonymousId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        try {
+          await Preferences.set({
+            key: 'notifications_anonymous_id',
+            value: anonymousId
+          });
+        } catch (error) {
+          console.warn('Could not save anonymous ID to preferences:', error);
+        }
+      }
+      deviceData.anonymousId = anonymousId;
+    }
+
+    // Register device
+    await store.notifications.actions.registerDevice(deviceData);
+  }
+
+  async generateDeviceId() {
+    // Try to get or generate a persistent device ID
+    try {
+      const result = await Preferences.get({ key: 'notifications_device_id' });
+      let deviceId = result.value;
+      
+      if (!deviceId) {
+        deviceId = 'web_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        await Preferences.set({
+          key: 'notifications_device_id',
+          value: deviceId
+        });
+      }
+      return deviceId;
+    } catch (error) {
+      console.warn('Could not access preferences for device ID:', error);
+      return 'web_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
   }
 
   async initialize() {
     if (this.initialized || this.isServer) return;
 
     const userId = this.store.auth.state.user?._id;
-    if (!userId) {
-      console.warn('Cannot initialize notifications: No user ID found in auth store');
-      return;
+    
+    // Connect WebSocket only for authenticated users
+    if (userId) {
+      console.log('Connecting to websockets via notifications');
+      globalWebSocket.initialize({
+        maxReconnectAttempts: 10,
+        reconnectDelay: 2000,
+      });
+
+      await globalWebSocket.connect(userId);
+
+      globalWebSocket.removeModuleListeners('notification');
+
+      await globalWebSocket.subscribeModule('notification');
+
+      globalWebSocket.addEventListener(
+        'notification',
+        data => {
+          this.store.notifications.actions.addLocalNotification(data.data);
+        },
+        { module: 'notification' }
+      );
+
+      // Load notifications from API for authenticated users
+      await this.store.notifications.actions.getNotifications(userId);
+    } else {
+      console.log('Initializing notifications for anonymous user');
     }
 
-    
-    console.log('Connecting to websockets via notifications');
-    globalWebSocket.initialize({
-      maxReconnectAttempts: 10,
-      reconnectDelay: 2000,
-    });
-
-    await globalWebSocket.connect(userId);
-
-    globalWebSocket.removeModuleListeners('notification');
-
-    await globalWebSocket.subscribeModule('notification');
-
-    globalWebSocket.addEventListener(
-      'notification',
-      data => {
-        this.store.notifications.actions.addLocalNotification(data.data);
-      },
-      { module: 'notification' }
-    );
-
-    // 🎯 Опционально включаем push
-    if (this.options.enablePush !== false) {
+    // Enable push notifications for both authenticated and anonymous users
+    // Skip auto-init for mobile apps - will be triggered manually from Walkthrough
+    if (this.options.enablePush !== false && !process.env.MOBILE_APP) {
       await this.pushHandler.requestPermissions();
       await this.registerWebPush(this.store);
     }
 
     this.initialized = true;
-
-    // ✅ Загружаем список уведомлений из API
-    await this.store.notifications.actions.getNotifications(userId);
   }
 
   disconnect() {
@@ -313,22 +400,21 @@ function initializeNotifications(app, store, router, options = {}) {
   const autoInit = !isServer && options.autoInit !== false;
 
   if (autoInit) {
-    // Initialize after auth is confirmed
-    const isAuthenticated = store.auth.state.access.status;
-    const userId = store.auth.state.user?._id;
-
-    if (isAuthenticated && userId) {
-      notificationManager.initialize();
-    }
+    // Initialize immediately (supports both authenticated and anonymous users)
+    notificationManager.initialize();
 
     // Watch for user login/logout using auth store
     watch(
       () => store.auth.state.access.status,
       isAuthenticated => {
         if (isAuthenticated) {
+          // Re-register device for authenticated user
+          store.notifications.actions.reregisterDeviceAfterLogin();
+          // Reinitialize for authenticated user
+          notificationManager.disconnect();
           notificationManager.initialize();
         } else {
-          notificationManager.disconnect();
+          // Keep notifications active for anonymous users, just reset user-specific data
           store.notifications.mutations.resetNotifications();
         }
       }

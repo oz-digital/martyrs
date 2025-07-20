@@ -23,6 +23,7 @@ body {
 	.bg-blur-small 		{ backdrop-filter: blur(var(--small)) 	}
 	.bg-blur-thin 		{ backdrop-filter: blur(var(--thin)) 		}
 	// Other
+	.bg-black-grad { background: linear-gradient(180deg,rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%); }
 	.bg-grad-main { background: radial-gradient(84.52% 84.52% at 50% 50%, rgb(var(--main)) 23.39%, #E7FFF4 100%), #E8FFF3;}
 	// Transpatrens
 	.bg-t-white 	{ background: rgba(var(--white),0.1); 		}

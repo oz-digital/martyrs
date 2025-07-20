@@ -16,6 +16,8 @@ import NavigationBar from '@martyrs/src/modules/globals/views/components/partial
 import Sidebar from '@martyrs/src/modules/globals/views/components/partials/Sidebar.vue';
 import Footer from '@martyrs/src/modules/globals/views/components/partials/Footer.vue';
 
+import Walkthrough from '@martyrs/src/modules/globals/views/components/sections/Walkthrough.vue';
+
 import * as mixins from './views/mixins/mixins.js';
 import * as storeGlobals from './views/store/globals.js';
 import * as appRenderer from './views/utils/vue-app-renderer.js';
@@ -118,6 +120,7 @@ const ModuleGlobals = {
       Sidebar,
       BottomNavigationBar,
       NavigationBar,
+      Walkthrough
     },
   },
 };
@@ -129,6 +132,7 @@ export {
   Navigation,
   NavigationBar,
   Sidebar,
+  Walkthrough,
   appRenderer,
   getBrowserLocale,
   layoutApp,

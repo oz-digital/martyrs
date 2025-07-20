@@ -5,6 +5,8 @@ import { computed, reactive, watch } from 'vue';
 // Dependencies
 // Globals
 import { setError, setSnack } from '@martyrs/src/modules/globals/views/store/globals.js';
+// Capacitor Preferences
+import { Preferences } from '@capacitor/preferences';
 
 /////////////////////////////
 // State
@@ -19,14 +21,18 @@ const state = reactive({
 // Helpers
 /////////////////////////////
 const helpers = {
-  saveToStorage() {
-    localStorage.setItem(
-      CART_STORAGE_KEY,
-      JSON.stringify({
-        positions: state.positions,
-        organization: state.organization,
-      })
-    );
+  async saveToStorage() {
+    try {
+      await Preferences.set({
+        key: CART_STORAGE_KEY,
+        value: JSON.stringify({
+          positions: state.positions,
+          organization: state.organization,
+        })
+      });
+    } catch (error) {
+      console.warn('Could not save cart to preferences:', error);
+    }
   },
 
   async validateProduct(product) {
@@ -75,7 +81,7 @@ async function syncWithServer() {
 
     if (invalidProducts.length > 0) {
       state.positions = state.positions.filter(product => !invalidProducts.includes(product._id));
-      helpers.saveToStorage();
+      await helpers.saveToStorage();
       setError('Some products were removed from cart due to changes on server');
     }
   } catch (error) {
@@ -105,9 +111,10 @@ const actions = {
     state.currentState = state.currentState ? false : true;
   },
 
-  setShopcart() {
+  async setShopcart() {
     try {
-      const storedShopcart = localStorage.getItem('shopcart');
+      const result = await Preferences.get({ key: 'shopcart' });
+      const storedShopcart = result.value;
 
       if (storedShopcart) {
         const shopcartData = JSON.parse(storedShopcart);
@@ -120,7 +127,7 @@ const actions = {
     }
   },
 
-  addProductToCart(product, variant, organization, date, quantity = 1) {
+  async addProductToCart(product, variant, organization, date, quantity = 1) {
     console.log('Adding product with variant to cart', { product: product._id, variant: variant._id, quantity });
     
     // Убедимся, что организация установлена
@@ -148,8 +155,8 @@ const actions = {
       });
     }
 
-    // Сохраняем в localStorage
-    helpers.saveToStorage();
+    // Сохраняем в Preferences
+    await helpers.saveToStorage();
     
     // Отправляем уведомление
     setSnack('Product added to cart');
@@ -157,7 +164,7 @@ const actions = {
 
 
 
-  removeProduct(productId, variantId = null) {
+  async removeProduct(productId, variantId = null) {
     const cartItemIndex = state.positions.findIndex(item => {
       if (variantId) {
         return item._id === productId && item.variant === variantId;
@@ -167,11 +174,11 @@ const actions = {
 
     if (cartItemIndex > -1) {
       state.positions.splice(cartItemIndex, 1);
-      helpers.saveToStorage();
+      await helpers.saveToStorage();
     }
   },
 
-  decrementItemQuantity(productId, variantId = null) {
+  async decrementItemQuantity(productId, variantId = null) {
     const cartItem = state.positions.find(item => {
       if (variantId) {
         return item._id === productId && item.variant === variantId;
@@ -187,11 +194,11 @@ const actions = {
         state.positions.splice(index, 1);
       }
 
-      helpers.saveToStorage();
+      await helpers.saveToStorage();
     }
   },
 
-  incrementItemQuantity(productId, variantId = null) {
+  async incrementItemQuantity(productId, variantId = null) {
     const cartItem = state.positions.find(item => {
       if (variantId) {
         return item._id === productId && item.variant === variantId;
@@ -201,11 +208,11 @@ const actions = {
 
     if (cartItem) {
       cartItem.quantity++;
-      helpers.saveToStorage();
+      await helpers.saveToStorage();
     }
   },
 
-  updateRentDates({ productId, variantId, dates }) {
+  async updateRentDates({ productId, variantId, dates }) {
     const product = state.positions.find(p => p._id === productId && p.variant === variantId);
 
     if (product) {
@@ -215,10 +222,14 @@ const actions = {
     helpers.saveToStorage();
   },
 
-  resetShopcart() {
+  async resetShopcart() {
     state.positions = [];
 
-    localStorage.removeItem('shopcart');
+    try {
+      await Preferences.remove({ key: 'shopcart' });
+    } catch (error) {
+      console.warn('Could not remove cart from preferences:', error);
+    }
   },
 };
 

@@ -6,6 +6,8 @@ import $axios from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
 import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
 // Auth
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
+// Capacitor Preferences
+import { Preferences } from '@capacitor/preferences';
 
 // Initial state for a notification
 const notificationInitState = {
@@ -108,14 +110,29 @@ const actions = {
    */
   async registerDevice(deviceData) {
     try {
-      // Add the current user ID to the device data
-      const userId = auth.state.user._id;
-      if (!userId) {
-        console.warn('Cannot register device: No user ID found');
-        return;
+      const userId = auth.state.user?._id;
+      
+      if (userId) {
+        // Registered user
+        deviceData.userId = userId;
+      } else {
+        // Anonymous user - generate or use existing anonymousId
+        if (!deviceData.anonymousId) {
+          // Generate anonymous ID if not provided
+          deviceData.anonymousId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          // Store in Capacitor Preferences for persistence
+          if (typeof window !== 'undefined') {
+            try {
+              await Preferences.set({
+                key: 'notifications_anonymous_id',
+                value: deviceData.anonymousId
+              });
+            } catch (error) {
+              console.warn('Could not save anonymous ID to preferences:', error);
+            }
+          }
+        }
       }
-
-      deviceData.userId = userId;
 
       const response = await $axios.post('/api/notifications/devices/register', deviceData);
       state.deviceRegistered = true;
@@ -123,6 +140,29 @@ const actions = {
     } catch (error) {
       setError(error);
       throw error;
+    }
+  },
+
+  /**
+   * Re-register device after user login
+   */
+  async reregisterDeviceAfterLogin() {
+    try {
+      const deviceIdResult = await Preferences.get({ key: 'notifications_device_id' });
+      const deviceTokenResult = await Preferences.get({ key: 'notifications_device_token' });
+      
+      const deviceId = deviceIdResult.value;
+      const deviceToken = deviceTokenResult.value;
+      
+      if (deviceId && deviceToken) {
+        await this.registerDevice({
+          deviceId,
+          deviceToken,
+          deviceType: 'web'
+        });
+      }
+    } catch (error) {
+      console.error('Error re-registering device after login:', error);
     }
   },
 

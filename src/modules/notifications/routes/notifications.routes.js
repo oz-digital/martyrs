@@ -18,5 +18,9 @@ const notificationsRoutes = (app, db, wss, origins, publicPath, notificationServ
   app.get('/api/notifications/preferences/:userId', controller.getUserPreferences);
   // Update notification preferences
   app.put('/api/notifications/preferences', controller.updatePreferences);
+  // Send notifications to specific device tokens
+  app.post('/api/notifications/send-to-tokens', controller.sendToTokens);
+  // Send notifications to anonymous devices
+  app.post('/api/notifications/send-to-anonymous', controller.sendToAnonymous);
 };
 export default notificationsRoutes;
