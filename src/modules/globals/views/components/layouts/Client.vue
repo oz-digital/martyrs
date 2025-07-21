@@ -3,7 +3,7 @@
 		id="app-wrapper"
 		class="flex flex-column h-100 w-100 pos-relative o-hidden"
 		:class="{
-  		'pd-t-extra': MOBILE_APP === 'ios',  
+  		'pd-t-big': MOBILE_APP === 'ios',  
 			'bg-white': headerTheme === 'light',
 			'bg-black': headerTheme === 'dark' 
   	}"

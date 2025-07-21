@@ -195,8 +195,6 @@
 			/>
 		</Button>
 
-
-
 		<Select 
 			v-if="$i18n.availableLocales.length > 1"
 			v-model:select="$i18n.locale"
