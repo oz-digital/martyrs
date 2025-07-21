@@ -21,7 +21,7 @@
     </div>
 
     <div class="flex-nowrap flex-v-center flex bg-white w-100 radius-big pd-small">
-      <IconAdd class="mn-r-thin t-transp i-regular" />
+      <!-- <IconAdd class="mn-r-thin t-transp i-regular" /> -->
       <input class="" placeholder="Enter your message" type="text" v-model="newMessage" @keyup.enter="sendMessage" />
     </div>
   </div>

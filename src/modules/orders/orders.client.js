@@ -44,6 +44,8 @@ function initializeOrders(app, store, router, options = {}) {
   const routeOrganizations = options.routeOrganizations || 'OrganizationRoot';
   const routeUsers = options.routeUsers || 'User Profile Root';
 
+  if (typeof window !== 'undefined') storeShopcart.actions.setShopcart()
+
   addRoutes(router, {
     parentName: route,
     basePath: 'orders',

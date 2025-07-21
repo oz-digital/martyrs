@@ -17,7 +17,7 @@
       <div class="w-100 pos-relative">
         <p class="t-truncate t-medium">{{ name }}</p>
         
-        <div>
+        <div class="mn-t-thin">
           <p v-if="price != null && quantity != null">
             <span class="t-second mn-r-micro d-inline-block t-demi">
               {{ returnCurrency() }}{{ totalPrice }}

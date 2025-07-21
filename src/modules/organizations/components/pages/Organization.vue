@@ -133,7 +133,7 @@
 		</section>
 
 		<!-- Organization Info Section -->
-		<div class="pos-relative">
+		<!-- <div class="pos-relative">
 			<div class="bg-light radius-medium pd-medium">
 				<h3 class="mn-b-small">About {{ organization.state.current?.profile?.name }}</h3>
 				<p v-if="organization.state.current?.profile?.description" class="t-medium">
@@ -143,7 +143,9 @@
 					No description available.
 				</p>
 			</div>
-		</div>
+		</div> -->
+
+		<Products/>
 	</div>
 </template>
 
@@ -173,6 +175,8 @@
 	import User from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
 	// Report Module
 	import FormReport from '@martyrs/src/modules/reports/components/sections/FormReport.vue'
+	// Products modu;e
+	import Products from '@martyrs/src//modules/products/components/pages/Products.vue'
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';

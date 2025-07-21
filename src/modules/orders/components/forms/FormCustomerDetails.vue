@@ -1,18 +1,5 @@
 <template>
   <Block :title="title" class="mn-b-thin">
-    <Field 
-      v-model:field="customer.profile.name"   
-      label="Name"  
-      placeholder="Enter name"  
-      class="bg-white pd-small radius-small mn-b-thin"
-    />
-    <Field 
-      v-model:field="customer.email"   
-      label="Email"  
-      placeholder="Enter email"  
-      type="email"
-      class="bg-white pd-small radius-small mn-b-thin"
-    />
     <FieldPhone
       v-model="customer.number"  
       @country="(country) => { customer.phone = country }"
@@ -30,8 +17,43 @@
       mode="national"
       class="w-100 bg-white pd-small mn-b-thin radius-small" 
     />
+    <Field 
+      v-model:field="customer.profile.name"   
+      label="Name"  
+      placeholder="Enter name"  
+      class="bg-white pd-small radius-small mn-b-thin"
+    />
+    <Field 
+      v-model:field="customer.email"   
+      label="Email"  
+      placeholder="Enter email"  
+      type="email"
+      class="bg-white pd-small radius-small mn-b-thin"
+    />
+    
+    <div class="gap-thin mn-b-thin flex-justify-between flex-nowrap flex">
+      <Select 
+        :select="messengerSelected"
+        :options="[
+          {name: 'Instagram', value: 'instagram'}, 
+          {name: 'Telegram', value: 'telegram'}, 
+          {name: 'WhatsApp', value: 'whatsapp'},
+        ]"
+        @update:select="(option) => messengerSelected = option"
+        placeholder="Messenger" 
+        size="small"
+        class="bg-white  pd-small radius-small"
+      />
+      <Field
+        v-model:field="customer.socials[messengerSelected.value]"     
+        label="@"  
+        placeholder="Enter username"
+        class="bg-white pd-small radius-small w-100"
+      />
+    </div>
     
     <Select 
+      v-if="showAdminFields"
       :select="sourceSelected"
       :options="[
         {name: 'Web', value: 'web'}, 
@@ -49,6 +71,7 @@
     />
 
     <Field 
+      v-if="showAdminFields"
       v-model:field="customer.referral.code"   
       label="Referral Code"  
       placeholder="Enter referral code"  
@@ -64,7 +87,7 @@
     />
 
     <!-- Address Fields -->
-    <div class="mn-t-small">
+    <div v-if="showAddressFields" class="mn-t-small">
       <h3 class="t-medium mn-b-thin">Address Information</h3>
       
       <Field 
@@ -106,6 +129,7 @@
     </div>
 
     <Select 
+      v-if="showAdminFields"
       :select="statusSelected"
       :options="[
         {name: 'Active', value: 'active'}, 
@@ -117,28 +141,9 @@
       class="bg-white pd-small radius-small mn-b-thin"
     />
     
-    <div class="gap-thin flex-justify-between flex-nowrap flex">
-      <Select 
-        :select="messengerSelected"
-        :options="[
-          {name: 'Instagram', value: 'instagram'}, 
-          {name: 'Telegram', value: 'telegram'}, 
-          {name: 'WhatsApp', value: 'whatsapp'},
-        ]"
-        @update:select="(option) => messengerSelected = option"
-        placeholder="Messenger" 
-        size="small"
-        class="bg-white  pd-small radius-small"
-      />
-      <Field
-        v-model:field="customer.socials[messengerSelected.value]"     
-        label="@"  
-        placeholder="Enter username"
-        class="bg-white pd-small radius-small w-100"
-      />
-    </div>
 
-    <div class="gap-thin flex mn-t-small">
+
+    <div v-if="showButtons" class="gap-thin flex mn-t-small">
       <Button 
         @click="handleSave"
         class="w-100 pd-small radius-big bg-main t-black uppercase t-medium"
@@ -177,6 +182,18 @@ defineProps({
   createMode: {
     type: Boolean,
     default: false
+  },
+  showAdminFields: {
+    type: Boolean,
+    default: true
+  },
+  showButtons: {
+    type: Boolean,
+    default: true
+  },
+  showAddressFields: {
+    type: Boolean,
+    default: true
   }
 });
 

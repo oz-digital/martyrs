@@ -35,10 +35,6 @@
     >
       <div class="flex-v-center flex-nowrap flex mn-b-medium">
         <h3 class="flex-child-full">Filters</h3>
-        <IconCross 
-          @click="showAllFilters = false" 
-          class="i-regular cursor-pointer"
-        />
       </div>
 
       <div class="filters-content">
@@ -168,12 +164,14 @@
           v-model:field="tempSelected[filter.value].min"
           :placeholder="filter.minPlaceholder || 'Min'"
           type="number"
+          :label="returnCurrency()"
           class="w-50 bg-light pd-small radius-small"
         />
         <Field
           v-model:field="tempSelected[filter.value].max"
           :placeholder="filter.maxPlaceholder || 'Max'"
           type="number"
+          :label="returnCurrency()"
           class="w-50 bg-light pd-small radius-small"
         />
       </div>

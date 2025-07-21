@@ -45,7 +45,6 @@
 			<Feed
 				:search="true"
 				v-model:sort="sort"
-				v-model:filter="filter"
 	      :states="{
 	        empty: {
 	          title: 'No Events Found',

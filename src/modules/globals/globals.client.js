@@ -63,6 +63,19 @@ function initializeGlobals(app, store, router, config, options = {}) {
   app.use(datePickerPlugin);
   // app.use(storeDebuggerPlugin, store);
 
+
+    
+  // Connect WebSocket only for authenticated users
+  
+    // const userId = this.store.auth.state.user?._id;
+  console.log('Connecting to websockets via globals');
+  websockets.initialize({
+    maxReconnectAttempts: 10,
+    reconnectDelay: 2000,
+  });
+
+  websockets.connect();
+
   // Change Locale to Route Locale if available
   router.beforeEach((to, from, next) => {
     const locale = to.params.locale;

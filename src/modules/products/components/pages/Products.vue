@@ -447,18 +447,20 @@
     });
   };
 
-  globals.state.navigation_bar.actions = [{
-    component: IconPlus,
-    props: {
-      fill: "rgb(var(--main))" 
-    },
-    condition: () => auth.state.user && auth.state.user._id,
-    action: () => route.params._id ? router.push({ name: 'Organization_ProductAdd', params: { _id: route.params._id} }) : router.push({ name: 'ProductAdd' })
-  }],
+  if (route.params?._id) {
+    globals.state.navigation_bar.actions = [{
+      component: IconPlus,
+      props: {
+        fill: "rgb(var(--main))" 
+      },
+      condition: () => auth.state.user && auth.state.user._id,
+      action: () => route.params._id ? router.push({ name: 'Organization_ProductAdd', params: { _id: route.params._id} }) : router.push({ name: 'ProductAdd' })
+    }];
+  }
 
   onMounted(async () => {
     await loadCategoryData();
-  })
+  });
 
   onUnmounted(() => {
     globals.state.navigation_bar.actions = [];

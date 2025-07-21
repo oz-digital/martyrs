@@ -70,42 +70,42 @@ export const navigationItems = [
         }),
         visible: () => true // Public access
       },
-      {
-        title: 'Events',
-        iconComponent: IconEvents,
-        route: (auth, route) => ({
-          name: 'Organization_Events',
-          params: { _id: route.params._id }
-        }),
-        visible: () => true // Public access
-      },
-      {
-        title: 'Posts',
-        iconComponent: IconCommunity,
-        route: (auth, route) => ({
-          name: 'Organization_Posts',
-          params: { _id: route.params._id }
-        }),
-        visible: () => true // Public access
-      },
-      {
-        title: 'Spots',
-        iconComponent: IconAddress,
-        route: (auth, route) => ({
-          name: 'Organization_Spots',
-          params: { _id: route.params._id }
-        }),
-        visible: () => true // Public access
-      },
-      {
-        title: 'Gallery',
-        iconComponent: IconGallery,
-        route: (auth, route) => ({
-          name: 'Backoffice Gallery',
-          params: { _id: route.params._id }
-        }),
-        visible: () => true // Public access
-      },
+      // {
+      //   title: 'Events',
+      //   iconComponent: IconEvents,
+      //   route: (auth, route) => ({
+      //     name: 'Organization_Events',
+      //     params: { _id: route.params._id }
+      //   }),
+      //   visible: () => true // Public access
+      // },
+      // {
+      //   title: 'Posts',
+      //   iconComponent: IconCommunity,
+      //   route: (auth, route) => ({
+      //     name: 'Organization_Posts',
+      //     params: { _id: route.params._id }
+      //   }),
+      //   visible: () => true // Public access
+      // },
+      // {
+      //   title: 'Spots',
+      //   iconComponent: IconAddress,
+      //   route: (auth, route) => ({
+      //     name: 'Organization_Spots',
+      //     params: { _id: route.params._id }
+      //   }),
+      //   visible: () => true // Public access
+      // },
+      // {
+      //   title: 'Gallery',
+      //   iconComponent: IconGallery,
+      //   route: (auth, route) => ({
+      //     name: 'Backoffice Gallery',
+      //     params: { _id: route.params._id }
+      //   }),
+      //   visible: () => true // Public access
+      // },
     ]
   },
   {

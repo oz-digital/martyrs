@@ -70,7 +70,7 @@
 				<IconEdit
 					v-if="route.params._id === auth.state.user._id"
 					@click="$router.push({
-						name: 'User Edit Profile', 
+						name: 'Profile Edit Profile', 
 						params: {
 							_id: auth.state.user._id
 						}

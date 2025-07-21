@@ -21,7 +21,6 @@
     <div class="rows-1">
       <Feed
         :search="true"
-        v-model:filter="filter"
         v-model:sort="sort"
         :store="{
           read: (options) => products.actions.read(options),

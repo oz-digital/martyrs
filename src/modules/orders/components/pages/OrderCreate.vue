@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<!-- Order form -->
-	<div class="gap-small mn-b-thin cols-2">
+	<div class="gap-small mn-b-thin cols-2 mobile:cols-1">
 		<!-- Order Form -->
 		<div
 			v-if="orders.state.current.status !== true && shopcart.state.positions.length > 0" 
@@ -31,6 +31,8 @@
 		>
 			<FormCustomerDetails
 				v-model:customer="orders.state.current.customer"
+			  :showAdminFields="false"
+			  :showButtons="false"
 			/>
 			<FormPayment 	
 				v-if="orders.state.current.status !== true && shopcart.state.positions.length > 0"

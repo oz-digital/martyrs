@@ -2,17 +2,14 @@
   import { h, ref, inject, defineComponent } from 'vue';
   
   import IconChevronRight from '@martyrs/src/modules/icons/navigation/IconChevronRight.vue';  
-
   export default defineComponent({
     props: {
     },
     setup(props, { slots }) {
       return () => {
         const defaultSlotContent = slots.default ? slots.default() : [];
-
         const iconSlot = [];
         const textSlot = [];
-
         // Changing the logic to place slots based on whether the type starts with 'Icon' or not
         defaultSlotContent.forEach((vnode) => {
           let compType = vnode.toString()
@@ -22,7 +19,6 @@
             textSlot.push(vnode);
           }
         });
-
         return h(
           'div',
           {
@@ -32,8 +28,7 @@
               'flex-nowrap',
               'flex-v-center',
               'flex',
-              // here we need add logic
-              { 'br-b br-black-transp-10 br-solid': true  }
+              'border-bottom-except-last'
             ]
           },
           [
@@ -69,3 +64,13 @@
     }
   });
 </script>
+
+<style>
+.border-bottom-except-last {
+  border-bottom: 1px solid rgba(var(--black) 0.1);
+}
+
+.border-bottom-except-last:last-child {
+  border-bottom: none;
+}
+</style>

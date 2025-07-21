@@ -112,7 +112,7 @@
 
 
 	  
-	  <div v-if="order" class="gap-thin cols-2">
+	  <div v-if="order" class="gap-thin cols-2 mobile:cols-1">
 
 	    <div class="w-100">
 
@@ -132,7 +132,7 @@
 		    >
 		    	<div class="pd-small flex-nowrap flex">
 			    	<div class="mn-r-auto">
-				    	<span class="d-block t-medium p-medium">Order is</span>
+				    	<span class="d-block t-medium p-medium mn-b-thin">Order is</span>
 					    <span class=" t-lh-075 h2 d-block mn-b-small">{{order.status}}</span>
 					    <p class="pd-thin radius-extra bg-black t-white w-max">{{formatDate(order.updatedAt, {language: locale })}}</p>
 					  </div>

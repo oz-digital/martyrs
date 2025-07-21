@@ -9,7 +9,7 @@
         v-model:radio="order.delivery.type"
         :label="capitalize(type)"
         :value="type"
-        class="bg-white pd-medium radius-small w-100 mn-r-small"
+        class="bg-white field-wrapper cursor-pointer pd-medium radius-small w-100 mn-r-small"
       />
     </div>
     <div v-else>No delivery options available.</div>
@@ -27,7 +27,7 @@
         :showPaymentOptions="false"
         :selected="order.delivery.spot === spot._id"
         @click="() => order.delivery.spot = order.delivery.spot === spot._id ? null : spot._id"
-        class="mn-b-thin radius-medium o-hidden bg-white"
+        class="field-wrapper cursor-pointer mn-b-thin radius-medium o-hidden bg-white"
       />
     </template>
 
