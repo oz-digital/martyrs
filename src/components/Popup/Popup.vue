@@ -10,7 +10,9 @@
         <transition name="TransitionTranslateY" mode="out-in">
           <section class="h-max-100 o-y-scroll pos-relative z-index-4" v-bind="$attrs" :class="$attrs.class">
             <h4 v-if="title" class="mn-b-medium">{{title}}</h4>
-            <IconCross :fill="'rgb(var(--white))'" @click="closePopup()" class="cursor-pointer bg-second pd-micro radius-extra pos-absolute pos-t-0 pos-r-0 mn-t-medium mn-r-medium hover-scale-1 i-medium z-index-5"/>
+            <div class="pos-absolute h-100 pos-t-0 pos-r-0">
+              <IconCross :fill="'rgb(var(--white))'" @click="closePopup()" class="cursor-pointer bg-second pd-micro radius-extra pos-sticky pos-t-0 pos-r-0 mn-t-medium mn-r-medium hover-scale-1 i-medium z-index-5"/>
+            </div>
             <slot></slot>
           </section>  
         </transition>

@@ -20,6 +20,7 @@ class GlobalWebSocket {
   }
 
   initialize(options = {}) {
+    console.log('ws url is', options.wsUrl)
     this.maxReconnectAttempts = options.maxReconnectAttempts || this.maxReconnectAttempts;
     this.reconnectDelay = options.reconnectDelay || this.reconnectDelay;
     this.baseUrl = options.wsUrl || this._getDefaultWsUrl();

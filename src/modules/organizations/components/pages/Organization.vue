@@ -131,6 +131,15 @@
 	   		:youtube="organization.state.current.socials.youtube"
 	   	/>
 		</section>
+		
+		<!-- Backoffice -->
+		<div v-if="MOBILE_APP" @click="() => globals.state.isOpenSidebar = !globals.state.isOpenSidebar"  class="pos-relative">
+			<div class="bg-light radius-medium pd-medium">
+				<p class="t-medium t-black-transp-60">
+					Show Menu
+				</p>
+			</div>
+		</div>
 
 		<!-- Organization Info Section -->
 		<!-- <div class="pos-relative">
@@ -179,6 +188,8 @@
 	import Products from '@martyrs/src//modules/products/components/pages/Products.vue'
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
+	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
 	import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js';
 	import * as departments from '@martyrs/src/modules/organizations/store/departments.js';

@@ -1,5 +1,5 @@
 <template>
-  <div class="radius-small">
+  <div class="price-tag radius-small">
     <span
       :class="{
         'h4': !size,

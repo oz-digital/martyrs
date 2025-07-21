@@ -301,6 +301,7 @@ class NotificationManager {
     if (userId) {
       console.log('Connecting to websockets via notifications');
       globalWebSocket.initialize({
+        wsUrl: process.env.WSS_URL,
         maxReconnectAttempts: 10,
         reconnectDelay: 2000,
       });
@@ -381,7 +382,7 @@ function initializeNotifications(app, store, router, options = {}) {
 
   // Initialize global WebSocket if needed
   if (options.wsUrl) {
-    globalWebSocket.initialize({ wsUrl:   app.config.globalProperties.WSS_URL });
+    globalWebSocket.initialize({ wsUrl: process.env.WSS_URL });
   }
 
   // Create notification manager

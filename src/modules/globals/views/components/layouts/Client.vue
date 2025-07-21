@@ -85,7 +85,7 @@
 				}"
 			/>
 	    <component
-	      v-if="route.meta?.sidebar && !MOBILE_APP"
+	      v-if="route.meta?.sidebar"
 	      v-slot="{ Component }"
 	      :is="route.meta.sidebar"
 	      :stateSidebar="globals.state.isOpenSidebar" 

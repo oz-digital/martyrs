@@ -70,6 +70,7 @@ function initializeGlobals(app, store, router, config, options = {}) {
     // const userId = this.store.auth.state.user?._id;
   console.log('Connecting to websockets via globals');
   websockets.initialize({
+    wsUrl: process.env.WSS_URL,
     maxReconnectAttempts: 10,
     reconnectDelay: 2000,
   });

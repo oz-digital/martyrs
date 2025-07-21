@@ -33,7 +33,7 @@ const { isPhone, isTablet } = useGlobalMixins()
 const router = useRouter()
 
 const toggleSidebar = () => {
-  emit('closeSidebar')
+  emits('closeSidebar')
 }
 
 router.beforeEach((to, from) => {
@@ -60,6 +60,14 @@ router.beforeEach((to, from) => {
 
     <!-- Slot for navigation content -->
     <slot></slot>
+
+    <div v-if="MOBILE_APP" @click="() => toggleSidebar()"  class="pos-relative">
+      <div class="bg-light radius-medium pd-medium">
+        <p  class="t-medium t-black-transp-60">
+          Close Menu
+        </p>
+      </div>
+    </div>
 
     <div 
       class="br-solid w-100 br-t"
