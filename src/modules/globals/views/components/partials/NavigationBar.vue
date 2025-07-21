@@ -25,9 +25,9 @@
 				  :theme="theme"
 				/>
 
-				<p v-else class="t-semi h-2r lh-semi h4 d-block" >
+				<span v-else class="t-semi h-2r lh-semi h5 d-block" >
 					{{ formateText(globals.state.navigation_bar.name || route.meta?.title?.[locale.toLowerCase()] || route.name) }}
-				</p>
+				</span>
 			</div>
 		</transition>
 
