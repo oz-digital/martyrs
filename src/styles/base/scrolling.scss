@@ -54,6 +54,11 @@ body {
 	.scroll-pd-thin 		{ scroll-padding: var(--thin); }
 	.scroll-pd-micro 		{ scroll-padding: var(--micro); }
 
+	.scroll-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none
+	}
+
 	.scroll-hide::-webkit-scrollbar {
     width: 0;
     height: 0;

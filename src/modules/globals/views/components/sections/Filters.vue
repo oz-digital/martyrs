@@ -80,12 +80,14 @@
               v-model:field="tempSelected[filter.value].min"
               :placeholder="filter.minPlaceholder || 'Min'"
               type="number"
+              :label="returnCurrency()"
               class="w-50 bg-light pd-small radius-small"
             />
             <Field
               v-model:field="tempSelected[filter.value].max"
               :placeholder="filter.maxPlaceholder || 'Max'"
               type="number"
+              :label="returnCurrency()"
               class="w-50 bg-light pd-small  radius-small"
             />
           </div>

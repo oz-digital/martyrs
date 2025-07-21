@@ -6,7 +6,7 @@
     >
       <h2 class="mn-r-medium">{{ currentCategory ? currentCategory.name : 'All Products' }}</h2>
       <button 
-        v-if="hasAccess(route.params._id, 'products', 'create', auth.state.accesses, auth.state.access.roles)"
+        v-if="route.params._id && hasAccess(route.params._id, 'products', 'create', auth.state.accesses, auth.state.access.roles)"
         @click="$router.push({
           name: route.params?._id ? 'Organization_ProductAdd' : 'ProductAdd'
         })" 
@@ -197,7 +197,7 @@
               class=""
             />
           </div>
-          <div class="cols-4 pos-relative w-100 rows-1 gap-thin">
+          <div class="cols-4 z-index-1 pos-relative w-100 rows-1 gap-thin">
             <router-link  
               v-for="product in items" 
               :to="route.params._id ? { name: 'Organization_Product', params: { _id: route.params._id, product: product._id  } } : { name: 'Product', params: { product: product._id  } }"
@@ -288,6 +288,7 @@
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
   import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 
+  const emits = defineEmits(['page-loading', 'page-loaded']);
   const route = useRoute()
   const router = useRouter()
   const { generateFilters, formatDate } = useGlobalMixins()
@@ -459,7 +460,9 @@
   }
 
   onMounted(async () => {
+    emits('page-loading');
     await loadCategoryData();
+    emits('page-loaded');
   });
 
   onUnmounted(() => {

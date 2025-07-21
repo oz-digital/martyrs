@@ -80,7 +80,7 @@
 
 				<img loading="lazy" 
 					v-if="users.state.current.profile.photo && users.state.current.profile.photo.length > 0" 
-					:src="(FILE_SERVER_URL || '')+ users.state.current.profile.photo" 
+					:src="(FILE_SERVER_URL || '') + users.state.current.profile.photo" 
 					class="radius-extra bg-white mn-b-small object-fit-cover i-extra" 
 				/>
 				

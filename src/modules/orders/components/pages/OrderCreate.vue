@@ -110,7 +110,7 @@
       </Button>
 
 		  <p class='mn-b-thin'>
-				I agree that placing the order places me under an obligation to make a payment in accordance with <a class="t-semi font-second t-second" href="/legal/terms-of-use" target="_blank">Terms of Use.</a>
+				I agree that placing the order places me under an obligation to make a payment in accordance with <a class="t-semi font-second t-second" href="/pages/terms-of-use" target="_blank">Terms of Use.</a>
 			</p>
 			<p >
 				
