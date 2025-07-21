@@ -6,7 +6,7 @@
 			<svg 
 				v-if="!route.meta.title_hide"
 				@click="handleBackNavigation()" 
-				class="pos-absolute cursor-pointer i-semi pos-l-medium"
+				class="pos-absolute cursor-pointer i-medium pos-l-medium"
 				width="12"
 				height="22"
 				viewBox="0 0 12 22"
@@ -18,14 +18,14 @@
 		</transition>
 
 		<transition name="slideIn"  mode="out-in">
-			<div :key="route.meta.title" class="header-title">
+			<div :key="route.meta.title" class="h-2r flex flex-center header-title">
 				<component
 					v-if="props.logotype && route.meta.title_hide"
 				  :is="props.logotype"
 				  :theme="theme"
 				/>
 
-				<span v-else class="t-semi h-2r lh-semi h5 d-block" >
+				<span v-else class="t-semi lh-semi h5 d-block" >
 					{{ formateText(globals.state.navigation_bar.name || route.meta?.title?.[locale.toLowerCase()] || route.name) }}
 				</span>
 			</div>
@@ -41,18 +41,18 @@
 					:showLoader="false"
 					class="cursor-pointer pd-zero "
 					> 
-					<IconShopcart class="i-semi" fill="rgb(var(--main))" />
+					<IconShopcart class="i-medium" fill="rgb(var(--main))" />
 				</Button>
 			</transition>
 
-	    <transition-group v-if="actions.length > 0" name="slideIn" class="i-semi" tag="div">
+	    <transition-group v-if="actions.length > 0" name="slideIn" class="i-medium" tag="div">
 	      <template v-for="(item, index) in actions" :key="index">
 	        <component
 						v-if="typeof item.condition === 'function' ? item.condition(router, route) : item.condition"
 	          :is="item.component"
 	          v-bind="item.props"
 	          @click="item.action(router, route)"
-	          class="i-semi cursor-pointer "
+	          class="i-medium cursor-pointer "
 	        />
 	      </template>
 	    </transition-group>
@@ -61,7 +61,7 @@
 				<IconProfile 
 					v-if="route.meta.title_hide"
 					@click="handleToggle()" 
-					class="cursor-pointer i-semi"
+					class="cursor-pointer i-medium"
 					fill="rgb(var(--main))" 
 				/>
 			</transition>
