@@ -113,6 +113,12 @@ const menuItems = [
     icon: IconGallery
   },
   {
+    name: 'applications',
+    title: 'Applications',
+    routeName: 'BackofficeApplications',
+    icon: IconEvents
+  },
+  {
     name: 'events',
     title: 'Events',
     routeName: 'BackofficeEvents Backoffice',

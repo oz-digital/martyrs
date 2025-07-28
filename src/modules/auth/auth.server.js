@@ -9,6 +9,7 @@ import RequestModel from './models/request.model.js';
 import RoleModel from './models/role.model.js';
 import UserModel from './models/user.model.js';
 import VisitorModel from './models/visitor.model.js';
+
 function initializeAuth(app, db, origins, publicPath) {
   // Настраиваем модели в объекте базы данных
   db.role = RoleModel(db);

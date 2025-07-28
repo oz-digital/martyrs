@@ -144,21 +144,22 @@ export default (projectRoot) => {
       level: 'verbose',
     },
     stats: {
-      colors: true,
-      hash: true,
-      version: true,
-      timings: true,
-      assets: true,
-      chunks: true,
-      modules: true, 
-      reasons: true,
-      children: true,
-      source: true, 
-      errors: true, 
-      errorDetails: true, 
-      errorStack: true,
+      // Минимальный вывод
+      preset: 'minimal',
+      // Или более детальная настройка:
+      modules: false,
+      chunks: false,
+      chunkModules: false,
+      chunkOrigins: false,
+      entrypoints: false,
+      assets: false,
+      moduleTrace: false,
+      errorDetails: false,
+      // Показывать только ошибки и предупреждения
+      errors: true,
       warnings: true,
-      publicPath: true
-    },
+      // Цвета в терминале
+      colors: true
+    }
   };
 };

@@ -67,13 +67,6 @@
           <span>{{ reason.label }}</span>
         </div>
       </div>
-      
-      <Field
-        v-if="selectedReason === 'custom'"
-        v-model:field="customReasonText"
-        placeholder="Enter custom reason"
-        class="w-100 bg-light radius-small pd-medium"
-      />
     </div>
     
     <Field
@@ -85,19 +78,23 @@
     />
     
     <div class="flex-nowrap flex gap-small">
-      <button 
-        @click="$emit('close')" 
+      <Button
+        :submit="() => $emit('close')"
+        :showLoader="false"
+        :showSucces="false"
         class="pd-small radius-small flex-center flex w-max cursor-pointer t-transp"
       >
         Cancel
-      </button>
+      </Button>
       
-      <button 
-        @click="saveAdjustment" 
+      <Button
+        :submit="saveAdjustment"
+        :showLoader="true"
+        :showSucces="true"
         class="pd-small radius-small flex-center flex w-100 cursor-pointer bg-main t-black"
       >
         Save Adjustment
-      </button>
+      </Button>
     </div>
   </div>
 </template>
@@ -107,9 +104,11 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Field from '@martyrs/src/components/Field/Field.vue'
 import Select from '@martyrs/src/components/Select/Select.vue'
+import Button from '@martyrs/src/components/Button/Button.vue'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as spots from '@martyrs/src/modules/spots/store/spots.js'
 import variants from '@martyrs/src/modules/products/store/variants.store.js'
+import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js'
 
 const route = useRoute()
 
@@ -128,12 +127,11 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['save', 'close'])
+const emit = defineEmits(['close', 'adjustment-created'])
 
 // Form state
 const quantity = ref(0)
-const selectedReason = ref('custom')
-const customReasonText = ref('')
+const selectedReason = ref('restock')
 const note = ref('')
 const selectedStorage = ref(null)
 const selectedVariant = ref(null)
@@ -147,7 +145,7 @@ const adjustmentReasons = [
   { label: 'Return', value: 'return', icon: IconMisplacement },
   { label: 'Damage', value: 'damage', icon: IconThief },
   { label: 'Transfer', value: 'transfer', icon: IconStocktake },
-  { label: 'Custom', value: 'custom', icon: IconCustom },
+  { label: 'Other', value: 'custom', icon: IconCustom },
 ]
 
 function formatPrice(price) {
@@ -193,33 +191,52 @@ onMounted(async () => {
   }
 })
 
-function saveAdjustment() {
+async function saveAdjustment() {
   if (!selectedVariant.value) {
     alert('Please select a variant')
-    return
+    throw new Error('Please select a variant')
   }
   if (!selectedStorage.value) {
     alert('Please select a storage')
-    return
+    throw new Error('Please select a storage')
   }
 
-  const adjustmentData = {
-    product: props.product._id,
-    variant: selectedVariant.value,
-    storage: selectedStorage.value,
-    source: {
-      type: 'User',
-      target: auth.state.user._id
-    },
-    quantity: parseInt(quantity.value || 0),
-    reason: selectedReason.value === 'custom' ? customReasonText.value : selectedReason.value,
-    comment: note.value || '',
-    creator: {
-      type: 'user',
-      target: auth.state.user._id
+  try {
+    const adjustmentData = {
+      product: props.product._id,
+      variant: selectedVariant.value,
+      storage: selectedStorage.value,
+      source: {
+        type: 'User',
+        target: auth.state.user._id
+      },
+      quantity: parseInt(quantity.value || 0),
+      reason: selectedReason.value,
+      comment: note.value || '',
+      owner: {
+        type: 'organization',
+        target: route.params._id
+      },
+      creator: {
+        type: 'user',
+        target: auth.state.user._id
+      }
     }
+    
+    const createdAdjustment = await inventory.actions.createAdjustment(adjustmentData)
+    
+    // Emit the adjustment data for parent component to update the product
+    emit('adjustment-created', {
+      product: props.product._id,
+      storage: selectedStorage.value,
+      quantity: parseInt(quantity.value || 0),
+      storageName: storageOptions.value.find(s => s._id === selectedStorage.value)?.name
+    })
+    
+    emit('close')
+  } catch (err) {
+    console.error(err)
+    throw err
   }
-  
-  emit('save', adjustmentData)
 }
 </script>

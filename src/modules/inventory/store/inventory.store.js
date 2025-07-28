@@ -4,7 +4,6 @@ import $axios from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
 
 const state = reactive({
   adjustments: [],
-  balance: [],
   availability: [],
   inventories: [],
   current: {
@@ -39,19 +38,6 @@ const actions = {
     try {
       const response = await $axios.post('/api/inventory/adjustments/create', data);
       state.adjustments.unshift(response.data);
-      return response.data;
-    } catch (error) {
-      setError(error);
-      throw error;
-    }
-  },
-  
-  // Balance
-  async fetchBalance(options = {}) {
-    try {
-      const params = { ...state.filters, ...options };
-      const response = await $axios.get('/api/inventory/balance', { params });
-      state.balance = response.data;
       return response.data;
     } catch (error) {
       setError(error);

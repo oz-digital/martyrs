@@ -14,13 +14,13 @@ class AvailabilityWorker {
   }
   
   /**
-   * Initialize change stream to watch for stock balance changes
+   * Initialize change stream to watch for stock availability changes
    */
   initChangeStream() {
     try {
-      const stockBalance = this.db.stockBalance;
+      const stockAvailability = this.db.stockAvailability;
       
-      stockBalance.collection.watch(
+      stockAvailability.collection.watch(
         [{ $match: { operationType: { $in: ['insert', 'update', 'replace'] } } }],
         { fullDocument: 'updateLookup' } // Critical to get the complete document after updates
       ).on('change', async (event) => {
@@ -43,7 +43,7 @@ class AvailabilityWorker {
         }
       });
       
-      this.logger.info('Stock balance change stream initialized');
+      this.logger.info('Stock availability change stream initialized');
     } catch (error) {
       this.logger.error('Error initializing change stream:', error);
       // If change streams aren't supported, fall back to timer-based updates
@@ -59,11 +59,11 @@ class AvailabilityWorker {
     
     setInterval(async () => {
       try {
-        const stockBalance = this.db.stockBalance;
+        const stockAvailability = this.db.stockAvailability;
         
-        // Find recently updated balances (in the last interval)
+        // Find recently updated availability records (in the last interval)
         // Use index on updatedAt for efficient querying
-        const recentUpdates = await stockBalance.find({
+        const recentUpdates = await stockAvailability.find({
           updatedAt: { $gte: new Date(Date.now() - REFRESH_INTERVAL * 2) }
         })
         .sort({ updatedAt: -1 })
@@ -71,9 +71,9 @@ class AvailabilityWorker {
         
         // Group by product+storage to avoid duplicate recalcs
         const updates = new Map();
-        recentUpdates.forEach(balance => {
-          const key = `${balance.product.toString()}_${balance.storage.toString()}`;
-          updates.set(key, { product: balance.product, storage: balance.storage });
+        recentUpdates.forEach(item => {
+          const key = `${item.product.toString()}_${item.storage.toString()}`;
+          updates.set(key, { product: item.product, storage: item.storage });
         });
         
         // Process each unique product+storage asynchronously
@@ -101,7 +101,6 @@ class AvailabilityWorker {
   async recalcByProduct(product, storage, session = null) {
     try {
       const Product = this.db.product;
-      const StockBalance = this.db.stockBalance;
       const StockAvailability = this.db.stockAvailability;
       
       // Get the product with its variants - using $lookup instead of populate for better performance
@@ -140,8 +139,8 @@ class AvailabilityWorker {
       // Add explicit base product (no variant) - better than null for indexing
       const explicitBaseVariantId = '000000000000000000000000'; // ObjectId for base variant
       
-      // Get all balances for this product's variants at this storage
-      const balances = await StockBalance.find({
+      // Get all availability records for this product's variants at this storage
+      const availabilityItems = await StockAvailability.find({
         product,
         $or: [
           { variant: { $in: variantIds } },
@@ -151,10 +150,10 @@ class AvailabilityWorker {
       }).session(session).lean();
       
       // Create a map for quick lookup
-      const balanceMap = new Map();
-      balances.forEach(balance => {
-        const key = balance.variant ? balance.variant.toString() : explicitBaseVariantId;
-        balanceMap.set(key, balance);
+      const availabilityMap = new Map();
+      availabilityItems.forEach(item => {
+        const key = item.variant ? item.variant.toString() : explicitBaseVariantId;
+        availabilityMap.set(key, item);
       });
       
       // Get all ingredient IDs from product and variants
@@ -174,19 +173,19 @@ class AvailabilityWorker {
         });
       }
       
-      // Get ingredient balances if needed
-      let ingredientBalances = [];
+      // Get ingredient availability if needed
+      let ingredientItems = [];
       if (ingredientIds.size > 0) {
-        ingredientBalances = await StockBalance.find({
+        ingredientItems = await StockAvailability.find({
           product: { $in: Array.from(ingredientIds).map(id => this.db.mongoose.Types.ObjectId(id)) },
           storage
         }).session(session).lean();
       }
       
-      // Create ingredient balance map
+      // Create ingredient availability map
       const ingredientMap = new Map();
-      ingredientBalances.forEach(balance => {
-        ingredientMap.set(balance.product.toString(), balance);
+      ingredientItems.forEach(item => {
+        ingredientMap.set(item.product.toString(), item);
       });
       
       // Prepare bulk operations for StockAvailability updates
@@ -199,7 +198,7 @@ class AvailabilityWorker {
         null, // null variant for base product
         storage,
         productData, 
-        balanceMap.get(explicitBaseVariantId), 
+        availabilityMap.get(explicitBaseVariantId), 
         ingredientMap
       );
       
@@ -211,7 +210,7 @@ class AvailabilityWorker {
           variant._id, 
           storage,
           variant, 
-          balanceMap.get(variant._id.toString()), 
+          availabilityMap.get(variant._id.toString()), 
           ingredientMap
         );
       }
@@ -232,9 +231,9 @@ class AvailabilityWorker {
   /**
    * Helper to process a single variant's availability
    */
-  _processVariantAvailability(bulkOps, productId, variantId, storageId, variant, balance, ingredientMap) {
-    // Default values if no balance found
-    const stockQuantity = balance ? balance.quantity : 0;
+  _processVariantAvailability(bulkOps, productId, variantId, storageId, variant, availabilityItem, ingredientMap) {
+    // Default values if no availability item found
+    const stockQuantity = availabilityItem ? availabilityItem.quantity : 0;
     
     // Start with direct stock
     let availableQuantity = stockQuantity;
@@ -251,8 +250,8 @@ class AvailabilityWorker {
         // Skip optional ingredients
         if (ingredient.optional) continue;
         
-        const ingBalance = ingredientMap.get(ingId);
-        const stockIng = ingBalance ? ingBalance.quantity : 0;
+        const ingAvailability = ingredientMap.get(ingId);
+        const stockIng = ingAvailability ? ingAvailability.quantity : 0;
         
         // Calculate how many products can be made with this ingredient
         if (requiredQty > 0) {

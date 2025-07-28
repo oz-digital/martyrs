@@ -119,7 +119,7 @@ async function Submit() {
         <slot></slot>
       </span>
       <!-- Loading state -->
-      <Loader v-else-if="loading && !error && showLoader"   class="button-content pos-relative pos-t-0 pos-l-0 loading"/>
+      <Loader v-else-if="loading && !error && showLoader"   class="icon button-content pos-relative pos-t-0 pos-l-0 loading"/>
       <!-- Success state -->
       <span v-else-if="finished && showSucces" class="button-content t-semi t-center w-100 loading t-black">
         <template v-if="text.success">

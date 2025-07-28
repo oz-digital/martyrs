@@ -48,22 +48,29 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
           const jsonStats = stats.toJson();
 
           if (stats.hasErrors()) {
-            console.error(chalk.red("Client compilation error"));
-            jsonStats.errors.forEach((err) => {
-              if (err.details) {
-                console.error(err.details);
-              } else if (typeof err === 'object') {
-                try {
-                  console.error(JSON.stringify(err, null, 2));
-                } catch (e) {
-                  console.error(e);
-                }
-              } else {
-                console.error(chalk.red(err.slice()));
+            console.error(chalk.red("❌ Ошибка компиляции"));
+            
+            jsonStats.errors.forEach((err, index) => {
+              console.error(chalk.red(`\n=== ОШИБКА ${index + 1} ===`));
+              
+              // Основное сообщение ошибки
+              if (err.message) {
+                let message = err.message.replace(/\u001b\[[0-9;]*m/g, '');
+                console.error(chalk.red(message));
               }
+              
+              // ФАЙЛ ГДЕ ОШИБКА
+              if (err.moduleName) {
+                console.error(chalk.yellow(`📄 ФАЙЛ: ${err.moduleName}`));
+              }
+              
+              console.error(''); // пустая строка для разделения
             });
+            
             return;
           }
+
+          
           const { entrypoints, outputPath } = jsonStats;
           const { main: { assets: [mainChunkPath] } } = entrypoints;
           const mainModulePath = path.resolve(outputPath, mainChunkPath.name);
@@ -139,6 +146,7 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
   const clientDevMiddleware = devMiddleware(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
     serverSideRender: true,
+    stats: 'minimal', // или 'errors-only'
     stats: {
       children: true
     },

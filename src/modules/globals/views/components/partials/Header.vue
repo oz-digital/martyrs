@@ -82,7 +82,7 @@
 		<button  
 			aria-label="menu"
 			@click="() => globals.state.isOpenSidebar = !globals.state.isOpenSidebar" 
-			class="cursor-pointer menu-btn"
+			class="cursor-pointer mobile-only menu-btn"
 			:class="{
 				'menu-btn_active': globals.state.isOpenSidebar
 			}"

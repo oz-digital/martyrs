@@ -3,7 +3,7 @@ import Customers from '@martyrs/src/modules/orders/components/pages/Customers.vu
 const customersRoutes = [
   {
     path: '',
-    name: 'CustomersList',
+    name: 'Customers',
     component: Customers,
     meta: {
       title: {

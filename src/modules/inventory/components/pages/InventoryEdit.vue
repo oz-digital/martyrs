@@ -254,7 +254,7 @@
  
   import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as inventory from '@martyrs/src/modules/inventory/store/ inventory.store.js';
+  import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
   import * as spots from '@martyrs/src/modules/spots/store/spots.js';
   import variants from '@martyrs/src/modules/products/store/variants.store.js';

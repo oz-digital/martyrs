@@ -34,8 +34,8 @@ export default function(db) {
     comment: { rule: 'optional', validator: Validator.schema().string() }
   };
   
-  // Balance & Availability verifiers
-  const balanceQueryConfig = {
+  // Availability & Inventory query verifiers
+  const queryConfig = {
     product: { rule: 'optional', validator: Validator.schema().string() },
     storage: { rule: 'optional', validator: Validator.schema().string() },
     skip: { rule: 'optional', validator: Validator.schema().integer().min(0), default: 0 },
@@ -65,7 +65,7 @@ export default function(db) {
   
   const adjustmentQueryVerifier = new Verifier(adjustmentQueryConfig);
   const adjustmentBodyVerifier = new Verifier(adjustmentBodyConfig);
-  const balanceQueryVerifier = new Verifier(balanceQueryConfig);
+  const queryVerifier = new Verifier(queryConfig);
   const inventoryBodyVerifier = new Verifier(inventoryBodyConfig);
   
   return {
@@ -85,19 +85,8 @@ export default function(db) {
       req.verifiedBody = verification.verifiedData;
       next();
     },
-    verifyBalanceQuery: (req, res, next) => {
-      const verification = balanceQueryVerifier.verify(req.query);
-      if (!verification.isValid) {
-        return res.status(400).json({ errors: verification.verificationErrors });
-      }
-      // Преобразуем числовые поля
-      verification.verifiedData.skip = parseInt(verification.verifiedData.skip) || 0;
-      verification.verifiedData.limit = parseInt(verification.verifiedData.limit) || 50;
-      req.verifiedQuery = verification.verifiedData;
-      next();
-    },
     verifyAvailabilityQuery: (req, res, next) => {
-      const verification = balanceQueryVerifier.verify(req.query);
+      const verification = queryVerifier.verify(req.query);
       if (!verification.isValid) {
         return res.status(400).json({ errors: verification.verificationErrors });
       }
@@ -108,7 +97,7 @@ export default function(db) {
       next();
     },
     verifyInventoryQuery: (req, res, next) => {
-      const verification = balanceQueryVerifier.verify(req.query);
+      const verification = queryVerifier.verify(req.query);
       if (!verification.isValid) {
         return res.status(400).json({ errors: verification.verificationErrors });
       }

@@ -119,7 +119,7 @@
       :horizontal="skeleton.horizontal"
       :loading="skeleton.apply_to_slot"
       :key="'skeleton-' + i"
-      :class="replaceClasses('radius-medium bg-light pd-thin flex-child-default o-hidden d-block', skeleton.class)"
+      :class="replaceClasses('radius-medium bg-light pd-thin flex-child-default mn-b-thin o-hidden d-block', skeleton.class)"
     />
     <Loader v-if="isLoading && skeleton?.hide"/>
   </TransitionGroup>

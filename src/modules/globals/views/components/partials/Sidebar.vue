@@ -1,8 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
-
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
 
 const props = defineProps({
@@ -29,11 +28,23 @@ const emits = defineEmits([
 ])
 
 const { isPhone, isTablet } = useGlobalMixins()
-
 const router = useRouter()
+const route = useRoute()
 
 const toggleSidebar = () => {
   emits('closeSidebar')
+}
+
+const handleMouseEnter = () => {
+  if (route.meta?.sidebar_hover && !isPhone() && !isTablet()) {
+    globals.state.isOpenSidebar = true
+  }
+}
+
+const handleMouseLeave = () => {
+  if (route.meta?.sidebar_hover && !isPhone() && !isTablet()) {
+    globals.state.isOpenSidebar = false
+  }
 }
 
 router.beforeEach((to, from) => {
@@ -41,7 +52,6 @@ router.beforeEach((to, from) => {
     emits('closeSidebar')
   }
 })
-
 </script>
 
 <template>
@@ -56,11 +66,11 @@ router.beforeEach((to, from) => {
       ? 't-black bg-white br-light'
       : 't-white bg-black br-dark'
     ]"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
-
     <!-- Slot for navigation content -->
     <slot></slot>
-
     <div v-if="MOBILE_APP" @click="() => toggleSidebar()"  class="pos-relative">
       <div class="bg-light radius-medium pd-medium">
         <p  class="t-medium t-black-transp-60">
@@ -68,7 +78,6 @@ router.beforeEach((to, from) => {
         </p>
       </div>
     </div>
-
     <div 
       class="br-solid w-100 br-t"
       :class="{ 
@@ -106,27 +115,22 @@ router.beforeEach((to, from) => {
   width: 0;
   display: none;
 }
-
 .visible {
   opacity: 1;
   display: block;
 }
-
 /* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
   background-color: var(--grey-micro);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--grey-small);
 }
-</style>  
+</style>

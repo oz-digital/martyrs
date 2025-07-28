@@ -115,7 +115,7 @@ function initializeOrders(app, store, router, options = {}) {
       routes: routerCustomers,
       routeNamePrefix: 'Backoffice',
       filterConfig: {
-        include: ['CustomersList'],
+        include: ['Customers'],
       },
       meta: {
         context: 'backoffice',
@@ -131,7 +131,7 @@ function initializeOrders(app, store, router, options = {}) {
       routes: routerCustomers,
       routeNamePrefix: 'Organization',
       filterConfig: {
-        include: ['CustomersList'],
+        include: ['Customers'],
       },
       meta: {
         context: 'organization',

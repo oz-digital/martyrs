@@ -20,5 +20,5 @@ export default (function (app, db) {
   app.post('/api/organizations/create', controller.create);
   app.post('/api/organizations/:_id/update', controller.update);
   app.delete('/api/organizations/:_id/delete', controller.delete);
-  app.get('/api/auth/check-accesses', [authJwt.verifyToken()], controller.checkAccesses);
+  app.get('/api/organizations/check-accesses', [authJwt.verifyToken()], controller.checkAccesses);
 });

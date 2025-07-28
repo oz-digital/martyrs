@@ -15,7 +15,7 @@
         
         <div>
           <h3 class="mn-b-nano">{{ product.name }}</h3>
-          <p class="t-small t-transp">SKU: {{ product.sku }}</p>
+          <!-- <p class="t-small t-transp">SKU: {{ product.sku }}</p> -->
         </div>
       </div>
     </div>
@@ -71,20 +71,23 @@
       </table>
     </div>
     
-    <button 
-      @click="$emit('close')" 
+    <Button
+      :submit="() => $emit('close')"
+      :showLoader="false"
+      :showSucces="false"
       class="pd-small radius-small flex-center flex w-max cursor-pointer bg-main t-black"
     >
       Close
-    </button>
+    </Button>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
-// Import inventory API functions
-const API_BASE = '/api/inventory'
+import Button from '@martyrs/src/components/Button/Button.vue'
+
+import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js'
 
 const props = defineProps({
   product: {
@@ -104,14 +107,21 @@ onMounted(async () => {
 })
 
 async function loadHistory() {
+  loading.value = true
   try {
     // Fetch adjustments for this product
-    const response = await fetch(`${API_BASE}/adjustments?product=${props.product._id}&limit=50&sort=createdAt&order=desc`)
-    const data = await response.json()
+    const data = await inventory.actions.fetchAdjustments({
+      product: props.product._id,
+      limit: 50,
+      sortParam: 'createdAt',
+      sortOrder: 'desc',
+      lookup: ['creator', 'source', 'storage']
+    })
     
     history.value = data || []
   } catch (error) {
     console.error('Error loading history:', error)
+    history.value = []
   } finally {
     loading.value = false
   }
@@ -122,7 +132,9 @@ function formatDate(dateString) {
   return date.toLocaleDateString('en-US', { 
     day: 'numeric', 
     month: 'short', 
-    year: 'numeric' 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   })
 }
 </script>

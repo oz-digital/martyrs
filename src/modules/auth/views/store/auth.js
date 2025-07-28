@@ -40,7 +40,7 @@ const actions = {
         setAuthToken(accessToken);
 
         // Проверка токена через серверный маршрут
-        const response = await $axios.get('/api/auth/check-accesses');
+        const response = await $axios.get('/api/organizations/check-accesses');
         const userAccesses = response.data;
         state.accesses = userAccesses;
 

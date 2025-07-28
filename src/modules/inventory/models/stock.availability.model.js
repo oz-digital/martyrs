@@ -1,3 +1,5 @@
+import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+
 export default db => {
   const StockAvailabilitySchema = new db.mongoose.Schema({
     product: {
@@ -8,18 +10,18 @@ export default db => {
     variant: {
       type: db.mongoose.Schema.Types.ObjectId,
       ref: 'Variant',
-      required: true,
     },
     storage: {
       type: db.mongoose.Schema.Types.ObjectId,
       ref: 'Spot',
       required: true,
     },
-    // Computed availability
+    // Physical stock quantity (was in StockBalance)
     quantity: {
       type: Number,
       default: 0,
     },
+    // Computed availability for sale
     available: {
       type: Number,
       default: 0,
@@ -37,17 +39,28 @@ export default db => {
       required: Number,
       available: Number,
     }],
+    calculatedAt: {
+      type: Date,
+      default: Date.now,
+    }
   }, {
     timestamps: {
       currentTime: () => Date.now(),
     },
   });
 
-  // Create indexes for efficient querying
-  StockAvailabilitySchema.index(
-    { product: 1, variant: 1, storage: 1 },
-    { unique: true }
-  );
+  applyOwnershipSchema(StockAvailabilitySchema, db);
+
+  // Add proper composite index for lookups (from StockBalance)
+  StockAvailabilitySchema.index({product: 1, variant: 1, storage: 1}, {unique: true});
+  
+  // Add individual indexes for common lookups (from StockBalance)
+  StockAvailabilitySchema.index({updatedAt: -1});
+  StockAvailabilitySchema.index({ storage: 1, variant: 1 });
+  StockAvailabilitySchema.index({ storage: 1, product: 1 });
+  StockAvailabilitySchema.index({ quantity: -1 });
+  
+  // Original availability indexes
   StockAvailabilitySchema.index({ storage: 1 });
   StockAvailabilitySchema.index({ available: -1 }); 
   

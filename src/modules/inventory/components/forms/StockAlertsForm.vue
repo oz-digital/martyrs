@@ -43,19 +43,23 @@
     
     <!-- Actions -->
     <div class="flex-nowrap flex gap-small">
-      <button 
-        @click="$emit('close')" 
+      <Button
+        :submit="() => $emit('close')"
+        :showLoader="false"
+        :showSucces="false"
         class="pd-small radius-small flex-center flex w-max cursor-pointer t-transp"
       >
         Cancel
-      </button>
+      </Button>
       
-      <button 
-        @click="saveAlert" 
+      <Button
+        :submit="saveAlert"
+        :showLoader="true"
+        :showSucces="true"
         class="pd-small radius-small flex-center flex w-100 cursor-pointer bg-main t-black"
       >
         Save Alert
-      </button>
+      </Button>
     </div>
   </div>
 </template>
@@ -65,6 +69,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Field from '@martyrs/src/components/Field/Field.vue'
 import Select from '@martyrs/src/components/Select/Select.vue'
+import Button from '@martyrs/src/components/Button/Button.vue'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as spots from '@martyrs/src/modules/spots/store/spots.js'
 import variants from '@martyrs/src/modules/products/store/variants.store.js'
@@ -79,7 +84,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['save', 'close'])
+const emit = defineEmits(['close'])
 
 // Form state
 const selectedVariant = ref(null)
@@ -160,22 +165,28 @@ onMounted(async () => {
 })
 
 async function saveAlert() {
-  const alertData = {
-    product: props.product._id,
-    variant: selectedVariant.value,
-    storage: selectedStorage.value,
-    threshold: parseInt(threshold.value || 0),
-    enabled: true,
-    owner: {
-      type: 'organization',
-      target: route.params._id
-    },
-    creator: {
-      type: 'user',
-      target: auth.state.user._id
+  try {
+    const alertData = {
+      product: props.product._id,
+      variant: selectedVariant.value,
+      storage: selectedStorage.value,
+      threshold: parseInt(threshold.value || 0),
+      enabled: true,
+      owner: {
+        type: 'organization',
+        target: route.params._id
+      },
+      creator: {
+        type: 'user',
+        target: auth.state.user._id
+      }
     }
+    
+    await stockAlerts.create(alertData)
+    emit('close')
+  } catch (err) {
+    console.error(err)
+    throw err
   }
-  
-  emit('save', alertData)
 }
 </script>

@@ -4,16 +4,9 @@
     <header class="mn-b-medium flex-v-center flex-nowrap flex">
       <h2>Inventory</h2>
       <button
-        v-if="route.meta.context === 'backoffice'"
-        @click="router.push({ name: 'BackofficeInventoryAudit' })"
-        class="mn-l-small radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second"
-        v-html="'+'"
-      />
-      <button
-        v-if="route.meta.context === 'organization'"
-        @click="router.push({ name: 'OrganizationInventoryAudit', params: { _id: route.params._id } })"
-        class="mn-l-small radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second"
-        v-html="'+'"
+        @click="route.meta.context === 'backoffice' ? router.push({ name: 'BackofficeInventoryAudit' }) : router.push({ name: 'OrganizationInventoryAudit', params: { _id: route.params._id } })"
+        class="mn-l-auto radius-small button t-white bg-second"
+        v-html="'+ New Audit'"
       />
     </header>
 
@@ -22,6 +15,7 @@
       <Feed
         :search="true"
         v-model:sort="sort"
+        v-model:items="items"
         :store="{
           read: (options) => products.actions.read(options),
           state: products.state
@@ -41,7 +35,6 @@
           sortParam: sort.param,
           sortOrder: sort.order
         }"
-        v-slot="{ items }"
       >
         <Table
           :columns="columns.filter(col => col.visible)"
@@ -159,7 +152,7 @@
       <AdjustmentForm
         :product="selectedProduct"
         @close="showAuditModal = false"
-        @save="handleAuditSave"
+        @adjustment-created="handleAdjustmentCreated"
       />
     </Popup>
 
@@ -172,7 +165,6 @@
       <StockAlertsForm
         :product="selectedProduct"
         @close="showReorderModal = false"
-        @save="handleAlertSave"
       />
     </Popup>
 
@@ -228,7 +220,7 @@ import HistoryView from '../forms/HistoryView.vue'
 import ColumnSettingsMenu from '../forms/ColumnSettingsMenu.vue'
 
 // Stores
-import * as inventory from '@martyrs/src/modules/inventory/store/ inventory.store.js'
+import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js'
 import * as products from '@martyrs/src/modules/products/store/products.js'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import stockAlerts from '@martyrs/src/modules/inventory/store/stock.alerts.store.js'
@@ -237,6 +229,9 @@ import stockAlerts from '@martyrs/src/modules/inventory/store/stock.alerts.store
 const route = useRoute()
 const router = useRouter()
 const { formatPrice } = useGlobalMixins()
+
+// Products items state
+const items = ref([])
 
 // Feed controls
 const sort = ref({
@@ -290,6 +285,37 @@ function openStockAudit(row) {
   selectedProduct.value = row
   showAuditModal.value = true
 }
+
+// Update product after adjustment
+function handleAdjustmentCreated(adjustment) {
+  // Find the product in items array
+  const productIndex = items.value.findIndex(item => item._id === adjustment.product)
+  
+  if (productIndex !== -1) {
+    // Update the available quantity
+    items.value[productIndex].available += adjustment.quantity
+    
+    // Update availabilityDetails if present
+    if (items.value[productIndex].availabilityDetails) {
+      const storageDetail = items.value[productIndex].availabilityDetails.find(
+        detail => detail.storage === adjustment.storage
+      )
+      
+      if (storageDetail) {
+        storageDetail.available += adjustment.quantity
+      } else {
+        // Add new storage detail if not found
+        items.value[productIndex].availabilityDetails.push({
+          storage: adjustment.storage,
+          available: adjustment.quantity,
+          storageName: adjustment.storageName || adjustment.storage
+        })
+      }
+    }
+  }
+  
+  showAuditModal.value = false
+}
 function openReorderSettings(row = null) {
   selectedProduct.value = row
   showReorderModal.value = true
@@ -300,32 +326,6 @@ function openStockHistory(row) {
 }
 function openViewSettings() {
   showSettingsModal.value = true
-}
-async function handleAuditSave(adjustmentData) {
-  try {
-    await inventory.actions.createAdjustment({
-      ...adjustmentData,
-      owner: {
-        type: 'organization',
-        target: route.params._id
-      },
-      creator: {
-        type: 'user',
-        target: auth.state.user._id
-      }
-    })
-    showAuditModal.value = false
-  } catch (err) {
-    console.error(err)
-  }
-}
-async function handleAlertSave(alertData) {
-  try {
-    await stockAlerts.create(alertData)
-    showReorderModal.value = false
-  } catch (err) {
-    console.error('Error saving alert:', err)
-  }
 }
 function handleColumnsUpdate(updated) {
   // Update column visibility
