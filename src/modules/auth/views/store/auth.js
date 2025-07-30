@@ -105,8 +105,8 @@ const actions = {
       
       // Переподключаем WebSocket с новым userId после входа
       console.log('[AUTH] Reconnecting WebSocket after login for user:', response.data._id);
-      globalWebSocket.disconnect();
-      await globalWebSocket.connect(response.data._id);
+      // globalWebSocket.disconnect();
+      // await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {
@@ -168,8 +168,8 @@ const actions = {
       
       // Переподключаем WebSocket с новым userId после регистрации
       console.log('[AUTH] Reconnecting WebSocket after signup for user:', response.data._id);
-      globalWebSocket.disconnect();
-      await globalWebSocket.connect(response.data._id);
+      // globalWebSocket.disconnect();
+      // await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {
