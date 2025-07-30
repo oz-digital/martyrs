@@ -24,7 +24,7 @@
           :to="{
           name: 'Spot Edit',
           params: {
-            _id: props.organization._id || props.organization,
+            _id: props.organization?._id || props.organization,
             spot: spot._id
           }
         }"

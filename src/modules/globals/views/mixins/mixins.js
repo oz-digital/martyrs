@@ -1,7 +1,13 @@
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import { inject } from 'vue';
 
 // useGlobalMixins.js
 export function useGlobalMixins() {
+  const isModuleInstalled = (moduleName) => {
+    const store = inject('store');
+    if (!store || !store.modules) return false;
+    return store.modules.includes(moduleName);
+  };
   const isAdmin = roles => {
     if (roles) {
       const isAdmin = roles.includes('ROLE_ADMIN') ? roles.includes('ROLE_ADMIN') : false;
@@ -287,6 +293,7 @@ export function useGlobalMixins() {
   const isXXLDesktop = () => isMediaMin('--xxl-desktop-min');
 
   return {
+    isModuleInstalled,
     isAdmin,
     hasAccess,
     returnCurrency,

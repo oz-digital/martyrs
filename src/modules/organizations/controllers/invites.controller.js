@@ -18,10 +18,24 @@ const сontrollerFactory = db => {
   };
   const read = async (req, res) => {
     try {
-      const invites = await Invite.find({ 'owner.target': req.params._id });
-      if (!invites || invites.length === 0) {
-        return res.status(200).send([]);
+      const { skip = 0, limit = 10, owner, target, search } = req.query;
+      
+      const query = {};
+      if (owner) query['owner.user'] = owner;
+      if (target) query['owner.target'] = target;
+      if (search) {
+        query.$or = [
+          { email: new RegExp(search, 'i') },
+          { phone: new RegExp(search, 'i') }
+        ];
       }
+
+      const invites = await Invite
+        .find(query)
+        .skip(parseInt(skip))
+        .limit(parseInt(limit))
+        .sort({ createdAt: -1 });
+      
       res.send(invites);
     } catch (err) {
       res.status(500).send({ message: err.message });
@@ -88,13 +102,37 @@ const сontrollerFactory = db => {
       res.status(500).json({ message: 'Something went wrong' });
     }
   };
-  const deleteInvite = async (req, res) => {
+  const update = async (req, res) => {
     try {
-      const invite = await Invite.findOneAndDelete({ _id: req.params._id });
+      const { _id, ...updateData } = req.body;
+      if (!_id) {
+        return res.status(400).send({ message: 'Invite ID is required' });
+      }
+      const invite = await Invite.findByIdAndUpdate(
+        _id,
+        updateData,
+        { new: true, runValidators: true }
+      );
       if (!invite) {
         return res.status(404).send({ message: 'Invite not found' });
       }
-      res.send({ message: 'Invite deleted successfully' });
+      res.send(invite);
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
+  };
+  
+  const deleteInvite = async (req, res) => {
+    try {
+      const { _id } = req.body;
+      if (!_id) {
+        return res.status(400).send({ message: 'Invite ID is required' });
+      }
+      const invite = await Invite.findOneAndDelete({ _id });
+      if (!invite) {
+        return res.status(404).send({ message: 'Invite not found' });
+      }
+      res.send(invite);
     } catch (err) {
       res.status(500).send({ message: err.message });
     }
@@ -103,6 +141,7 @@ const сontrollerFactory = db => {
     getOneByCode,
     read,
     create,
+    update,
     delete: deleteInvite,
   };
 };

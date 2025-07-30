@@ -14,7 +14,8 @@ import IconAddress from '@martyrs/src/modules/icons/entities/IconAddress.vue';
 
 // Import global mixins for access control
 import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
-const { hasAccess } = useGlobalMixins();
+
+const { hasAccess, isModuleInstalled } = useGlobalMixins();
 
 // Organization backoffice navigation configuration
 export const navigationItems = [
@@ -68,44 +69,44 @@ export const navigationItems = [
           name: 'Organization_Products',
           params: { _id: route.params._id }
         }),
-        visible: () => true // Public access
+        visible: () => isModuleInstalled('products')
       },
-      // {
-      //   title: 'Events',
-      //   iconComponent: IconEvents,
-      //   route: (auth, route) => ({
-      //     name: 'Organization_Events',
-      //     params: { _id: route.params._id }
-      //   }),
-      //   visible: () => true // Public access
-      // },
-      // {
-      //   title: 'Posts',
-      //   iconComponent: IconCommunity,
-      //   route: (auth, route) => ({
-      //     name: 'Organization_Posts',
-      //     params: { _id: route.params._id }
-      //   }),
-      //   visible: () => true // Public access
-      // },
-      // {
-      //   title: 'Spots',
-      //   iconComponent: IconAddress,
-      //   route: (auth, route) => ({
-      //     name: 'Organization_Spots',
-      //     params: { _id: route.params._id }
-      //   }),
-      //   visible: () => true // Public access
-      // },
-      // {
-      //   title: 'Gallery',
-      //   iconComponent: IconGallery,
-      //   route: (auth, route) => ({
-      //     name: 'Backoffice Gallery',
-      //     params: { _id: route.params._id }
-      //   }),
-      //   visible: () => true // Public access
-      // },
+      {
+        title: 'Events',
+        iconComponent: IconEvents,
+        route: (auth, route) => ({
+          name: 'Organization_Events',
+          params: { _id: route.params._id }
+        }),
+        visible: () => isModuleInstalled('events')
+      },
+      {
+        title: 'Posts',
+        iconComponent: IconCommunity,
+        route: (auth, route) => ({
+          name: 'Organization_Posts',
+          params: { _id: route.params._id }
+        }),
+        visible: () => isModuleInstalled('blogposts')
+      },
+      {
+        title: 'Spots',
+        iconComponent: IconAddress,
+        route: (auth, route) => ({
+          name: 'Organization_Spots',
+          params: { _id: route.params._id }
+        }),
+        visible: () => isModuleInstalled('spots')
+      },
+      {
+        title: 'Gallery',
+        iconComponent: IconGallery,
+        route: (auth, route) => ({
+          name: 'Backoffice Gallery',
+          params: { _id: route.params._id }
+        }),
+        visible: () => isModuleInstalled('gallery')
+      },
     ]
   },
   {
@@ -155,7 +156,7 @@ export const navigationItems = [
           name: 'Organization_Rents',
           params: { _id: route.params._id }
         }),
-        visible: (auth, route) => hasAccess(
+        visible: (auth, route) => isModuleInstalled('events') && hasAccess(
           route.params._id, 
           'orders', 
           'read', 

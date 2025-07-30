@@ -1,78 +1,75 @@
 <template>
   <div class="w-100 mn-x-auto pd-x-regular w-max-66r">
     <!-- Профиль организации -->
-    <div v-if="organizationData" class="mn-b-extra">
-      <div class="w-100 h-20r radius-regular o-hidden pos-relative">
+    <div v-if="organizationData" class="mn-b-big">
+      <!-- Обложка с статистикой -->
+      <div class="w-100 h-20r radius-medium o-hidden pos-relative">
         <img
           :src="organizationData?.profile?.photo"
           :alt="organizationData?.profile?.name"
           class="w-100 h-100 object-fit-cover"
         />
-        <div class="pos-absolute pos-t-0 pos-l-0 pos-r-0 pos-b-0 bg-black-transp-40 d-flex flex-align-end pd-medium">
-          <div class="d-flex gap-medium mn-l-auto">
-            <div class="t-white t-center">
-              <span class="p-big t-bold t-white">{{ organizationState.stats.members }}</span>
-              <span class="p-small uppercase t-white-transp-90">участников</span>
-            </div>
-            <div class="t-white t-center">
-              <span class="p-big t-bold t-white">{{ organizationState.stats.events }}</span>
-              <span class="p-small uppercase t-white-transp-90">событий</span>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="bg-white radius-regular pd-medium pos-relative mn-t-regular bs-black-small br-1px">
-        <div class="d-flex flex-nowrap flex-align-start gap-medium">
-          <div class="pos-relative flex-shrink-0">
+      
+      <!-- Основная информация -->
+      <div class="bg-light radius-medium pd-medium mn-t-regular">
+        <div class="flex gap-medium">
+          <!-- Аватар -->
+          <div class="pos-relative">
             <img
               :src="organizationData?.profile?.photo"
               :alt="organizationData?.profile?.name"
-              class="w-8r h-8r radius-big br-3px object-fit-cover bs-black-small"
+              class="w-8r h-8r radius-medium object-fit-cover"
             />
             <div
-              class="pos-absolute pos-b-1 pos-r-1 w-2r h-2r radius-big br-3px bs-black-small"
+              class="pos-absolute pos-b-micro pos-r-micro w-1r h-1r radius-extra"
               :class="{
-                'bg-green-nice': organizationState.status === 'active',
+                'bg-green': organizationState.status === 'active',
                 'bg-grey': organizationState.status === 'inactive',
-                'bg-yellow-nice': organizationState.status === 'busy'
+                'bg-yellow': organizationState.status === 'busy'
               }"
             ></div>
-            <div class="pos-absolute pos-t-1 pos-l-1 pos-r-1 pos-b-1 br-2px br-main br-pulse opacity-30"></div>
           </div>
-          <div class="flex-grow-1 pd-t-regular">
-            <div class="d-flex flex-align-center gap-small mn-b-small">
-              <h1 class="h1 font-main t-bold t-main">{{ organizationData?.profile?.name }}</h1>
+          
+          <!-- Информация -->
+          <div class="flex-child-1">
+            <div class="flex gap-small mn-b-small">
+              <h1 class="h1">{{ organizationData?.profile?.name }}</h1>
               <div
                 v-if="organizationData?.official"
-                class="d-flex flex-align-center gap-nano bg-second pd-nano radius-extra bs-black-small t-white p-small"
+                class="flex gap-micro bg-second pd-micro radius-small t-white p-small"
               >
-                <CheckCircle class="w-2r h-2r fill-white" />
+                <CheckCircle class="i-small fill-white" />
                 <span>Verified</span>
               </div>
             </div>
-            <p class="p-regular t-grey mn-b-medium">{{ organizationData?.profile?.description }}</p>
-            <div class="d-flex flex-wrap gap-medium mn-b-medium">
-              <div class="d-flex flex-align-center gap-nano bg-third pd-small radius-extra t-dark">
-                <Calendar class="w-2r h-2r fill-main" />
-                <!-- <span>Создана {{ formatDate(organizationData?.createdAt) }}</span> -->
+            
+            <p class="mn-b-medium t-grey">{{ organizationData?.profile?.description }}</p>
+            
+            <div class="flex gap-small mn-b-medium">
+              <div class="flex gap-micro bg-light pd-small radius-small">
+                <Calendar class="i-small fill-main" />
+                <!-- <span class="p-small">{{ formatDate(organizationData?.createdAt) }}</span> -->
               </div>
-              <div class="d-flex flex-align-center gap-nano bg-third pd-small radius-extra t-dark">
-                <Globe class="w-2r h-2r fill-main" />
-                <span>{{ organizationData?.types?.[0] }}</span>
+              <div class="flex gap-micro bg-light pd-small radius-small">
+                <Globe class="i-small fill-main" />
+                <span class="p-small">{{ organizationData?.types?.[0] }}</span>
               </div>
             </div>
-            <div class="d-flex flex-wrap gap-nano mn-b-medium">
+            
+            <div class="flex gap-micro mn-b-medium">
               <span
                 v-for="tag in organizationData?.profile?.tags"
                 :key="tag"
-                class="bg-main-transp-15 t-main pd-thin radius-extra"
+                class="bg-main-nano pd-micro radius-small p-small"
               >
                 {{ tag }}
               </span>
             </div>
-            <div class="d-flex flex-wrap gap-small">
-              <button class="bg-main pd-small radius-extra t-white bs-black-small hover-scale-1 transition-ease-in-out d-flex flex-align-center gap-nano">
-                <Users class="w-2r h-2r fill-white" />
+            
+            <div class="flex gap-small">
+              <button class="bg-main pd-small radius-small t-white flex gap-micro">
+                <Users class="i-small fill-white" />
                 Присоединиться
               </button>
               <ButtonToggleMembership
@@ -81,12 +78,12 @@
                 type="organization"
                 role="subscriber"
                 :target="organizationData"
-                :status="memberships.state.isSubscriber"
+                :status="membershipsStore.state.isSubscriber"
                 text="Подписаться"
-                class="bg-light pd-small radius-extra t-dark br-1px br-light hover-bg-third hover-t-main transition-ease-in-out d-flex flex-align-center gap-nano"
+                class="bg-light pd-small radius-small t-dark"
               />
-              <button class="bg-light pd-small radius-extra t-dark br-1px br-light hover-bg-third hover-t-main transition-ease-in-out d-flex flex-align-center gap-nano">
-                <Share2 class="w-2r h-2r fill-main" />
+              <button class="bg-light pd-small radius-small">
+                <Share2 class="i-small" />
               </button>
             </div>
           </div>
@@ -95,120 +92,129 @@
     </div>
 
     <!-- О нас и соцсети -->
-    <div v-if="organizationData" class="d-grid cols-2-1_3 gap-medium mn-b-extra mobile-only:cols-1">
-      <div class="bg-white pd-medium radius-extra bs-black-small br-1px">
-        <h3 class="h4 t-main t-bold mn-b-small">О нас</h3>
-        <p class="p-regular t-dark mn-b-medium">{{ organizationData?.profile?.description }}</p>
-        <div class="d-flex gap-medium">
+    <div v-if="organizationData" class="cols-2  gap-medium mn-b-big">
+      <!-- О нас -->
+      <div class="bg-light pd-medium radius-medium">
+        <h3 class="h4 mn-b-small">О нас</h3>
+        <p class="mn-b-medium">{{ organizationData?.profile?.description }}</p>
+        <div class="flex gap-medium">
           <div class="t-center">
-            <span class="p-big t-bold t-main">{{ organizationState.stats.projects }}</span>
-            <span class="p-small uppercase t-grey">проектов</span>
+            <div class="h3 t-main">{{ organizationState.stats.projects }}</div>
+            <div class="p-small t-grey uppercase">проектов</div>
           </div>
           <div class="t-center">
-            <span class="p-big t-bold t-main">{{ organizationState.stats.posts }}</span>
-            <span class="p-small uppercase t-grey">постов</span>
+            <div class="h3 t-main">{{ organizationState.stats.posts }}</div>
+            <div class="p-small t-grey uppercase">постов</div>
           </div>
         </div>
       </div>
-      <div class="bg-white pd-medium radius-extra bs-black-small br-1px">
-        <h3 class="h4 t-main t-bold mn-b-small">Мы в соцсетях</h3>
-        <div class="d-flex flex-column gap-small">
+      
+      <!-- Соцсети -->
+      <div class="bg-light pd-medium radius-medium">
+        <h3 class="h4 mn-b-small">Мы в соцсетях</h3>
+        <div class="flex flex-column gap-small">
           <a
             v-if="organizationData?.socials?.telegram"
             :href="organizationData.socials.telegram"
             target="_blank"
-            class="d-flex flex-align-center gap-small pd-small bg-white radius-extra bs-black-small br-1px hover-bg-second hover-fill-white transition-ease-in-out"
+            class="flex gap-small pd-small bg-light radius-small"
           >
-            <MessageCircle class="w-2r h-2r fill-main" />
-            <span class="t-dark font-second">Telegram</span>
+            <MessageCircle class="i-small fill-main" />
+            <span>Telegram</span>
           </a>
           <a
             v-if="organizationData?.socials?.facebook"
             :href="organizationData.socials.facebook"
             target="_blank"
-            class="d-flex flex-align-center gap-small pd-small bg-white radius-extra bs-black-small br-1px hover-bg-second hover-fill-white transition-ease-in-out"
+            class="flex gap-small pd-small bg-light radius-small"
           >
-            <Users class="w-2r h-2r fill-main" />
-            <span class="t-dark font-second">Facebook</span>
+            <Users class="i-small fill-main" />
+            <span>Facebook</span>
           </a>
           <a
             v-if="organizationData?.socials?.instagram"
             :href="organizationData.socials.instagram"
             target="_blank"
-            class="d-flex flex-align-center gap-small pd-small bg-white radius-extra bs-black-small br-1px hover-bg-second hover-fill-white transition-ease-in-out"
+            class="flex gap-small pd-small bg-light radius-small"
           >
-            <Play class="w-2r h-2r fill-main" />
-            <span class="t-dark font-second">Instagram</span>
+            <Play class="i-small fill-main" />
+            <span>Instagram</span>
           </a>
         </div>
       </div>
     </div>
 
     <!-- Участники -->
-    <div class="bg-white pd-medium radius-extra bs-black-small br-1px mn-b-extra">
-      <div class="d-flex justify-between flex-align-center mn-b-medium">
-        <h2 class="h3 t-main flex-align-center gap-small">
-          <Users class="w-2r h-2r fill-main" />
+    <div class="bg-white pd-medium radius-medium mn-b-big">
+      <div class="flex flex-justify-between mn-b-medium">
+        <h2 class="h3 t-main flex gap-small">
+          <Users class="i-medium fill-main" />
           Участники
         </h2>
         <button
-          class="pd-small bg-light radius-small t-dark br-1px br-light hover-bg-third hover-t-main transition-ease-in-out d-flex flex-align-center gap-nano"
+          class="pd-small bg-light radius-small t-dark hover-bg-main hover-t-white transition-linear flex gap-micro"
           @click="goToMembersPage"
         >
           Все участники
-          <ArrowRight class="w-2r h-2r fill-main" />
+          <ArrowRight class="i-small" />
         </button>
       </div>
-      <div class="d-grid cols-auto-1fr gap-medium mobile-only:cols-1">
-        <div class="pos-relative d-flex flex-align-center gap-small pd-small radius-small bs-black-small br-1px bg-main-transp-10 hover-scale-1 transition-ease-in-out">
-          <div class="pos-absolute pos-t-1 pos-l-1 w-2r h-2r radius-round br-3px bg-yellow-nice bs-black-small"></div>
+      
+      <div class="flex flex-column gap-small">
+        <!-- Владелец -->
+        <div class="pos-relative flex gap-small pd-small radius-small bg-main-nano">
+          <div class="pos-absolute pos-t-micro pos-l-micro w-1r h-1r radius-extra bg-yellow"></div>
           <img
             :src="organizationState.owner.avatar"
             :alt="organizationState.owner.name"
-            class="w-6r h-6r radius-big object-fit-cover br-2px"
+            class="w-5r h-5r radius-medium object-fit-cover"
           />
-          <div class="flex-grow-1">
-            <div class="t-medium t-main">{{ organizationState.owner.name }}</div>
-            <div class="p-small t-orange-nice t-bold">Владелец</div>
+          <div class="flex-child-1">
+            <div class="t-semi">{{ organizationState.owner.name }}</div>
+            <div class="p-small t-main">Владелец</div>
             <div class="p-small t-grey">онлайн</div>
           </div>
-          <div class="w-3r h-3r radius-extra bg-fifth d-flex flex-align-center flex-justify-center bs-black-small">
-            <Crown class="w-2r h-2r fill-white" />
+          <div class="w-3r h-3r radius-extra bg-main flex flex-center">
+            <Crown class="i-small fill-white" />
           </div>
         </div>
+        
+        <!-- Администраторы -->
         <div
           v-for="admin in organizationState.admins"
           :key="admin.id"
-          class="pos-relative d-flex flex-align-center gap-small pd-small radius-small bs-black-small br-1px bg-third-transp-15 hover-scale-1 transition-ease-in-out"
+          class="pos-relative flex gap-small pd-small radius-small bg-second-nano"
         >
-          <div class="pos-absolute pos-t-1 pos-l-1 w-2r h-2r radius-round br-3px bg-second bs-black-small"></div>
+          <div class="pos-absolute pos-t-micro pos-l-micro w-1r h-1r radius-extra bg-second"></div>
           <img
             :src="admin.avatar"
             :alt="admin.name"
-            class="w-6r h-6r radius-big object-fit-cover br-2px"
+            class="w-5r h-5r radius-medium object-fit-cover"
           />
-          <div class="flex-grow-1">
-            <div class="t-medium t-main">{{ admin.name }}</div>
-            <div class="p-small t-main t-bold">Администратор</div>
+          <div class="flex-child-1">
+            <div class="t-semi">{{ admin.name }}</div>
+            <div class="p-small t-second">Администратор</div>
             <div class="p-small t-grey">2 часа назад</div>
           </div>
-          <div class="w-3r h-3r radius-extra bg-second d-flex flex-align-center flex-justify-center bs-black-small">
-            <Shield class="w-2r h-2r fill-white" />
+          <div class="w-3r h-3r radius-extra bg-second flex flex-center">
+            <Shield class="i-small fill-white" />
           </div>
         </div>
+        
+        <!-- Участники -->
         <div
           v-for="member in organizationState.featuredMembers"
           :key="member.id"
-          class="pos-relative d-flex flex-align-center gap-small pd-small radius-small bs-black-small br-1px hover-scale-1 transition-ease-in-out"
+          class="pos-relative flex gap-small pd-small radius-small bg-light"
         >
-          <div class="pos-absolute pos-t-1 pos-l-1 w-2r h-2r radius-round br-3px bg-green-nice bs-black-small"></div>
+          <div class="pos-absolute pos-t-micro pos-l-micro w-1r h-1r radius-extra bg-green"></div>
           <img
             :src="member.avatar"
             :alt="member.name"
-            class="w-6r h-6r radius-big object-fit-cover br-2px"
+            class="w-5r h-5r radius-medium object-fit-cover"
           />
-          <div class="flex-grow-1">
-            <div class="t-medium t-main">{{ member.name }}</div>
+          <div class="flex-child-1">
+            <div class="t-semi">{{ member.name }}</div>
             <div class="p-small t-dark">Участник</div>
             <div class="p-small t-grey">вчера</div>
           </div>
@@ -217,73 +223,80 @@
     </div>
 
     <!-- Контакты и адреса -->
-    <div class="bg-white pd-medium radius-extra bs-black-small br-1px mn-b-extra">
-      <h2 class="h3 t-main flex-align-center gap-small mn-b-medium">
-        <MapPin class="w-2r h-2r fill-main" />
+    <div class="bg-white pd-medium radius-medium mn-b-big">
+      <h2 class="h3 t-main flex gap-small mn-b-medium">
+        <MapPin class="i-medium fill-main" />
         Контакты и адреса
       </h2>
-      <div class="d-grid cols-2-1_3 gap-medium mobile-only:cols-1">
+      
+      <div class="cols-2 gap-medium">
+        <!-- Контакты -->
         <div>
-          <h3 class="h4 t-main t-bold mn-b-small">Связь с нами</h3>
-          <div class="d-flex flex-column gap-small">
-            <div class="d-flex flex-align-center gap-medium pd-small bg-third-transp-15 radius-small br-1px bs-black-small hover-bg-third hover-t-main transition-ease-in-out">
-              <Phone class="w-2r h-2r fill-main" />
+          <h3 class="h4 mn-b-small">Связь с нами</h3>
+          <div class="flex flex-column gap-small">
+            <div class="flex gap-small pd-small bg-light radius-small">
+              <Phone class="i-small fill-main" />
               <div>
-                <div class="p-small uppercase t-grey mn-b-nano">Телефон</div>
-                <div class="p-regular t-dark">{{ organizationData?.contacts?.phone }}</div>
+                <div class="p-small t-grey uppercase">Телефон</div>
+                <div>{{ organizationData?.contacts?.phone }}</div>
                 <div class="p-small t-grey">Пн-Пт 9:00-18:00</div>
               </div>
             </div>
-            <div class="d-flex flex-align-center gap-medium pd-small bg-third-transp-15 radius-small br-1px bs-black-small hover-bg-third hover-t-main transition-ease-in-out">
-              <Mail class="w-2r h-2r fill-main" />
+            
+            <div class="flex gap-small pd-small bg-light radius-small">
+              <Mail class="i-small fill-main" />
               <div>
-                <div class="p-small uppercase t-grey mn-b-nano">Email</div>
-                <div class="p-regular t-dark">{{ organizationData?.contacts?.email }}</div>
+                <div class="p-small t-grey uppercase">Email</div>
+                <div>{{ organizationData?.contacts?.email }}</div>
                 <div class="p-small t-grey">Ответим в течение 24 часов</div>
               </div>
             </div>
-            <div class="d-flex flex-align-center gap-medium pd-small bg-third-transp-15 radius-small br-1px bs-black-small hover-bg-third hover-t-main transition-ease-in-out">
-              <Globe class="w-2r h-2r fill-main" />
+            
+            <div class="flex gap-small pd-small bg-light radius-small">
+              <Globe class="i-small fill-main" />
               <div>
-                <div class="p-small uppercase t-grey mn-b-nano">Веб-сайт</div>
-                <div class="p-regular t-dark">{{ organizationData?.contacts?.website }}</div>
+                <div class="p-small t-grey uppercase">Веб-сайт</div>
+                <div>{{ organizationData?.contacts?.website }}</div>
                 <div class="p-small t-grey">Официальный сайт</div>
               </div>
             </div>
           </div>
         </div>
+        
+        <!-- Адреса -->
         <div>
-          <h3 class="h4 t-main t-bold mn-b-small">Наши адреса</h3>
-          <div class="d-flex flex-column gap-small">
-            <div class="pd-small bg-third-transp-15 radius-small br-1px bs-black-small hover-bg-third hover-t-main transition-ease-in-out mn-b-small">
-              <div class="d-flex flex-align-center gap-nano mn-b-nano">
-                <MapPin class="w-2r h-2r fill-main" />
-                <div class="t-medium t-main">Главный офис</div>
+          <h3 class="h4 mn-b-small">Наши адреса</h3>
+          <div class="flex flex-column gap-small">
+            <div class="pd-small bg-light radius-small">
+              <div class="flex gap-micro mn-b-micro">
+                <MapPin class="i-small fill-main" />
+                <div class="t-semi">Главный офис</div>
               </div>
-              <div class="p-regular t-dark mn-b-nano">{{ organizationData?.contacts?.address }}</div>
-              <div class="d-flex flex-align-center gap-nano mn-b-nано">
-                <Clock class="w-2r h-2r fill-main" />
+              <div class="mn-b-small">{{ organizationData?.contacts?.address }}</div>
+              <div class="flex gap-micro mn-b-small">
+                <Clock class="i-small fill-grey" />
                 <span class="p-small t-grey">Пн-Пт: 9:00-18:00, Сб: 10:00-16:00</span>
               </div>
-              <div class="d-flex gap-nano">
-                <span class="bg-fifth-transp-15 t-main pd-thin radius-extra">Парковка</span>
-                <span class="bg-fifth-transp-15 t-main pd-thin radius-extra">Wi-Fi</span>
-                <span class="bg-fifth-transp-15 t-main pd-thin radius-extra">Кофе-зона</span>
+              <div class="flex gap-micro">
+                <span class="bg-main-nano pd-micro radius-small p-small">Парковка</span>
+                <span class="bg-main-nano pd-micro radius-small p-small">Wi-Fi</span>
+                <span class="bg-main-nano pd-micro radius-small p-small">Кофе-зона</span>
               </div>
             </div>
-            <div class="pd-small bg-third-transp-15 radius-small br-1px bs-black-small hover-bg-third hover-t-main transition-ease-in-out">
-              <div class="d-flex flex-align-center gap-nano mn-b-нано">
-                <MapPin class="w-2r h-2r fill-main" />
-                <div class="t-medium t-main">Коворкинг</div>
+            
+            <div class="pd-small bg-light radius-small">
+              <div class="flex gap-micro mn-b-micro">
+                <MapPin class="i-small fill-main" />
+                <div class="t-semi">Коворкинг</div>
               </div>
-              <div class="p-regular t-dark mn-b-нано">г. Москва, ул. Арбат, д. 25, 3 этаж</div>
-              <div class="d-flex flex-align-center gap-nano">
-                <Clock class="w-2р h-2р fill-main" />
+              <div class="mn-b-small">г. Москва, ул. Арбат, д. 25, 3 этаж</div>
+              <div class="flex gap-micro mn-b-small">
+                <Clock class="i-small fill-grey" />
                 <span class="p-small t-grey">Круглосуточно</span>
               </div>
-              <div class="d-flex gap-nано">
-                <span class="bg-fifth-transp-15 t-main pd-thin radius-extra">24/7</span>
-                <span class="bg-fifth-transp-15 t-main pd-thин radius-extra">Переговорные</span>
+              <div class="flex gap-micro">
+                <span class="bg-main-nano pd-micro radius-small p-small">24/7</span>
+                <span class="bg-main-nano pd-micro radius-small p-small">Переговорные</span>
               </div>
             </div>
           </div>
@@ -297,59 +310,45 @@
         <FileText class="w-2r h-2r fill-main" />
         Последние посты
       </h2>
-      <div class="d-grid cols-auto-1fr gap-medium mobile-only:cols-1">
-        <div
-          v-for="post in organizationState.posts"
-          :key="post.id"
-          class="bg-white radius-small o-hidden br-1px bs-black-small hover-scale-1 transition-ease-in-out cursor-pointer"
-        >
-          <img :src="post.image" :alt="post.title" class="w-100 h-10r object-fit-cover" />
-          <div class="pd-small">
-            <h4 class="t-medium t-main mn-b-нано">{{ post.title }}</h4>
-            <p class="p-small t-grey mn-б-small">{{ post.excerpt }}</p>
-            <div class="d-flex justify-between flex-align-center t-grey p-small">
-              <span>{{ formatDate(post.date) }}</span>
-              <div class="d-flex flex-align-center gap-нано">
-                <Heart class="w-2r h-2r fill-main" />
-                <span>{{ post.likes }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Расписание ивентов -->
-    <div class="bg-white pd-medium radius-extra bs-black-small br-1px mn-b-extra">
-      <h2 class="h3 t-main flex-align-center gap-small mn-б-medium">
-        <Calendar class="w-2r h-2r fill-main" />
+   <div class="bg-white pd-medium radius-medium mn-b-big">
+      <h2 class="h3 t-main flex gap-small mn-b-medium">
+        <Calendar class="i-medium fill-main" />
         Расписание ивентов
       </h2>
-      <div class="d-flex flex-column gap-medium">
+      
+      <div class="flex flex-column gap-medium">
         <div
           v-for="event in organizationState.events"
           :key="event.id"
-          class="d-flex flex-align-center gap-medium pd-small radius-small bs-black-small br-1px hover-scale-1 transition-ease-in-out mobile-only: flex-column"
+          class="flex gap-medium pd-small bg-light radius-small"
         >
-          <div class="d-flex flex-column flex-align-center bg-main pd-small radius-small bs-black-small br-1px mn-р-medium">
-            <span class="p-бig t-white t-bold">{{ getEventDay(event.date) }}</span>
-            <span class="p-small uppercase t-white">{{ getEventMonth(event.date) }}</span>
+          <!-- Дата -->
+          <div class="flex flex-column flex-center bg-main pd-small radius-small t-white w-5r h-5r">
+            <span class="h4">{{ getEventDay(event.date) }}</span>
+            <span class="p-small uppercase">{{ getEventMonth(event.date) }}</span>
           </div>
-          <div class="flex-grow-1">
-            <h4 class="t-мedium t-main mn-b-нано">{{ event.title }}</h4>
-            <p class="p-small t-grey mn-b-нedium">{{ event.description }}</p>
-            <div class="d-flex gap-medium p-small t-grey">
-              <div class="d-flex flex-align-center gap-нано">
-                <Clock class="w-2r h-2r fill-main" />
+          
+          <!-- Информация -->
+          <div class="flex-child-1">
+            <h4 class="t-semi mn-b-micro">{{ event.title }}</h4>
+            <p class="p-small t-grey mn-b-small">{{ event.description }}</p>
+            <div class="flex gap-medium p-small t-grey">
+              <div class="flex gap-micro">
+                <Clock class="i-small fill-grey" />
                 <span>{{ event.time }}</span>
               </div>
-              <div class="d-flex flex-align-center gap-нано">
-                <MapPin class="w-2r h-2р fill-main" />
+              <div class="flex gap-micro">
+                <MapPin class="i-small fill-grey" />
                 <span>{{ event.location }}</span>
               </div>
             </div>
           </div>
-          <button class="bg-main pd-small radius-extra t-white bs-black-small hover-scale-1 transition-ease-in-out">
+          
+          <!-- Кнопка -->
+          <button class="bg-main pd-small radius-small t-white">
             Участвовать
           </button>
         </div>
@@ -362,16 +361,6 @@
         <Image class="w-2r h-2р fill-main" />
         Галерея
       </h2>
-      <div class="d-grid cols-auto-1fr gap-small mobile-only:cols-2">
-        <div
-          v-for="image in organizationState.gallery"
-          :key="image.id"
-          class="o-hidden radius-small bs-black-small hover-scale-1 transition-ease-in-out cursor-pointer"
-          @click="openGallery(image)"
-        >
-          <img :src="image.url" :alt="image.alt" class="w-100 h-10r object-fit-cover" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -399,7 +388,7 @@ import Play from '@martyrs/src/modules/icons/navigation/IconPlay.vue'
 
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
-import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 import ButtonToggleMembership from '@martyrs/src/modules/organizations/components/elements/ButtonToggleMembership.vue'
 
 const router = useRouter()
@@ -573,7 +562,7 @@ onMounted(async () => {
 
     organizationData.value = result[0]
 
-    await memberships.actions.read({ target: route.params._id })
+    await membershipsStore.read({ target: route.params._id })
 
     if (typeof gtag === 'function') {
       gtag('event', 'view_organization', {

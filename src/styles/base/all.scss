@@ -15,21 +15,6 @@
 .unactive { opacity: 0.0; }
 .hide { display: block; position: absolute; opacity: 0; pointer-events: none; }
 
-.t-truncate {
-  overflow: hidden; /* Скрывает все, что выходит за пределы блока */
-  text-overflow: ellipsis; /* Добавляет многоточие, если текст обрезается */
-  display: -webkit-box; /* Устанавливает элемент как блочный контейнер */
-  -webkit-line-clamp: 1; /* Ограничивает количество строк до 3 */
-  -webkit-box-orient: vertical; /* Устанавливает вертикальное направление расположения строк */
-}
-
-.t-trimmed {
-  overflow: hidden; /* Скрывает все, что выходит за пределы блока */
-  text-overflow: ellipsis clip;
-  display: -webkit-box; /* Устанавливает элемент как блочный контейнер */
-  -webkit-line-clamp: 1; /* Ограничивает количество строк до 3 */
-  -webkit-box-orient: vertical; /* Устанавливает вертикальное направление расположения строк */
-}
 
 
 body { 

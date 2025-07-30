@@ -72,7 +72,7 @@
 					    :showRating="true"
 					    :showFollowers="true"
 					    :showProducts="false"
-					    class="bg-light mn-b-thin w-100 o-hidden radius-big pd-medium"
+					    class="bg-light mn-b-thin w-100 o-hidden radius-medium pd-medium"
 					  />
 		      </Feed>
 			</transition>

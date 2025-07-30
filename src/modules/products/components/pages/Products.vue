@@ -266,7 +266,6 @@
 
   import FilterProducts from '@martyrs/src/modules/products/components/sections/FilterProducts.vue'
   import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
-  import BlockFilter  from '@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue'
   import Filters  from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
   import Spoiler from "@martyrs/src/components/Spoiler/Spoiler.vue"
   import Field from "@martyrs/src/components/Field/Field.vue"

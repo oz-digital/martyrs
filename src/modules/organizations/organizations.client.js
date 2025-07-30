@@ -1,7 +1,7 @@
 // Store
-import * as storeDepartments from './store/departments.js';
-import * as storeInvites from './store/invites.js';
-import * as storeMemberships from './store/memberships.js';
+import departmentsStore from './store/departments.store.js';
+import invitesStore from './store/invites.store.js';
+import membershipsStore from './store/memberships.store.js';
 import * as storeOrganizations from './store/organizations.js';
 
 // Router
@@ -10,10 +10,15 @@ import routerOrganization from './router/organizations.js';
 // Views
 // Pages
 import Department from './components/pages/Department.vue';
-import DepartmentEdit from './components/pages/DepartmentEdit.vue';
+import Members from './components/pages/Members.vue';
 import Organization from './components/pages/Organization.vue';
 import OrganizationEdit from './components/pages/OrganizationEdit.vue';
 import Organizations from './components/pages/Organizations.vue';
+
+// Forms
+import DepartmentForm from './components/forms/DepartmentForm.vue';
+import InviteForm from './components/forms/InviteForm.vue';
+import AddExistingMembersForm from './components/forms/AddExistingMembersForm.vue';
 
 // Blocks
 import CardDepartment from './components/blocks/CardDepartment.vue';
@@ -40,24 +45,27 @@ function initializeOrganization(app, store, router, options = {}) {
 
   router.addRoute(route, routerOrganization);
 
-  store.addStore('departments', storeDepartments);
-  store.addStore('memberships', storeMemberships);
   store.addStore('organizations', storeOrganizations);
-  store.addStore('invites', storeInvites);
 }
 
 // Export components, store modules, and routes
 export {
+  AddExistingMembersForm,
   ButtonToggleMembership,
   CardDepartment,
   CardOrganization,
   Contacts,
   Department,
-  DepartmentEdit,
+  DepartmentForm,
   DepartmentSub,
+  departmentsStore,
   Documents,
   EmptyState,
+  InviteForm,
+  invitesStore,
+  Members,
   MembersAdd,
+  membershipsStore,
   Organization,
   OrganizationEdit,
   Organizations,
@@ -67,9 +75,6 @@ export {
   Socials,
   Unit,
   routerOrganization,
-  storeDepartments,
-  storeInvites,
-  storeMemberships,
   storeOrganizations,
 };
 
@@ -77,10 +82,10 @@ const ModuleOrganization = {
   initialize: initializeOrganization,
   views: {
     store: {
-      storeDepartments,
-      storeMemberships,
+      departmentsStore,
+      invitesStore,
+      membershipsStore,
       storeOrganizations,
-      storeInvites,
     },
     router: {
       routerOrganization,
@@ -89,9 +94,13 @@ const ModuleOrganization = {
       // Pages
       Organization,
       Department,
+      Members,
       OrganizationEdit,
       Organizations,
-      DepartmentEdit,
+      // Forms
+      DepartmentForm,
+      InviteForm,
+      AddExistingMembersForm,
       // Blocks
       CardOrganization,
       Unit,

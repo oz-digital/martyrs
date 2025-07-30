@@ -17,10 +17,8 @@ const WebPushService = {
         badge: process.env.NOTIFICATION_BADGE_URL || '/favicon.ico',
         data: data,
       });
-      console.log('payload is', payload);
       // Send the notification
       const result = await webpush.sendNotification(subscription, payload);
-      console.log('web push is', result);
       return { success: true, statusCode: result.statusCode };
     } catch (error) {
       console.error('Web Push service error:', error);

@@ -26,14 +26,14 @@
     />
 
     <div>
-      <p class="h4">{{ name }}</p>
+      <p class="h4 mn-b-thin">{{ name }}</p>
       <span class="t-transp mn-r-small">{{phone || email}}</span>
     </div>
 
     <div v-if="action || role" class="mn-l-auto  flex-stretch flex-v-center flex">
       <span 
         v-if="role"
-        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-b-nano pd-t-nano pd-r-thin pd-l-thin bg-main"
+        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-thin bg-main"
       >
         {{role}}
       </span>

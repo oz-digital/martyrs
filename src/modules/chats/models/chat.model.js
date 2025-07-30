@@ -4,14 +4,35 @@ export default db => {
       type: String,
       required: true,
     },
+    userId: {
+      type: db.mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     chatId: {
       type: String,
       required: true,
+    },
+    chatType: {
+      type: String,
+      required: true,
+      enum: ['order', 'group', 'support', 'private'],
+      default: 'private'
     },
     text: {
       type: String,
       required: true,
     },
+    readBy: [{
+      userId: {
+        type: db.mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      readAt: {
+        type: Date,
+        default: Date.now
+      }
+    }],
     createdAt: {
       type: Date,
       default: Date.now,

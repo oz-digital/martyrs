@@ -14,22 +14,16 @@ const NotificationsController = (db, wss, notificationService) => {
   
   // Create multiple notifications at once
   const createBatch = async (req, res) => {
-    console.log('=== Batch notifications endpoint ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
     
     try {
       const { notifications } = req.body;
       
       if (!notifications || !Array.isArray(notifications)) {
-        console.error('Invalid request: notifications array is required');
         return res.status(400).json({ message: 'notifications array is required' });
       }
 
-      console.log('Creating notifications count:', notifications.length);
-
       // Create all notifications
       const createdNotifications = await db.notification.insertMany(notifications);
-      console.log('Created notifications:', createdNotifications.map(n => n._id));
       
       // Fire and forget with error tracking
       setImmediate(() => {

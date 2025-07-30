@@ -75,7 +75,7 @@
       title="Add member" 
       @close-popup="closeMemberPopup" 
       :isPopupOpen="isOpenAddMemberPopup"
-      class="bg-white w-max-30r radius-big pd-big"
+      class="bg-white w-max-30r radius-medium pd-big"
     >
       <Feed
         :search="{
@@ -99,7 +99,7 @@
         v-slot="{ 
           items 
         }"
-        class="bg-light pd-medium w-min-20r w-max-40r radius-big h-max-20r o-scroll"
+        class="bg-light pd-medium w-min-20r w-max-40r radius-medium h-max-20r o-scroll"
       >
         <CardUser
           v-for="(user, index) in items" 
@@ -119,7 +119,7 @@
 
     <div class="cols-2 gap-thin">
     
-        <div class="bg-light pd-medium o-hidden radius-big">
+        <div class="bg-light pd-medium o-hidden radius-medium">
           <h3 class="mn-b-semi">Department Settings</h3>
           
           <p class="p-medium mn-b-small">Please settings for your department:</p>
@@ -134,7 +134,7 @@
           </div>
         </div>
 
-        <div class="bg-light pd-medium o-hidden radius-big">
+        <div class="bg-light pd-medium o-hidden radius-medium">
           <h3 class="mn-b-semi">Acessess</h3>
           
           <p class="p-medium mn-b-small">Please select organization accesses for user in department:</p>
@@ -221,16 +221,16 @@ import DepartmentSub from "@martyrs/src/modules/organizations/components/blocks/
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'
 
 import * as globals from "@martyrs/src/modules/globals/views/store/globals.js";
-import * as departments from "@martyrs/src/modules/organizations/store/departments.js";
-import * as memberships from "@martyrs/src/modules/organizations/store/memberships.js";
+import departmentsStore from "@martyrs/src/modules/organizations/store/departments.store.js";
+import membershipsStore from "@martyrs/src/modules/organizations/store/memberships.store.js";
 
 const router = useRouter();
 const route = useRoute();
 
 async function fetchData() {
-  const users = ref(memberships.state.memberships);
+  const users = ref(membershipsStore.state.items);
   // await departments.actions.read({organization: route.params._id});
-  if (route.params.department) await departments.actions.readOne(route.params.department);
+  if (route.params.department) await departmentsStore.read({ _id: route.params.department });
 }
 
 fetchData();

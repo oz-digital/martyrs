@@ -43,7 +43,7 @@ import { computed, onMounted, ref, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // Import state
 import * as auth 		from '@martyrs/src/modules/auth/views/store/auth.js'
-import * as invites from '@martyrs/src/modules/organizations/store/invites.js'
+import invitesStore from '@martyrs/src/modules/organizations/store/invites.store.js'
 // Import validation
 import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
 const passswordValidation = ref(null)
@@ -52,7 +52,7 @@ const route = useRoute()
 const router = useRouter()
 // Lifecycles
 onMounted(async () => {
-	await invites.actions.readOne(route.query.inviteCode)
+	await invitesStore.read({ code: route.query.inviteCode })
 })
 // Methods
 async function onSubmit() {

@@ -2,7 +2,7 @@ const controllerFactory = db => {
   const Department = db.department;
   const readOne = (req, res) => {
     Department.findOne({ _id: req.params._id })
-      .populate('members.user')
+      .populate('members.user', '-password')
       .populate('subdepartments')
       .then(department => {
         if (!department) {
@@ -14,42 +14,56 @@ const controllerFactory = db => {
         res.status(500).send({ message: err.message });
       });
   };
-  const read = (req, res) => {
-    let query = {};
-    let options = {};
-    if (req.query.organization) {
-      query.organization = new db.mongoose.Types.ObjectId(req.query.organization);
+  const read = async (req, res) => {
+    try {
+      const { skip = 0, limit = 10, organization, hidden, _id, search } = req.query;
+      
+      let query = {};
+      if (_id) {
+        query._id = _id;
+      }
+      if (organization) {
+        query.organization = new db.mongoose.Types.ObjectId(organization);
+      }
+      if (hidden !== undefined) {
+        query.hidden = hidden === 'true';
+      }
+      if (search) {
+        query['profile.name'] = new RegExp(search, 'i');
+      }
+
+      const departments = await Department
+        .find(query)
+        .skip(parseInt(skip))
+        .limit(parseInt(limit))
+        .populate('members.user', '-password')
+        .populate('subdepartments')
+        .sort({ createdAt: -1 });
+      
+      res.send(departments);
+    } catch (err) {
+      res.status(500).send({ message: err.message });
     }
-    if (req.query.hidden) {
-      query.hidden = req.query.hidden;
-    }
-    Department.find(query, null, options)
-      .populate('members.user')
-      .populate('subdepartments')
-      .then(departments => {
-        if (!departments) {
-          return res.status(404).send({ message: 'Departments not found' });
-        }
-        res.send(departments);
-      })
-      .catch(err => {
-        res.status(500).send({ message: err.message });
-      });
   };
   const create = async (req, res) => {
     try {
       const newDepartment = new Department({
         ...req.body,
-        organization: req.params._id,
+        organization: req.body.organization || req.params._id,
       });
       const data = await newDepartment.save();
-      res.send(data);
+      const populated = await Department.findById(data._id)
+        .populate('members.user', '-password')
+        .populate('subdepartments');
+      res.send(populated);
     } catch (err) {
       res.status(500).send({ message: err.message });
     }
   };
   const update = (req, res) => {
     Department.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true })
+      .populate('members.user', '-password')
+      .populate('subdepartments')
       .then(department => {
         if (!department) {
           return res.status(404).send({ message: 'Department not found' });
@@ -60,17 +74,22 @@ const controllerFactory = db => {
         res.status(500).send({ message: err.message });
       });
   };
-  const deleteDepartment = (req, res) => {
-    Department.findOneAndRemove({ _id: req.body._id, organization: req.params._id })
-      .then(department => {
-        if (!department) {
-          return res.status(404).send({ message: 'Department not found' });
-        }
-        res.send({ message: 'Department deleted successfully' });
-      })
-      .catch(err => {
-        res.status(500).send({ message: err.message });
-      });
+  const deleteDepartment = async (req, res) => {
+    try {
+      const { _id } = req.body;
+      if (!_id) {
+        return res.status(400).send({ message: 'Department ID is required' });
+      }
+      
+      const department = await Department.findOneAndRemove({ _id });
+      if (!department) {
+        return res.status(404).send({ message: 'Department not found' });
+      }
+      
+      res.send(department);
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
   };
   return {
     readOne,

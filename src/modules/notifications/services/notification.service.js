@@ -43,12 +43,6 @@ export default (function (db, wss) {
         userId: new ObjectId(userId),
         isActive: true,
       });
-      console.log('=== CHANNEL SELECTION DEBUG ===');
-      console.log('userDevices found:', userDevices.length);
-      console.log('userDevices:', userDevices);
-      console.log('user.email:', user.email);
-      console.log('user.phoneNumber:', user.phoneNumber);
-      console.log('preferences.length:', preferences.length);
       
       // Default channels if no preferences set
       let channels = ['web']; // Web is always on by default
@@ -56,7 +50,6 @@ export default (function (db, wss) {
       // If user has devices, add push to default channels
       if (userDevices.length > 0) {
         channels.push('push');
-        console.log('Added push channel - devices found');
       } else {
         console.log('No push channel - no devices found');
       }
@@ -64,24 +57,20 @@ export default (function (db, wss) {
       // If user has email, add it to default channels
       if (user.email) {
         channels.push('email');
-        console.log('Added email channel');
       }
       // If user has phone, add SMS to default channels
       if (user.phoneNumber) {
         channels.push('sms');
-        console.log('Added SMS channel');
       }
       // Override with user preferences if they exist
       if (preferences.length > 0) {
         channels = preferences.filter(pref => pref.isEnabled).map(pref => pref.channelType);
-        console.log('Overridden with user preferences:', channels);
       }
-      console.log('=== FINAL CHANNELS ===', channels);
+      
       // Send to each enabled channel - parallel processing
       const channelPromises = [];
 
       for (const channel of channels) {
-        console.log(`=== PREPARING CHANNEL: ${channel} ===`);
         const sendFunc = channelRouters[channel];
         if (!sendFunc) {
           channelPromises.push(Promise.resolve({
@@ -93,17 +82,14 @@ export default (function (db, wss) {
         }
 
         if (channel === 'push') {
-          console.log(`Preparing push to ${userDevices.length} devices`);
           // Each device as separate promise for true parallelism
           for (const device of userDevices) {
             channelPromises.push(
               sendFunc(notification, user, device)
                 .then(() => {
-                  console.log(`Push sent successfully to device ${device.deviceId}`);
                   return { channel: 'push', deviceId: device.deviceId, success: true };
                 })
                 .catch(err => {
-                  console.error(`Push failed for device ${device.deviceId}:`, err);
                   return { channel: 'push', deviceId: device.deviceId, success: false, error: err.message };
                 })
             );
@@ -123,7 +109,6 @@ export default (function (db, wss) {
         }
       }
 
-      console.log(`=== PROCESSING ${channelPromises.length} PARALLEL OPERATIONS ===`);
       const results = await Promise.allSettled(channelPromises);
       
       // Process results and create batch logs
@@ -180,7 +165,6 @@ export default (function (db, wss) {
   };
   // Send websocket notifications
   const sendWebNotification = async (notification, user) => {
-    console.log(`[WebSocket][notification] sending to user ${user._id}`);
     const result = await wss.sendToUserInModule('notification', user._id, {
       type: 'notification',
       data: notification,

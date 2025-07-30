@@ -505,11 +505,9 @@ const controllerFactory = db => {
         console.log('Sending notification for status change...');
         try {
           const usersWithAccess = await getUsersWithOrdersConfirmAccess(order.owner.target);
-          const filteredUsers = usersWithAccess.filter(userId => 
-            userId.toString() !== order.creator.target.toString()
-          );
           
-          await sendOrderNotifications(order, 'order_status', filteredUsers, {
+          // Отправляем уведомления всем пользователям с доступом, включая создателя
+          await sendOrderNotifications(order, 'order_status', usersWithAccess, {
             oldStatus: oldStatus,
             newStatus: order.status,
             organization: order.owner.target

@@ -207,7 +207,6 @@ import BottomSheet from '@martyrs/src/components/BottomSheet/BottomSheet.vue';
 
 import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
 import BlockSorting  from '@martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue'
-import BlockFilter  from '@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue'
 
 import FiltersBar from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
 

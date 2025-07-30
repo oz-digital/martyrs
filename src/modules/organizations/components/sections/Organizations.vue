@@ -1,5 +1,5 @@
 <template>
-	<div class="for-transition bg-white radius-big w-100">
+	<div class="for-transition bg-white radius-medium w-100">
 		<div class="">
 			 <EmptyState 
         v-if="organizations < 1"
@@ -43,7 +43,7 @@
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
-	import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+	import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 
 	const props = defineProps({
     owner: {

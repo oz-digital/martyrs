@@ -160,13 +160,13 @@
   // Import state
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js'
-  import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+  import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 
 
   import * as events from '@martyrs/src/modules/events/store/events.js'; 
 
   const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
-    memberships.mutations.handleMembershipUpdate(organizations.state.current, membership, status, target, statusName, statusNumber)
+    membershipsStore.handleMembershipUpdate(organizations.state.current, membership, status, target, statusName, statusNumber)
   };
   // State
   const route = useRoute();

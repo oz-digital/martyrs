@@ -4,7 +4,7 @@
       		v-if="!publics || publics.length < 1"
       		title="Unfortunately, we couldn't find any recommendations for you"
       		description="Explore and find a community or organization that suits your interests."
-      		class="radius-big bg-light pd-medium"
+      		class="radius-medium bg-light pd-medium"
     	/>
     	
 	    <div v-else class="w-max gap-thin flex-nowrap flex">
@@ -15,7 +15,7 @@
 		      	:organization="organization"
 		      	:user="auth.state.user"
 						@updateMembership="event => handleMembershipUpdate(event, 'isSubscriber', 'numberOfSubscribers')"
-						class="w-max-20r radius-big"
+						class="w-max-20r radius-medium"
 		    />
 		</div>
 	</div>
@@ -28,7 +28,7 @@
 	
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
-	import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+	import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 
 	let publics = ref(null)
 
@@ -42,7 +42,7 @@
 
 	// Methods
 	const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
-	  memberships.mutations.handleMembershipUpdate(publics.value, membership, status, target, statusName, statusNumber)
+	  membershipsStore.handleMembershipUpdate(publics.value, membership, status, target, statusName, statusNumber)
 	};
 </script>
 

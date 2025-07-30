@@ -157,27 +157,28 @@
 			
 			<RouterView />
 
-			<Menu v-if="filteredModules.length > 0" class="mn-b-regular bg-light">
-	      <MenuItem 
-	        v-for="module in filteredModules" 
-	        :key="module.name"
-	        @click="router.push({
-	          name: `${module.route}`, 
-	          params: {
-	            _id: route.params._id,
-	            user: route.params._id
-	          }
-	        })" 
-	        class="profile-menu-item cursor-pointer"
-	      >
-	        <component 
-	          :is="module.icon" 
-	          v-if="module.icon"
-	          class="i-semi" 
-	          :icon="true"
-	        />
-	        <span>{{ module.displayName }}</span>
-      	</MenuItem>
+			<Menu class="mn-b-regular bg-light">
+	      <template v-for="(module, moduleName) in modules" :key="moduleName">
+	        <MenuItem 
+	          v-if="isModuleInstalled(moduleName) && (!module.visible || module.visible(auth))"
+	          @click="router.push({
+	            name: `${module.route}`, 
+	            params: {
+	              _id: route.params._id,
+	              user: route.params._id
+	            }
+	          })" 
+	          class="profile-menu-item cursor-pointer"
+	        >
+	          <component 
+	            :is="module.icon" 
+	            v-if="module.icon"
+	            class="i-semi" 
+	            :icon="true"
+	          />
+	          <span>{{ module.displayName }}</span>
+	        </MenuItem>
+	      </template>
    		</Menu>
 			  
 			<Menu 
@@ -270,7 +271,8 @@ import { useRoute, useRouter } from 'vue-router'
 // Import state
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as users from '@martyrs/src/modules/auth/views/store/users.js'
-import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
 // Accessing router
 const route = useRoute()
 const router = useRouter()
@@ -278,22 +280,26 @@ const router = useRouter()
 const show = ref(false)
 
 const store = inject('store')
+const { isModuleInstalled } = useGlobalMixins()
 
-const moduleMapping = {
+const modules = {
   events: {
     displayName: 'Events',
     route: 'User Events',
-    icon: IconEvents
+    icon: IconEvents,
+    visible: () => true
   },
   organizations: {
     displayName: 'Groups',
     route: 'User Organizations',
-    icon: IconGroups
+    icon: IconGroups,
+    visible: () => true
   },
   blogposts: {
     displayName: 'Posts',
     route: 'User Posts',
-    icon: IconCommunity
+    icon: IconCommunity,
+    visible: () => true
   },
   orders: {
     displayName: 'Orders',
@@ -309,27 +315,6 @@ const moduleMapping = {
   }
 }
 
-const filteredModules = computed(() => {
-  return store.modules
-    .map(moduleName => {
-      return {
-        name: moduleName,
-        ...moduleMapping[moduleName]
-      }
-    })
-    .filter(module => {
-      // Проверяем существование маппинга для модуля
-      if (!moduleMapping[module.name]) return false;
-      
-      // Проверяем видимость модуля, если есть условие visible
-      if (module.visible && typeof module.visible === 'function') {
-        return module.visible(auth);
-      }
-      
-      // По умолчанию показываем модуль, если есть маппинг
-      return true;
-    })
-})
 
 onMounted(async () => {
  	await users.actions.read({ _id: route.params._id, user: auth.state.user._id });
@@ -337,7 +322,7 @@ onMounted(async () => {
 })
 
 const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
-  memberships.mutations.handleMembershipUpdate(users.state.current, membership, status, target, statusName, statusNumber)
+  membershipsStore.handleMembershipUpdate(users.state.current, membership, status, target, statusName, statusNumber)
 };
 
 function logout () {

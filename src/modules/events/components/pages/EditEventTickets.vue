@@ -108,7 +108,7 @@
             {{ticket.client_refactor?.email || 'No email'}}
           </p>
 
-           <span class="pd-r-thin pd-l-thin pd-b-nano pd-t-nano bg-second radius-extra t-white t-medium d-block w-max uppercase">
+           <span class="pd-thin ]bg-second radius-extra t-white t-medium d-block w-max uppercase">
             {{ticket.status}}
           </span>
         </div>

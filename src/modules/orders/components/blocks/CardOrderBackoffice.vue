@@ -55,13 +55,13 @@
       <p class="t-medium mn-r-auto">{{formatDate(order.deadline)}}</p>
 
       <span 
-        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-b-nano pd-t-nano pd-r-thin pd-l-thin bg-main"
+        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-thin bg-main"
       >
         {{order.status}}
       </span>
 
       <span 
-        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-b-nano pd-t-nano pd-r-thin pd-l-thin t-white bg-red"
+        class="flex-child flex-child-shrink-0 capitalize w-max t-medium radius-big pd-thin t-white bg-red"
       >
         {{order.payment.status || 'Not defined'}}
       </span>

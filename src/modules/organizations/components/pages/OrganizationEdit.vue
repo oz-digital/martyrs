@@ -127,7 +127,7 @@
 
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
-  import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js';
+  import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
 
   const route = useRoute()
   const router = useRouter()

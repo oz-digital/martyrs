@@ -35,35 +35,6 @@
       />
     </Dropdown> 
 
-    <!-- <template
-      v-if="filter"
-    >
-      <div 
-        :class="filter.class || 'bg-light'"
-        class="flex-center flex pd-thin bg-light radius-medium aspect-1x1 h-100"
-      >
-        <IconFilter @click="() => filter.active = !filter.active" class="w-1r h-auto"/>
-      </div>
-
-    
-      <BottomSheet
-        :show="filter.active"
-        @toggle="() => filter.active = false"
-        class="z-index-10 pos-fixed pos-r-0"
-        :class="{
-          'pos-t-0':  filter.active,
-          'pos-t-100': !filter.active
-        }"
-      >
-        <BlockFilter
-          v-model:filter="filter"
-          :options="filter.options"
-          @click_filter="() => { filter.active = false } "
-          class="h-max w-100 pd-small pd-b-5r bg-light"
-        />
-      </BottomSheet>  
-    </template> -->
-
     <Dropdown 
       v-if="sort && !sort.hideButton"
       :label="{
@@ -207,7 +178,6 @@ import BottomSheet from '@martyrs/src/components/BottomSheet/BottomSheet.vue';
 
 import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
 import BlockSorting  from '@martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue'
-import BlockFilter  from '@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue'
 
 import FiltersBar from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
 

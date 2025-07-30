@@ -1,81 +1,22 @@
 <template>
   <div class="pd-thin">
-    <SectionPageTitle
-      title="Members"
-      @update:tabs_current="(update) => tab = update"
-      :tabs_current="tab"
-      :tabs="[
-        { name: `Members (${organization.state.current.numberOfMembers || 0})`, value: 'members' },
-        { name: 'Departments', value: 'departments' },
-        { name: 'Invites', value: 'invites' }
-      ]"
-      :actions="[
-        { method: openMembersAddPopup, label: 'Invite members' }
-      ]"
-      class="mn-b-small bg-light bg-light radius-medium pd-medium"
-    />
-
-    <Popup 
-      title="Add members"
-      @close-popup="closeMembersAddPopup" 
-      :isPopupOpen="isOpenMembersAddPopup"
-      class="bg-white w-min-30r w-max-30r radius-big pd-medium"
-    >
-      <MembersAdd 
-        text="Please enter your email or phone number to send an invitation link:"
-        :organization="organizationData"
-        @send-invite="handleSendInvite"
-      />
-    </Popup>  
-
-    <Feed
-      v-if="tab === 'departments'"
-      :states="{
-        empty: {
-          title: 'No Departments Found',
-          description: 'Currently, there are no departments available.',
-          action: 'Add department',
-          callback:  () => $router.push(`/organizations/${route.params._id}/departments/create`)
-        }
-      }"
-      :store="{
-        read: (options) => departments.actions.read(options),
-        state: null
-      }"
-      :options="{
-        organization: route.params._id,
-        user: auth.state.user._id,
-      }"
-      v-slot="{ 
-        items 
-      }"
-    >
-      <CardDepartment
-        v-for="(department, index) in items"
-        :key="index"
-        :department="department"
-        :organization="route.params._id"
-        class="radius-semi bg-light pos-relative mn-b-thin"
+    <div v-if="!isLoaded" class="flex-center flex h-20r">
+      <span class="t-transp">Loading...</span>
+    </div>
+    <div v-else>
+    <!-- Members Section -->
+    <section class="mn-b-medium">
+      <SectionPageTitle
+        :title="`Members ${organizationData?.numberOfMembers ? `(${organizationData.numberOfMembers})` : ''}`"
+        :actions="[
+          { method: openAddUsersPopup, label: 'Add user to organization' }
+        ]"
+        class="mn-b-small bg-light radius-medium pd-medium"
       />
 
-     </Feed>
-
-      <router-link
-         v-if="tab === 'departments' && departments.state.departments.length > 0"
-        :to="{
-          path: `/organizations/${route.params._id}/departments/create`
-        }"
-        class="d-block flex-center flex uppercase t-semi bg-main w-100 pd-small radius-extra"
-      >
-        Add department
-      </router-link>
-
-      <!-- Members -->
-      <div 
-         v-if="tab === 'members'"
-        class="cols-1 gap-thin"
-      >
+      <div class="cols-1 gap-thin">
         <Feed
+          v-model:items="membersList"
           :search="true"
           :states="{
             empty: {
@@ -84,7 +25,7 @@
             },
           }"
           :store="{
-            read: (options) => memberships.actions.read(options)
+            read: (options) => membershipsStore.read(options)
           }"
           :options="{
             target: route.params._id,
@@ -105,7 +46,7 @@
             :email="member.user.email"
             :name="member.user.profile.name || 'No name'"
             :role="member.label || member.role"
-            @click="$router.push(`/profile/${member.user._id}`)" 
+            @click="$router.push({ name: 'User Profile', params: { _id: member.user._id } })" 
             :action=" member.role !== 'owner' ? {
               label: {
                 is: IconDelete,
@@ -117,119 +58,230 @@
           />
         </Feed>
       </div>
-      <!-- Invites -->
-      <div 
-        v-if="tab === 'invites'"
-      > 
-        <Feed
-          v-model:items="invitesState"
-          :states="{
-            empty: {
-              title: 'No Invites Found',
-              description: 'Currently, there are no members.'
-            }
-          }"
-          :store="{
-            read: (options) => invites.actions.read(options)
-          }"
-          :options="{
-            owner: route.params._id
-          }"
-          v-slot="{ 
-            items 
-          }"
-          class="gap-thin cols-1"
+    </section>
+
+    <!-- Departments Section -->
+    <section class="mn-b-medium">
+      <SectionPageTitle
+        title="Departments"
+        :actions="[
+          { method: () => openDepartmentPopup(), label: 'Add department' }
+        ]"
+        class="mn-b-small bg-light bg-light radius-medium pd-medium"
+      />
+
+      <Feed
+        v-model:items="departmentsList"
+        :states="{
+          empty: {
+            title: 'No Departments Found',
+            description: 'Currently, there are no departments available.'
+          }
+        }"
+        :store="departmentsStore"
+        :options="{
+          organization: route.params._id,
+          user: auth.state.user._id,
+        }"
+        v-slot="{ 
+          items 
+        }"
+      >
+        <div
+          v-for="(department, index) in items"
+          :key="department._id"
+          @click="() => openDepartmentPopup(department)"
+          class="cursor-pointer hover-scale-1"
         >
-          <CardUser 
-            v-for="invite in items" 
-            :key="index" 
-            :user="{ type: 'invite'} "
-            :name="invite.email || invite.phone"
-            :role="invite.status"
-            :action="{
-              label: {
-                is: IconDelete,
-                props: { class: 'i-medium', fill: 'rgb(var(--white)' }
-              },
-              method: () => removeInvite(index, invite)
-            }"
-            class="h-4r w-100 bg-light radius-big flex-nowrap flex pd-medium"
+          <CardDepartment
+            :department="department"
+            :organization="route.params._id"
+            class="radius-semi bg-light pos-relative mn-b-thin"
           />
-        </Feed>
-      </div>
-  
+        </div>
+      </Feed>
+    </section>
+
+    <!-- Invites Section -->
+    <section>
+      <SectionPageTitle
+        title="Invites"
+        :actions="[
+          { method: openInvitePopup, label: 'Invite members' }
+        ]"
+        class="mn-b-small bg-light bg-light radius-medium pd-medium"
+      />
+
+      <Feed
+        v-model:items="invitesList"
+        :states="{
+          empty: {
+            title: 'No Invites Found',
+            description: 'Currently, there are no pending invites.'
+          }
+        }"
+        :store="{
+          read: (options) => invitesStore.read(options)
+        }"
+        :options="{
+          owner: route.params._id
+        }"
+        v-slot="{ 
+          items 
+        }"
+        class="gap-thin cols-1"
+      >
+        <CardUser 
+          v-for="(invite, index) in items" 
+          :key="invite._id" 
+          :user="{ type: 'invite'} "
+          :name="invite.email || invite.phone"
+          :role="invite.status"
+          :action="{
+            label: {
+              is: IconDelete,
+              props: { class: 'i-medium', fill: 'rgb(var(--white)' }
+            },
+            method: () => removeInvite(index, invite)
+          }"
+          class="h-4r w-100 bg-light radius-medium flex-nowrap flex pd-medium"
+        />
+      </Feed>
+    </section>
+
+    <!-- Invite Members Popup -->
+    <Popup 
+      title="Invite members"
+      @close-popup="closeInvitePopup" 
+      :isPopupOpen="isOpenInvitePopup"
+      class="bg-white w-min-30r w-max-30r radius-medium pd-medium"
+    >
+      <InviteForm 
+        v-if="organizationData"
+        :organization="organizationData"
+        @send-invite="handleSendInvite"
+      />
+    </Popup>
+
+    <!-- Add Existing Users Popup -->
+    <Popup 
+      title="Add users to organization"
+      @close-popup="closeAddUsersPopup" 
+      :isPopupOpen="isOpenAddUsersPopup"
+      class="bg-white w-min-40r w-max-50r radius-medium pd-medium"
+    >
+      <AddExistingMembersForm 
+        :organizationId="route.params._id"
+        @users-added="handleUsersAdded"
+      />
+    </Popup>
+
+    <!-- Department Edit Popup -->
+    <Popup
+      :title="editingDepartment ? 'Edit Department' : 'Create Department'"
+      @close-popup="closeDepartmentPopup"
+      :isPopupOpen="isDepartmentPopupOpen"
+      align="center right"
+      class="bg-white h-min-100 w-max-50r pd-medium"
+    >
+      <DepartmentForm
+        :department="editingDepartment"
+        :organizationId="route.params._id"
+        @close="closeDepartmentPopup"
+        @saved="handleDepartmentSaved"
+      />
+    </Popup>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router';
 
-import Feed from '@martyrs/src/components/Feed/Feed.vue'
-import Tab      from '@martyrs/src/components/Tab/Tab.vue'
-import Block      from '@martyrs/src/components/Block/Block.vue'
+import Feed from '@martyrs/src/components/Feed/Feed.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 
-import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
-import PlaceholderUserpic from '@martyrs/src/modules/icons/placeholders/PlaceholderUserpic.vue'
+import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue';
 
-import MembersAdd from '@martyrs/src/modules/organizations/components/sections/MembersAdd.vue';
-
-// Mobile Module
-import Menu from '@martyrs/src/components/Menu/Menu.vue'
-import MenuItem from '@martyrs/src/components/Menu/MenuItem.vue'
+import InviteForm from '@martyrs/src/modules/organizations/components/forms/InviteForm.vue';
+import AddExistingMembersForm from '@martyrs/src/modules/organizations/components/forms/AddExistingMembersForm.vue';
+import DepartmentForm from '@martyrs/src/modules/organizations/components/forms/DepartmentForm.vue';
 
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
 import CardDepartment from '@martyrs/src/modules/organizations/components/blocks/CardDepartment.vue';
 
-import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue'
+import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
-import * as auth      from '@martyrs/src/modules/auth/views/store/auth.js'
-import * as globals      from '@martyrs/src/modules/globals/views/store/globals.js'
-import * as invites from '@martyrs/src/modules/organizations/store/invites.js';
-import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js';
-import * as organization  from '@martyrs/src/modules/organizations/store/organizations.js'
-import * as departments from '@martyrs/src/modules/organizations/store/departments.js';
+import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
+import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
+import departmentsStore from '@martyrs/src/modules/organizations/store/departments.store.js';
+import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
+import invitesStore from '@martyrs/src/modules/organizations/store/invites.store.js';
 
-const route   = useRoute()
-const router   = useRouter()
-const organizationData = ref(null)
+const route = useRoute();
+const router = useRouter();
 
-// Tab logic
-const tab = ref('members')
-// States
-const invitesState = ref([])
-// Popup
-const isOpenMembersAddPopup = ref(false);
+// Data
+const organizationData = ref(null);
+const membersList = ref([]);
+const invitesList = ref([]);
+const departmentsList = ref([]);
+const isLoaded = ref(false);
 
-function openMembersAddPopup() {
-  isOpenMembersAddPopup.value = true;
+// Popups state
+const isOpenInvitePopup = ref(false);
+const isOpenAddUsersPopup = ref(false);
+const isDepartmentPopupOpen = ref(false);
+const editingDepartment = ref(null);
+
+// Popup functions
+function openInvitePopup() {
+  isOpenInvitePopup.value = true;
 }
 
-function closeMembersAddPopup() {
-  isOpenMembersAddPopup.value = false;
+function closeInvitePopup() {
+  isOpenInvitePopup.value = false;
 }
 
+function openAddUsersPopup() {
+  isOpenAddUsersPopup.value = true;
+}
+
+function closeAddUsersPopup() {
+  isOpenAddUsersPopup.value = false;
+}
+
+function openDepartmentPopup(department = null) {
+  editingDepartment.value = department;
+  isDepartmentPopupOpen.value = true;
+}
+
+function closeDepartmentPopup() {
+  isDepartmentPopupOpen.value = false;
+  editingDepartment.value = null;
+}
+
+// Load organization data
 onMounted(async () => {
-  organizationData.value = (await organization.actions.read({_id: route.params._id, user: auth.state.user._id}))[0]
-  ;
-})
-
-const FirstLevelDepartments = computed(() => {
-  const departmentsState = departments.state.departments;
-
-  const subdepartmentIds = departmentsState.flatMap(department =>
-    department.subdepartments.map(subdepartment => subdepartment._id)
-  );
-
-  return departmentsState.filter(department =>
-    !subdepartmentIds.includes(department._id)
-  );
+  try {
+    const response = await organization.actions.read({
+      _id: route.params._id, 
+      user: auth.state.user._id
+    });
+    organizationData.value = response[0];
+    isLoaded.value = true;
+  } catch (error) {
+    console.error('Error loading organization:', error);
+    isLoaded.value = true; // Still show the page even if organization load fails
+  }
 });
 
+// Handlers
 async function handleSendInvite(list, resolve, reject) {
   try {
-    const response = await invites.actions.create({
+    const response = await invitesStore.create({
       owner: {
         type: 'Organization',
         target: organizationData.value._id
@@ -240,27 +292,69 @@ async function handleSendInvite(list, resolve, reject) {
       },
       invites: list,
     });
-    for (let invite of response.createdInvites) {
-      globals.actions.add(invitesState.value, invite)
+    
+    // Assuming the API returns an array of created invites
+    if (response.createdInvites) {
+      for (let invite of response.createdInvites) {
+        invitesStore.addItem(invite, invitesList.value);
+      }
+    } else if (response._id) {
+      // Single invite created
+      invitesStore.addItem(response, invitesList.value);
     }
-    closeMembersAddPopup();
-    resolve(); // Вызываем resolve, когда все операции завершены успешно
+    
+    closeInvitePopup();
+    resolve();
   } catch (error) {
-    reject(error); // Вызываем reject, если произошла ошибка
+    reject(error);
   }
 }
 
-async function removeMember(index,member) {
+function handleUsersAdded(addedUsers) {
+  closeAddUsersPopup();
+  // Add new members to the list
+  if (addedUsers && addedUsers.length > 0) {
+    addedUsers.forEach(membership => {
+      membershipsStore.addItem(membership, membersList.value);
+    });
+  }
+}
+
+function handleDepartmentSaved(department) {
+  closeDepartmentPopup();
+  
+  console.log('handleDepartmentSaved called with:', department);
+  console.log('departmentsList before update:', departmentsList.value);
+  console.log('editingDepartment:', editingDepartment.value);
+  
+  if (department) {
+    // Update or add department in the list
+    if (editingDepartment.value) {
+      departmentsStore.updateItem(department, departmentsList.value);
+    } else {
+      departmentsStore.addItem(department, departmentsList.value);
+    }
+  } else {
+    // Department was deleted
+    if (editingDepartment.value) {
+      departmentsStore.removeItem(editingDepartment.value, departmentsList.value);
+    }
+  }
+  
+  console.log('departmentsList after update:', departmentsList.value);
+}
+
+async function removeMember(index, member) {
   if (confirm("Confirm remove of member") == true) {
-    memberships.state.memberships.splice(index, 1);
-    await memberships.actions.delete(member);
+    await membershipsStore.delete(member);
+    membershipsStore.removeItem(member, membersList.value);
   } 
 }
 
-async function removeInvite(index,invite) {
-  if (confirm("Confirm remove of member") == true) {
-    globals.actions.delete(invitesState.value, invite)
-    await invites.actions.delete(invite._id);
+async function removeInvite(index, invite) {
+  if (confirm("Confirm remove of invite") == true) {
+    await invitesStore.delete(invite);
+    invitesStore.removeItem(invite, invitesList.value);
   }
 }
 </script>

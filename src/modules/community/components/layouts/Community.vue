@@ -211,7 +211,7 @@ fetchComments();
 import * as blog from '@martyrs/src/modules/community/store/blogposts.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js'
-import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 
 // State
 const route = useRoute();
@@ -222,7 +222,7 @@ if (route.params.category === 'new') blog.state.sort.param = 'createdAt';
 
 
 const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
-  memberships.mutations.handleMembershipUpdate(organizations.state.current, membership, status, target, statusName, statusNumber)
+  membershipsStore.handleMembershipUpdate(organizations.state.current, membership, status, target, statusName, statusNumber)
 };
 
 </script>

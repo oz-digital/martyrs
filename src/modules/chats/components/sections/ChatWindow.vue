@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 
 import IconAdd from '@martyrs/src/modules/icons/navigation/IconAdd.vue'
 import PlaceholderChat from '@martyrs/src/modules/icons/placeholders/PlaceholderChat.vue'
@@ -38,6 +38,8 @@ import chatStore from '../../store/chat.store.js';
 
 const newMessage = ref('');
 const allMessages = ref(null);
+const visibleMessageIds = ref(new Set());
+let messageObserver = null;
 
 // Вычисляемые свойства
 const messages = computed(() => chatStore.state.messages);
@@ -69,12 +71,86 @@ const sendMessage = async () => {
   }
 };
 
+// Отслеживание видимых сообщений
+const observeMessages = () => {
+  console.log('[CHAT] Setting up message observer');
+  
+  // Очищаем предыдущий observer если есть
+  if (messageObserver) {
+    messageObserver.disconnect();
+  }
+  
+  messageObserver = new IntersectionObserver((entries) => {
+    console.log('[CHAT] Observer triggered for', entries.length, 'entries');
+    entries.forEach(entry => {
+      const messageId = entry.target.dataset.messageId;
+      if (entry.isIntersecting) {
+        visibleMessageIds.value.add(messageId);
+      } else {
+        visibleMessageIds.value.delete(messageId);
+      }
+    });
+    
+    // Отправляем прочтение видимых сообщений
+    if (visibleMessageIds.value.size > 0) {
+      const unreadVisibleMessages = messages.value
+        .filter(msg => {
+          // Проверяем, что сообщение видимо
+          if (!visibleMessageIds.value.has(msg._id)) return false;
+          
+          // Проверяем, что сообщение не от текущего пользователя
+          console.log('[CHAT] Checking if own message:', {
+            msgUserId: msg.userId,
+            currentUserId: chatStore.state.userId,
+            isEqual: msg.userId === chatStore.state.userId,
+            msgUserIdType: typeof msg.userId,
+            currentUserIdType: typeof chatStore.state.userId
+          });
+          if (msg.userId && msg.userId === chatStore.state.userId) return false;
+          
+          // Проверяем, что сообщение еще не прочитано текущим пользователем
+          if (msg.readBy?.some(r => r.userId === chatStore.state.userId)) return false;
+          
+          console.log('[CHAT] Message can be marked as read:', {
+            msgId: msg._id,
+            msgUserId: msg.userId,
+            currentUserId: chatStore.state.userId,
+            readBy: msg.readBy
+          });
+          
+          return true;
+        })
+        .map(msg => msg._id);
+      
+      console.log('[CHAT] Unread visible messages to mark:', unreadVisibleMessages);
+      
+      if (unreadVisibleMessages.length > 0) {
+        console.log('[CHAT] Sending markAsRead for messages:', unreadVisibleMessages);
+        chatStore.methods.markMessagesAsRead(unreadVisibleMessages);
+      } else {
+        console.log('[CHAT] No unread messages to mark');
+      }
+    }
+  }, {
+    root: allMessages.value,
+    threshold: 0.5
+  });
+  
+  // Наблюдаем за всеми сообщениями
+  nextTick(() => {
+    const messageElements = allMessages.value?.querySelectorAll('[data-message-id]');
+    console.log('[CHAT] Found message elements to observe:', messageElements?.length);
+    messageElements?.forEach(el => messageObserver.observe(el));
+  });
+};
+
 // Прокрутка вниз при монтировании
 onMounted(() => {
   nextTick(() => {
     if (allMessages.value) {
       allMessages.value.scrollTop = allMessages.value.scrollHeight;
     }
+    observeMessages();
   });
 });
 
@@ -84,10 +160,16 @@ watch(messages, () => {
     if (allMessages.value) {
       allMessages.value.scrollTop = allMessages.value.scrollHeight;
     }
+    observeMessages();
   });
 }, { deep: true });
 
-// Обработчик после завершения анимации входа нового элемента
+// Очистка observer при размонтировании
+onUnmounted(() => {
+  if (messageObserver) {
+    messageObserver.disconnect();
+  }
+});
 </script>
 
 <style>

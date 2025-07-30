@@ -7,7 +7,7 @@
             target="_blank" 
             class="i-big bg-second t-white flex-nowrap flex-center flex radius-extra"
         >
-            <component :is="resolveSocialIcon(social.name)" class="i-medium"></component>
+            <component :is="resolveSocialIcon(social.name)" :fill="'rgb(var(--white))'" class="i-medium"></component>
         </a> 
     </div>
 </template>

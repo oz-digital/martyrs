@@ -7,6 +7,7 @@ import { Preferences } from '@capacitor/preferences';
 import { reactive, watch } from 'vue';
 // Globals
 import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
 // State
 import * as twofa from './twofa.js';
 
@@ -101,6 +102,11 @@ const actions = {
       });
 
       await this.initialize();
+      
+      // Переподключаем WebSocket с новым userId после входа
+      console.log('[AUTH] Reconnecting WebSocket after login for user:', response.data._id);
+      globalWebSocket.disconnect();
+      await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {
@@ -159,6 +165,11 @@ const actions = {
       });
 
       await this.initialize();
+      
+      // Переподключаем WebSocket с новым userId после регистрации
+      console.log('[AUTH] Reconnecting WebSocket after signup for user:', response.data._id);
+      globalWebSocket.disconnect();
+      await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {
@@ -174,6 +185,10 @@ const actions = {
     await removeCookie('user');
     setAuthToken(null);
     this.resetState();
+    
+    // Отключаем WebSocket при выходе
+    console.log('[AUTH] Disconnecting WebSocket on logout');
+    globalWebSocket.disconnect();
   },
 
   async resetPassword(user, type) {

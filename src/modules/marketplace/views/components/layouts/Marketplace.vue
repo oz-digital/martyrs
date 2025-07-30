@@ -1,13 +1,127 @@
 <template>
 	 <div class="cols-2-1_3 z-index-3 pos-relative radius-big">
 
-		<div class="o-y-scroll br-r br-solid br-light  z-index-2 desktop-only h-100 pos-relative">
-     	<BlockFilter
-        v-model:filter="marketplace.state.filter"
-        :options="marketplace.state.filter.options"
-        class="h-100 w-100 pd-medium"
-	    />
-	  </div>
+		<div class="o-y-scroll br-r br-solid br-light pd-medium z-index-2 desktop-only h-100 pos-relative">
+			<div class="w-100 o-y-scroll h-100">
+				<!-- Categories -->
+				<div class="mn-b-medium" v-if="currentCategories.length > 0">
+					<h4 class="mn-b-small">
+						{{ route.params.categoryPath ? 'Subcategories' : 'Categories' }}
+					</h4>
+					<div class="gap-micro">
+						<div
+							v-for="category in currentCategories"
+							:key="category._id"
+							@click="selectCategory(category)"
+							class="pd-small radius-small cursor-pointer hover-bg-light transition-all"
+						>
+							{{ category.name }}
+						</div>
+					</div>
+				</div>
+
+				<!-- Location Filter -->
+				<Spoiler 
+					class="o-hidden mn-b-medium"
+					:status="true"
+				>
+					<template #header="{ isOpen }">
+						<div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
+							<h4 class="w-100">Location</h4>
+							<div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
+								<IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+							</div>
+						</div>
+					</template>
+
+					<template #content>
+						<div class="mn-t-small">
+							<Field
+								v-model="searchLocation"
+								placeholder="Search location..."
+								type="text"
+								class="w-100 bg-light pd-small radius-small mn-b-small"
+							/>
+							<Checkbox 
+								v-for="location in locationOptions"
+								:key="location"
+								v-model:radio="selectedLocation"
+								:label="location"
+								:value="location"
+								mode="radio"
+								class="mn-b-micro"
+							/>
+						</div>
+					</template>
+				</Spoiler>
+
+				<!-- Delivery Options -->
+				<Spoiler 
+					class="o-hidden mn-b-medium"
+					:status="true"
+				>
+					<template #header="{ isOpen }">
+						<div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
+							<h4 class="w-100">Delivery Options</h4>
+							<div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
+								<IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+							</div>
+						</div>
+					</template>
+
+					<template #content>
+						<div class="mn-t-small">
+							<Checkbox 
+								v-for="option in deliveryOptions"
+								:key="option.value"
+								v-model:checkbox="selectedDeliveryOptions"
+								:label="option.label"
+								:value="option.value"
+								mode="checkbox"
+								class="mn-b-micro"
+							/>
+						</div>
+					</template>
+				</Spoiler>
+
+				<!-- Payment Options -->
+				<Spoiler 
+					class="o-hidden mn-b-medium"
+					:status="true"
+				>
+					<template #header="{ isOpen }">
+						<div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
+							<h4 class="w-100">Payment Options</h4>
+							<div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
+								<IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+							</div>
+						</div>
+					</template>
+
+					<template #content>
+						<div class="mn-t-small">
+							<Checkbox 
+								v-for="option in paymentOptions"
+								:key="option.value"
+								v-model:checkbox="selectedPaymentOptions"
+								:label="option.label"
+								:value="option.value"
+								mode="checkbox"
+								class="mn-b-micro"
+							/>
+						</div>
+					</template>
+				</Spoiler>
+
+				<!-- Clear Filters Button -->
+				<button 
+					@click="clearFilters"
+					class="bg-main w-100 button mn-t-medium"
+				>
+					Clear Filters
+				</button>
+				</div>
+		</div>
 
 		<!-- Catalog wrapper -->
 		<div class="pd-thin">
@@ -45,7 +159,10 @@
 	import { useRoute, useRouter,onBeforeRouteLeave } from 'vue-router'
 	import { useI18n } from 'vue-i18n'
 
-	import BlockFilter  from '@martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue'
+	import Spoiler from "@martyrs/src/components/Spoiler/Spoiler.vue"
+	import Field from "@martyrs/src/components/Field/Field.vue"
+	import Checkbox from "@martyrs/src/components/Checkbox/Checkbox.vue"
+	import IconChevronBottom from '@martyrs/src/modules/icons/navigation/IconChevronBottom.vue'
 
 	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
@@ -64,6 +181,41 @@
 	});
 
 	const desktopFilters = ref(null)
+
+	// Categories
+	const currentCategories = ref([]);
+	const searchLocation = ref('');
+	const selectedLocation = ref('All');
+	const locationOptions = ref(['All', 'Phuket', 'Bangkok', 'Chiang Mai', 'Pattaya']);
+
+	// Delivery options
+	const deliveryOptions = ref([
+		{ label: 'Pickup', value: 'pickup' },
+		{ label: 'Delivery', value: 'delivery' },
+		{ label: 'Dine-in', value: 'dinein' }
+	]);
+	const selectedDeliveryOptions = ref([]);
+
+	// Payment options
+	const paymentOptions = ref([
+		{ label: 'Cash', value: 'cash' },
+		{ label: 'Card', value: 'card' },
+		{ label: 'Crypto', value: 'crypto' },
+		{ label: 'Bank Transfer', value: 'transfer' }
+	]);
+	const selectedPaymentOptions = ref([]);
+
+	const selectCategory = (category) => {
+		// Implementation for category selection
+		console.log('Category selected:', category);
+	};
+
+	const clearFilters = () => {
+		selectedLocation.value = 'All';
+		selectedDeliveryOptions.value = [];
+		selectedPaymentOptions.value = [];
+		searchLocation.value = '';
+	};
 
 	function denormalizeUrlParam(param) {
 	  return param

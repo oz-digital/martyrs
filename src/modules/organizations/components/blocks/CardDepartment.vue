@@ -3,28 +3,7 @@
 
     <div class="pd-medium w-100">
 
-      <router-link 
-        :to="{
-          name: 'Department Edit', 
-          params: {
-            _id: props.organization,
-            department: department._id
-          }
-        }" 
-        class="
-          cursor-pointer 
-          pos-absolute pos-t-regular pos-r-regular
-          radius-extra pd-thin bg-second
-        "
-      >
-        <IconEdit
-          class="i-regular"
-          classes="fill-white"
-        />
-      </router-link>
-
       <h3 
-        @click="$router.push(`/organizations/${props.organization}/departments/${department._id}`)"
         class="mn-b-small w-100"
         v-html="department.profile.name"
       />
@@ -39,7 +18,7 @@
           :photo="member.user.profile.photo"
           :name="member.user.profile.name || member.user.phone || member.user.email || member.user._id"
           :position="member.position" 
-          @click="$router.push(`/app/profile/${member.user._id}`)" 
+          @click="$router.push({ name: 'User Profile', params: { _id: member.user._id } })" 
         />
       </ul>
     </div>

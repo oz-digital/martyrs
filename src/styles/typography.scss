@@ -29,8 +29,6 @@ h1,h2,h3,h4,h5,span,p {
   text-box-trim: none;
 }
 
-
-
 .text-box-trim {
   text-box: trim-both cap alphabetic;
 }
@@ -101,6 +99,23 @@ a:hover   { cursor: pointer;}
 .lh-regular { line-height: 1.125; }
 .lh-light  	{ line-height: 1.000; }
 
+.t-truncate {
+  overflow: hidden; 
+  text-overflow: ellipsis; /* Добавляет многоточие, если текст обрезается */
+  display: -webkit-box; /* Устанавливает элемент как блочный контейнер */
+  -webkit-line-clamp: 1; /* Ограничивает количество строк до 3 */
+  -webkit-box-orient: vertical; /* Устанавливает вертикальное направление расположения строк */
+}
+
+.t-trimmed {
+/*  overflow: hidden;*/
+  text-overflow: ellipsis clip;
+  display: -webkit-box; /* Устанавливает элемент как блочный контейнер */
+  -webkit-line-clamp: 1; /* Ограничивает количество строк до 3 */
+  -webkit-box-orient: vertical; /* Устанавливает вертикальное направление расположения строк */
+}
+
+
 .t-trim {
   white-space: nowrap;
   overflow: hidden;
@@ -110,21 +125,21 @@ a:hover   { cursor: pointer;}
 .t-trim-1 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-  overflow: hidden;
+/*  overflow: hidden;*/
   -webkit-line-clamp: 1;
 }
 
 .t-trim-2 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-  overflow: hidden;
+/*  overflow: hidden;*/
   -webkit-line-clamp: 2;
 }
 
 .t-trim-3 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-  overflow: hidden;
+/*  overflow: hidden;*/
   -webkit-line-clamp: 3;
 }
 

@@ -26,7 +26,7 @@
               Order: #{{order._id}}
 
               <span 
-                class="flex-child flex-child-shrink-0 capitalize w-max mn-r-thin t-medium radius-big pd-b-nano pd-t-nano pd-r-thin pd-l-thin bg-main"
+                class="flex-child flex-child-shrink-0 capitalize w-max mn-r-thin t-medium radius-big pd-thin bg-main"
               >
                 {{order.status}}
               </span>

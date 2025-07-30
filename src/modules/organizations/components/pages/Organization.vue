@@ -1,7 +1,7 @@
 <template>
 	<div v-if="organizationData" class="pd-thin for-transition w-100">
 
-		<!-- <Breadcrumbs class="mn-b-thin pd-medium bg-light radius-big"/> -->
+		<!-- <Breadcrumbs class="mn-b-thin pd-medium bg-light radius-medium"/> -->
 		<!-- <pre>{{organization.state.current}}</pre> -->
 
 		<section class="flex-center flex flex-column t-center pd-medium radius-medium bg-light mn-b-thin">
@@ -68,7 +68,7 @@
 			<img loading="lazy" 
 				v-if="organization.state.current.profile.photo" 
 				:src="(FILE_SERVER_URL || '') + organization.state.current.profile.photo" 
-				class="radius-big bg-light flex-center flex mn-b-small w-8r" 
+				class="radius-medium bg-light flex-center flex mn-b-small w-8r" 
 			/>
 
 			<PlaceholderOrganizationPic
@@ -191,8 +191,8 @@
 	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
 
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
-	import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js';
-	import * as departments from '@martyrs/src/modules/organizations/store/departments.js';
+	import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
+	import departmentsStore from '@martyrs/src/modules/organizations/store/departments.store.js';
 	// Init router
 	const router 	= useRouter()
 	const route 	= useRoute()
@@ -207,7 +207,7 @@
 			lookup: ['memberships']
 		})
 
- 		await memberships.actions.read({target: route.params._id})
+ 		await membershipsStore.read({target: route.params._id})
 
  		if (typeof gtag === 'function') {
 			gtag('event', 'view_organization', {
@@ -222,7 +222,7 @@
 
 	// Methods
 	const handleMembershipUpdate = ({ membership, status, target }, statusName, statusNumber) => {
-	  memberships.mutations.handleMembershipUpdate(organization.state.current, membership, status, target, statusName, statusNumber)
+	  membershipsStore.handleMembershipUpdate(organization.state.current, membership, status, target, statusName, statusNumber)
 	};
 </script>
 

@@ -13,7 +13,7 @@
   
   import { ref } from 'vue'
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
-  import * as memberships from '@martyrs/src/modules/organizations/store/memberships.js'
+  import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
 
   const emits = defineEmits(['updateMembership'])
 
@@ -64,7 +64,7 @@
         target: props.target
       };
 
-      const response = await memberships.actions.create(membershipData);
+      const response = await membershipsStore.create(membershipData);
 
       emits('updateMembership', { 
         membership: response, 
@@ -86,7 +86,7 @@
     };
 
     try {
-      const response = await memberships.actions.delete(membershipData);
+      const response = await membershipsStore.delete(membershipData);
 
       emits('updateMembership', {
         membership: response, 

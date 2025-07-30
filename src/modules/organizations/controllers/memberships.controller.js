@@ -47,7 +47,30 @@ const controllerFactory = db => {
         {
           $unwind: '$user',
         },
-        // Pagination
+        {
+          $project: {
+            _id: 1,
+            user: {
+              _id: 1,
+              profile: 1,
+              roles: 1,
+              phone: 1,
+              email: 1,
+              username: 1,
+              socials: 1,
+              status: 1,
+              createdAt: 1,
+              updatedAt: 1
+            },
+            type: 1,
+            role: 1,
+            label: 1,
+            target: 1,
+            createdAt: 1,
+            updatedAt: 1
+          }
+        },
+        // Sorting and Pagination
         ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
         ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
       ]);
@@ -69,7 +92,9 @@ const controllerFactory = db => {
     });
     try {
       const data = await newMembership.save();
-      res.send(data);
+      const populated = await Membership.findById(data._id)
+        .populate('user', '-password');
+      res.send(populated);
     } catch (err) {
       console.log(err);
       res.status(500).send({ errorCode: 'SERVER_ERROR' });
@@ -77,7 +102,8 @@ const controllerFactory = db => {
   };
   const update = async (req, res) => {
     try {
-      const membership = await Membership.findByIdAndUpdate(req.body._id, req.body, { new: true });
+      const membership = await Membership.findByIdAndUpdate(req.body._id, req.body, { new: true })
+        .populate('user', '-password');
       if (!membership) {
         return res.status(404).send({ errorCode: 'MEMBERSHIP_NOT_FOUND' });
       }
@@ -88,9 +114,22 @@ const controllerFactory = db => {
   };
   const deleteMembership = async (req, res) => {
     const { _id, type, target, user, role } = req.body;
+    console.log('Delete membership request:', { _id, type, target, user, role });
     try {
       // Обрабатываем сценарий когда мы не знаем _id нашего membership
-      const membership = _id ? await Membership.findOneAndDelete({ _id: new ObjectId(_id) }) : await Membership.findOneAndDelete({ type, target, user, role });
+      const query = _id 
+        ? { _id: new ObjectId(_id) } 
+        : { 
+            type, 
+            target: new ObjectId(target), 
+            user: new ObjectId(user), 
+            role 
+          };
+      console.log('Delete query:', query);
+      
+      const membership = await Membership.findOneAndDelete(query);
+      console.log('Deleted membership:', membership);
+      
       if (!membership) {
         return res.status(404).send({ errorCode: 'MEMBERSHIP_NOT_FOUND' });
       }
