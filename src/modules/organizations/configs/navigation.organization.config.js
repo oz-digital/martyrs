@@ -39,7 +39,13 @@ export const navigationItems = [
           name: 'Organization Members',
           params: { _id: route.params._id }
         }),
-        visible: () => true // Public access
+        visible: (auth, route) => hasAccess(
+          route.params._id, 
+          'departments', 
+          'read', 
+          auth.accesses, 
+          auth.access.roles
+        )
       },
       {
         title: 'Settings',
