@@ -6,29 +6,53 @@ const state = reactive({
   currentChatId: null,
   username: null,
   userId: null,
+  anonymousId: null,
 });
 
 const methods = {
   /**
    * Подключение к глобальному WebSocket и подписка на чат
-   * @param {String} userId
+   * @param {String} userId - optional userId for authenticated users
    */
-  async connectWebSocket(userId) {
+  async connectWebSocket(userId = null) {
     try {
       console.log('[Chat] Connecting to WebSocket with userId:', userId);
-      state.userId = userId; // Сохраняем userId
-      await globalWebSocket.connect(userId);
-      await globalWebSocket.subscribeModule('chat'); // 👈 Подписка на модуль чата
-
-      // Очистка старых листенеров
+      state.userId = userId; // Сохраняем userId (может быть null для анонимных)
+      
+      // Generate anonymousId for anonymous users
+      if (!userId) {
+        // Try to get existing anonymousId from localStorage
+        let anonymousId = localStorage.getItem('chat_anonymous_id');
+        if (!anonymousId) {
+          anonymousId = 'anon_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('chat_anonymous_id', anonymousId);
+        }
+        state.anonymousId = anonymousId;
+        console.log('[Chat] Using anonymousId:', anonymousId);
+      }
+      
+      // WebSocket уже подключен в globals.client.js, просто подписываемся на модуль
+      console.log('[Chat Store] Subscribing to chat module...');
+      
+      // Очистка старых листенеров ДО подписки, чтобы избежать дублирования
       globalWebSocket.removeModuleListeners('chat');
+      
+      await globalWebSocket.subscribeModule('chat'); // 👈 Подписка на модуль чата
+      console.log('[Chat Store] Subscribed to chat module');
 
       // Добавляем обработчик входящих сообщений
       globalWebSocket.addEventListener(
         'message',
         data => {
+          console.log('[Chat Store] Received message:', data);
+          console.log('[Chat Store] Current chatId:', state.currentChatId);
+          console.log('[Chat Store] Message chatId:', data.chatId);
+          
           if (data.chatId === state.currentChatId) {
+            console.log('[Chat Store] Adding message to state');
             state.messages.push(data);
+          } else {
+            console.log('[Chat Store] Message is for different chat, ignoring');
           }
         },
         { module: 'chat' }
@@ -73,16 +97,20 @@ const methods = {
    * @param {String} chatId
    */
   async setCurrentChat(chatId) {
+    console.log('[Chat Store] Setting current chat to:', chatId);
     state.currentChatId = chatId;
     state.messages = [];
 
     // Отправляем joinChat через WebSocket
-    globalWebSocket.send({ type: 'joinChat', module: 'chat', chatId });
+    const joinMessage = { type: 'joinChat', module: 'chat', chatId };
+    console.log('[Chat Store] Sending joinChat:', joinMessage);
+    await globalWebSocket.send(joinMessage);
 
     // Загружаем историю сообщений
     try {
       const response = await fetch(`/messages/${chatId}`);
       const messages = await response.json();
+      console.log('[Chat Store] Loaded messages:', messages.length);
       methods.setMessages(messages);
     } catch (err) {
       console.error('[Chat] Failed to fetch messages:', err);
@@ -102,14 +130,24 @@ const methods = {
    * @param {Object} message
    */
   async addMessage(message) {
-    await globalWebSocket.send({
+    const messageData = {
       ...message,
       module: 'chat',
       type: 'message',
       chatId: state.currentChatId,
       chatType: 'order', // TODO: динамически определять тип чата
-      userId: state.userId, // Добавляем userId отправителя
-    });
+    };
+    
+    // Add userId or anonymousId
+    if (state.userId) {
+      messageData.userId = state.userId;
+    } else if (state.anonymousId) {
+      messageData.anonymousId = state.anonymousId;
+    }
+    
+    console.log('[Chat Store] Sending message:', messageData);
+    const sendResult = await globalWebSocket.send(messageData);
+    console.log('[Chat Store] Send result:', sendResult);
   },
 
   /**

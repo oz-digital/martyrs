@@ -134,7 +134,9 @@ const actions = {
         }
       }
 
+      console.log('[Notifications Store] Registering device:', deviceData);
       const response = await $axios.post('/api/notifications/devices/register', deviceData);
+      console.log('[Notifications Store] Device registered successfully:', response.data);
       state.deviceRegistered = true;
       return response.data;
     } catch (error) {

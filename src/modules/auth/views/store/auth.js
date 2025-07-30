@@ -48,6 +48,12 @@ const actions = {
         // Обновление состояния приложения с информацией о пользователе и его правах доступа
         Object.assign(state.user, { _id, email, phone, avatar });
         Object.assign(state.access, { token: accessToken, roles, status: !!accessToken });
+        
+        // Переподключаем WebSocket если пользователь аутентифицирован
+        if (_id && accessToken) {
+          console.log('[AUTH] Reconnecting WebSocket for authenticated user:', _id);
+          await globalWebSocket.reconnectWithAuth(_id);
+        }
       } else {
         console.log('no cookies');
         setAuthToken(null);
@@ -102,11 +108,6 @@ const actions = {
       });
 
       await this.initialize();
-      
-      // Переподключаем WebSocket с новым userId после входа
-      console.log('[AUTH] Reconnecting WebSocket after login for user:', response.data._id);
-      // globalWebSocket.disconnect();
-      // await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {
@@ -165,11 +166,6 @@ const actions = {
       });
 
       await this.initialize();
-      
-      // Переподключаем WebSocket с новым userId после регистрации
-      console.log('[AUTH] Reconnecting WebSocket after signup for user:', response.data._id);
-      // globalWebSocket.disconnect();
-      // await globalWebSocket.connect(response.data._id);
 
       return response.data;
     } catch (error) {

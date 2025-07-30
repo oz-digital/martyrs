@@ -20,7 +20,6 @@ class GlobalWebSocket {
   }
 
   initialize(options = {}) {
-    console.log('ws url is', options.wsUrl)
     this.maxReconnectAttempts = options.maxReconnectAttempts || this.maxReconnectAttempts;
     this.reconnectDelay = options.reconnectDelay || this.reconnectDelay;
     this.baseUrl = options.wsUrl || this._getDefaultWsUrl();
@@ -39,12 +38,17 @@ class GlobalWebSocket {
     return `${protocol}//${host}${port}/api/ws`;
   }
 
-  connect(userId) {
+  connect(userId = null) {
     if (typeof window === 'undefined') return Promise.resolve(false);
     this.userId = userId;
 
     // Проверяем существующее соединение
     if (this.isConnected && this.socket?.readyState === WebSocket.OPEN) {
+      // If already connected but userId changed, need to reconnect
+      if (this.userId !== userId) {
+        console.log('[WebSocket] UserId changed, reconnecting...');
+        return this.reconnectWithAuth(userId);
+      }
       return Promise.resolve(this.socket);
     }
 
@@ -57,6 +61,7 @@ class GlobalWebSocket {
       this.disconnect();
 
       // Используем baseUrl без параметров, так как аутентификация через cookie
+      console.log('[WebSocket] Connecting to:', this.baseUrl, 'userId:', userId);
       this.socket = new WebSocket(this.baseUrl);
 
       this.socket.onopen = () => {
@@ -205,10 +210,20 @@ class GlobalWebSocket {
   }
 
   async subscribeModule(moduleName) {
-    if (!moduleName || this.subscribedModules.has(moduleName)) return;
+    if (!moduleName) return;
+    
+    if (this.subscribedModules.has(moduleName)) {
+      console.log(`[WebSocket] Module ${moduleName} already subscribed`);
+      return;
+    }
+    
+    console.log(`[WebSocket] Subscribing to module: ${moduleName}`);
     const success = await this.send({ type: 'subscribe', module: moduleName });
     if (success) {
       this.subscribedModules.add(moduleName);
+      console.log(`[WebSocket] Successfully subscribed to module: ${moduleName}`);
+    } else {
+      console.log(`[WebSocket] Failed to subscribe to module: ${moduleName}`);
     }
   }
 
@@ -303,9 +318,11 @@ class GlobalWebSocket {
 
     this._notifyListeners('close', { code: event.code, reason: event.reason });
 
-    if (event.code !== 1000 && this.userId && this.reconnectAttempts < this.maxReconnectAttempts) {
+    // Reconnect for both authenticated and anonymous users (not just authenticated)
+    if (event.code !== 1000 && this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       const delay = this.reconnectDelay * this.reconnectAttempts;
+      console.log(`[WebSocket] Reconnecting in ${delay}ms... (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
       setTimeout(() => {
         this.connect(this.userId).catch(err => {
           console.error('Reconnection failed:', err);
@@ -326,6 +343,25 @@ class GlobalWebSocket {
 
   isSocketConnected() {
     return this.isConnected && this.socket?.readyState === WebSocket.OPEN;
+  }
+
+  /**
+   * Reconnect WebSocket with new authentication
+   * Useful when user logs in/out
+   * @param {string} userId - New user ID (optional)
+   * @returns {Promise<WebSocket|boolean>}
+   */
+  async reconnectWithAuth(userId) {
+    console.log('[WebSocket] Reconnecting with auth, userId:', userId);
+    
+    // Disconnect existing connection
+    this.disconnect();
+    
+    // Small delay to ensure clean disconnect
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Connect with new userId (or null for anonymous)
+    return this.connect(userId);
   }
 }
 

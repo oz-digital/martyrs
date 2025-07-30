@@ -39,12 +39,8 @@ async function sendEmail(to, subject, text, files = []) {
 }
 async function sendSms(phone, message) {
   const sessionUrl = `https://api.sms.to/sms/send?api_key=${process.env.SMS_API_KEY}&to=${phone}&message=${encodeURIComponent(message)}&sender_id=${encodeURIComponent(process.env.APP_NAME)}`;
-  //
-  console.log(`Phone:${phone} message:${message} session: ${sessionUrl}`);
   try {
     const response = await axios.get(sessionUrl);
-    console.log(response);
-    console.log('SMS sent');
     return true;
   } catch (error) {
     console.log(error);

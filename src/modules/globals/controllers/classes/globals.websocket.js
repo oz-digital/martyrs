@@ -16,6 +16,7 @@ class WebSocketManager {
     };
     this.modules = new Map();
     this.userConnections = new Map();
+    this.anonymousConnections = new Set(); // Для хранения анонимных соединений
     // Добавляем контейнер для RPC методов
     this.rpcMethods = new Map();
     // Настраиваем WebSocket обработчик
@@ -61,9 +62,12 @@ class WebSocketManager {
         // Инициализация свойств клиента
         ws.userId = ws.getUserData().userId;
         ws.subscriptions = new Set();
-        // Отслеживаем соединение, если есть userId
+        // Отслеживаем соединение
         if (ws.userId) {
           this._trackUserConnection(ws.userId, ws);
+        } else {
+          // Добавляем анонимное соединение
+          this.anonymousConnections.add(ws);
         }
       },
       // Обработчик входящих сообщений
@@ -76,9 +80,11 @@ class WebSocketManager {
             // Обработка подписки и отписки на модуль
             if (msg.type === 'subscribe' && msg.module && this.modules.has(msg.module)) {
               ws.subscriptions.add(msg.module);
+              console.log(`[WebSocket Server] Client ${ws.userId || 'anonymous'} subscribed to module: ${msg.module}`);
               return;
             } else if (msg.type === 'unsubscribe' && msg.module) {
               ws.subscriptions.delete(msg.module);
+              console.log(`[WebSocket Server] Client ${ws.userId || 'anonymous'} unsubscribed from module: ${msg.module}`);
               return;
             }
             // Обработка RPC вызова
@@ -88,11 +94,21 @@ class WebSocketManager {
             }
             // Маршрутизация сообщения к соответствующему обработчику модуля
             const moduleName = msg.module;
+            console.log(`[WebSocket Server] Message from ${ws.userId || 'anonymous'}, module: ${moduleName}, type: ${msg.type}, subscriptions:`, Array.from(ws.subscriptions));
+            
             if (moduleName && this.modules.has(moduleName)) {
+              // Проверяем подписку на модуль для всех сообщений кроме subscribe/unsubscribe
+              if (msg.type !== 'subscribe' && msg.type !== 'unsubscribe' && !ws.subscriptions.has(moduleName)) {
+                console.log(`[WebSocket Server] Client not subscribed to module: ${moduleName}, ignoring message`);
+                return;
+              }
+              
               const handler = this.modules.get(moduleName);
               Promise.resolve(handler(ws, msg)).catch(err => {
                 console.error(`Error in handler for module ${moduleName}:`, err);
               });
+            } else {
+              console.log(`[WebSocket Server] Module ${moduleName} not registered`);
             }
           } catch (err) {
             console.error('Invalid message or handler error:', err);
@@ -124,6 +140,9 @@ class WebSocketManager {
           if (this.userConnections.get(userId).size === 0) {
             this.userConnections.delete(userId);
           }
+        } else {
+          // Удаляем анонимное соединение
+          this.anonymousConnections.delete(ws);
         }
         // Очищаем подписки для предотвращения утечки памяти
         if (ws.subscriptions && typeof ws.subscriptions.clear === 'function') {
@@ -287,7 +306,8 @@ class WebSocketManager {
   broadcastToModule(moduleName, data) {
     const message = JSON.stringify(data);
     let failedSends = 0;
-    // Итерируем через наши отслеживаемые соединения
+    
+    // Iterate through authenticated connections
     for (const sockets of this.userConnections.values()) {
       for (const ws of sockets) {
         if (ws.subscriptions.has(moduleName)) {
@@ -303,6 +323,22 @@ class WebSocketManager {
         }
       }
     }
+    
+    // Also iterate through anonymous connections
+    for (const ws of this.anonymousConnections) {
+      if (ws.subscriptions.has(moduleName)) {
+        try {
+          const ok = ws.send(message, false);
+          if (!ok) {
+            failedSends++;
+          }
+        } catch (err) {
+          failedSends++;
+          console.warn('Failed to broadcast message to anonymous:', err);
+        }
+      }
+    }
+    
     if (failedSends > 0) {
       console.warn(`Failed to send broadcast to ${failedSends} connections due to backpressure or closed sockets`);
     }
@@ -311,6 +347,8 @@ class WebSocketManager {
   broadcastToModuleWithFilter(moduleName, filterFn, data) {
     const message = JSON.stringify(data);
     let failedSends = 0;
+    
+    // Iterate through authenticated connections
     for (const sockets of this.userConnections.values()) {
       for (const ws of sockets) {
         if (!ws.subscriptions.has(moduleName)) continue;
@@ -326,6 +364,22 @@ class WebSocketManager {
         }
       }
     }
+    
+    // Also iterate through anonymous connections
+    for (const ws of this.anonymousConnections) {
+      if (!ws.subscriptions.has(moduleName)) continue;
+      if (!filterFn(ws)) continue;
+      try {
+        const ok = ws.send(message, false);
+        if (!ok) {
+          failedSends++;
+        }
+      } catch (err) {
+        failedSends++;
+        console.warn('Failed to send filtered broadcast to anonymous:', err);
+      }
+    }
+    
     if (failedSends > 0) {
       console.warn(`Failed to send filtered broadcast to ${failedSends} connections due to backpressure or closed sockets`);
     }

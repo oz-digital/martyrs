@@ -122,55 +122,46 @@ const NotificationsController = (db, wss, notificationService) => {
     try {
       const { userId, anonymousId, deviceId, deviceType, deviceToken } = req.body;
       
+      console.log('[RegisterDevice] Request:', { userId, anonymousId, deviceId, isAnonymous: !userId });
+      
       // Validate that either userId or anonymousId is provided
       if (!userId && !anonymousId) {
         return res.status(400).json({ message: 'Either userId or anonymousId is required' });
       }
       
-      const isAnonymous = !userId;
-      let query, updateData;
-      
-      if (isAnonymous) {
-        // For anonymous users
-        query = { anonymousId, deviceId };
-        updateData = {
-          anonymousId,
-          deviceId,
-          deviceType,
-          deviceToken,
-          isActive: true,
-          isAnonymous: true,
-          lastActive: Date.now(),
-        };
-      } else {
-        // For registered users - first delete any anonymous device with same deviceId/token
-        await db.userDevice.deleteMany({
-          $or: [
-            { deviceId, isAnonymous: true },
-            { deviceToken, isAnonymous: true }
-          ]
-        });
-        
-        query = { userId, deviceId };
-        updateData = {
-          userId,
-          deviceId,
-          deviceType,
-          deviceToken,
-          isActive: true,
-          isAnonymous: false,
-          lastActive: Date.now(),
-        };
+      // Clean up any old devices with conflicting indexes before proceeding
+      if (anonymousId) {
+        // Remove any existing devices with same anonymousId+deviceId combo
+        await db.userDevice.deleteMany({ anonymousId, deviceId });
       }
       
-      // Upsert device registration
+      // Simple upsert by deviceToken
+      const updateData = {
+        deviceId,
+        deviceType,
+        deviceToken,
+        isActive: true,
+        lastActive: Date.now(),
+        isAnonymous: !userId
+      };
+      
+      if (userId) {
+        updateData.userId = userId;
+        // Remove anonymousId field when user is authenticated
+        updateData.$unset = { anonymousId: 1 };
+      } else {
+        updateData.anonymousId = anonymousId;
+        // Remove userId field when user is anonymous
+        updateData.$unset = { userId: 1 };
+      }
+      
       const device = await db.userDevice.findOneAndUpdate(
-        query,
-        { $set: updateData },
+        { deviceToken },
+        updateData,
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
       
-      return res.status(201).json(device);
+      return res.status(200).json(device);
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }

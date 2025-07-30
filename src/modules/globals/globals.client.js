@@ -65,16 +65,15 @@ function initializeGlobals(app, store, router, config, options = {}) {
 
 
     
-  // Connect WebSocket only for authenticated users
-  
-    // const userId = this.store.auth.state.user?._id;
-  console.log('Connecting to websockets via globals');
+  // Initialize WebSocket for all users (authenticated and anonymous)
+  console.log('Initializing websockets via globals');
   websockets.initialize({
     wsUrl: process.env.WSS_URL,
     maxReconnectAttempts: 10,
     reconnectDelay: 2000,
   });
 
+  // Connect without userId - will work for both authenticated (via cookies) and anonymous users
   websockets.connect();
 
   // Change Locale to Route Locale if available

@@ -7,17 +7,32 @@ export default (function (app, db, wss) {
   
   // WebSocket-обработчик для модуля "chat"
   wss.registerModule('chat', async (ws, msg) => {
+    console.log('[CHAT WebSocket] Received message type:', msg.type, 'from ws.id:', ws.id);
+    
     if (msg.type === 'joinChat') {
-      if (!msg.chatId) return;
+      console.log('[CHAT WebSocket] joinChat request for chatId:', msg.chatId);
+      if (!msg.chatId) {
+        console.log('[CHAT WebSocket] No chatId provided for joinChat');
+        return;
+      }
       // Вешаем chatId на сокет — позволяет фильтровать клиентов
       if (!ws.activeChats) ws.activeChats = new Set();
       ws.activeChats.add(msg.chatId);
+      console.log('[CHAT WebSocket] Client', ws.id, 'joined chat:', msg.chatId);
+      console.log('[CHAT WebSocket] Client activeChats:', Array.from(ws.activeChats));
     }
     
     if (msg.type === 'message') {
       console.log('[CHAT] Received message:', msg);
       
-      const savedMessage = await controller.saveMessage(msg);
+      // Add userId or anonymousId from WebSocket connection
+      const messageData = {
+        ...msg,
+        userId: ws.userId || undefined,
+        anonymousId: ws.anonymousId || undefined
+      };
+      
+      const savedMessage = await controller.saveMessage(messageData);
       console.log('[CHAT] Saved message:', savedMessage);
       
       // Отправить сообщение всем в этом чате

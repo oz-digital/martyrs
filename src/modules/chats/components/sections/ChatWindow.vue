@@ -101,14 +101,23 @@ const observeMessages = () => {
           // Проверяем, что сообщение не от текущего пользователя
           console.log('[CHAT] Checking if own message:', {
             msgUserId: msg.userId,
+            msgAnonymousId: msg.anonymousId,
             currentUserId: chatStore.state.userId,
+            currentAnonymousId: chatStore.state.anonymousId,
             isEqual: msg.userId === chatStore.state.userId,
             msgUserIdType: typeof msg.userId,
             currentUserIdType: typeof chatStore.state.userId
           });
-          if (msg.userId && msg.userId === chatStore.state.userId) return false;
+          
+          // Для аутентифицированных пользователей
+          if (msg.userId && chatStore.state.userId && msg.userId === chatStore.state.userId) return false;
+          
+          // Для анонимных пользователей
+          if (!msg.userId && !chatStore.state.userId && msg.anonymousId === chatStore.state.anonymousId) return false;
           
           // Проверяем, что сообщение еще не прочитано текущим пользователем
+          // Для анонимных пользователей не отмечаем сообщения как прочитанные
+          if (!chatStore.state.userId) return false;
           if (msg.readBy?.some(r => r.userId === chatStore.state.userId)) return false;
           
           console.log('[CHAT] Message can be marked as read:', {

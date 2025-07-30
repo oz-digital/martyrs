@@ -269,6 +269,7 @@ class NotificationManager {
     }
 
     // Register device
+    console.log('[Notifications] Registering device with data:', deviceData);
     await store.notifications.actions.registerDevice(deviceData);
   }
 
@@ -379,6 +380,9 @@ function initializeNotifications(app, store, router, options = {}) {
   const route = options.route || 'User Profile Root';
   router.addRoute(route, routerNotifications);
   store.addStore('notifications', storeNotifications);
+  
+  console.log('[Notifications] Initializing, auth store exists:', !!store.auth);
+  console.log('[Notifications] Auth state:', store.auth?.state);
 
   // Initialize global WebSocket if needed
   if (options.wsUrl) {
@@ -405,17 +409,26 @@ function initializeNotifications(app, store, router, options = {}) {
     notificationManager.initialize();
 
     // Watch for user login/logout using auth store
+    console.log('[Notifications] Setting up auth watcher...');
+    if (!store.auth) {
+      console.error('[Notifications] Auth store not found! Cannot set up watcher.');
+      return;
+    }
+    
     watch(
       () => store.auth.state.access.status,
-      isAuthenticated => {
+      async (isAuthenticated) => {
+        console.log('[Notifications] Auth status changed:', isAuthenticated);
         if (isAuthenticated) {
           // Re-register device for authenticated user
-          store.notifications.actions.reregisterDeviceAfterLogin();
-          // Reinitialize for authenticated user
+          console.log('[Notifications] User logged in, re-registering device...');
+          await store.notifications.actions.reregisterDeviceAfterLogin();
+          // Reinitialize notifications for authenticated user
           notificationManager.disconnect();
-          notificationManager.initialize();
+          await notificationManager.initialize();
         } else {
           // Keep notifications active for anonymous users, just reset user-specific data
+          console.log('[Notifications] User logged out, resetting notifications...');
           store.notifications.mutations.resetNotifications();
         }
       }

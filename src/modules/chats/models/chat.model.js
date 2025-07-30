@@ -7,7 +7,11 @@ export default db => {
     userId: {
       type: db.mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: false // Make optional for anonymous users
+    },
+    anonymousId: {
+      type: String,
+      required: false // For anonymous users
     },
     chatId: {
       type: String,
