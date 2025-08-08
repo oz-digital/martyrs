@@ -8,7 +8,7 @@
       <button 
         v-if="hasAccess(route.params._id, 'spots', 'create', auth.state.accesses, auth.state.access.roles)"
         @click="$router.push({
-          name: route.params?._id ? 'Organization_SpotAdd' : 'SpotAdd'
+          name: route.params?._id ? 'Spot Creation' : 'Spot Creation'
         })" 
         class="radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second">
           +

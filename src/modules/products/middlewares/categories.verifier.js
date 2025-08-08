@@ -98,7 +98,14 @@ export default (function (db) {
     order: { rule: 'optional', validator: Validator.schema().number() },
   };
   const orderBodyValidatorConfig = {
-    categories: {
+    movedCategory: {
+      rule: 'optional',
+      validator: Validator.schema().object({
+        _id: Validator.schema().string().required(),
+        newParent: Validator.schema().oneOfTypes(['string', 'null'])
+      })
+    },
+    affectedCategories: {
       rule: 'optional',
       validator: Validator.schema().array().required(),
       default: [],

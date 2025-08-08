@@ -116,32 +116,55 @@
     
   });
 
-  // Функция для преобразования дерева в плоский массив для API (materialised path)
-  function flattenTreeForAPI(treeData, parentUrl = '') {
-    let flatCategories = [];
+  // Функция для сбора затронутых категорий при drag-n-drop
+  function collectAffectedCategories(movedItem) {
+    const result = {
+      movedCategory: null,
+      affectedCategories: []
+    };
     
-    function processNode(node, index, parentUrl) {
-      const { children, ...nodeData } = node;
+    // Находим уровень по parent ID
+    function getLevelItems(items, parentId) {
+      if (!parentId) return items; // root level
       
-      // Для materialised path отправляем order и parent (если есть)
-      flatCategories.push({
-        _id: nodeData._id,
-        order: index,
-        ...(nodeData.parent && { parent: nodeData.parent })
-      });
-      
-      if (children && children.length > 0) {
-        children.forEach((child, childIndex) => {
-          processNode(child, childIndex, nodeData.url);
-        });
+      for (const item of items) {
+        if (item._id === parentId) {
+          return item.children || [];
+        }
+        if (item.children?.length) {
+          const found = getLevelItems(item.children, parentId);
+          if (found) return found;
+        }
       }
+      return [];
     }
     
-    treeData.forEach((node, index) => {
-      processNode(node, index, parentUrl);
-    });
+    // Если есть перемещенная категория
+    if (movedItem && movedItem._id) {
+      result.movedCategory = {
+        _id: movedItem._id,
+        newParent: movedItem.parent || null
+      };
+      
+      // Собираем категории с целевого уровня (куда переместили)
+      const targetLevel = getLevelItems(categories.state.all, movedItem.parent);
+      targetLevel.forEach((item, index) => {
+        result.affectedCategories.push({
+          _id: item._id,
+          order: index
+        });
+      });
+    } else {
+      // Изменение порядка на root уровне
+      categories.state.all.forEach((item, index) => {
+        result.affectedCategories.push({
+          _id: item._id,
+          order: index
+        });
+      });
+    }
     
-    return flatCategories;
+    return result;
   }
 
   // Функция для обновления порядка категорий
@@ -149,10 +172,10 @@
     console.log('updateCategoriesOrder called with event:', event);
     
     try {
-      // Игнорируем события drag-and-drop, используем актуальное состояние
-      const flatCategories = flattenTreeForAPI(categories.state.all);
+      const data = collectAffectedCategories(event);
       
-      await categories.actions.updateOrder(flatCategories);
+      console.log('Sending data:', data);
+      await categories.actions.updateOrder(data);
       console.log('Categories order updated successfully');
     } catch (error) {
       console.error('Error updating categories order:', error);

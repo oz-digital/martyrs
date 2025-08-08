@@ -69,11 +69,9 @@ const actions = {
   },
 
   // Method for updating order of multiple categories
-  async updateOrder(categories) {
+  async updateOrder(data) {
     try {
-      const response = await $axios.post('/api/categories/updateOrder', {
-        categories: categories,
-      });
+      const response = await $axios.post('/api/categories/updateOrder', data);
 
       return Promise.resolve(response.data);
     } catch (error) {

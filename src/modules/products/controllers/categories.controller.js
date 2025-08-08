@@ -69,40 +69,88 @@ const controllerFactory = db => {
 
   // Обновление пути категории и всех потомков
   const updateCategoryPaths = async (categoryId, newParentId = null) => {
-    const category = await Category.findById(categoryId);
-    if (!category) return;
+    // Загружаем категорию и родителя параллельно для скорости
+    const [category, parent] = await Promise.all([
+      Category.findById(categoryId).lean(),
+      newParentId ? Category.findById(newParentId).lean() : null
+    ]);
     
-    let newPath = [];
+    if (!category) {
+      console.log('Category not found');
+      return;
+    }
+    
+    const oldUrl = category.url;
+    const oldLevel = category.level;
+    const oldParent = category.parent ? category.parent.toString() : null;
+    
+    // Если parent не изменился, не нужно обновлять пути
+    const newParentStr = newParentId ? newParentId.toString() : null;
+    if (oldParent === newParentStr) {
+      console.log('Parent not changed, skipping path update');
+      return;
+    }
+    
     let newLevel = 0;
     let newUrl = `/${category.slug}`;
     
-    if (newParentId) {
-      const parent = await Category.findById(newParentId);
-      if (parent) {
-        newPath = [...parent.path, newParentId];
-        newLevel = parent.level + 1;
-        newUrl = `${parent.url}/${category.slug}`;
-      }
+    if (parent) {
+      newLevel = parent.level + 1;
+      newUrl = `${parent.url}/${category.slug}`;
     }
     
-    // Обновляем категорию
-    await Category.updateOne(
-      { _id: categoryId },
-      { path: newPath, level: newLevel, url: newUrl }
-    );
+    // Если URL не изменился, ничего не делаем
+    if (oldUrl === newUrl) {
+      console.log('URL not changed, skipping update');
+      return;
+    }
     
-    // Обновляем всех потомков одним запросом
-    const oldUrlPattern = new RegExp(`^${category.url}/`);
+    console.log(`URL change: "${oldUrl}" -> "${newUrl}"`);
     
-    await Category.updateMany(
-      { url: oldUrlPattern },
-      [{
-        $set: {
-          url: { $concat: [newUrl, { $substr: ['$url', { $strLenCP: category.url }, -1] }] },
-          level: { $add: ['$level', newLevel - category.level] }
+    // Подготавливаем bulk операции для обновления категории и всех потомков
+    const bulkOps = [];
+    
+    // Обновление самой категории
+    bulkOps.push({
+      updateOne: {
+        filter: { _id: categoryId },
+        update: { 
+          $set: { 
+            level: newLevel, 
+            url: newUrl, 
+            parent: newParentId 
+          } 
         }
-      }]
-    );
+      }
+    });
+    
+    // Обновление всех потомков - используем aggregation pipeline
+    const levelDiff = newLevel - oldLevel;
+    const oldUrlLength = oldUrl.length;
+    
+    // Обновляем потомков без предварительного подсчета
+    bulkOps.push({
+      updateMany: {
+        filter: { url: { $regex: `^${oldUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/` } },
+        update: [
+          {
+            $set: {
+              url: { 
+                $concat: [
+                  newUrl, 
+                  { $substr: ['$url', oldUrlLength, -1] }
+                ]
+              },
+              level: { $add: ['$level', levelDiff] }
+            }
+          }
+        ]
+      }
+    });
+    
+    // Выполняем все операции одним запросом
+    const result = await Category.bulkWrite(bulkOps, { ordered: false });
+    console.log(`Updated ${result.modifiedCount} documents`);
   };
 
   return {
@@ -244,8 +292,7 @@ const controllerFactory = db => {
         // Генерация slug
         const slug = await generateSlug(data.name, data.parent);
 
-        // Определение path, level, url
-        let path = [];
+        // Определение level, url
         let level = 0;
         let url = `/${slug}`;
 
@@ -253,7 +300,6 @@ const controllerFactory = db => {
           const parent = await Category.findById(data.parent);
           if (!parent) throw new Error('Parent category not found');
           
-          path = [...parent.path, data.parent];
           level = parent.level + 1;
           url = `${parent.url}/${slug}`;
         }
@@ -268,7 +314,6 @@ const controllerFactory = db => {
           ...data,
           slug,
           url,
-          path,
           level,
           order,
         });
@@ -323,30 +368,62 @@ const controllerFactory = db => {
     },
 
     async updateOrder(req, res) {
+      const startTime = Date.now();
       try {
-        const { categories } = req.verifiedBody;
+        console.log('=== UPDATE ORDER START ===');
+        console.log('Affected categories count:', req.verifiedBody?.affectedCategories?.length);
+        console.log('Has moved category:', !!req.verifiedBody?.movedCategory);
         
-        const bulkOps = categories.map(cat => ({
+        const { movedCategory, affectedCategories } = req.verifiedBody;
+        
+        if (!affectedCategories || affectedCategories.length === 0) {
+          return res.json({ message: 'No changes to update' });
+        }
+        
+        // Создаем bulk операции для обновления order всех затронутых категорий
+        const bulkOps = affectedCategories.map(cat => ({
           updateOne: {
             filter: { _id: cat._id },
             update: { $set: { order: cat.order } }
           }
         }));
-
-        // Обработка смены parent
-        const movedCategories = categories.filter(cat => cat.parent !== undefined);
-
-        for (const cat of movedCategories) {
-          await updateCategoryPaths(cat._id, cat.parent);
+        
+        // Если есть перемещенная категория, добавляем обновление parent
+        if (movedCategory) {
+          bulkOps.push({
+            updateOne: {
+              filter: { _id: movedCategory._id },
+              update: { $set: { parent: movedCategory.newParent } }
+            }
+          });
         }
-
-        await Category.bulkWrite(bulkOps);
+        
+        // Выполняем все обновления одним запросом
+        console.log(`Starting bulkWrite with ${bulkOps.length} operations`);
+        const bulkStart = Date.now();
+        await Category.bulkWrite(bulkOps, { ordered: false });
+        console.log(`BulkWrite completed in ${Date.now() - bulkStart}ms`);
+        
+        // Если категория переместилась, обновляем URL для нее и всех потомков
+        if (movedCategory) {
+          const pathStart = Date.now();
+          console.log('Starting updateCategoryPaths...');
+          await updateCategoryPaths(movedCategory._id, movedCategory.newParent);
+          console.log(`updateCategoryPaths completed in ${Date.now() - pathStart}ms`);
+        }
+        
+        const cacheStart = Date.now();
         await cache.delByTags(['categories']);
+        console.log(`Cache clear completed in ${Date.now() - cacheStart}ms`);
 
-        logger.info(`Categories order updated: ${categories.map(c => c._id).join(', ')}`);
+        const totalTime = Date.now() - startTime;
+        console.log(`=== UPDATE ORDER COMPLETE in ${totalTime}ms ===`);
+        
+        logger.info(`Categories order updated: ${affectedCategories.length} items in ${totalTime}ms`);
         res.json({ message: 'Order updated successfully' });
       } catch (err) {
         logger.error(`Category order update error: ${err.message}`);
+        console.error('Full error:', err);
         res.status(500).json({ message: 'Failed to update categories order' });
       }
     },
