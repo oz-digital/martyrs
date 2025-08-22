@@ -129,13 +129,17 @@ const NotificationsController = (db, wss, notificationService) => {
         return res.status(400).json({ message: 'Either userId or anonymousId is required' });
       }
       
-      // Clean up any old devices with conflicting indexes before proceeding
-      if (anonymousId) {
-        // Remove any existing devices with same anonymousId+deviceId combo
-        await db.userDevice.deleteMany({ anonymousId, deviceId });
+      // Build the filter based on whether user is authenticated or anonymous
+      let filter;
+      if (userId) {
+        // For authenticated users, use userId + deviceId as unique identifier
+        filter = { userId, deviceId };
+      } else {
+        // For anonymous users, use anonymousId + deviceId as unique identifier
+        filter = { anonymousId, deviceId };
       }
       
-      // Simple upsert by deviceToken
+      // Build update data
       const updateData = {
         deviceId,
         deviceType,
@@ -155,14 +159,18 @@ const NotificationsController = (db, wss, notificationService) => {
         updateData.$unset = { userId: 1 };
       }
       
+      // Upsert the device
       const device = await db.userDevice.findOneAndUpdate(
-        { deviceToken },
+        filter,
         updateData,
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
       
+      console.log('[RegisterDevice] Device registered/updated:', device._id);
+      
       return res.status(200).json(device);
     } catch (err) {
+      console.error('[RegisterDevice] Error:', err.message);
       return res.status(500).json({ message: err.message });
     }
   };

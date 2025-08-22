@@ -126,6 +126,24 @@ class CapacitorPushHandler {
         deviceToken: token.value,
       };
 
+      // Store device info for re-registration after login
+      try {
+        await Preferences.set({
+          key: 'notifications_device_id',
+          value: deviceId.uuid
+        });
+        await Preferences.set({
+          key: 'notifications_device_token',
+          value: token.value
+        });
+        await Preferences.set({
+          key: 'notifications_device_type',
+          value: deviceInfo.platform.toLowerCase()
+        });
+      } catch (error) {
+        console.warn('Could not save device info to preferences:', error);
+      }
+
       // For anonymous users, add anonymousId
       if (!this.store.auth.state.user?._id) {
         let anonymousId = null;
@@ -231,11 +249,19 @@ class NotificationManager {
     // Store device data for re-registration after login
     try {
       await Preferences.set({
+        key: 'notifications_device_id',
+        value: deviceId
+      });
+      await Preferences.set({
         key: 'notifications_device_token',
         value: deviceToken
       });
+      await Preferences.set({
+        key: 'notifications_device_type',
+        value: 'web'
+      });
     } catch (error) {
-      console.warn('Could not save device token to preferences:', error);
+      console.warn('Could not save device info to preferences:', error);
     }
 
     const deviceData = {

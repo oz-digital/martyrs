@@ -152,16 +152,21 @@ const actions = {
     try {
       const deviceIdResult = await Preferences.get({ key: 'notifications_device_id' });
       const deviceTokenResult = await Preferences.get({ key: 'notifications_device_token' });
+      const deviceTypeResult = await Preferences.get({ key: 'notifications_device_type' });
       
       const deviceId = deviceIdResult.value;
       const deviceToken = deviceTokenResult.value;
+      const deviceType = deviceTypeResult.value || 'web';
       
       if (deviceId && deviceToken) {
+        console.log('[Notifications Store] Re-registering device after login:', { deviceId, deviceType });
         await this.registerDevice({
           deviceId,
           deviceToken,
-          deviceType: 'web'
+          deviceType
         });
+      } else {
+        console.log('[Notifications Store] No stored device info for re-registration');
       }
     } catch (error) {
       console.error('Error re-registering device after login:', error);
