@@ -204,6 +204,28 @@ class Validator {
     return this;
   }
   /**
+   * Проверяет длину строки
+   * @param {{ min?: number, max?: number }} options - Минимальная и максимальная длина
+   * @param {string} [message] - Пользовательское сообщение об ошибке
+   * @returns {Validator}
+   */
+  length(options, message) {
+    this.rules.push({
+      type: 'length',
+      check: value => {
+        if (value === undefined || value === null) return true;
+        // Преобразуем в строку для проверки длины
+        const str = String(value);
+        if (options.min !== undefined && str.length < options.min) return false;
+        if (options.max !== undefined && str.length > options.max) return false;
+        return true;
+      },
+      param: options,
+      message,
+    });
+    return this;
+  }
+  /**
    * Проверяет соответствие регулярному выражению
    * @param {RegExp} regex - Регулярное выражение
    * @param {string} [message] - Пользовательское сообщение об ошибке
@@ -422,6 +444,15 @@ class Validator {
       case 'max':
         if (rule.param instanceof Date) return `${context}должно быть не позднее ${rule.param.toLocaleDateString()}`;
         return `${context}должно быть не более ${rule.param}`;
+      case 'length':
+        if (rule.param.min !== undefined && rule.param.max !== undefined) {
+          return `${context}длина должна быть от ${rule.param.min} до ${rule.param.max} символов`;
+        } else if (rule.param.min !== undefined) {
+          return `${context}длина должна быть не менее ${rule.param.min} символов`;
+        } else if (rule.param.max !== undefined) {
+          return `${context}длина должна быть не более ${rule.param.max} символов`;
+        }
+        return `${context}не соответствует требованиям длины`;
       case 'pattern':
         return `${context}не соответствует требуемому формату`;
       case 'email':
@@ -452,7 +483,7 @@ class Validator {
     for (const rule of this.rules) {
       if (!rule.check(value)) {
         // Для правил с вложенной валидацией ошибки уже добавлены
-        if (rule.type !== 'items' && rule.type !== 'shape') {
+        if (rule.type !== 'items' && rule.type !== 'shape' && rule.type !== 'object') {
           this.errors.push(this._getErrorMessage(rule));
         }
         // Для типов, где проверка типа важна, прерываем валидацию

@@ -380,9 +380,6 @@ function initializeNotifications(app, store, router, options = {}) {
   const route = options.route || 'User Profile Root';
   router.addRoute(route, routerNotifications);
   store.addStore('notifications', storeNotifications);
-  
-  console.log('[Notifications] Initializing, auth store exists:', !!store.auth);
-  console.log('[Notifications] Auth state:', store.auth?.state);
 
   // Initialize global WebSocket if needed
   if (options.wsUrl) {
@@ -409,7 +406,6 @@ function initializeNotifications(app, store, router, options = {}) {
     notificationManager.initialize();
 
     // Watch for user login/logout using auth store
-    console.log('[Notifications] Setting up auth watcher...');
     if (!store.auth) {
       console.error('[Notifications] Auth store not found! Cannot set up watcher.');
       return;
@@ -418,7 +414,6 @@ function initializeNotifications(app, store, router, options = {}) {
     watch(
       () => store.auth.state.access.status,
       async (isAuthenticated) => {
-        console.log('[Notifications] Auth status changed:', isAuthenticated);
         if (isAuthenticated) {
           // Re-register device for authenticated user
           console.log('[Notifications] User logged in, re-registering device...');

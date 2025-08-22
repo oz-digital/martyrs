@@ -14,6 +14,7 @@
       <Tree 
         :items="item.children"
         :state="state"
+        :parent-id="item._id"
         @update="emitChange"
         class="pd-l-medium"
         v-slot="{ item }"
@@ -34,7 +35,8 @@ import Tree from './Tree.vue';
 
 const props = defineProps({
   items: Array,
-   state: Array
+  state: Array,
+  parentId: { type: String, default: null }
 });
 
 const emits = defineEmits(['update']);
@@ -77,23 +79,33 @@ function updateOrders(items, startOrder = 0) {
 }
 
 function handleChange(event) {
-
-    console.log('event order is', event)
+  console.log('event order is', event)
   if (!event.added && !event.moved) return;
   
-  const targetId = event.added ? 
-    event.added.element._id : 
-    props.items[event.moved.newIndex]._id;
-    
-  const updatedCategory = findCategoryAndUpdateParent(props.state, targetId);
-
-  if (!updatedCategory) return;
+  let movedItem = null;
   
-  // Обновляем order для всего дерева категорий
-  updateOrders(props.state);
-  console.log('hi')
-  // Отправляем обновленную категорию
-  emits('update', updatedCategory);
+  if (event.added) {
+    // Элемент добавлен с другого уровня
+    movedItem = event.added.element;
+    // Устанавливаем правильный parent для этого уровня
+    movedItem.parent = props.parentId;
+  } else if (event.moved) {
+    // Элемент перемещен на том же уровне (только изменение порядка)
+    movedItem = props.items[event.moved.newIndex];
+    // Parent не меняется при перемещении на том же уровне
+  }
+  
+  // Обновляем order для текущего уровня
+  props.items.forEach((item, index) => {
+    item.order = index;
+  });
+  
+  // Передаем полную информацию об изменении
+  emits('update', {
+    movedItem: movedItem,
+    parentId: props.parentId,
+    items: props.items
+  });
 }
 
 function emitChange(event) {

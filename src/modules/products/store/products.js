@@ -31,6 +31,11 @@ const state = reactive({
     included: null,
     ingredients: [],
     description: '',
+    defaultVariant: {
+      price: null,
+      quantity: 1,
+      unit: 'pcs'
+    }
   },
   filter: {
     active: false,
@@ -227,6 +232,11 @@ const mutations = {
       discounts: [],
       ingredients: [],
       description: '',
+      defaultVariant: {
+        price: null,
+        quantity: 1,
+        unit: 'pcs'
+      }
     };
   },
 };

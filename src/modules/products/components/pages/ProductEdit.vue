@@ -169,9 +169,33 @@
           type="textarea"
         />
       </Block>
-      <!-- Categories -->
-      
 
+      <!-- Price Block (only for new products) -->
+      <Block v-if="!route.params.product" title="Price">
+        <div class="flex gap-thin mn-b-thin">
+          <Field
+            v-model:field="products.state.current.defaultVariant.price"
+            label="Price"
+            type="number"
+            placeholder="Enter price"
+            class="w-100 bg-white radius-small pd-medium"
+          />
+          <Field
+            v-model:field="products.state.current.defaultVariant.quantity"
+            label="Quantity"
+            type="number"
+            placeholder="Enter quantity"
+            class="w-100 bg-white radius-small pd-medium"
+          />
+          <Select
+            v-model:select="products.state.current.defaultVariant.unit"
+            label="Unit"
+            :options="['pcs', 'g', 'kg', 'ml', 'l', 'oz']"
+            placeholder="Select unit"
+            class="w-100 bg-white radius-small pd-medium"
+          />
+        </div>
+      </Block>
 
       <!-- Attributes -->
       <EditAttributes 
@@ -303,33 +327,24 @@ onMounted(async() => {
   if (route.params.product) {
     await products.actions.read({ _id: route.params.product, lookup: ['variants','categories','recommended'] });
   } else {
-    // Создаем дефолтный вариант для нового товара
-    if (!products.state.current.variants || products.state.current.variants.length === 0) {
-      products.state.current.variants = [{
-        name: 'Default',
-        sku: '',
-        images: [],
-        price: 0,
-        cost: 0,
-        quantity: 1,
-        unit: 'pcs',
-        available: 0,
-        ingredients: [],
-        attributes: []
-      }];
-    }
-  }
-
   // Убедимся, что массивы инициализированы
   if (!products.state.current.translations) {
     products.state.current.translations = []
   }
-   // Убедимся, что массивы инициализированы
+  // Убедимся, что массивы инициализированы
   if (!products.state.current.recommended) {
     products.state.current.recommended = []
   }
   if (!products.state.current.discounts) {
     products.state.current.discounts = []
+  }
+  // Инициализируем defaultVariant для нового продукта
+  if (!products.state.current.defaultVariant) {
+    products.state.current.defaultVariant = {
+      price: null,
+      quantity: 1,
+      unit: 'pcs'
+    }
   }
 
   try {
@@ -342,6 +357,8 @@ onMounted(async() => {
     })
   } catch (error) {
     console.error('error loading categories:', error);
+  }
+
   }
 
   emits('page-loaded');
@@ -362,7 +379,14 @@ async function onSubmit() {
         type: 'user',
         hidden: false
       }
-      await products.actions.create(products.state.current)
+      
+      // Передаем defaultVariant на бекенд при создании
+      const productData = {
+        ...products.state.current,
+        defaultVariant: products.state.current.defaultVariant
+      }
+      
+      await products.actions.create(productData)
     }
     
     redirectTo()

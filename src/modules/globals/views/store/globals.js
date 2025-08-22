@@ -151,13 +151,30 @@ function setError(error) {
 
   errorData = error;
 
+  // Обработка ошибок из fetch API (Store class)
+  if (error?.info) errorData = error.info;
+  
+  // Обработка ошибок из axios
   if (error?.response?.data) errorData = error.response.data;
 
-  if (error && errorData.errorCode) {
+  // Обработка ошибок верификации
+  if (errorData?.error === 'VALIDATION_ERROR' && errorData?.errors) {
+    // Собираем все сообщения об ошибках в одну строку
+    const errorMessages = [];
+    for (const field in errorData.errors) {
+      const fieldErrors = errorData.errors[field];
+      if (Array.isArray(fieldErrors)) {
+        errorMessages.push(...fieldErrors);
+      } else if (typeof fieldErrors === 'string') {
+        errorMessages.push(fieldErrors);
+      }
+    }
+    state.error.message = errorMessages.join(', ') || 'Validation error';
+  } else if (error && errorData.errorCode) {
     // state.error.message = i18n.global.t(`errors.${errorData.errorCode}`);
     state.error.message = errorData.errorCode;
   } else {
-    state.error.message = errorData.message || 'Unknown error';
+    state.error.message = errorData.message || error.message || 'Unknown error';
   }
 
   state.error.show = true;

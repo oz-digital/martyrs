@@ -175,7 +175,6 @@
           :options="{
             limit: 16,
             owner: route.name?.includes('Organization') ? route.params._id : null,
-            search: route.query.search,
             lookup: ['variants','rents','inventory'],
             categories: route.params.categoryPath ? `/${route.params.categoryPath}` : null,
             filters: processedFilters,

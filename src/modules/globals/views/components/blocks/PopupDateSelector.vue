@@ -6,7 +6,7 @@
       :allowRange="true"
       :disablePastDates="true"
       :availabilityData="availabilityData"
-      :showAvailability="true"
+      :showAvailability="false"
       :lowAvailabilityThreshold="3"
       :requiredQuantity="quantity"
       class="bg-light radius-small"

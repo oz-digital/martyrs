@@ -7,6 +7,14 @@ import productLookupConfigs from '@martyrs/src/modules/products/controllers/conf
 
 const controllerFactory = db => {
   const Product = db.product;
+  const Variant = db.variant;
+
+  // Функция генерации SKU для варианта
+  const generateSKU = () => {
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).substring(2, 5);
+    return `VAR-${timestamp}-${random}`.toUpperCase();
+  };
 
   const Create = async (req, res) => {
     try {
@@ -15,7 +23,32 @@ const controllerFactory = db => {
         category: req.body.category?.map(cat => cat._id) || []
       };
       
-      const product = await new Product(productData).save();
+      // Удаляем defaultVariant из данных продукта
+      const { defaultVariant, ...cleanProductData } = productData;
+      
+      const product = await new Product(cleanProductData).save();
+      
+      // Создаем дефолтный вариант если указана цена
+      if (defaultVariant && defaultVariant.price !== null && defaultVariant.price > 0) {
+        const variantData = {
+          product: product._id,
+          name: product.name,
+          price: parseFloat(defaultVariant.price),
+          quantity: parseInt(defaultVariant.quantity) || 1,
+          unit: defaultVariant.unit || 'pcs',
+          status: product.status, // используем статус из товара
+          sku: generateSKU(),
+          owner: product.owner,
+          creator: product.creator,
+          images: [],
+          cost: 0,
+          ingredients: [],
+          attributes: []
+        };
+        
+        await new Variant(variantData).save();
+      }
+      
       return res.status(201).json(product);
     } catch (err) {
       console.log(err)

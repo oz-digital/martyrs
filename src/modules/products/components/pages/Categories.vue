@@ -48,7 +48,8 @@
         <Tree 
           v-if="items" 
           :items="categories.state.all" 
-          :state="categories.state.all" 
+          :state="categories.state.all"
+          :parent-id="null"
           @update="updateCategoriesOrder" 
           v-slot="{ item }"
         >
@@ -117,45 +118,56 @@
   });
 
   // Функция для сбора затронутых категорий при drag-n-drop
-  function collectAffectedCategories(movedItem) {
+  function collectAffectedCategories(eventData) {
     const result = {
       movedCategory: null,
       affectedCategories: []
     };
     
-    // Находим уровень по parent ID
-    function getLevelItems(items, parentId) {
-      if (!parentId) return items; // root level
-      
-      for (const item of items) {
-        if (item._id === parentId) {
-          return item.children || [];
-        }
-        if (item.children?.length) {
-          const found = getLevelItems(item.children, parentId);
-          if (found) return found;
-        }
-      }
-      return [];
-    }
+    console.log('collectAffectedCategories - eventData:', eventData);
     
-    // Если есть перемещенная категория
-    if (movedItem && movedItem._id) {
+    // Проверяем, что это объект от Tree компонента с полной информацией
+    if (eventData && eventData.movedItem) {
+      // Если категория переместилась между уровнями
+      if (eventData.movedItem._id) {
+        result.movedCategory = {
+          _id: eventData.movedItem._id,
+          newParent: eventData.parentId // Используем parentId из события (null для корня)
+        };
+      }
+      
+      // Собираем все категории текущего уровня с их новым порядком
+      const items = eventData.items || [];
+      console.log('Level items:', items);
+      
+      items.forEach((item, index) => {
+        result.affectedCategories.push({
+          _id: item._id,
+          order: index
+        });
+      });
+    } else if (eventData && eventData._id) {
+      // Fallback для старого формата (простой объект категории)
       result.movedCategory = {
-        _id: movedItem._id,
-        newParent: movedItem.parent || null
+        _id: eventData._id,
+        newParent: eventData.parent || null
       };
       
-      // Собираем категории с целевого уровня (куда переместили)
-      const targetLevel = getLevelItems(categories.state.all, movedItem.parent);
-      targetLevel.forEach((item, index) => {
+      // Пытаемся найти категории того же уровня
+      const parentId = eventData.parent;
+      const sameLevel = parentId 
+        ? categories.state.all.find(c => c._id === parentId)?.children || []
+        : categories.state.all;
+      
+      sameLevel.forEach((item, index) => {
         result.affectedCategories.push({
           _id: item._id,
           order: index
         });
       });
     } else {
-      // Изменение порядка на root уровне
+      // Если нет данных о перемещении, собираем корневые категории
+      console.log('No event data, collecting root level categories');
       categories.state.all.forEach((item, index) => {
         result.affectedCategories.push({
           _id: item._id,
@@ -163,6 +175,8 @@
         });
       });
     }
+    
+    console.log('collectAffectedCategories - result:', result);
     
     return result;
   }
@@ -174,7 +188,8 @@
     try {
       const data = collectAffectedCategories(event);
       
-      console.log('Sending data:', data);
+      // ОДИН КОНСОЛЬ ЛОГ НА ФРОНТЕНДЕ - ЧТО ОТПРАВЛЯЕМ
+      console.log('📤 FRONTEND SENDING:', JSON.stringify(data, null, 2));
       await categories.actions.updateOrder(data);
       console.log('Categories order updated successfully');
     } catch (error) {

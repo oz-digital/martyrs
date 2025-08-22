@@ -69,46 +69,53 @@ function getFilterDate(dateStart, dateEnd, fieldNames = { start: 'createdAt', en
   }
   return matchStage.$and.length > 0 ? [{ $match: matchStage }] : [];
 }
-function createSearchQuery(search, options = {}) {
+function getSearchOptions(search, options = {}) {
   if (!search) {
-    return {};
+    return [];
   }
+  
   const fields = options.fields || ['name'];
   const allowDotNotation = options.allowDotNotation || false;
+  
+  // Функция для экранирования специальных символов регулярных выражений
+  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
   let regexPattern = '';
   if (allowDotNotation) {
+    // Для поиска по вложенным полям (например, "user.name")
     const parts = search.split('.');
     if (parts.length === 2) {
+      // Экранируем каждую часть и соединяем точкой
       regexPattern = parts
         .map(function (part) {
-          return part.substr(0, part.length - 1) + '.{1}';
+          return escapeRegex(part);
         })
         .join('\\.');
     } else {
-      regexPattern = search.substr(0, search.length - 1) + '.{1}';
+      // Обычный поиск подстроки
+      regexPattern = escapeRegex(search);
     }
   } else {
-    regexPattern = search.substr(0, search.length - 1) + '.{1}';
+    // Обычный поиск подстроки с экранированием специальных символов
+    regexPattern = escapeRegex(search);
   }
+  
+  let query;
   if (fields.length === 1) {
-    return {
+    query = {
       [fields[0]]: { $regex: regexPattern, $options: 'i' },
     };
+  } else {
+    query = {
+      $or: fields.map(function (field) {
+        return {
+          [field]: { $regex: regexPattern, $options: 'i' },
+        };
+      }),
+    };
   }
-  return {
-    $or: fields.map(function (field) {
-      return {
-        [field]: { $regex: regexPattern, $options: 'i' },
-      };
-    }),
-  };
-}
-function getSearchOptions(search, options) {
-  const query = createSearchQuery(search, options);
-  if (Object.keys(query).length) {
-    return [{ $match: query }];
-  }
-  return [];
+  
+  return [{ $match: query }];
 }
 function getTagsOptions(tags) {
   if (tags) {

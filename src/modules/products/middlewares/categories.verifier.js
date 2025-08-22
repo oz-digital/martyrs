@@ -107,7 +107,7 @@ export default (function (db) {
     },
     affectedCategories: {
       rule: 'optional',
-      validator: Validator.schema().array().required(),
+      validator: Validator.schema().array(),
       default: [],
     },
   };

@@ -17,7 +17,7 @@ export default (function (db) {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .max(5000, 'Description must not exceed 5000 characters')
+        .length({ max: 5000 }, 'Description must not exceed 5000 characters')
     },
     sku: {
       rule: 'optional',
@@ -112,7 +112,7 @@ export default (function (db) {
       rule: 'optional',
       validator: Validator.schema()
         .string()
-        .max(5000, 'Description must not exceed 5000 characters')
+        .length({ max: 5000 }, 'Description must not exceed 5000 characters')
     },
     sku: {
       rule: 'optional',

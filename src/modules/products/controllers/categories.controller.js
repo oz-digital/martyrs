@@ -28,13 +28,12 @@ const controllerFactory = db => {
 
   // Построение дерева из плоского массива используя url
   const buildTreeFromUrl = (categories, sortParam = 'order', sortOrder = 'asc') => {
-    console.log('cat buildtree', categories)
     // Сортируем по url для правильного порядка обработки
     categories.sort((a, b) => a.url.localeCompare(b.url));
     
     const tree = [];
     const nodeMap = new Map();
-      console.log('cat buildtree', categories)
+    
     categories.forEach(cat => {
       const node = { ...cat, children: [] };
       nodeMap.set(cat.url, node);
@@ -42,11 +41,9 @@ const controllerFactory = db => {
 
       // Находим родителя по url
       const parentUrl = cat.url.substring(0, cat.url.lastIndexOf('/'));
-          console.log('cat parent buildtree', parentUrl)
       
       if (parentUrl && nodeMap.has(parentUrl)) {
         nodeMap.get(parentUrl).children.push(node);
-            console.log('cat nodeMap buildtree', nodeMap)
       } else if (cat.level === 0) {
         tree.push(node);
       }
@@ -370,9 +367,8 @@ const controllerFactory = db => {
     async updateOrder(req, res) {
       const startTime = Date.now();
       try {
-        console.log('=== UPDATE ORDER START ===');
-        console.log('Affected categories count:', req.verifiedBody?.affectedCategories?.length);
-        console.log('Has moved category:', !!req.verifiedBody?.movedCategory);
+        // ОДИН КОНСОЛЬ ЛОГ НА БЕКЕНДЕ - ЧТО ПРИШЛО
+        console.log('📥 BACKEND RECEIVED:', JSON.stringify(req.body, null, 2));
         
         const { movedCategory, affectedCategories } = req.verifiedBody;
         
@@ -387,16 +383,6 @@ const controllerFactory = db => {
             update: { $set: { order: cat.order } }
           }
         }));
-        
-        // Если есть перемещенная категория, добавляем обновление parent
-        if (movedCategory) {
-          bulkOps.push({
-            updateOne: {
-              filter: { _id: movedCategory._id },
-              update: { $set: { parent: movedCategory.newParent } }
-            }
-          });
-        }
         
         // Выполняем все обновления одним запросом
         console.log(`Starting bulkWrite with ${bulkOps.length} operations`);
