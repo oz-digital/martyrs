@@ -47,7 +47,11 @@ const actions = {
 
   // Black/White Theme
   async setTheme(isDarkMode) {
-    let root = document.querySelector(':root');
+    // Cache root element
+    if (!state.theme.rootElement) {
+      state.theme.rootElement = document.documentElement;
+    }
+    const root = state.theme.rootElement;
 
     state.theme.darkmode = isDarkMode;
 
@@ -66,20 +70,20 @@ const actions = {
 
     // Проверяем, сохранены ли оригинальные цвета
     if (!state.theme.originalColors) {
-      // Сохраняем оригинальные цвета
+      // Сохраняем оригинальные цвета один раз
       state.theme.originalColors = {};
+      const computedStyle = getComputedStyle(root);
       variableNames.forEach(variableName => {
-        const currentColor = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-        state.theme.originalColors[variableName] = currentColor;
+        state.theme.originalColors[variableName] = computedStyle.getPropertyValue(variableName).trim();
       });
     }
 
     if (isDarkMode) {
       invertColors(variableNames, state.theme.originalColors);
     } else {
-      // Восстанавливаем оригинальные цвета
+      // Восстанавливаем оригинальные цвета батчем
       variableNames.forEach(variableName => {
-        document.documentElement.style.setProperty(variableName, state.theme.originalColors[variableName]);
+        root.style.setProperty(variableName, state.theme.originalColors[variableName]);
       });
     }
   },
@@ -179,7 +183,9 @@ function setError(error) {
 
   state.error.show = true;
 
-  setTimeout(() => (state.error.show = false), 3000);
+  requestAnimationFrame(() => {
+    setTimeout(() => (state.error.show = false), 5000);
+  });
 }
 
 function setSnack(data) {
@@ -213,9 +219,10 @@ function setSnack(data) {
   }
 
   // Auto-hide
-  setTimeout(() => {
-    state.snack.show = false
-  }, duration)
+  requestAnimationFrame(() => {
+    setTimeout(() => {state.snack.show = false }, duration)
+  });
+  
 }
 
 function invertColors(variableNames, originalColors) {

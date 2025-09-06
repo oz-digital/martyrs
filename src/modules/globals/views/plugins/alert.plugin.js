@@ -1,7 +1,10 @@
 // alertPlugin.js
-import { h, reactive, render } from 'vue';
-  
-import AlertDialog from '@martyrs/src/modules/globals/views/components/blocks/AlertDialog.vue';
+import { h, reactive, render, defineAsyncComponent } from 'vue';
+
+// Dynamic import for better tree shaking and lazy loading
+const AlertDialog = defineAsyncComponent(() => 
+  import('@martyrs/src/modules/globals/views/components/blocks/AlertDialog.vue')
+);
 
 // Глобальное реактивное состояние для алерта
 const alertState = reactive({

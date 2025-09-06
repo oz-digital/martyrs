@@ -9,7 +9,7 @@ const inventoryRoutes = [
       },
       authorize: [],
     },
-    component: () => import(/* webpackChunkName: 'Inventory' */ '../components/pages/Inventory.vue'),
+    component: () => import(/* webpackChunkName: 'inventory-list' */ '../components/pages/Inventory.vue'),
   },
   {
     path: 'audit',
@@ -21,7 +21,7 @@ const inventoryRoutes = [
       },
       authorize: [],
     },
-    component: () => import(/* webpackChunkName: 'InventoryEdit' */ '../components/pages/InventoryEdit.vue'),
+    component: () => import(/* webpackChunkName: 'inventory-audit' */ '../components/pages/InventoryEdit.vue'),
   },
 ];
 

@@ -81,9 +81,9 @@ export default (projectRoot) => {
         {
           test: /\.(sa|sc|c)ss$/,
           use: [
-            process.env.NODE_ENV !== 'production'
-              ? 'vue-style-loader'
-              : rspack.CssExtractRspackPlugin.loader,  
+            // ВСЕГДА используем CssExtractRspackPlugin для SSR
+            // Это нужно чтобы Beasties мог найти CSS файлы
+            rspack.CssExtractRspackPlugin.loader,  
             {
               loader: 'css-loader',
               options: {
@@ -119,11 +119,16 @@ export default (projectRoot) => {
     plugins: [
       ...(process.env.BUNDLE_ANALYZER ? [new RsdoctorRspackPlugin(), new BundleAnalyzerPlugin()] : []),
       new VueLoaderPlugin(),
-      ...(process.env.NODE_ENV === 'production' ? [new rspack.CssExtractRspackPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[id].[contenthash].css',
+      // Используем CssExtractRspackPlugin в обоих режимах
+      new rspack.CssExtractRspackPlugin({
+        filename: process.env.NODE_ENV === 'production' 
+          ? '[name].[contenthash].css' 
+          : '[name].css',
+        chunkFilename: process.env.NODE_ENV === 'production'
+          ? '[id].[contenthash].css'
+          : '[id].css',
         ignoreOrder: true,
-      })]: []),
+      }),
       new CleanWebpackPlugin(),
       new Dotenv({
         path: `.env.${process.env.NODE_ENV}`,

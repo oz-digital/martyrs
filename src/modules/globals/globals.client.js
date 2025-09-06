@@ -1,26 +1,11 @@
-// Components
-// import Client from "./components/layouts/Client.vue"
-
+// Functional imports (needed for initialize function)
 import getBrowserLocale from './views/localization/get-browser-locale.js';
 import scrollBehavior from './views/router/scrollBehavior.js';
-
-import layoutApp from './views/components/layouts/App.vue';
-import layoutClient from './views/components/layouts/Client.vue';
-
-import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue';
-
-import BottomNavigationBar from '@martyrs/src/modules/globals/views/components/partials/BottomNavigationBar.vue';
-import Header from '@martyrs/src/modules/globals/views/components/partials/Header.vue';
-import Navigation from '@martyrs/src/modules/globals/views/components/partials/Navigation.vue';
-import NavigationBar from '@martyrs/src/modules/globals/views/components/partials/NavigationBar.vue';
-import Sidebar from '@martyrs/src/modules/globals/views/components/partials/Sidebar.vue';
-import Footer from '@martyrs/src/modules/globals/views/components/partials/Footer.vue';
-
-import Walkthrough from '@martyrs/src/modules/globals/views/components/sections/Walkthrough.vue';
 
 import * as mixins from './views/mixins/mixins.js';
 import * as storeGlobals from './views/store/globals.js';
 import * as appRenderer from './views/utils/vue-app-renderer.js';
+import './views/utils/polyfills.js'; // Auto-apply polyfills
 
 import alertPlugin from './views/plugins/alert.plugin.js';
 import popupAuthPlugin from './views/plugins/popup.auth.plugin.js';
@@ -30,6 +15,7 @@ import storeDebuggerPlugin from './views/plugins/store-debugger/store-debugger.p
 import store from './views/classes/store.js';
 import websockets from './views/classes/globals.websocket.js';
 import { i18nManager }  from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+import { moduleRegistry } from './views/classes/module-registry.js';
 
 import en from './locales/en.js';
 import ru from './locales/ru.js';
@@ -64,17 +50,8 @@ function initializeGlobals(app, store, router, config, options = {}) {
   // app.use(storeDebuggerPlugin, store);
 
 
-    
-  // Initialize WebSocket for all users (authenticated and anonymous)
-  console.log('Initializing websockets via globals');
-  websockets.initialize({
-    wsUrl: process.env.WSS_URL,
-    maxReconnectAttempts: 10,
-    reconnectDelay: 2000,
-  });
-
-  // Connect without userId - will work for both authenticated (via cookies) and anonymous users
-  websockets.connect();
+  // WebSocket инициализируется в client.js после гидратации
+  // чтобы не блокировать главный поток
 
   // Change Locale to Route Locale if available
   router.beforeEach((to, from, next) => {
@@ -122,43 +99,35 @@ const ModuleGlobals = {
     router: {
       // routerOrders
     },
-    components: {
-      // Pages
-      BlockSearch,
-      layoutClient,
-      layoutApp,
-      Header,
-      Navigation,
-      Footer,
-      Sidebar,
-      BottomNavigationBar,
-      NavigationBar,
-      Walkthrough
-    },
   },
 };
 
+// Component re-exports (enables tree shaking)
+export { default as layoutApp } from './views/components/layouts/App.vue';
+export { default as layoutClient } from './views/components/layouts/Client.vue';
+export { default as BlockSearch } from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue';
+export { default as BottomNavigationBar } from '@martyrs/src/modules/globals/views/components/partials/BottomNavigationBar.vue';
+export { default as Header } from '@martyrs/src/modules/globals/views/components/partials/Header.vue';
+export { default as Navigation } from '@martyrs/src/modules/globals/views/components/partials/Navigation.vue';
+export { default as NavigationBar } from '@martyrs/src/modules/globals/views/components/partials/NavigationBar.vue';
+export { default as Sidebar } from '@martyrs/src/modules/globals/views/components/partials/Sidebar.vue';
+export { default as Footer } from '@martyrs/src/modules/globals/views/components/partials/Footer.vue';
+export { default as Walkthrough } from '@martyrs/src/modules/globals/views/components/sections/Walkthrough.vue';
+
+// Functional exports
 export {
-  BlockSearch,
-  Header,
-  Footer,
-  Navigation,
-  NavigationBar,
-  Sidebar,
-  Walkthrough,
   appRenderer,
   getBrowserLocale,
-  layoutApp,
-  // Components
-  layoutClient,
-  // Client,
   mixins,
+  moduleRegistry,
   scrollBehavior,
   store,
   i18nManager,
-  // Store
   storeGlobals,
   websockets,
 };
+
+// Re-export polyfills for documentation
+export * from './views/utils/polyfills.js';
 
 export default ModuleGlobals;

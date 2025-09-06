@@ -241,13 +241,13 @@ function closePopup() {
   width: 90vw;
 }
 
-:deep(.feed-enter-active),
-:deep(.feed-leave-active) {
+::v-deep(.feed-enter-active),
+::v-deep(.feed-leave-active) {
   transition: all 0.3s ease;
 }
 
-:deep(.feed-enter-from),
-:deep(.feed-leave-to) {
+::v-deep(.feed-enter-from),
+::v-deep(.feed-leave-to) {
   opacity: 0;
   transform: scale(0.9);
 }

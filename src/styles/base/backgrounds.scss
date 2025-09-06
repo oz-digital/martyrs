@@ -25,6 +25,7 @@ body {
 	// Other
 	.bg-black-grad { background: linear-gradient(180deg,rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%); }
 	.bg-grad-main { background: radial-gradient(84.52% 84.52% at 50% 50%, rgb(var(--main)) 23.39%, #E7FFF4 100%), #E8FFF3;}
+	.bg-grad-white { background:  linear-gradient(180deg,rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);  }
 	// Transpatrens
 	.bg-t-white 	{ background: rgba(var(--white),0.1); 		}
 	.bg-t-grey 		{ background: rgba(var(--grey),0.1); 		}

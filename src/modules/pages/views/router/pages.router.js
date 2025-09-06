@@ -1,7 +1,7 @@
 import layoutEmpty from '@martyrs/src/modules/globals/views/components/layouts/Empty.vue';
 
 const pages = {
-  path: 'pages',
+  path: '/pages',
   component: layoutEmpty,
   meta: {
     title: {

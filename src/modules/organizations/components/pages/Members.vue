@@ -204,21 +204,23 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 
 import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue';
 
-import InviteForm from '@martyrs/src/modules/organizations/components/forms/InviteForm.vue';
-import AddExistingMembersForm from '@martyrs/src/modules/organizations/components/forms/AddExistingMembersForm.vue';
-import DepartmentForm from '@martyrs/src/modules/organizations/components/forms/DepartmentForm.vue';
+import { 
+  InviteForm,
+  AddExistingMembersForm,
+  DepartmentForm,
+  CardDepartment,
+  departmentsStore,
+  membershipsStore,
+  invitesStore,
+  storeOrganizations as organization
+} from '@martyrs/src/modules/organizations/organizations.client.js';
 
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
-import CardDepartment from '@martyrs/src/modules/organizations/components/blocks/CardDepartment.vue';
 
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
-import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
-import departmentsStore from '@martyrs/src/modules/organizations/store/departments.store.js';
-import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
-import invitesStore from '@martyrs/src/modules/organizations/store/invites.store.js';
 
 const route = useRoute();
 const router = useRouter();

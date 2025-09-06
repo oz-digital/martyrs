@@ -11,6 +11,7 @@ import baseConfig from './rspack.config.base.js';
 export default (projectRoot) => {
   const isProd = process.env.NODE_ENV === "production";
   const config = {
+    target: 'web',
     mode: !isProd ? "development" : "production",
     devtool: !isProd ? "inline-source-map" : "source-map",
     entry: {
@@ -20,8 +21,8 @@ export default (projectRoot) => {
       rules: [],
     },
     output: {
-      filename: "[name].js",
-      chunkFilename: '[name].js',
+      filename: "[name].[contenthash:8].js",
+      chunkFilename: 'chunks/[name].[contenthash:8].js',
       path: path.resolve(projectRoot, "builds/web/client"),
       publicPath: "/",
       clean: true
@@ -29,7 +30,18 @@ export default (projectRoot) => {
     
     plugins: [
       // ...(!isProd ? [new rspack.HotModuleReplacementPlugin()] : []),
-      new StatsWriterPlugin(),
+      new StatsWriterPlugin({
+        filename: 'stats.json',
+        stats: {
+          all: false,
+          assets: true,
+          chunks: true,
+          modules: true,
+          entrypoints: true,
+          chunkModules: true,
+          assetsByChunkName: true
+        }
+      }),
       new PurgeCSSPlugin({
         paths: glob.sync([
           path.join(projectRoot, 'src/**/*.vue'),
@@ -66,6 +78,11 @@ export default (projectRoot) => {
         ],
       }),
       // PWA PWA PWA PWA PWA
+      // Simple RspackManifestPlugin configuration
+      new RspackManifestPlugin({
+        fileName: 'manifest.json',
+        publicPath: '/'
+      }),
       ...(isProd ? [
         new InjectManifest({
           swSrc: path.resolve(projectRoot, '../public/sw.js'),
@@ -91,7 +108,7 @@ export default (projectRoot) => {
           ]
         }),
         new RspackManifestPlugin({
-          fileName: 'manifest.json',
+          fileName: 'pwa-manifest.json',
           seed: {
             name: process.env.APP_NAME || 'App by Martyrs Framework',
             short_name: process.env.APP_SHORT_NAME || 'App',
@@ -120,21 +137,68 @@ export default (projectRoot) => {
       ] : []),
     ],
     optimization: {
-      usedExports: true,  
+      sideEffects: false,
+      usedExports: true,
+      innerGraph: true,
+      providedExports: true,
+      runtimeChunk: false,
       splitChunks: {
-        chunks: "async",
-        minSize: 0,
-        // minRemainingSize: 0,
+        chunks: "all",
+        minSize: 10000,
         minChunks: 1,
         maxAsyncRequests: 30,
-        maxInitialRequests: 30,
-        // enforceSizeThreshold: 50000,
+        maxInitialRequests: 5,
+        cacheGroups: {
+          // Vendor libraries (except Vue)
+          vendor: {
+            test: /[\\/]node_modules[\\/](?!(vue|vue-router|vuex|@vue|@unhead|vue-i18n)[\\/])/,
+            name: 'vendor',
+            priority: 10,
+            chunks: 'initial',
+            enforce: true
+          },
+          // Vue core framework only
+          vue: {
+            test: /[\\/]node_modules[\\/](vue|vue-router|vuex|@vue|@unhead|vue-i18n)[\\/]/,
+            name: 'vue',
+            priority: 20,
+            chunks: 'initial',
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          // Martyrs modules - only for async imports
+          modules: {
+            test: /[\\/]martyrs[\\/]src[\\/]modules[\\/]/,
+            chunks: 'async',
+            name: false,
+            priority: 5,
+            enforce: true
+          },
+          // Combine all CSS into single file
+          styles: {
+            name: 'styles',
+            type: 'css/mini-extract',
+            chunks: 'all',
+            enforce: true,
+            minChunks: 1,
+            reuseExistingChunk: true,
+            priority: 100
+          }
+        }
       },
       minimize: isProd,
       minimizer: [
         new rspack.SwcJsMinimizerRspackPlugin(), 
         new rspack.LightningCssMinimizerRspackPlugin()
       ],
+    },
+    stats: {
+      assets: true,
+      chunks: true,
+      modules: true,
+      ids: true,
+      entrypoints: true,
+      chunkModules: true
     },
   };
   return merge(baseConfig(projectRoot), config);

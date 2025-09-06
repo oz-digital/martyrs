@@ -249,57 +249,60 @@
 	  selectedIndex.value = emblaApi.value.selectedScrollSnap();
 	};
 
+	let scrollRAF = null;
 	const onScroll = (embla) => {
-    const engine = emblaApi.value.internalEngine()
-    const scrollProgress = emblaApi.value.scrollProgress()
+		// Cancel previous frame if exists
+		if (scrollRAF) cancelAnimationFrame(scrollRAF);
+		
+		scrollRAF = requestAnimationFrame(() => {
+			const engine = emblaApi.value.internalEngine()
+			const scrollProgress = emblaApi.value.scrollProgress()
+			// Cache snapList to avoid calling it twice
+			const snapList = emblaApi.value.scrollSnapList()
 
-    const stylesOpacity = emblaApi.value.scrollSnapList().map((scrollSnap, index) => {
-	    let diffToTarget = scrollSnap - scrollProgress
+			const stylesOpacity = snapList.map((scrollSnap, index) => {
+				let diffToTarget = scrollSnap - scrollProgress
 
-	    if (engine.options.loop) {
-	      engine.slideLooper.loopPoints.forEach((loopItem) => {
-	        const target = loopItem.target()
-	        if (index === loopItem.index && target !== 0) {
-	          const sign = Math.sign(target)
-	          if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress)
-	          if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress)
-	        }
-	      })
-	    }
-	    const tweenValue = 1 - Math.abs(diffToTarget * TWEEN_FACTOR)
-	    return  Math.min(Math.max(tweenValue, 0), 1)
-	  })
+				if (engine.options.loop) {
+					engine.slideLooper.loopPoints.forEach((loopItem) => {
+						const target = loopItem.target()
+						if (index === loopItem.index && target !== 0) {
+							const sign = Math.sign(target)
+							if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress)
+							if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress)
+						}
+					})
+				}
+				const tweenValue = 1 - Math.abs(diffToTarget * TWEEN_FACTOR)
+				return  Math.min(Math.max(tweenValue, 0), 1)
+			})
 
-		tweenSlides.value = stylesOpacity
+			const styles = snapList.map((scrollSnap, index) => {
+				let diffToTarget = scrollSnap - scrollProgress
 
-    const styles = emblaApi.value.scrollSnapList().map((scrollSnap, index) => {
-      let diffToTarget = scrollSnap - scrollProgress
+				if (engine.options.loop) {
+					engine.slideLooper.loopPoints.forEach((loopItem) => {
+						const target = loopItem.target()
+						if (index === loopItem.index && target !== 0) {
+							const sign = Math.sign(target)
+							if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress)
+							if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress)
+						}
+					})
+				}
+				return diffToTarget * (1 / TWEEN_FACTOR) * 100
+			})
 
-      if (engine.options.loop) {
-        engine.slideLooper.loopPoints.forEach((loopItem) => {
-          const target = loopItem.target()
-          if (index === loopItem.index && target !== 0) {
-            const sign = Math.sign(target)
-            if (sign === -1) diffToTarget = scrollSnap - (1 + scrollProgress)
-            if (sign === 1) diffToTarget = scrollSnap + (1 - scrollProgress)
-          }
-        })
-      }
-      return diffToTarget * (1 / TWEEN_FACTOR) * 100
-    })
-
-    tweenValues.value = styles
-  }
+			// Batch updates together
+			tweenSlides.value = stylesOpacity
+			tweenValues.value = styles
+		});
+	}
 
 
-	onMounted(async() => {
-	  onInit(emblaApi);
-	  onSelect(emblaApi);
-	  onScroll(emblaApi);
-
-	  emblaApi.value.on('reInit', onInit);
-	  emblaApi.value.on('reInit', onSelect);
-	  emblaApi.value.on('select', onSelect);
+	onMounted(() => {
+	  emblaApi.value.on('init', onInit)
+	  emblaApi.value.on('select', onSelect)
 	  emblaApi.value.on('scroll', onScroll)
 	});
 

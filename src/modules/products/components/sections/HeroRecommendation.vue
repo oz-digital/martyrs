@@ -142,7 +142,7 @@
 		<!-- <Shader class="w-100 h-100 flex flex-center pos-absolute pos-t-0 pos-r-0 z-index-0"/> -->
 
     <!-- <div class="w-100 h-100 flex flex-center pos-absolute pos-t-0 pos-r-0 z-index-0">
-  	  <div style="background-image: url(/spiral.jpg)" class="spiral"></div>
+  	  <img src="/spiral.webp" loading="lazy" alt="" class="spiral"/>
     </div> -->
 
 	</div>
@@ -150,8 +150,7 @@
 
 <style style="scoped">
 .spiral {
-	
-  background-size: cover;
+  object-fit: cover;
   width: 100rem;
   height: 100rem;
   position: absolute;

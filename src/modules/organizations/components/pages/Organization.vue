@@ -176,11 +176,13 @@
 	import IconEllipsis from '@martyrs/src/modules/icons/navigation/IconEllipsis.vue'
 	import PlaceholderOrganizationPic from '@martyrs/src/modules/icons/placeholders/PlaceholderOrganizationPic.vue'
 	// Organizations
-	import DepartmentSub from '@martyrs/src/modules/organizations/components/blocks/DepartmentSub.vue';
-	import ButtonToggleMembership from '@martyrs/src/modules/organizations/components/elements/ButtonToggleMembership.vue'
-	import Contacts from '@martyrs/src/modules/organizations/components/blocks/Contacts.vue'
-	import Rating from '@martyrs/src/modules/organizations/components/blocks/Rating.vue'
-	import Socials from '@martyrs/src/modules/organizations/components/blocks/Socials.vue'
+	import { 
+		DepartmentSub, 
+		ButtonToggleMembership, 
+		Contacts, 
+		Rating, 
+		Socials 
+	} from '@martyrs/src/modules/organizations/organizations.client.js'
 	import User from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
 	// Report Module
 	import FormReport from '@martyrs/src/modules/reports/components/sections/FormReport.vue'

@@ -16,7 +16,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           },
           authorize: options.productsAuthorize || [],
         },
-        component: () => import(/* webpackChunkName: 'Products' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
+        component: () => import(/* webpackChunkName: 'products-list' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
       },
       {
         path: 'categories/:categoryPath(.*)',
@@ -28,7 +28,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           },
           authorize: options.productsAuthorize || [],
         },
-        component: () => import(/* webpackChunkName: 'Products' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
+        component: () => import(/* webpackChunkName: 'products-list' */ '@martyrs/src/modules/products/components/pages/Products.vue'),
       },
       {
         path: 'add',
@@ -40,7 +40,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           },
           authorize: options.addProductAuthorize || [],
         },
-        component: () => import('@martyrs/src/modules/products/components/pages/ProductEdit.vue'),
+        component: () => import(/* webpackChunkName: "products-edit" */ '@martyrs/src/modules/products/components/pages/ProductEdit.vue'),
       },
       {
         path: ':product',
@@ -52,7 +52,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           },
           showShopCart: true,
         },
-        component: () => import('@martyrs/src/modules/products/components/pages/Product.vue'),
+        component: () => import(/* webpackChunkName: "products-detail" */ '@martyrs/src/modules/products/components/pages/Product.vue'),
       },
       {
         path: ':product/edit',
@@ -65,7 +65,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           authorize: options.editProductAuthorize || [],
         },
         beforeEnter: [validationAuth.requiresAuth],
-        component: () => import('@martyrs/src/modules/products/components/pages/ProductEdit.vue'),
+        component: () => import(/* webpackChunkName: "products-edit" */ '@martyrs/src/modules/products/components/pages/ProductEdit.vue'),
       },
       {
         path: 'recommendation',
@@ -78,7 +78,7 @@ export function createProductRoutes(prefix = '', options = {}) {
           header_theme: 'dark',
           footer_theme: 'dark',
         },
-        component: () => import(/* webpackChunkName: 'Product Recommmendation' */ '@martyrs/src/modules/products/components/pages/ProductRecommmendation.vue'),
+        component: () => import(/* webpackChunkName: 'products-recommendation' */ '@martyrs/src/modules/products/components/pages/ProductRecommmendation.vue'),
         props: route => ({ mood: route.query.mood }),
       },
     ],

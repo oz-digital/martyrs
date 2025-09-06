@@ -7,32 +7,24 @@ import { fork } from "child_process";
 import devMiddleware from "webpack-dev-middleware";
 
 import { createHtmlRenderer } from "../ssr/ssr-render-html.js";
-import { transformDevStats } from "../ssr/ssr-transform-webpack-stats.js";
+import { createAssetResolver } from "../ssr/asset-resolver.js";
+import { createBeastiesProcessor } from '../ssr/beasties-processor.js';
 
-export default function createSsrDevServer(projectRoot, { clientConfig, apiConfig, ssrConfig }) {
-  const clientCompiler = rspack(clientConfig); 
-  const ssrCompiler = rspack(ssrConfig);
-  const serverCompiler = rspack(apiConfig);
+export default function createSsrDevServer(projectRoot, configs, createServer) {
+  const { client, api, ssr } = configs;
+  const clientCompiler = rspack(client); 
+  const ssrCompiler = rspack(ssr);
+  const serverCompiler = rspack(api);
+  const beastiesProcessor = createBeastiesProcessor(projectRoot);
 
   const createDevRenderer = (onUpdate) => {
-    const createHotReloadingServerRenderer = (config) => {
-      const progressPlugin = new ProgressPlugin((percentage, message, ...args) => {
+    const createHotReloadingServerRenderer = () => {
+      const progressPlugin = new ProgressPlugin((percentage, message, ...args) => {});
 
-        console.log(
-          chalk.greenBright(`${(percentage * 100).toFixed(2)}% `) +
-          chalk.blueBright(message) +
-          " " +
-          args.map((arg) => chalk.yellow(arg)).join(" ")
-        );
-      });
-
-      config.plugins = config.plugins || [];
-      config.plugins.push(progressPlugin);
+      ssr.plugins = ssr.plugins || [];
+      ssr.plugins.push(progressPlugin);
       
       let renderApp = null;
-
-      let setCompilationDone = null;
-      let ssrCompilation = new Promise((resolve) => { setCompilationDone = resolve });
 
       ssrCompiler.watch(
         {
@@ -75,37 +67,73 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
           const { main: { assets: [mainChunkPath] } } = entrypoints;
           const mainModulePath = path.resolve(outputPath, mainChunkPath.name);
           
-          // Dynamic import for ESM compatibility
-          const module = await import(mainModulePath);
+          // Dynamic import for ESM compatibility with cache busting
+          // IMPORTANT: Add timestamp to force reimport after recompilation
+          const module = await import(`${mainModulePath}?t=${Date.now()}`);
           renderApp = module.render;
-          setCompilationDone();
         }
       );
       
       return async (stuff) => {
-        await ssrCompilation;
+        if (!renderApp) {
+          throw new Error('SSR module not compiled yet');
+        }
         const result = await renderApp(stuff);
         return result;
       };
     };
 
-    const renderApp = createHotReloadingServerRenderer(ssrConfig);
+    const renderApp = createHotReloadingServerRenderer();
     const renderHtml = createHtmlRenderer(onUpdate);
 
     return async (stuff, { stats, outputFileSystem }) => {
-      const { html, meta, state, statusCode } = await renderApp(stuff);
+      const ssrContext = {};
+      
+      const { html, meta, state, statusCode, usedModules, loadedModules } = await renderApp({
+        ...stuff,
+        ssrContext
+      });
 
-      const { head, body } = transformDevStats(stats.toJson(), outputFileSystem);
+      // Используем loadedModules если они есть, иначе usedModules
+      const modulesToLoad = loadedModules || usedModules || [];
+
+      let head = '';
+      let body = '';
+      
+      if (cachedStatsJson) {
+        // Используем кэшированный stats - это в 1000 раз быстрее!
+        const resolver = createAssetResolver(cachedStatsJson);
+        const tags = resolver.collect(modulesToLoad);
+        head = tags.head;
+        body = tags.body;
+      } else if (stats && stats.toJson) {
+        // Fallback если кэш еще не готов (только первый запрос)
+        const statsJson = stats.toJson();
+        
+        const resolver = createAssetResolver(statsJson);
+        const tags = resolver.collect(modulesToLoad);
+        head = tags.head;
+        body = tags.body;
+      } else {
+        // This shouldn't happen
+        console.error('[DEBUG ssr.rspack.dev] No stats available!');
+      }
 
       const initialState = JSON.stringify(state);
 
-      const completeHtml = await renderHtml({
+      let completeHtml = await renderHtml({
         appHtml: html,
         meta,
         head,
         body,
         initialState,
       });
+      
+      // Обрабатываем HTML через Beasties для извлечения критического CSS
+      completeHtml = await beastiesProcessor.processHtml(completeHtml, {
+        url: stuff.url
+      });
+      
       return { html: completeHtml, statusCode };
     };
   };
@@ -121,7 +149,6 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
       return;
     }
     
-    console.log(stats.toString(apiConfig.stats));
     
     try {
       // Получаем путь к скомпилированному файлу
@@ -136,19 +163,35 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
         throw new Error("Экспорт createServer не найден");
       }
       
-      console.log("Сервер скомпилирован, перезапуск...");
       await startServer();
     } catch (error) {
       console.error("Ошибка при загрузке серверного модуля:", error);
     }
   });
 
+  // Кэшируем stats после компиляции чтобы не вызывать toJson() на каждый запрос  
+  let cachedStatsJson = null;
+  
+  clientCompiler.hooks.done.tap('cache-stats', (stats) => {
+    cachedStatsJson = stats.toJson({
+      assets: true,
+      chunks: true,
+      modules: true,
+      entrypoints: true,
+      chunkModules: true
+    });
+  });
+
   const clientDevMiddleware = devMiddleware(clientCompiler, {
-    publicPath: clientConfig.output.publicPath,
+    publicPath: client.output.publicPath,
     serverSideRender: true,
-    stats: 'minimal', // или 'errors-only'
     stats: {
-      children: true
+      children: true,
+      assets: true,
+      chunks: true,
+      modules: true,
+      entrypoints: true,
+      chunkModules: true
     },
   });
 
@@ -203,7 +246,6 @@ export default function createSsrDevServer(projectRoot, { clientConfig, apiConfi
 
     try {
       await server.listen(port);
-      console.log(`Server started at localhost:${port}\n`);
     } catch (err) {
       console.error(err);
       process.exit(1);

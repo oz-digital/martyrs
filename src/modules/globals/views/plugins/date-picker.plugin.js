@@ -1,7 +1,11 @@
 // date-selector.plugin.js
-import { reactive, markRaw, defineComponent, h, render } from 'vue'
-import PopupDateSelector from '@martyrs/src/modules/globals/views/components/blocks/PopupDateSelector.vue'
+import { reactive, markRaw, defineComponent, h, render, defineAsyncComponent } from 'vue'
 import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+
+// Dynamic import for better tree shaking and lazy loading
+const PopupDateSelector = defineAsyncComponent(() => 
+  import('@martyrs/src/modules/globals/views/components/blocks/PopupDateSelector.vue')
+)
 
 // 1) Общее состояние и API
 const state = reactive({

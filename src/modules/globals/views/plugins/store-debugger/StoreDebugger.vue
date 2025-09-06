@@ -54,7 +54,6 @@
 
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
-import { format } from 'date-fns'
 
 const props = defineProps({
   store: { type: Object, required: true }
@@ -71,7 +70,11 @@ const toggleTheme = () => { theme.value = theme.value === 'light' ? 'dark' : 'li
 // capture timestamp
 const lastUpdated = ref('')
 function updateTimestamp() {
-  lastUpdated.value = format(new Date(), 'PPpp')
+  const now = new Date()
+  lastUpdated.value = now.toLocaleString('en-US', { 
+    dateStyle: 'medium', 
+    timeStyle: 'medium' 
+  })
 }
 
 // modules state for UI

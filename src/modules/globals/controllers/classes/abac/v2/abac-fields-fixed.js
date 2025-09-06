@@ -1,5 +1,8 @@
 // @martyrs/src/modules/globals/controllers/classes/abac/abac.fields.js
-import _ from 'lodash';
+import set from 'lodash/set';
+import get from 'lodash/get';
+import unset from 'lodash/unset';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default class ABACFields {
   constructor(abac) {
@@ -143,7 +146,7 @@ export default class ABACFields {
         path,
         result.transformed
       );
-      _.set(result.transformed, path, transformed);
+      set(result.transformed, path, transformed);
     }
 
     return result;
@@ -181,7 +184,7 @@ export default class ABACFields {
       }
     }
     // Fallback на lodash
-    return _.cloneDeep(obj);
+    return cloneDeep(obj);
   }
 
   /**
@@ -209,7 +212,7 @@ export default class ABACFields {
         for (const path of dataPaths) {
           rules.push({
             path,
-            value: _.get(data, path),
+            value: get(data, path),
             rule
           });
         }
@@ -230,7 +233,7 @@ export default class ABACFields {
           if (this._matchesAction(rule.actions, action)) {
             rules.push({
               path,
-              value: _.get(data, path),
+              value: get(data, path),
               rule
             });
             break; // Берем первое совпадение
@@ -391,7 +394,7 @@ export default class ABACFields {
     result.denied.push({ path, reason: rule });
     
     if (rule === 'remove') {
-      _.unset(result.allowed, path);
+      unset(result.allowed, path);
     } else if (rule === 'error') {
       throw new Error(`Access denied: ${path}`);
     }

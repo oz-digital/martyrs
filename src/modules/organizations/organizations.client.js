@@ -1,4 +1,4 @@
-// Store
+// Functional imports (needed for initialize function)
 import departmentsStore from './store/departments.store.js';
 import invitesStore from './store/invites.store.js';
 import membershipsStore from './store/memberships.store.js';
@@ -7,37 +7,37 @@ import * as storeOrganizations from './store/organizations.js';
 // Router
 import routerOrganization from './router/organizations.js';
 
-// Views
+// Component re-exports (enables tree shaking)
 // Pages
-import Department from './components/pages/Department.vue';
-import Members from './components/pages/Members.vue';
-import Organization from './components/pages/Organization.vue';
-import OrganizationEdit from './components/pages/OrganizationEdit.vue';
-import Organizations from './components/pages/Organizations.vue';
+export { default as Department } from './components/pages/Department.vue';
+export { default as Members } from './components/pages/Members.vue';
+export { default as Organization } from './components/pages/Organization.vue';
+export { default as OrganizationEdit } from './components/pages/OrganizationEdit.vue';
+export { default as Organizations } from './components/pages/Organizations.vue';
 
 // Forms
-import DepartmentForm from './components/forms/DepartmentForm.vue';
-import InviteForm from './components/forms/InviteForm.vue';
-import AddExistingMembersForm from './components/forms/AddExistingMembersForm.vue';
+export { default as DepartmentForm } from './components/forms/DepartmentForm.vue';
+export { default as InviteForm } from './components/forms/InviteForm.vue';
+export { default as AddExistingMembersForm } from './components/forms/AddExistingMembersForm.vue';
 
 // Blocks
-import CardDepartment from './components/blocks/CardDepartment.vue';
-import CardOrganization from './components/blocks/CardOrganization.vue';
-import Contacts from './components/blocks/Contacts.vue';
-import DepartmentSub from './components/blocks/DepartmentSub.vue';
-import EmptyState from './components/blocks/EmptyState.vue';
-import Rating from './components/blocks/Rating.vue';
-import Socials from './components/blocks/Socials.vue';
-import Unit from './components/blocks/Unit.vue';
+export { default as CardDepartment } from './components/blocks/CardDepartment.vue';
+export { default as CardOrganization } from './components/blocks/CardOrganization.vue';
+export { default as Contacts } from './components/blocks/Contacts.vue';
+export { default as DepartmentSub } from './components/blocks/DepartmentSub.vue';
+export { default as EmptyState } from './components/blocks/EmptyState.vue';
+export { default as Rating } from './components/blocks/Rating.vue';
+export { default as Socials } from './components/blocks/Socials.vue';
+export { default as Unit } from './components/blocks/Unit.vue';
 
 // Sections
-import Documents from './components/sections/Documents.vue';
-import MembersAdd from './components/sections/MembersAdd.vue';
-import OrganizationsSection from './components/sections/Organizations.vue';
-import Publics from './components/sections/Publics.vue';
+export { default as Documents } from './components/sections/Documents.vue';
+export { default as MembersAdd } from './components/sections/MembersAdd.vue';
+export { default as OrganizationsSection } from './components/sections/Organizations.vue';
+export { default as Publics } from './components/sections/Publics.vue';
 
 // Elements
-import ButtonToggleMembership from './components/elements/ButtonToggleMembership.vue';
+export { default as ButtonToggleMembership } from './components/elements/ButtonToggleMembership.vue';
 
 // Пример функции инициализации для модуля организаций
 function initializeOrganization(app, store, router, options = {}) {
@@ -48,34 +48,14 @@ function initializeOrganization(app, store, router, options = {}) {
   store.addStore('organizations', storeOrganizations);
 }
 
-// Export components, store modules, and routes
+// Functional exports
 export {
-  AddExistingMembersForm,
-  ButtonToggleMembership,
-  CardDepartment,
-  CardOrganization,
-  Contacts,
-  Department,
-  DepartmentForm,
-  DepartmentSub,
   departmentsStore,
-  Documents,
-  EmptyState,
-  InviteForm,
   invitesStore,
-  Members,
-  MembersAdd,
   membershipsStore,
-  Organization,
-  OrganizationEdit,
-  Organizations,
-  OrganizationsSection,
-  Publics,
-  Rating,
-  Socials,
-  Unit,
   routerOrganization,
   storeOrganizations,
+  initializeOrganization as initialize,
 };
 
 const ModuleOrganization = {
@@ -89,34 +69,6 @@ const ModuleOrganization = {
     },
     router: {
       routerOrganization,
-    },
-    components: {
-      // Pages
-      Organization,
-      Department,
-      Members,
-      OrganizationEdit,
-      Organizations,
-      // Forms
-      DepartmentForm,
-      InviteForm,
-      AddExistingMembersForm,
-      // Blocks
-      CardOrganization,
-      Unit,
-      DepartmentSub,
-      CardDepartment,
-      Rating,
-      EmptyState,
-      Contacts,
-      Socials,
-      // Sections
-      MembersAdd,
-      OrganizationsSection,
-      Publics,
-      Documents,
-      // Elements
-      ButtonToggleMembership,
     },
   },
 };

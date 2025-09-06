@@ -3,7 +3,7 @@ import Sidebar from '@martyrs/src/modules/backoffice/components/partials/Sidebar
 import SidebarPages from '../components/partials/SidebarPages.vue';
 
 const pages = {
-  path: 'pages',
+  path: '/pages',
   meta: {
     title: {
       en: 'Pages',

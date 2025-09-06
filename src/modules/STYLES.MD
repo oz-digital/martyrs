@@ -1,3 +1,121 @@
+## ВАЖНО: Инструкция для AI по классам Martyrs
+
+**НИКОГДА НЕ СОЗДАВАЙ СЛУЧАЙНЫЕ КЛАССЫ!** Используй только классы из системы Martyrs, перечисленные ниже.
+
+### Правила использования фонов:
+- На белом фоне страницы → элементы используют `bg-light`
+- На фоне `bg-light` → элементы используют `bg-white`
+- Кнопки и акцентные элементы → `bg-main` или `bg-second`
+- Всегда соблюдай контраст между элементами
+
+## Реальные примеры паттернов из кода
+
+### Страницы и секции
+```
+<!-- Страница с паддингом (rents/Rents.vue) -->
+<div class="pd-medium mobile:pd-thin bg-white">
+
+<!-- Хедер страницы (products/Products.vue) -->
+<header class="pd-medium flex-v-center flex-nowrap flex">
+
+<!-- Основная сетка с сайдбаром (products/Products.vue) -->
+<div class="cols-2-1_3 br-1px br-solid br-light z-index-3 pos-relative">
+```
+
+### Карточки продуктов/контента
+```
+<!-- Карточка продукта (products/CardProduct.vue) -->
+<div class="radius-medium cols-1 o-hidden pos-relative">
+  <!-- Изображение продукта -->
+  <div class="o-hidden d-flex pd-thin pd-b-zero radius-medium w-100 pos-relative aspect-1x1">
+  <!-- Информация продукта -->
+  <div class="pd-small cols-1 t-left">
+</div>
+
+<!-- Карточка категории (products/CardCategory.vue) -->
+<div class="flex-v-center bg-light pd-small radius-small flex-column flex">
+
+<!-- Карточка в Feed (community/Blog.vue) -->
+<CardComponent class="h-max-40r bg-light radius-medium mobile:radius-zero">
+```
+
+### Кнопки (используется компонент Button)
+```
+<!-- Основная кнопка (auth/SignIn.vue) -->
+<Button class="w-100 bg-main">
+
+<!-- HTML кнопка добавления (rents/Rents.vue) - исключение -->
+<button class="radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second">
+
+<!-- HTML кнопка-иконка (products/CardProduct.vue) - исключение -->
+<button class="cursor-pointer radius-extra pd-thin bg-main">
+
+<!-- HTML кнопка вторичная (products/Products.vue) - исключение -->
+<button class="pd-small radius-small bg-light mn-r-small">
+
+<!-- Компонент Button с классом button (products/Products.vue) -->
+<Button class="bg-main w-100 button mn-t-medium">
+```
+
+### Поля форм (используются компоненты Field/FieldPhone)
+```
+<!-- Поле ввода (auth/SignIn.vue) -->
+<Field class="bg-light h-4r pd-medium radius-small">
+
+<!-- Поле фильтра (products/Products.vue) -->
+<Field class="w-50 bg-light pd-small radius-small">
+
+<!-- Контейнер табов (auth/SignIn.vue) -->
+<div class="mn-b-small p-small uppercase t-semi bg-light radius-small o-hidden">
+```
+
+### Сетки и раскладки
+```
+<!-- Грид продуктов 4 колонки (products/Products.vue) -->
+<div class="cols-4 z-index-1 pos-relative w-100 rows-1 gap-thin">
+
+<!-- Feed контейнер (community/Blog.vue) -->
+<Feed class="rows-1 gap-thin">
+
+<!-- Flex контейнер (products/CardCategory.vue) -->
+<div class="w-100 flex-v-center flex-nowrap gap-thin flex">
+
+<!-- Сайдбар (products/Products.vue) -->
+<div class="o-y-scroll br-r br-solid br-light pd-medium z-index-2 desktop-only h-100 pos-relative">
+```
+
+### Типографика
+```
+<!-- Заголовки используются без классов -->
+<h1>, <h2>, <h3>, <h4>, <h5>
+
+<!-- Текст с размерами -->
+<p class="p-small">, <p class="p-medium">, <p class="p-big">
+
+<!-- Модификаторы текста -->
+<span class="t-semi">, <span class="t-transp">, <span class="t-medium">
+```
+
+### Отступы и размеры
+```
+<!-- Отступы снизу -->
+mn-b-micro, mn-b-thin, mn-b-small, mn-b-medium, mn-b-big
+
+<!-- Паддинги -->
+pd-micro, pd-thin, pd-small, pd-medium, pd-big
+
+<!-- Специальные паддинги -->
+pd-r-medium, pd-l-medium, pd-b-zero
+
+<!-- Размеры -->
+w-100, h-100, w-50, aspect-1x1
+
+<!-- Максимальные высоты -->
+h-max-40r, h-4r
+```
+
+---
+
 Вот полный список классов Martyrs:
 
 ## **Позиционирование и Display**

@@ -19,7 +19,7 @@ export default projectRoot => {
       main: path.resolve(projectRoot, 'src/client.js'),
     },
     output: {
-      filename: 'main.js',
+      filename: '[name].[contenthash:8].js',
       path: path.resolve(projectRoot, 'builds/web/spa'),
       clean: true,
     },

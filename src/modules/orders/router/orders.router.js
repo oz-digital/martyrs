@@ -1,13 +1,10 @@
-import OrderBackoffice from '@martyrs/src/modules/orders/components/pages/OrderBackoffice.vue';
-import OrderCreate from '@martyrs/src/modules/orders/components/pages/OrderCreate.vue';
-import OrderCreateBackoffice from '@martyrs/src/modules/orders/components/pages/OrderCreateBackoffice.vue';
-import Orders from '@martyrs/src/modules/orders/components/pages/Orders.vue';
+// Use dynamic imports for better code splitting
 
 const ordersRoutes = [
   {
     path: '',
     name: 'OrdersList',
-    component: Orders,
+    component: () => import(/* webpackChunkName: "orders" */ '@martyrs/src/modules/orders/components/pages/Orders.vue'),
     meta: {
       title: {
         en: 'Orders',
@@ -18,7 +15,7 @@ const ordersRoutes = [
   {
     path: 'form',
     name: 'CreateOrder',
-    component: OrderCreate,
+    component: () => import(/* webpackChunkName: "orders" */ '@martyrs/src/modules/orders/components/pages/OrderCreate.vue'),
     meta: {
       title: {
         en: 'Create Order',
@@ -29,7 +26,7 @@ const ordersRoutes = [
   {
     path: 'add',
     name: 'AdminCreateOrder',
-    component: OrderCreateBackoffice,
+    component: () => import(/* webpackChunkName: "orders" */ '@martyrs/src/modules/orders/components/pages/OrderCreateBackoffice.vue'),
     meta: {
       title: {
         en: 'Add Order',
@@ -40,7 +37,7 @@ const ordersRoutes = [
   {
     path: ':order',
     name: 'Order',
-    component: OrderBackoffice,
+    component: () => import(/* webpackChunkName: "orders" */ '@martyrs/src/modules/orders/components/pages/OrderBackoffice.vue'),
     props: route => ({
       mode: route.matched[0].meta.context === 'backoffice' ? 'edit' : 'view',
     }),
@@ -54,7 +51,7 @@ const ordersRoutes = [
   {
     path: ':order/edit',
     name: 'OrderEdit',
-    component: OrderBackoffice,
+    component: () => import(/* webpackChunkName: "orders" */ '@martyrs/src/modules/orders/components/pages/OrderBackoffice.vue'),
     props: { mode: 'edit' },
     meta: {
       title: {

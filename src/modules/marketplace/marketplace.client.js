@@ -13,8 +13,8 @@ import SectionMenu from './views/components/sections/SectionMenu.vue';
 // Pages
 import Catalog from './views/components/pages/Catalog.vue';
 
-// Пример функции инициализации для модуля продуктов
-function initializeProducts(app, store, router, options = {}) {
+// Пример функции инициализации для модуля маркетплейса
+function initializeMarketplace(app, store, router, options = {}) {
   const route = options.route || 'Home';
 
   router.addRoute(route, routerMarketplace);
@@ -23,7 +23,7 @@ function initializeProducts(app, store, router, options = {}) {
 }
 
 const ModuleMarketplace = {
-  initialize: initializeProducts,
+  initialize: initializeMarketplace,
   views: {
     store: {
       storeMarketplace,

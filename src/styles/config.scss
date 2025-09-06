@@ -12,25 +12,74 @@
 	--#{$base-var-name}-nano: 		color-mix(in srgb, rgb(var(--#{$base-var-name})) 10%, white 80%);
 }
 
-@mixin generate-bg-classes($base-class-name, $base-var-name) {
-	.#{$base-class-name} 				{ background: rgb(var(--#{$base-var-name})); 	}
-	.#{$base-class-name}-extra	{ background: var(--#{$base-var-name}-extra); 	}
-	.#{$base-class-name}-big 		{ background: var(--#{$base-var-name}-big); 	}
-	.#{$base-class-name}-semi 	{ background: var(--#{$base-var-name}-semi); 	}
-	.#{$base-class-name}-medium { background: var(--#{$base-var-name}-medium); 	} 
-	.#{$base-class-name}-regular{ background: var(--#{$base-var-name}-regular);} 
-	.#{$base-class-name}-small 	{ background: var(--#{$base-var-name}-small); 	} 
-	.#{$base-class-name}-thin 	{ background: var(--#{$base-var-name}-thin); 	} 
-	.#{$base-class-name}-micro 	{ background: var(--#{$base-var-name}-micro); 	} 
-	.#{$base-class-name}-nano 	{ background: var(--#{$base-var-name}-nano); 	} 
+// Dark Theme Mixin
+@mixin dark-variant($selector, $property, $value) {
+  .#{$selector} { #{$property}: $value; }
+  @media (prefers-color-scheme: dark) {
+    .dark\:#{$selector} { #{$property}: $value; }
+  }
+}
 
- 	@for $i from 1 through 20 {
-        $percentage: $i * 5;
+// Simple color classes (for colors without variants)
+@mixin generate-simple-color($name, $var) {
+  @include dark-variant('bg-#{$name}', 'background', rgb(var(--#{$var})));
+  @include dark-variant('t-#{$name}', 'color', rgb(var(--#{$var})));
+  @include dark-variant('fill-#{$name}', 'fill', rgb(var(--#{$var})));
+  @include dark-variant('stroke-#{$name}', 'stroke', rgb(var(--#{$var})));
+}
 
-        .#{$base-class-name}-transp-#{$percentage} {
-            background: rgba(var(--#{$base-var-name}), $percentage * 0.01);
-        }
-    }
+// Brand color classes
+@mixin generate-brand-color($name, $var) {
+  @include dark-variant('bg-#{$name}', 'background', rgba(var(--#{$var}), 1));
+  @include dark-variant('t-#{$name}', 'color', rgba(var(--#{$var}), 1));
+  @include dark-variant('fill-#{$name}', 'fill', rgba(var(--#{$var}), 1));
+}
+
+@mixin generate-color-classes($base-name, $var-name) {
+  // Background classes
+  @include dark-variant('bg-#{$base-name}', 'background', rgb(var(--#{$var-name})));
+  @include dark-variant('bg-#{$base-name}-extra', 'background', var(--#{$var-name}-extra));
+  @include dark-variant('bg-#{$base-name}-big', 'background', var(--#{$var-name}-big));
+  @include dark-variant('bg-#{$base-name}-semi', 'background', var(--#{$var-name}-semi));
+  @include dark-variant('bg-#{$base-name}-medium', 'background', var(--#{$var-name}-medium));
+  @include dark-variant('bg-#{$base-name}-regular', 'background', var(--#{$var-name}-regular));
+  @include dark-variant('bg-#{$base-name}-small', 'background', var(--#{$var-name}-small));
+  @include dark-variant('bg-#{$base-name}-thin', 'background', var(--#{$var-name}-thin));
+  @include dark-variant('bg-#{$base-name}-micro', 'background', var(--#{$var-name}-micro));
+  @include dark-variant('bg-#{$base-name}-nano', 'background', var(--#{$var-name}-nano));
+  
+  // Transparent background variants
+  @for $i from 1 through 20 {
+    $percentage: $i * 5;
+    @include dark-variant('bg-#{$base-name}-transp-#{$percentage}', 'background', rgba(var(--#{$var-name}), $percentage * 0.01));
+  }
+  
+  // Text color classes
+  @include dark-variant('t-#{$base-name}', 'color', rgb(var(--#{$var-name})));
+  @include dark-variant('t-#{$base-name}-extra', 'color', var(--#{$var-name}-extra));
+  @include dark-variant('t-#{$base-name}-big', 'color', var(--#{$var-name}-big));
+  @include dark-variant('t-#{$base-name}-semi', 'color', var(--#{$var-name}-semi));
+  @include dark-variant('t-#{$base-name}-medium', 'color', var(--#{$var-name}-medium));
+  @include dark-variant('t-#{$base-name}-regular', 'color', var(--#{$var-name}-regular));
+  @include dark-variant('t-#{$base-name}-small', 'color', var(--#{$var-name}-small));
+  @include dark-variant('t-#{$base-name}-thin', 'color', var(--#{$var-name}-thin));
+  @include dark-variant('t-#{$base-name}-micro', 'color', var(--#{$var-name}-micro));
+  @include dark-variant('t-#{$base-name}-nano', 'color', var(--#{$var-name}-nano));
+  
+  // Fill classes
+  @include dark-variant('fill-#{$base-name}', 'fill', rgb(var(--#{$var-name})));
+  @include dark-variant('fill-#{$base-name}-extra', 'fill', var(--#{$var-name}-extra));
+  @include dark-variant('fill-#{$base-name}-big', 'fill', var(--#{$var-name}-big));
+  @include dark-variant('fill-#{$base-name}-semi', 'fill', var(--#{$var-name}-semi));
+  @include dark-variant('fill-#{$base-name}-medium', 'fill', var(--#{$var-name}-medium));
+  @include dark-variant('fill-#{$base-name}-regular', 'fill', var(--#{$var-name}-regular));
+  @include dark-variant('fill-#{$base-name}-small', 'fill', var(--#{$var-name}-small));
+  @include dark-variant('fill-#{$base-name}-thin', 'fill', var(--#{$var-name}-thin));
+  @include dark-variant('fill-#{$base-name}-micro', 'fill', var(--#{$var-name}-micro));
+  @include dark-variant('fill-#{$base-name}-nano', 'fill', var(--#{$var-name}-nano));
+  
+  // Stroke classes
+  @include dark-variant('stroke-#{$base-name}', 'stroke', rgb(var(--#{$var-name})));
 }
 
 @mixin generate-base-classes($class-name, $css-property, $values) {
@@ -365,58 +414,117 @@ $cols: (
 );
 
 body {
-	@include generate-utility-classes('pd',	'padding', $modifiers, $combined, $breakpoints);
-	@include generate-utility-classes('mn', 'margin', $modifiers, $combined, $breakpoints);
+  @include generate-utility-classes('d', 'display', null, $display-values, $breakpoints);
+  @include generate-utility-classes('pos', 'position', null, $position-values, $breakpoints);
+  @include generate-utility-classes('pos-t', 'top', null, $combined, $breakpoints);
+  @include generate-utility-classes('pos-r', 'right', null, $combined, $breakpoints);
+  @include generate-utility-classes('pos-b', 'bottom', null, $combined, $breakpoints);
+  @include generate-utility-classes('pos-l', 'left', null, $combined, $breakpoints);
 
 	@include generate-utility-classes('w', 'width', null, $combined, $breakpoints);
 	@include generate-utility-classes('h', 'height', null, $combined, $breakpoints);
-
-	@include generate-utility-classes('pos-t', 'top', null, $combined, $breakpoints);
-	@include generate-utility-classes('pos-r', 'right', null, $combined, $breakpoints);
-	@include generate-utility-classes('pos-b', 'bottom', null, $combined, $breakpoints);
-	@include generate-utility-classes('pos-l', 'left', null, $combined, $breakpoints);
-
 	@include generate-utility-classes('h-max', 'max-height', null, $combined, $breakpoints);
 	@include generate-utility-classes('h-min', 'min-height', null, $combined, $breakpoints);
-
 	@include generate-utility-classes('w-max', 'max-width',	null, $combined, $breakpoints);
 	@include generate-utility-classes('w-min', 'min-width',	null, $combined, $breakpoints);
 
+  @include generate-utility-classes('pd', 'padding', $modifiers, $combined, $breakpoints);
+  @include generate-utility-classes('mn', 'margin', $modifiers, $combined, $breakpoints);
 	@include generate-utility-classes('radius', 'border-radius', null, $combined, $breakpoints);
-
 	@include generate-utility-classes('radius-tl', 'border-top-left-radius', null, $combined, $breakpoints);
 	@include generate-utility-classes('radius-tr', 'border-top-right-radius', null, $combined, $breakpoints);
 	@include generate-utility-classes('radius-br', 'border-bottom-right-radius', null, $combined, $breakpoints);
 	@include generate-utility-classes('radius-bl', 'border-bottom-left-radius', null, $combined, $breakpoints);
-
-	@include generate-utility-classes('gap', 'gap', null, $combined, $breakpoints);
-	@include generate-utility-classes('flex', 'justify-content', null, $justify-content, $breakpoints);
-	@include generate-utility-classes('flex', 'align-items', null, $align-items, $breakpoints);
-	@include generate-utility-classes('flex', 'flex-direction', null, $flex-direction, $breakpoints);
-	@include generate-utility-classes('order', 'order', null, $order, $breakpoints);
-
-	@include generate-utility-classes('pos', 'position', null, $position-values, $breakpoints);
+  // Typography
+  @include generate-utility-classes('t', 'text-align', null, $text-align-values, $breakpoints);
+  // Layout
+	@include generate-utility-classes('cols', 'grid-template-columns', null, $cols, $breakpoints);
+  @include generate-utility-classes('gap', 'gap', null, $combined, $breakpoints);
+  @include generate-utility-classes('flex', 'justify-content', null, $justify-content, $breakpoints);
+  @include generate-utility-classes('flex', 'align-items', null, $align-items, $breakpoints);
+  @include generate-utility-classes('flex', 'flex-direction', null, $flex-direction, $breakpoints);
+  @include generate-utility-classes('order', 'order', null, $order, $breakpoints);
+  // Overflow
   @include generate-utility-classes('o', 'overflow', null, $overflow-values, $breakpoints);
   @include generate-utility-classes('o-x', 'overflow-x', null, $overflow-xy-values, $breakpoints);
   @include generate-utility-classes('o-y', 'overflow-y', null, $overflow-xy-values, $breakpoints);
-  @include generate-utility-classes('d', 'display', null, $display-values, $breakpoints);
-
-  /* Typography */
-  @include generate-utility-classes('t', 'text-align', null, $text-align-values, $breakpoints);
-
-
-
-	@include generate-utility-classes('cols', 'grid-template-columns', null, $cols, $breakpoints);
-	
-	@include generate-bg-classes('bg-main', 	'main');
-	@include generate-bg-classes('bg-second',	'second');
-	@include generate-bg-classes('bg-third', 	'third');
-	@include generate-bg-classes('bg-fourth', 'fourth');
-	@include generate-bg-classes('bg-fifth', 	'fifth');
-
-	@include generate-bg-classes('bg-black', 	'black');
-	@include generate-bg-classes('bg-dark', 	'dark');
-	@include generate-bg-classes('bg-grey', 	'grey');
-	@include generate-bg-classes('bg-light', 	'light');
-	@include generate-bg-classes('bg-white', 	'white');
+	// Colors
+	@include generate-color-classes('main', 'main');
+  @include generate-color-classes('second', 'second');
+  @include generate-color-classes('third', 'third');
+  @include generate-color-classes('fourth', 'fourth');
+  @include generate-color-classes('fifth', 'fifth');
+  
+  // Neutrals with all variants
+  @include generate-color-classes('black', 'black');
+  @include generate-color-classes('dark', 'dark');
+  @include generate-color-classes('grey', 'grey');
+  @include generate-color-classes('light', 'light');
+  @include generate-color-classes('white', 'white');
+  
+  // Tone colors
+  @include generate-simple-color('red', 'red');
+  @include generate-simple-color('red-nice', 'red-nice');
+  @include generate-simple-color('green', 'green');
+  @include generate-simple-color('green-nice', 'green-nice');
+  @include generate-simple-color('orange', 'orange');
+  @include generate-simple-color('orange-nice', 'orange-nice');
+  @include generate-simple-color('yellow', 'yellow');
+  @include generate-simple-color('yellow-nice', 'yellow-nice');
+  
+  // Brand colors
+  @include generate-brand-color('youtube', 'youtube');
+  @include generate-brand-color('telegram', 'telegram');
+  @include generate-brand-color('twitter', 'twitter');
+  @include generate-brand-color('reddit', 'reddit');
+  @include generate-brand-color('instagram', 'instagram');
+  
+  // Special background effects
+  @include dark-variant('bg-blur-extra', 'backdrop-filter', blur(var(--extra)));
+  @include dark-variant('bg-blur-big', 'backdrop-filter', blur(var(--big)));
+  @include dark-variant('bg-blur-semi', 'backdrop-filter', blur(var(--semi)));
+  @include dark-variant('bg-blur-medium', 'backdrop-filter', blur(var(--medium)));
+  @include dark-variant('bg-blur-regular', 'backdrop-filter', blur(var(--regular)));
+  @include dark-variant('bg-blur-small', 'backdrop-filter', blur(var(--small)));
+  @include dark-variant('bg-blur-thin', 'backdrop-filter', blur(var(--thin)));
+  
+  // Gradients
+  @include dark-variant('bg-black-grad', 'background', linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 100%));
+  @include dark-variant('bg-grad-main', 'background', radial-gradient(84.52% 84.52% at 50% 50%, rgb(var(--main)) 23.39%, #E7FFF4 100%));
+  @include dark-variant('bg-grad-white', 'background', linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%));
+  
+  // Transparent backgrounds
+  @include dark-variant('bg-t-white', 'background', rgba(var(--white), 0.1));
+  @include dark-variant('bg-t-grey', 'background', rgba(var(--grey), 0.1));
+  @include dark-variant('bg-t-darkgrey', 'background', rgba(var(--darkgrey), 0.1));
+  @include dark-variant('bg-transp', 'background', rgba(var(--white), 0));
+  
+  // Video background (no dark variant needed)
+  .bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    object-fit: cover;
+  }
+  
+  // Additional text utilities
+  @include dark-variant('t-transp', 'opacity', 0.5);
+  @include dark-variant('t-violet', 'color', violet);
+  @include dark-variant('t-blue', 'color', #0057FF);
+  
+  // Additional fills
+  @include dark-variant('fill-l-main', 'fill', var(--light-main));
+  @include dark-variant('fill-card', 'fill', #F7F7F7);
+  @include dark-variant('fill-card-blue', 'fill', #eef2f6);
+  @include dark-variant('fill-t-white', 'fill', rgba(var(--white), 0.1));
+  @include dark-variant('fill-t-grey', 'fill', rgba(var(--grey), 0.1));
+  @include dark-variant('fill-t-darkgrey', 'fill', rgba(var(--darkgrey), 0.1));
+  @include dark-variant('fill-transp', 'fill', rgba(var(--white), 0));
+  @include dark-variant('fill-blue', 'fill', #0057FF);
+  @include dark-variant('fill-light-blue', 'fill', #4E8AFF);
+  @include dark-variant('fill-lightblue', 'fill', linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%));
+  @include dark-variant('fill-light-red', 'fill', var(--light-red));
 }

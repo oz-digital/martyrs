@@ -1,4 +1,4 @@
-// Store
+// Functional imports (needed for initialize function)
 import * as storeAuth from './views/store/auth.js';
 import * as storeTwofa from './views/store/twofa.js';
 import * as storeUsers from './views/store/users.js';
@@ -10,25 +10,22 @@ import routerUsers from './views/router/users.js';
 // Middlewares
 import * as validationAuth from '@martyrs/src/modules/auth/views/middlewares/auth.validation.js';
 
-// Views
-import Auth from './views/components/layouts/Auth.vue';
-import EnterCode from './views/components/pages/EnterCode.vue';
-import EnterPassword from './views/components/pages/EnterPassword.vue';
-import Invite from './views/components/pages/Invite.vue';
-import Profile from './views/components/pages/Profile.vue';
-import ProfileEdit from './views/components/pages/ProfileEdit.vue';
-import ResetPassword from './views/components/pages/ResetPassword.vue';
-import SignIn from './views/components/pages/SignIn.vue';
-import SignUp from './views/components/pages/SignUp.vue';
-
-
-// Importing sections components
-import FeaturedUsers from './views/components/sections/FeaturedUsers.vue';
-import SliderFeatures from './views/components/sections/SliderFeatures.vue';
-
 import { i18nManager }  from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
 
 import locales from './locales/index.js';
+
+// Component re-exports (enables tree shaking)
+export { default as Auth } from './views/components/layouts/Auth.vue';
+export { default as EnterCode } from './views/components/pages/EnterCode.vue';
+export { default as EnterPassword } from './views/components/pages/EnterPassword.vue';
+export { default as Invite } from './views/components/pages/Invite.vue';
+export { default as Profile } from './views/components/pages/Profile.vue';
+export { default as ProfileEdit } from './views/components/pages/ProfileEdit.vue';
+export { default as ResetPassword } from './views/components/pages/ResetPassword.vue';
+export { default as SignIn } from './views/components/pages/SignIn.vue';
+export { default as SignUp } from './views/components/pages/SignUp.vue';
+export { default as FeaturedUsers } from './views/components/sections/FeaturedUsers.vue';
+export { default as SliderFeatures } from './views/components/sections/SliderFeatures.vue';
 
 // Пример функции инициализации для модуля аутентификации
 function initializeAuth(app, store, router, options = {}) {
@@ -61,23 +58,18 @@ const ModuleAuth = {
     middlewares: {
       validationAuth,
     },
-    components: {
-      // Layout
-      Auth,
-      // Pages
-      EnterCode,
-      Invite,
-      EnterPassword,
-      ResetPassword,
-      SignUp,
-      SignIn,
-      Profile,
-      ProfileEdit,
-      // Sections
-      SliderFeatures,
-      FeaturedUsers,
-    },
   },
+};
+
+// Functional exports
+export {
+  storeAuth,
+  storeTwofa,
+  storeUsers,
+  routerAuth,
+  routerUsers,
+  validationAuth,
+  initializeAuth as initialize,
 };
 
 export default ModuleAuth;

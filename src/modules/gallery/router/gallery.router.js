@@ -4,7 +4,7 @@ const gallery = {
   meta: {
     title_hide: true,
   },
-  component: () => import(/* webpackChunkName: 'Gallery' */ '@martyrs/src/modules/gallery/components/pages/Gallery.vue'),
+  component: () => import(/* webpackChunkName: 'gallery-main' */ '@martyrs/src/modules/gallery/components/pages/Gallery.vue'),
 };
 
 export default gallery;

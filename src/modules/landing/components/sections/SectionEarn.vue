@@ -42,7 +42,7 @@
         }"
         class="z-index-3 pos-relative w-100"
       />
-      <div style="background-image: url(/spiral.jpg)" class="mn-b-extra z-index-1 spiral"/>
+      <img :src="'/spiral.webp'" loading="lazy" alt="" class="mn-b-extra z-index-1 spiral"/>
     </div>
   </section>
 </template>
@@ -80,7 +80,7 @@ const { t, te } = useI18n({
 
 <style lang="scss" scoped>
   .spiral {
-    background-size: cover;
+    object-fit: cover;
     width: 100rem;
     height: 100rem;
     position: absolute;

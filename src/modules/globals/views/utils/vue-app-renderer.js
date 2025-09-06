@@ -4,6 +4,9 @@ import { renderToString } from '@vue/server-renderer';
 
 export function renderAndMountApp({ createApp }) {
   const start = async () => {
+    const startTime = Date.now();
+    console.log('[PERF] renderAndMountApp start:', startTime);
+    
     const { app, router, store } = createApp();
 
     let initialState;
@@ -31,19 +34,22 @@ export function renderAndMountApp({ createApp }) {
       initialState = null;
     }
 
+    console.log('[PERF] Initial state parsed:', Date.now() - startTime, 'ms');
+
     if (initialState) {
-      // Применяем начальное состояние ко всем модулям
-      store.setInitialState(initialState);
+      // Применяем начальное состояние ко всем модулям (true = гидратация)
+      store.setInitialState(initialState, true);
       
-      console.log('auth', initialState?.auth);
       if (initialState?.auth?.access?.token) {
         setAuthToken(initialState.auth.access.token);
       }
     } else {
-      // Если нет initialState, сбрасываем авторизацию
-      store.auth.actions.resetState();
-      // await store.auth.removeCookie('user');
-      await store.auth.actions.logout();
+      // Если нет initialState, сбрасываем авторизацию (если модуль auth загружен)
+      if (store.auth && store.auth.actions) {
+        store.auth.actions.resetState();
+        // await store.auth.removeCookie('user');
+        await store.auth.actions.logout();
+      }
     }
 
     // app.config.globalProperties.$i18n.locale = router.currentRoute.value.params.locale
@@ -54,12 +60,15 @@ export function renderAndMountApp({ createApp }) {
     // }
 
     await router.isReady();
+    console.log('[PERF] Router ready:', Date.now() - startTime, 'ms');
+    
     app.mount('#app');
+    console.log('[PERF] App mounted:', Date.now() - startTime, 'ms');
   };
   start();
 }
 
-export async function render({ url, cookies, createApp }) {
+export async function render({ url, cookies, createApp, ssrContext }) {
   const { app, router, store, meta } = createApp();
 
   await router.push(url);
@@ -70,13 +79,12 @@ export async function render({ url, cookies, createApp }) {
   //   app.config.globalProperties.$i18n.locale = language
   // }
 
-  // console.log(router.currentRoute.value.params.locale)
   // app.config.globalProperties.$i18n.locale = router.currentRoute.value.params.locale
 
-  const sharedContext = {};
+  const ctx = ssrContext || {};
 
   if (router.currentRoute.value.name?.toLowerCase() === 'notfound') {
-    sharedContext.notFound = true;
+    ctx.notFound = true;
   }
 
   let user = null;
@@ -91,12 +99,21 @@ export async function render({ url, cookies, createApp }) {
   }
 
   if (user) {
-    await store.auth.actions.initialize(user);
+    if (store.auth && store.auth.actions) {
+      await store.auth.actions.initialize(user);
+    } else {
+      console.warn('[SSR] Auth module not loaded, cannot initialize user');
+    }
   } else {
-    store.auth.actions.resetState();
+    if (store.auth && store.auth.actions) {
+      store.auth.actions.resetState();
+    } else {
+      console.warn('[SSR] Auth module not loaded, cannot reset state');
+    }
   }
 
-  const html = await renderToString(app, sharedContext);
+  // After render, ctx.modules will be populated with used module identifiers
+  const html = await renderToString(app, ctx);
   const payload = await renderSSRHead(meta, {});
   const initialState = await store.getInitialState();
 
@@ -105,5 +122,6 @@ export async function render({ url, cookies, createApp }) {
     meta: payload,
     state: initialState,
     statusCode: router.currentRoute?.value?.name?.toLowerCase() === 'notfound' ? 404 : 200,
+    usedModules: Array.from(ctx.modules || new Set()), // Return used modules
   };
 }

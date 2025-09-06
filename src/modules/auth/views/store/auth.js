@@ -41,7 +41,9 @@ const actions = {
         setAuthToken(accessToken);
 
         // Проверка токена через серверный маршрут
+        console.log('[PERF] Auth API call start:', Date.now());
         const response = await $axios.get('/api/organizations/check-accesses');
+        console.log('[PERF] Auth API call done:', Date.now());
         const userAccesses = response.data;
         state.accesses = userAccesses;
 

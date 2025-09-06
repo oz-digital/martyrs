@@ -25,7 +25,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           },
           title_hide: true,
         },
-        component: () => import(/* webpackChunkName: 'Events' */ '../components/pages/Events.vue'),
+        component: () => import(/* webpackChunkName: 'events-list' */ '../components/pages/Events.vue'),
       },
       {
         path: 'search',
@@ -37,7 +37,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           },
           title_hide: true,
         },
-        component: () => import(/* webpackChunkName: 'Events' */ '../components/pages/EventsSearch.vue'),
+        component: () => import(/* webpackChunkName: 'events-search' */ '../components/pages/EventsSearch.vue'),
       },
       {
         path: 'backoffice',
@@ -50,7 +50,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           title_hide: false,
         },
 
-        component: () => import(/* webpackChunkName: 'Events' */ '../components/pages/EventsBackoffice.vue'),
+        component: () => import(/* webpackChunkName: 'events-backoffice' */ '../components/pages/EventsBackoffice.vue'),
       },
       {
         path: 'create',
@@ -63,7 +63,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           title_hide: false,
         },
         beforeEnter: [validationAuth.requiresAuth],
-        component: () => import(/* webpackChunkName: 'Events' */ '../components/pages/EditEvent.vue'),
+        component: () => import(/* webpackChunkName: 'events-edit' */ '../components/pages/EditEvent.vue'),
       },
       {
         path: ':url',
@@ -75,7 +75,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           },
           title_hide: false,
         },
-        component: options.page_event || defineAsyncComponent(() => import(/* webpackChunkName: 'Events' */ '../components/pages/Event.vue')),
+        component: options.page_event || defineAsyncComponent(() => import(/* webpackChunkName: 'events-detail' */ '../components/pages/Event.vue')),
       },
       {
         path: ':url/edit',
@@ -88,7 +88,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           title_hide: false,
         },
         beforeEnter: [validationAuth.requiresAuth],
-        component: options.page_event_edit || defineAsyncComponent(() => import(/* webpackChunkName: 'Events' */ '../components/pages/EditEvent.vue')),
+        component: options.page_event_edit || defineAsyncComponent(() => import(/* webpackChunkName: 'events-edit' */ '../components/pages/EditEvent.vue')),
       },
       {
         path: ':url/edit/tickets',
@@ -101,7 +101,7 @@ export function createEventRoutes(prefix = '', options = {}) {
           title_hide: false,
         },
         beforeEnter: [validationAuth.requiresAuth],
-        component: () => import(/* webpackChunkName: 'Events' */ '../components/pages/EditEventTickets.vue'),
+        component: () => import(/* webpackChunkName: 'events-tickets' */ '../components/pages/EditEventTickets.vue'),
       },
     ],
   };

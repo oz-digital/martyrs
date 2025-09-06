@@ -1,5 +1,6 @@
-import SidebarMusic from '../components/SidebarMusic.vue';
-import MusicBottomPlayer from '../components/layouts/MusicBottomPlayer.vue';
+// Components loaded dynamically when needed
+const SidebarMusic = () => import(/* webpackChunkName: "music" */ '../components/SidebarMusic.vue');
+const MusicBottomPlayer = () => import(/* webpackChunkName: "music" */ '../components/layouts/MusicBottomPlayer.vue');
 
 
 // router/music.js

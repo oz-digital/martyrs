@@ -1,4 +1,4 @@
-import layoutCommunity from '../components/layouts/Community.vue';
+// Layout will be handled via dynamic import if needed
 
 import * as validationAuth from '@martyrs/src/modules/auth/views/middlewares/auth.validation.js';
 
@@ -19,7 +19,7 @@ export const createPostsRoutes = (prefix = '') => {
 
 const community = {
   path: 'community',
-  component: layoutCommunity,
+  component: () => import(/* webpackChunkName: "community-layout" */ '../components/layouts/Community.vue'),
   meta: {
     title: {
       en: 'Community',

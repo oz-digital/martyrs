@@ -32,20 +32,43 @@ class Store {
     return initialState;
   }
 
-  async setInitialState(initialState) {
-    for (const [moduleName, moduleState] of Object.entries(initialState)) {
+  async setInitialState(initialState, isHydration = false) {
+    console.time('[PERF] Store.setInitialState');
+    const modules = Object.entries(initialState);
+    console.log(`[PERF] Setting initial state for ${modules.length} modules (hydration: ${isHydration})`);
+    
+    for (const [moduleName, moduleState] of modules) {
       if (this.store[moduleName] && this.store[moduleName].state) {
-        this.mergeReactive(this.store[moduleName].state, moduleState);
+        console.time(`[PERF] Merge state: ${moduleName}`);
+        
+        // При гидратации просто заменяем state целиком для скорости
+        if (isHydration) {
+          Object.assign(this.store[moduleName].state, moduleState);
+        } else {
+          this.mergeReactive(this.store[moduleName].state, moduleState);
+        }
+        
+        console.timeEnd(`[PERF] Merge state: ${moduleName}`);
       }
     }
+    console.timeEnd('[PERF] Store.setInitialState');
   }
 
   mergeReactive(target, source) {
-    for (const key in source) {
-      if (isReactive(target[key]) && typeof source[key] === 'object') {
-        this.mergeReactive(target[key], source[key]);
+    // Оптимизированная версия слияния
+    const keys = Object.keys(source);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const sourceValue = source[key];
+      
+      if (sourceValue !== null && typeof sourceValue === 'object' && !Array.isArray(sourceValue)) {
+        if (isReactive(target[key])) {
+          this.mergeReactive(target[key], sourceValue);
+        } else {
+          target[key] = sourceValue;
+        }
       } else {
-        target[key] = source[key];
+        target[key] = sourceValue;
       }
     }
   }

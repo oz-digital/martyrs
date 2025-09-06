@@ -14,27 +14,27 @@
     
     <Block
       title="Profile"
-      v-if="departments.state.department.profile"
+      v-if="departmentsStore.state.department.profile"
       class="mn-b-thin"
     >
       <div
         class="cols-2-fit-content"
       >
         <UploadImage 
-           v-model:photo="departments.state.department.profile.photo"
-          :uploadPath="'organizations/' + departments.state.department.name + '/avatars'"
+           v-model:photo="departmentsStore.state.department.profile.photo"
+          :uploadPath="'organizations/' + departmentsStore.state.department.name + '/avatars'"
           class="w-8r aspect-1x1 o-hidden mn-r-small radius-extra" 
         />
         <div class="w-100 flex-child-grow-1 flex-child ">
           <Field 
-            v-model:field="departments.state.department.profile.name"     
+            v-model:field="departmentsStore.state.department.profile.name"     
             label="Name"  
             placeholder="Department Name" 
             class="mn-b-small bg-white radius-small pd-medium"
             :validation="organizationName" 
           />
           <Field 
-            v-model:field="departments.state.department.profile.description"     
+            v-model:field="departmentsStore.state.department.profile.description"     
             label="Description"  
             placeholder="Department description (max 120 symbols)" 
             class="bg-white radius-small pd-medium"
@@ -55,7 +55,7 @@
     > 
       <CardUser 
         class="h-4r bg-white pd-thin radius-medium w-100" 
-        v-for="(member, index) in departments.state.department.members" 
+        v-for="(member, index) in departmentsStore.state.department.members" 
         :key="index" 
         :user="member.user" 
         :photo="member.user.profile.photo"
@@ -108,7 +108,7 @@
           :photo="user.user.profile?.photo"
           :name="user.user.profile?.name || user.user.phone || user.user.email"
           @click="() => { 
-            globals.actions.add(departments.state.department.members, { _id: user.user._id, user: user.user, position: 'Member'})
+            globals.actions.add(departmentsStore.state.department.members, { _id: user.user._id, user: user.user, position: 'Member'})
             closeMemberPopup();
           }"
           class="h-4r bg-white pd-thin radius-medium w-100 mn-b-thin"
@@ -128,8 +128,8 @@
               label="Hidden department"
               name="hidden"
               class="w-100 mn-r-small bg-white radius-small pd-small"
-              @update:radio="updated => departments.state.department.hidden = !departments.state.department.hidden"
-              :radio="departments.state.department.hidden"
+              @update:radio="updated => departmentsStore.state.department.hidden = !departmentsStore.state.department.hidden"
+              :radio="departmentsStore.state.department.hidden"
             />
           </div>
         </div>
@@ -140,7 +140,7 @@
           <p class="p-medium mn-b-small">Please select organization accesses for user in department:</p>
           
           <div class="cols-1 gap-thin">
-            <div v-for="(actions, category) in departments.state.department.accesses" :key="category">
+            <div v-for="(actions, category) in departmentsStore.state.department.accesses" :key="category">
               <h4>{{ category.charAt(0).toUpperCase() + category.slice(1) }}</h4>
               <Checkbox
                 v-for="(value, action) in actions"
@@ -148,7 +148,7 @@
                 :label="action"
                 :name="action"
                 :radio="value"
-                @update:radio="updated => (departments.state.department.accesses[category][action] = !value)"
+                @update:radio="updated => (departmentsStore.state.department.accesses[category][action] = !value)"
                 class="w-100 mn-r-small bg-white radius-small pd-small"
               />
             </div>
@@ -166,10 +166,10 @@
 
       <Popup title="Добавить подотдел" @close-popup="closeDepartmentPopup" :isPopupOpen="isOpenDepartmentPopup">
         <DepartmentSubDepartmentModify 
-          :departments="departments.state.department.subdepartments" 
+          :departments="departmentsStore.state.department.subdepartments" 
           :department="selectedDepartment" 
-          :maindepartment="departments.state.department"
-          :alldepartments="departments.state.departments"
+          :maindepartment="departmentsStore.state.department"
+          :alldepartments="departmentsStore.state.departments"
           @callback="closeDepartmentPopup"
         />
       </Popup>
@@ -182,9 +182,9 @@
       </div>
 
         <ul class="mn-b-small">
-          <li v-if="departments.state.department.subdepartments.length < 1">В отделе еще нет подотделов</li>
+          <li v-if="departmentsStore.state.department.subdepartments.length < 1">В отделе еще нет подотделов</li>
           <DepartmentSub  
-            v-for="(subdepartment, index) in departments.state.department.subdepartments" 
+            v-for="(subdepartment, index) in departmentsStore.state.department.subdepartments" 
             :key="index" class="bg-light o-hidden radius-small mn-b-thin" 
             :department="subdepartment" 
               @click="openDepartmentPopup(index)"
@@ -216,26 +216,28 @@ import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue'
 
-import DepartmentSub from "@martyrs/src/modules/organizations/components/blocks/DepartmentSub.vue";
+import { 
+  DepartmentSub, 
+  departmentsStore, 
+  membershipsStore 
+} from "@martyrs/src/modules/organizations/organizations.client.js";
 
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'
 
 import * as globals from "@martyrs/src/modules/globals/views/store/globals.js";
-import departmentsStore from "@martyrs/src/modules/organizations/store/departments.store.js";
-import membershipsStore from "@martyrs/src/modules/organizations/store/memberships.store.js";
 
 const router = useRouter();
 const route = useRoute();
 
 async function fetchData() {
   const users = ref(membershipsStore.state.items);
-  // await departments.actions.read({organization: route.params._id});
+  // await departmentsStore.read({organization: route.params._id});
   if (route.params.department) await departmentsStore.read({ _id: route.params.department });
 }
 
 fetchData();
 
-// const members = ref(departments.state.department.members);
+// const members = ref(departmentsStore.state.department.members);
 
 const isOpenAddMemberPopup = ref(false);
 const selectedMember = ref(null);
@@ -265,15 +267,15 @@ function closeDepartmentPopup() {
 
 async function onSubmit() {
   if (route.params.department) {
-    await departments.actions.update(
+    await departmentsStore.update(
       route.params._id,
-      departments.state.department
+      departmentsStore.state.department
     );
   }
   if (!route.params.department) {
-    await departments.actions.create(
+    await departmentsStore.create(
       route.params._id,
-      departments.state.department
+      departmentsStore.state.department
     );
   }
 }
@@ -284,9 +286,9 @@ function redirectTo() {
 
 async function onDelete() {
   if (confirm("Are you sure you want to delete this department?")) {
-    await departments.actions.delete(
+    await departmentsStore.delete(
       route.params._id,
-      departments.state.department
+      departmentsStore.state.department
     );
   }
   
@@ -294,7 +296,7 @@ async function onDelete() {
 
 function removeMember(member) {
    if (confirm("Are you sure you want to remove this member?")) {
-    globals.actions.delete(departments.state.department.members, { _id: member.user._id}) 
+    globals.actions.delete(departmentsStore.state.department.members, { _id: member.user._id}) 
   }
 }
 

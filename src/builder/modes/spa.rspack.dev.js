@@ -1,32 +1,26 @@
-import * as history from 'connect-history-api-fallback';
+import history from 'connect-history-api-fallback';
 import path from 'path';
 import chalk from 'chalk';
 import { rspack, ProgressPlugin } from '@rspack/core';
 import devMiddleware from 'webpack-dev-middleware';
 
-export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }) {
-  const spaCompiler = rspack(spaConfig);
-  const serverCompiler = rspack(apiConfig);
+export default function createSpaDevServer(projectRoot, configs, createServer) {
+  const { spa, api } = configs;
+  const spaCompiler = rspack(spa);
+  const serverCompiler = rspack(api);
 
   const createDevRenderer = () => {
-    const progressPlugin = new ProgressPlugin((percentage, message, ...args) => {
-      console.log(
-        chalk.greenBright(`${(percentage * 100).toFixed(2)}% `) +
-        chalk.blueBright(message) +
-        " " +
-        args.map((arg) => chalk.yellow(arg)).join(" ")
-      );
-    });
+    const progressPlugin = new ProgressPlugin((percentage, message, ...args) => {});
 
-    spaConfig.plugins = spaConfig.plugins || [];
-    spaConfig.plugins.push(progressPlugin);
+    spa.plugins = spa.plugins || [];
+    spa.plugins.push(progressPlugin);
   };
 
   let serverInstance;
   let serverModule;
 
   const clientDevMiddleware = devMiddleware(spaCompiler, {
-    publicPath: spaConfig.output.publicPath,
+    publicPath: spa.output.publicPath,
     stats: false,
   });
 
@@ -40,7 +34,6 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
 
     // Проверяем, что серверный модуль загружен
     if (!serverModule) {
-      console.error("Серверный модуль еще не скомпилирован");
       return;
     }
 
@@ -68,7 +61,6 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
 
     try {
       await server.listen(port);
-      console.log(`Server started at http://localhost:${port}\n`);
     } catch (err) {
       console.error(err);
       process.exit(1);
@@ -82,13 +74,13 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
       return;
     }
     
-    console.log(stats.toString(apiConfig.stats));
     
     try {
-      // Получаем путь к скомпилированному файлу
-      const { outputPath } = stats.toJson();
-      const entryName = Object.keys(stats.toJson().entrypoints)[0];
-      const assetName = stats.toJson().entrypoints[entryName].assets[0].name;
+      // Получаем путь к скомпилированному файлу - вызываем toJson() только один раз!
+      const statsJson = stats.toJson();
+      const { outputPath } = statsJson;
+      const entryName = Object.keys(statsJson.entrypoints)[0];
+      const assetName = statsJson.entrypoints[entryName].assets[0].name;
       
       // Импортируем с уникальным параметром для сброса кэша
       serverModule = await import(`file://${path.resolve(outputPath, assetName)}?t=${Date.now()}`);
@@ -97,7 +89,6 @@ export default function createSpaDevServer(projectRoot, { spaConfig, apiConfig }
         throw new Error("Экспорт createServer не найден");
       }
       
-      console.log("Сервер скомпилирован, перезапуск...");
       await startServer();
     } catch (error) {
       console.error("Ошибка при загрузке серверного модуля:", error);

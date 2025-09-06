@@ -1,6 +1,10 @@
-import core from '@rspack/core.js';
+import core from '@rspack/core';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { VueLoaderPlugin } from 'vue-loader';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const { rspack } = core;
 // Получаем формат из переменной среды, по умолчанию cjs
 const format = process.env.FORMAT || 'esm';
@@ -71,7 +75,6 @@ export const plugins = [
   //   ignoreOrder: true,
   // })
 ];
-// __dirname as context, 
 export { moduleEntries as entry };
 export default {
   context: __dirname,

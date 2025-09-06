@@ -16,6 +16,11 @@
     "express"
   ],
   "type": "module",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.vue"
+  ],
   "main": "./dist/library/martyrs.es.js",
   "module": "./dist/library/martyrs.cjs.js",
   "browser": {

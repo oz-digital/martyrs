@@ -9,7 +9,7 @@
   	}"
 	>
 		<transition name="moveFromTop" appear>
-			<Loader v-if="!page || isPageLoading" class="pos-fixed"/>
+			<Loader v-if="!page || globals.state.loading" class="pos-fixed"/>
 		</transition>
 
 
@@ -160,7 +160,7 @@
 			    />
 			  	<transition @before-enter="scrollTop" name="scaleTransition" mode="out-in" appear>
 		        <component
-							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !isPageLoading"
+							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !globals.state.loading"
 				      ref="footer" 
 				      :is="route.meta.footer"
 				      :theme="headerTheme"
@@ -236,15 +236,15 @@
   const page = ref(null)
    const scrollview = ref(null)
 
-  const isPageLoading = ref(true);
+  // isPageLoading убран - используем globals.state.loading
   
   // Обработчики событий загрузки
   function handlePageLoading() {
-    isPageLoading.value = true;
+    globals.state.loading = true;
   }
   
   function handlePageLoaded() {
-    isPageLoading.value = false;
+    globals.state.loading = false;
   }
   
   // Обработка события разрешения Suspense (когда async setup компонента завершается)
@@ -252,7 +252,7 @@
     // Если страница не отправляет событие page-loaded, этот обработчик 
     // может служить запасным вариантом для отключения лоадера
     // Можно оставить закомментированным, если все страницы будут явно вызывать handlePageLoaded
-    isPageLoading.value = false;
+    globals.state.loading = false;
   }
 	/////////////////////////////
 	// CREATED

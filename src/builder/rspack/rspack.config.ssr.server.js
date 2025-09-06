@@ -10,7 +10,7 @@ export default (projectRoot) => {
   const isProd = process.env.NODE_ENV === "production";
 
   const ssrConfig = {
-    target: ["node", "es2022"], // Явно указываем современную версию Node.js с поддержкой ESM
+    target: "node", // Для совместимости с VueSsrAssetsServerPlugin
     mode: !isProd ? "development" : "production",
     entry: {
       main: path.resolve(projectRoot, "src/client.js"),
@@ -34,10 +34,7 @@ export default (projectRoot) => {
     },
     module: {
       rules: [
-        {
-          test: /\.css$/,
-          use: "null-loader",
-        },
+        // CSS обрабатывается base конфигом, не нужен null-loader
       ],
     },
     optimization: {

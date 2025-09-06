@@ -89,7 +89,6 @@
 import { ref, computed, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { format } from 'date-fns'
 import IconAdd from '@martyrs/src/modules/icons/navigation/IconAdd.vue'
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
 import IconMinus from '@martyrs/src/modules/icons/navigation/IconMinus.vue'

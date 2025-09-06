@@ -1,6 +1,10 @@
 // @martyrs/src/modules/auth/views/plugins/authPlugin.js
-import { reactive, defineComponent, h, render } from 'vue';
-import PopupAuth from '@martyrs/src/modules/globals/views/components/blocks/PopupAuth.vue';
+import { reactive, defineComponent, h, render, defineAsyncComponent } from 'vue';
+
+// Dynamic import for better tree shaking and lazy loading
+const PopupAuth = defineAsyncComponent(() => 
+  import('@martyrs/src/modules/globals/views/components/blocks/PopupAuth.vue')
+);
 
 // 1) Общее состояние и API
 const state = reactive({

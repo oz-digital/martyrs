@@ -1,6 +1,10 @@
 // src/plugins/storeDebuggerPlugin.js
-import { createVNode, render } from 'vue'
-import StoreDebugger from './StoreDebugger.vue'
+import { createVNode, render, defineAsyncComponent } from 'vue'
+
+// Dynamic import for better tree shaking and lazy loading
+const StoreDebugger = defineAsyncComponent(() => 
+  import('./StoreDebugger.vue')
+)
 
 export default {
   install(app, store) {

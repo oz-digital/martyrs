@@ -2,39 +2,39 @@ import path from 'path';
 import express from 'express';
 import { readFileSync } from 'fs';
 import { renderHtml } from '../ssr/ssr-render-html.js';
-import { transformProdStats } from '../ssr/ssr-transform-webpack-stats.js';
+import { createAssetResolver } from '../ssr/asset-resolver.js';
+import { createBeastiesProcessor } from '../ssr/beasties-processor.js';
 
-export default function createSsrProdServer(projectRoot, { clientConfig, apiConfig }, createServerPath) {
-  const clientStats = JSON.parse(readFileSync(path.join(projectRoot, 'builds/web/client/stats.json'), 'utf-8'));
+export default function createSsrProdServer(projectRoot, configs, createServer) {
+  // Load stats for asset resolution
+  const statsJson = JSON.parse(readFileSync(path.join(projectRoot, 'builds/web/client/stats.json'), 'utf-8'));
   const serverManifest = JSON.parse(readFileSync(path.join(projectRoot, 'builds/web/server/manifest.json'), 'utf-8'));
-  
-  const { createServer } = createServerPath;
+  const resolver = createAssetResolver(statsJson);
+  const beastiesProcessor = createBeastiesProcessor(projectRoot);
 
   const startServer = async () => {
-    const { app, server, env } = await createServer();
+    const { app, server, env } = await createServer.createServer();
     
-    app.use(
-      clientConfig.output.publicPath,
-      express.static(path.resolve(projectRoot, 'builds/web/client'), {
-        maxAge: '1d', // Кэширование на 1 день
-      })
-    );
+    // Статика отдается через Nginx, Express не обрабатывает статические файлы
+    // Это решает проблему с производительностью
 
     const { render } = await import(path.join(
-      apiConfig.output.path,
+      path.resolve(projectRoot, 'builds/web/server'),
       serverManifest['main.js']
     ));
 
-    const { head, body } = transformProdStats({
-      stats: clientStats,
-      publicPath: clientConfig.output.publicPath,
-    });
-
     app.use('/*', async (req, res) => {
-      const { html, meta, state, statusCode } = await render({
+      // Логируем если это запрос к JS чанку
+      if (req.originalUrl.includes('.js')) {
+        console.log('[SSR] JS request caught in SSR handler:', req.originalUrl);
+      }
+      const ssrContext = {};
+      
+      const { html, meta, state, statusCode, usedModules, loadedModules } = await render({
         url: req.originalUrl,
         cookies: req.cookies,
         languages: req.acceptsLanguages(),
+        ssrContext
       });
 
       if (state.NotFound) {
@@ -43,12 +43,24 @@ export default function createSsrProdServer(projectRoot, { clientConfig, apiConf
 
       const initialState = JSON.stringify(state);
 
-      const completeHtml = await renderHtml({
+      // Используем loadedModules если они есть, иначе usedModules
+      const modulesToLoad = loadedModules || usedModules || [];
+
+      // Use asset resolver to get only needed chunks with critical CSS mode
+      const { head, body } = resolver.collect(modulesToLoad, { criticalCss: true });
+
+      let completeHtml = await renderHtml({
         appHtml: html,
         meta,
         head,
         body,
         initialState,
+      });
+      
+      // Обрабатываем HTML через Beasties для извлечения критического CSS
+      // Beasties сам определит какие стили используются в HTML
+      completeHtml = await beastiesProcessor.processHtml(completeHtml, {
+        url: req.originalUrl
       });
 
       res.status(statusCode).header('Content-Type', 'text/html; charset=utf-8').send(completeHtml);
@@ -62,7 +74,7 @@ export default function createSsrProdServer(projectRoot, { clientConfig, apiConf
   const start = async () => {
     const server = await startServer();
     try {
-      server.listen(port, () => console.log(`Server running on port ${port}`));
+      server.listen(port, () => {});
     } catch (err) {
       console.error(err);
       process.exit(1);

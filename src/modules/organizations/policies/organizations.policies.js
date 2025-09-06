@@ -1,4 +1,4 @@
-import Validator from '@martyrs/src/modules/globals/controllers/classes/globals.Validator.js';
+import Validator from '@martyrs/src/modules/globals/controllers/classes/globals.validator.js';
 import Verifier from '@martyrs/src/modules/globals/controllers/classes/globals.verifier.js';
 
 export default (function initializeOrganizationPolicies(abacAccessControl, db) {

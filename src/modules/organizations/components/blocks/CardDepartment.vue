@@ -31,7 +31,7 @@ import { ref } from 'vue';
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue'
 
 import Spoiler  from '@martyrs/src/components/Spoiler/Spoiler.vue';
-import DepartmentSub from '@martyrs/src/modules/organizations/components/blocks/DepartmentSub.vue';
+import { DepartmentSub } from '@martyrs/src/modules/organizations/organizations.client.js';
 import User from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
 
 const props = defineProps({
