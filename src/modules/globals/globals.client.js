@@ -127,6 +127,9 @@ export {
   websockets,
 };
 
+// Export client factory
+export { createUniversalApp } from './views/classes/globals.app.js';
+
 // Re-export polyfills for documentation
 export * from './views/utils/polyfills.js';
 

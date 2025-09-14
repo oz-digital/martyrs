@@ -4,9 +4,6 @@ import { renderToString } from '@vue/server-renderer';
 
 export function renderAndMountApp({ createApp }) {
   const start = async () => {
-    const startTime = Date.now();
-    console.log('[PERF] renderAndMountApp start:', startTime);
-    
     const { app, router, store } = createApp();
 
     let initialState;
@@ -34,7 +31,6 @@ export function renderAndMountApp({ createApp }) {
       initialState = null;
     }
 
-    console.log('[PERF] Initial state parsed:', Date.now() - startTime, 'ms');
 
     if (initialState) {
       // Применяем начальное состояние ко всем модулям (true = гидратация)
@@ -60,15 +56,13 @@ export function renderAndMountApp({ createApp }) {
     // }
 
     await router.isReady();
-    console.log('[PERF] Router ready:', Date.now() - startTime, 'ms');
     
     app.mount('#app');
-    console.log('[PERF] App mounted:', Date.now() - startTime, 'ms');
   };
   start();
 }
 
-export async function render({ url, cookies, createApp, ssrContext }) {
+export async function render({ url, cookies,  ssrContext, createApp}) {
   const { app, router, store, meta } = createApp();
 
   await router.push(url);

@@ -1,60 +1,48 @@
 import { isReactive, reactive } from 'vue';
 
-class Store {
-  constructor() {
-    if (!Store.instance) {
-      this.store = reactive({
-        modules: [], // Инициализация пустого объекта для модулей
-        addStore: this.addStore.bind(this), // Привязка контекста
-        getInitialState: this.getInitialState.bind(this), // Метод получения начального состояния
-        setInitialState: this.setInitialState.bind(this), // Метод установки начального состояния
-      });
-
-      Store.instance = this;
-    }
-    return Store.instance;
-  }
-
-  addStore(name, storage) {
-    this.store[name] = storage;
-    this.store.modules.push(name);
-  }
-
-  async getInitialState() {
-    const initialState = {};
-    for (const [moduleName, moduleStore] of Object.entries(this.store)) {
-      if (moduleName !== 'modules' && moduleName !== 'addStore' && moduleName !== 'getInitialState' && moduleName !== 'setInitialState') {
-        if (moduleStore.state) {
-          initialState[moduleName] = JSON.parse(JSON.stringify(moduleStore.state));
+// Фабрика для создания store
+export function createStore() {
+  const store = reactive({
+    modules: [],
+    addStore(name, storage) {
+      this[name] = storage;
+      this.modules.push(name);
+    },
+    async getInitialState() {
+      const initialState = {};
+      for (const [moduleName, moduleStore] of Object.entries(this)) {
+        if (moduleName !== 'modules' && moduleName !== 'addStore' && moduleName !== 'getInitialState' && moduleName !== 'setInitialState') {
+          if (moduleStore.state) {
+            initialState[moduleName] = JSON.parse(JSON.stringify(moduleStore.state));
+          }
         }
       }
-    }
-    return initialState;
-  }
-
-  async setInitialState(initialState, isHydration = false) {
-    console.time('[PERF] Store.setInitialState');
-    const modules = Object.entries(initialState);
-    console.log(`[PERF] Setting initial state for ${modules.length} modules (hydration: ${isHydration})`);
-    
-    for (const [moduleName, moduleState] of modules) {
-      if (this.store[moduleName] && this.store[moduleName].state) {
-        console.time(`[PERF] Merge state: ${moduleName}`);
-        
-        // При гидратации просто заменяем state целиком для скорости
-        if (isHydration) {
-          Object.assign(this.store[moduleName].state, moduleState);
-        } else {
-          this.mergeReactive(this.store[moduleName].state, moduleState);
+      return initialState;
+    },
+    async setInitialState(initialState, isHydration = false) {
+      console.time('[PERF] Store.setInitialState');
+      const modules = Object.entries(initialState);
+      console.log(`[PERF] Setting initial state for ${modules.length} modules (hydration: ${isHydration})`);
+      
+      for (const [moduleName, moduleState] of modules) {
+        if (this[moduleName] && this[moduleName].state) {
+          console.time(`[PERF] Merge state: ${moduleName}`);
+          
+          // При гидратации просто заменяем state целиком для скорости
+          if (isHydration) {
+            Object.assign(this[moduleName].state, moduleState);
+          } else {
+            mergeReactive(this[moduleName].state, moduleState);
+          }
+          
+          console.timeEnd(`[PERF] Merge state: ${moduleName}`);
         }
-        
-        console.timeEnd(`[PERF] Merge state: ${moduleName}`);
       }
+      console.timeEnd('[PERF] Store.setInitialState');
     }
-    console.timeEnd('[PERF] Store.setInitialState');
-  }
+  });
 
-  mergeReactive(target, source) {
+  function mergeReactive(target, source) {
     // Оптимизированная версия слияния
     const keys = Object.keys(source);
     for (let i = 0; i < keys.length; i++) {
@@ -63,7 +51,7 @@ class Store {
       
       if (sourceValue !== null && typeof sourceValue === 'object' && !Array.isArray(sourceValue)) {
         if (isReactive(target[key])) {
-          this.mergeReactive(target[key], sourceValue);
+          mergeReactive(target[key], sourceValue);
         } else {
           target[key] = sourceValue;
         }
@@ -72,14 +60,23 @@ class Store {
       }
     }
   }
+
+  return store;
 }
 
-const instance = new Store();
-
-Object.freeze(instance);
+// Синглтон для клиента
+let clientStore = null;
 
 export function useStore() {
-  return instance.store;
+  if (typeof window === 'undefined') {
+    // SSR: новый store каждый раз
+    return createStore();
+  }
+  // Client: синглтон
+  if (!clientStore) {
+    clientStore = createStore();
+  }
+  return clientStore;
 }
 
-export default instance.store;
+export default useStore();

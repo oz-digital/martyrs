@@ -10,6 +10,7 @@
       :class="{ 'loading': !isLoaded }"
       loading="lazy"
       @load="handleLoad"
+      @error="handleImageError"
       v-bind="options"
       ref="imageElement"
     />
@@ -33,7 +34,7 @@
     </video>
     
     <!-- Плейсхолдер во время загрузки -->
-    <div v-if="!isLoaded" class="media-placeholder">
+    <div v-if="!isLoaded && !error" class="media-placeholder">
       Loading...
     </div>
     
@@ -71,6 +72,7 @@ const error = ref(null)
 const isIntersecting = ref(false)
 let observer = null
 let isPlaying = false
+let loadTimeout = null
 
 // Определяем тип медиа
 const fileExtension = computed(() => {
@@ -100,12 +102,21 @@ const videoType = computed(() => {
 // Обработчик загрузки медиа
 function handleLoad() {
   isLoaded.value = true
+  clearTimeout(loadTimeout)
+}
+
+// Обработка ошибок изображения
+function handleImageError() {
+  error.value = 'Не удалось загрузить изображение'
+  isLoaded.value = false
+  clearTimeout(loadTimeout)
 }
 
 // Обработка ошибок
 function handleError(err) {
   error.value = `Ошибка загрузки медиа: ${err.message}`
   isLoaded.value = false
+  clearTimeout(loadTimeout)
 }
 
 // Управление видео с обработкой ошибок
@@ -149,6 +160,13 @@ function setupIntersectionObserver() {
       isIntersecting.value = entry.isIntersecting
       
       if (entry.isIntersecting) {
+        // Устанавливаем таймаут для обнаружения зависшей загрузки
+        loadTimeout = setTimeout(() => {
+          if (!isLoaded.value && !error.value) {
+            error.value = 'Истекло время ожидания загрузки'
+          }
+        }, 10000) // 10 секунд таймаут
+        
         if (isVideo.value && props.options?.autoplay) {
           playVideo()
         }
@@ -173,6 +191,9 @@ onMounted(() => {
 onUnmounted(() => {
   if (observer) {
     observer.disconnect()
+  }
+  if (loadTimeout) {
+    clearTimeout(loadTimeout)
   }
 })
 </script>

@@ -70,7 +70,7 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
           // Dynamic import for ESM compatibility with cache busting
           // IMPORTANT: Add timestamp to force reimport after recompilation
           const module = await import(`${mainModulePath}?t=${Date.now()}`);
-          renderApp = module.render;
+          renderApp = module._renderApp;
         }
       );
       

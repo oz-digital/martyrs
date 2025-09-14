@@ -20,17 +20,17 @@
       </picture>
 
     <div class="pd-big flex flex-h-center flex-column z-index-1 w-1/2">
-      <h2 class="mn-t-medium mn-b-semi w-m-40r">{{ t('title') }}</h2>
-      <p class="t-transp mn-b-big p-semi w-m-33r">{{ t('description') }}</p>
+      <h2 class="mn-t-medium mn-b-medium w-m-40r">{{ t('title') }}</h2>
+      <p class="t-transp mn-b-semi p-semi w-m-33r">{{ t('description') }}</p>
       
-      <div class="mn-b-big gap-medium cols-2">
+      <div v-if="tm('features').length > 0" class="mn-b-semi gap-medium cols-2">
         <div v-for="feature in tm('features')"  class="feature">
           <h4 class="mn-b-small">{{ feature.title }}</h4>
           <p class="t-transp p-medium">{{ feature.text }}</p>
         </div>
       </div>
 
-      <div class="w-100 w-max-30r flex-nowrap flex gap-medium">
+      <div class="w-100 w-max-20r flex-nowrap flex gap-small">
         <a 
            v-if="te('linkAppStore') || te('label')"
           :href="te('linkAppStore') ? t('linkAppStore') : null" 
@@ -39,7 +39,7 @@
         > 
           <span 
             v-if="te('label')"
-            class="z-index-2 radius-medium bg-main t-semi uppercase pd-thin pos-absolute pos-r-10-negative pos-t-10-negative"
+            class="z-index-2 radius-medium p-small bg-main t-semi uppercase pd-thin pos-absolute pos-r-10-negative pos-t-10-negative"
           >
             {{ t('label') }}
           </span>
@@ -54,7 +54,7 @@
         > 
           <span 
             v-if="te('label')"
-            class="z-index-2 pd-thin radius-medium bg-main t-semi uppercase pos-absolute pos-r-10-negative pos-t-10-negative"
+            class="z-index-2 pd-thin p-small radius-medium bg-main t-semi uppercase pos-absolute pos-r-10-negative pos-t-10-negative"
           >
             {{ t('label') }}
           </span>

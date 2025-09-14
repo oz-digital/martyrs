@@ -38,7 +38,7 @@ export default (function createSsrDevServer(projectRoot, { clientConfig, apiConf
       }
       // Рендерим приложение с помощью SSR
       try {
-        const { html, meta, state, statusCode } = await ssrEntry.render(stuff);
+        const { html, meta, state, statusCode } = await ssrEntry._renderApp(stuff);
         // Получаем скрипты и стили клиентской части для вставки в HTML
         const headTags = [];
         const bodyTags = [];

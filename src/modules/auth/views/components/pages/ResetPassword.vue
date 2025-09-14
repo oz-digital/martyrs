@@ -65,12 +65,16 @@ import Button        from '@martyrs/src/components/Button/Button.vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-// Import state
-import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
-import * as twofa from '@martyrs/src/modules/auth/views/store/twofa.js'
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+// Import store
+import { useStore } from '@martyrs/src/modules/globals/views/classes/store.js'
 // Import validation
 import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
+
+// Get store
+const store = useStore()
+const auth = store.auth || { state: {}, actions: {} }
+const twofa = store.twofa || { state: {}, actions: {}, sendCode: () => {} }
+const globals = store.globals || { state: {}, actions: {} }
 // Localization
 const { t } = useI18n({
 	useScope: 'global', 
@@ -87,7 +91,8 @@ const availableTabs = computed(() => {
         { name: t('auth.resetPassword.phone'), value: 'phone' },
         { name: t('auth.resetPassword.email'), value: 'email' }
     ];
-    return tabs.filter(tab => !globals.state.options.auth.authMethodsExclude.includes(tab.value));
+    const excludeMethods = globals.state?.options?.auth?.authMethodsExclude || [];
+    return tabs.filter(tab => !excludeMethods.includes(tab.value));
 });
 
 const tabAuth = ref(availableTabs.value.length ? availableTabs.value[0].value : '');

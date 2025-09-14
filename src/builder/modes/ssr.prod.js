@@ -18,7 +18,7 @@ export default function createSsrProdServer(projectRoot, configs, createServer) 
     // Статика отдается через Nginx, Express не обрабатывает статические файлы
     // Это решает проблему с производительностью
 
-    const { render } = await import(path.join(
+    const { _renderApp } = await import(path.join(
       path.resolve(projectRoot, 'builds/web/server'),
       serverManifest['main.js']
     ));
@@ -30,7 +30,7 @@ export default function createSsrProdServer(projectRoot, configs, createServer) 
       }
       const ssrContext = {};
       
-      const { html, meta, state, statusCode, usedModules, loadedModules } = await render({
+      const { html, meta, state, statusCode, usedModules, loadedModules } = await _renderApp({
         url: req.originalUrl,
         cookies: req.cookies,
         languages: req.acceptsLanguages(),
