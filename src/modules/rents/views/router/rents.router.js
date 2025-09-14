@@ -37,7 +37,7 @@ export function createRentsRoutes(prefix = '', options = {}) {
         component: () => import(/* webpackChunkName: 'Renting' */ '../components/pages/RentsEdit.vue'),
       },
       {
-        path: ':_id/edit',
+        path: ':rent/edit',
         name: nameWithPrefix('Edit Rent'),
         meta: {
           title: {

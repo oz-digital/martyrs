@@ -3,6 +3,7 @@
 		id="app-wrapper"
 		class="flex flex-column h-100 w-100 pos-relative o-hidden"
 		:class="{
+			[route.name ? route.name.replace(/\s+/g, '_') : route.path.replace(/\W+/g, '_')]: true,
   		'pd-t-big': MOBILE_APP === 'ios',  
 			'bg-white': headerTheme === 'light',
 			'bg-black': headerTheme === 'dark' 
@@ -12,12 +13,10 @@
 			<Loader v-if="!page || globals.state.loading" class="pos-fixed"/>
 		</transition>
 
-
 	  <transition 
 	    name="moveFromTop" 
 	    mode="out-in"
 	  >
-	  	
 	    <section 
 	      v-if="FirstUse && route.meta.walkthrough"
 	      class="w-100 h-100" 
@@ -163,7 +162,7 @@
 							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !globals.state.loading"
 				      ref="footer" 
 				      :is="route.meta.footer"
-				      :theme="headerTheme"
+				      :theme="route.meta.footer_theme || 'light'"
 				      :logotype="route.meta.logotype"
 				      :location="route.meta.location"
 				    />
@@ -180,9 +179,6 @@
     		:is="Component" 
     	/>
 		</router-view>
-
-	
-
 
     <component 
       v-if="MOBILE_APP && route.meta.title_hide"

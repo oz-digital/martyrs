@@ -267,7 +267,7 @@ const iconComponents = {
           <p class="t-small mn-b-small t-transp">{{ t('subscribe_text') }}</p>
           
           <FieldSubscribeNewsletter
-            :action="false"
+            :action="''"
             fieldName="footer-newsletter"
             fieldId="footer-newsletter-email"
             class="d-inline-flex mn-b-medium bg-light t-black w-100"
