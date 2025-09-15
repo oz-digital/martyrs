@@ -156,7 +156,7 @@ The same section contains classes for determining the size of icons, adding marg
   width: $regular;
   height: $regular;
 }
-.i-thin {
+.i-semi {
   width: 2rem;
   height: 2rem;
 }

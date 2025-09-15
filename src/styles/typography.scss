@@ -78,6 +78,12 @@ a:hover   { cursor: pointer;}
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */  
 }
+// WhiteSpace
+.t-nowrap { white-space: nowrap; }
+.t-normal { white-space: normal; }
+.t-pre { white-space: pre; }
+.t-pre-line { white-space: pre-line; }
+.t-pre-wrap { white-space: pre-wrap; }
 // Font weights
 .t-bold   	{ font-weight: 900;}
 .t-demi   	{ font-weight: 700;}

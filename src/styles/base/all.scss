@@ -73,12 +73,6 @@ body {
 }
 
 body {
-	// WhiteSpace
-	.t-nowrap { white-space: nowrap; }
-	.t-normal { white-space: normal; }
-	.t-pre { white-space: pre; }
-	.t-pre-line { white-space: pre-line; }
-	.t-pre-wrap { white-space: pre-wrap; }
 	
 	// Icon Classes
 	.i-extra { width: var(--extra); height: var(--extra); }
@@ -87,12 +81,15 @@ body {
 	.i-medium { width: var(--medium); height: var(--medium); }
 	.i-regular { width: var(--regular); height: var(--regular) }
 	.i-small { width: var(--small); height: var(--small) }
-	.i-default { width: var(--regular); height: var(--regular) }
-	.i-thin { width: 2rem; height: 2rem }
+	.i-thin { width: var(--thin); height: var(--thin) }
+	.i-micro { width: var(--micro); height: var(--micro) }
+	.i-nano { width: var(--nano); height: var(--nano) }
+
+	// REFACTOR
 	.i-base { width: 1rem; height: 1rem }
-	
-	// Extra
+	.i-default { width: var(--regular); height: var(--regular) }
 	.i-circle { padding: var(--small); border-radius: var(--extra); background: var(--light-main); overflow: visible; }
+	// REFACTOR
 	
 	// Aspect ratio
 	.aspect-16x9 { aspect-ratio: 16 / 9; }

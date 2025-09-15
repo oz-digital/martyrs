@@ -13,7 +13,7 @@
 				<img loading="lazy" 
 					v-if="owner.target?.profile?.photo?.length > 0 && type !== 'short'" 
 					:src="(FILE_SERVER_URL || '') + owner.target.profile.photo" 
-					class="radius-medium bg-white flex-child-default object-fit-cover i-thin" 
+					class="radius-medium bg-white flex-child-default object-fit-cover i-semi" 
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
@@ -25,7 +25,7 @@
 				<component
 					v-if="!owner.target?.profile?.photo && type !== 'short'"
 					:is="owner.type === 'user' ? PlaceholderUserpic : PlaceholderOrganizationPic"
-					class="radius-medium flex-child-default cursor-pointer i-thin"
+					class="radius-medium flex-child-default cursor-pointer i-semi"
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
