@@ -2,11 +2,11 @@
   <Carousel
     :store="{
       read: (options) => blog.read({ 
-        skip, 
-        limit,
-        user: userId,
-        period,
-        category 
+        skip: props.skip, 
+        limit: props.limit,
+        user: props.userId,
+        period: props.period,
+        category: props.category 
       })
     }"
     :text="{

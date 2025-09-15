@@ -4,7 +4,6 @@
     class="vue3-marquee"
     :class="{ vertical: vertical, horizontal: !vertical }"
     :style="getCurrentStyle"
-    :key="componentKey"
     @mouseenter="hoverStarted"
     @mouseleave="hoverEnded"
     @mousedown="mouseDown"
@@ -43,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 
 const props = defineProps({
   vertical: { type: Boolean, default: false },
@@ -64,10 +63,11 @@ const emits = defineEmits(['onComplete', 'onLoopComplete', 'onPause', 'onResume'
 
 const ready = ref(false)
 
-const componentKey = ref(0)
 const cloneAmount = ref(0)
 const loopCounter = ref(0)
 const loopInterval = ref(null)
+const resizeObserver = ref(null)
+const checkInterval = ref(null)
 
 const widthMin = ref('100%')
 const widthContainer = ref(0)
@@ -84,7 +84,6 @@ const marqueeOverlayContainer = ref(null)
 
 const ForcesUpdate = async () => {
   await checkForClone()
-  componentKey.value++
 }
 
 const checkForClone = async () => {
@@ -92,7 +91,9 @@ const checkForClone = async () => {
     verticalAnimationPause.value = true
   }
 
-  setInterval(() => {
+  await nextTick()
+  
+  const calculateClones = () => {
     widthMin.value = '0%'
     heightMin.value = '0%'
 
@@ -141,7 +142,34 @@ const checkForClone = async () => {
       heightMin.value = '100%'
       return 0
     }
-  }, 100)
+  }
+  
+  // Run once immediately
+  calculateClones()
+  
+  // Setup ResizeObserver for efficient resize detection
+  if (typeof ResizeObserver !== 'undefined' && marqueeOverlayContainer.value) {
+    if (resizeObserver.value) {
+      resizeObserver.value.disconnect()
+    }
+    
+    resizeObserver.value = new ResizeObserver(() => {
+      calculateClones()
+    })
+    
+    resizeObserver.value.observe(marqueeOverlayContainer.value)
+  } else {
+    // Fallback for browsers without ResizeObserver
+    // Only check once after a delay for initial setup
+    if (checkInterval.value) {
+      clearInterval(checkInterval.value)
+    }
+    
+    checkInterval.value = setTimeout(() => {
+      calculateClones()
+      checkInterval.value = null
+    }, 500)
+  }
 }
 
 const hoverStarted = () => { if (props.pauseOnHover) emits('onPause') }
@@ -205,19 +233,19 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   clearInterval(loopInterval.value)
-})
-
-watch(widthContent, async () => {
-  if (props.clone) {
-    ForcesUpdate()
+  
+  if (resizeObserver.value) {
+    resizeObserver.value.disconnect()
+    resizeObserver.value = null
+  }
+  
+  if (checkInterval.value) {
+    clearInterval(checkInterval.value)
+    checkInterval.value = null
   }
 })
 
-watch(widthContainer, async () => {
-  if (props.clone) {
-    ForcesUpdate()
-  }
-})
+// Removed inefficient watchers - ResizeObserver handles this now
 
 watch(
   () => props.pause,

@@ -50,12 +50,12 @@
 			<!-- Detail -->
 			<p 
 				v-if="product.attributes.length > 0"  
-				class="t-semi t-transp p-small mn-b-micro"
+				class="t-semi t-transp p-small mn-b-thin"
 			>
 				{{product.attributes[0].value}}
 			</p>
 			<!-- Name -->
-			<span style=" hyphens: auto;" class="word-break t-truncate p-medium mn-b-thin w-100 w-max-100 ">
+			<span style=" hyphens: auto;" class="word-break t-truncate p-medium mn-b-micro w-100 w-max-100 ">
 				{{product.name}}
 			</span>
 
