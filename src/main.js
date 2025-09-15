@@ -18,6 +18,7 @@ import {
   FieldBig,
   FieldPhone,
   FieldTags,
+  Gradient,
   // Footer,
   // Header,
   Loader,
@@ -50,7 +51,7 @@ export default {
     app.component('Address', () => import('./components/Address/Address.vue'));
     app.component('Button', () => import('./components/Button/Button.vue'));
     app.component('Checkbox', () => import('./components/Checkbox/Checkbox.vue'));
-      app.component('Calendar', () => import('./components/Calendar/Calendar.vue'));
+    app.component('Calendar', () => import('./components/Calendar/Calendar.vue'));
     app.component('Dropdown', () => import('./components/Dropdown/Dropdown.vue'));
     app.component('Error', () => import('./components/Error/Error.vue'));
     app.component('Field', () => import('./components/Field/Field.vue'));
@@ -79,6 +80,7 @@ export default {
     app.component('Carousel', () => import('./components/Feed/Carousel.vue'));
     app.component('FieldBig', () => import('./components/FieldBig/FieldBig.vue'));
     app.component('FieldTags', () => import('./components/FieldTags/FieldTags.vue'));
+    app.component('Gradient', () => import('./components/Gradient/Gradient.vue'));
     // app.component('Footer',       () => import('./components/Footer/Footer.vue'));
     // app.component('Header',       () => import('./components/Header/Header.vue'));
     app.component('Loader', () => import('./components/Loader/Loader.vue'));
@@ -110,6 +112,7 @@ export {
   FieldBig,
   FieldPhone,
   FieldTags,
+  Gradient,
   // Footer,
   // Header,
   Loader,

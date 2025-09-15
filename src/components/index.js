@@ -9,6 +9,7 @@ export { default as FieldPhone } from './FieldPhone/FieldPhone.vue';
 export { default as LocationMarker } from './LocationMarker/LocationMarker.vue';
 export { default as Map } from './Map/Map.vue';
 export { default as Popup } from './Popup/Popup.vue';
+
 export { default as Radio } from './Radio/Radio.vue';
 export { default as Select } from './Select/Select.vue';
 export { default as SelectMulti } from './SelectMulti/SelectMulti.vue';
@@ -38,6 +39,7 @@ export { default as Loader } from './Loader/Loader.vue';
 // export { default as Navigation } from './Navigation/Navigation.vue';
 // export { default as Search } from './Search/Search.vue';
 export { default as Shader } from './Shader/Shader.vue';
+export { default as Gradient } from './Gradient/Gradient.vue';
 export { default as Slider } from './Slider/Slider.vue';
 export { default as Status } from './Status/Status.vue';
 
