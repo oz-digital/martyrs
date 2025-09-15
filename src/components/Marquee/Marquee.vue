@@ -68,6 +68,7 @@ const loopCounter = ref(0)
 const loopInterval = ref(null)
 const resizeObserver = ref(null)
 const checkInterval = ref(null)
+const resizeTimeout = ref(null)
 
 const widthMin = ref('100%')
 const widthContainer = ref(0)
@@ -82,9 +83,7 @@ const verticalAnimationPause = ref(false)
 const marqueeContent = ref(null)
 const marqueeOverlayContainer = ref(null)
 
-const ForcesUpdate = async () => {
-  await checkForClone()
-}
+// Removed ForcesUpdate - no longer needed
 
 const checkForClone = async () => {
   if (props.vertical) {
@@ -154,7 +153,10 @@ const checkForClone = async () => {
     }
     
     resizeObserver.value = new ResizeObserver(() => {
-      calculateClones()
+      clearTimeout(resizeTimeout.value)
+      resizeTimeout.value = setTimeout(() => {
+        calculateClones()
+      }, 150)
     })
     
     resizeObserver.value.observe(marqueeOverlayContainer.value)
@@ -209,7 +211,6 @@ const setupMarquee = async () => {
 
   if (props.clone) {
     await checkForClone()
-    ForcesUpdate()
     ready.value = true
   } else {
     ready.value = true
@@ -243,6 +244,11 @@ onBeforeUnmount(() => {
     clearInterval(checkInterval.value)
     checkInterval.value = null
   }
+  
+  if (resizeTimeout.value) {
+    clearTimeout(resizeTimeout.value)
+    resizeTimeout.value = null
+  }
 })
 
 // Removed inefficient watchers - ResizeObserver handles this now
@@ -271,10 +277,14 @@ watch(
     min-width: var(--min-width);
     min-height: var(--min-height);
     z-index: 1;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 
     animation: var(--orientation) var(--duration) linear var(--delay) var(--loops);
     animation-play-state: var(--pauseAnimation);
     animation-direction: var(--direction);
+    contain: layout style paint;
   }
 
   .overlay {
@@ -368,19 +378,19 @@ watch(
 
 @keyframes scrollX {
   0% {
-    transform: translateX(0%);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
 @keyframes scrollY {
   0% {
-    transform: translateY(0%);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
   }
 }
 </style>
