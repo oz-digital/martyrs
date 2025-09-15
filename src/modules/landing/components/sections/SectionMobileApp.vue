@@ -3,16 +3,16 @@
       <picture>
         <source 
           type="image/webp"
-          :srcset="`${FILE_SERVER_URL || ''}/landing/mockup-400w.webp 400w,
-                   ${FILE_SERVER_URL || ''}/landing/mockup-800w.webp 800w,
-                   ${FILE_SERVER_URL || ''}/landing/mockup-1200w.webp 1200w,
-                   ${FILE_SERVER_URL || ''}/landing/mockup.webp 2028w`"
+          :srcset="`${FILE_SERVER_URL || ''}${t('image').replace(/\.[^/.]+$/, '-400w.webp')} 400w,
+                   ${FILE_SERVER_URL || ''}${t('image').replace(/\.[^/.]+$/, '-800w.webp')} 800w,
+                   ${FILE_SERVER_URL || ''}${t('image').replace(/\.[^/.]+$/, '-1200w.webp')} 1200w,
+                   ${FILE_SERVER_URL || ''}${t('image').replace(/\.[^/.]+$/, '.webp')} 2028w`"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
         >
         <img 
           loading="lazy" 
           :src="(FILE_SERVER_URL || '') + t('image')" 
-          :srcset="`${FILE_SERVER_URL || ''}/landing/mockup.jpg 2028w`"
+          :srcset="`${FILE_SERVER_URL || ''}${t('image')} 2028w`"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
           class="radius-medium w-100 h-100 mobile:h-auto object-fit-cover"
           alt="OZ DAO Mobile App"
