@@ -3,10 +3,13 @@
 		id="app-wrapper"
 		class="flex flex-column h-100 w-100 pos-relative o-hidden"
 		:class="{
-			[route.name ? route.name.replace(/\s+/g, '_') : route.path.replace(/\W+/g, '_')]: true,
+			[(route.name 
+      ? route.name.replace(/\s+/g, '_') 
+      : route.path.replace(/\W+/g, '_')
+    ).toLowerCase()]: true,
   		'pd-t-big': MOBILE_APP === 'ios',  
 			'bg-white': headerTheme === 'light',
-			'bg-black': headerTheme === 'dark' 
+			'bg-black': headerTheme === 'dark',
   	}"
 	>
 		<transition name="moveFromTop" appear>
@@ -39,6 +42,9 @@
       :theme="headerTheme"
       :logotype="route.meta.logotype"
       :location="route.meta.location"
+      :class="{
+      	'header-scrolled': scrollOffset > 50 
+      }"
     >
     	<component
 		    v-if="route.meta?.header_navigation"
@@ -72,7 +78,6 @@
 		<section 
 			id="screen" 
 			ref="screen"
-			@scroll="handleScroll"
 			class="flex flex-nowrap h-100 pos-relative o-hidden  transition-ease-in-out"
 			:class="{
 				'': MOBILE_APP === 'ios',
@@ -106,7 +111,7 @@
 	    </component>
 		  <!-- rows-1-min0_max1 z-index-1 pos-relative w-100 h-100 -->
 		  <div class="rows-1-min0_max1 z-index-1 pos-relative w-100 h-100">
-		  	<div id="scrollview" ref="scrollview" class="o-y-scroll o-x-hidden h-100">
+		  	<div id="scrollview" ref="scrollview" @scroll="handleScroll" class="o-y-scroll o-x-hidden h-100">
 	  			<Status 
 	  				v-if="globals.state.error.show"
 						:data="globals.state.error"

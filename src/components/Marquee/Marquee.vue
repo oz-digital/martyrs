@@ -275,6 +275,7 @@ watch(
 
   &.horizontal {
     overflow-x: hidden !important;
+    overflow-y: hidden !important;
     flex-direction: row !important;
     width: 100%;
     height: max-content;
@@ -300,6 +301,7 @@ watch(
 
   &.vertical {
     overflow-y: hidden !important;
+    overflow-x: hidden !important;
     flex-direction: column !important;
     height: 100%;
     width: max-content;
