@@ -183,9 +183,13 @@ function setError(error) {
 
   state.error.show = true;
 
-  requestAnimationFrame(() => {
+  if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+    requestAnimationFrame(() => {
+      setTimeout(() => (state.error.show = false), 5000);
+    });
+  } else {
     setTimeout(() => (state.error.show = false), 5000);
-  });
+  }
 }
 
 function setSnack(data) {
@@ -219,9 +223,13 @@ function setSnack(data) {
   }
 
   // Auto-hide
-  requestAnimationFrame(() => {
+  if (typeof window !== 'undefined' && window.requestAnimationFrame) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {state.snack.show = false }, duration)
+    });
+  } else {
     setTimeout(() => {state.snack.show = false }, duration)
-  });
+  }
   
 }
 
