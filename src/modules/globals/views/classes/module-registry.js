@@ -97,8 +97,11 @@ export class ModuleRegistry {
     // Инициализируем модуль
     // Поддерживаем оба варианта: module.initialize и module.default.initialize для обратной совместимости
     const initFunc = module.initialize || (module.default && module.default.initialize);
+    console.log(`[DEBUG registry] Module ${name} initFunc found:`, !!initFunc);
     if (initFunc) {
+      console.log(`[DEBUG registry] Calling initialize for ${name}`);
       await initFunc(app, store, router, config);
+      console.log(`[DEBUG registry] Module ${name} initialize completed`);
     }
     
     this.initialized.set(name, true);

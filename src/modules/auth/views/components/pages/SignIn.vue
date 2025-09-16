@@ -118,8 +118,8 @@ import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/i
 
 // Get store
 const store = useStore()
-const auth = store.auth || { state: {}, actions: {} }
-const globals = store.globals || { state: {}, actions: {} }
+const auth = store.auth
+const globals = store.globals
 
 // Init validation
 const phoneValidation = ref(null)

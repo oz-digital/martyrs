@@ -71,7 +71,10 @@ function initializeGlobals(app, store, router, config, options = {}) {
 
   if (config && config.modules) storeGlobals.state.options = config.modules;
 
+  console.log('[DEBUG] initializeGlobals called with store:', !!store);
+  console.log('[DEBUG] Adding globals to store...');
   store.addStore('globals', storeGlobals);
+  console.log('[DEBUG] globals added to store:', !!store.globals);
 
   router.addRoute(route, {
     path: '404',

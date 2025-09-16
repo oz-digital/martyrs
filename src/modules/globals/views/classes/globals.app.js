@@ -50,8 +50,15 @@ export function createUniversalApp({
     });
     
     // Основная функция создания приложения
-    function createApp() {
+    async function createApp() {
       const store = getStore();
+      console.log('[DEBUG createApp] store created:', !!store);
+      
+      // Установить SSR store для useStore
+      if (typeof window === 'undefined') {
+        const { setSSRStore } = await import('./store.js');
+        setSSRStore(store);
+      }
       const app = process.env.MOBILE_APP 
         ? createVueApp(layoutApp, config) 
         : createVueSSRApp(layoutApp, config);
@@ -77,8 +84,10 @@ export function createUniversalApp({
         
         for (const moduleName of criticalModules) {
           try {
+            console.log(`[DEBUG] Loading module ${moduleName}, context.store:`, !!context.store);
             await moduleRegistry.load(moduleName, context);
             await moduleRegistry.initialize(moduleName, context);
+            console.log(`[DEBUG] Module ${moduleName} initialized, store.${moduleName}:`, !!context.store[moduleName]);
           } catch (error) {
             console.error(`Failed to load critical module ${moduleName}:`, error);
           }
@@ -193,19 +202,31 @@ export function createUniversalApp({
     // FOR SSR / SERVER ENTRY
     async function renderApp({ url, cookies, languages, ssrContext }) {
       const { app, router, store, i18n, meta, moduleRegistry } = await createApp();
+      console.log('[DEBUG SSR] After createApp - store.globals:', !!store.globals);
       
       // ВАЖНО: Очищаем состояние moduleRegistry на сервере перед каждым запросом
       // чтобы избежать загрязнения между запросами
       if (typeof window === 'undefined') {
-        moduleRegistry.initialized.clear();
-        moduleRegistry.modules.clear();
-        moduleRegistry.loadingPromises.clear();
+        // Сброс SSR store для нового запроса
+        const { setSSRStore } = await import('./store.js');
+        setSSRStore(null);
         
-        // На сервере загружаем auth для SSR рендеринга (vue-app-renderer требует его)
-        const context = { app, store, router, config };
-        await moduleRegistry.load('auth', context);
-        await moduleRegistry.initialize('auth', context);
+        // Устанавливаем новый store для этого запроса
+        setSSRStore(store);
       }
+      
+      // if (typeof window === 'undefined') {
+      //   moduleRegistry.initialized.clear();
+      //   moduleRegistry.modules.clear();
+      //   moduleRegistry.loadingPromises.clear();
+        
+      //   // На сервере загружаем auth для SSR рендеринга (vue-app-renderer требует его)
+      //   const context = { app, store, router, config };
+      //   await moduleRegistry.load('globals', context);
+      //   await moduleRegistry.initialize('globals', context);
+      //   await moduleRegistry.load('auth', context);
+      //   await moduleRegistry.initialize('auth', context);
+      // }
       
       const context = {
         app,
@@ -244,6 +265,7 @@ export function createUniversalApp({
       }
       
       // Передаем только модули текущего роута + критические модули
+      // Это не реальные модули а метаданные для дегидратации
       const criticalModules = ['globals', 'auth', 'organizations', 'backoffice'];
       const allModulesForRoute = [...new Set([...criticalModules, ...currentRouteModules])];
       

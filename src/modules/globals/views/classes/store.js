@@ -67,9 +67,21 @@ export function createStore() {
 // Синглтон для клиента
 let clientStore = null;
 
+// Store для SSR должен создаваться в createApp и передаваться сюда
+let ssrStore = null;
+
+export function setSSRStore(store) {
+  ssrStore = store;
+}
+
 export function useStore() {
   if (typeof window === 'undefined') {
-    // SSR: новый store каждый раз
+    // SSR: используем переданный store
+    if (ssrStore) {
+      return ssrStore;
+    }
+    // Fallback для обратной совместимости
+    console.warn('[WARN] SSR store not set, creating new store instance');
     return createStore();
   }
   // Client: синглтон
