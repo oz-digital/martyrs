@@ -82,7 +82,18 @@ const props = defineProps({
 
 // Get router and notification functionality
 const router = useRouter();
-const { notifications, unreadCount, loading, markAllAsRead, getNotifications } = inject('useNotifications')();
+
+// Check if notifications module is loaded
+const useNotifications = inject('useNotifications');
+
+// Provide fallback values if module is not loaded
+const { notifications, unreadCount, loading, markAllAsRead, getNotifications } = useNotifications ? useNotifications() : {
+  notifications: ref([]),
+  unreadCount: ref(0),
+  loading: ref(false),
+  markAllAsRead: () => {},
+  getNotifications: () => {}
+};
 
 // Local state
 const isOpen = ref(false);

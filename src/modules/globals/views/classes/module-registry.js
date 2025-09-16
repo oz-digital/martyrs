@@ -114,9 +114,9 @@ export class ModuleRegistry {
     for (const [name, config] of this.loaders) {
       if (config.routes.some(route => {
         if (typeof route === 'string') {
-          // Для корневого роута проверяем точное совпадение
+          // Для корневого роута матчим все пути
           if (route === '/') {
-            return normalizedPath === '/';
+            return true;
           }
           // Для остальных роутов проверяем начало пути
           // но учитываем границы сегментов (не /events должен матчить /event)

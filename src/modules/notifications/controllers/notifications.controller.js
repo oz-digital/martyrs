@@ -129,6 +129,37 @@ const NotificationsController = (db, wss, notificationService) => {
         return res.status(400).json({ message: 'Either userId or anonymousId is required' });
       }
       
+      // First, try to find existing device by deviceToken
+      let existingDevice = await db.userDevice.findOne({ deviceToken });
+      
+      if (existingDevice) {
+        // Device with this token already exists, update it
+        console.log('[RegisterDevice] Found existing device by token, updating...');
+        
+        if (userId) {
+          // Transfer device from anonymous to authenticated user
+          existingDevice.userId = userId;
+          existingDevice.anonymousId = undefined;
+          existingDevice.isAnonymous = false;
+        } else {
+          // Update anonymous device
+          existingDevice.anonymousId = anonymousId;
+          existingDevice.userId = undefined;
+          existingDevice.isAnonymous = true;
+        }
+        
+        // Update common fields
+        existingDevice.deviceId = deviceId;
+        existingDevice.deviceType = deviceType;
+        existingDevice.lastActive = Date.now();
+        existingDevice.isActive = true;
+        
+        await existingDevice.save();
+        console.log('[RegisterDevice] Device updated:', existingDevice._id);
+        return res.status(200).json(existingDevice);
+      }
+      
+      // No existing device with this token, proceed with original logic
       // Build the filter based on whether user is authenticated or anonymous
       let filter;
       if (userId) {
