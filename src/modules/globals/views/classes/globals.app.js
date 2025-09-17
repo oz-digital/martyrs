@@ -204,16 +204,6 @@ export function createUniversalApp({
       const { app, router, store, i18n, meta, moduleRegistry } = await createApp();
       console.log('[DEBUG SSR] After createApp - store.globals:', !!store.globals);
       
-      // ВАЖНО: Очищаем состояние moduleRegistry на сервере перед каждым запросом
-      // чтобы избежать загрязнения между запросами
-      if (typeof window === 'undefined') {
-        // Сброс SSR store для нового запроса
-        const { setSSRStore } = await import('./store.js');
-        setSSRStore(null);
-        
-        // Устанавливаем новый store для этого запроса
-        setSSRStore(store);
-      }
       
       // if (typeof window === 'undefined') {
       //   moduleRegistry.initialized.clear();
