@@ -79,7 +79,15 @@ export default (function (db) {
     slug: { rule: 'optional', validator: Validator.schema().string() },
     parent: { rule: 'optional', validator: Validator.schema().oneOfTypes(['string', 'null']) },
     localization: { rule: 'optional' },
-    filters: { rule: 'optional' },
+    filters: { 
+      rule: 'optional',
+      validator: Validator.schema().array().items(
+        Validator.schema().object({
+          name: Validator.schema().string(),
+          options: Validator.schema().array().items(Validator.schema().string())
+        })
+      )
+    },
     owner: {
       rule: 'optional',
       validator: Validator.schema().object({

@@ -36,6 +36,11 @@ const actions = {
       const response = await $axios.get('/api/categories', { params: options });
 
       if (options._id) {
+        // Проверяем что приходит с сервера
+        console.log('Category data from server:', response.data[0]);
+        if (response.data[0].filters) {
+          console.log('Filters:', response.data[0].filters);
+        }
         state.current = { ...response.data[0] };
         return Promise.resolve(response.data[0]);
       } else {

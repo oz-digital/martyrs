@@ -341,7 +341,8 @@ class Validator {
         for (let i = 0; i < value.length; i++) {
           const result = validator.validate(value[i]);
           if (!result.isValid) {
-            this.errors.push(`Item at index ${i}: ${result.errors.join(', ')}`);
+            const fieldName = message ? `${message}[${i}]` : `Item ${i}`;
+            this.errors.push(`${fieldName}: ${result.errors.join(', ')}`);
             return false;
           }
         }
@@ -367,7 +368,7 @@ class Validator {
           }
           const result = validator.validate(value[key]);
           if (!result.isValid) {
-            this.errors.push(`Property "${key}": ${result.errors.join(', ')}`);
+            this.errors.push(`"${key}" ${result.errors.join(', ')}`);
             return false;
           }
         }
@@ -394,7 +395,7 @@ class Validator {
           }
           const result = validator.validate(value[key]);
           if (!result.isValid) {
-            this.errors.push(`Property "${key}": ${result.errors.join(', ')}`);
+            this.errors.push(`"${key}" ${result.errors.join(', ')}`);
             return false;
           }
         }
@@ -425,46 +426,46 @@ class Validator {
     const context = this.options.context ? `${this.options.context} ` : '';
     switch (rule.type) {
       case 'string':
-        return `${context}должно быть строкой`;
+        return `${context}must be a string`;
       case 'number':
-        return `${context}должно быть числом`;
+        return `${context}must be a number`;
       case 'integer':
-        return `${context}должно быть целым числом`;
+        return `${context}must be an integer`;
       case 'boolean':
-        return `${context}должно быть логическим значением`;
+        return `${context}must be a boolean`;
       case 'array':
-        return `${context}должно быть массивом`;
+        return `${context}must be an array`;
       case 'date':
-        return `${context}должно быть корректной датой`;
+        return `${context}must be a valid date`;
       case 'required':
-        return `${context}обязательное поле`;
+        return `${context}is required`;
       case 'min':
-        if (rule.param instanceof Date) return `${context}должно быть не ранее ${rule.param.toLocaleDateString()}`;
-        return `${context}должно быть не менее ${rule.param}`;
+        if (rule.param instanceof Date) return `${context}must be no earlier than ${rule.param.toLocaleDateString()}`;
+        return `${context}must be at least ${rule.param}`;
       case 'max':
-        if (rule.param instanceof Date) return `${context}должно быть не позднее ${rule.param.toLocaleDateString()}`;
-        return `${context}должно быть не более ${rule.param}`;
+        if (rule.param instanceof Date) return `${context}must be no later than ${rule.param.toLocaleDateString()}`;
+        return `${context}must be at most ${rule.param}`;
       case 'length':
         if (rule.param.min !== undefined && rule.param.max !== undefined) {
-          return `${context}длина должна быть от ${rule.param.min} до ${rule.param.max} символов`;
+          return `${context}length must be between ${rule.param.min} and ${rule.param.max} characters`;
         } else if (rule.param.min !== undefined) {
-          return `${context}длина должна быть не менее ${rule.param.min} символов`;
+          return `${context}length must be at least ${rule.param.min} characters`;
         } else if (rule.param.max !== undefined) {
-          return `${context}длина должна быть не более ${rule.param.max} символов`;
+          return `${context}length must be at most ${rule.param.max} characters`;
         }
-        return `${context}не соответствует требованиям длины`;
+        return `${context}does not meet length requirements`;
       case 'pattern':
-        return `${context}не соответствует требуемому формату`;
+        return `${context}does not match required format`;
       case 'email':
-        return `${context}должно быть корректным email-адресом`;
+        return `${context}must be a valid email address`;
       case 'oneOf':
-        return `${context}должно быть одним из: ${rule.param.join(', ')}`;
+        return `${context}must be one of: ${rule.param.join(', ')}`;
       case 'oneOfTypes':
-        return `${context}должно быть одного из типов: ${rule.param.join(', ')}`;
+        return `${context}must be one of types: ${rule.param.join(', ')}`;
       case 'custom':
         return rule.param;
       case 'items':
-        return `${context}содержит невалидные элементы`;
+        return `${context}contains invalid items`;
       case 'object':
         return `${context}не соответствует типу объекта`;
       case 'shape':

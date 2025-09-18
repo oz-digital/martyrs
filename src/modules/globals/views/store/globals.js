@@ -162,7 +162,7 @@ function setError(error) {
   if (error?.response?.data) errorData = error.response.data;
 
   // Обработка ошибок верификации
-  if (errorData?.error === 'VALIDATION_ERROR' && errorData?.errors) {
+  if ((errorData?.error === 'VALIDATION_ERROR' || errorData?.errors) && errorData?.errors) {
     // Собираем все сообщения об ошибках в одну строку
     const errorMessages = [];
     for (const field in errorData.errors) {
@@ -173,7 +173,7 @@ function setError(error) {
         errorMessages.push(fieldErrors);
       }
     }
-    state.error.message = errorMessages.join(', ') || 'Validation error';
+    state.error.message = errorMessages.join(', ') || errorData.message || 'Validation error';
   } else if (error && errorData.errorCode) {
     // state.error.message = i18n.global.t(`errors.${errorData.errorCode}`);
     state.error.message = errorData.errorCode;

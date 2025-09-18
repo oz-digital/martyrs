@@ -224,6 +224,16 @@
           ? categories.state.current.owner.target._id 
           : categories.state.current.owner.target
       }
+      
+      // Очищаем filters от tiClasses перед отправкой
+      if (categories.state.current.filters) {
+        categories.state.current.filters = categories.state.current.filters.map(filter => ({
+          ...filter,
+          options: filter.options ? filter.options.map(opt => 
+            typeof opt === 'string' ? opt : opt.text
+          ) : []
+        }));
+      }
 
       await categories.actions.update(categories.state.current)
 
@@ -240,6 +250,16 @@
         type: route.params._id ? 'organization' : 'platform',
         hidden: false,
         target: route.params._id ? route.params._id : null
+      }
+      
+      // Очищаем filters от tiClasses перед отправкой
+      if (categories.state.current.filters) {
+        categories.state.current.filters = categories.state.current.filters.map(filter => ({
+          ...filter,
+          options: filter.options ? filter.options.map(opt => 
+            typeof opt === 'string' ? opt : opt.text
+          ) : []
+        }));
       }
 
       await categories.actions.create(categories.state.current)

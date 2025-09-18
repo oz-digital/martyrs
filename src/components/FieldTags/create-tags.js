@@ -29,6 +29,9 @@ const findIndex = (arr, callback) => {
 
 const createClasses = (tag, tags, validation = [], customDuplicateFn) => {
   if (tag.text === undefined) tag = { text: tag };
+  
+  // Ensure tags is an array
+  if (!Array.isArray(tags)) tags = [];
 
   // create css classes from the user validation array
   const classes = validateUserRules(tag, validation);
@@ -40,7 +43,7 @@ const createClasses = (tag, tags, validation = [], customDuplicateFn) => {
   const inputTag = index !== -1 ? tagsDiff.splice(index, 1)[0] : clone(tag);
 
   // check whether the tag is a duplicate or not
-  const duplicate = customDuplicateFn ? customDuplicateFn(tagsDiff, inputTag) : tagsDiff.map(t => t.text).indexOf(inputTag.text) !== -1;
+  const duplicate = customDuplicateFn ? customDuplicateFn(tagsDiff, inputTag) : (Array.isArray(tagsDiff) ? tagsDiff.map(t => t.text).indexOf(inputTag.text) !== -1 : false);
 
   // if it's a duplicate, push the class duplicate to the array
   if (duplicate) classes.push('ti-duplicate');
@@ -64,6 +67,11 @@ const createTag = (tag, ...rest) => {
 
   // we better make a clone to not getting reference trouble
   const t = clone(tag);
+  
+  // Ensure the first argument in rest (tags array) is actually an array
+  if (rest[0] && !Array.isArray(rest[0])) {
+    rest[0] = [];
+  }
 
   // create the validation classes
   t.tiClasses = createClasses(tag, ...rest);
@@ -79,6 +87,11 @@ const createTag = (tag, ...rest) => {
  * @example  &#47;* Example to call the function *&#47;
    const validatedTags = createTags(['tag1Text', 'tag2Text'], [{ type: 'length', rule: /[0-9]/ }])
  */
-const createTags = (tags, ...rest) => tags.map(t => createTag(t, tags, ...rest));
+const createTags = (tags, ...rest) => {
+  if (!Array.isArray(tags)) {
+    return [];
+  }
+  return tags.map(t => createTag(t, tags, ...rest));
+};
 
 export { clone, createClasses, createTag, createTags };
