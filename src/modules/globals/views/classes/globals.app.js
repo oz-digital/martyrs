@@ -50,15 +50,8 @@ export function createUniversalApp({
     });
     
     // Основная функция создания приложения
-    async function createApp() {
+    function createApp() {
       const store = getStore();
-      console.log('[DEBUG createApp] store created:', !!store);
-      
-      // Установить SSR store для useStore
-      if (typeof window === 'undefined') {
-        const { setSSRStore } = await import('./store.js');
-        setSSRStore(store);
-      }
       const app = process.env.MOBILE_APP 
         ? createVueApp(layoutApp, config) 
         : createVueSSRApp(layoutApp, config);
@@ -84,10 +77,8 @@ export function createUniversalApp({
         
         for (const moduleName of criticalModules) {
           try {
-            console.log(`[DEBUG] Loading module ${moduleName}, context.store:`, !!context.store);
             await moduleRegistry.load(moduleName, context);
             await moduleRegistry.initialize(moduleName, context);
-            console.log(`[DEBUG] Module ${moduleName} initialized, store.${moduleName}:`, !!context.store[moduleName]);
           } catch (error) {
             console.error(`Failed to load critical module ${moduleName}:`, error);
           }
@@ -202,7 +193,12 @@ export function createUniversalApp({
     // FOR SSR / SERVER ENTRY
     async function renderApp({ url, cookies, languages, ssrContext }) {
       const { app, router, store, i18n, meta, moduleRegistry } = await createApp();
-      console.log('[DEBUG SSR] After createApp - store.globals:', !!store.globals);
+      
+      // Set SSR store for useStore calls
+      if (typeof window === 'undefined') {
+        const { setSSRStore } = await import('./store.js');
+        setSSRStore(store);
+      }
       
       
       // if (typeof window === 'undefined') {
@@ -271,26 +267,18 @@ export function createUniversalApp({
     
     // FOR SSR / CLIENT ENTRY
     if (typeof window !== 'undefined' && !process.env.MOBILE_APP) {
-      createApp().then(({ app, router, store, moduleRegistry }) => {
-        // Ждем когда роутер будет готов
-        router.isReady().then(() => {
-          // Хук ДО гидратации
-          if (hooks.beforeHydration) {
-            hooks.beforeHydration({ app, router, store, moduleRegistry });
-          }
-          
-          app.mount('#app');
-          
-          // Хук ПОСЛЕ гидратации
-          if (hooks.afterHydration) {
-            hooks.afterHydration({ app, router, store, moduleRegistry });
-          }
-          
-          // Создаем context для загрузки модулей
-          const context = { app, store, router, config };
-          
-          // Загружаем auth модуль сразу - он критичен
-          moduleRegistry.load('auth', context).then(() => {
+      // Используем renderAndMountApp для правильной гидратации со state
+      appRenderer.renderAndMountApp({ createApp, hooks }).then(({ app, router, store, moduleRegistry }) => {
+        // Хук ПОСЛЕ гидратации
+        if (hooks.afterHydration) {
+          hooks.afterHydration({ app, router, store, moduleRegistry });
+        }
+        
+        // Создаем context для загрузки модулей
+        const context = { app, store, router, config };
+        
+        // Загружаем auth модуль сразу - он критичен
+        moduleRegistry.load('auth', context).then(() => {
             // Загружаем важные модули в следующем тике
             setTimeout(async () => {
               try {
@@ -315,9 +303,8 @@ export function createUniversalApp({
                 console.error('Error loading non-critical modules:', error);
               }
             });
-          }).catch(error => {
-            console.error('Error loading auth module:', error);
-          });
+        }).catch(error => {
+          console.error('Error loading auth module:', error);
         });
       }).catch(error => {
         console.error('Hydration failed:', error);

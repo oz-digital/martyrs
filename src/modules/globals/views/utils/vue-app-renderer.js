@@ -2,9 +2,14 @@ import { setAuthToken } from '@martyrs/src/modules/globals/views/utils/axios-ins
 import { renderSSRHead } from '@unhead/ssr';
 import { renderToString } from '@vue/server-renderer';
 
-export function renderAndMountApp({ createApp }) {
+export function renderAndMountApp({ createApp, hooks = {} }) {
   const start = async () => {
-    const { app, router, store } = createApp();
+    const { app, router, store, moduleRegistry } = await createApp();
+    
+    // Call beforeHydration hook if provided
+    if (hooks.beforeHydration) {
+      hooks.beforeHydration({ app, router, store, moduleRegistry });
+    }
 
     let initialState;
 
@@ -58,8 +63,11 @@ export function renderAndMountApp({ createApp }) {
     await router.isReady();
     
     app.mount('#app');
+    
+    // Return the objects for further use
+    return { app, router, store, moduleRegistry };
   };
-  start();
+  return start();
 }
 
 export async function render({ url, cookies,  ssrContext, createApp}) {

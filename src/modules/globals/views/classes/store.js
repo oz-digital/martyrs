@@ -20,25 +20,18 @@ export function createStore() {
       return initialState;
     },
     async setInitialState(initialState, isHydration = false) {
-      console.time('[PERF] Store.setInitialState');
       const modules = Object.entries(initialState);
-      console.log(`[PERF] Setting initial state for ${modules.length} modules (hydration: ${isHydration})`);
       
       for (const [moduleName, moduleState] of modules) {
         if (this[moduleName] && this[moduleName].state) {
-          console.time(`[PERF] Merge state: ${moduleName}`);
-          
           // При гидратации просто заменяем state целиком для скорости
           if (isHydration) {
             Object.assign(this[moduleName].state, moduleState);
           } else {
             mergeReactive(this[moduleName].state, moduleState);
           }
-          
-          console.timeEnd(`[PERF] Merge state: ${moduleName}`);
         }
       }
-      console.timeEnd('[PERF] Store.setInitialState');
     }
   });
 
