@@ -14,7 +14,7 @@
     	:creator="blogpost.creator"
     	:date="blogpost.createdAt"
     	:actions="user && user === blogpost.creator.target._id ? [
-        { to: { name: 'Edit BlogPost', params: {url: blogpost.url } }, label: 'Edit' }
+        { to: `/community/posts/${blogpost.url}/edit`, label: 'Edit' }
        ]: null"
 		/>
 
@@ -30,12 +30,7 @@
 				 	:text="blogpost.name || ''" 
 				 	:maxLen="80" 
 				 	class="h3 d-block"
-				 	@click="router.push({
-						name: 'BlogPost', 
-						params: { 
-							url: blogpost.url 
-						}
-					})"
+				 	@click="router.push(`/community/posts/${blogpost.url}`)"
 				/>
 
 				<div 

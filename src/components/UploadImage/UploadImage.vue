@@ -4,21 +4,21 @@
       @click="onComponentClick"
       @drop="onDrop"
       @dragover.prevent
-      class="pos-relative bg-light radius-small br-solid br-1px br-black-transp-10 h-100 aspect-1x1 flex-v-center flex-h-center flex cursor-pointer"
+      class="pos-relative radius-small br-solid br-1px br-black-transp-10 h-100 aspect-1x1 flex-v-center flex-h-center flex cursor-pointer"
     >
       <img loading="lazy" 
         v-if="imageUrl || photo || previewUrl" 
         :src="previewUrl || (FILE_SERVER_URL || '') + (imageUrl || photo)"
         alt="Uploaded image" 
-        class="pos-absolute z-index-1 w-100 h-100 object-fit-cover"
+        class="pos-absolute  radius-small o-hidden z-index-1 w-100 h-100 object-fit-cover"
       />
       
-      <div v-else class="flex-v-center z-index-2 flex-h-center flex w-100 h-100 bg-second" >
+      <div v-else class="flex-v-center pos-relative z-index-2 flex-h-center flex w-100 h-100 radius-small  bg-second" >
         <IconUpload class="i-medium upload-icon" fill="rgb(var(--white))" />
       </div>
       
       <!-- Hover controls -->
-      <div class="z-index-2 hover-controls pos-absolute w-100 h-100 flex-v-center flex-h-center flex">
+      <div class="z-index-2 pos-relative  hover-controls pos-absolute w-100 h-100 flex-v-center flex-h-center flex">
         <div v-if="!imageUrl && !photo && !previewUrl" class="hover-upload-icon">
           <IconUpload class="i-medium" fill="rgb(var(--white))" />
         </div>

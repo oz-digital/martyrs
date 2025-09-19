@@ -55,6 +55,7 @@
         >
           <CardCategory 
             :category="item" 
+            :access="hasAccess(route.params._id, 'products', 'edit', auth.state.accesses, auth.state.access.roles)"
             @delete="deleteCategory" 
           />
         </Tree>
@@ -69,10 +70,12 @@
 
   import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'; 
-  import * as categories from '@martyrs/src/modules/products/store/categories.js'; 
+  import * as categories from '@martyrs/src/modules/products/store/categories.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'; 
 
   const route = useRoute();
   const router = useRouter();
+  const { hasAccess } = useGlobalMixins();
 
   import Button from "@martyrs/src/components/Button/Button.vue";
   import Block from '@martyrs/src/components/Block/Block.vue';

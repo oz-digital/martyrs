@@ -60,6 +60,7 @@ export default {
       const container = document.createElement('div');
       document.body.appendChild(container);
       const vnode = h(AlertDialog, { alertState, handleAction, closeAlert });
+      vnode.appContext = app._context;
       render(vnode, container);
     }
   },

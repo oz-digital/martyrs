@@ -289,7 +289,7 @@
   const emits = defineEmits(['page-loading', 'page-loaded']);
   const route = useRoute()
   const router = useRouter()
-  const { generateFilters, formatDate } = useGlobalMixins()
+  const { generateFilters, formatDate, hasAccess } = useGlobalMixins()
 
   // Категории и фильтры
   const currentCategories = ref([]);

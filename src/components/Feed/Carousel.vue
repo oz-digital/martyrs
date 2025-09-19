@@ -34,9 +34,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 import Loader from '@martyrs/src/components/Loader/Loader.vue'
 import Slider from '@martyrs/src/components/Slider/Slider.vue'
 import EmptyState from '@martyrs/src/components/EmptyState/EmptyState.vue';
+
+const { replaceClasses } = useGlobalMixins();
 
 const props = defineProps({
   showDots: Boolean,

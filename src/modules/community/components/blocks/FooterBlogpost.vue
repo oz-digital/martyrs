@@ -1,11 +1,6 @@
 <template>
   <footer class="t-semi br-top-dark flex-nowrap flex-nojustify flex">
-    <router-link :to="{
-      name: 'BlogPost', 
-      params: { 
-        url: blogpost.url 
-      }
-    }" 
+    <router-link :to="`/community/posts/${blogpost.url}`" 
     class="font-second cursor-pointer hover-bg-white pd-l-thin pd-r-thin radius-big">
       👁️ {{blogpost.views}}
     </router-link>
@@ -18,13 +13,7 @@
         👍 {{reactionsCount }}
       </div>
     </div>
-    <router-link :to="{
-      name: 'BlogPost', 
-      hash: '#comments',
-      params: { 
-        url: blogpost.url 
-      }
-    }" 
+    <router-link :to="`/community/posts/${blogpost.url}#comments`" 
     class="font-second cursor-pointer hover-bg-white pd-l-thin pd-r-thin radius-big">
       💬 {{ blogpost.numberOfComments }}
     </router-link>

@@ -5,6 +5,7 @@
       <h4 class="my-handle word-break t-truncate w-100 w-max-100 mn-r-auto">{{category.name}}</h4>
 
       <router-link
+       v-if="access"
        :to="{
           name: 'Category Edit', 
           params: { 
@@ -27,6 +28,7 @@
       </router-link>
 
       <button
+        v-if="access"
         @click="deleteCategory(category)"
         class="
           i-semi
@@ -68,6 +70,10 @@ import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue'
 
 const props = defineProps({
   category: Object,
+  access: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const emits = defineEmits(['delete']);

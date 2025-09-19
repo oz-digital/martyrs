@@ -166,6 +166,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 
 import SkeletonEvent from '@martyrs/src/modules/icons/skeletons/SkeletonEvent.vue'
 
@@ -186,6 +187,8 @@ import ButtonDate  from '@martyrs/src/modules/globals/views/components/elements/
 
 import IconFilter from '@martyrs/src/modules/icons/navigation/IconFilter.vue'
 import IconEvents from '@martyrs/src/modules/icons/entities/IconEvents.vue'
+
+const { replaceClasses } = useGlobalMixins();
 
 const search = defineModel('search')
 const sort = defineModel('sort')
