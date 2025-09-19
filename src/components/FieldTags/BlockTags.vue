@@ -1,19 +1,23 @@
 <template>
   <div>
     <FieldTags
-      v-model="tag"
-      :tags="selectedTags"
+      v-model="selectedTags"
       :autocomplete-items="filteredItems"
       :add-on-key="[13, ':', ';', ',']"
-      :save-on-key="[13, ':', ';', ',']"
       :separators="[';', ',']"
       :max-tags="20"
       :maxlength="20"
       :placeholder="'Please add tags'"
-      :add-from-paste="true"
-      :allow-edit-tags="true"
       @tags-changed="handleTagsChanged"
       class="mn-b-thin bg-light radius-medium pd-small"
+    />
+    
+    <input
+      v-model="tag"
+      @keydown.enter="addTagFromInput"
+      placeholder="Type to filter suggestions"
+      class="hidden-input"
+      style="position: absolute; left: -9999px;"
     />
 
     <p class="p-small mn-b-thin">Suggested:</p>
@@ -53,18 +57,19 @@ const props = defineProps({
 });
 
 const tag = ref('');
-
 const selectedTags = ref([]);
-
 const autocompleteItems = ref(props.tagsSuggested);
 
-if (props.tags) selectedTags.value = props.tags.map(tag => ({text: tag}))
-  
+// Initialize tags
+if (props.tags) {
+  selectedTags.value = props.tags.map(tag => 
+    typeof tag === 'string' ? { text: tag } : tag
+  );
+}
 
+// Filter autocomplete items based on current input
 const filteredItems = computed(() => {
-  return autocompleteItems.value.filter(i => {
-    return i.text.toLowerCase().includes(tag.value.toLowerCase());
-  });
+  return autocompleteItems.value;
 });
 
 const filteredSuggestedItems = computed(() => {
@@ -73,14 +78,21 @@ const filteredSuggestedItems = computed(() => {
     });
   })
 
-function addTag (tag) {
-  selectedTags.value.push(tag)
-  emits('tags-changed', selectedTags.value.map(tag => { return tag.text }));
+function addTag (tagToAdd) {
+  selectedTags.value.push(tagToAdd)
+  emits('tags-changed', selectedTags.value.map(t => t.text));
+}
+
+function addTagFromInput() {
+  if (tag.value) {
+    addTag({ text: tag.value });
+    tag.value = '';
+  }
 }
 
 function handleTagsChanged(newTags) {
   selectedTags.value = newTags;
-  emits('tags-changed', selectedTags.value.map(tag => { return tag.text }));
+  emits('tags-changed', newTags.map(t => typeof t === 'string' ? t : t.text));
 }
 
 

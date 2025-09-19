@@ -69,6 +69,7 @@ const loopInterval = ref(null)
 const resizeObserver = ref(null)
 const checkInterval = ref(null)
 const resizeTimeout = ref(null)
+const previousSize = ref({ width: 0, height: 0 })
 
 const widthMin = ref('100%')
 const widthContainer = ref(0)
@@ -152,11 +153,22 @@ const checkForClone = async () => {
       resizeObserver.value.disconnect()
     }
     
-    resizeObserver.value = new ResizeObserver(() => {
-      clearTimeout(resizeTimeout.value)
-      resizeTimeout.value = setTimeout(() => {
-        calculateClones()
-      }, 150)
+    resizeObserver.value = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      const newWidth = entry.contentRect.width
+      const newHeight = entry.contentRect.height
+      
+      // Only recalculate if size changed significantly (more than 1px)
+      const widthChanged = Math.abs(newWidth - previousSize.value.width) > 1
+      const heightChanged = Math.abs(newHeight - previousSize.value.height) > 1
+      
+      if (widthChanged || heightChanged) {
+        previousSize.value = { width: newWidth, height: newHeight }
+        clearTimeout(resizeTimeout.value)
+        resizeTimeout.value = setTimeout(() => {
+          calculateClones()
+        }, 300)
+      }
     })
     
     resizeObserver.value.observe(marqueeOverlayContainer.value)
@@ -188,7 +200,7 @@ const getCurrentStyle = computed(() => {
     '--pauseOnHover': `${props.pauseOnHover ? 'paused' : 'running'}`,
     '--pauseOnClick': `${props.pauseOnClick ? 'paused' : 'running'}`,
     '--pauseAnimation': `${(props.vertical && verticalAnimationPause.value) || props.pause ? 'paused' : 'running'}`,
-    '--gradient-color': `rgba(${props.gradientColor}, 1), rgba(${props.gradientColor}, 0)`,
+    '--gradient-color': props.gradientColor,
     '--gradient-length': `${gradientLength.value}`,
     '--min-width': `${widthMin.value}`,
     '--min-height': `${heightMin.value}`,
@@ -258,9 +270,9 @@ watch(
   (newVal, oldVal) => {
     if (newVal !== oldVal) {
       if (newVal) {
-        emits('onResume')
-      } else {
         emits('onPause')
+      } else {
+        emits('onResume')
       }
     }
   }
@@ -271,20 +283,19 @@ watch(
 .vue3-marquee {
   display: flex !important;
   position: relative;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 
   .marquee {
     flex: 0 0 auto;
     min-width: var(--min-width);
     min-height: var(--min-height);
     z-index: 1;
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
 
     animation: var(--orientation) var(--duration) linear var(--delay) var(--loops);
     animation-play-state: var(--pauseAnimation);
     animation-direction: var(--direction);
-    contain: layout style paint;
   }
 
   .overlay {
@@ -325,7 +336,7 @@ watch(
     }
 
     .overlay::before,.overlay::after {
-      background: linear-gradient(to right, var(--gradient-color));
+      background: linear-gradient(to right, var(--gradient-color), transparent);
       height: 100%;
       width: var(--gradient-length);
     }
@@ -351,7 +362,7 @@ watch(
     }
 
     .overlay::before, .overlay::after {
-      background: linear-gradient(to bottom, var(--gradient-color));
+      background: linear-gradient(to bottom, var(--gradient-color), transparent);
       height: var(--gradient-length);
       width: 100%;
     }

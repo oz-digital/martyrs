@@ -1,39 +1,115 @@
 <template>
-  <div 
-    @click="onComponentClick"
-    @drop="onDrop"
-    @dragover.prevent
-    class="image-upload-area flex-v-center flex-h-center flex">
+  <div class="upload-image-wrapper flex-v-center flex-nowrap flex gap-small" :class="{'with-text': text}">
+    <div 
+      @click="onComponentClick"
+      @drop="onDrop"
+      @dragover.prevent
+      class="pos-relative bg-light radius-small br-solid br-1px br-black-transp-10 h-100 aspect-1x1 flex-v-center flex-h-center flex cursor-pointer"
+    >
       <img loading="lazy" 
-        v-if="imageUrl || photo" 
-        :src="(FILE_SERVER_URL || '') + (imageUrl || photo)"
+        v-if="imageUrl || photo || previewUrl" 
+        :src="previewUrl || (FILE_SERVER_URL || '') + (imageUrl || photo)"
         alt="Uploaded image" 
-        class="w-100 h-100 object-fit-cover"
-        />
+        class="pos-absolute z-index-1 w-100 h-100 object-fit-cover"
+      />
       
-      <div v-else class="flex-v-center flex-h-center flex w-100 h-100 bg-second" >
-        <svg class="i-medium" width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path  fill="rgb(var(--white))" d="M21.2784 37.2973C18.8466 34.6628 18.8466 30.6098 21.2784 27.9753L47.2179 2.03584C48.6364 0.81993 50.2577 0.211974 51.8789 0.211974C53.5001 0.211974 55.1213 0.81993 56.5399 2.03584L82.4793 27.9753C84.9111 30.6098 84.9111 34.6628 82.4793 37.2973C79.8448 39.7291 75.7918 39.7291 73.1573 37.2973L58.3637 22.301V71.5454C58.3637 75.1932 55.5266 78.0303 51.8789 78.0303C48.2311 78.0303 45.394 75.1932 45.394 71.5454V22.301L30.6004 37.2973C27.966 39.7291 23.9129 39.7291 21.2784 37.2973ZM97.2729 71.5454C100.921 71.5454 103.758 74.3825 103.758 78.0303V97.4849C103.758 101.133 100.921 103.97 97.2729 103.97H6.48486C2.83713 103.97 0 101.133 0 97.4849V78.0303C0 74.3825 2.83713 71.5454 6.48486 71.5454H38.9092C38.9092 78.6382 44.7861 84.5151 51.8789 84.5151C58.9717 84.5151 64.8486 78.6382 64.8486 71.5454H97.2729ZM87.5456 92.6212C90.1801 92.6212 92.4092 90.392 92.4092 87.7576C92.4092 85.1231 90.1801 82.8939 87.5456 82.8939C84.9111 82.8939 82.682 85.1231 82.682 87.7576C82.682 90.392 84.9111 92.6212 87.5456 92.6212Z"/>
-        </svg>
+      <div v-else class="flex-v-center z-index-2 flex-h-center flex w-100 h-100 bg-second" >
+        <IconUpload class="i-medium upload-icon" fill="rgb(var(--white))" />
+      </div>
+      
+      <!-- Hover controls -->
+      <div class="z-index-2 hover-controls pos-absolute w-100 h-100 flex-v-center flex-h-center flex">
+        <div v-if="!imageUrl && !photo && !previewUrl" class="hover-upload-icon">
+          <IconUpload class="i-medium" fill="rgb(var(--white))" />
+        </div>
+        <div v-else class="hover-buttons flex gap-small">
+          <button @click.stop="onComponentClick" class="hover-button radius-small pd-thin bg-main t-white br-none cursor-pointer">
+            <IconUpload class="i-semi" fill="rgb(var(--white))" />
+          </button>
+          <button @click.stop="deleteImage" class="hover-button radius-small pd-thin bg-danger t-white br-none cursor-pointer">
+            <IconDelete class="i-semi" fill="rgb(var(--white))" />
+          </button>
+        </div>
+      </div>
+      
+      <!-- Loading overlay -->
+      <div v-if="loading" class="z-index-2 loading-overlay pos-absolute w-100 h-100 flex-v-center flex-h-center flex">
+        <Loader :centered="false" />
       </div>
       
       <input type="file" name="file" ref="fileInput" @change="onFileChange" style="display: none"/>
+    </div>
+    
+    <!-- Text block -->
+    <div v-if="text" class="upload-text-block  flex flex-column">
+      <span class="mn-b-small t-medium">{{ textConfig.title }}</span>
+      <span class="mn-b-medium t-transp">{{ textConfig.subtitle }}</span>
+      <div v-if="!imageUrl && !photo && !previewUrl">
+        <button @click="onComponentClick" class="button button-small w-max bg-main t-black cursor-pointer">
+          {{ textConfig.buttonText }}
+        </button>
+      </div>
+      <div v-else class="flex gap-thin">
+        <button @click="onComponentClick" class="button button-small w-max bg-second t-white cursor-pointer">
+          Upload 
+        </button>
+        <button @click="deleteImage" class="button button-small w-max bg-red t-white cursor-pointer">
+          Delete
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import axios from 'axios';
+import Loader from '@martyrs/src/components/Loader/Loader.vue';
+import IconUpload from '@martyrs/src/modules/icons/navigation/IconUpload.vue';
+import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
 const imageUrl = ref(null);
 const fileInput = ref(null);
+const previewUrl = ref(null);
+const loading = ref(false);
 
-const props = defineProps([
-  'uploadPath', // only necessary prop
-  'photo' // new prop for holding the image url
-]);
+const props = defineProps({
+  uploadPath: {
+    type: String,
+    required: true
+  },
+  photo: {
+    type: String,
+    default: null
+  },
+  text: {
+    type: [Object, Boolean],
+    default: null
+  }
+});
 
 const emit = defineEmits(['update:photo', 'error']);
+
+// Text configuration with defaults
+const textConfig = computed(() => {
+  const defaults = {
+    title: 'Upload Image',
+    subtitle: 'Drag & drop your image here or click button. Supported: JPG, PNG, GIF. Max size: 2MB',
+    buttonText: 'Choose Image'
+  };
+  
+  if (props.text === true) {
+    return defaults;
+  } else if (typeof props.text === 'object' && props.text !== null) {
+    return {
+      title: props.text.title || defaults.title,
+      subtitle: props.text.subtitle || defaults.subtitle,
+      buttonText: props.text.buttonText || defaults.buttonText
+    };
+  }
+  
+  return defaults;
+});
 
 watch(props, ({photo}) => {
   if(photo) imageUrl.value = photo;
@@ -50,10 +126,19 @@ async function onFileChange(e) {
     return;
   }
   
+  // Create preview from file
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewUrl.value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  
   let formData = new FormData();
   formData.append("file", file);
 
   console.log("Sending file:", file.name); // Логируем имя файла перед отправкой
+  
+  loading.value = true;
 
   try {
     const $axios = axios.create({ baseURL: process.env.API_URL, withCredentials: true }); 
@@ -61,10 +146,14 @@ async function onFileChange(e) {
     let response = await $axios.post(`/api/upload/multiple?folderName=${encodeURIComponent(props.uploadPath)}`, formData);
     console.log("Upload response:", response); // Логируем ответ сервера
     imageUrl.value = response.data[0].filepath;
+    previewUrl.value = null; // Clear preview after successful upload
     emit('update:photo', imageUrl.value);
   } catch (error) {
     emit('error', error);
     console.error("Upload error:", error); // Логируем ошибку
+    previewUrl.value = null; // Clear preview on error
+  } finally {
+    loading.value = false;
   }
 }
 
@@ -77,4 +166,89 @@ function onDrop(e) {
     }
   });
 }
+
+function deleteImage() {
+  imageUrl.value = null;
+  previewUrl.value = null;
+  emit('update:photo', null);
+  // Reset file input
+  if (fileInput.value) {
+    fileInput.value.value = '';
+  }
+}
 </script>
+
+<style scoped>
+.image-upload-area {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.image-upload-area:hover {
+  opacity: 0.95;
+}
+
+/* Hover controls */
+.hover-controls {
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.image-upload-area:hover .hover-controls {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.hover-upload-icon {
+  animation: pulse 1.5s infinite;
+}
+
+.hover-button {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hover-button:hover {
+  transform: scale(1.1);
+}
+
+.hover-button:active {
+  transform: scale(0.95);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Upload icon in empty state */
+.upload-icon {
+  transition: transform 0.3s ease;
+}
+
+.image-upload-area:hover .upload-icon {
+  transform: scale(1.1);
+}
+</style>

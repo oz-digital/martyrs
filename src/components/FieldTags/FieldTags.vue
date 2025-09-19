@@ -1,543 +1,362 @@
 <template>
-  <div
-    class="vue-tags-input pos-relative"
-    :class="[{ 'ti-disabled': disabled }, { 'ti-focus': focused }, $attrs.class]"
-    :style="$attrs.style"
-  >
-    <div class="ti-input">
-      <ul v-if="tagsCopy.length || !disabled" class="ti-tags">
-        <li
-          v-for="(tag, index) in tagsCopy"
-          :key="`tag-${index}-${tag.text}`"
-          :style="tag.style"
-          :class="[
-            { 'ti-editing': tagsEditStatus[index] },
-            tag.tiClasses,
-            tag.classes,
-            { 'ti-deletion-mark': isMarked(index) }
-          ]"
-          tabindex="0"
-          class="ti-tag t-medium"
-          @click="emit('tag-clicked', { tag, index })"
+  <div class="field-tags-new">
+    <!-- Tags container -->
+    <div class="tags-container">
+      <span 
+        v-for="(tag, index) in tags" 
+        :key="index"
+        class="tag"
+      >
+        {{ getTagText(tag) }}
+        <button 
+          @click="removeTag(index)" 
+          class="tag-remove"
+          type="button"
         >
-          <div class="ti-content">
-            <div
-              v-if="$slots['tag-left']"
-              class="ti-tag-left"
-            >
-              <slot
-                name="tag-left"
-                :tag="tag"
-                :index="index"
-                :edit="tagsEditStatus[index]"
-                :perform-save-edit="performSaveTag"
-                :perform-delete="performDeleteTag"
-                :perform-cancel-edit="cancelEdit"
-                :perform-open-edit="performEditTag"
-                :deletion-mark="isMarked(index)"
-              />
-            </div>
-            <div :ref="el => setTagCenter(el, index)" class="ti-tag-center">
-              <span
-                v-if="!$slots['tag-center']"
-                :class="{ 'ti-hidden': tagsEditStatus[index] }"
-                @click="performEditTag(index)"
-              >{{ tag.text }}</span>
-              <tag-input
-                v-if="!$slots['tag-center']"
-                :scope="{
-                  edit: tagsEditStatus[index],
-                  maxlength,
-                  tag,
-                  index,
-                  validateTag: createChangedTag,
-                  performCancelEdit: cancelEdit,
-                  performSaveEdit: performSaveTag,
-                }"
-              />
-              <slot
-                name="tag-center"
-                :tag="tag"
-                :index="index"
-                :maxlength="maxlength"
-                :edit="tagsEditStatus[index]"
-                :perform-save-edit="performSaveTag"
-                :perform-delete="performDeleteTag"
-                :perform-cancel-edit="cancelEdit"
-                :validate-tag="createChangedTag"
-                :perform-open-edit="performEditTag"
-                :deletion-mark="isMarked(index)"
-              />
-            </div>
-            <div
-              v-if="$slots['tag-right']"
-              class="ti-tag-right"
-            >
-              <slot
-                name="tag-right"
-                :tag="tag"
-                :index="index"
-                :edit="tagsEditStatus[index]"
-                :perform-save-edit="performSaveTag"
-                :perform-delete="performDeleteTag"
-                :perform-cancel-edit="cancelEdit"
-                :perform-open-edit="performEditTag"
-                :deletion-mark="isMarked(index)"
-              />
-            </div>
-          </div>
-          <div class="ti-actions">
-            <i
-              v-if="!$slots['tag-actions']"
-              v-show="tagsEditStatus[index]"
-              class="ti-icon-undo"
-              @click.stop="cancelEdit(index)"
-            />
-            <i
-              v-if="!$slots['tag-actions']"
-              v-show="!tagsEditStatus[index]"
-              class="ti-icon-close"
-              @click.stop="performDeleteTag(index)"
-            />
-            <slot
-              v-if="$slots['tag-actions']"
-              name="tag-actions"
-              :tag="tag"
-              :index="index"
-              :edit="tagsEditStatus[index]"
-              :perform-save-edit="performSaveTag"
-              :perform-delete="performDeleteTag"
-              :perform-cancel-edit="cancelEdit"
-              :perform-open-edit="performEditTag"
-              :deletion-mark="isMarked(index)"
-            />
-          </div>
-        </li>
-        <li class="ti-new-tag-input-wrapper">
-          <input
-            ref="newTagInputRef"
-            :class="[createClasses(newTag, tags, validation, isDuplicate)]"
-            :placeholder="placeholder"
-            :value="newTag"
-            :maxlength="maxlength"
-            :disabled="disabled"
-            type="text"
-            size="1"
-            class="ti-new-tag-input"
-            @keydown="handleKeyDown"
-            @paste="addTagsFromPaste"
-            @keydown.delete="invokeDelete"
-            @keydown.tab="performBlur"
-            @keydown.up.prevent="selectItem('before')"
-            @keydown.down.prevent="selectItem('after')"
-            @input="updateNewTag"
-            @focus="focused = true"
-            @click="!addOnlyFromAutocomplete && (selectedItem = null)"
-          >
-        </li>
-      </ul>
+          ×
+        </button>
+      </span>
+      
+      <input
+        ref="inputRef"
+        v-model="newTag"
+        @keydown="handleKeyDown"
+        @paste="handlePaste"
+        @focus="focused = true"
+        @blur="handleBlur"
+        :placeholder="placeholder || 'Add tags'"
+        :maxlength="maxlength"
+        :disabled="disabled"
+        class="tag-input"
+      />
     </div>
-    <slot name="between-elements" />
-    <div
-      v-if="autocompleteOpen"
-      class="ti-autocomplete"
-      :class="$attrs.class"
-      @mouseleave="selectedItem = null"
+    
+    <!-- Autocomplete dropdown -->
+    <div 
+      v-if="showAutocomplete && filteredAutocomplete.length > 0"
+      class="autocomplete"
     >
-      <slot name="autocomplete-header" />
-      <ul>
-        <li
-          v-for="(item, index) in filteredAutocompleteItems"
-          :key="`autocomplete-${index}-${item.text}`"
-          :style="item.style"
-          :class="[
-            item.tiClasses,
-            item.classes,
-            { 'ti-selected-item': isSelected(index) }
-          ]"
-          class="ti-item"
-          @mouseenter="!disabled && (selectedItem = index)"
-        >
-          <div
-            v-if="!$slots['autocomplete-item']"
-            @click="performAddTags(item, undefined, 'autocomplete')"
-          >
-            {{ item.text }}
-          </div>
-          <slot
-            v-else
-            name="autocomplete-item"
-            :item="item"
-            :index="index"
-            :perform-add="item => performAddTags(item, undefined, 'autocomplete')"
-            :selected="isSelected(index)"
-          />
-        </li>
-      </ul>
-      <slot name="autocomplete-footer" />
+      <div 
+        v-for="(item, index) in filteredAutocomplete"
+        :key="getTagText(item)"
+        @click="addTag(item)"
+        @mouseenter="selectedIndex = index"
+        :class="['autocomplete-item', { selected: selectedIndex === index }]"
+      >
+        {{ getTagText(item) }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount, shallowRef, toRef } from 'vue';
-import equal from 'fast-deep-equal';
-import { clone, createClasses, createTag, createTags } from './create-tags.js';
-import TagInput from './tag-input.vue';
-import props from './vue-tags-input.props.js';
+import { ref, computed, watch } from 'vue'
 
-// Props
-const propsObj = defineProps(props);
+const props = defineProps({
+  modelValue: Array,
+  textField: {
+    type: String,
+    default: 'text'
+  },
+  autocompleteItems: Array,
+  separators: {
+    type: Array,
+    default: () => [',', ';']
+  },
+  addOnKey: {
+    type: Array,
+    default: () => [13] // Enter key
+  },
+  maxTags: {
+    type: Number,
+    default: 20
+  },
+  maxlength: {
+    type: Number,
+    default: 50
+  },
+  placeholder: String,
+  disabled: Boolean,
+  addOnBlur: {
+    type: Boolean,
+    default: true
+  },
+  autocompleteMinLength: {
+    type: Number,
+    default: 1
+  }
+})
 
-// Emits
-const emit = defineEmits([
-  'adding-duplicate',
-  'before-adding-tag',
-  'before-deleting-tag',
-  'before-editing-tag',
-  'before-saving-tag',
-  'max-tags-reached',
-  'saving-duplicate',
-  'tags-changed',
-  'tag-clicked',
-  'update:modelValue',
-  'update:tags',
-]);
+const emit = defineEmits(['update:modelValue', 'tags-changed'])
 
 // State
-const tagCenterRefs = ref(new Map());
-const newTag = ref(propsObj.modelValue || '');
-const tagsCopy = shallowRef([]);
-const tagsEditStatus = ref([]);
-const deletionMark = ref(null);
-const deletionMarkTimer = ref(null);
-const selectedItem = ref(null);
-const focused = ref(false);
-const newTagInputRef = ref(null);
+const newTag = ref('')
+const focused = ref(false)
+const selectedIndex = ref(-1)
+const inputRef = ref(null)
 
 // Computed
-const autocompleteOpen = computed(() => {
-  if (propsObj.autocompleteAlwaysOpen) return true;
-  return newTag.value !== null && 
-         newTag.value.length >= propsObj.autocompleteMinLength && 
-         filteredAutocompleteItems.value.length > 0 && 
-         focused.value;
-});
+const tags = computed({
+  get: () => props.modelValue || [],
+  set: (value) => {
+    emit('update:modelValue', value)
+    emit('tags-changed', value)
+  }
+})
 
-const filteredAutocompleteItems = computed(() => {
-  const items = propsObj.autocompleteItems.map(i => 
-    createTag(i, propsObj.tags, propsObj.validation, propsObj.isDuplicate)
-  );
+const showAutocomplete = computed(() => {
+  return focused.value && 
+         props.autocompleteItems?.length > 0 &&
+         newTag.value.length >= props.autocompleteMinLength
+})
 
-  if (!propsObj.autocompleteFilterDuplicates) return items;
-  return items.filter(duplicateFilter);
-});
+const filteredAutocomplete = computed(() => {
+  if (!props.autocompleteItems) return []
+  
+  const searchText = newTag.value.toLowerCase()
+  
+  return props.autocompleteItems.filter(item => {
+    const itemText = getTagText(item).toLowerCase()
+    
+    // Filter by search text
+    if (!itemText.includes(searchText)) return false
+    
+    // Filter out duplicates
+    return !isDuplicate(itemText)
+  })
+})
 
 // Methods
-const getSelectedIndex = (method) => {
-  const items = filteredAutocompleteItems.value;
-  const current = selectedItem.value;
-  const lastItem = items.length - 1;
-  
-  if (items.length === 0) return;
-  if (current === null) return 0;
-  if (method === 'before' && current === 0) return lastItem;
-  if (method === 'after' && current === lastItem) return 0;
-  return method === 'after' ? current + 1 : current - 1;
-};
+function getTagText(tag) {
+  if (tag === null || tag === undefined) return ''
+  if (typeof tag === 'string') return tag
+  return tag[props.textField] || ''
+}
 
-const selectDefaultItem = () => {
-  selectedItem.value = propsObj.addOnlyFromAutocomplete && filteredAutocompleteItems.value.length > 0 ? 0 : null;
-};
-
-const selectItem = (method) => {
-  selectedItem.value = getSelectedIndex(method);
-};
-
-const isSelected = (index) => selectedItem.value === index;
-const isMarked = (index) => deletionMark.value === index;
-
-const setTagCenter = (el, index) => {
-  if (el) {
-    tagCenterRefs.value.set(index, el);
-  } else {
-    tagCenterRefs.value.delete(index);
-  }
-};
-
-const invokeDelete = () => {
-  if (!propsObj.deleteOnBackspace || newTag.value.length > 0) return;
-  
-  const lastIndex = tagsCopy.value.length - 1;
-  if (deletionMark.value === null) {
-    clearTimeout(deletionMarkTimer.value);
-    deletionMarkTimer.value = setTimeout(() => (deletionMark.value = null), 1000);
-    deletionMark.value = lastIndex;
-  } else {
-    performDeleteTag(lastIndex);
-  }
-};
-
-const addTagsFromPaste = () => {
-  if (!propsObj.addFromPaste) return;
-  setTimeout(() => performAddTags(newTag.value), 10);
-};
-
-const performEditTag = (index) => {
-  if (!propsObj.allowEditTags) return;
-  
-  if (!propsObj.onBeforeEditingTag) {
-    editTag(index);
-  } else {
-    emit('before-editing-tag', {
-      index,
-      tag: tagsCopy.value[index],
-      editTag: () => editTag(index),
-    });
-  }
-};
-
-const editTag = (index) => {
-  if (!propsObj.allowEditTags) return;
-  toggleEditMode(index);
-  focus(index);
-};
-
-const toggleEditMode = (index) => {
-  if (!propsObj.allowEditTags || propsObj.disabled) return;
-  tagsEditStatus.value[index] = !tagsEditStatus.value[index];
-};
-
-const createChangedTag = (index, event) => {
-  const tag = tagsCopy.value[index];
-  tag.text = event ? event.target.value : tagsCopy.value[index].text;
-  
-  const newTags = [...tagsCopy.value];
-  newTags[index] = createTag(tag, tagsCopy.value, propsObj.validation, propsObj.isDuplicate);
-  tagsCopy.value = newTags;
-};
-
-const focus = (index) => {
-  nextTick(() => {
-    const el = tagCenterRefs.value.get(index)?.querySelector('input.ti-tag-input');
-    if (el) el.focus();
-  });
-};
-
-const quote = (regex) => regex.replace(/([()[{*+.$^\\|?])/g, '\\$1');
-
-const cancelEdit = (index) => {
-  if (!propsObj.tags[index]) return;
-  
-  const newTags = [...tagsCopy.value];
-  newTags[index] = clone(createTag(propsObj.tags[index], propsObj.tags, propsObj.validation, propsObj.isDuplicate));
-  tagsCopy.value = newTags;
-  tagsEditStatus.value[index] = false;
-};
-
-const hasForbiddingAddRule = (tiClasses) => {
-  return tiClasses.some(type => {
-    const rule = propsObj.validation.find(rule => type === rule.classes);
-    return rule ? rule.disableAdd : false;
-  });
-};
-
-const createTagTexts = (string) => {
-  const regex = new RegExp(propsObj.separators.map(s => quote(s)).join('|'));
-  return string.split(regex).map(text => ({ text }));
-};
-
-const performDeleteTag = (index) => {
-  if (!propsObj.onBeforeDeletingTag) {
-    deleteTag(index);
-  } else {
-    emit('before-deleting-tag', {
-      index,
-      tag: tagsCopy.value[index],
-      deleteTag: () => deleteTag(index),
-    });
-  }
-};
-
-const deleteTag = (index) => {
-  if (propsObj.disabled) return;
-  
-  deletionMark.value = null;
-  clearTimeout(deletionMarkTimer.value);
-  
-  const newTags = [...tagsCopy.value];
-  newTags.splice(index, 1);
-  tagsCopy.value = newTags;
-  
-  tagsEditStatus.value.splice(index, 1);
-  
-  emit('update:tags', tagsCopy.value);
-  emit('tags-changed', tagsCopy.value);
-};
-
-const noTriggerKey = (event, category) => {
-  const triggerKey = propsObj[category].indexOf(event.keyCode) !== -1 || 
-                     propsObj[category].indexOf(event.key) !== -1;
-  if (triggerKey) event.preventDefault();
-  return !triggerKey;
-};
-
-const performAddTags = (tag, event, source) => {
-  if (propsObj.disabled || (event && noTriggerKey(event, 'addOnKey'))) return;
-
-  let tags = [];
-  if (typeof tag === 'object') tags = [tag];
-  if (typeof tag === 'string') tags = createTagTexts(tag);
-
-  tags = tags.filter(tag => tag.text.trim().length > 0);
-
-  tags.forEach(tag => {
-    tag = createTag(tag, propsObj.tags, propsObj.validation, propsObj.isDuplicate);
-    if (!propsObj.onBeforeAddingTag) {
-      addTag(tag, source);
-    } else {
-      emit('before-adding-tag', {
-        tag,
-        addTag: () => addTag(tag, source),
-      });
+function createTag(text) {
+  // Preserve format based on existing data
+  if (tags.value.length > 0) {
+    if (typeof tags.value[0] === 'string') {
+      return text
     }
-  });
-};
-
-const duplicateFilter = (tag) => {
-  return propsObj.isDuplicate ? 
-    !propsObj.isDuplicate(tagsCopy.value, tag) : 
-    !tagsCopy.value.find(t => t.text === tag.text);
-};
-
-const addTag = (tag, source = 'new-tag-input') => {
-  const options = filteredAutocompleteItems.value.map(i => i.text);
-  if (propsObj.addOnlyFromAutocomplete && options.indexOf(tag.text) === -1) return;
-
-  nextTick(() => {
-    const maximumReached = propsObj.maxTags && propsObj.maxTags <= tagsCopy.value.length;
-    if (maximumReached) return emit('max-tags-reached', tag);
-
-    const dup = propsObj.avoidAddingDuplicates && !duplicateFilter(tag);
-    if (dup) return emit('adding-duplicate', tag);
-
-    if (hasForbiddingAddRule(tag.tiClasses)) return;
-
-    newTag.value = '';
-    tagsCopy.value = [...tagsCopy.value, tag];
-    tagsEditStatus.value.push(false);
-
-    emit('update:tags', tagsCopy.value);
-
-    if (source === 'autocomplete') newTagInputRef.value?.focus();
-
-    emit('tags-changed', tagsCopy.value);
-  });
-};
-
-const performSaveTag = (index, event) => {
-  const tag = tagsCopy.value[index];
-
-  if (propsObj.disabled || (event && noTriggerKey(event, 'addOnKey'))) return;
-  if (tag.text.trim().length === 0) return;
-
-  if (!propsObj['onBeforeSavingTag']) {
-    saveTag(index, tag);
-  } else {
-    emit('before-saving-tag', {
-      index,
-      tag,
-      saveTag: () => saveTag(index, tag),
-    });
   }
-};
+  
+  // Default to object with custom field
+  return { [props.textField]: text }
+}
 
-const saveTag = (index, tag) => {
-  if (propsObj.avoidAddingDuplicates) {
-    const tagsDiff = clone(tagsCopy.value);
-    const inputTag = tagsDiff.splice(index, 1)[0];
-    const dup = propsObj.isDuplicate ? 
-      propsObj.isDuplicate(tagsDiff, inputTag) : 
-      tagsDiff.map(t => t.text).indexOf(inputTag.text) !== -1;
+function isDuplicate(text) {
+  const searchText = text.toLowerCase().trim()
+  return tags.value.some(tag => 
+    getTagText(tag).toLowerCase().trim() === searchText
+  )
+}
 
-    if (dup) return emit('saving-duplicate', tag);
+function addTag(input) {
+  let text = ''
+  
+  if (typeof input === 'string') {
+    text = input.trim()
+  } else if (typeof input === 'object') {
+    // If it's an autocomplete item, preserve the whole object
+    if (props.autocompleteItems?.includes(input)) {
+      if (!isDuplicate(getTagText(input))) {
+        tags.value = [...tags.value, input]
+      }
+      newTag.value = ''
+      selectedIndex.value = -1
+      return
+    }
+    text = getTagText(input).trim()
   }
+  
+  if (!text || tags.value.length >= props.maxTags) return
+  
+  if (isDuplicate(text)) return
+  
+  const tag = createTag(text)
+  tags.value = [...tags.value, tag]
+  newTag.value = ''
+  selectedIndex.value = -1
+}
 
-  if (hasForbiddingAddRule(tag.tiClasses)) return;
+function removeTag(index) {
+  if (props.disabled) return
+  
+  const newTags = [...tags.value]
+  newTags.splice(index, 1)
+  tags.value = newTags
+}
 
-  const newTags = [...tagsCopy.value];
-  newTags[index] = tag;
-  tagsCopy.value = newTags;
-  toggleEditMode(index);
-
-  emit('update:tags', tagsCopy.value);
-  emit('tags-changed', tagsCopy.value);
-};
-
-const tagsEqual = () => {
-  return !tagsCopy.value.some((t, i) => !equal(t, propsObj.tags[i]));
-};
-
-const updateNewTag = (event) => {
-  const value = event.target.value;
-  newTag.value = value;
-  emit('update:modelValue', value);
-};
-
-const initTags = () => {
-  tagsCopy.value = createTags(propsObj.tags, propsObj.validation, propsObj.isDuplicate);
-  tagsEditStatus.value = new Array(propsObj.tags.length).fill(false);
-
-  if (!tagsEqual()) {
-    emit('update:tags', tagsCopy.value);
+function handleKeyDown(event) {
+  // Handle arrow keys for autocomplete navigation
+  if (showAutocomplete.value) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      selectedIndex.value = Math.min(
+        selectedIndex.value + 1, 
+        filteredAutocomplete.value.length - 1
+      )
+      return
+    }
+    
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      selectedIndex.value = Math.max(selectedIndex.value - 1, -1)
+      return
+    }
+    
+    // Add selected autocomplete item on Enter
+    if (event.key === 'Enter' && selectedIndex.value >= 0) {
+      event.preventDefault()
+      addTag(filteredAutocomplete.value[selectedIndex.value])
+      return
+    }
   }
-};
+  
+  // Check for add triggers
+  const shouldAdd = props.addOnKey.some(key => {
+    if (typeof key === 'number') {
+      return event.keyCode === key
+    }
+    return event.key === key
+  })
+  
+  if (shouldAdd) {
+    event.preventDefault()
+    addTag(newTag.value)
+    return
+  }
+  
+  // Handle backspace to delete last tag
+  if (event.key === 'Backspace' && newTag.value === '' && tags.value.length > 0) {
+    removeTag(tags.value.length - 1)
+  }
+}
 
-const blurredOnClick = (e) => {
-  const el = e.currentTarget;
-  if (el?.contains(e.target) || el?.contains(document.activeElement)) return;
-  performBlur();
-};
+function handlePaste(event) {
+  event.preventDefault()
+  
+  const text = event.clipboardData.getData('text')
+  if (!text) return
+  
+  // Create regex from separators
+  const separatorRegex = new RegExp(
+    props.separators.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
+  )
+  
+  // Split by separators and add each tag
+  const parts = text.split(separatorRegex)
+  
+  parts.forEach(part => {
+    if (tags.value.length >= props.maxTags) return
+    addTag(part)
+  })
+}
 
-const performBlur = () => {
-  if (propsObj.addOnBlur && focused.value) performAddTags(newTag.value);
-  focused.value = false;
-};
+function handleBlur() {
+  // Small delay to allow click on autocomplete items
+  setTimeout(() => {
+    focused.value = false
+    selectedIndex.value = -1
+    
+    if (props.addOnBlur && newTag.value) {
+      addTag(newTag.value)
+    }
+  }, 200)
+}
 
-const handleKeyDown = (event) => {
-  const item = filteredAutocompleteItems.value[selectedItem.value] || newTag.value;
-  performAddTags(item, event);
-};
-
-// Watchers
-watch(() => propsObj.modelValue, (newValue) => {
-  if (!propsObj.addOnlyFromAutocomplete) selectedItem.value = null;
-  newTag.value = newValue;
-});
-
-watch(() => propsObj.tags, () => {
-  initTags();
-}, { deep: true });
-
-watch(autocompleteOpen, selectDefaultItem);
-
-// Lifecycle
-initTags();
-
-onMounted(() => {
-  selectDefaultItem();
-  document.addEventListener('click', blurredOnClick);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', blurredOnClick);
-  clearTimeout(deletionMarkTimer.value);
-});
-
-// Expose for template
-defineExpose({
-  createClasses
-});
+// Reset selected index when autocomplete items change
+watch(filteredAutocomplete, () => {
+  selectedIndex.value = -1
+})
 </script>
 
-<style lang="scss" src="./vue-tags-input.scss"></style>
+<style scoped>
+.field-tags-new {
+  position: relative;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  background: rgb(var(--main, 255, 215, 0));
+  color: rgb(var(--black, 0, 0, 0));
+  padding: 0.25rem 0.5rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+}
+
+.tag-remove {
+  margin-left: 0.25rem;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.tag-remove:hover {
+  opacity: 1;
+}
+
+.tag-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  min-width: 150px;
+  padding: 0.25rem;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.tag-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  background: white;
+  border: 1px solid rgb(var(--gray, 224, 224, 224));
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.autocomplete-item {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+  background: rgb(var(--gray-light, 248, 248, 248));
+}
+
+.autocomplete-item:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.autocomplete-item:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+</style>

@@ -130,7 +130,6 @@ import Textarea from '@martyrs/src/modules/constructor/components/elements/Texta
 import Constructor from '@martyrs/src/modules/constructor/components/sections/Constructor.vue';
 
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
-import FieldTags from '@martyrs/src/components/FieldTags/FieldTags.vue'
 import BlockTags from '@martyrs/src/components/FieldTags/BlockTags.vue'
 import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue'
 import Field from '@martyrs/src/components/Field/Field.vue'

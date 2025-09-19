@@ -17,43 +17,6 @@
       title="Profile"
       class="mn-b-thin"
     >
-      <div  class="cols-auto-1fr mn-b-thin w-100 ">
-        <UploadImage 
-           v-model:photo="categories.state.current.photo"
-          :uploadPath="'categories'"
-          class="aspect-1x1 h-100 o-hidden mn-r-small radius-extra" 
-        />
-       <Field
-            v-model:field="categories.state.current.name"
-            label="Name"
-            placeholder="Enter category name"
-            class="w-100 bg-white radius-small pd-medium"
-          />  
-      </div>
-
-        <div class="mn-b-thin w-100 flex-nowrap gap-thin flex">
-         <Field
-            v-model:field="categories.state.current.order"
-            label="Order"
-            :disabled="true"
-            class="w-40 bg-white radius-small pd-medium"
-          />  
-         <Field
-            v-model:field="categories.state.current.slug"
-            label="Slug"
-            placeholder="Enter category slug"
-            :disabled="route.params.category ? true : false"
-            class="w-100 bg-white radius-small pd-medium"
-          />  
-      </div>
-      
-      <Field
-        v-if="route.params.category"
-        v-model:field="categories.state.current.url"
-        label="URL Path"
-        :disabled="true"
-        class="w-100 bg-white radius-small pd-medium mn-b-thin"
-      />
 
       <Select 
         v-model:select="categories.state.current.status"
@@ -65,8 +28,56 @@
           'removed'
         ]"
         placeholder="Select category"
-        class="pos-relative w-100 bg-white radius-small pd-medium"
+        class="pos-relative mn-b-thin w-100 bg-white radius-small pd-medium"
       />
+
+      <Field
+        v-model:field="categories.state.current.name"
+        label="Name"
+        placeholder="Enter category name"
+        class="w-100 mn-b-thin bg-white radius-small pd-medium"
+      />  
+
+      <div class="w-100 mn-b-thin bg-white radius-small pd-medium cols-1">
+        <UploadImage 
+          v-model:photo="categories.state.current.photo"
+          :uploadPath="'categories'"
+          :text="{
+            title: 'Upload category image',
+            subtitle: 'Supported: JPG, PNG, GIF. Max size: 5MB',
+            buttonText: 'Select Image'
+          }"
+          class="pos-relative" 
+        />
+      </div>
+
+
+      <Field
+        v-if="route.params.category"
+        v-model:field="categories.state.current.url"
+        label="URL Path"
+        :disabled="true"
+        class="w-100 bg-white radius-small pd-medium mn-b-thin"
+      />
+      
+
+      <div class="mn-b-thin w-100 flex-nowrap gap-thin flex">
+       <Field
+          v-model:field="categories.state.current.order"
+          label="Order"
+          :disabled="true"
+          class="w-40 bg-white radius-small pd-medium"
+        />  
+       <Field
+          v-model:field="categories.state.current.slug"
+          label="Slug"
+          placeholder="Enter category slug"
+          :disabled="route.params.category ? true : false"
+          class="w-100 bg-white radius-small pd-medium"
+        />  
+      </div>
+      
+    
 
       <!-- <div class="flex-v-center flex-nowrap flex">
         <h4  class="mn-r-thin t-medium">Localization</h4>
@@ -125,8 +136,11 @@
           class="w-100 bg-white radius-small pd-medium"
         />  
         <FieldTags
-          v-model:tags="item.options"
-          placeholder="Add filter options"
+          v-model="item.options"
+          :placeholder="'Add filter options'"
+          :separators="[',', ';']"
+          :add-on-key="[13, ',', ';']"
+          :max-tags="20"
           class="w-100 bg-white radius-small pd-medium"
         />
         <div
