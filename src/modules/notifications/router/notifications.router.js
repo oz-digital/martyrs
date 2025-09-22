@@ -3,7 +3,7 @@ import Notifications from '../components/pages/Notifications.vue';
 import NotificationPreferences from '../components/sections/NotificationPreferences.vue';
 
 const nofitications = {
-  path: 'notifications',
+  path: '/notifications',
   component: NotificationsLayout,
   children: [
     {
