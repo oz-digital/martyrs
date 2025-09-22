@@ -95,3 +95,14 @@
               <p class="t-truncate">Comment: {{order.comment}}</p>
             </div>
       </router-link>
+</template>
+
+<script setup>
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
+
+const { returnCurrency } = useGlobalMixins()
+
+defineProps({
+  order: Object
+})
+</script>

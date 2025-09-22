@@ -233,7 +233,7 @@ const selected = defineModel('selected', {
 
 const emit = defineEmits(['select'])
 
-const { formatDate } = useGlobalMixins()
+const { formatDate, returnCurrency } = useGlobalMixins()
 
 // State
 const showAllFilters = ref(false)

@@ -32,6 +32,9 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+
+const { returnCurrency } = useGlobalMixins();
 
 const props = defineProps({
   product: Object,

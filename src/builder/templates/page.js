@@ -25,6 +25,10 @@ export default `
       <script type="application/json" data-state>
         {{{ initialState }}}
       </script>
+
+      <script type="application/json" data-loaded-modules>
+        {{{ loadedModulesJson }}}
+      </script>
       
       {{{ meta.body }}} {{{ body }}}
       

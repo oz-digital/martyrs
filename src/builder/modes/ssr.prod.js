@@ -42,6 +42,7 @@ export default function createSsrProdServer(projectRoot, configs, createServer) 
       }
 
       const initialState = JSON.stringify(state);
+      const loadedModulesJson = JSON.stringify(loadedModules || []);
 
       // Используем loadedModules если они есть, иначе usedModules
       const modulesToLoad = loadedModules || usedModules || [];
@@ -55,6 +56,7 @@ export default function createSsrProdServer(projectRoot, configs, createServer) 
         head,
         body,
         initialState,
+        loadedModulesJson,
       });
       
       // Обрабатываем HTML через Beasties для извлечения критического CSS

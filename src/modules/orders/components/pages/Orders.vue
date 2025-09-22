@@ -116,9 +116,11 @@
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
   import IconTime  from '@martyrs/src/modules/icons/entities/IconTime.vue'
+  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
 
   const route = useRoute();
   const router = useRouter();
+  const { returnCurrency, formatPrice, formatDate } = useGlobalMixins()
 
   const spoiler = ref(false)
 

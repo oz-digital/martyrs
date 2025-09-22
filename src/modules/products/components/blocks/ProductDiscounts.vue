@@ -36,6 +36,9 @@ import { computed } from 'vue';
 import IconDiscount from '@martyrs/src/modules/icons/entities/IconDiscount.vue'
 import Chips from '@martyrs/src/components/Chips/Chips.vue';
 import Tooltip from '@martyrs/src/components/Tooltip/Tooltip.vue';
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+
+const { returnCurrency } = useGlobalMixins();
 
 const props = defineProps({
   discounts: { 

@@ -233,7 +233,7 @@
   const route = useRoute()
   const router = useRouter()
   const { proxy } = getCurrentInstance()
-  const { formatPrice } = useGlobalMixins()
+  const { formatPrice, returnCurrency } = useGlobalMixins()
 
    orders.mutations.resetOrder(orders.state.current)
 

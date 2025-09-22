@@ -311,8 +311,10 @@
 	import * as organizations 	from '@martyrs/src/modules/organizations/store/organizations.js'
 
 	import { useI18n } from 'vue-i18n';
+	import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 	
 	const { locale } = useI18n();
+	const { returnCurrency } = useGlobalMixins();
 
 	const router = useRouter()
 	const route = useRoute()

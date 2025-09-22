@@ -31,6 +31,10 @@ export default `
         {{{ initialState }}}
       </script>
 
+      <script type="application/json" data-loaded-modules>
+        {{{ loadedModulesJson }}}
+      </script>
+
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}

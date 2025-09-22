@@ -4,7 +4,31 @@ import { renderToString } from '@vue/server-renderer';
 
 export function renderAndMountApp({ createApp, hooks = {} }) {
   const start = async () => {
-    const { app, router, store, moduleRegistry } = await createApp();
+    const { app, router, store, moduleRegistry, config } = await createApp();
+    
+    let serverModules = [];
+    
+    // Загружаем модули которые были загружены на сервере
+    if (typeof window !== 'undefined') {
+      try {
+        const modulesElement = document.querySelector('[data-loaded-modules]');
+        if (modulesElement) {
+          serverModules = JSON.parse(modulesElement.innerHTML);
+        }
+      } catch (e) {
+        console.error('Failed to parse loaded modules', e);
+      }
+      
+      const context = { app, store, router };
+      for (const moduleName of serverModules) {
+        try {
+          await moduleRegistry.load(moduleName, context);
+          await moduleRegistry.initialize(moduleName, context);
+        } catch (error) {
+          console.error(`Failed to load module ${moduleName}:`, error);
+        }
+      }
+    }
     
     // Call beforeHydration hook if provided
     if (hooks.beforeHydration) {

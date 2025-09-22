@@ -1,5 +1,5 @@
 // client-factory.js - фабрика для создания клиентского приложения
-import { createApp as createVueApp, createSSRApp as createVueSSRApp } from 'vue';
+import { nextTick, createApp as createVueApp, createSSRApp as createVueSSRApp } from 'vue';
 import { createHead } from '@unhead/vue';
 
 export function createUniversalApp({
@@ -72,7 +72,13 @@ export function createUniversalApp({
       
       // Загружаем только критические модули синхронно
       const initCriticalModules = async () => {
-        // Критические модули одинаковые для всех проектов
+        // Если это SSR гидратация - модули загрузятся в renderAndMountApp
+        const isSSRHydration = typeof window !== 'undefined' && !process.env.MOBILE_APP;
+        if (isSSRHydration) {
+          return;
+        }
+        
+        // Для SPA и сервера загружаем как обычно
         const criticalModules = ['globals', 'auth', 'organizations', 'backoffice'];
         
         for (const moduleName of criticalModules) {
@@ -87,17 +93,63 @@ export function createUniversalApp({
       
       // Router guard для загрузки модулей ДО навигации (только на клиенте)
       if (typeof window !== 'undefined') {
+        const originalPush = router.push.bind(router);
+        const originalReplace = router.replace.bind(router);
+
+        async function paintNow() {
+          await nextTick();                           // flush реактивки в DOM
+          await new Promise(requestAnimationFrame);   // кадр layout/style
+          await new Promise(requestAnimationFrame);   // кадр отрисовки
+          // иногда в WebView помогает ещё макротаск
+          await new Promise(r => setTimeout(r, 0));
+        }
+
+        router.push = async (...args) => {
+          // Включаем лоадер
+          store.globals.state.loading = true;
+          
+          // Даем браузеру отрисовать лоадер
+          await paintNow();
+          
+          // Запускаем навигацию асинхронно, чтобы не блокировать UI
+          setTimeout(() => {
+            originalPush(...args);
+          }, 0);
+          
+          // Возвращаем промис для совместимости
+          return Promise.resolve();
+        };
+
+        // router.replace = async (...args) => {
+        //   // Включаем лоадер
+        //   store.globals.state.loading = true;
+          
+        //   // Даем браузеру отрисовать лоадер
+        //   await paintNow();
+          
+        //   // Запускаем навигацию асинхронно
+        //   setTimeout(() => {
+        //     originalReplace(...args);
+        //   }, 0);
+          
+        //   return Promise.resolve();
+        // };
+
         router.beforeEach(async (to, from) => {
-          // Получаем модули для маршрута
-          const requiredModules = moduleRegistry.getModulesForRoute(to.path);
+          // Получаем оригинальный путь ДО fallback редиректа на 404
+          // Это критически важно для SSR гидратации вложенных роутов!
+          const target = to.redirectedFrom || to;
+          
+          // Используем оригинальный путь для определения нужных модулей
+          const requiredModules = moduleRegistry.getModulesForRoute(target.path);
           
           // Проверяем, какие модули еще не загружены
           const modulesToLoad = requiredModules.filter(m => !moduleRegistry.initialized.has(m.name));
           
           if (modulesToLoad.length > 0) {
-            // Показываем глобальный лоадер
-            if (store.globals && store.globals.state) {
-              store.globals.state.loading = true;
+            // Логируем если это редирект с 404 (для отладки)
+            if (to.redirectedFrom) {
+              console.log('[Router] Loading modules for redirected path:', target.path, 'modules:', modulesToLoad.map(m => m.name));
             }
             
             // Загружаем и инициализируем модули
@@ -110,14 +162,17 @@ export function createUniversalApp({
               }
             }
             
-            // Лоадер остается включенным - страница сама выключит через globals.state.loading = false
-            
             // После загрузки модулей и регистрации их роутов,
-            // возвращаем тот же путь для повторной навигации с новыми роутами
-            return to.fullPath;
+            // возвращаем объект с оригинальным путем и replace: true
+            // Это заставит роутер заново резолвить маршрут с новыми роутами
+            return { path: target.fullPath, replace: true };
           }
         });
       }
+
+      router.beforeResolve(async (to, from) => {
+           store.globals.state.loading = false;
+      })
       
       // Error handler для lazy loaded chunks
       if (typeof window !== 'undefined') {
@@ -178,6 +233,7 @@ export function createUniversalApp({
           i18n,
           meta,
           moduleRegistry,
+          config,
         };
       };
       
@@ -201,11 +257,11 @@ export function createUniversalApp({
       }
       
       
-      // if (typeof window === 'undefined') {
-      //   moduleRegistry.initialized.clear();
-      //   moduleRegistry.modules.clear();
-      //   moduleRegistry.loadingPromises.clear();
-        
+      if (typeof window === 'undefined') {
+        moduleRegistry.initialized.clear();
+        moduleRegistry.modules.clear();
+        moduleRegistry.loadingPromises.clear();
+      }
       //   // На сервере загружаем auth для SSR рендеринга (vue-app-renderer требует его)
       //   const context = { app, store, router, config };
       //   await moduleRegistry.load('globals', context);
@@ -274,38 +330,10 @@ export function createUniversalApp({
           hooks.afterHydration({ app, router, store, moduleRegistry });
         }
         
-        // Создаем context для загрузки модулей
-        const context = { app, store, router, config };
-        
-        // Загружаем auth модуль сразу - он критичен
-        moduleRegistry.load('auth', context).then(() => {
-            // Загружаем важные модули в следующем тике
-            setTimeout(async () => {
-              try {
-                await Promise.all([
-                  moduleRegistry.load('organizations', context),
-                  moduleRegistry.load('backoffice', context),
-                ]);
-              } catch (error) {
-                console.error('Error loading core modules:', error);
-              }
-            }, 0);
-            
-            // Загружаем некритичные модули когда браузер idle
-            requestIdleCallback(async () => {
-              try {
-                await moduleRegistry.load('notifications', context);
-                // Маркер для тестов
-                if (typeof window !== 'undefined') {
-                  window.performance.mark('client-ready');
-                }
-              } catch (error) {
-                console.error('Error loading non-critical modules:', error);
-              }
-            });
-        }).catch(error => {
-          console.error('Error loading auth module:', error);
-        });
+        // Модули уже загружены в renderAndMountApp, просто ставим маркер
+        if (typeof window !== 'undefined') {
+          window.performance.mark('client-ready');
+        }
       }).catch(error => {
         console.error('Hydration failed:', error);
       });

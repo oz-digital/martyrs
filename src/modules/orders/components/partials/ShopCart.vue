@@ -90,11 +90,13 @@
   import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
   /////////////////////////////
   // CREATED
   /////////////////////////////
   const route = useRoute()
   const router = useRouter()
+  const { returnCurrency } = useGlobalMixins()
   // Accessing state
   const cartTotalPrice = shopcart.getters.cartTotalPrice
   const StoreCartAmount = shopcart.getters.cartTotalAmount

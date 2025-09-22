@@ -143,8 +143,10 @@ import * as tickets from '@martyrs/src/modules/events/store/tickets.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 import { useRoute } from 'vue-router';
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 
 const route = useRoute();
+const { returnCurrency, formatDate } = useGlobalMixins();
 const qrcode = ref(null);
 
 const handleTicketUpdate = ({ ticket, hasTicket, targetId }) => {

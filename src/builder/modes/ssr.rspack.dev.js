@@ -120,6 +120,7 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
       }
 
       const initialState = JSON.stringify(state);
+      const loadedModulesJson = JSON.stringify(loadedModules || []);
 
       let completeHtml = await renderHtml({
         appHtml: html,
@@ -127,6 +128,7 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
         head,
         body,
         initialState,
+        loadedModulesJson,
       });
       
       // Обрабатываем HTML через Beasties для извлечения критического CSS

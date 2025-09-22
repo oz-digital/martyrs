@@ -257,8 +257,10 @@ import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/Placeholde
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue';
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 import IconDuplicate from '@martyrs/src/modules/icons/actions/IconDuplicate.vue';
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
 
 const route = useRoute();
+const { returnCurrency } = useGlobalMixins();
 
 const productId = computed(() => route.params.product);
 

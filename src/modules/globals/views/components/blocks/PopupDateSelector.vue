@@ -60,6 +60,7 @@ import IconShopcartAdd from '@martyrs/src/modules/icons/actions/IconShopcartAdd.
 import PriceTotal from '@martyrs/src/modules/orders/components/elements/PriceTotal.vue'
 // Import the store actions
 import * as rents from '@martyrs/src/modules/rents/views/store/rents.store.js'
+import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
 
 const props = defineProps({
   productId: { type: String, required: true },
@@ -84,6 +85,7 @@ const { t } = useI18n({
     }
   }
 })
+const { returnCurrency } = useGlobalMixins()
 
 const selectedDates = ref({ start: null, end: null })
 const availabilityData = ref([])
