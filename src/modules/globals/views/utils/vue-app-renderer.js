@@ -19,7 +19,7 @@ export function renderAndMountApp({ createApp, hooks = {} }) {
         console.error('Failed to parse loaded modules', e);
       }
       
-      const context = { app, store, router };
+      const context = { app, store, router, config };
       for (const moduleName of serverModules) {
         try {
           await moduleRegistry.load(moduleName, context);
