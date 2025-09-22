@@ -23,9 +23,6 @@ import ru from './locales/ru.js';
 
 // Пример функции инициализации для модуля заказов
 function initializeGlobals(app, store, router, config, options = {}) {
-  console.log('[initializeGlobals] START');
-  console.log('[initializeGlobals] Store before addStore:', store);
-  
   const route = options.route || 'Home';
 
   const locales = {
@@ -74,11 +71,7 @@ function initializeGlobals(app, store, router, config, options = {}) {
 
   if (config && config.modules) storeGlobals.state.options = config.modules;
 
-  console.log('[initializeGlobals] Adding globals store with state:', storeGlobals.state);
   store.addStore('globals', storeGlobals);
-  console.log('[initializeGlobals] Store after addStore:', store);
-  console.log('[initializeGlobals] Store.globals exists:', !!store.globals);
-  console.log('[initializeGlobals] END');
 
   router.addRoute(route, {
     path: '404',
