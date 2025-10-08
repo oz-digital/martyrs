@@ -1,7 +1,7 @@
 <template>
   <section>
     <h5 class="mn-b-small">{{ title }}</h5>
-    <p class="t-transp p-medium">{{ description }}</p>
+    <p class="t-transp p-regular">{{ description }}</p>
 
     <button v-if="action" @click="callback" class="mn-t-small t-white bg-second w-100 button">
       {{ action }}

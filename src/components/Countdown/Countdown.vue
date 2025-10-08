@@ -5,19 +5,19 @@
     </div>
 
     <div  v-if="!isTimeOver" class="flex-child-grow-1  flex-child-shrink-0 flex-child-basis-auto pd-thin bg-blur-small bg-white-transp-5 radius-small">
-    	<p class="p-semi">{{ days }}</p>
+    	<p class="p-medium">{{ days }}</p>
     	<p class="p-small t-transp">Days</p>
     </div>
      <div  v-if="!isTimeOver" class="flex-child-grow-1  flex-child-shrink-0 flex-child-basis-auto pd-thin bg-blur-small bg-white-transp-5 radius-small">
-    	<p class="p-semi">{{ hours }}</p>
+    	<p class="p-medium">{{ hours }}</p>
     	<p class="p-small t-transp">hours</p>
     </div>
      <div  v-if="!isTimeOver" class="flex-child-grow-1  flex-child-shrink-0 flex-child-basis-auto pd-thin bg-blur-small bg-white-transp-5 radius-small">
-    	<p class="p-semi">{{ minutes }}</p>
+    	<p class="p-medium">{{ minutes }}</p>
     	<p class="p-small t-transp">minutes</p>
     </div>
      <div  v-if="!isTimeOver" class="flex-child-grow-1  flex-child-shrink-0 flex-child-basis-auto pd-thin bg-blur-small bg-white-transp-5 radius-small">
-    	<p class="p-semi">{{ seconds }}</p>
+    	<p class="p-medium">{{ seconds }}</p>
     	<p class="p-small t-transp">seconds</p>
     </div>
   </div>

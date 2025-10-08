@@ -11,7 +11,7 @@
 			<p class="w-100">
 				{{te(`globals.errors.${data.message}`) ? t(`globals.errors.${data.message}`) : data.message}}
 			</p>
-			<IconCross @click="closeError()"  class="cursor-pointer hover-scale-1 i-regular z-index-5"/>
+			<IconCross @click="closeError()"  class="cursor-pointer hover-scale-1 i-medium z-index-5"/>
 		</div>
 	</div>
 </template>

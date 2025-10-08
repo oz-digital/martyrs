@@ -14,7 +14,7 @@
       </p>
       <IconCross 
         @click="$emit('close')" 
-        class="cursor-pointer hover-scale-1 i-regular z-index-5"
+        class="cursor-pointer hover-scale-1 i-medium z-index-5"
       />
     </div>
   </div>

@@ -6,7 +6,7 @@
       class="radius-small pd-small bg-light flex-center flex aspect-1x1 cursor-pointer hover-scale-1"
       :disabled="modelValue <= 1"
     >
-      <span class="i-regular">-</span>
+      <span class="i-medium">-</span>
     </button>
     <div class="radius-small br-solid br-1px br-light w-3r pd-small">
       <input
@@ -23,7 +23,7 @@
       class="radius-small pd-small bg-light flex-center flex aspect-1x1 cursor-pointer hover-scale-1"
       :disabled="modelValue >= maxValue"
     >
-      <span class="i-regular">+</span>
+      <span class="i-medium">+</span>
     </button>
   </div>
 </template>

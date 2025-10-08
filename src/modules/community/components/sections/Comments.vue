@@ -9,7 +9,7 @@
           <textarea 
             v-model="commentContent" 
             placeholder="Enter your comment" 
-            class="p-semi w-100"
+            class="p-medium w-100"
             style="resize: none;"
           ></textarea>
           <button type="submit" class="mn-l-auto bg-main pd-r-regular pd-l-regular pd-thin button">

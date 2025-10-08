@@ -51,7 +51,7 @@
                 h(
                   'span',
                   {
-                    class: ['p-semi', 't-medium', 'mn-r-auto']
+                    class: ['p-medium', 't-medium', 'mn-r-auto']
                   },
                   textSlot
                 )

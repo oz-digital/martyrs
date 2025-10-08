@@ -17,6 +17,7 @@ const moduleEntries = {
   'modules/organizations/organizations.client': './src/modules/organizations/organizations.client.js',
   'modules/events/events.client': './src/modules/events/events.client.js',
   'modules/products/products.client': './src/modules/products/products.client.js',
+  'modules/inventory/inventory.client': './src/modules/inventory/inventory.client.js',
   'modules/marketplace/marketplace.client': './src/modules/marketplace/marketplace.client.js',
   'modules/files/files.client': './src/modules/files/files.client.js',
   'modules/chats/chats.client': './src/modules/chats/chats.client.js',
@@ -31,6 +32,7 @@ const moduleEntries = {
   'modules/rents/rents.client': './src/modules/rents/rents.client.js',
   'modules/music/music.client': './src/modules/music/music.client.js',
   'modules/notifications/notifications.client': './src/modules/notifications/notifications.client.js',
+  'modules/wallet/wallet.client': './src/modules/wallet/wallet.client.js',
 };
 export const mode = 'production';
 export const devtool = false;

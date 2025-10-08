@@ -51,7 +51,7 @@
 		</div>
 
     <div class="pd-small bg-white radius-small gap-micro flex-v-center flex-nowrap flex"> 
-      <IconTime class="i-semi t-transp" fill="rgb(var(--black)" />
+      <IconTime class="i-medium t-transp" fill="rgb(var(--black)" />
       <p class="t-medium mn-r-auto">{{formatDate(order.deadline)}}</p>
 
       <span 

@@ -15,28 +15,34 @@ function initializeNotifications(app, db, wss, origins, publicPath) {
   db.notificationLog = NotificationLogModel(db);
   const abac = getInstance(db);
   // const notificationPolicies = initNotificationPolicies(abac, db);
-  // Initialize notification service and related background tasks
-  const notificationService = NotificationService(db, wss);
-  // Set up routes if app is provided
-  if (app) {
-    notificationsRoutes(app, db, wss, origins, publicPath, notificationService);
-  }
-  console.log('[DEBUG] WSS in notification init:', wss);
-  // Set up a scheduler to process pending notifications with overlap protection
-  let isProcessing = false;
 
-  setInterval(async () => {
-    if (isProcessing) return;
-    isProcessing = true;
-
-    try {
-      await notificationService.processPendingNotifications();
-    } catch (error) {
-      console.error('Error in processPendingNotifications:', error);
-    } finally {
-      isProcessing = false;
+  // Initialize notification service and related background tasks only if wss is provided
+  if (wss) {
+    const notificationService = NotificationService(db, wss);
+    // Set up routes if app is provided
+    if (app) {
+      notificationsRoutes(app, db, wss, origins, publicPath, notificationService);
     }
-  }, 10000); // Every 10 seconds
+    console.log('[DEBUG] WSS in notification init:', wss);
+    // Set up a scheduler to process pending notifications with overlap protection
+    let isProcessing = false;
+
+    setInterval(async () => {
+      if (isProcessing) return;
+      isProcessing = true;
+
+      try {
+        await notificationService.processPendingNotifications();
+      } catch (error) {
+        console.error('Error in processPendingNotifications:', error);
+      } finally {
+        isProcessing = false;
+      }
+    }, 10000); // Every 10 seconds
+  } else if (app) {
+    // Set up routes without notificationService if wss is not available
+    notificationsRoutes(app, db, null, origins, publicPath, null);
+  }
 }
 export const models = {
   NotificationModel,

@@ -49,21 +49,21 @@ span.text-box-trim-end {
 
 
 // Font Styles
-h1,.h1  { font-family: var(--font-main); font-weight: 500; font-size: 3.250rem; 	line-height: 1.000; letter-spacing: -0.05rem; 	text-transform: none; }
-h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: 2.000rem; 	line-height: 1.125; letter-spacing: -0.05rem;	text-transform: none; }
-h3,.h3  { font-family: var(--font-main); font-weight: 500; font-size: 1.500rem; 	line-height: 1.250; letter-spacing: -0.05rem;	text-transform: none; }
-h4,.h4  { font-family: var(--font-main); font-weight: 500; font-size: 1.125rem; 	line-height: 1.250; letter-spacing: +0.0rem; 	text-transform: none; }
-h5,.h5 	{ font-family: var(--font-main); font-weight: 500; font-size: 1.000rem; 	line-height: 1.250;	letter-spacing: -0.0rem; 	text-transform: none; }
+h1,.h1  { font-family: var(--font-main); font-weight: 500; font-size: clamp(3.250rem, 5vw, 4.000rem); 	line-height: 1.000; letter-spacing: -0.05rem; 	text-transform: none; }
+h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: clamp(2.000rem, 5vw, 3.250rem);  	line-height: 1.125; letter-spacing: -0.05rem;	text-transform: none; }
+h3,.h3  { font-family: var(--font-main); font-weight: 500; font-size: clamp(1.500rem, 5vw, 2.000rem);  	line-height: 1.250; letter-spacing: -0.05rem;	text-transform: none; }
+h4,.h4  { font-family: var(--font-main); font-weight: 500; font-size: clamp(1.250rem, 5vw, 1.500rem);  letter-spacing: +0.0rem; 	text-transform: none; }
+h5,.h5 	{ font-family: var(--font-main); font-weight: 500; font-size: clamp(1.000rem, 5vw, 1.250rem); 	letter-spacing: -0.0rem; 	text-transform: none; }
 
 // Typogragy Styles
-.p-nano        { font-family: var(--font-second); font-weight: 400; font-size: 0.50rem; line-height: 1.5; }
-.p-micro       { font-family: var(--font-second); font-weight: 400; font-size: 0.625rem; line-height: 1.5; }
-.p-small       { font-family: var(--font-second); font-weight: 400; font-size: 0.75rem; line-height: 1.5; }
-p,.p-regular   { font-family: var(--font-second); font-weight: 400; font-size: 1.0rem; line-height: 1.5 }
-.p-medium   	 { font-family: var(--font-second); font-weight: 400; font-size: 1.0rem; line-height: 1.5 }
-.p-semi        { font-family: var(--font-second); font-weight: 400; font-size: 1.125rem; line-height: 1.5; letter-spacing: 0.0rem; }
-.p-big         { font-family: var(--font-second); font-weight: 400; font-size: 1.25rem; line-height: 1.5; }
-.p-extra       { font-family: var(--font-second); font-weight: 400; font-size: 2.00rem; line-height: 1.5; }
+.p-nano        { font-family: var(--font-second); font-weight: 400; font-size: 0.625rem; line-height: 1.25; }
+.p-micro       { font-family: var(--font-second); font-weight: 400; font-size: 0.750rem; line-height: 1.25; }
+.p-small       { font-family: var(--font-second); font-weight: 400; font-size: 0.875rem; line-height: 1.25; }
+p,.p-regular   { font-family: var(--font-second); font-weight: 400; font-size: 1.000rem; line-height: 1.25 }
+.p-medium   	 { font-family: var(--font-second); font-weight: 400; font-size: 1.125rem; line-height: 1.25 }
+.p-semi        { font-family: var(--font-second); font-weight: 400; font-size: 1.250rem; line-height: 1.25; letter-spacing: 0.0rem; }
+.p-big         { font-family: var(--font-second); font-weight: 400; font-size: 1.375rem; line-height: 1.25; }
+.p-extra       { font-family: var(--font-second); font-weight: 400; font-size: 1.500rem; line-height: 1.25; }
 
 .t-zero { font-size: 0; }
 b  { font-weight: 600}

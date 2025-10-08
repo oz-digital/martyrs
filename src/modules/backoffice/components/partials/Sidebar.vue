@@ -11,7 +11,7 @@
         <component 
           v-if="item.icon" 
           :is="item.icon" 
-          class="i-regular mn-r-thin" 
+          class="i-medium mn-r-thin" 
           :icon="true" 
           :fill="'rgba(var(--black),0.25)'"
         /> 
@@ -27,7 +27,7 @@
         <component 
           v-if="item.icon" 
           :is="item.icon" 
-          class="i-regular mn-r-thin" 
+          class="i-medium mn-r-thin" 
           :icon="true" 
           :fill="'rgba(var(--black),0.25)'"
         /> 

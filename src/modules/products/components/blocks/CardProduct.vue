@@ -19,7 +19,7 @@
       "
     >
       <IconEdit
-        class="i-regular"
+        class="i-medium"
         classes="fill-white"
       />
     </router-link>
@@ -55,7 +55,7 @@
 				{{product.attributes[0].value}}
 			</p>
 			<!-- Name -->
-			<span style=" hyphens: auto;" class="word-break t-truncate p-medium mn-b-micro w-100 w-max-100 ">
+			<span style=" hyphens: auto;" class="word-break t-truncate p-regular mn-b-micro w-100 w-max-100 ">
 				{{product.name}}
 			</span>
 
@@ -72,7 +72,7 @@
 				<Price 
 					:product="product" 
 					size="small" 
-					class="bg-white h-100 p-medium flex flex-center pd-thin radius-small mn-r-auto" 
+					class="bg-white h-100 p-regular flex flex-center pd-thin radius-small mn-r-auto" 
 				/>
 				
 				<button

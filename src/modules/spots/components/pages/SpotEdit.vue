@@ -68,7 +68,7 @@
           class="pos-relative w-100 mn-b-small bg-white radius-small pd-medium"
         />
 
-        <p class="p-medium mn-b-small">Please the available delivery options:</p>
+        <p class="p-regular mn-b-small">Please the available delivery options:</p>
 
         <Checkbox 
           v-for="option in ['pickup','courier','post']"
@@ -80,7 +80,7 @@
           @update:radio="event => spots.state.spot.delivery = event"
         />
 
-        <p class="p-medium mn-b-small">Please select the available payment methods:</p>
+        <p class="p-regular mn-b-small">Please select the available payment methods:</p>
      
         <Checkbox 
           v-for="option in ['cash','bank transfer','crypto']"
@@ -134,7 +134,7 @@
           class="mn-b-small"
         />
 
-        <p class="mn-b-small p-medium">Options:</p>
+        <p class="mn-b-small p-regular">Options:</p>
         <Checkbox 
           :label="'Hide address'"
           name="address"

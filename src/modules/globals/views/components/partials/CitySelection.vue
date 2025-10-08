@@ -6,7 +6,7 @@
     <!-- Select city -->
     <div class="mn-b-semi">
       <!-- Description -->
-      <p class="mn-b-small t-transp p-medium">{{t('description')}}</p> 
+      <p class="mn-b-small t-transp p-regular">{{t('description')}}</p> 
       <!-- Input -->
       <div class="flex-nowrap flex mn-b-small pd-small radius-small bg-light">
         <span class="d-block mn-r-auto">{{t('cities[0]')}}</span>
@@ -33,7 +33,7 @@
     </div>
     <!-- Description -->
     <p class="mn-b-small t-transp">{{t('helpus')}}</p> 
-    <div class="pd-small p-semi radius-small bg-light">
+    <div class="pd-small p-medium radius-small bg-light">
       <a class="">hello@nms.network</a>
     </div>
   </div>

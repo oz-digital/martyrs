@@ -143,7 +143,7 @@
               <Media 
                 v-if="collaborator.photoUrl"
                 :url="collaborator.photoUrl"
-                class="i-regular radius-full object-cover"
+                class="i-medium radius-full object-cover"
               />
               <span class="t-small">{{ collaborator.name || collaborator.profile?.name || 'User' }}</span>
             </div>
@@ -154,7 +154,7 @@
         <h3 class="t-medium mn-b-small">Metadata</h3>
         <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Created Date -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
               <IconCalendar class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Created</div>
@@ -163,7 +163,7 @@
           </div>
 
           <!-- Total Duration -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
               <IconClock class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Duration</div>
@@ -172,7 +172,7 @@
           </div>
 
           <!-- Updated Date -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
               <IconRefresh class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Updated</div>
@@ -181,7 +181,7 @@
           </div>
 
           <!-- Visibility -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
               <IconEye class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>

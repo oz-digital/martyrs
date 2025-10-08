@@ -6,7 +6,7 @@
 		<p 
 			v-if="chips?.length"
 		  v-for="(chip,index) in chips" 
-		  :class="$attrs.class || 'p-medium font-main'"
+		  :class="$attrs.class || 'p-regular font-main'"
 		 	class="mn-r-nano d-inline-block w-max pd-thin radius-thin t-medium bg-main" 
 		>
 			{{chip.text ? chip.text : chip}}

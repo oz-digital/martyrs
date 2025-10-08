@@ -15,10 +15,10 @@
         <div class="flex flex-wrap gap-thin flex-v-center w-100">
 
           <Tooltip :text="discount.description || 'No description'">
-            <span class="discount-name t-semi p-medium">{{ discount.name }}</span>
+            <span class="discount-name t-semi p-regular">{{ discount.name }}</span>
           </Tooltip>
 
-          <span class="t-main p-medium">
+          <span class="t-main p-regular">
             {{returnCurrency()}}{{ discount.value }} per {{ currentVariant?.quantity || 1 }}{{ currentVariant?.unit || pcs }}
           </span>
 

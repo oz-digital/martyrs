@@ -8,92 +8,76 @@
 - Кнопки и акцентные элементы → `bg-main` или `bg-second`
 - Всегда соблюдай контраст между элементами
 
-## Реальные примеры паттернов из кода
+## Примеры комбинаций классов из модуля music
+
+### Карточки
+```
+# Карточка пример 1
+d-block radius-medium o-hidden
+pos-relative
+w-100 aspect-1x1 object-fit-cover
+pos-absolute pos-t-0 pos-l-0 w-100 h-100 flex-center flex transition-cubic-in-out
+i-big bg-main radius-round flex-center flex aspect-1x1
+pd-medium bg-light
+mn-b-thin t-medium t-truncate
+t-transp t-small t-truncate
+
+# Карточка пример 2
+flex flex-column radius-medium o-hidden bg-white
+cursor-pointer hover-scale-1
+w-100 pos-relative aspect-1x1
+w-100 h-100 object-fit-cover
+w-100 h-100 bg-light flex-center flex
+pos-absolute pos-t-small pos-r-small pd-micro radius-medium
+t-medium mn-b-small t-truncate
+азвTrackListCard)
+pd-small hover-bg-white-transp-25 flex-v-center flex cursor-pointer
+bg-main-transp-10
+w-3r t-center pos-relative
+flex-child-1 flex flex-v-center
+w-3r h-3r object-fit-cover o-hidden radius-small
+hover-t-main hover-t-underline
+```
+
+### Формы
+```
+# Форма поиска (SearchForm)
+flex-v-center flex bg-white-transp-50 pd-thin radius-extra
+i-small mn-r-small
+bg-transparent border-none flex-1
+bg-transparent border-none pd-zero
+```
 
 ### Страницы и секции
 ```
-<!-- Страница с паддингом (rents/Rents.vue) -->
-<div class="pd-medium mobile:pd-thin bg-white">
-
-<!-- Хедер страницы (products/Products.vue) -->
-<header class="pd-medium flex-v-center flex-nowrap flex">
-
-<!-- Основная сетка с сайдбаром (products/Products.vue) -->
-<div class="cols-2-1_3 br-1px br-solid br-light z-index-3 pos-relative">
+# Главная страница музыки (MusicHome)
+pd-medium mobile:pd-thin
+mn-b-semi
+flex-between flex mn-b-small
 ```
 
-### Карточки продуктов/контента
+### Скроллируемые контейнеры
 ```
-<!-- Карточка продукта (products/CardProduct.vue) -->
-<div class="radius-medium cols-1 o-hidden pos-relative">
-  <!-- Изображение продукта -->
-  <div class="o-hidden d-flex pd-thin pd-b-zero radius-medium w-100 pos-relative aspect-1x1">
-  <!-- Информация продукта -->
-  <div class="pd-small cols-1 t-left">
-</div>
+# Горизонтальный скролл
+flex flex-nowrap gap-small o-x-scroll scroll-behavior-smooth scroll-snap-type-x-mandatory scroll-hide
+flex-none scroll-snap-align-start
+w-min-15r transition-cubic-in-out
 
-<!-- Карточка категории (products/CardCategory.vue) -->
-<div class="flex-v-center bg-light pd-small radius-small flex-column flex">
-
-<!-- Карточка в Feed (community/Blog.vue) -->
-<CardComponent class="h-max-40r bg-light radius-medium mobile:radius-zero">
+# Контейнер списка
+bg-light radius-medium o-hidden
 ```
 
-### Кнопки (используется компонент Button)
+### Гриды и раскладки
 ```
-<!-- Основная кнопка (auth/SignIn.vue) -->
-<Button class="w-100 bg-main">
+# Грид плейлистов
+cols-5 mobile:cols-2 gap-small
 
-<!-- HTML кнопка добавления (rents/Rents.vue) - исключение -->
-<button class="radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second">
+# Грид артистов
+cols-6 mobile:cols-3 gap-small
 
-<!-- HTML кнопка-иконка (products/CardProduct.vue) - исключение -->
-<button class="cursor-pointer radius-extra pd-thin bg-main">
-
-<!-- HTML кнопка вторичная (products/Products.vue) - исключение -->
-<button class="pd-small radius-small bg-light mn-r-small">
-
-<!-- Компонент Button с классом button (products/Products.vue) -->
-<Button class="bg-main w-100 button mn-t-medium">
-```
-
-### Поля форм (используются компоненты Field/FieldPhone)
-```
-<!-- Поле ввода (auth/SignIn.vue) -->
-<Field class="bg-light h-4r pd-medium radius-small">
-
-<!-- Поле фильтра (products/Products.vue) -->
-<Field class="w-50 bg-light pd-small radius-small">
-
-<!-- Контейнер табов (auth/SignIn.vue) -->
-<div class="mn-b-small p-small uppercase t-semi bg-light radius-small o-hidden">
-```
-
-### Сетки и раскладки
-```
-<!-- Грид продуктов 4 колонки (products/Products.vue) -->
-<div class="cols-4 z-index-1 pos-relative w-100 rows-1 gap-thin">
-
-<!-- Feed контейнер (community/Blog.vue) -->
-<Feed class="rows-1 gap-thin">
-
-<!-- Flex контейнер (products/CardCategory.vue) -->
-<div class="w-100 flex-v-center flex-nowrap gap-thin flex">
-
-<!-- Сайдбар (products/Products.vue) -->
-<div class="o-y-scroll br-r br-solid br-light pd-medium z-index-2 desktop-only h-100 pos-relative">
-```
-
-### Типографика
-```
-<!-- Заголовки используются без классов -->
-<h1>, <h2>, <h3>, <h4>, <h5>
-
-<!-- Текст с размерами -->
-<p class="p-small">, <p class="p-medium">, <p class="p-big">
-
-<!-- Модификаторы текста -->
-<span class="t-semi">, <span class="t-transp">, <span class="t-medium">
+# Элемент грида
+flex-child-default w-100
+hover-scale-1 transition-cubic-in-out
 ```
 
 ### Отступы и размеры
@@ -167,10 +151,8 @@ grid-template-columns
 ```
 pd-zero, pd-nano, pd-micro, pd-thin, pd-small, pd-regular, pd-medium, pd-semi, pd-big, pd-extra
 pd-t-*, pd-r-*, pd-b-*, pd-l-*
-pd-x-*, pd-y-*
 mn-zero, mn-nano, mn-micro, mn-thin, mn-small, mn-regular, mn-medium, mn-semi, mn-big, mn-extra
 mn-t-*, mn-r-*, mn-b-*, mn-l-*
-mn-x-*, mn-y-*
 mn-auto, mn-l-auto, mn-r-auto
 gap-nano, gap-micro, gap-thin, gap-small, gap-regular, gap-medium, gap-semi, gap-big, gap-extra
 ```
@@ -224,7 +206,7 @@ radius-tl-*, radius-tr-*, radius-br-*, radius-bl-*
 ## **Типография**
 ```
 h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5
-p-nano, p-micro, p-small, p-regular, p-medium, p-semi, p-big, p-extra
+p-nano, p-micro, p-small, p-regular, p-medium, p-medium, p-semi, p-extra
 font-main, font-second
 t-bold, t-demi, t-semi, t-medium, t-regular, t-light
 t-left, t-center, t-right

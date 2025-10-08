@@ -9,7 +9,7 @@
     :name="fieldName"
     :id="fieldId"
     :validation="validation"
-    class="radius-medium flex-nowrap flex  w-100 p-medium t-regular uppercase pd-thin"
+    class="radius-medium flex-nowrap flex  w-100 p-regular t-regular uppercase pd-thin"
   >
     <slot></slot>
     <Button

@@ -1,11 +1,11 @@
 <template>
 	<section>
 		<div class="w-100 mn-b-small star-container flex-v-center flex">
-	       	<span class="p-semi t-semi mn-r-small">{{rating}}</span>
+	       	<span class="p-medium t-semi mn-r-small">{{rating}}</span>
 
 	       	<svg 
 	       		v-for="i in 5" 
-	         	class="i-semi mn-r-small" 
+	         	class="i-medium mn-r-small" 
 	         	:class="{'t-transp': i > rating}"
 	       		width="113" height="108" 
 	       		viewBox="0 0 113 108" 

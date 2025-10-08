@@ -5,8 +5,8 @@
         <img v-if="te('logo')" loading="lazy" class="mn-b-semi h-4r" :src="t('logo')">
 
         <h2 v-if="te('title')" class="mn-b-medium" v-html="t('title')"/>
-        <p v-if="te('description')" class="mn-b-medium p-semi t-transp">{{ t('description') }}</p>  
-        <p v-if="te('subdescription')" class="mn-b-semi p-medium t-transp">{{ t('subdescription')}}</p>
+        <p v-if="te('description')" class="mn-b-medium p-medium t-transp">{{ t('description') }}</p>  
+        <p v-if="te('subdescription')" class="mn-b-semi p-regular t-transp">{{ t('subdescription')}}</p>
 
       <div class="gap-thin cols-2">
         <router-link :to="t('action_link')" class="flex t-center bg-white flex-center flex-column t-black pd-big radius-medium">

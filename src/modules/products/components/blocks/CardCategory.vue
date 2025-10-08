@@ -14,7 +14,7 @@
           } 
         }"
         class="
-          i-semi
+          i-medium
           cursor-pointer 
           card-page-actions
           radius-extra pd-micro bg-second
@@ -31,7 +31,7 @@
         v-if="access"
         @click="deleteCategory(category)"
         class="
-          i-semi
+          i-medium
           cursor-pointer 
           card-page-actions
           radius-extra pd-micro bg-second

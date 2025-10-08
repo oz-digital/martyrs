@@ -25,7 +25,7 @@
     </p>
     
     <!-- Grand total -->
-    <p class="p-semi flex flex-nowrap pd-b-small pd-t-small">
+    <p class="p-medium flex flex-nowrap pd-b-small pd-t-small">
       <span class="w-100 t-medium">{{ t('intotal') }}</span>
       <span class="w-100 t-main t-medium t-right">{{currency}}{{grandTotal}}</span>
     </p>

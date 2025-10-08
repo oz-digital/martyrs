@@ -67,7 +67,7 @@ const handleClick = () => {
       {{ notificationIcon }}
     </div>
     <div class="notification-content">
-      <p class="p-medium t-medium mn-b-small">{{ notification.title }}</p>
+      <p class="p-regular t-medium mn-b-small">{{ notification.title }}</p>
       <p class="p-small mn-b-small">{{ notification.body }}</p>
       <p class="pd-thin w-max radius-thin bg-white">{{ formattedDate }}</p>
     </div>

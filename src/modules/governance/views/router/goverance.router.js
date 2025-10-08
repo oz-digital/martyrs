@@ -7,6 +7,7 @@ export function createGovernanceRoutes(prefix = '', options = {}) {
 
   const routes = {
     path: options.basePath || 'governance',
+    component: () => import(/* webpackChunkName: 'governance-layout' */ '../components/layouts/Governance.vue'),
     meta: {
       title: {
         en: 'Governance',
@@ -15,10 +16,22 @@ export function createGovernanceRoutes(prefix = '', options = {}) {
       title_hide: true,
     },
     children: [
+      // Index route
+      {
+        path: '',
+        name: nameWithPrefix('Governance'),
+        meta: {
+          title: {
+            en: 'Governance',
+            ru: 'Управление',
+          },
+          title_hide: false,
+        },
+        component: () => import(/* webpackChunkName: 'Governance' */ '../components/pages/Governance.vue'),
+      },
       // Initiatives routes
       {
         path: 'initiatives',
-        name: nameWithPrefix('Initiatives'),
         meta: {
           title: {
             en: 'Initiatives',
@@ -77,7 +90,45 @@ export function createGovernanceRoutes(prefix = '', options = {}) {
             beforeEnter: [validationAuth.requiresAuth],
             component: options.page_initiative_edit || defineAsyncComponent(() => import(/* webpackChunkName: 'Governance' */ '../components/pages/InitiativeCreate.vue')),
           },
+          {
+            path: ':id/roadmap',
+            name: nameWithPrefix('Roadmap'),
+            meta: {
+              title: {
+                en: 'Roadmap',
+                ru: 'Дорожная карта',
+              },
+              title_hide: false,
+            },
+            component: () => import(/* webpackChunkName: 'Governance' */ '../components/pages/Roadmap.vue'),
+          },
+          {
+            path: ':id/milestones',
+            name: nameWithPrefix('InitiativeMilestones'),
+            meta: {
+              title: {
+                en: 'Milestones',
+                ru: 'Вехи',
+              },
+              title_hide: false,
+            },
+            component: () => import(/* webpackChunkName: 'Governance' */ '../components/pages/InitiativeMilestones.vue'),
+          },
         ],
+      },
+
+      // Milestones routes
+      {
+        path: 'milestones/:id',
+        name: nameWithPrefix('Milestone'),
+        meta: {
+          title: {
+            en: 'Milestone',
+            ru: 'Веха',
+          },
+          title_hide: false,
+        },
+        component: () => import(/* webpackChunkName: 'Governance' */ '../components/pages/Milestone.vue'),
       },
 
       // Tasks routes

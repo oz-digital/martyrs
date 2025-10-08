@@ -17,7 +17,7 @@
 		  	})" 
 		  	class="cursor-pointer"
 		  >
-		  	<IconGroups class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconGroups class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Members
 		    </span>
@@ -45,7 +45,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconProducts class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconProducts class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Products
 		    </span>
@@ -60,7 +60,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconProducts class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconProducts class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Categories
 		    </span>
@@ -75,7 +75,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconLeftovers class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconLeftovers class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Inventory
 		    </span>
@@ -90,7 +90,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconOrders class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconOrders class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Orders
 		    </span>
@@ -105,7 +105,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconOrders class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconOrders class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Rents
 		    </span>
@@ -121,7 +121,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconGallery class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconGallery class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Gallery
 		    </span>
@@ -136,7 +136,7 @@
 		  		}
 		  	})" 
 		  	class="cursor-pointer">
-		  	<IconEvents class="i-semi" :icon="true" :fill="'rgb(var(--white))'"/> 
+		  	<IconEvents class="i-medium" :icon="true" :fill="'rgb(var(--white))'"/> 
 		    <span>
 		    	Events
 		    </span>

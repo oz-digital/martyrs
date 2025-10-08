@@ -10,7 +10,7 @@
       <Loader />
     </div>
     
-    <div v-else class="flex h-min-100 flex-row mobile:flex-column gap-medium">
+    <div v-else class="flex h-min-100 flex-row mobile:flex-column gap-regular">
       <ProfileEditSidebar class="w-10r mobile:w-100 flex-shrink-0" />
       
       <RouterView :userData="userData" />

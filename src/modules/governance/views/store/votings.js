@@ -28,7 +28,7 @@ const votesActions = {
   },
   async getVotesForVoting(votingId) {
     try {
-      const response = await $axios.get(`/api/votings/${votingId}/votes`);
+      const response = await $axios.get('/api/votes/read', { params: { voting: votingId } });
       return response.data;
     } catch (error) {
       setError(error);
@@ -37,7 +37,7 @@ const votesActions = {
   },
   async getUserVotes(userId) {
     try {
-      const response = await $axios.get(`/api/users/${userId}/votes`);
+      const response = await $axios.get('/api/votes/read', { params: { voter: userId } });
       return response.data;
     } catch (error) {
       setError(error);
@@ -46,8 +46,11 @@ const votesActions = {
   },
   async updateVote(id, vote) {
     try {
-      const response = await $axios.put(`/api/votes/${id}`, vote);
-      const index = votesState.all.findIndex(v => v.id === id);
+      const response = await $axios.put('/api/votes/update', {
+        _id: id,
+        ...vote
+      });
+      const index = votesState.all.findIndex(v => (v._id || v.id) === id);
       if (index !== -1) {
         votesState.all[index] = response.data;
       }
@@ -59,8 +62,8 @@ const votesActions = {
   },
   async deleteVote(id) {
     try {
-      await $axios.delete(`/api/votes/${id}`);
-      votesState.all = votesState.all.filter(v => v.id !== id);
+      await $axios.post('/api/votes/delete', { _id: id });
+      votesState.all = votesState.all.filter(v => (v._id || v.id) !== id);
     } catch (error) {
       setError(error);
       throw error;

@@ -24,10 +24,10 @@
         </div>
         <div v-else class="hover-buttons flex gap-small">
           <button @click.stop="onComponentClick" class="hover-button radius-small pd-thin bg-main t-white br-none cursor-pointer">
-            <IconUpload class="i-semi" fill="rgb(var(--white))" />
+            <IconUpload class="i-medium" fill="rgb(var(--white))" />
           </button>
           <button @click.stop="deleteImage" class="hover-button radius-small pd-thin bg-danger t-white br-none cursor-pointer">
-            <IconDelete class="i-semi" fill="rgb(var(--white))" />
+            <IconDelete class="i-medium" fill="rgb(var(--white))" />
           </button>
         </div>
       </div>

@@ -25,7 +25,7 @@
 
     <div class="mn-r-auto">
       <h3 class="t-semi mn-b-small">Already registered?</h3>
-      <span class="p-medium t-transp">Sign in to your account to checkout faster.</span>
+      <span class="p-regular t-transp">Sign in to your account to checkout faster.</span>
     </div>
 
     <button 

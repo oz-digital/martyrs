@@ -1,5 +1,10 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import nodeExternals from 'webpack-node-externals';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Получаем формат из переменной среды, по умолчанию cjs
 const format = process.env.FORMAT || 'cjs';
 const isESM = format === 'esm';

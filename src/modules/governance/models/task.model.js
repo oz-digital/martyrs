@@ -10,7 +10,7 @@ export default db => {
       },
       status: {
         type: String,
-        enum: ['not_started', 'in_progress', 'completed', 'blocked', 'cancelled'],
+        enum: ['proposed', 'voting', 'not_started', 'in_progress', 'review', 'completed', 'blocked', 'cancelled'],
         default: 'not_started',
       },
       assignedTo: {
@@ -41,6 +41,18 @@ export default db => {
           type: String,
         },
       ],
+      // Voting references
+      proposedByVoting: {
+        type: db.mongoose.Schema.Types.ObjectId,
+        ref: 'Voting',
+      },
+      completionVoting: {
+        type: db.mongoose.Schema.Types.ObjectId,
+        ref: 'Voting',
+      },
+      completedDate: {
+        type: Date,
+      },
     },
     {
       timestamps: { currentTime: () => Date.now() },

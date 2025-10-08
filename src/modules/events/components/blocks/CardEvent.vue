@@ -65,7 +65,7 @@
 						url: event.url
 					}
 				})" 
-				class="z-index-2 pos-absolute pos-t-regular pos-r-regular i-regular t-transp"
+				class="z-index-2 pos-absolute pos-t-regular pos-r-regular i-medium t-transp"
 			/>
 
     	<div
@@ -116,9 +116,9 @@
        	<span
        		v-if="event.date?.start"
           :key="index"
-          class="d-inline-flex p-semi t-medium mn-nano pd-thin radius-small bg-white"
+          class="d-inline-flex p-medium t-medium mn-nano pd-thin radius-small bg-white"
           :class="{
-		    		'p-medium': type === 'short'
+		    		'p-regular': type === 'short'
 	    		}"
         >
           {{ formattedDate }}
@@ -134,7 +134,7 @@
         	v-if="type !== 'short'"
           v-for="(chip, index) in event.tags"
           :key="index"
-          class="d-inline-flex mn-nano pd-thin radius-small p-semi t-medium bg-main"
+          class="d-inline-flex mn-nano pd-thin radius-small p-medium t-medium bg-main"
         >
           {{ chip }}
         </span>

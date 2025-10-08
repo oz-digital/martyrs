@@ -2,14 +2,14 @@
   <div class="pd-medium">
     <h2 class="h2 mn-b-medium">{{ editMode ? 'Edit Album' : 'Create Album' }}</h2>
     
-    <form @submit.prevent="submitForm" class="cols-1 gap-medium">
+    <form @submit.prevent="submitForm" class="cols-1 gap-regular">
       <!-- Basic Info Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Basic Information</h3>
         
         <!-- Album Cover -->
         <div class="mn-b-medium">
-          <p class="p-semi mn-b-small">Album Cover</p>
+          <p class="p-medium mn-b-small">Album Cover</p>
           <UploadImage
             v-model:photo="album.coverArt"
             uploadPath="albums/covers"

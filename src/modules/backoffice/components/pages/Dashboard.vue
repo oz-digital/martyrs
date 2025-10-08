@@ -4,21 +4,21 @@
 		<div class="mn-b-medium cols-3 mobile:cols-1 gap-thin">
 			<Block class="pos-relative">
 				<span class="t-green t-semi pos-absolute pos-t-medium pos-r-medium">+12.5%</span>
-				<div class="mn-b-medium radius-small w-max bg-main"><IconProfile class="i-semi mn-small"/></div>
+				<div class="mn-b-medium radius-small w-max bg-main"><IconProfile class="i-medium mn-small"/></div>
 				<p class="h3 mn-b-thin">2,453</p>
 				<p>Active Members</p>
 			</Block>
 
 			<Block class="pos-relative">
 				<span class="t-green t-semi pos-absolute pos-t-medium pos-r-medium">+14.8%</span>
-				<div class="mn-b-medium radius-small w-max bg-main"><IconOrders class="i-semi mn-small"/></div>
+				<div class="mn-b-medium radius-small w-max bg-main"><IconOrders class="i-medium mn-small"/></div>
 				<p class="h3 mn-b-thin">432</p>
 				<p>New Orders</p>
 			</Block>
 
 			<Block class="pos-relative">
 				<span class="t-green t-semi pos-absolute pos-t-medium pos-r-medium">+25.1%</span>
-				<div class="mn-b-medium radius-small w-max bg-main"><IconProfile class="i-semi mn-small"/></div>
+				<div class="mn-b-medium radius-small w-max bg-main"><IconProfile class="i-medium mn-small"/></div>
 				<p class="h3 mn-b-thin">$23,232</p>
 				<p>Monthly Revenue</p>
 			</Block>

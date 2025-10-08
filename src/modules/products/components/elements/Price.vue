@@ -3,7 +3,7 @@
     <span
       :class="{
         'h4': !size,
-        'p-medium t-semi': size === 'small',
+        'p-regular t-semi': size === 'small',
         'h3 t-semi': size === 'big'
       }"
     >
@@ -12,9 +12,9 @@
 
     <span
       :class="{
-        'p-medium': !size,
+        'p-regular': !size,
         'p-small': size === 'small',
-        'p-semi': size === 'big'
+        'p-medium': size === 'big'
       }"
       class="p-small mn-l-micro t-transp"
     >
@@ -23,7 +23,7 @@
 
     <p
       v-if="variant.sale"
-      class="pd-r-small t-transp p-medium line-through price"
+      class="pd-r-small t-transp p-regular line-through price"
     >
       {{ returnCurrency() + ((variant.price / 100) * (100 + variant.sale)) }}
     </p>

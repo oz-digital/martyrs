@@ -14,19 +14,19 @@
         class="bg-white radius-small pd-small flex-nowrap flex-v-center flex gap-thin"
       >
         <div class="w-100">
-          <p class="p-medium mn-b-thin t-medium d-block">{{ attribute.name || 'Unnamed parameter' }}</p>
+          <p class="p-regular mn-b-thin t-medium d-block">{{ attribute.name || 'Unnamed parameter' }}</p>
           <p class="t-medium t-transp">{{ attribute.value || 'No value' }}</p>
         </div>
         
         <div class="flex gap-thin">
           <div @click="() => openAttributePopup(index)" class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1">
             <IconEdit
-              class="i-regular"
+              class="i-medium"
             />
           </div>
           <div @click="() => attributes.splice(index, 1)" class="radius-small pd-small flex-center flex aspect-1x1 bg-red cursor-pointer hover-scale-1">
             <IconDelete
-              class="i-regular"
+              class="i-medium"
             />
           </div>
         </div>

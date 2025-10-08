@@ -28,7 +28,7 @@
 	        </p>
 
 
-	        <button @click="nextSlide" class="bg-main p-big w-max button">
+	        <button @click="nextSlide" class="bg-main p-semi w-max button">
 	          Get Started
 	        </button>
 	      </div>
@@ -49,10 +49,10 @@
 	        </p>
 
 	        <div class="flex flex-column flex-center gap-small">
-	          <button @click="requestNotificationPermission" class="bg-main p-big w-max button">
+	          <button @click="requestNotificationPermission" class="bg-main p-semi w-max button">
 						 	 Enable Notifications
 						 </button>
-	          <button @click="nextSlide" class="bg-light p-big w-max button">
+	          <button @click="nextSlide" class="bg-light p-semi w-max button">
 	            Maybe Later
 	          </button>
 	        </div>
@@ -74,10 +74,10 @@
           </p>
 
           <div class="flex flex-column flex-center gap-small">
-            <button @click="requestLocationPermission" class="bg-main p-big w-max button">
+            <button @click="requestLocationPermission" class="bg-main p-semi w-max button">
               Enable Location
             </button>
-            <button @click="nextSlide" class="bg-light p-big w-max button">
+            <button @click="nextSlide" class="bg-light p-semi w-max button">
               Skip for Now
             </button>
           </div>
@@ -98,10 +98,10 @@
           </p>
 
           <div class="flex flex-column flex-center gap-small">
-            <button @click="requestTrackingPermission" class="bg-main p-big w-max button">
+            <button @click="requestTrackingPermission" class="bg-main p-semi w-max button">
               Allow Tracking
             </button>
-            <button @click="nextSlide" class="bg-light p-big w-max button">
+            <button @click="nextSlide" class="bg-light p-semi w-max button">
               Ask App Not to Track
             </button>
           </div>
@@ -119,11 +119,11 @@
 	      	<h3 class="h3 mn-b-medium">Ready to Rent?</h3>
 	      	<p class="p-regular t-transp mn-b-big">Join thousands of creators who trust 3SR for their professional video equipment needs. Choose how you'd like to get started.</p>
 	    
-	      	<button @click="openFirstRoute('Sign Up')" class="bg-main p-big w-100 button mn-b-thin">Create Account</button> 
-	      	<button @click="openFirstRoute('Sign In')" class="bg-light t-black p-big w-100 button mn-b-semi">Sign In</button>
+	      	<button @click="openFirstRoute('Sign Up')" class="bg-main p-semi w-100 button mn-b-thin">Create Account</button> 
+	      	<button @click="openFirstRoute('Sign In')" class="bg-light t-black p-semi w-100 button mn-b-semi">Sign In</button>
 
 		      <p class="p-small mn-b-medium t-transp">Or explore as a guest:</p> 
-	      	<button @click="setFirstUseFalse()" class="bg-light p-big w-max button">Continue as Guest</button>
+	      	<button @click="setFirstUseFalse()" class="bg-light p-semi w-max button">Continue as Guest</button>
       	</div>
 	    </div>
 

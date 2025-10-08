@@ -1,6 +1,6 @@
 <template>
   <section class="bg-white"> 
-    <div class="gap-medium pos-t-0 pos-sticky z-index-3 radius-medium ">
+    <div class="gap-regular pos-t-0 pos-sticky z-index-3 radius-medium ">
       <DatePicker
         @update:date="handleDatePickerChange"
         :locale="$i18n.locale"
@@ -14,7 +14,7 @@
 
    <section class="pd-medium mobile:pd-thin radius-tr-medium radius-tl-medium bg-white"> 
 
-    <div class="gap-medium radius-medium mn-b-semi">
+    <div class="gap-regular radius-medium mn-b-semi">
       <h2
         class="mn-b-small"
       >
@@ -43,7 +43,7 @@
       @date-selected="handleDateSelection" 
     />
 
-    <div class="gap-medium radius-medium mn-b-semi">
+    <div class="gap-regular radius-medium mn-b-semi">
 
       <h3
         class="mn-b-small"
@@ -91,7 +91,7 @@
 
     </div>
     
-    <div class="gap-medium radius-medium">
+    <div class="gap-regular radius-medium">
 
       <h3
         class="mn-b-small"

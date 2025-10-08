@@ -63,7 +63,7 @@
           :class="{ 'bg-main t-black': selectedReason === reason.value, 'bg-light': selectedReason !== reason.value }"
           class="pd-small radius-small flex-column flex-center flex cursor-pointer"
         >
-          <component :is="reason.icon" class="i-regular mn-b-nano" />
+          <component :is="reason.icon" class="i-medium mn-b-nano" />
           <span>{{ reason.label }}</span>
         </div>
       </div>

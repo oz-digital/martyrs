@@ -4,7 +4,7 @@
     <!-- Artist not found -->
     <div v-if="hasLoaded && !artist" class="flex-center flex-column flex pd-extra">
       <h2 class="h2 mn-b-medium">Artist Not Found</h2>
-      <p class="p-medium t-transp mn-b-medium">The artist you are looking for doesn't exist or may have been removed.</p>
+      <p class="p-regular t-transp mn-b-medium">The artist you are looking for doesn't exist or may have been removed.</p>
       <Button
         :submit="() => router.push({ name: 'music-home' })"
         class="bg-main "
@@ -67,7 +67,7 @@
               </span>
             </div>
             
-            <p v-if="artist.location" class="p-medium mn-b-small">{{ artist.location }}</p>
+            <p v-if="artist.location" class="p-regular mn-b-small">{{ artist.location }}</p>
             
             <!-- Social media links -->
             <div class="flex flex-nowrap gap-small mobile:flex-center">
@@ -122,13 +122,13 @@
       
       <!-- Main content -->
       <div class="pd-medium">
-        <div class="cols-2-1_2 gap-medium mobile:cols-1">
+        <div class="cols-2-1_2 gap-regular mobile:cols-1">
           <!-- Left column - Bio and details -->
           <div>
             <div class="bg-light pd-medium radius-medium mn-b-medium">
               <h2 class="h3 mn-b-small">Biography</h2>
-              <p v-if="artist.bio" class="p-medium">{{ artist.bio }}</p>
-              <p v-else class="p-medium t-transp">No biography available for this artist.</p>
+              <p v-if="artist.bio" class="p-regular">{{ artist.bio }}</p>
+              <p v-else class="p-regular t-transp">No biography available for this artist.</p>
             </div>
             
             <!-- Genres -->
@@ -172,7 +172,7 @@
                   </div>
                   
                   <div class="w-100 o-hidden">
-                    <p class="p-medium t-truncate">{{ album.title }}</p>
+                    <p class="p-regular t-truncate">{{ album.title }}</p>
                     <p class="p-small t-transp">{{ formatDate(album.releaseDate) }}</p>
                   </div>
                 </div>
@@ -213,7 +213,7 @@
                   </div>
                   
                   <div class="w-100 o-hidden">
-                    <p class="p-medium t-truncate">{{ single.title }}</p>
+                    <p class="p-regular t-truncate">{{ single.title }}</p>
                     <p class="p-small t-transp">{{ formatDate(single.releaseDate) }}</p>
                   </div>
                 </div>
@@ -251,7 +251,7 @@
               v-if="discography.albums.length === 0 && discography.singles.length === 0" 
               class="bg-light pd-medium radius-medium t-center"
             >
-              <p class="p-medium mn-b-small">No releases yet</p>
+              <p class="p-regular mn-b-small">No releases yet</p>
               <p class="p-small t-transp">This artist hasn't released any albums or singles yet.</p>
               
               <Button
@@ -271,7 +271,7 @@
         <div v-if="relatedArtists.length > 0" class="mn-t-medium">
           <h2 class="h3 mn-b-medium">Fans Also Like</h2>
           
-          <div class="cols-5 gap-medium mobile:cols-2">
+          <div class="cols-5 gap-regular mobile:cols-2">
             <div
               v-for="relatedArtist in relatedArtists"
               :key="relatedArtist._id"
@@ -290,7 +290,7 @@
                 </div>
               </div>
               
-              <p class="p-medium t-truncate">{{ relatedArtist.name }}</p>
+              <p class="p-regular t-truncate">{{ relatedArtist.name }}</p>
             </div>
           </div>
         </div>

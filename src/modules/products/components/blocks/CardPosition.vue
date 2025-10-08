@@ -47,7 +47,7 @@
         >
           <component
             :is="action.component"
-            class="i-regular"
+            class="i-medium"
           />
         </div>
       </template>

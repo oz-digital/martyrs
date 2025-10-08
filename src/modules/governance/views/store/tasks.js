@@ -20,7 +20,7 @@ const tasksState = reactive({
 const tasksActions = {
   async getAllTasks() {
     try {
-      const response = await $axios.get('/api/tasks');
+      const response = await $axios.get('/api/tasks/read');
       tasksState.all = response.data;
       return response.data;
     } catch (error) {
@@ -30,7 +30,7 @@ const tasksActions = {
   },
   async getTaskById(id) {
     try {
-      const response = await $axios.get(`/api/tasks/${id}`);
+      const response = await $axios.get('/api/tasks/read', { params: { _id: id } });
       tasksState.current = response.data;
       return response.data;
     } catch (error) {
@@ -40,7 +40,7 @@ const tasksActions = {
   },
   async createTask(task) {
     try {
-      const response = await $axios.post('/api/tasks', task);
+      const response = await $axios.post('/api/tasks/create', task);
       tasksState.all.push(response.data);
       return response.data;
     } catch (error) {
@@ -50,8 +50,11 @@ const tasksActions = {
   },
   async updateTask(task) {
     try {
-      const response = await $axios.put(`/api/tasks/${task.id}`, task);
-      const index = tasksState.all.findIndex(t => t.id === task.id);
+      const response = await $axios.put('/api/tasks/update', {
+        _id: task._id || task.id,
+        ...task
+      });
+      const index = tasksState.all.findIndex(t => (t._id || t.id) === (task._id || task.id));
       if (index !== -1) {
         tasksState.all[index] = response.data;
       }
@@ -63,8 +66,8 @@ const tasksActions = {
   },
   async deleteTask(id) {
     try {
-      await $axios.delete(`/api/tasks/${id}`);
-      tasksState.all = tasksState.all.filter(t => t.id !== id);
+      await $axios.post('/api/tasks/delete', { _id: id });
+      tasksState.all = tasksState.all.filter(t => (t._id || t.id) !== id);
     } catch (error) {
       setError(error);
       throw error;

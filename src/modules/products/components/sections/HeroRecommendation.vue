@@ -82,7 +82,7 @@
 			/>
 
 			<p 
-				class="mn-b-big p-semi t-transp" 
+				class="mn-b-big p-medium t-transp" 
 				v-html="t('description')"
 			/>
 			
@@ -99,7 +99,7 @@
 			/>
 
 			<p 
-				class="w-m-60r t-transp mn-b-semi p-medium" 
+				class="w-m-60r t-transp mn-b-semi p-regular" 
 				v-html="t('subdescription')"
 			/>
 

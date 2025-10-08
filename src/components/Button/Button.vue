@@ -167,7 +167,6 @@ a.button {
   justify-content: center;
   color: black;
   text-align: center;
-  text-transform: uppercase;
   font-size: 1rem;
   letter-spacing: 5%;
   transition: all 0.33s ease;

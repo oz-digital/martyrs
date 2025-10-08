@@ -75,7 +75,7 @@
 							_id: auth.state.user._id
 						}
 					})" 
-					class="cursor-pointer pos-absolute pos-t-regular pos-r-regular i-regular t-transp"
+					class="cursor-pointer pos-absolute pos-t-regular pos-r-regular i-medium t-transp"
 				/>
 
 				<img loading="lazy" 
@@ -103,7 +103,7 @@
 				</p>
 
 				<p 
-					class="mn-b-small p-medium"
+					class="mn-b-small p-regular"
 				>
 				 {{ users.state.current.profile.description ? users.state.current.profile.description : 'Bio not specified' }}
 				</p>
@@ -173,7 +173,7 @@
 	          <component 
 	            :is="module.icon" 
 	            v-if="module.icon"
-	            class="i-semi" 
+	            class="i-medium" 
 	            :icon="true"
 	          />
 	          <span>{{ module.displayName }}</span>

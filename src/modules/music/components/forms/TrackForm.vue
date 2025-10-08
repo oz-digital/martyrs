@@ -3,15 +3,15 @@
   <div class="pd-medium">
     <h2 class="h2 mn-b-medium">{{ editMode ? 'Edit Track' : 'Upload Track' }}</h2>
     
-    <form @submit.prevent="submitForm" class="cols-1 gap-medium">
+    <form @submit.prevent="submitForm" class="cols-1 gap-regular">
        <!-- Media Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Media</h3>
         
-        <div class="cols-2-fit-content mobile:cols-1 gap-medium">
+        <div class="cols-2-fit-content mobile:cols-1 gap-regular">
           <!-- Track Cover -->
           <div>
-            <p class="p-semi mn-b-small">Cover Image</p>
+            <p class="p-medium mn-b-small">Cover Image</p>
             <UploadImage
               v-model:photo="form.coverUrl"
               uploadPath="tracks/covers"
@@ -22,7 +22,7 @@
           
           <!-- Audio File -->
           <div>
-            <p class="p-semi mn-b-small">Audio File</p>
+            <p class="p-medium mn-b-small">Audio File</p>
             <Upload
               v-model:field="form.fileUrl"
               @file-change="(url) => form.fileUrl = url"

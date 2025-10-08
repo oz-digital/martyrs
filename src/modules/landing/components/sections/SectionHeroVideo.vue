@@ -13,11 +13,11 @@
 						</span>
 	        </h1>
 	        
-	        <p class="p-semi t-transp">{{ t('viewpoint.description') }}</p>
+	        <p class="p-medium t-transp">{{ t('viewpoint.description') }}</p>
 	      </div>
 
         <div class="pd-big bg-black t-white radius-medium">
-          <p class="p-semi mn-b-small" itemprop="name">{{ t('contacts.name') }}</p>
+          <p class="p-medium mn-b-small" itemprop="name">{{ t('contacts.name') }}</p>
           
           <address class="d-block mn-b-small" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
             <a :href="t('contacts.addressLink')" target="_blank" rel="noopener"> 

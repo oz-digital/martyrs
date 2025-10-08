@@ -26,7 +26,7 @@
 							{{category.name}}
 						</h3>
 					
-						<p v-if="category.url === 'buds'" class="mn-t-thin mn-b-thin t-transp t-black p-medium">
+						<p v-if="category.url === 'buds'" class="mn-t-thin mn-b-thin t-transp t-black p-regular">
 							Unveiling the Exceptional User Curated Best Buds
 						</p>
 						

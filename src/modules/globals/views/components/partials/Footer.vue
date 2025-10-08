@@ -78,7 +78,7 @@ const iconComponents = {
         
         <!-- Contact Block -->
         <div class="col w-max-15r">
-          <p class="p-semi t-medium mn-b-semi">{{ t('footer.description') }}</p>
+          <p class="p-medium t-medium mn-b-semi">{{ t('footer.description') }}</p>
           
           <div class="mn-b-semi flex flex-column gap-small">
             <a 
@@ -86,7 +86,7 @@ const iconComponents = {
               class="flex mn-b-micro gap-micro flex-v-center transition-opacity hover-opacity-70"
               :class="theme === 'light' ? 't-black' : 't-white'"
             >
-              <IconPhone class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
+              <IconPhone class="i-medium" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
               <span class="t-small">{{ t('footer.phoneNumber') }}</span>
             </a>
             
@@ -95,12 +95,12 @@ const iconComponents = {
               class="flex mn-b-micro gap-micro flex-v-center transition-opacity hover-opacity-70"
               :class="theme === 'light' ? 't-black' : 't-white'"
             >
-              <IconEmail class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
+              <IconEmail class="i-medium" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
               <span class="t-small">{{ t('footer.emailAddress') }}</span>
             </a>
             
             <div class="flex mn-b-micro gap-micro flex-v-center">
-              <IconTime class="i-regular" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
+              <IconTime class="i-medium" :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" />
               <span class="t-small">{{ t('footer.hours_text') }}</span>
             </div>
           </div>
@@ -141,7 +141,7 @@ const iconComponents = {
 
         <!-- Navigation Columns -->
         <div class="cols-2 gap-big">
-          <div v-for="(column, colIndex) in tm('footer.navigationColumns')" :key="colIndex" class="flex flex-column gap-medium">
+          <div v-for="(column, colIndex) in tm('footer.navigationColumns')" :key="colIndex" class="flex flex-column gap-regular">
             <div v-for="(section, sectionIndex) in column.sections" :key="sectionIndex" class="">
               <h4 class="h5 t-medium mn-b-regular">{{ section.title }}</h4>
               <nav>
@@ -192,7 +192,7 @@ const iconComponents = {
             >
               <component
                 :is="iconComponents[social.name]"
-                class="i-semi"
+                class="i-medium"
                 :fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'"
               />
             </a>

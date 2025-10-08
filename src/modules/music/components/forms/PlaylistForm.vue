@@ -2,14 +2,14 @@
   <div class="pd-medium">
     <h2 class="h2 mn-b-medium">{{ editMode ? 'Edit Playlist' : 'Create Playlist' }}</h2>
     
-    <form @submit.prevent="submitForm" class="cols-1 gap-medium">
+    <form @submit.prevent="submitForm" class="cols-1 gap-regular">
       <!-- Basic Info Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Basic Information</h3>
         
         <!-- Playlist Cover -->
         <div class="mn-b-medium">
-          <p class="p-semi mn-b-small">Playlist Cover</p>
+          <p class="p-medium mn-b-small">Playlist Cover</p>
           <UploadImage
             v-model:photo="playlist.coverUrl"
             uploadPath="playlists/covers"
@@ -162,8 +162,8 @@
         
         <!-- Privacy -->
         <div class="mn-b-medium">
-          <p class="p-semi mn-b-small">Privacy</p>
-          <div class="flex gap-medium">
+          <p class="p-medium mn-b-small">Privacy</p>
+          <div class="flex gap-regular">
             <Radio
               v-model:radio="playlist.isPublic"
               :value="true"
@@ -183,8 +183,8 @@
         
         <!-- Collaborative -->
         <div class="mn-b-medium">
-          <p class="p-semi mn-b-small">Collaborative Playlist</p>
-          <div class="flex gap-medium">
+          <p class="p-medium mn-b-small">Collaborative Playlist</p>
+          <div class="flex gap-regular">
             <Radio
               v-model:radio="playlist.isCollaborative"
               :value="true"

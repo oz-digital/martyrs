@@ -14,14 +14,14 @@ defineProps({
 </script>
 
 <template>
-  <div v-if="number" class="w-4r pos-relative i-semi">
+  <div v-if="number" class="w-4r pos-relative i-medium">
     <span 
       :style="{ 
         position: 'absolute', 
         top: '0px', 
         right: '0px' 
       }"
-      class="br-solid br-2px br-white z-index-1 radius-big i-semi bg-second flex flex-center t-white p-small t-semi"
+      class="br-solid br-2px br-white z-index-1 radius-big i-medium bg-second flex flex-center t-white p-small t-semi"
     >
       {{number}}
     </span>
@@ -38,7 +38,7 @@ defineProps({
           right: (index * 20 + 20) + '%', 
           zIndex: 1 - index 
         }"
-        class="br-solid br-2px br-white i-semi bg-light radius-big"
+        class="br-solid br-2px br-white i-medium bg-light radius-big"
       />
 
       <PlaceholderUserpic
@@ -49,7 +49,7 @@ defineProps({
           right: (index * 20 + 20) + '%', 
           zIndex: 1 - index 
         }"
-        class="br-solid br-2px br-white i-semi bg-light radius-big"
+        class="br-solid br-2px br-white i-medium bg-light radius-big"
       />
     </template>
   </div>

@@ -136,7 +136,7 @@ The same section contains classes for determining the size of icons, adding marg
   width: $extra * 2;
   height: $extra * 2;
 }
-.i-semi {
+.i-medium {
   width: $big * 3;
   height: $big * 3;
 }
@@ -144,7 +144,7 @@ The same section contains classes for determining the size of icons, adding marg
   width: $extra;
   height: $extra;
 }
-.i-regular {
+.i-medium {
   width: $semi * 2;
   height: $semi * 2;
 }
@@ -156,7 +156,7 @@ The same section contains classes for determining the size of icons, adding marg
   width: $regular;
   height: $regular;
 }
-.i-semi {
+.i-medium {
   width: 2rem;
   height: 2rem;
 }
@@ -529,7 +529,7 @@ p {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.p-big {
+.p-semi {
   font-size: 1.25rem;
   line-height: 1.25;
   font-weight: 400;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="mn-b-thin t-transp p-medium">{{ text }}</p> 
+    <p class="mn-b-thin t-transp p-regular">{{ text }}</p> 
 
     <section class="cols-1 mn-b-small radius-medium pd-semi bg-light pos-relative">
       <div

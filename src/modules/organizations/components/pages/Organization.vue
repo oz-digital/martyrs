@@ -8,7 +8,7 @@
 
 			<Dropdown 
 				v-if="auth.state.user._id !== organization.state.current.owner"
-				:label="{ component: IconEllipsis, class: 'i-regular t-transp' }"
+				:label="{ component: IconEllipsis, class: 'i-medium t-transp' }"
 				:align="'right'"
 				class="cursor-pointer pos-absolute pos-r-regular pos-t-regular pd-thin radius-extra "
 			>
@@ -59,7 +59,7 @@
 	      "
 	    >
 	      <IconEdit
-	        class="i-regular"
+	        class="i-medium"
 	        classes="fill-white"
 	      />
 	    </router-link>
@@ -85,7 +85,7 @@
 	   	<div class="flex-center  pd-r-thin pd-l-thin flex-nowrap flex mn-t-thin bg-white radius-extra w-max">
 	   		<IconFollowing class="i-medium mn-r-micro t-transp"/>
 
-	      <p class="mn-t-thin p-medium t-medium uppercase mn-b-thin">{{organization.state.current.numberOfSubscribers}} followers</p>
+	      <p class="mn-t-thin p-regular t-medium uppercase mn-b-thin">{{organization.state.current.numberOfSubscribers}} followers</p>
 
 	      <ButtonToggleMembership
 	        v-if="
@@ -101,18 +101,18 @@
 	        :status="organization.state.current.isSubscriber" 
 	        :text="{create: '+', remove: '-'}"
 	        @updateMembership="event => handleMembershipUpdate(event, 'isSubscriber', 'numberOfSubscribers')"
-	        class=" mn-l-thin p-medium t-medium radius-extra i-semi" 
+	        class=" mn-l-thin p-regular t-medium radius-extra i-medium" 
 	      />
 	    </div>
 
-	    <!-- <p class="w-max-50r mn-t-regular mn-b-medium p-semi">
+	    <!-- <p class="w-max-50r mn-t-regular mn-b-medium p-medium">
 	   		<Text :text="organization.profile.description || ''" :showToggleText="true" :maxLen="320" />
 	  	</p>   -->
 
 	  	<Chips 
 	    	v-if="organization.state.current.profile?.tags?.length > 0" 
 	    	:chips="organization.state.current.profile.tags"
-	    	class="p-medium"
+	    	class="p-regular"
 	   	/>
 
 

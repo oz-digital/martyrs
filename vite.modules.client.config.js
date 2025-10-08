@@ -40,6 +40,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/rents/rents.client.js'),
         resolve(__dirname, './src/modules/music/music.client.js'),
         resolve(__dirname, './src/modules/notifications/notifications.client.js'),
+        // resolve(__dirname, './src/modules/wallet/wallet.client.js'),
       ],
       formats: ['cjs', 'es'],
       fileName: (format, entryName) => {

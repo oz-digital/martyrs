@@ -37,12 +37,12 @@
         <transition name="fade">
           <div 
             v-if="showControls === index" 
-            class="pos-absolute z-index-4 i-semi" 
+            class="pos-absolute z-index-4 i-medium" 
             style="right: calc(100% + 0.5rem); top: calc(50% - 1.125rem);"
           >
             <button 
               @click="showMenu = !showMenu" 
-              class="mn-b-small cursor-pointer w-100 i-semi bg-white radius-thin"
+              class="mn-b-small cursor-pointer w-100 i-medium bg-white radius-thin"
             >
               {{ block.content ? '⋯' : '+' }}
             </button>

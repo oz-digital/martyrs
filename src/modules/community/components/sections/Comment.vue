@@ -11,7 +11,7 @@
         :date="comment.createdAt"
       />
       <div class="pd-t-zero">
-        <p class="p-medium">{{ comment.content }}</p>
+        <p class="p-regular">{{ comment.content }}</p>
       </div>
       <div class="mn-t-thin flex-v-center flex-nowrap flex gap-small">
         <button 

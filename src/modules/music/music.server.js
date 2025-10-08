@@ -1,7 +1,6 @@
 import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
 import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
 import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
-import globalswebsocket from '@martyrs/src/modules/globals/controllers/classes/globals.websocket.js';
 
 // NEW CRUD Routes
 import setupTracksRoutes from './routes/tracks.routes.js';

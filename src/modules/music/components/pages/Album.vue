@@ -132,8 +132,8 @@
         <h3 class="t-medium mn-b-small">Metadata</h3>
         <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Release Date -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconCalendar class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconCalendar class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Released</div>
               <div class="t-medium ">{{ formatDate(album.releaseDate) }}</div>
@@ -141,8 +141,8 @@
           </div>
 
           <!-- Total Duration -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconClock class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconClock class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Duration</div>
               <div class="t-medium ">{{ totalDuration }}</div>
@@ -150,8 +150,8 @@
           </div>
 
           <!-- Label -->
-          <div v-if="album.label" class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconDisc class="i-regular t-primary" />
+          <div v-if="album.label" class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconDisc class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Label</div>
               <div class="t-medium ">{{ album.label }}</div>
@@ -159,8 +159,8 @@
           </div>
 
           <!-- Visibility -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconEye class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconEye class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>
               <div class="t-medium ">{{ album.isPublic ? 'Public' : 'Private' }}</div>

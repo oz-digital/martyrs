@@ -35,7 +35,7 @@
       class="h-3r w-100 bg-main button"
     >
       <div class="gap-thin flex flex-center flex-nowrap">
-        <IconShopcartAdd class="i-semi icon-button-main" />
+        <IconShopcartAdd class="i-medium icon-button-main" />
         <span>{{t('addtoorder')}}</span>
       </div>
     </Button>

@@ -5,7 +5,7 @@
     <!-- ---------------------------------------------------------------- -->
     <div class="pd-big mobile:pd-medium pd-b-zero mobile:pd-b-zero flex-nowrap flex">
       <div class="mn-b-medium w-100">
-        <h4 class="mn-b-thin p-semi">{{t('title')}}</h4>
+        <h4 class="mn-b-thin p-medium">{{t('title')}}</h4>
         <p class="t-transp p-small">{{t('subtitle')}} {{ t('positions', { count: StoreCartAmount }) }}</p>
       </div>
       <IconCross @click="shopcart.actions.toggleShopcart" class="cursor-pointer i-medium button-icon"/>

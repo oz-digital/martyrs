@@ -59,7 +59,7 @@
     <div class="bg-light pd-medium o-hidden radius-medium mn-b-thin">
       <h3 class="mn-b-semi">Department Settings</h3>
       
-      <p class="p-medium mn-b-small">Please settings for your department:</p>
+      <p class="p-regular mn-b-small">Please settings for your department:</p>
       <div class="cols-1 gap-thin">
         <Checkbox 
           label="Hidden department"
@@ -74,7 +74,7 @@
     <div class="bg-light pd-medium o-hidden radius-medium">
       <h3 class="mn-b-semi">Accesses</h3>
       
-      <p class="p-medium mn-b-small">Please select organization accesses for user in department:</p>
+      <p class="p-regular mn-b-small">Please select organization accesses for user in department:</p>
       
       <div class="cols-1 gap-thin">
         <div v-for="(actions, category) in currentDepartment.accesses" :key="category" class="mn-b-small">

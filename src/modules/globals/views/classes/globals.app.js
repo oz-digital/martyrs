@@ -195,8 +195,10 @@ export function createUniversalApp({
         // 1. Критические модули
         await initCriticalModules();
         
-        // 2. WebSocket (отложим после гидратации)
-        if (typeof window !== 'undefined') {
+        // 2. WebSocket (отложим после гидратации, только если включен)
+        const useWebsocket = config.globals?.websocket !== false; // по умолчанию false
+
+        if (useWebsocket && typeof window !== 'undefined') {
           // Откладываем инициализацию WebSocket после гидратации
           requestIdleCallback(() => {
             globalWebSocket.initialize({
@@ -206,8 +208,10 @@ export function createUniversalApp({
               pingInterval: 30000,
             });
           });
-          
-          // 3. Предзагрузка важных модулей в фоне
+        }
+
+        // 3. Предзагрузка важных модулей в фоне
+        if (typeof window !== 'undefined') {
           requestIdleCallback(() => {
             moduleRegistry.preloadModules(context);
           });

@@ -1,7 +1,7 @@
 <template>
   <section class="mn-b-big radius-medium pd-big bg-white">
     <h3 class="mn-b-regular">{{ title }}</h3>
-    <p class="mn-b-small t-transp p-medium">{{ description }}</p>
+    <p class="mn-b-small t-transp p-regular">{{ description }}</p>
 
     <button @click="callback" class="t-white bg-second w-100 button">
       {{ action }}

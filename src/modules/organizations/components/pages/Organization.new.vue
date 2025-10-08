@@ -13,7 +13,7 @@
       
       <!-- Основная информация -->
       <div class="bg-light radius-medium pd-medium mn-t-regular">
-        <div class="flex gap-medium">
+        <div class="flex gap-regular">
           <!-- Аватар -->
           <div class="pos-relative">
             <img
@@ -92,12 +92,12 @@
     </div>
 
     <!-- О нас и соцсети -->
-    <div v-if="organizationData" class="cols-2  gap-medium mn-b-big">
+    <div v-if="organizationData" class="cols-2  gap-regular mn-b-big">
       <!-- О нас -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h4 mn-b-small">О нас</h3>
         <p class="mn-b-medium">{{ organizationData?.profile?.description }}</p>
-        <div class="flex gap-medium">
+        <div class="flex gap-regular">
           <div class="t-center">
             <div class="h3 t-main">{{ organizationState.stats.projects }}</div>
             <div class="p-small t-grey uppercase">проектов</div>
@@ -229,7 +229,7 @@
         Контакты и адреса
       </h2>
       
-      <div class="cols-2 gap-medium">
+      <div class="cols-2 gap-regular">
         <!-- Контакты -->
         <div>
           <h3 class="h4 mn-b-small">Связь с нами</h3>
@@ -319,11 +319,11 @@
         Расписание ивентов
       </h2>
       
-      <div class="flex flex-column gap-medium">
+      <div class="flex flex-column gap-regular">
         <div
           v-for="event in organizationState.events"
           :key="event.id"
-          class="flex gap-medium pd-small bg-light radius-small"
+          class="flex gap-regular pd-small bg-light radius-small"
         >
           <!-- Дата -->
           <div class="flex flex-column flex-center bg-main pd-small radius-small t-white w-5r h-5r">
@@ -335,7 +335,7 @@
           <div class="flex-child-1">
             <h4 class="t-semi mn-b-micro">{{ event.title }}</h4>
             <p class="p-small t-grey mn-b-small">{{ event.description }}</p>
-            <div class="flex gap-medium p-small t-grey">
+            <div class="flex gap-regular p-small t-grey">
               <div class="flex gap-micro">
                 <Clock class="i-small fill-grey" />
                 <span>{{ event.time }}</span>

@@ -25,7 +25,7 @@
         <h3 class="mn-b-medium">{{ props.successTitle || t('orders.newsletter.success.title') }}</h3>
         <p class="t-transp mn-b-medium">{{ props.successSubtitle || t('orders.newsletter.success.subtitle') }}</p>
         
-        <div v-if="(props.socials || tm('orders.newsletter.socials')) && (props.socials || tm('orders.newsletter.socials')).length" class="flex flex-wrap flex-h-center gap-medium">
+        <div v-if="(props.socials || tm('orders.newsletter.socials')) && (props.socials || tm('orders.newsletter.socials')).length" class="flex flex-wrap flex-h-center gap-regular">
           <a
             v-for="social in (props.socials || tm('orders.newsletter.socials'))"
             :key="social.name"
@@ -36,7 +36,7 @@
           >
             <component
               :is="socialIcons[social.icon]"
-              class="i-semi"
+              class="i-medium"
               :fill="'rgb(var(--dark))'"
             />
           </a>

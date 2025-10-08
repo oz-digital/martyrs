@@ -41,7 +41,7 @@
       </p>
 
       <div class="flex block">
-        <p class="w-100 mn-b-thin p-semi">
+        <p class="w-100 mn-b-thin p-medium">
           <!-- +7{{user.phone}}  -->
         </p>
          

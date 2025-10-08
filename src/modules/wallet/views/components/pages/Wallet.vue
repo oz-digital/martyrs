@@ -3,7 +3,7 @@
     <section class="bg-black t-white mn-b-thin radius-big pd-big">
       <h1 class="mn-b-medium">{{ t('wallet.title') }}</h1>
 
-      <p class="mn-b-semi t-transp p-semi">
+      <p class="mn-b-semi t-transp p-medium">
         {{ t('wallet.subtitle') }}
       </p>
 
@@ -35,7 +35,7 @@
       >
         <p class="t-transp t-medium mn-b-thin">You own:</p>
         <p class="h1 mn-b-small">{{state.share}}%</p>
-        <p class="t-white p-semi t-medium mn-b-semi">of all shares</p>
+        <p class="t-white p-medium t-medium mn-b-semi">of all shares</p>
 
           <div
             class="flex-v-center mn-b-small flex-nowrap flex pd-small bg-black-transp-5 radius-extra"
@@ -95,7 +95,7 @@
         v-for="income in state.rewards"
       > 
         <div class="flex-nowrap br-b br-black-transp-10 br-solid flex pd-medium">
-          <!-- <img loading="lazy" src="/logo/wdt-plus.svg" class="mn-r-thin i-semi"> -->
+          <!-- <img loading="lazy" src="/logo/wdt-plus.svg" class="mn-r-thin i-medium"> -->
           <p class="t-semi mn-r-auto">{{income.amount}} WDT</p>
           
           <span class="pd-t-nano pd-b-nano pd-l-thin pd-r-thin bg-main flex flex-center radius-extra t-semi p-small">{{income.type === 'blogpost' ? 'Community Reward' : income.type}}</span>
@@ -119,7 +119,7 @@
         v-for="income in state.rewards"
       > 
         <div class="flex-nowrap br-b br-black-transp-10 br-solid flex pd-medium">
-          <!-- <img loading="lazy" src="/logo/wdt-plus.svg" class="mn-r-thin i-semi"> -->
+          <!-- <img loading="lazy" src="/logo/wdt-plus.svg" class="mn-r-thin i-medium"> -->
           <p class="t-semi mn-r-auto">{{income.amount}} WDT</p>
           
           <span class="pd-t-nano pd-b-nano pd-l-thin pd-r-thin bg-main flex flex-center radius-extra t-semi p-small">{{income.type === 'blogpost' ? 'Community Reward' : income.type}}</span>

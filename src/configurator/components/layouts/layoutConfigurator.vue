@@ -1,5 +1,5 @@
 <template>
-	<section id="account" class="cols-2-1_3 gap-medium pd-big">
+	<section id="account" class="cols-2-1_3 gap-regular pd-big">
     <!-- ---------------------------------------------------------------- -->
     <!-- 02. Page Tabs  -->
     <!-- ---------------------------------------------------------------- -->

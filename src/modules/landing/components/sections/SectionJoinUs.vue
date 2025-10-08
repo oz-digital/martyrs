@@ -4,7 +4,7 @@
       <span style="font-size: 8rem" class="t-main font-main t-semi">
         {{ userCount }}
       </span>
-      <p class="w-m-33r t-center mn-b-small p-semi">
+      <p class="w-m-33r t-center mn-b-small p-medium">
         {{t('description')}}
     
       </p>

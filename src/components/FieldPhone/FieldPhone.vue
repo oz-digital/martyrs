@@ -19,7 +19,7 @@
       @keydown.esc="reset"
       class="br-solid br-black-transp-10 br-1px radius-thin"
     >
-      <span class="flex-nowrap flex flex-v-center p-medium vti__selection">
+      <span class="flex-nowrap flex flex-v-center p-regular vti__selection">
         <span v-if="dropdownOptions.showFlags" v-html="activeCountryFlag" class="mn-r-nano" />
         
         <!-- Новый инпут для ввода кода страны -->

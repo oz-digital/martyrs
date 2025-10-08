@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="mn-b-thin t-transp p-medium">Select users to add to the organization:</p>
+    <p class="mn-b-thin t-transp p-regular">Select users to add to the organization:</p>
 
     <Feed
       :search="{

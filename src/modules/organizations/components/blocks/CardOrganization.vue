@@ -39,9 +39,9 @@
           <Chips 
             v-if="showTags && organization.profile.tags?.length > 0" 
             :chips="organization.profile.tags.slice(0,3)"
-            class="pos-relative t-trimmed p-medium"
+            class="pos-relative t-trimmed p-regular"
           >
-           <div v-if="showFollowers" class="t-truncate pos-relative p-medium mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
+           <div v-if="showFollowers" class="t-truncate pos-relative p-regular mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
             <p class="t-truncate">{{organization.numberOfSubscribers}} followers</p>
 
             <ButtonToggleMembership
@@ -56,7 +56,7 @@
               :status="organization.isSubscriber" 
               :text="{create: '+', remove: '-'}"
               @updateMembership="event => emits('updateMembership', event, 'isSubscriber', 'numberOfSubscribers')"
-              class="i-semi" 
+              class="i-medium" 
             />
           </div>
         </Chips>

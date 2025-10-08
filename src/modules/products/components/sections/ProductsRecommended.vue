@@ -172,7 +172,7 @@ const addSelectedToCart = async () => {
           :showLoader="false"
           :submit="canAddToCart ? addSelectedToCart : undefined"
         >
-          <IconShopcartAdd class="i-semi"/>
+          <IconShopcartAdd class="i-medium"/>
           <span>Add to Cart</span>
         </Button>
       </div>

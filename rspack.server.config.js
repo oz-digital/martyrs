@@ -1,5 +1,10 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import nodeExternals from 'webpack-node-externals';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Получаем формат из переменной среды, по умолчанию cjs
 const format = process.env.FORMAT || 'cjs';
 const isESM = format === 'esm';
@@ -10,6 +15,7 @@ export const entry = {
   'modules/globals/globals.server': './src/modules/globals/globals.server.js',
   'modules/organizations/organizations.server': './src/modules/organizations/organizations.server.js',
   'modules/products/products.server': './src/modules/products/products.server.js',
+  'modules/inventory/inventory.server': './src/modules/inventory/inventory.server.js',
   'modules/events/events.server': './src/modules/events/events.server.js',
   'modules/files/files.server': './src/modules/files/files.server.js',
   'modules/chats/chats.server': './src/modules/chats/chats.server.js',

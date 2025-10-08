@@ -60,7 +60,7 @@
         class="cursor-pointer pd-medium radius-big w-100 bg-main button h-3r"
       >
         <div v-if="isVariantAvailable" class="gap-micro flex flex-center flex-nowrap">
-          <IconShopcartAdd class="i-semi"/>
+          <IconShopcartAdd class="i-medium"/>
           <span class="t-nowrap">{{ t('addtoorder') }}</span>
         </div>
         <template v-else>

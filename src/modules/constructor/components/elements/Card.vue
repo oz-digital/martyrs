@@ -33,7 +33,7 @@
         </template>
         <template v-else>
           <h4 class="h4">{{ modelValue.title }}</h4>
-          <p class="p-medium">{{ modelValue.subtitle }}</p>
+          <p class="p-regular">{{ modelValue.subtitle }}</p>
         </template>
       </div>
     </div>

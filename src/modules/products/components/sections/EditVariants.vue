@@ -46,7 +46,7 @@
           
           <div class="w-100">
             <div class="flex-nowrap mn-b-nano flex-v-center flex">
-              <p class="p-medium t-medium d-block">{{ variant.name || 'Unnamed variant' }}</p>
+              <p class="p-regular t-medium d-block">{{ variant.name || 'Unnamed variant' }}</p>
               <p v-if="variant.status" class="t-small pd-thin mn-l-thin radius-thin bg-light">{{ variant.status }}</p>
             </div>
 
@@ -62,7 +62,7 @@
               class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1"
               :submit="() => copyVariant(variant)"
             >
-              <IconDuplicate class="i-regular" />
+              <IconDuplicate class="i-medium" />
             </Button>
             <Button
               :showSuccess="false"
@@ -70,7 +70,7 @@
               class="radius-small pd-small flex-center flex aspect-1x1 bg-light cursor-pointer hover-scale-1"
               :submit="() => openVariantPopup(variant)"
             >
-              <IconEdit class="i-regular" />
+              <IconEdit class="i-medium" />
             </Button>
             <Button
               :showSuccess="false"
@@ -78,7 +78,7 @@
               class="radius-small pd-small flex-center flex aspect-1x1 bg-red cursor-pointer hover-scale-1"
               :submit="() => deleteVariant(variant)"
             >
-               <IconDelete class="i-regular" />
+               <IconDelete class="i-medium" />
             </Button>
           </div>
         </li>
@@ -159,7 +159,7 @@
         <div class="radius-small h-100 flex-center flex-child-default flex aspect-1x1 bg-red cursor-pointer hover-scale-1">
           <IconDelete 
             @click="() => currentVariant.attributes.splice(attrIndex, 1)" 
-            class="i-regular"
+            class="i-medium"
           />
         </div>
       </div>

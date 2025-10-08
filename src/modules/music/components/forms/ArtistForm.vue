@@ -2,15 +2,15 @@
   <div class="pd-medium">
     <h2 class="h2 mn-b-medium">{{ editMode ? 'Edit Artist' : 'Create Artist' }}</h2>
     
-    <form @submit.prevent="submitForm" class="cols-1 gap-medium">
+    <form @submit.prevent="submitForm" class="cols-1 gap-regular">
       <!-- Basic Info Section -->
       <div class="bg-light pd-medium radius-medium">
         <h3 class="h3 mn-b-medium">Basic Information</h3>
         
-        <div class="cols-2 mobile:cols-1 gap-medium">
+        <div class="cols-2 mobile:cols-1 gap-regular">
           <!-- Artist Photo -->
           <div>
-            <p class="p-semi mn-b-small">Artist Photo</p>
+            <p class="p-medium mn-b-small">Artist Photo</p>
             <UploadImage
               v-model:photo="artist.photoUrl"
               uploadPath="artists/photos"
@@ -21,7 +21,7 @@
           
           <!-- Artist Cover -->
           <div>
-            <p class="p-semi mn-b-small">Cover Image</p>
+            <p class="p-medium mn-b-small">Cover Image</p>
             <UploadImage
               v-model:photo="artist.coverUrl"
               uploadPath="artists/covers"

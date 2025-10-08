@@ -3,7 +3,7 @@
 		<p class="h1 mn-b-medium">🌍</p>
 		
 		<h3 class="mn-b-semi">{{t('title')}}</h3>
-		<p class="mn-b-small t-transp p-medium">{{t('description')}}</p> 
+		<p class="mn-b-small t-transp p-regular">{{t('description')}}</p> 
 		
 		<Address
 			:key="$i18n.locale"

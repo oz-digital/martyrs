@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="mn-b-thin t-transp p-medium">{{text}}</p> 
+    <p class="mn-b-thin t-transp p-regular">{{text}}</p> 
 
     <div class="mn-b-thin pos-relative">
       <BlockSearch 

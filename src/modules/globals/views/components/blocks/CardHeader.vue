@@ -8,12 +8,12 @@
 		>
 
 			<div
-				class="w-100 gap-thin p-medium t-nowrap flex-nowrap flex-v-center flex"
+				class="w-100 gap-thin p-regular t-nowrap flex-nowrap flex-v-center flex"
 			>
 				<img loading="lazy" 
 					v-if="owner.target?.profile?.photo?.length > 0 && type !== 'short'" 
 					:src="(FILE_SERVER_URL || '') + owner.target.profile.photo" 
-					class="radius-medium bg-white flex-child-default object-fit-cover i-semi" 
+					class="radius-medium bg-white flex-child-default object-fit-cover i-medium" 
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
@@ -25,7 +25,7 @@
 				<component
 					v-if="!owner.target?.profile?.photo && type !== 'short'"
 					:is="owner.type === 'user' ? PlaceholderUserpic : PlaceholderOrganizationPic"
-					class="radius-medium flex-child-default cursor-pointer i-semi"
+					class="radius-medium flex-child-default cursor-pointer i-medium"
 
 					@click.stop="$router.push({
 						name: owner.type === 'user' ? 'User Profile' : 'Organization', 
@@ -92,7 +92,7 @@
 				<!-- Report -->
 				<Dropdown 
 					v-if="type !== 'short' && user && (user !== creator.target?._id || (actions && actions.length > 0))"
-					:label="{ component: IconEllipsis, class: 't-transp i-regular' }"
+					:label="{ component: IconEllipsis, class: 't-transp i-medium' }"
 					:align="'right'"
 					class="cursor-pointer z-index-2"
 				>

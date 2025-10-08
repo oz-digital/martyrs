@@ -3,7 +3,7 @@
 
 	  <div v-if="order" class="mn-b-thin pos-relative w-100 bg-main radius-medium pd-medium">
 	  	<div class="mn-b-small flex-nowrap flex">
-		  	<p class="t-medium p-medium">
+		  	<p class="t-medium p-regular">
 		     	Order No: <span class="p-small t-transp">#{{order._id}}</span>
 		    </p>
 			</div>
@@ -132,7 +132,7 @@
 		    >
 		    	<div class="pd-small flex-nowrap flex">
 			    	<div class="mn-r-auto">
-				    	<span class="d-block t-medium p-medium mn-b-thin">Order is</span>
+				    	<span class="d-block t-medium p-regular mn-b-thin">Order is</span>
 					    <span class=" t-lh-075 h2 d-block mn-b-small">{{order.status}}</span>
 					    <p class="pd-thin radius-extra bg-black t-white w-max">{{formatDate(order.updatedAt, {language: locale })}}</p>
 					  </div>
@@ -146,7 +146,7 @@
 					</div>
 
 					<div v-if="order.customer.target?.number" class="pd-small flex flex-nowrap flex-v-center br-t br-black-transp-10 br-solid">
-			    	<p class="w-100 t-medium p-medium">
+			    	<p class="w-100 t-medium p-regular">
 			      	Phone
 			      </p>
 
@@ -156,7 +156,7 @@
 			    </div>
 
 			    <div class="pd-small   flex flex-nowrap flex-v-center br-t br-black-transp-10 br-solid">
-			    	<p class="t-medium p-medium">
+			    	<p class="t-medium p-regular">
 			      	Address
 			      </p>
 
@@ -175,7 +175,7 @@
 			    </div>
 
 			    <div class="pd-small  flex flex-nowrap flex-v-center br-t br-black-transp-10 br-solid">
-			    	<p class="t-medium p-medium">
+			    	<p class="t-medium p-regular">
 			      	Delivery
 			      </p>
 
@@ -185,7 +185,7 @@
 			    </div>
 
 			     <div class="pd-small  flex flex-nowrap flex-v-center br-t br-black-transp-10 br-solid">
-			    	<p class="mn-r-auto t-medium p-medium">
+			    	<p class="mn-r-auto t-medium p-regular">
 			      	Payment
 			      </p>
 
@@ -204,7 +204,7 @@
 
 				<div v-if="route.meta.context !== 'user' && route.meta.context !== 'root'" class="o-y-scroll bg-light pd-thin mn-b-thin pd-thin radius-medium flex-nowrap flex">
 		  		<div class="flex-child-default mn-r-small w-max flex-v-center gap-thin flex-nowrap flex pd-thin radius-small bg-light-transp-20">
-		  			<IconTime class="i-semi t-transp" fill="rgb(var(--black)" />
+		  			<IconTime class="i-medium t-transp" fill="rgb(var(--black)" />
 		        <p class="t-medium mn-r-auto"><span class="p-small t-transp">Estimated Reaction</span><br>{{formatDate(order.deadline, { language: locale })}}</p>
 			  	</div>
 			  	<button v-if="getNextStatus(order.status)" @click="openStatusPopup" class="flex-child-default  mn-l-auto bg-black t-white button">  

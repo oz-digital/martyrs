@@ -1,9 +1,9 @@
 <template>
 	<div class="mn-b-big">
 		 <!-- v-if="order.state.current._id === ''" -->
-		<p class="mn-b-small t-semi p-semi">История заказов</p>
+		<p class="mn-b-small t-semi p-medium">История заказов</p>
 		<!-- @click="store.commit('orders/resetOrder')" v-if="order.state.current._id !== ''"  -->
-		<p class="mn-b-small t-semi p-semi flex-nojustify flex-center flex link-inherit">
+		<p class="mn-b-small t-semi p-medium flex-nojustify flex-center flex link-inherit">
 			<svg class="mn-r-small" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path fill="rgb(var(--black))" fill-rule="evenodd" clip-rule="evenodd" d="M5.34661 10.8333L10.5907 16.0774L9.41217 17.2559L2.15625 10L9.41217 2.74408L10.5907 3.92259L5.34661 9.16667H17.5014V10.8333H5.34661Z" />
 			</svg>
@@ -25,7 +25,7 @@
 						<img loading="lazy" v-if="order.status === 'Ожидает отправки'" 			class="mn-r-small" src="@/assets/icons/status/paid.svg"/>
 						<img loading="lazy" v-if="order.status === 'Отправлен'" 		class="mn-r-small" src="@/assets/icons/status/finished.svg"/>
 						<img loading="lazy" v-if="order.status === 'Выполнен'" 		class="mn-r-small" src="@/assets/icons/status/finished.svg"/>
-		        <span class="w-100 t-medium p-semi">{{order.status}}</span>
+		        <span class="w-100 t-medium p-medium">{{order.status}}</span>
 		      </p>
 		      <ul class="mn-b-semi order-images-wrapper">
 		        <li v-for="(product, index) in orderProducts(order.positions.slice(0,2))" :key="product._id" class="mn-r-small">

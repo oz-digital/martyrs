@@ -2,7 +2,7 @@
   <div class="pos-relative flex-nowrap flex flex-column flex-center z-index-1">
     <header class="d-inline-block z-index-1 mn-b-big">
       <h2 class="mn-b-semi">{{ t('title') }}</h2>
-      <p class="t-transp p-semi">{{ t('subtitle') }}</p>
+      <p class="t-transp p-medium">{{ t('subtitle') }}</p>
     </header>
 
     <FieldSubscribeNewsletter

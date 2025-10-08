@@ -6,7 +6,7 @@
 				<img loading="lazy" v-if="order.status === 'Awaiting shipment'" 			class="mn-r-small" src="@/assets/icons/status/paid.svg"/>
 				<img loading="lazy" v-if="order.status === 'In delivery'" 		class="mn-r-small" src="@/assets/icons/status/finished.svg"/>
 				<img loading="lazy" v-if="order.status === 'Finished'" 		class="mn-r-small" src="@/assets/icons/status/finished.svg"/> -->
-	    <span class="w-100 t-medium p-semi">{{order.status}}</span>
+	    <span class="w-100 t-medium p-medium">{{order.status}}</span>
 	  </p>
 	  
 	  <div class="flex-nowrap flex">
@@ -34,7 +34,7 @@
 
 	    		</li> -->
 	      </ul>
-	      <p class="mn-small t-medium p-semi">
+	      <p class="mn-small t-medium p-medium">
 	      	Adress and delivery
 	      </p>
 	      <p class="mn-small">
@@ -55,7 +55,7 @@
 
 
 	    <div class="w-40">
-	    	<p class="mn-small w-100 t-medium p-semi">
+	    	<p class="mn-small w-100 t-medium p-medium">
 	        <span class="t-transp">Order:</span> №{{order._id.slice(0,8)}} 
 	      </p>
 	       <p  v-if="order.delivery.type === 'Post'" class="mn-medium w-100">
@@ -81,10 +81,10 @@
 	      </div>
 	      <div class="mn-semi intotal flex-bottom flex">
 	        <p  class="t-transp">In total to pay</p>
-	        <p v-if="order.delivery.type === ''" class="p-semi t-semi">$ {{ cartTotalPrice }}</p>
-	        <p v-if="order.delivery.type === 'Pickup'" class="p-semi t-semi">$ {{ cartTotalPrice}} ₽</p>
-	        <p v-if="order.delivery.type === 'Courier'" class="p-semi t-semi">$ {{ cartTotalPrice + 20 }}</p>
-	        <p v-if="order.delivery.type === 'Post'" class="p-semi t-semi">$ {{ cartTotalPrice + 10 }}</p>
+	        <p v-if="order.delivery.type === ''" class="p-medium t-semi">$ {{ cartTotalPrice }}</p>
+	        <p v-if="order.delivery.type === 'Pickup'" class="p-medium t-semi">$ {{ cartTotalPrice}} ₽</p>
+	        <p v-if="order.delivery.type === 'Courier'" class="p-medium t-semi">$ {{ cartTotalPrice + 20 }}</p>
+	        <p v-if="order.delivery.type === 'Post'" class="p-medium t-semi">$ {{ cartTotalPrice + 10 }}</p>
 	      </div>
 	      <hr  v-if="order.status === 'Confirmed'" class="mn-semi" >
 	     <!-- 	<button 

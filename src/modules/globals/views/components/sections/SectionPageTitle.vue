@@ -11,7 +11,7 @@
           v-if="action.to"
           :key="action.to"
           :to="action.to"
-          :class="action.class || 'radius-extra pd-small pd-r-medium pd-l-medium p-medium uppercase t-medium hover-scale-1 transition-ease cursor-pointer t-white bg-second flex-center flex'"
+          :class="action.class || 'radius-extra pd-small pd-r-medium pd-l-medium p-regular uppercase t-medium hover-scale-1 transition-ease cursor-pointer t-white bg-second flex-center flex'"
         >
           {{ action.label }}
         </router-link>
@@ -31,7 +31,7 @@
       :selected="tabs_current"
       @update:selected="updateTabsCurrent"
       :tabs="tabs"
-      class="mn-t-small pd-thin bg-light radius-small w-max t-nowrap o-scroll p-medium"
+      class="mn-t-small pd-thin bg-light radius-small w-max t-nowrap o-scroll p-regular"
     />
   </div>
 </template>

@@ -24,7 +24,7 @@
 		</div>
 		<div
 			 v-if="route.query.method !== 'reset-password'" 
-			 class="p-medium t-semi mn-b-semi "
+			 class="p-regular t-semi mn-b-semi "
 		>
 			 By registering, you agree to our <a class="t-second" href="/legal/eula" target="_blank" rel="noopener noreferrer">End User License Agreement (EULA)</a>
 		</div>

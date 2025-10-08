@@ -17,7 +17,7 @@
 			</h3>
 		    
 		    <p 
-		    	class="p-medium mn-b-small"
+		    	class="p-regular mn-b-small"
 		    >
 		    	We strive to maintain a safe and comfortable environment for all users. If you encounter content that you believe violates our guidelines, please report it:
 		    </p>
@@ -35,7 +35,7 @@
 				class="mn-b-small bg-white br-solid br-black-transp-10 br-1px uppercase pd-medium t-semi bg-white t-black radius-medium"
 		      />
 		    
-		    <p class="p-medium mn-b-small">Our moderators will review your report within 24 hours and take action if it violates our policies.</p>
+		    <p class="p-regular mn-b-small">Our moderators will review your report within 24 hours and take action if it violates our policies.</p>
 		    
 		    <Button 
 		    	:submit="onSubmit" 

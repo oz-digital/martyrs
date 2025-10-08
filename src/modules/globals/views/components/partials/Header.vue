@@ -150,7 +150,7 @@
 			:showLoader="false"
 		>
 			<IconSearch 
-				class="i-semi"
+				class="i-medium"
 				:fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" 
 			/>
 		</Button>
@@ -164,7 +164,7 @@
 			class="pd-zero mn-r-micro"
 			> 
 			<IconShopcart 
-				class="i-semi"
+				class="i-medium"
 				:fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" 
 			/>
 			<!-- <div class="w-max p-small pos-absolute pos-t-100 pos-r-0">Product Added to Shopcart</div> -->
@@ -190,7 +190,7 @@
 			:showLoader="false"
 		>
 			<IconProfile 
-				class="i-semi"
+				class="i-medium"
 				:fill="theme === 'light' ? 'rgb(var(--black))' : 'rgb(var(--white))'" 
 			/>
 		</Button>

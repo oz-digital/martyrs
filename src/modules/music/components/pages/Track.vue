@@ -140,8 +140,8 @@
         <h3 class="t-medium mn-b-small">Metadata</h3>
         <div class="metadata-grid grid cols-2 gap-small mn-b-medium">
           <!-- Release Date -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconCalendar class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconCalendar class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Released</div>
               <div class="t-medium ">{{ formatDate(track.releaseDate) }}</div>
@@ -149,8 +149,8 @@
           </div>
 
           <!-- Total Duration -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconClock class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconClock class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Duration</div>
               <div class="t-medium ">{{ formatDuration(track.duration) }}</div>
@@ -158,8 +158,8 @@
           </div>
 
           <!-- Label -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconCheck class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconCheck class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Status</div>
               <div class="t-medium ">{{ track.status }}</div>
@@ -167,8 +167,8 @@
           </div>
 
           <!-- Visibility -->
-          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-medium">
-            <IconEye class="i-regular t-primary" />
+          <div class="metadata-card bg-light pd-medium radius-medium flex items-center gap-regular">
+            <IconEye class="i-medium t-primary" />
             <div>
               <div class="t-small t-transp t-uppercase">Visibility</div>
               <div class="t-medium ">{{ track.isPublic ? 'Public' : 'Private' }}</div>
@@ -246,7 +246,7 @@
             class: 'pd-medium bg-light radius-medium'
           }
         }"
-        class="grid cols-2 cols-m-3 cols-l-4 gap-medium"
+        class="grid cols-2 cols-m-3 cols-l-4 gap-regular"
       >
         <template #default="{ items }">
           <div class="bg-light radius-medium o-hidden">

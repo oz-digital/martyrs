@@ -11,7 +11,7 @@
 				<span class="text-splitted">Welcome to Weeder Farms, your trusted partner in cannabis cultivation. </span>
 			</h2> 
 
-			<p class="element-intro display-block p-semi">We are a team of professional growers, engineers, programmers, and geneticists. We are dedicated to the growth and development of the cannabis industry, offering our extensive experience and knowledge to help cultivators like you succeed.</p>
+			<p class="element-intro display-block p-medium">We are a team of professional growers, engineers, programmers, and geneticists. We are dedicated to the growth and development of the cannabis industry, offering our extensive experience and knowledge to help cultivators like you succeed.</p>
 		</div>
 
 		<div class="cols-2 gap-thin col">

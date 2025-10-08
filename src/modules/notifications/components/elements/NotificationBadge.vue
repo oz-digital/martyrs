@@ -1,7 +1,7 @@
 <template>
   <div class="notification-badge-container">
     <button 
-      class="i-semi notification-button"
+      class="i-medium notification-button"
       @click="toggleNotifications"
       :aria-label="unreadCount > 0 ? `${unreadCount} unread notifications` : 'No unread notifications'"
     >

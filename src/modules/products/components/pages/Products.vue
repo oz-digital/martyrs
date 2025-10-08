@@ -49,7 +49,7 @@
               <div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
                 <h4 class="w-100">{{ filter.name }}</h4>
                 <div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
-                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-medium"/>
                 </div>
               </div>
             </template>
@@ -78,7 +78,7 @@
               <div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
                 <h4 class="w-100">  Price</h4>
                 <div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
-                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-medium"/>
                 </div>
               </div>
             </template>
@@ -112,7 +112,7 @@
               <div class="cursor-pointer w-100 flex-v-center flex-nowrap flex">
                 <h4 class="w-100">Availability</h4>
                 <div class="h-2r w-2r flex-child-auto aspect-1x1 flex-center flex bg-light radius-extra">
-                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-regular"/>
+                  <IconChevronBottom :class="{ 'rotate-180 mn-t-micro-negative': isOpen }" fill="rgb(var(--black))" class="i-medium"/>
                 </div>
               </div>
             </template>
@@ -124,7 +124,7 @@
                   :class="{ 'bg-light': selectedFilters?.availability }"
                   class="pd-small field-wrapper radius-small bg-light cursor-pointer hover-bg-light transition-all  flex-v-center flex gap-thin"
                 >
-                  <IconCalendar class="i-regular" />
+                  <IconCalendar class="i-medium" />
                   <span class="h-1r">{{ selectedFilters.availability ? `${formatDate(selectedFilters.availability.start, { dayMonth: true, language: 'en' })} - ${formatDate(selectedFilters.availability.end, { dayMonth: true, language: 'en' })}` : 'Select dates'}}</span>
                 </div>
               </div>

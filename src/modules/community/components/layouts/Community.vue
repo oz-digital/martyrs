@@ -22,14 +22,14 @@
 			         	t-center
 			         	flex-column 
 			         	flex 
-			         	gap-medium 
+			         	gap-regular 
 			        "
 			      />
 		    	</h2>
 				</header>
 
 				<div  v-if="!route.params.url && route.name !=='Create BlogPost'"  class="w-100 pos-relative">
-					<ul class="align-self-start pos-sticky pos-t-0 w-100 bg-light radius-medium mobile:radius-zero mn-b-thin pd-medium p-medium gap-thin flex-row flex-nowrap flex z-index-2 o-scroll t-nowrap scroll-hide">
+					<ul class="align-self-start pos-sticky pos-t-0 w-100 bg-light radius-medium mobile:radius-zero mn-b-thin pd-medium p-regular gap-thin flex-row flex-nowrap flex z-index-2 o-scroll t-nowrap scroll-hide">
 						<li  	
 							:class="{'t-black bg-white': route.params.category === 'featured' }" 					
 							@click="() => { blog.state.sort.param = 'createdAt'; router.push({name: 'Blog', params: { category: 'featured' } })}" 

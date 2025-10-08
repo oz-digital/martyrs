@@ -68,7 +68,7 @@
       </div>
     </Marquee>
 
-    <p class="w-m-33r mn-r-auto mn-l-auto t-center mn-b-small p-semi">
+    <p class="w-m-33r mn-r-auto mn-l-auto t-center mn-b-small p-medium">
       Together, we're shaping the future of the globals music community.
     </p>
     <router-link :to="{ name: 'Sign In' }" class="bg-black w-max mn-r-auto mn-l-auto t-medium t-white button">

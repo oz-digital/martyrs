@@ -22,13 +22,13 @@
             "
           >
             <IconEdit
-              class="i-regular"
+              class="i-medium"
               classes="fill-white"
             />
           </router-link>
 
         </div>
-        <p class="t-transp p-semi" v-html="departmentsStore.state.items[0].description"></p>
+        <p class="t-transp p-medium" v-html="departmentsStore.state.items[0].description"></p>
       </section>
 
      <section class="mn-b-medium radius-medium pd-semi bg-white">

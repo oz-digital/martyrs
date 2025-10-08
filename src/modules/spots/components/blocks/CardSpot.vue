@@ -33,13 +33,13 @@
             cursor-pointer 
             pos-absolute pos-t-thin pos-r-thin
             radius-extra pd-thin bg-second
-            i-semi
+            i-medium
             flex
             flex-center
           "
         >
           <IconEdit
-            class="i-regular"
+            class="i-medium"
             classes="fill-white"
           />
         </router-link>
@@ -47,15 +47,15 @@
         <IconCheckmark
           v-if="selected"
           :fill="'rgb(var(--white))'"
-          class="z-index-2 pos-absolute pos-t-thin pos-r-thin radius-extra bg-second pd-thin i-semi"
+          class="z-index-2 pos-absolute pos-t-thin pos-r-thin radius-extra bg-second pd-thin i-medium"
         />
      
         <p
-          class="p-medium t-medium d-inline-block w-100"
+          class="p-regular t-medium d-inline-block w-100"
           v-html="spot.profile.name"
         />
         
-        <p v-if="spot.profile.description" class="d-block p-semi mn-t-thin">
+        <p v-if="spot.profile.description" class="d-block p-medium mn-t-thin">
           {{spot.profile.description}}
         </p>
 

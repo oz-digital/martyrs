@@ -3,10 +3,11 @@ import controllerFactory from '../controllers/chats.controller.js';
 export default (function (app, db, wss) {
   const controller = controllerFactory(db);
   const { verifySignUp, verifyUser } = middlewareFactory(db);
-  
-  
+
+
   // WebSocket-обработчик для модуля "chat"
-  wss.registerModule('chat', async (ws, msg) => {
+  if (wss) {
+    wss.registerModule('chat', async (ws, msg) => {
     console.log('[CHAT WebSocket] Received message type:', msg.type, 'from ws.id:', ws.id);
     
     if (msg.type === 'joinChat') {
@@ -83,7 +84,8 @@ export default (function (app, db, wss) {
         }
       );
     }
-  });
+    });
+  }
   // REST API: получить историю сообщений
   app.get('/messages/:chatId', async (req, res) => {
     const { chatId } = req.params;

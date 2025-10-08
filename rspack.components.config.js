@@ -1,6 +1,11 @@
 import core from '@rspack/core.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { VueLoaderPlugin } from 'vue-loader';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const { rspack } = core;
 const format = process.env.FORMAT || 'esm';
 const isESM = format === 'esm';

@@ -49,7 +49,7 @@
             class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
-        class="gap-medium"
+        class="gap-regular"
       >
         <template #default="{ items }">
           <PlaylistCard
@@ -89,7 +89,7 @@
             class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
-        class="gap-medium"
+        class="gap-regular"
       >
         <template #default="{ items }">
           <AlbumCard
@@ -129,7 +129,7 @@
             class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
-        class="gap-medium"
+        class="gap-regular"
       >
         <template #default="{ items }">
           <ArtistCard
@@ -169,7 +169,7 @@
             class: 'pd-big bg-white-transp-10 radius-medium'
           }
         }"
-        class="gap-medium"
+        class="gap-regular"
       >
         <template #default="{ items }">
           <div class="bg-light radius-medium o-hidden">

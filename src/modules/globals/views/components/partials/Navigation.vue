@@ -128,7 +128,7 @@ const processRoute = (routeFn) => {
             />
             <span 
               v-if="!item.iconComponent " 
-              class="p-medium"
+              class="p-regular"
             >
               {{ item.icon }}
             </span>

@@ -44,10 +44,10 @@
 						product: product._id
 					}
 				})" 
-				class="pos-absolute pos-t-regular pos-r-regular i-regular t-transp"
+				class="pos-absolute pos-t-regular pos-r-regular i-medium t-transp"
 			/>
 
-			<h2 v-if="recommendation" class="t-main t-semi p-semi">{{t('airecommend')}}</h2>
+			<h2 v-if="recommendation" class="t-main t-semi p-medium">{{t('airecommend')}}</h2>
 			<!-- Name -->
 			<h1 class="w-100 h1-product mn-b-small">{{ product.name }}</h1>
 			<!-- Price -->

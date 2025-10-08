@@ -38,7 +38,7 @@
         <!-- ID заказа и цена -->
         <div class="mn-b-thin">
           <Tooltip :text="orderId">
-			      <p class="p-semi">
+			      <p class="p-medium">
 			        #{{ orderId.slice(0, 4) }}...{{ orderId.slice(-4) }}
 			      </p>
 			    </Tooltip>
@@ -48,7 +48,7 @@
         <!-- Оставшееся время -->
         <div class="flex-nowrap radius-thin bg-white w-max pd-thin flex-v-center flex">
 					<component :is="statusIcon" class="t-transp" />
-			    <span class="mn-l-micro p-medium">{{ statusText }}</span>
+			    <span class="mn-l-micro p-regular">{{ statusText }}</span>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
 		    />
 		  </svg>	
 		  <span 
-		  	class="p-medium t-semi"
+		  	class="p-regular t-semi"
 		  	:class="[
 			    hasOverdue ? 't-red' : 't-second'
 			  ]"

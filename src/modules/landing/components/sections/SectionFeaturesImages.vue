@@ -3,7 +3,7 @@
 
     <div class="mn-b-big t-center title">
       <h2 class="mn-b-small">{{t('title')}}</h2>
-      <p class="w-m-60r mn-b-big mn-auto t-transp p-semi">
+      <p class="w-m-60r mn-b-big mn-auto t-transp p-medium">
         {{t('subtitle')}}
       </p>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="gap-medium radius-medium mn-b-semi">
+  <div class="gap-regular radius-medium mn-b-semi">
     <h3 class="mn-b-small">
       {{ title }}
     </h3>
@@ -11,7 +11,7 @@
         class="bg-light radius-medium pd-medium cursor-pointer"
         @click="handleDateSelect(date)"
       >
-        <p class="mn-b-small p-semi t-medium">{{ date.label }}</p>
+        <p class="mn-b-small p-medium t-medium">{{ date.label }}</p>
         <div class="p-regular t-transp">{{ date.range }}</div>
       </div>
     </div>
