@@ -198,19 +198,18 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import { useI18n } from 'vue-i18n'
-  import Web3 from "web3";
 
   import { state, actions } from '@martyrs/src/modules/wallet/views/store/wallet.store';
 
   import text from '@martyrs/src/modules/wallet/views/localization/wallet.json'
- 
+
   const { t } = useI18n({
-    useScope: 'global', 
+    useScope: 'global',
     ...text
   })
 
   import Popup from '@martyrs/src/components/Popup/Popup.vue';
-  import Button from '@martyrs/src/components/Button/Button.vue'; 
+  import Button from '@martyrs/src/components/Button/Button.vue';
 
   import CardBlogpost from '@martyrs/src/modules/community/components/blocks/CardBlogpost.vue';
 
@@ -224,7 +223,7 @@
 
 
 
-  onMounted(() => {
+  onMounted(async () => {
       // User has disconnected metamask from extension
     window.ethereum.on('accountsChanged', (accounts) => {
       if (accounts.length < 1) {
@@ -232,7 +231,8 @@
       }
     });
 
-
+    // Динамический импорт Web3 только когда компонент монтируется
+    const { default: Web3 } = await import('web3');
     state.web3 = new Web3(window.ethereum || 'http://localhost:8080');
 
     actions.listRewards();
