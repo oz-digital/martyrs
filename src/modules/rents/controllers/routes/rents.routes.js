@@ -1,9 +1,9 @@
 import middlewareFactoryAuth from '@martyrs/src/modules/auth/controllers/middlewares/index.js';
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
 import controllerFactory from '../services/rents.services.js';
 // const middlewareFactoryRents = require('../middlewares/rent');
 // ABAC
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 export default (function (app, db) {
   const controller = controllerFactory(db);
   const abac = getInstance(db);

@@ -202,7 +202,7 @@ import { useRoute, useRouter } from 'vue-router';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 
-import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue';
+import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue';
 
 import { 
   InviteForm,
@@ -220,7 +220,7 @@ import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 
 const route = useRoute();
 const router = useRouter();

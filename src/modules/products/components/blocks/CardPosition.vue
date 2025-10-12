@@ -59,7 +59,7 @@
 <script setup>
 import { defineProps } from 'vue';
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue';
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const { formatPrice } = useGlobalMixins();
 

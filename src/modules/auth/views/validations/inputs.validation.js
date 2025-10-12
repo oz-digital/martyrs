@@ -1,4 +1,4 @@
-// import i18n from "@martyrs/src/modules/globals/views/localization/vue-i18n.js";
+// import i18n from "@martyrs/src/modules/core/views/localization/vue-i18n.js";
 const messages = {
   ru: {
     validation: {

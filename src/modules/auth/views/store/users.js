@@ -1,7 +1,7 @@
-import $axios from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
+import $axios from '@martyrs/src/modules/core/views/utils/axios-instance.js';
 import { reactive } from 'vue';
 // Add import for global error handler
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError } from '@martyrs/src/modules/core/views/store/core.store.js';
 
 const state = reactive({
   all: [],

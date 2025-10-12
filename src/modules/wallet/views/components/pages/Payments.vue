@@ -57,7 +57,7 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
 import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
 import * as payments from '@martyrs/src/modules/wallet/views/store/payments.store';  

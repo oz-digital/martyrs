@@ -5,11 +5,12 @@
       class="pd-medium flex-v-center flex-nowrap flex"
     >
       <h2 class="mn-r-medium">Spots</h2>
-      <button 
+      <button
         v-if="hasAccess(route.params._id, 'spots', 'create', auth.state.accesses, auth.state.access.roles)"
         @click="$router.push({
-          name: route.params?._id ? 'Spot Creation' : 'Spot Creation'
-        })" 
+          name: getRouteName('Create Spot'),
+          params: { _id: route.params._id }
+        })"
         class="radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second">
           +
       </button>
@@ -65,12 +66,12 @@
             :showDeliveryOptions="true"
             :showPaymentOptions="true"
             class="radius-medium h-min-big bg-light"
-            @click="$router.push({ 
-              name: route.params._id ? 'Organization_Spot' : 'Spot', 
-              params: { 
+            @click="$router.push({
+              name: getRouteName('Spot'),
+              params: {
                 _id: route.params._id,
-                spot: spot._id 
-              } 
+                spot: spot._id
+              }
             })"
           />
         </Feed>
@@ -81,7 +82,7 @@
 
 <script setup="props">
   // Import libs
-  import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+  import { ref, watch, onMounted, onUnmounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
 
   // Import components
@@ -93,14 +94,16 @@
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as spots from '@martyrs/src/modules/spots/store/spots.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
   const route = useRoute()
   const router = useRouter()
   const { hasAccess } = useGlobalMixins()
+
+  const getRouteName = (baseName) => `${route.meta?.context || ''}${baseName}`
 
   // Props
   const props = defineProps({
@@ -118,13 +121,13 @@
     console.log('Category selected:', category);
   };
 
-  globals.state.navigation_bar.actions = [{
+  core.state.navigation_bar.actions = [{
     component: IconPlus,
     props: {
-      fill: "rgb(var(--main))" 
+      fill: "rgb(var(--main))"
     },
     condition: () => auth.state.user && auth.state.user._id,
-    action: () => route.params._id ? router.push({ name: 'Organization_SpotAdd', params: { _id: route.params._id} }) : router.push({ name: 'SpotAdd' })
+    action: () => router.push({ name: getRouteName('Create Spot'), params: { _id: route.params._id } })
   }]
 
   onMounted(async () => {
@@ -134,7 +137,7 @@
   })
 
   onUnmounted(() => {
-    globals.state.navigation_bar.actions = [];
+    core.state.navigation_bar.actions = [];
   });
 </script>
 

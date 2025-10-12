@@ -272,7 +272,7 @@ import { useRoute, useRouter } from 'vue-router'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as users from '@martyrs/src/modules/auth/views/store/users.js'
 import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js'
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 // Accessing router
 const route = useRoute()
 const router = useRouter()

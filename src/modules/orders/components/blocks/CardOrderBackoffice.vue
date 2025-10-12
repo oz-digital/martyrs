@@ -76,7 +76,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import CardHeader from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue';
+import CardHeader from '@martyrs/src/modules/core/views/components/blocks/CardHeader.vue';
 import IconTime from '@martyrs/src/modules/icons/entities/IconTime.vue';
 
 const props = defineProps({

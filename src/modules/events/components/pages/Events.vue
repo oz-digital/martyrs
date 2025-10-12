@@ -43,7 +43,7 @@
       @date-selected="handleDateSelection" 
     />
 
-    <div class="gap-regular radius-medium mn-b-semi">
+    <div class="gap-regular  mn-b-semi">
 
       <h3
         class="mn-b-small"
@@ -85,7 +85,7 @@
           :showFeatured="false"
           :showFollowers="false"
           @updateMembership="handleMembershipUpdate"
-          class="pd-small w-100 pd-0 bg-light radius-semi o-hidden"
+          class="pd-small w-100 pd-0 bg-light p-regular radius-medium o-hidden"
         />
       </Feed>
 
@@ -119,7 +119,7 @@
         v-slot="{ 
           items 
         }"
-        class="cols-3 mobile:cols-1 gap-thin"
+        class="cols-3 mobile:cols-1 gap-thin o-x-hidden"
       >
          <CardEvent 
           @click="$router.push({name: 'Event', params: {url: event.url}})" 
@@ -128,7 +128,7 @@
           :event="event" 
           :user="auth.state.user._id" 
           :type="'normal'"
-          class="bg-light radius-medium"
+          class="w-100 o-hidden bg-light radius-medium"
         >
         </CardEvent>
       </Feed>
@@ -148,7 +148,7 @@
   import Popup from '@martyrs/src/components/Popup/Popup.vue'
   import DatePicker from '@martyrs/src/components/DatePicker/DatePicker.vue'
 
-  import CitySelection from '@martyrs/src/modules/globals/views/components/partials/CitySelection.vue';
+  import CitySelection from '@martyrs/src/modules/core/views/components/partials/CitySelection.vue';
 
   import FeaturedEvents from '@martyrs/src/modules/events/components/sections/FeaturedEvents.vue';   
   import SelectDate from '@martyrs/src/modules/events/components/sections/SelectDate.vue';   

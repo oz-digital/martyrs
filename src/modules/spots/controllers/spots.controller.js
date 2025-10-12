@@ -1,25 +1,25 @@
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 import getIsOpenNowStage from './queries/getIsOpenNowStage.js';
 const controllerFactory = db => {
   const Spot = db.spot;
   const read = async (req, res) => {
     let stages = [
-      ...queryProcessorGlobals.getBasicOptions(req.query),
+      ...queryProcessorCore.getBasicOptions(req.query),
       getIsOpenNowStage(),
       // Tags
-      ...queryProcessorGlobals.getTagsOptions(req.query.tags),
+      ...queryProcessorCore.getTagsOptions(req.query.tags),
       // For creator
-      queryProcessorGlobals.getCreatorUserLookupStage(),
-      queryProcessorGlobals.getCreatorOrganizationLookupStage(),
-      queryProcessorGlobals.getCreatorCustomerLookupStage(),
+      queryProcessorCore.getCreatorUserLookupStage(),
+      queryProcessorCore.getCreatorOrganizationLookupStage(),
+      queryProcessorCore.getCreatorCustomerLookupStage(),
       // For owner
-      queryProcessorGlobals.getOwnerUserLookupStage(),
-      queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-      queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
-      queryProcessorGlobals.removeTempPropeties(),
+      queryProcessorCore.getOwnerUserLookupStage(),
+      queryProcessorCore.getOwnerOrganizationLookupStage(),
+      queryProcessorCore.getAddFieldsCreatorOwnerStage(),
+      queryProcessorCore.removeTempPropeties(),
       // Pagination
-      ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-      ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+      ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+      ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
     ];
     try {
       const spots = await Spot.aggregate(stages);

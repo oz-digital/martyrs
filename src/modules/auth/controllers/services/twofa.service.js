@@ -1,4 +1,4 @@
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
 const { sendEmail, sendSms } = mailing;
 const controllerFactory = db => {
   const sendcode = async (req, res) => {

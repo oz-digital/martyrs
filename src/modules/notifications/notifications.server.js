@@ -1,4 +1,4 @@
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
 import NotificationsController from './controllers/notifications.controller.js';
 import NotificationLogModel from './models/notification-log.model.js';
 import NotificationPreferenceModel from './models/notification-preference.model.js';
@@ -6,7 +6,7 @@ import NotificationModel from './models/notification.model.js';
 import UserDeviceModel from './models/user-device.model.js';
 import notificationsRoutes from './routes/notifications.routes.js';
 import NotificationService from './services/notification.service.js';
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 function initializeNotifications(app, db, wss, origins, publicPath) {
   // Set up models in the database object
   db.notification = NotificationModel(db);

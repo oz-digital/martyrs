@@ -193,7 +193,7 @@ import Spoiler from '@martyrs/src/components/Spoiler/Spoiler.vue';
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue';
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
 import departmentsStore from '@martyrs/src/modules/organizations/store/departments.store.js';
 
@@ -330,7 +330,7 @@ function addMemberToDepartment(user) {
     });
     closeMemberPopup();
   } else {
-    globals.actions.setError({ message: 'This user is already a member of this department' });
+    core.actions.setError({ message: 'This user is already a member of this department' });
   }
 }
 
@@ -370,7 +370,7 @@ async function saveDepartment() {
     emit('close');
   } catch (error) {
     console.error('Error saving department:', error);
-    globals.actions.setError(error);
+    core.actions.setError(error);
     throw error;
   }
 }
@@ -383,7 +383,7 @@ async function onDelete() {
       emit('close');
     } catch (error) {
       console.error('Error deleting department:', error);
-      globals.actions.setError(error);
+      core.actions.setError(error);
     }
   }
 }

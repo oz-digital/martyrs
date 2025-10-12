@@ -328,16 +328,16 @@
     "hash": "57aff47b1f82fbbe3d98e120b8e0c9e764e77f9ef81e9d9cdb4ab9a96fbe4a83"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/globals.server.js",
-    "relativePath": "modules/globals/globals.server.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/core.server.js",
+    "relativePath": "modules/globals/core.server.js",
     "extension": ".js",
     "size": 938,
     "modified": "2025-06-10T08:48:55.238Z",
     "hash": "6a5628fbc9bffce104b491b37872f19b96a9608bdd7edd66e9385156b673bb22"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/globals.client.js",
-    "relativePath": "modules/globals/globals.client.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/core.client.js",
+    "relativePath": "modules/globals/core.client.js",
     "extension": ".js",
     "size": 3919,
     "modified": "2025-05-19T05:36:46.991Z",
@@ -4920,7 +4920,7 @@
     "hash": "48a35137007e2eafd75402e28fedac6f527c074a8a531dbfb6f439da40e3e967"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/utils/vue-app-renderer.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/utils/vue-app-renderer.js",
     "relativePath": "modules/globals/views/utils/vue-app-renderer.js",
     "extension": ".js",
     "size": 2737,
@@ -4928,7 +4928,7 @@
     "hash": "bcbec5a14c41fdc5ea6dcba6d33b8f96a1b12c69c9a193e5d2e95a5cf9bc010e"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/utils/axios-instance.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/utils/axios-instance.js",
     "relativePath": "modules/globals/views/utils/axios-instance.js",
     "extension": ".js",
     "size": 603,
@@ -4936,15 +4936,15 @@
     "hash": "38200d81f449ebc5295730cc614d73c631d31958e593cf84556b42289e9b1292"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/store/globals.js",
-    "relativePath": "modules/globals/views/store/globals.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/store/core.js",
+    "relativePath": "modules/globals/views/store/core.js",
     "extension": ".js",
     "size": 7327,
     "modified": "2025-05-06T14:21:38.851Z",
     "hash": "83b96161363fd3d194a39da53f5b849686ecf8b4506247fffa6ac7cc88d0e587"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/router/scrollBehavior.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/router/scrollBehavior.js",
     "relativePath": "modules/globals/views/router/scrollBehavior.js",
     "extension": ".js",
     "size": 957,
@@ -4952,7 +4952,7 @@
     "hash": "522a05547f930eb594d7baa95946f54873d47a4427b8a301de69281c927651f6"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/router/addRoutes.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/router/addRoutes.js",
     "relativePath": "modules/globals/views/router/addRoutes.js",
     "extension": ".js",
     "size": 4406,
@@ -4960,7 +4960,7 @@
     "hash": "a9b4bffb1a79faab1a414f64a7c8dc05358bdcba18c04e3397a76239f8835a8e"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/plugins/date-picker.plugin.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/plugins/date-picker.plugin.js",
     "relativePath": "modules/globals/views/plugins/date-picker.plugin.js",
     "extension": ".js",
     "size": 2606,
@@ -4968,7 +4968,7 @@
     "hash": "4f3f14ee055ef4452f12217a155200cd76fcbfd7dc81f5873b2c7633f89035c7"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/plugins/alert.plugin.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/plugins/alert.plugin.js",
     "relativePath": "modules/globals/views/plugins/alert.plugin.js",
     "extension": ".js",
     "size": 1682,
@@ -4976,7 +4976,7 @@
     "hash": "bf42a4adcd17ebd2bcb04fd548960020fcd68ec8f0a1463d336f3bce90c94c39"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/mixins/mixins.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/mixins/mixins.js",
     "relativePath": "modules/globals/views/mixins/mixins.js",
     "extension": ".js",
     "size": 10270,
@@ -4984,7 +4984,7 @@
     "hash": "87d7319b3bccf71b4a04c5d9113558f529792dd117c5efae9c53d34dc3e7bbe2"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/middlewares/localization.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/middlewares/localization.js",
     "relativePath": "modules/globals/views/middlewares/localization.js",
     "extension": ".js",
     "size": 276,
@@ -4992,7 +4992,7 @@
     "hash": "0f42f7f6bec3c7a56826de2fdedb6b188e4af010712d1c5f1d09295b466e1470"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/localization/get-browser-locale.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/localization/get-browser-locale.js",
     "relativePath": "modules/globals/views/localization/get-browser-locale.js",
     "extension": ".js",
     "size": 460,
@@ -5000,7 +5000,7 @@
     "hash": "04817cbbda96781e95a37c355c239bef6dfe31fde24d20c422e174aee440d809"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/classes/store.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/classes/store.js",
     "relativePath": "modules/globals/views/classes/store.js",
     "extension": ".js",
     "size": 1883,
@@ -5008,31 +5008,31 @@
     "hash": "d0d84de152547bb3b5ff9ed2e83b829878b87316df1b9b1ca786ca14c6f8d096"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/classes/globals.websocket.ws.js",
-    "relativePath": "modules/globals/views/classes/globals.websocket.ws.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/classes/core.websocket.ws.js",
+    "relativePath": "modules/globals/views/classes/core.websocket.ws.js",
     "extension": ".js",
     "size": 6118,
     "modified": "2025-05-06T11:36:28.029Z",
     "hash": "e36ab06a42f7bb95071c67bfd207593f31c0a88411724860f178d3f1f566a88a"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/classes/globals.websocket.js",
-    "relativePath": "modules/globals/views/classes/globals.websocket.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/classes/core.websocket.js",
+    "relativePath": "modules/globals/views/classes/core.websocket.js",
     "extension": ".js",
     "size": 10439,
     "modified": "2025-05-06T11:36:28.012Z",
     "hash": "715f8ca2c48b7a099f2f521052054918f7460240adbd59115a439b40a9ef0969"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/classes/globals.store.js",
-    "relativePath": "modules/globals/views/classes/globals.store.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/classes/core.store.js",
+    "relativePath": "modules/globals/views/classes/core.store.js",
     "extension": ".js",
     "size": 6554,
     "modified": "2025-05-08T14:05:05.624Z",
     "hash": "3620e47669444e4663562fcea306a667bd8b4ee5b27eef252ebe68414dea7408"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/socials.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/socials.schema.js",
     "relativePath": "modules/globals/models/schemas/socials.schema.js",
     "extension": ".js",
     "size": 385,
@@ -5040,7 +5040,7 @@
     "hash": "61f59e5b8157fca218796881385a73da7790e986a0b6a5619bf685cc5b88a500"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/profile.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/profile.schema.js",
     "relativePath": "modules/globals/models/schemas/profile.schema.js",
     "extension": ".js",
     "size": 317,
@@ -5048,7 +5048,7 @@
     "hash": "dd04eec90e368a35941ff5d15e051dbe1bb1e040f4101d48e4af2c9a1703286a"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/ownership.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/ownership.schema.js",
     "relativePath": "modules/globals/models/schemas/ownership.schema.js",
     "extension": ".js",
     "size": 927,
@@ -5056,7 +5056,7 @@
     "hash": "966331d698866bd04b0a89b1285583387ebd98b8e27a930221a8d656fd51ec02"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/metadata.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/metadata.schema.js",
     "relativePath": "modules/globals/models/schemas/metadata.schema.js",
     "extension": ".js",
     "size": 687,
@@ -5064,7 +5064,7 @@
     "hash": "50f9760f3009aa6a7b970159fc5e5578249d175d301327bf7e36058c09f95777"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/engagement.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/engagement.schema.js",
     "relativePath": "modules/globals/models/schemas/engagement.schema.js",
     "extension": ".js",
     "size": 1150,
@@ -5072,7 +5072,7 @@
     "hash": "2e2ee248e34bd889f590f3a7d5c8d256846748eec7b6aa63b2cfb32b6ca1e0cf"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/credentials.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/credentials.schema.js",
     "relativePath": "modules/globals/models/schemas/credentials.schema.js",
     "extension": ".js",
     "size": 147,
@@ -5080,7 +5080,7 @@
     "hash": "c5b493805d4dfc7cdd68bcb040c9304eb3355483b757c88f017b6070af3eb03a"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/models/schemas/common.schema.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/models/schemas/common.schema.js",
     "relativePath": "modules/globals/models/schemas/common.schema.js",
     "extension": ".js",
     "size": 240,
@@ -5088,7 +5088,7 @@
     "hash": "45d1cd97b086e4ee9a62272d47fe3122067fed07a6994056d1387d14da45d8ff"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/utils/sitemap.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/utils/sitemap.js",
     "relativePath": "modules/globals/controllers/utils/sitemap.js",
     "extension": ".js",
     "size": 1282,
@@ -5096,7 +5096,7 @@
     "hash": "32ff2d45716910f69a3ed2b8623e8cefd4bf69f8fb01cc93d1d2ef80520bdbf2"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/utils/seo-friendly-url.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/utils/seo-friendly-url.js",
     "relativePath": "modules/globals/controllers/utils/seo-friendly-url.js",
     "extension": ".js",
     "size": 6692,
@@ -5104,7 +5104,7 @@
     "hash": "f7d4a17965e15d8b58d9d3c5c2192abbb4ff2e6d03adba3891cc6ad987c6c91b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/utils/queryProcessor.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/utils/queryProcessor.js",
     "relativePath": "modules/globals/controllers/utils/queryProcessor.js",
     "extension": ".js",
     "size": 10681,
@@ -5112,7 +5112,7 @@
     "hash": "3e58fe9798546fc301a7a0dff82bd6e5dbb45bf0cb88f0ddf4bc579179add547"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/utils/parseCookie.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/utils/parseCookie.js",
     "relativePath": "modules/globals/controllers/utils/parseCookie.js",
     "extension": ".js",
     "size": 316,
@@ -5120,7 +5120,7 @@
     "hash": "2e66dc1c3ff42470870e47f67c81fc439d44859f6dc3b9594c544784029b069e"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/utils/mailing.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/utils/mailing.js",
     "relativePath": "modules/globals/controllers/utils/mailing.js",
     "extension": ".js",
     "size": 3359,
@@ -5128,88 +5128,88 @@
     "hash": "70406a7071ec1f4cbab0afb96e1c9c7c479d89d6cd5755a405f351f25f67a24f"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/policies/globals.policies.js",
-    "relativePath": "modules/globals/controllers/policies/globals.policies.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/policies/core.policies.js",
+    "relativePath": "modules/globals/controllers/policies/core.policies.js",
     "extension": ".js",
     "size": 5804,
     "modified": "2025-06-10T12:36:00.928Z",
     "hash": "8427450bf161de002b2f43df2f49a7fba314e06d3d69ce0d91284ca639276ca9"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.websocket.ws.js",
-    "relativePath": "modules/globals/controllers/classes/globals.websocket.ws.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.websocket.ws.js",
+    "relativePath": "modules/globals/controllers/classes/core.websocket.ws.js",
     "extension": ".js",
     "size": 3342,
     "modified": "2025-05-06T09:18:45.028Z",
     "hash": "d17182d6ab72ff9edc8ded20ba2ad6da3cf524bcfe4aa031e21883f3c60faaf2"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.websocket.js",
-    "relativePath": "modules/globals/controllers/classes/globals.websocket.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.websocket.js",
+    "relativePath": "modules/globals/controllers/classes/core.websocket.js",
     "extension": ".js",
     "size": 12649,
     "modified": "2025-05-06T11:36:27.737Z",
     "hash": "60c202c161890d5c0991c60ef8b41d2121dcde2892a8bde7e50dabe25933107e"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.webhook.js",
-    "relativePath": "modules/globals/controllers/classes/globals.webhook.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.webhook.js",
+    "relativePath": "modules/globals/controllers/classes/core.webhook.js",
     "extension": ".js",
     "size": 508,
     "modified": "2025-05-06T09:18:44.987Z",
     "hash": "f5381bebe29731b20a275b6675e17c52d4f8b20d27b1042cf5eecd647c045fd8"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.verifier.js",
-    "relativePath": "modules/globals/controllers/classes/globals.verifier.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.verifier.js",
+    "relativePath": "modules/globals/controllers/classes/core.verifier.js",
     "extension": ".js",
     "size": 8178,
     "modified": "2025-06-10T11:36:08.453Z",
     "hash": "92955cd3e144ed5d7760b13036bb7d7d0924d7f3df4b1532151eb6310587701b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.validator.js",
-    "relativePath": "modules/globals/controllers/classes/globals.validator.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.validator.js",
+    "relativePath": "modules/globals/controllers/classes/core.validator.js",
     "extension": ".js",
     "size": 16832,
     "modified": "2025-05-06T11:36:27.684Z",
     "hash": "8da8e8a573e914e0ba0f3517bf0b3b7143b8b0d1af90ddcd0b22b9b50d102b61"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.observer.js",
-    "relativePath": "modules/globals/controllers/classes/globals.observer.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.observer.js",
+    "relativePath": "modules/globals/controllers/classes/core.observer.js",
     "extension": ".js",
     "size": 1446,
     "modified": "2025-05-06T09:18:44.933Z",
     "hash": "743075ec876c5d9273a68af01d0b751f3b6931cfc6a182185ff03c6254e66ec9"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.logger.js",
-    "relativePath": "modules/globals/controllers/classes/globals.logger.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.logger.js",
+    "relativePath": "modules/globals/controllers/classes/core.logger.js",
     "extension": ".js",
     "size": 757,
     "modified": "2025-05-06T09:18:44.922Z",
     "hash": "08c7f3909923d6e6618ab3d7f9a46abcf3ffcd967560b82d82b274bc30ed876c"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.crud.js",
-    "relativePath": "modules/globals/controllers/classes/globals.crud.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.crud.js",
+    "relativePath": "modules/globals/controllers/classes/core.crud.js",
     "extension": ".js",
     "size": 3256,
     "modified": "2025-05-06T12:05:44.229Z",
     "hash": "aec7d169d5abf0fd9e7447cd8d81cea612ca9f6208787c1d0b0d433b2d799770"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.cache.js",
-    "relativePath": "modules/globals/controllers/classes/globals.cache.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.cache.js",
+    "relativePath": "modules/globals/controllers/classes/core.cache.js",
     "extension": ".js",
     "size": 4004,
     "modified": "2025-05-06T14:05:19.876Z",
     "hash": "07e551f0f246c9148070eb5672b6dbf29844e4b3f29fa766e87c7e0b6431599b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/globals.abac.js",
-    "relativePath": "modules/globals/controllers/classes/globals.abac.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/core.abac.js",
+    "relativePath": "modules/globals/controllers/classes/core.abac.js",
     "extension": ".js",
     "size": 12438,
     "modified": "2025-05-11T04:39:06.067Z",
@@ -6272,7 +6272,7 @@
     "hash": "1d6588aea7e2882e110826af6eb269fd74a6f42339a616552ff54ca87cc178d1"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/plugins/store-debugger/store-debugger.plugin.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/plugins/store-debugger/store-debugger.plugin.js",
     "relativePath": "modules/globals/views/plugins/store-debugger/store-debugger.plugin.js",
     "extension": ".js",
     "size": 895,
@@ -6280,7 +6280,7 @@
     "hash": "66d801ddf826ed0623545decd74961f6a4bfea8824be520988f8f54a25a9752b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/plugins/store-debugger/StoreDebugger.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/plugins/store-debugger/StoreDebugger.vue",
     "relativePath": "modules/globals/views/plugins/store-debugger/StoreDebugger.vue",
     "extension": ".vue",
     "size": 7521,
@@ -6288,7 +6288,7 @@
     "hash": "25716b38661f345c70dfa463d8627dbf6481117f09c210dccc3bbff9e0416c60"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/sections/Walkthrough.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/sections/Walkthrough.vue",
     "relativePath": "modules/globals/views/components/sections/Walkthrough.vue",
     "extension": ".vue",
     "size": 6310,
@@ -6296,7 +6296,7 @@
     "hash": "3e4fb55a0645ef03b08b6eceeb4e7b8b7c976223c28af2f19c7978ca08683314"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/sections/Title.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/sections/Title.vue",
     "relativePath": "modules/globals/views/components/sections/Title.vue",
     "extension": ".vue",
     "size": 434,
@@ -6304,7 +6304,7 @@
     "hash": "958e881676db4a02d5ff07926b8b648ac5f0cf37dec4a3828a01cf5249db7595"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue",
     "relativePath": "modules/globals/views/components/sections/SectionPageTitle.vue",
     "extension": ".vue",
     "size": 1570,
@@ -6312,7 +6312,7 @@
     "hash": "a1884d2ba475adca7dcdc5b526ead7a8724d1539c390aafa5340e55235a916b7"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/pages/404.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/pages/404.vue",
     "relativePath": "modules/globals/views/components/pages/404.vue",
     "extension": ".vue",
     "size": 66,
@@ -6320,7 +6320,7 @@
     "hash": "d2dc97ef4087405ef68cb0a786a6ba2246026c2abb83dc9709b8319e7547b630"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/pages/401.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/pages/401.vue",
     "relativePath": "modules/globals/views/components/pages/401.vue",
     "extension": ".vue",
     "size": 70,
@@ -6328,7 +6328,7 @@
     "hash": "86270d40d81c8246c9c8f2ff8455f431827a767bba7c1c734cec848474acb16b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/Sidebar.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/Sidebar.vue",
     "relativePath": "modules/globals/views/components/partials/Sidebar.vue",
     "extension": ".vue",
     "size": 2709,
@@ -6336,7 +6336,7 @@
     "hash": "2b6e3f60359f46294eca9d3bd99f738ab8c898a81e71264ed34c0b9ad0b0a849"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/SearchBar.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/SearchBar.vue",
     "relativePath": "modules/globals/views/components/partials/SearchBar.vue",
     "extension": ".vue",
     "size": 747,
@@ -6344,7 +6344,7 @@
     "hash": "8fb5d3b8899dd59d3643b5e59ae30eee7ce7b45388398adea2b8683ab963945c"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/NavigationBar.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/NavigationBar.vue",
     "relativePath": "modules/globals/views/components/partials/NavigationBar.vue",
     "extension": ".vue",
     "size": 4402,
@@ -6352,7 +6352,7 @@
     "hash": "82601ebab4ba817bab02dd4191ff155d7b549db578141be62992254a0379df26"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/Navigation.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/Navigation.vue",
     "relativePath": "modules/globals/views/components/partials/Navigation.vue",
     "extension": ".vue",
     "size": 7063,
@@ -6360,7 +6360,7 @@
     "hash": "c902754ab2e3e46fe8fbbe89722f8de8268f05829a007af8bb6151c998ddc11b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/LocationSelection.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/LocationSelection.vue",
     "relativePath": "modules/globals/views/components/partials/LocationSelection.vue",
     "extension": ".vue",
     "size": 3226,
@@ -6368,7 +6368,7 @@
     "hash": "f8de6b296a075a5c6f50e4a54abe4eb2175797b63ca82388136a1bf4512b5293"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/Header.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/Header.vue",
     "relativePath": "modules/globals/views/components/partials/Header.vue",
     "extension": ".vue",
     "size": 7445,
@@ -6376,7 +6376,7 @@
     "hash": "ce2dac14558cae646931d4d9e4161d64cfe4bb8489e25676ae75bc6a11bd2003"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/Footer.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/Footer.vue",
     "relativePath": "modules/globals/views/components/partials/Footer.vue",
     "extension": ".vue",
     "size": 5854,
@@ -6384,7 +6384,7 @@
     "hash": "533b4e49df09424216425845c8b18fcfa1a03f843676c0d19b1f748511caa8cc"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/CitySelection.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/CitySelection.vue",
     "relativePath": "modules/globals/views/components/partials/CitySelection.vue",
     "extension": ".vue",
     "size": 2627,
@@ -6392,7 +6392,7 @@
     "hash": "864acd8542e74f4e5fc24736dd4dc70c594c28711e171273099bc9da4dd9bb5b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/partials/BottomNavigationBar.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/partials/BottomNavigationBar.vue",
     "relativePath": "modules/globals/views/components/partials/BottomNavigationBar.vue",
     "extension": ".vue",
     "size": 4014,
@@ -6400,7 +6400,7 @@
     "hash": "7b4314e9f38d612a5491079ae201aa64d7c0d524588465d24b2331a7cdc05099"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/layouts/Empty.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/layouts/Empty.vue",
     "relativePath": "modules/globals/views/components/layouts/Empty.vue",
     "extension": ".vue",
     "size": 115,
@@ -6408,7 +6408,7 @@
     "hash": "f87bcc6932bf22c576376e2e28497a5ad97b666816e2e4e786ea9147ac091c70"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/layouts/Client.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/layouts/Client.vue",
     "relativePath": "modules/globals/views/components/layouts/Client.vue",
     "extension": ".vue",
     "size": 12352,
@@ -6416,7 +6416,7 @@
     "hash": "a5e9a17e528a3d26746960fcf1e8a387097b76fba9c5f0fbf6e9ee85b10ab0fd"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/layouts/App.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/layouts/App.vue",
     "relativePath": "modules/globals/views/components/layouts/App.vue",
     "extension": ".vue",
     "size": 3766,
@@ -6424,7 +6424,7 @@
     "hash": "732a59e3b62666339eadd94108c4347b79a5e0adcb6fe7b0d10d5c83d7fb6013"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/PopupDateSelector.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/PopupDateSelector.vue",
     "relativePath": "modules/globals/views/components/blocks/PopupDateSelector.vue",
     "extension": ".vue",
     "size": 6091,
@@ -6432,7 +6432,7 @@
     "hash": "73a15e6562366417a21db05c737224b28eb7563dd8f3c7d90959ef5df3cb3919"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/CardHeader.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/CardHeader.vue",
     "relativePath": "modules/globals/views/components/blocks/CardHeader.vue",
     "extension": ".vue",
     "size": 5938,
@@ -6440,7 +6440,7 @@
     "hash": "fef74cdc14d844eda8607ed0a2dd96cd94f88676a9b074f41213b24485e74e13"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/CardFooter.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/CardFooter.vue",
     "relativePath": "modules/globals/views/components/blocks/CardFooter.vue",
     "extension": ".vue",
     "size": 2052,
@@ -6448,7 +6448,7 @@
     "hash": "470b1de7f45e226d6c7dca0d78d4a1d70e7688983a3e751ec021416a742f2bf0"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/Card.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/Card.vue",
     "relativePath": "modules/globals/views/components/blocks/Card.vue",
     "extension": ".vue",
     "size": 1933,
@@ -6456,7 +6456,7 @@
     "hash": "3a6b5839cae45a07558d4e0d5c6ebc9fc6b1708323844b927a2509b417abc273"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/BlockSorting.vue",
     "relativePath": "modules/globals/views/components/blocks/BlockSorting.vue",
     "extension": ".vue",
     "size": 1953,
@@ -6464,7 +6464,7 @@
     "hash": "408984b194f4527eb0dbaa669fdca2f7baaae0f0643140e8fe07f330081808ae"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/BlockSearch.vue",
     "relativePath": "modules/globals/views/components/blocks/BlockSearch.vue",
     "extension": ".vue",
     "size": 1390,
@@ -6472,7 +6472,7 @@
     "hash": "8682665562fe2c0230c26c82ab1e7c2b1f308de6fd88ea29cfbd342f8a45b411"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/BlockMultiselect.vue",
     "relativePath": "modules/globals/views/components/blocks/BlockMultiselect.vue",
     "extension": ".vue",
     "size": 9168,
@@ -6480,7 +6480,7 @@
     "hash": "60715a7b8da4ada92f863ff6b2fa3ab444814087277e89618583a024d1fb7d00"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/BlockFilter.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/BlockFilter.vue",
     "relativePath": "modules/globals/views/components/blocks/BlockFilter.vue",
     "extension": ".vue",
     "size": 1758,
@@ -6488,7 +6488,7 @@
     "hash": "996abdf42d2ba2287561936f6371077c66317daef3b18cd3505a94f4abb75a4b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/blocks/AlertDialog.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/blocks/AlertDialog.vue",
     "relativePath": "modules/globals/views/components/blocks/AlertDialog.vue",
     "extension": ".vue",
     "size": 925,
@@ -6496,7 +6496,7 @@
     "hash": "eabfe32b21751f548a045acff16b4ce47e28c0d6e3d2c6e275b26b64a6d7ed4b"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/elements/PhotoStack.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/elements/PhotoStack.vue",
     "relativePath": "modules/globals/views/components/elements/PhotoStack.vue",
     "extension": ".vue",
     "size": 1337,
@@ -6504,7 +6504,7 @@
     "hash": "ba1d85cc66c783e5dfbcdf70e5816d3689a916b399e90d2ef2b4d689fe9ea82f"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/elements/ButtonSort.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/elements/ButtonSort.vue",
     "relativePath": "modules/globals/views/components/elements/ButtonSort.vue",
     "extension": ".vue",
     "size": 635,
@@ -6512,7 +6512,7 @@
     "hash": "9f3462ed72ab355ae498e00912f8cf45c47a22b12403e6a9721317eb9acc329f"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/views/components/elements/ButtonDate.vue",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/views/components/elements/ButtonDate.vue",
     "relativePath": "modules/globals/views/components/elements/ButtonDate.vue",
     "extension": ".vue",
     "size": 1890,
@@ -6520,7 +6520,7 @@
     "hash": "67eb6793f976ae980634cf588aedac1fcf0862e840f3b1a074cd80fb8e2056bf"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.service.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.service.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.service.js",
     "extension": ".js",
     "size": 8605,
@@ -6528,7 +6528,7 @@
     "hash": "60b1eba3194b77c604ad7d3775b4d43ec1b205fde00906f3953b3ee7c3fcb0d2"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.policies.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.policies.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.policies.js",
     "extension": ".js",
     "size": 7613,
@@ -6536,7 +6536,7 @@
     "hash": "f9c9f0b75a42744998aa6f0c2b8ee6e1c5e24e476be5e385b46c47079eeff0f2"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.js",
     "extension": ".js",
     "size": 5205,
@@ -6544,7 +6544,7 @@
     "hash": "dbe6b8bb4a3f10b60ebcb5e7282d08e7a2aa97df97e8ac09df101b6912b2cf3a"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.events.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.events.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.events.js",
     "extension": ".js",
     "size": 5405,
@@ -6552,7 +6552,7 @@
     "hash": "6140789dc7a09f26e89db1fa6949ef1cdfe9b1784400228d020ce46e1ac7c15d"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.core.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.core.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.core.js",
     "extension": ".js",
     "size": 6448,
@@ -6560,7 +6560,7 @@
     "hash": "b1bad9fd58ef39e6953b08820a3f09c2d7bdaa7c6c4bc5ff990fd99e8365ecff"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/crud/crud.controller.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/crud/crud.controller.js",
     "relativePath": "modules/globals/controllers/classes/crud/crud.controller.js",
     "extension": ".js",
     "size": 10119,
@@ -6568,7 +6568,7 @@
     "hash": "0e761f266aa280336544829877ad967c14c4037c43fa23f1261ace7c6c48557d"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.policies.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.policies.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.policies.js",
     "extension": ".js",
     "size": 6548,
@@ -6576,7 +6576,7 @@
     "hash": "2642d2d34db87ea9a91c56cbaab23d96a96ca77fafd63c2868b5cf93b8e26132"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.js",
     "extension": ".js",
     "size": 3345,
@@ -6584,7 +6584,7 @@
     "hash": "c17c06e3aac76a1c16f6c6e8d50d15cda7930965e9aab93f4869164892c12534"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.fields.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.fields.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.fields.js",
     "extension": ".js",
     "size": 12738,
@@ -6592,7 +6592,7 @@
     "hash": "24ed0298c3cc2f17f3fe24a61731d49f3c4e9ea90afced72a29477374f5dd288"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.core.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.core.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.core.js",
     "extension": ".js",
     "size": 7319,
@@ -6600,7 +6600,7 @@
     "hash": "0ff52e0d495cfd672827f88c2430fecaa5a5db116a48cc60c595f5558e06ce04"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.adapter.ws.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.adapter.ws.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.adapter.ws.js",
     "extension": ".js",
     "size": 2497,
@@ -6608,7 +6608,7 @@
     "hash": "bd589b1e29cf819b63fd7b703f01d0db332ae7f66b03071170a998d12d8e7b33"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/abac.adapter.express.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/abac.adapter.express.js",
     "relativePath": "modules/globals/controllers/classes/abac/abac.adapter.express.js",
     "extension": ".js",
     "size": 5617,
@@ -6752,7 +6752,7 @@
     "hash": "2fdface443d29607d4cbc0d0fcf9fc9b58b311143ddd77941040cd3bca778451"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-ws-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-ws-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-ws-fixed.js",
     "extension": ".js",
     "size": 7072,
@@ -6760,7 +6760,7 @@
     "hash": "33f456dac4077f13e6b2e839f3891dcccf772bc009080e40b142f1cd835624af"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-policies-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-policies-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-policies-fixed.js",
     "extension": ".js",
     "size": 8860,
@@ -6768,7 +6768,7 @@
     "hash": "1dbe4e4822dbc2b39d0640d211554e129357c8059b3a1d1738c731f5e225ebe9"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-main-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-main-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-main-fixed.js",
     "extension": ".js",
     "size": 10727,
@@ -6776,7 +6776,7 @@
     "hash": "c644634a17ff5970209f8ccef4584c8b37618fcdfc33a934ac3a5d1375ec319c"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-fields-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-fields-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-fields-fixed.js",
     "extension": ".js",
     "size": 12036,
@@ -6784,7 +6784,7 @@
     "hash": "dab41e707828272ed6a31a8fea67d555ab7a87a3881de4ce63ea6654c7c51e93"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-express-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-express-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-express-fixed.js",
     "extension": ".js",
     "size": 7455,
@@ -6792,7 +6792,7 @@
     "hash": "55af314a1e7a01098bbfb62bfd747d23995e6dfe758f6229ac9ac04f5fda4f03"
   },
   {
-    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/globals/controllers/classes/abac/v2/abac-core-fixed.js",
+    "path": "/Users/magicofoz/Development/OZDAO/ozdao.dev/app/martyrs/src/modules/core/controllers/classes/abac/v2/abac-core-fixed.js",
     "relativePath": "modules/globals/controllers/classes/abac/v2/abac-core-fixed.js",
     "extension": ".js",
     "size": 9409,

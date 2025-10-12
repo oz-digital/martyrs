@@ -1,5 +1,5 @@
 // store/player.js
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 import { reactive } from 'vue';
 
 // State

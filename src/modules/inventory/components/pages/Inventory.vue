@@ -198,7 +198,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 
 // Components
 import Table from '@martyrs/src/components/Table/Table.vue'

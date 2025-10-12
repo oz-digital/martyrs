@@ -4,13 +4,13 @@ import * as storeTwofa from './views/store/twofa.js';
 import * as storeUsers from './views/store/users.js';
 
 // Router
-import routerAuth from './views/router/auth.js';
-import routerUsers from './views/router/users.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './auth.router.js';
 
 // Middlewares
 import * as validationAuth from '@martyrs/src/modules/auth/views/middlewares/auth.validation.js';
 
-import { i18nManager }  from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+import { i18nManager }  from '@martyrs/src/modules/core/views/classes/core.i18n.js';
 
 import locales from './locales/index.js';
 
@@ -29,12 +29,12 @@ export { default as SliderFeatures } from './views/components/sections/SliderFea
 
 // Пример функции инициализации для модуля аутентификации
 function initializeAuth(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
   i18nManager.register('auth', locales);
 
-  router.addRoute(route, routerAuth);
-  router.addRoute(route, routerUsers);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('auth', storeAuth);
   store.addStore('twofa', storeTwofa);
@@ -52,8 +52,7 @@ const ModuleAuth = {
       storeUsers,
     },
     router: {
-      routerAuth,
-      routerUsers,
+      getRoutes,
     },
     middlewares: {
       validationAuth,
@@ -66,8 +65,7 @@ export {
   storeAuth,
   storeTwofa,
   storeUsers,
-  routerAuth,
-  routerUsers,
+  getRoutes,
   validationAuth,
   initializeAuth as initialize,
 };

@@ -1,6 +1,6 @@
 // @martyrs/src/modules/music/middlewares/albums.verifier.js
-import Validator from '@martyrs/src/modules/globals/controllers/classes/globals.validator.js';
-import Verifier from '@martyrs/src/modules/globals/controllers/classes/globals.verifier.js';
+import Validator from '@martyrs/src/modules/core/controllers/classes/core.validator.js';
+import Verifier from '@martyrs/src/modules/core/controllers/classes/core.verifier.js';
 
 export default function(db) {
 

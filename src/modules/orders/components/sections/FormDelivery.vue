@@ -75,7 +75,7 @@ import { useRoute } from 'vue-router';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 import CardSpot from '@martyrs/src/modules/spots/components/blocks/CardSpot.vue';  
 import * as spotsModule from '@martyrs/src/modules/spots/store/spots.js';
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import Block from '@martyrs/src/components/Block/Block.vue';
 import Address from '@martyrs/src/components/Address/Address.vue';
 import LocationMarker from '@martyrs/src/components/LocationMarker/LocationMarker.vue';
@@ -98,9 +98,9 @@ watch(() => props.order.delivery.type, (newType) => {
 
 // Устанавливаем начальные данные из globals при монтировании
 onMounted(() => {
-  if (globals.state.position) {
-    props.order.delivery.address = globals.state.position.address;
-    props.order.delivery.location = globals.state.position.location;
+  if (core.state.position) {
+    props.order.delivery.address = core.state.position.address;
+    props.order.delivery.location = core.state.position.location;
   }
 });
 

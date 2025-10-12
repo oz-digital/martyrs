@@ -1,5 +1,5 @@
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
-import createFriendlyURL from '@martyrs/src/modules/globals/controllers/utils/seo-friendly-url.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
+import createFriendlyURL from '@martyrs/src/modules/core/controllers/utils/seo-friendly-url.js';
 import integrationStripe from '@martyrs/src/modules/integrations/stripe/controllers/services/stripe.service.js';
 import { Types } from 'mongoose';
 import queryProcessor from './utils/queryProcessor.js';
@@ -13,10 +13,10 @@ const middlewareFactory = db => {
     console.log('req is', req.query);
     let stages = [];
     stages = [
-      ...queryProcessorGlobals.getSearchOptions(req.query.search, {
+      ...queryProcessorCore.getSearchOptions(req.query.search, {
         fields: ['name'],
       }),
-      ...queryProcessorGlobals.getBasicOptions(req.query),
+      ...queryProcessorCore.getBasicOptions(req.query),
       ...queryProcessor.getDateConditions(req.query.date),
       ...queryProcessor.getPeriodConditions(req.query.period, req.query.periodStart, req.query.periodEnd),
       ...queryProcessor.getPhaseConditions(req.query.phase),
@@ -27,17 +27,17 @@ const middlewareFactory = db => {
       ...queryProcessor.getHasTicketStage(req.query.user),
       ...queryProcessor.getParticipantStages(req.query.participant),
       // For creator
-      queryProcessorGlobals.getCreatorUserLookupStage(),
-      queryProcessorGlobals.getCreatorOrganizationLookupStage(),
+      queryProcessorCore.getCreatorUserLookupStage(),
+      queryProcessorCore.getCreatorOrganizationLookupStage(),
       // For owner
-      queryProcessorGlobals.getOwnerUserLookupStage(),
-      queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-      queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
+      queryProcessorCore.getOwnerUserLookupStage(),
+      queryProcessorCore.getOwnerOrganizationLookupStage(),
+      queryProcessorCore.getAddFieldsCreatorOwnerStage(),
       // Get object
       // queryProcessor.getProjectStage(),
       // Pagination
-      ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-      ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+      ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+      ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
     ];
     try {
       const events = await Event.aggregate(stages).exec();

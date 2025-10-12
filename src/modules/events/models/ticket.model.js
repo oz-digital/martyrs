@@ -50,7 +50,15 @@ export default db => {
       status: {
         type: String,
         enum: ['unused', 'used', 'deactivated'],
-        deafult: 'unused',
+        default: 'unused',
+      },
+      paymentMethod: {
+        type: String,
+        enum: ['stripe', 'manual', null],
+        default: null,
+      },
+      refundedAt: {
+        type: Date,
       },
     },
     {

@@ -1,6 +1,6 @@
 // @martyrs/src/modules/music/routes/artists.routes.js
-import CRUD from '@martyrs/src/modules/globals/controllers/classes/crud/crud.js';
-import ABAC from '@martyrs/src/modules/globals/controllers/classes/abac/abac.js';
+import CRUD from '@martyrs/src/modules/core/controllers/classes/crud/crud.js';
+import ABAC from '@martyrs/src/modules/core/controllers/classes/abac/abac.js';
 import artistsVerifierFactory from '../middlewares/artists.verifier.js';
 
 const { getInstance } = ABAC;

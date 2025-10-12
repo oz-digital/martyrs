@@ -198,6 +198,7 @@
 <script setup>
   import { onMounted, ref } from 'vue';
   import { useI18n } from 'vue-i18n'
+  import Web3 from 'web3';
 
   import { state, actions } from '@martyrs/src/modules/wallet/views/store/wallet.store';
 
@@ -223,7 +224,7 @@
 
 
 
-  onMounted(async () => {
+  onMounted(() => {
       // User has disconnected metamask from extension
     window.ethereum.on('accountsChanged', (accounts) => {
       if (accounts.length < 1) {
@@ -231,8 +232,6 @@
       }
     });
 
-    // Динамический импорт Web3 только когда компонент монтируется
-    const { default: Web3 } = await import('web3');
     state.web3 = new Web3(window.ethereum || 'http://localhost:8080');
 
     actions.listRewards();

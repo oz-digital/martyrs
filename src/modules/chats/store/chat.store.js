@@ -1,4 +1,4 @@
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 import { reactive, readonly } from 'vue';
 
 const state = reactive({
@@ -31,7 +31,7 @@ const methods = {
         console.log('[Chat] Using anonymousId:', anonymousId);
       }
       
-      // WebSocket уже подключен в globals.client.js, просто подписываемся на модуль
+      // WebSocket уже подключен в core.client.js, просто подписываемся на модуль
       console.log('[Chat Store] Subscribing to chat module...');
       
       // Очистка старых листенеров ДО подписки, чтобы избежать дублирования

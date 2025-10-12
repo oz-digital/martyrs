@@ -131,7 +131,7 @@
 
 	    		<span 
 	    			v-if="localPosition.city || localPosition.state || localPosition.country"
-	    			@click="a => { globals.state.isOpenLocationPopup = true }" 
+	    			@click="a => { core.state.isOpenLocationPopup = true }" 
 	    			class="t-main t-semi cursor-pointer "
 	    		>
 	  				<template v-if="localPosition.city">{{localPosition.city}}, </template>
@@ -139,7 +139,7 @@
 	  				<template v-if="localPosition.country">{{localPosition.country}}</template>
 	    		</span>
 
-	    		<span v-else @click="a => { globals.state.isOpenLocationPopup = true }"  class="t-main t-semi cursor-pointer">The World</span>
+	    		<span v-else @click="a => { core.state.isOpenLocationPopup = true }"  class="t-main t-semi cursor-pointer">The World</span>
 	    	</h2>
 			</header>
 
@@ -164,7 +164,7 @@
 	import Checkbox from "@martyrs/src/components/Checkbox/Checkbox.vue"
 	import IconChevronBottom from '@martyrs/src/modules/icons/navigation/IconChevronBottom.vue'
 
-	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
 
 
@@ -317,7 +317,7 @@
 	  router.replace({ query });
 	}, { deep: true })
 
-	// watch(() => globals.state.position, (newPosition) => {
+	// watch(() => core.state.position, (newPosition) => {
 	//   // get the current route
 	//   const currentRoute = { ...router.currentRoute.value };
 	  

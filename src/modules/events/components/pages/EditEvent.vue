@@ -1,6 +1,6 @@
 <template>
   <article v-if="event" class="h-min-100 pd-thin">
-    <div class="pd-medium radius-semi mn-b-thin bg-light">
+    <div class="pd-medium radius-medium mn-b-thin bg-light">
       <h4 class="mn-b-small">Basic Info</h4>
     	<div class="mn-b-thin radius-small w-100 h-10r bg-white flex-center flex-column flex">
        	<UploadImage 
@@ -23,63 +23,70 @@
         placeholder="Enter short description" 
         class="mn-b-thin w-100 bg-white pd-medium radius-small" 
       />
-      <Field 
-        v-model:field="event.location" 
+      <Field
+        v-model:field="event.location"
         label="Location"
-        placeholder="Event location" 
-        class="mn-b-thin w-100 bg-white pd-medium radius-small" 
+        placeholder="Event location"
+        class="mn-b-thin w-100 bg-white pd-medium radius-small"
       />
-      <VueDatePicker v-model="date"  range class="z-index-3 radius-small mn-b-semi bg-white" />
     </div>
 
-   <!--    <Calendar
-        v-model:date="date"
-        :locale="$i18n.locale"
-        :allowRange="false"
-        class="radius-semi w-100 o-hidden bg-light"
-      /> -->
-
     <Block
-      title="Tickets"
-      placeholder="No line ups added yet"
+      title="Schedule"
+      placeholder="No schedule periods added yet"
       :actions="[{
         label: '+',
-        function: () => event.ticketsTypes.push({name: null, description: null, photo: null, main: false})
+        function: addSchedulePeriod
       }]"
       class="cols-1 mn-b-thin t-black gap-thin"
     >
-      <div 
-        class="mn-b-thin gap-small flex-nowrap flex" 
-        v-for="(item, index) in event.ticketsTypes" 
+      <div
+        class="mn-b-thin gap-small flex-nowrap flex"
+        v-for="(period, index) in event.schedule"
         :key="index"
-      > 
-        <Field
-          v-model:field="item.name"
-          placeholder="Name"
-          class="w-100  bg-white radius-small pd-medium"
-        />  
-        <Field
-          v-model:field="item.price"
-          placeholder="Price"
-          class="w-100  bg-white radius-small pd-medium"
+      >
+        <FieldDate
+          v-model="period.start"
+          :allowRange="false"
+          :enableTime="true"
+          :disablePastDates="!isBackoffice"
+          :disabledRanges="getDisabledRangesForPeriod(index)"
+          :showSelected="true"
+          :locale="$i18n.locale"
+          label="Start"
+          placeholder="Start time"
+          class="w-100 bg-white radius-small pd-medium"
         />
-        <div @click="() => event.ticketsTypes.splice(index, 1)" class="radius-small h-100 i-big flex-center flex aspect-1x1 bg-red">
-          <IconDelete 
-            class="i-medium"
-          />
+        <FieldDate
+          v-model="period.end"
+          :allowRange="false"
+          :enableTime="true"
+          :disablePastDates="!isBackoffice"
+          :disabledRanges="getDisabledRangesForPeriod(index)"
+          :showSelected="true"
+          :locale="$i18n.locale"
+          label="End"
+          placeholder="End time"
+          class="w-100 bg-white radius-small pd-medium"
+        />
+        <div v-if="index > 0" @click="() => event.schedule.splice(index, 1)" class="radius-small h-100 i-big flex-center flex aspect-1x1 bg-red">
+          <IconDelete class="i-medium" />
         </div>
       </div>
     </Block>
 
-		<section v-if="event" class="pd-b-extra w-100 bg-light pd-big radius-medium">
+    <EditTickets v-model:tickets="event.ticketsTypes" />
+
+		<section v-if="event" class="pd-b-extra z-index-1 pos-relative w-100 bg-light pd-big radius-medium">
       <Constructor 
         :content="event.content"
+        :autoFocus="false" 
         @update="update => event.content = update"
       />
     </section>
 
-    <section v-if="event" class="pd-thin pos-sticky pos-l-0 pos-b-0 w-100 ">
-      <div class="pd-thin radius-big  bg-main w-100 flex-nowrap flex">
+    <section v-if="event" class="pd-small z-index-2 pos-sticky pos-l-0 pos-b-0 w-100 ">
+      <div class="pd-thin radius-regular  bg-main w-100 flex-nowrap flex">
         <a v-if="route.params.url" @click="onDelete()" class="mn-r-auto bg-red t-white t-black button"><span>Delete</span></a>
         <a @click="onDrafts()" class="mn-l-auto bg-white t-black button"><span>To Drafts</span></a>
         <a @click="openPublicationPopup()" class="mn-l-thin bg-black t-white button"><span>Publish</span></a>
@@ -169,12 +176,7 @@
 import Textarea from '@martyrs/src/modules/constructor/components/elements/Textarea.vue';
 import Constructor from '@martyrs/src/modules/constructor/components/sections/Constructor.vue';
 
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-
-
-
-import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
+import FieldDate from '@martyrs/src/components/FieldDate/FieldDate.vue'
 
 import Block from '@martyrs/src/components/Block/Block.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
@@ -188,14 +190,16 @@ import EditImages from '@martyrs/src/components/EditImages/EditImages.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue'
 import Button from '@martyrs/src/components/Button/Button.vue';   
 
-import Card from '@martyrs/src/modules/globals/views/components/blocks/Card.vue';
+import Card from '@martyrs/src/modules/core/views/components/blocks/Card.vue';
+
+import EditTickets from '@martyrs/src/modules/events/components/sections/EditTickets.vue';
 
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 import * as events from '@martyrs/src/modules/events/store/events.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
@@ -206,17 +210,16 @@ const router = useRouter();
 
 const { hasAccess } = useGlobalMixins()
 
+const isBackoffice = computed(() => route.meta?.context === 'backoffice')
+
 let event = ref(null);
 let publics = ref(null);
 
 const selectedTags = ref([]);
 const selectedOrganization = ref(null);
 
-const date = ref(new Date);
-const customPosition = () => ({ top: 0, left: 0 });
-
 onMounted(async () =>{
-  
+
   if (route.params.url) {
     const data = await events.read({ user: auth.state.user._id, url: route.params.url });
 
@@ -241,18 +244,9 @@ onMounted(async () =>{
       router.push({name: 'unauthorized'})
     }
 
-    const startDate = event.value.date.start;
-    const endDate = event.value.date.end;
-
-    date.value = [startDate, endDate];
-
   } else {
     events.clean();
     event.value = events.state.current;
-
-    const startDate = new Date();
-    const endDate = new Date();
-    date.value = [startDate, endDate];
   }
 
   if (!event.value.owner) event.value.owner = {
@@ -264,6 +258,13 @@ onMounted(async () =>{
     target: auth.state.user._id,
     type: 'user',
     hidden: false
+  }
+
+  if (!event.value.schedule || event.value.schedule.length === 0) {
+    event.value.schedule = [{
+      start: new Date(),
+      end: new Date()
+    }]
   }
 
   if (event.value.owner.type === 'organization') selectedOrganization.value = {
@@ -284,15 +285,52 @@ function closePublicationPopup() {
   isPublicationPopup.value = false;
 }
 
-function onDrafts() {
+function addSchedulePeriod() {
+  event.value.schedule.push({
+    start: new Date(),
+    end: new Date()
+  })
+}
 
+function getDisabledRangesForPeriod(currentIndex) {
+  if (!event.value.schedule) return []
+
+  return event.value.schedule
+    .map((period, index) => {
+      if (index === currentIndex) return null
+      if (!period.start || !period.end) return null
+      return {
+        start: new Date(period.start),
+        end: new Date(period.end)
+      }
+    })
+    .filter(range => range !== null)
+}
+
+function onDrafts() {
   if (selectedTags.value.length > 0) selectedTags.value.map(tag => (tag.text))
 
+  // Auto-select organization in organization context
+  if (route.params._id && !selectedOrganization.value) {
+    event.value.owner = {
+      target: route.params._id,
+      type: 'organization'
+    }
+  }
+
   event.value.status = "draft"
-  
-  event.value.date = {
-    start: date.value[0],
-    end: date.value[1]
+
+  // Calculate event.date from schedule
+  if (event.value.schedule && event.value.schedule.length > 0) {
+    const allDates = event.value.schedule
+      .flatMap(period => [period.start, period.end])
+      .filter(date => date !== null && date !== undefined)
+      .map(date => new Date(date))
+
+    event.value.date = {
+      start: new Date(Math.min(...allDates)),
+      end: new Date(Math.max(...allDates))
+    }
   }
 
   if (route.params.url) {
@@ -315,7 +353,6 @@ function onDrafts() {
 }
 
 function onSubmit() {
-
   if (selectedOrganization.value) event.value.owner = {
     target: selectedOrganization.value._id,
     type: 'organization'
@@ -326,12 +363,18 @@ function onSubmit() {
 
   event.value.status = "published"
 
-  event.value.date = {
-    start: date.value[0],
-    end: date.value[1]
-  }
+  // Calculate event.date from schedule
+  if (event.value.schedule && event.value.schedule.length > 0) {
+    const allDates = event.value.schedule
+      .flatMap(period => [period.start, period.end])
+      .filter(date => date !== null && date !== undefined)
+      .map(date => new Date(date))
 
-  console.log(date.value)
+    event.value.date = {
+      start: new Date(Math.min(...allDates)),
+      end: new Date(Math.max(...allDates))
+    }
+  }
   if (route.params.url) {
     console.log(event.value)
     events.update(event.value)

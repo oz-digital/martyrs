@@ -111,10 +111,10 @@
 import { computed, ref, onMounted, getCurrentInstance } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
 import * as products from '@martyrs/src/modules/products/store/products.js'
 import * as categories from '@martyrs/src/modules/products/store/categories.js'
 import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'

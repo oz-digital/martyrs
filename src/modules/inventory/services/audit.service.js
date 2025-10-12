@@ -1,7 +1,7 @@
-import queryProcessor from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
-import Observer from '@martyrs/src/modules/globals/controllers/classes/globals.observer.js';
+import queryProcessor from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
+import Observer from '@martyrs/src/modules/core/controllers/classes/core.observer.js';
 import availabilityServiceFactory from './availability.service.js';
 
 const auditServiceFactory = db => {

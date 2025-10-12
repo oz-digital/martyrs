@@ -1,4 +1,4 @@
-import applyEngagementSchema from '@martyrs/src/modules/globals/models/schemas/engagement.schema.js';
+import applyEngagementSchema from '@martyrs/src/modules/core/models/schemas/engagement.schema.js';
 import accessesSchema from './schemas/accesses.schema.js';
 export default db => {
   const OrganizationSchema = new db.mongoose.Schema(

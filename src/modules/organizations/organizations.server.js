@@ -1,4 +1,4 @@
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/abac/abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/abac/abac.js';
 
 import DepartmentsController from './controllers/departments.controller.js';
 
@@ -18,7 +18,7 @@ import OrganizationsController from './controllers/organizations.controller.js';
 
 import initOrganizationPolicies from './policies/organizations.policies.js';
 
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 
 function initializeOrganization(app, db, origins, publicPath) {
   // Настраиваем модели в объекте базы данных

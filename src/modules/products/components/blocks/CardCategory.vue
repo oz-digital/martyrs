@@ -7,22 +7,22 @@
       <router-link
        v-if="access"
        :to="{
-          name: 'Category Edit', 
-          params: { 
+          name: route.meta.context === 'backoffice' ? 'BackofficeCategoryEdit' : 'Organization_CategoryEdit',
+          params: {
             _id: route.params._id,
             category: category._id
-          } 
+          }
         }"
         class="
           i-medium
-          cursor-pointer 
+          cursor-pointer
           card-page-actions
           radius-extra pd-micro bg-second
           flex-child-default
         "
       >
         <IconEdit
-          class="w-100 h-100" 
+          class="w-100 h-100"
           classes="fill-white"
         />
       </router-link>

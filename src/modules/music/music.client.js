@@ -8,7 +8,8 @@ import * as storeSearch from './store/search.js';
 import * as storeTracks from './store/tracks.js';
 
 // Router
-import routerMusic from './router/music.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './music.router.js';
 
 // Layouts
 import MusicBottomPlayer from './components/layouts/MusicBottomPlayer.vue';
@@ -43,7 +44,7 @@ import SearchForm from './components/forms/SearchForm.vue';
 import TrackForm from './components/forms/TrackForm.vue';
 
 // WebSocket integration for streaming
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 
 /**
  * Initialize Music module on client-side
@@ -54,10 +55,10 @@ import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.
  * @param {Object} options - Additional options
  */
 function initializeMusic(app, store, router, config, options = {}) {
-  const route = options.route || 'Home';
-
-  // Register routes
-  router.addRoute(route, routerMusic);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   // Register store modules
   store.addStore('tracks', storeTracks);
@@ -107,7 +108,7 @@ const ModuleMusic = {
       storeSearch,
     },
     router: {
-      routerMusic,
+      getRoutes,
     },
     components: {
       // Layouts
@@ -169,7 +170,7 @@ export {
   TrackProgress,
   VolumeControl,
   // Router
-  routerMusic,
+  getRoutes,
   storeAlbums,
   storeArtists,
   storeGenres,

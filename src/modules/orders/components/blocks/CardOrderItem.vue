@@ -95,7 +95,7 @@ import IconMinus from '@martyrs/src/modules/icons/navigation/IconMinus.vue'
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue'
 import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue'
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 
 const router = useRouter()
 const { locale } = useI18n()

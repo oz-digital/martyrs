@@ -215,10 +215,10 @@ Request related data using query parameters:
 
 ### Store Integration
 
-All stores use the Store class from `@martyrs/src/modules/globals/views/classes/globals.store.js`:
+All stores use the Store class from `@martyrs/src/modules/core/views/classes/core.store.js`:
 
 ```javascript
-import Store from '@martyrs/src/modules/globals/views/classes/globals.store.js';
+import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
 
 const membershipsStore = new Store('/api/memberships');
 const departmentsStore = new Store('/api/departments');
@@ -256,4 +256,4 @@ Use v-model:items pattern for reactive state:
 - Mongoose for MongoDB ODM
 - Express for routing
 - Vue 3 with Composition API
-- Custom modules from `@martyrs/src/modules/globals/`
+- Custom modules from `@martyrs/src/modules/core/`

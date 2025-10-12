@@ -236,13 +236,13 @@ import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 
 
-import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
+import BlockMultiselect from '@martyrs/src/modules/core/views/components/blocks/BlockMultiselect.vue';
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 
 // Import store
 import * as artistsStore from '../../store/artists';
 import * as genresStore from '../../store/genres';
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 // Props
@@ -331,7 +331,7 @@ const fetchArtist = async () => {
     const fetchedArtist = await artistsStore.actions.fetchArtistByUrl(props.url);
     
     if (!fetchedArtist) {
-      globals.actions.setError({
+      core.actions.setError({
         message: 'Artist not found'
       });
       return;
@@ -360,7 +360,7 @@ const fetchArtist = async () => {
     
   } catch (error) {
     console.error('Error fetching artist:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to load artist details'
     });
   }
@@ -433,7 +433,7 @@ const submitForm = async () => {
     
   } catch (error) {
     console.error('Error saving artist:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to save artist'
     });
   }
@@ -441,7 +441,7 @@ const submitForm = async () => {
 
 const handleUploadError = (error) => {
   console.error('Upload error:', error);
-  globals.actions.setError({
+  core.actions.setError({
     message: 'Error uploading image'
   });
 };

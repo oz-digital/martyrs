@@ -1,5 +1,5 @@
 // store/albums.js
-import Store from '@martyrs/src/modules/globals/views/classes/globals.store.js';
+import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
 import { reactive } from 'vue';
 
 // Create store instance

@@ -2,7 +2,8 @@
 import * as storeRenting from './views/store/rents.store.js';
 
 // Router
-import { createRentsRoutes } from './views/router/rents.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './rents.router.js';
 
 // Views
 import CardRent from './views/components/blocks/CardRent.vue';
@@ -12,12 +13,10 @@ import RentsEdit from './views/components/pages/RentsEdit.vue';
 
 // Функция инициализации для модуля аренды
 function initializeRenting(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  const routesRenting = createRentsRoutes('', options);
-
-  router.addRoute(route, routesRenting);
-  router.addRoute('Backoffice Root', createRentsRoutes('Backoffice', options));
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('rents', storeRenting);
 }
@@ -29,7 +28,7 @@ const ModuleRenting = {
       storeRenting,
     },
     router: {
-      createRentsRoutes,
+      getRoutes,
     },
     components: {
       // Blocks
@@ -46,7 +45,7 @@ const ModuleRenting = {
 export {
   // Blocks
   CardRent,
-  createRentsRoutes,
+  getRoutes,
   GanttChart,
   initializeRenting,
   // Sections

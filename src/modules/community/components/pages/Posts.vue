@@ -77,10 +77,10 @@
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as blog from '@martyrs/src/modules/community/store/blogposts.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
   const route = useRoute()
   const router = useRouter()
@@ -95,7 +95,7 @@
   })
 
 
-  globals.state.navigation_bar.actions = [{
+  core.state.navigation_bar.actions = [{
     component: IconPlus,
     props: {
       fill: "rgb(var(--main))" 
@@ -111,7 +111,7 @@
   })
 
   onUnmounted(() => {
-    globals.state.navigation_bar.actions = [];
+    core.state.navigation_bar.actions = [];
   });
 </script>
 

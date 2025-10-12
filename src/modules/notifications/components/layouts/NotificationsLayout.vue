@@ -18,7 +18,7 @@
 
 <script setup>
 import { computed, inject, ref, onMounted, onUnmounted } from 'vue';
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 
 // Get notification manager from store
 const store = inject('store');

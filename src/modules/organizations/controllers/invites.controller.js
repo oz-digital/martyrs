@@ -1,4 +1,4 @@
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
 import { uuid } from 'uuidv4';
 const { sendEmail, sendSms } = mailing;
 const сontrollerFactory = db => {

@@ -4,7 +4,7 @@
 import { computed, reactive, watch } from 'vue';
 // Dependencies
 // Globals
-import { setError, setSnack } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError, setSnack } from '@martyrs/src/modules/core/views/store/core.store.js';
 // Capacitor Preferences
 import { Preferences } from '@capacitor/preferences';
 

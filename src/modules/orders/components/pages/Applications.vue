@@ -103,7 +103,7 @@
   import Block from '@martyrs/src/components/Block/Block.vue';
   import Popup from '@martyrs/src/components/Popup/Popup.vue';
   import applications from '@martyrs/src/modules/orders/store/applications.js';
-  import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+  import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
   import CardApplication from '@martyrs/src/modules/orders/components/blocks/CardApplication.vue'
   import FormApplicationDetails from '@martyrs/src/modules/orders/components/forms/FormApplicationDetails.vue'

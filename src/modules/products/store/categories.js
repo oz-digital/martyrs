@@ -1,8 +1,8 @@
 // Dependencies
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError } from '@martyrs/src/modules/core/views/store/core.store.js';
 import { reactive, watch } from 'vue';
 
-import $axios from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
+import $axios from '@martyrs/src/modules/core/views/utils/axios-instance.js';
 
 // State
 const state = reactive({

@@ -1,12 +1,12 @@
 import jwtFactory from '@martyrs/src/modules/auth/controllers/middlewares/authJwt.js';
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
 import adjustmentServiceFactory from '../services/adjustment.service.js';
 import availabilityServiceFactory from '../services/availability.service.js';
 import auditServiceFactory from '../services/audit.service.js';
 import verifierFactory from '../middlewares/inventory.verifier.js';
 import setupStockAlertsRoutes from './stock.alerts.routes.js';
 
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 
 export default function(app, db) {
   const jwt = jwtFactory(db);

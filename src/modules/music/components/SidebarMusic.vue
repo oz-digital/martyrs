@@ -100,7 +100,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 // Import components from Martyrs framework
-import Sidebar from '@martyrs/src/modules/globals/views/components/partials/Sidebar.vue';
+import Sidebar from '@martyrs/src/modules/core/views/components/partials/Sidebar.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
 import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';

@@ -177,7 +177,7 @@
   import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue'
 
   // Import the new store structure
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'; 
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
 
@@ -205,7 +205,7 @@
   const routePath = computed(() => route.name)
 
   // Navigation Bar
-  globals.state.navigation_bar.actions = [{
+  core.state.navigation_bar.actions = [{
     component: IconCheckmark,
     props: {
       fill: "rgb(var(--main))" 
@@ -215,7 +215,7 @@
   }],
 
  onUnmounted(() => {
-    globals.state.navigation_bar.actions = [];
+    core.state.navigation_bar.actions = [];
   });
 
 

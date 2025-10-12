@@ -166,7 +166,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 import SkeletonEvent from '@martyrs/src/modules/icons/skeletons/SkeletonEvent.vue'
 
@@ -177,13 +177,13 @@ import Dropdown from "@martyrs/src/components/Dropdown/Dropdown.vue";
 import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 import BottomSheet from '@martyrs/src/components/BottomSheet/BottomSheet.vue';
 
-import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
-import BlockSorting  from '@martyrs/src/modules/globals/views/components/blocks/BlockSorting.vue'
+import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue'
+import BlockSorting  from '@martyrs/src/modules/core/views/components/blocks/BlockSorting.vue'
 
-import FiltersBar from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
+import FiltersBar from '@martyrs/src/modules/core/views/components/sections/Filters.vue'
 
-import ButtonSort  from '@martyrs/src/modules/globals/views/components/elements/ButtonSort.vue'
-import ButtonDate  from '@martyrs/src/modules/globals/views/components/elements/ButtonDate.vue'
+import ButtonSort  from '@martyrs/src/modules/core/views/components/elements/ButtonSort.vue'
+import ButtonDate  from '@martyrs/src/modules/core/views/components/elements/ButtonDate.vue'
 
 import IconFilter from '@martyrs/src/modules/icons/navigation/IconFilter.vue'
 import IconEvents from '@martyrs/src/modules/icons/entities/IconEvents.vue'

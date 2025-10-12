@@ -19,7 +19,7 @@
             component: IconDelete,
             class: 'bg-red',
             handler: () => {
-              globals.actions.delete(recommended, product, index);
+              core.actions.delete(recommended, product, index);
             }
           }
         ]"
@@ -60,7 +60,7 @@
           :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
           :name="product.name"
           :showThumbnail="true"
-          @click="globals.actions.add(recommended, product); closeRecommendedPopup();"
+          @click="core.actions.add(recommended, product); closeRecommendedPopup();"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin cursor-pointer hover-scale-1"
         />
       </Feed>
@@ -71,7 +71,7 @@
 <script setup>
 import { ref, computed, onMounted, defineModel } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 // Импорт компонентов
 import Block from '@martyrs/src/components/Block/Block.vue';
@@ -79,7 +79,7 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 // Импорт модулей и глобальных хранилищ
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 

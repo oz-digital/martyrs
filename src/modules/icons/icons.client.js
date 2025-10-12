@@ -213,24 +213,26 @@ export {
   SkeletonOrganization,
 };
 
-import iconsRouter from './router/icons.router.js';
+// Router
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './icons.router.js';
 
 // Icons page component
 import IconsPage from './pages/IconsPage.vue';
 
 
 function initializeIcons(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  // Регистрация маршрута для галереи иконок
-  router.addRoute(route, iconsRouter);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 }
 
 const ModuleIcons = {
   initialize: initializeIcons,
   views: {
     router: {
-      iconsRouter,
+      getRoutes,
     },
     components: {
       IconsPage,

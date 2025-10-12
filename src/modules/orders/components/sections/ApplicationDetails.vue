@@ -70,7 +70,7 @@
 import Block from '@martyrs/src/components/Block/Block.vue';
 import StatusBadge from '@martyrs/src/components/Table/StatusBadge.vue';
 import Button from '@martyrs/src/components/Button/Button.vue';
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const { formatDate } = useGlobalMixins();
 

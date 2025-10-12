@@ -19,7 +19,7 @@
 
       <Feed
         :search="true"
-        :showLoadMore="false"
+        :showLoadMore="true"
         :skeleton="{
           hide: false,
           horizontal: false,
@@ -37,7 +37,7 @@
         :store="{
           read: (options) => store.read(options)
         }"
-        :options="{ limit: 20 }"
+        :options="{ limit: 50 }"
         v-slot="{ items }"
         class="cols-4 gap-small icon-grid"
       >
@@ -45,7 +45,7 @@
           v-for="icon in items" 
           :key="icon.id"
           @click="selectIcon(icon)"
-          class="icon-item aspect-1x1 bg-light radius-medium flex-center flex-v-center flex-column cursor-pointer hover-scale-1 pd-small"
+          class="icon-item aspect-1x1  radius-medium flex-center flex-v-center flex-column cursor-pointer hover-scale-1 pd-small"
         >
           <div class="icon-preview w-3r h-3r mn-b-thin flex-center flex-v-center">
             <div 
@@ -93,7 +93,9 @@ const category = ref('');
 const loading = ref(false);
 const searchValue = ref('');
 
-// Store configuration for Feed component
+// Store configuration for Feed component with pagination support
+const paginationState = ref({ next_page: null, currentSearch: null });
+
 const store = {
   async read(params = {}) {
     try {
@@ -101,20 +103,45 @@ const store = {
         return [];
       }
 
+      // Сбросить пагинацию при новом поиске
+      if (paginationState.value.currentSearch !== params.search) {
+        paginationState.value = { next_page: null, currentSearch: params.search };
+      }
+
+      const requestBody = {
+        search: params.search,
+        limit: params.limit || 50
+      };
+
+      // Feed использует skip-based пагинацию, конвертируем в token-based
+      // Если skip > 0, используем сохранённый next_page токен
+      if (params.skip && params.skip > 0 && paginationState.value.next_page) {
+        requestBody.next_page = paginationState.value.next_page;
+      }
+
       const response = await fetch('/api/icons/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(params)
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to search icons');
       }
 
+      // Сохранить next_page для следующего запроса Load More
+      if (data.pagination && data.pagination.next_page) {
+        paginationState.value.next_page = data.pagination.next_page;
+      } else {
+        // Если нет next_page, значит больше страниц нет
+        paginationState.value.next_page = null;
+      }
+
+      // Feed ожидает массив, не объект
       return data.icons || [];
     } catch (err) {
       console.error('Search error:', err);

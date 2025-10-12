@@ -9,13 +9,13 @@
         "title": "Глобальные классы",
         "description": "Базовые классы для реализации кэширования, логирования, CRUD-операций, валидации, верификации, наблюдения и работы с вебхуками.",
         "files": [
-          "classes/globals.cache.js",
-          "classes/globals.logger.js",
-          "classes/globals.crud.js",
-          "classes/globals.validator.js",
-          "classes/globals.verifier.js",
-          "classes/globals.observer.js",
-          "classes/globals.webhook.js"
+          "classes/core.cache.js",
+          "classes/core.logger.js",
+          "classes/core.crud.js",
+          "classes/core.validator.js",
+          "classes/core.verifier.js",
+          "classes/core.observer.js",
+          "classes/core.webhook.js"
         ]
       },
       {
@@ -23,8 +23,8 @@
         "title": "Политики и ABAC",
         "description": "Файлы, связанные с политиками доступа и атрибутным контролем.",
         "files": [
-          "classes/globals.abac.js",
-          "policies/globals.policies.js"
+          "classes/core.abac.js",
+          "policies/core.policies.js"
         ]
       },
       {
@@ -32,8 +32,8 @@
         "title": "WebSocket",
         "description": "Классы для работы с WebSocket и их расширения.",
         "files": [
-          "classes/globals.websocket.js",
-          "classes/globals.websocket.ws.js"
+          "classes/core.websocket.js",
+          "classes/core.websocket.ws.js"
         ]
       },
       {
@@ -41,8 +41,8 @@
         "title": "Клиент и сервер",
         "description": "Глобальные файлы инициализации для клиентской и серверной части.",
         "files": [
-          "globals/globals.client.js",
-          "globals/globals.server.js"
+          "globals/core.client.js",
+          "globals/core.server.js"
         ]
       },
       {
@@ -74,7 +74,7 @@
         "title": "Хранилище данных",
         "description": "Классы для работы с глобальным и локальным хранилищем данных.",
         "files": [
-          "classes/globals.store.js",
+          "classes/core.store.js",
           "classes/store.js"
         ]
       },

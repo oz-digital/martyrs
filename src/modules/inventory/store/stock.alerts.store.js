@@ -1,4 +1,4 @@
-import Store from '@martyrs/src/modules/globals/views/classes/globals.store.js';
+import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
 
 const stockAlertsStore = new Store('/api/inventory/alerts');
 

@@ -2,7 +2,8 @@
 import * as storeReports from './store/reports.js';
 
 // Router
-// import { createReportsRoutes } from './router/reports.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './reports.router.js';
 
 // Views
 // Предполагаем, что у нас есть компонент для отображения отчетов
@@ -10,11 +11,10 @@ import * as storeReports from './store/reports.js';
 
 // Пример функции инициализации для модуля отчетов
 function initializeReports(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  // const routesReports = createReportsRoutes();
-
-  // router.addRoute(route, routesReports);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('reports', storeReports);
 }
@@ -26,7 +26,7 @@ const ModuleReports = {
       storeReports,
     },
     router: {
-      // createReportsRoutes
+      getRoutes,
     },
     components: {
       // Pages

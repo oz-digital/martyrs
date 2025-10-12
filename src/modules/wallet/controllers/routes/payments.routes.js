@@ -1,6 +1,6 @@
 import middlewareFactoryAuth from '@martyrs/src/modules/auth/controllers/middlewares/index.js';
 import controllerFactoryTickets from '@martyrs/src/modules/events/controllers/tickets.controller.js';
-import Observer from '@martyrs/src/modules/globals/controllers/classes/globals.observer.js';
+import Observer from '@martyrs/src/modules/core/controllers/classes/core.observer.js';
 import WebhookStripe from '@martyrs/src/modules/integrations/stripe/controllers/webhooks/stripe.webhook.js';
 import controllerFactory from '../factories/payments.factory.js';
 export default (function (app, db, origins, publicPath) {

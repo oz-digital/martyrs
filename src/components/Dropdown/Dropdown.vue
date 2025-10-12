@@ -1,16 +1,24 @@
 <template>
-  <div class="dropdown pos-relative" v-click-outside="clickedOutside" @click.stop="isOpen = !isOpen">
-    <div v-if="isComponentLabel" class="w-100 h-100 flex-center flex">
-      <component :is="label.component" v-bind="label.props" :class="label.class"></component>
-    </div>
-    <div v-else>
-      {{ label }}
-    </div>
+  <div
+    class="dropdown pos-relative"
+    v-click-outside="trigger === 'click' ? clickedOutside : undefined"
+    @click.stop="trigger === 'click' ? (isOpen = !isOpen) : null"
+    @mouseenter="trigger === 'hover' ? (isOpen = true) : null"
+    @mouseleave="trigger === 'hover' ? (isOpen = false) : null"
+  >
+    <slot name="label">
+      <div v-if="isComponentLabel" class="w-100 h-100 flex-center flex">
+        <component :is="label.component" v-bind="label.props" :class="label.class"></component>
+      </div>
+      <div v-else>
+        {{ label }}
+      </div>
+    </slot>
     <transition name="TransitionTranslateY" mode="out-in">
-      <div 
-        v-show="isOpen" 
-        :style="{ left: align === 'left' ? '0' : 'auto', right: align === 'right' ? '0' : 'auto' }" 
-        class="dropdown-content radius-big" 
+      <div
+        v-show="isOpen"
+        :style="{ left: align === 'left' ? '0' : 'auto', right: align === 'right' ? '0' : 'auto' }"
+        class="dropdown-content "
       >
         <slot></slot>
       </div>
@@ -32,6 +40,10 @@ const props = defineProps({
   align: {
     type: String,
     default: 'left'
+  },
+  trigger: {
+    type: String,
+    default: 'click'
   }
 })
 

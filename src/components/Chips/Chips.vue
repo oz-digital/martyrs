@@ -6,8 +6,8 @@
 		<p 
 			v-if="chips?.length"
 		  v-for="(chip,index) in chips" 
-		  :class="$attrs.class || 'p-regular font-main'"
-		 	class="mn-r-nano d-inline-block w-max pd-thin radius-thin t-medium bg-main" 
+		  :class="'p-regular font-main'"
+		 	class="mn-r-nano d-inline-block w-max p-regular pd-thin radius-thin t-medium bg-main" 
 		>
 			{{chip.text ? chip.text : chip}}
 		</p>
@@ -28,7 +28,4 @@ const props = defineProps(['chips']);
 </script>
 
 <style>
-	.t-trimmed {
-		font-size: 0;
-	}
 </style>

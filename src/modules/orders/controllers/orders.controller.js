@@ -1,5 +1,5 @@
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 const { sendChatMessageTelegram } = mailing;
 function formatPositions(positions) {
   return positions.map(pos => `🔹 ${pos.name} - Price: $${pos.price}, Quantity: ${pos.quantity}`).join('\n');
@@ -281,8 +281,8 @@ const controllerFactory = db => {
   const read = async (req, res) => {
     console.log(req.query);
     let stages = [
-      ...queryProcessorGlobals.getBasicOptions(req.query),
-      ...queryProcessorGlobals.getSearchOptions(req.query.search, {
+      ...queryProcessorCore.getBasicOptions(req.query),
+      ...queryProcessorCore.getSearchOptions(req.query.search, {
         fields: ['positions.name'],
       }),
       // For spots
@@ -309,16 +309,16 @@ const controllerFactory = db => {
         },
       },
       // For creator
-      queryProcessorGlobals.getCreatorUserLookupStage(),
-      queryProcessorGlobals.getCreatorOrganizationLookupStage(),
-      queryProcessorGlobals.getCreatorCustomerLookupStage(),
+      queryProcessorCore.getCreatorUserLookupStage(),
+      queryProcessorCore.getCreatorOrganizationLookupStage(),
+      queryProcessorCore.getCreatorCustomerLookupStage(),
       // For owner
-      queryProcessorGlobals.getOwnerUserLookupStage(),
-      queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-      queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
+      queryProcessorCore.getOwnerUserLookupStage(),
+      queryProcessorCore.getOwnerOrganizationLookupStage(),
+      queryProcessorCore.getAddFieldsCreatorOwnerStage(),
       // Pagination
-      ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-      ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+      ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+      ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
     ];
     try {
       const orders = await Order.aggregate(stages);

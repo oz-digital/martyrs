@@ -1,5 +1,6 @@
 // Router
-import routerMarketplace from './views/router/marketplace.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './marketplace.router.js';
 
 //Store
 import * as storeMarketplace from './views/store/marketplace.js';
@@ -15,9 +16,10 @@ import Catalog from './views/components/pages/Catalog.vue';
 
 // Пример функции инициализации для модуля маркетплейса
 function initializeMarketplace(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  router.addRoute(route, routerMarketplace);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('marketplace', storeMarketplace);
 }
@@ -29,7 +31,7 @@ const ModuleMarketplace = {
       storeMarketplace,
     },
     router: {
-      routerMarketplace,
+      getRoutes,
     },
     components: {
       // Elements

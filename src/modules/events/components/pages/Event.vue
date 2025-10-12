@@ -31,7 +31,7 @@
           <div class="flex flex-wrap gap-micro t-medium p-medium mn-b-semi justify-start align-center">
             <span v-if="event.date?.start" class="mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
               <IconDate :fill="'rgb(var(--black))'" class="w-1r h-auto"/>
-              {{formatDate(event.date.start)}}
+              {{formatDate(event.date.start, locale)}}
             </span>
 
 
@@ -128,7 +128,7 @@ import Countdown from "@martyrs/src/components/Countdown/Countdown.vue";
 
 import HeroEvent from '@martyrs/src/modules/events/components/sections/HeroEvent.vue';
 
-import PhotoStack from "@martyrs/src/modules/globals/views/components/elements/PhotoStack.vue";
+import PhotoStack from "@martyrs/src/modules/core/views/components/elements/PhotoStack.vue";
 
 import { SkeletonEvent, IconDate } from '@martyrs/src/modules/icons/icons.client.js';
 
@@ -143,9 +143,11 @@ import * as tickets from '@martyrs/src/modules/events/store/tickets.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 import { useRoute } from 'vue-router';
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useI18n } from 'vue-i18n';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const route = useRoute();
+const { locale } = useI18n();
 const { returnCurrency, formatDate } = useGlobalMixins();
 const qrcode = ref(null);
 

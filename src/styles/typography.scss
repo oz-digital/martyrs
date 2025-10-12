@@ -48,6 +48,7 @@ span.text-box-trim-end {
 
 
 
+
 // Font Styles
 h1,.h1  { font-family: var(--font-main); font-weight: 500; font-size: clamp(3.250rem, 5vw, 4.000rem); 	line-height: 1.000; letter-spacing: -0.05rem; 	text-transform: none; }
 h2,.h2  { font-family: var(--font-main); font-weight: 500; font-size: clamp(2.000rem, 5vw, 3.250rem);  	line-height: 1.125; letter-spacing: -0.05rem;	text-transform: none; }
@@ -114,7 +115,7 @@ a:hover   { cursor: pointer;}
 }
 
 .t-trimmed {
-/*  overflow: hidden;*/
+  overflow: hidden;
   text-overflow: ellipsis clip;
   display: -webkit-box; /* Устанавливает элемент как блочный контейнер */
   -webkit-line-clamp: 1; /* Ограничивает количество строк до 3 */
@@ -131,21 +132,21 @@ a:hover   { cursor: pointer;}
 .t-trim-1 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-/*  overflow: hidden;*/
+  overflow: hidden;
   -webkit-line-clamp: 1;
 }
 
 .t-trim-2 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-/*  overflow: hidden;*/
+  overflow: hidden;
   -webkit-line-clamp: 2;
 }
 
 .t-trim-3 {
 	display: -webkit-box;
   -webkit-box-orient: vertical;  
-/*  overflow: hidden;*/
+  overflow: hidden;
   -webkit-line-clamp: 3;
 }
 

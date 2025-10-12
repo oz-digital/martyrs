@@ -1,7 +1,8 @@
 // Store
 import * as storeSpots from './store/spots.js';
 // Router
-import routerSpots from './router/spots.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './router/spots.router.js';
 // Views
 import Spots from './components/layouts/Spots.vue';
 import Map from './components/pages/Map.vue';
@@ -12,8 +13,12 @@ import CardSpot from './components/blocks/CardSpot.vue';
 import SpotMemberModify from './components/blocks/SpotMemberModify.vue';
 import SpotSub from './components/blocks/SpotSub.vue';
 
-function initializeSpots(app, store, router) {
-  router.addRoute('Home', routerSpots);
+function initializeSpots(app, store, router, options = {}) {
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
+
   store.addStore('spots', storeSpots);
 }
 
@@ -24,7 +29,7 @@ const ModuleSpot = {
       storeSpots,
     },
     router: {
-      routerSpots,
+      getRoutes,
     },
     components: {
       // Pages

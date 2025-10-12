@@ -1,4 +1,4 @@
-import addRoutes from '@martyrs/src/modules/globals/views/router/addRoutes.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
 import routerInventory from './router/inventory.router.js';
 
 // Views

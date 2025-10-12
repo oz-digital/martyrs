@@ -5,7 +5,7 @@ import axios from 'axios';
 import { reactive, watch } from 'vue';
 
 // Globals
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError } from '@martyrs/src/modules/core/views/store/core.store.js';
 
 // Setup Axios
 const $axios = axios.create({
@@ -57,6 +57,36 @@ const actions = {
   async delete(ticket) {
     try {
       const response = await $axios.post(`/api/tickets/delete`, ticket);
+      state.error = null;
+      return Promise.resolve(response.data);
+    } catch (error) {
+      setError(error);
+      return Promise.reject(error);
+    }
+  },
+  async getStats(eventId) {
+    try {
+      const response = await $axios.get(`/api/tickets/stats/${eventId}`);
+      state.error = null;
+      return Promise.resolve(response.data);
+    } catch (error) {
+      setError(error);
+      return Promise.reject(error);
+    }
+  },
+  async getAttendance(eventId) {
+    try {
+      const response = await $axios.get(`/api/tickets/attendance/${eventId}`);
+      state.error = null;
+      return Promise.resolve(response.data);
+    } catch (error) {
+      setError(error);
+      return Promise.reject(error);
+    }
+  },
+  async sendEmail(ticketId) {
+    try {
+      const response = await $axios.post(`/api/tickets/${ticketId}/send-email`);
       state.error = null;
       return Promise.resolve(response.data);
     } catch (error) {

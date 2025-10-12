@@ -133,7 +133,7 @@
 		</section>
 		
 		<!-- Backoffice -->
-		<div v-if="MOBILE_APP" @click="() => globals.state.isOpenSidebar = !globals.state.isOpenSidebar"  class="pos-relative">
+		<div v-if="MOBILE_APP" @click="() => core.state.isOpenSidebar = !core.state.isOpenSidebar"  class="pos-relative">
 			<div class="bg-light radius-medium pd-medium">
 				<p class="t-medium t-black-transp-60">
 					Show Menu
@@ -190,7 +190,7 @@
 	import Products from '@martyrs/src//modules/products/components/pages/Products.vue'
 	// Import state
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
 
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js';
 	import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';

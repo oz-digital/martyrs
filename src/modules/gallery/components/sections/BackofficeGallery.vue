@@ -163,8 +163,8 @@ import * as organizations from '@martyrs/src/modules/organizations/store/organiz
   
 import gallery from '@martyrs/src/modules/gallery/store/gallery.js';
 
-import CardHeader  from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue'
-import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+import CardHeader  from '@martyrs/src/modules/core/views/components/blocks/CardHeader.vue'
+import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
 
 import EditImages from '@martyrs/src/components/EditImages/EditImages.vue';
 import BlockTags from '@martyrs/src/components/FieldTags/BlockTags.vue';

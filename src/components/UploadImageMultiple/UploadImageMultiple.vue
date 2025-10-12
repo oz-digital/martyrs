@@ -30,7 +30,7 @@ import axios from 'axios';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
 import IconUpload from '@martyrs/src/modules/icons/navigation/IconUpload.vue'
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 
 const images = ref([]);
 const loading = ref(false);
@@ -88,7 +88,7 @@ async function onFileChange(e) {
     
     emit('update:images', images.value);
   } catch (error) {
-    globals.setError(error);
+    core.setError(error);
   } finally {
     loading.value = false;
   }

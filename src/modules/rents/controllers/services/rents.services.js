@@ -1,8 +1,8 @@
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
-import Validator from '@martyrs/src/modules/globals/controllers/classes/globals.validator.js';
-import Verifier from '@martyrs/src/modules/globals/controllers/classes/globals.verifier.js';
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
+import Validator from '@martyrs/src/modules/core/controllers/classes/core.validator.js';
+import Verifier from '@martyrs/src/modules/core/controllers/classes/core.verifier.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 // Validation configs
 const queryValidatorConfig = {
   // status: { rule: 'optional', validator: Validator.schema().string().oneOf(['published', 'pending']), default: 'pending' },
@@ -119,9 +119,9 @@ const controller = db => {
       // Создаем pipeline с использованием utility-функций
       const stages = [
         // Базовые фильтры
-        ...queryProcessorGlobals.getBasicOptions(verifiedData),
+        ...queryProcessorCore.getBasicOptions(verifiedData),
         // Фильтр по датам
-        ...queryProcessorGlobals.getFilterDate(verifiedData.dateStart, verifiedData.dateEnd, {
+        ...queryProcessorCore.getFilterDate(verifiedData.dateStart, verifiedData.dateEnd, {
           start: 'startDate',
           end: 'endDate',
         }),
@@ -141,12 +141,12 @@ const controller = db => {
           },
         },
         // Добавляем стейджи для creator и owner
-        queryProcessorGlobals.getCreatorUserLookupStage(),
-        queryProcessorGlobals.getCreatorOrganizationLookupStage(),
-        queryProcessorGlobals.getCreatorCustomerLookupStage(),
-        queryProcessorGlobals.getOwnerUserLookupStage(),
-        queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-        queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
+        queryProcessorCore.getCreatorUserLookupStage(),
+        queryProcessorCore.getCreatorOrganizationLookupStage(),
+        queryProcessorCore.getCreatorCustomerLookupStage(),
+        queryProcessorCore.getOwnerUserLookupStage(),
+        queryProcessorCore.getOwnerOrganizationLookupStage(),
+        queryProcessorCore.getAddFieldsCreatorOwnerStage(),
         // Проекция нужных полей
         {
           $project: {
@@ -162,10 +162,10 @@ const controller = db => {
           },
         },
         // Удаляем временные свойства
-        queryProcessorGlobals.removeTempPropeties(),
+        queryProcessorCore.removeTempPropeties(),
         // Сортировка и пагинация
-        ...queryProcessorGlobals.getSortingOptions(verifiedData.sortParam, verifiedData.sortOrder),
-        ...queryProcessorGlobals.getPaginationOptions(verifiedData.skip, verifiedData.limit),
+        ...queryProcessorCore.getSortingOptions(verifiedData.sortParam, verifiedData.sortOrder),
+        ...queryProcessorCore.getPaginationOptions(verifiedData.skip, verifiedData.limit),
       ];
       const results = await Rent.aggregate(stages);
       // Добавляем теги для каждой аренды и продукта

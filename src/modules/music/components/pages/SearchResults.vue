@@ -176,7 +176,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue';
+import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue';
 import TrackListCard from '../cards/TrackListCard.vue';
 import AlbumCard from '../cards/AlbumCard.vue';
 import PlaylistCard from '../cards/PlaylistCard.vue';

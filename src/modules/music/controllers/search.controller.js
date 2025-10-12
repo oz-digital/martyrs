@@ -1,5 +1,5 @@
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
 export default (function (app, db) {
   const logger = new Logger(db);
   const cache = new Cache();

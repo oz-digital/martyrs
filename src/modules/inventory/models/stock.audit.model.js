@@ -1,4 +1,4 @@
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
 
 export default db => {
   const StockAuditSchema = new db.mongoose.Schema({

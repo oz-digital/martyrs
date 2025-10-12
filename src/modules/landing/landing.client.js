@@ -14,7 +14,7 @@ import SectionFeaturesImages from './components/sections/SectionFeaturesImages.v
 import SectionHeroToken from './components/sections/SectionHeroToken.vue';
 import SectionRoadmap from './components/sections/SectionRoadmap.vue';
 
-import { i18nManager } from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+import { i18nManager } from '@martyrs/src/modules/core/views/classes/core.i18n.js';
 import locales from './locales/index.js';
 
 // Регистрируем локализацию для модуля landing

@@ -51,7 +51,7 @@ const lookupStage = lookupConfig.categories.lookup;
 - **products.controller.js**:
   - Зависимости: 
     - `@martyrs/src/modules/integrations/openai/openai.globals.js`
-    - `@martyrs/src/modules/globals/controllers/utils/queryProcessor.js`
+    - `@martyrs/src/modules/core/controllers/utils/queryProcessor.js`
     - `controllers/queries/products.queries.js`
     - `controllers/configs/products.lookup.config.js`
   

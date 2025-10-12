@@ -1,5 +1,5 @@
 <template>
-  <div class="for-transition w-100 cols-1 pd-thin gap-thin">
+  <div v-if="spots.state.spot" class="for-transition w-100 cols-1 pd-thin gap-thin">
 
 
     <Block class="flex-nowrap flex-v-center flex">
@@ -167,7 +167,7 @@ import LocationMarker from "@martyrs/src/components/LocationMarker/LocationMarke
 import Button from "@martyrs/src/components/Button/Button.vue";
 import Popup from "@martyrs/src/components/Popup/Popup.vue";
 
-import WorktimeEdit from "../sections/WorktimeEdit.vue"; 
+import WorktimeEdit from "../sections/WorktimeEdit.vue";
 
 import * as spots from "@martyrs/src/modules/spots/store/spots.js";
 
@@ -175,6 +175,8 @@ const router = useRouter();
 const route = useRoute();
 const tabOrganization = ref("details");
 const showAddNew = ref(false);
+
+const getRouteName = (baseName) => `${route.meta?.context || ''}${baseName}`
 
 onMounted(async () => {
   await fetchData();
@@ -216,8 +218,7 @@ async function onSubmit() {
 }
 
 function redirectTo() {
-  // router.replace({ name: "Spot", params: { _id: route.params._id, spot: spots.state.spot._id } });
-   router.push({ name: "Organization",  query: { tab: 'spots' }, params: { _id: route.params._id }});
+  router.push({ name: getRouteName('Spots'), params: { _id: route.params._id } });
 }
 
 async function onDelete() {
@@ -228,7 +229,7 @@ async function onDelete() {
 }
 
 function redirectDash() {
-  router.push({ name: "Organization", params: { _id: route.params._id }});
+  router.push({ name: getRouteName('Spots'), params: { _id: route.params._id } });
 }
 </script>
 

@@ -1,5 +1,7 @@
 // Router
-import { createProductRoutes } from './router/products.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes as getProductRoutes } from './router/products.router.js';
+import { getRoutes as getCategoryRoutes } from './router/categories.router.js';
 
 //Store
 import * as storeCategories from './store/categories.js';
@@ -31,11 +33,15 @@ import Products from './components/pages/Products.vue';
 
 // Пример функции инициализации для модуля продуктов
 function initializeProducts(app, store, router, options = {}) {
-  const route = options.route || 'Home';
+  const productRoutes = getProductRoutes(options);
+  productRoutes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
-  const routesProducts = createProductRoutes();
-
-  router.addRoute(route, routesProducts);
+  const categoryRoutes = getCategoryRoutes(options);
+  categoryRoutes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('categories', storeCategories);
   store.addStore('products', storeProducts);
@@ -49,7 +55,8 @@ const ModuleProducts = {
       storeProducts,
     },
     router: {
-      createProductRoutes,
+      getProductRoutes,
+      getCategoryRoutes,
     },
     components: {
       // Elements

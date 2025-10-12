@@ -136,7 +136,7 @@ import Field from '@martyrs/src/components/Field/Field.vue'
 import Button from '@martyrs/src/components/Button/Button.vue';   
 import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
-import Card from '@martyrs/src/modules/globals/views/components/blocks/Card.vue';
+import Card from '@martyrs/src/modules/core/views/components/blocks/Card.vue';
 
 import { ref, onMounted, watchEffect, nextTick, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -146,7 +146,7 @@ import * as blog from '@martyrs/src/modules/community/store/blogposts.js';
 import * as auth  from '@martyrs/src/modules/auth/views/store/auth.js'
 import * as organizations  from '@martyrs/src/modules/organizations/store/organizations.js'
     
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 const { hasAccess } = useGlobalMixins()
 

@@ -9,7 +9,7 @@
 		">
 			<IconInfo fill="rgb(var(--white))" class="t-transp i-medium mn-r-thin z-index-5"/>
 			<p class="w-100">
-				{{te(`globals.errors.${data.message}`) ? t(`globals.errors.${data.message}`) : data.message}}
+				{{te(`core.errors.${data.message}`) ? t(`core.errors.${data.message}`) : data.message}}
 			</p>
 			<IconCross @click="closeError()"  class="cursor-pointer hover-scale-1 i-medium z-index-5"/>
 		</div>

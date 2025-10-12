@@ -108,7 +108,7 @@
           :photo="user.user.profile?.photo"
           :name="user.user.profile?.name || user.user.phone || user.user.email"
           @click="() => { 
-            globals.actions.add(departmentsStore.state.department.members, { _id: user.user._id, user: user.user, position: 'Member'})
+            core.actions.add(departmentsStore.state.department.members, { _id: user.user._id, user: user.user, position: 'Member'})
             closeMemberPopup();
           }"
           class="h-4r bg-white pd-thin radius-medium w-100 mn-b-thin"
@@ -224,7 +224,7 @@ import {
 
 import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'
 
-import * as globals from "@martyrs/src/modules/globals/views/store/globals.js";
+import * as globals from "@martyrs/src/modules/core/views/store/core.store.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -296,7 +296,7 @@ async function onDelete() {
 
 function removeMember(member) {
    if (confirm("Are you sure you want to remove this member?")) {
-    globals.actions.delete(departmentsStore.state.department.members, { _id: member.user._id}) 
+    core.actions.delete(departmentsStore.state.department.members, { _id: member.user._id}) 
   }
 }
 

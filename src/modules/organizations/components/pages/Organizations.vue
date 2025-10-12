@@ -90,7 +90,7 @@
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 	import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
 
-	import Card from '@martyrs/src/modules/globals/views/components/blocks/Card.vue';
+	import Card from '@martyrs/src/modules/core/views/components/blocks/Card.vue';
 	import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
 
 	// Accessing router

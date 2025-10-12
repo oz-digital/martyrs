@@ -22,10 +22,10 @@
 
 ```javascript
 // Пример инициализации модуля globals
-const globals = require('@martyrs/src/modules/globals');
+const globals = require('@martyrs/src/modules/core');
 
 // Инициализация
-globals.initialize(app, db, origins, publicPath);
+core.initialize(app, db, origins, publicPath);
 ```
 
 Параметры функции `initialize`:
@@ -60,7 +60,7 @@ globals.initialize(app, db, origins, publicPath);
 Для создания экземпляра ABAC используется синглтон-функция `getInstance`, которая принимает базу данных и необязательный объект настроек:
 
 ```javascript
-const { getInstance } = require('@martyrs/src/modules/globals/controllers/classes/globals.abac.js');
+const { getInstance } = require('@martyrs/src/modules/core/controllers/classes/core.abac.js');
 const abac = getInstance(db, options);
 ```
 
@@ -238,7 +238,7 @@ abac.registerGlobalPolicy('OrganizationAccessPolicy', async context => {
 Классы `Validator` и `Verifier` используются для проверки параметров запроса:
 
 ```javascript
-const Verifier = require('@martyrs/src/modules/globals/controllers/classes/globals.verifier.js');
+const Verifier = require('@martyrs/src/modules/core/controllers/classes/core.verifier.js');
 const publicAccessVerifier = new Verifier({
   status: {
     rule: 'optional',
@@ -300,7 +300,7 @@ Validator - это класс для валидации данных с бога
 #### Создание валидатора
 
 ```javascript
-const Validator = require('@martyrs/src/modules/globals/controllers/classes/validator.js');
+const Validator = require('@martyrs/src/modules/core/controllers/classes/validator.js');
 
 // Создание схемы валидации
 const userSchema = Validator.schema({ context: 'Пользователь' }).object({
@@ -348,7 +348,7 @@ Verifier - это класс для валидации query-параметро�
 #### Создание экземпляра Verifier
 
 ```javascript
-const Validator = require('@martyrs/src/modules/globals/controllers/classes/validator.js');
+const Validator = require('@martyrs/src/modules/core/controllers/classes/validator.js');
 
 // Создаем конфигурацию параметров
 const queryConfig = {
@@ -538,7 +538,7 @@ Observer - это реализация паттерна "Наблюдатель"
 #### Создание и использование Observer
 
 ```javascript
-const Observer = require('@martyrs/src/modules/globals/controllers/classes/observer.js');
+const Observer = require('@martyrs/src/modules/core/controllers/classes/observer.js');
 
 // Создание экземпляра Observer
 const events = new Observer();
@@ -580,7 +580,7 @@ Logger - это компонент для логирования событий 
 #### Использование Logger
 
 ```javascript
-const Logger = require('@martyrs/src/modules/globals/controllers/classes/logger.js');
+const Logger = require('@martyrs/src/modules/core/controllers/classes/logger.js');
 
 // Создание экземпляра Logger
 const logger = new Logger(db);
@@ -654,7 +654,7 @@ Cache - это компонент для кэширования данных в 
 #### Использование Cache
 
 ```javascript
-const Cache = require('@martyrs/src/modules/globals/controllers/classes/cache.js');
+const Cache = require('@martyrs/src/modules/core/controllers/classes/cache.js');
 
 // Создание экземпляра Cache с TTL в 5 минут
 const cache = new Cache({ ttlSeconds: 300 });
@@ -729,7 +729,7 @@ app.post('/api/users', async (req, res) => {
 
 ```javascript
 // Модуль auth, использующий globals
-const globals = require('@martyrs/src/modules/globals');
+const globals = require('@martyrs/src/modules/core');
 const { Validator, Logger, Cache } = globals;
 
 function initializeAuth(app, db) {

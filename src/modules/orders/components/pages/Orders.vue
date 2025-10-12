@@ -111,12 +111,12 @@
   import CardOrderUser from '@martyrs/src/modules/orders/components/blocks/CardOrderUser.vue'
   import CardOrderBackoffice from '@martyrs/src/modules/orders/components/blocks/CardOrderBackoffice.vue'
 
-  import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+  import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
 
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
   import IconTime  from '@martyrs/src/modules/icons/entities/IconTime.vue'
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 
   const route = useRoute();
   const router = useRouter();

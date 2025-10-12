@@ -1,8 +1,8 @@
 // Store
 import * as storePages from './views/store/pages.js';
 // Router
-import routerPagesBackoffice from './views/router/pages.backoffice.router.js';
-import routerPages from './views/router/pages.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './pages.router.js';
 // Views
 import Page from './views/components/pages/Page.vue';
 import PageEdit from './views/components/pages/PageEdit.vue';
@@ -10,11 +10,10 @@ import Pages from './views/components/pages/Pages.vue';
 
 // Пример функции инициализации для модуля страниц
 function initializePages(app, store, router, options = {}) {
-  const routeHome = options.route?.home || 'Home';
-  const routeBO = options.route?.backoffice || 'Backoffice Root';
-
-  router.addRoute(routeHome, routerPages);
-  router.addRoute(routeBO, routerPagesBackoffice);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('pages', storePages);
 }
@@ -26,7 +25,7 @@ const ModulePages = {
       storePages,
     },
     router: {
-      routerPages,
+      getRoutes,
     },
     components: {
       // Pages

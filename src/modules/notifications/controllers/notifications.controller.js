@@ -129,73 +129,51 @@ const NotificationsController = (db, wss, notificationService) => {
         return res.status(400).json({ message: 'Either userId or anonymousId is required' });
       }
       
-      // FIRST: Check by userId/anonymousId + deviceId (primary key)
-      let existingDevice;
-      if (userId) {
-        existingDevice = await db.userDevice.findOne({ userId, deviceId });
-      } else {
-        existingDevice = await db.userDevice.findOne({ anonymousId, deviceId });
-      }
-      
-      if (existingDevice) {
-        // Device with this userId/anonymousId + deviceId exists, update it
-        console.log('[RegisterDevice] Found existing device by userId/anonymousId + deviceId, updating...');
-        
-        // Check if the new deviceToken is already used by another device
-        if (existingDevice.deviceToken !== deviceToken) {
-          const tokenConflict = await db.userDevice.findOne({ 
-            deviceToken,
-            _id: { $ne: existingDevice._id }
-          });
-          
-          if (tokenConflict) {
-            // Remove the conflicting device with this token
-            console.log('[RegisterDevice] Removing conflicting device with token:', tokenConflict._id);
-            await tokenConflict.deleteOne();
-          }
-        }
-        
-        // Update the existing device
-        existingDevice.deviceToken = deviceToken;
-        existingDevice.deviceType = deviceType;
-        existingDevice.lastActive = Date.now();
-        existingDevice.isActive = true;
-        
-        await existingDevice.save();
-        console.log('[RegisterDevice] Device updated:', existingDevice._id);
-        return res.status(200).json(existingDevice);
-      }
-      
-      // SECOND: Check if deviceToken is already used
-      const tokenDevice = await db.userDevice.findOne({ deviceToken });
-      
+      // FIRST: Check if deviceToken is already used by another device
+      const tokenDevice = await db.userDevice.findOne({
+        deviceToken,
+        $or: [
+          { userId: { $ne: userId } },
+          { deviceId: { $ne: deviceId } }
+        ]
+      });
+
       if (tokenDevice) {
-        // This token is already registered to another device
-        console.log('[RegisterDevice] Token already exists for different device, removing old device:', tokenDevice._id);
+        // This token is already registered to another device, remove it
+        console.log('[RegisterDevice] Token exists for different device, removing:', tokenDevice._id);
         await tokenDevice.deleteOne();
       }
-      
-      // Create new device
-      const deviceData = {
-        deviceId,
-        deviceType,
-        deviceToken,
-        isActive: true,
-        lastActive: Date.now(),
-        isAnonymous: !userId
+
+      // Use atomic findOneAndUpdate with upsert to avoid race condition
+      const filter = userId
+        ? { userId, deviceId }
+        : { anonymousId, deviceId };
+
+      const update = {
+        $set: {
+          deviceToken,
+          deviceType,
+          isActive: true,
+          lastActive: Date.now(),
+          isAnonymous: !userId
+        },
+        $setOnInsert: userId
+          ? { userId, deviceId }
+          : { anonymousId, deviceId }
       };
-      
-      if (userId) {
-        deviceData.userId = userId;
-      } else {
-        deviceData.anonymousId = anonymousId;
-      }
-      
-      const device = await db.userDevice.create(deviceData);
-      
-      console.log('[RegisterDevice] New device created:', device._id);
-      
-      return res.status(201).json(device);
+
+      const device = await db.userDevice.findOneAndUpdate(
+        filter,
+        update,
+        {
+          upsert: true,
+          new: true,
+          runValidators: true
+        }
+      );
+
+      console.log('[RegisterDevice] Device upserted:', device._id);
+      return res.status(200).json(device);
     } catch (err) {
       console.error('[RegisterDevice] Error:', err.message);
       return res.status(500).json({ message: err.message });

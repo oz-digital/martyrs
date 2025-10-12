@@ -1,8 +1,8 @@
-import applyCommonSchema from '@martyrs/src/modules/globals/models/schemas/common.schema.js';
-import applyEngagementSchema from '@martyrs/src/modules/globals/models/schemas/engagement.schema.js';
-import applyMetadataSchema from '@martyrs/src/modules/globals/models/schemas/metadata.schema.js';
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
-import applySocialsSchema from '@martyrs/src/modules/globals/models/schemas/socials.schema.js';
+import applyCommonSchema from '@martyrs/src/modules/core/models/schemas/common.schema.js';
+import applyEngagementSchema from '@martyrs/src/modules/core/models/schemas/engagement.schema.js';
+import applyMetadataSchema from '@martyrs/src/modules/core/models/schemas/metadata.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
+import applySocialsSchema from '@martyrs/src/modules/core/models/schemas/socials.schema.js';
 export default (function (db) {
   const mongoose = db.mongoose;
   const Schema = mongoose.Schema;

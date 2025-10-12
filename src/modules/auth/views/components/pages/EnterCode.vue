@@ -68,7 +68,7 @@
 	// Import state
 	import * as auth 	from '@martyrs/src/modules/auth/views/store/auth.js'
 	import * as twofa 	from '@martyrs/src/modules/auth/views/store/twofa.js'
-	import { setError } from '@martyrs/src/modules/globals/views/store/globals.js'
+	import { setError } from '@martyrs/src/modules/core/views/store/core.store.js'
 	
 	const route = useRoute()
 	const router = useRouter()

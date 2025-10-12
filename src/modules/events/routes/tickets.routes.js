@@ -9,4 +9,10 @@ export default (function (app, db, origins, publicPath) {
   app.post('/api/tickets/update', controller.update);
   // Delete a ticket
   app.post('/api/tickets/delete', controller.delete);
+  // Get ticket statistics for an event
+  app.get('/api/tickets/stats/:eventId', controller.getStats);
+  // Get attendance timeline for an event
+  app.get('/api/tickets/attendance/:eventId', controller.getAttendance);
+  // Resend ticket email
+  app.post('/api/tickets/:ticketId/send-email', controller.resendTicketEmail);
 });

@@ -38,12 +38,12 @@
 			<IconEdit
 				v-if="accesses && hasAccess(route.params._id, 'products', 'edit', accesses)"
 				@click="$router.push({
-					name: 'ProductEdit', 
+					name: route.meta.context === 'backoffice' ? 'BackofficeProductEdit' : 'Organization_ProductEdit',
 					params: {
 						_id: product.owner.target,
 						product: product._id
 					}
-				})" 
+				})"
 				class="pos-absolute pos-t-regular pos-r-regular i-medium t-transp"
 			/>
 

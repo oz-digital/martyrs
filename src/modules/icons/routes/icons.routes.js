@@ -4,12 +4,11 @@ export default function iconsRoutes(app, db, origins, publicPath) {
   // Search icons endpoint with pagination
   app.post('/api/icons/search', async (req, res) => {
     try {
-      const { 
-        search: term, 
-        limit = 20, 
-        skip = 0,
+      const {
+        search: term,
+        limit = 50,
         next_page,
-        prev_page 
+        prev_page
       } = req.body;
 
       if (!term) {
@@ -18,12 +17,10 @@ export default function iconsRoutes(app, db, origins, publicPath) {
 
       // Remove "Icon" prefix from search term
       const cleanTerm = term.replace(/^Icon/i, '').trim();
-      
-      // Для skip-based пагинации запрашиваем больше результатов
-      const requestLimit = skip > 0 ? limit + skip : limit;
-      
-      let searchParams = { limit: requestLimit };
-      
+
+      // Используем только token-based пагинацию
+      const searchParams = { limit };
+
       if (next_page) {
         searchParams.next_page = next_page;
       } else if (prev_page) {
@@ -31,20 +28,10 @@ export default function iconsRoutes(app, db, origins, publicPath) {
       }
 
       const response = await searchIcons(cleanTerm, searchParams);
-      
-      let icons = response.icons || [];
-      
-      // Применяем skip и limit к результатам
-      if (skip > 0) {
-        icons = icons.slice(skip);
-      }
-      if (icons.length > limit) {
-        icons = icons.slice(0, limit);
-      }
 
       res.json({
         success: true,
-        icons: icons.map(icon => ({
+        icons: (response.icons || []).map(icon => ({
           id: icon.id,
           term: icon.term,
           preview_url: icon.thumbnail_url || icon.preview_url_84 || icon.preview_url_42,
@@ -53,7 +40,7 @@ export default function iconsRoutes(app, db, origins, publicPath) {
         pagination: {
           next_page: response.next_page || null,
           prev_page: response.prev_page || null,
-          total: response.total || icons.length
+          total: response.total || 0
         }
       });
     } catch (error) {

@@ -39,6 +39,9 @@ span, p {
 .field-wrapper:focus-within {
   box-shadow: inset 0 0 0 1px rgba(var(--second), 1), 0 0 6px 2px rgba(var(--second), 0.1);
 }
+.field-wrapper.focus-within {
+  box-shadow: inset 0 0 0 1px rgba(var(--second), 1), 0 0 6px 2px rgba(var(--second), 0.1);
+}
 
 .field-wrapper:has(input:-webkit-autofill),
 .field-wrapper:has(textarea:-webkit-autofill),

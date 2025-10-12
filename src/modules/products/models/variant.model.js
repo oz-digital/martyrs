@@ -1,5 +1,5 @@
-import applyCommonSchema from '@martyrs/src/modules/globals/models/schemas/common.schema.js';
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+import applyCommonSchema from '@martyrs/src/modules/core/models/schemas/common.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
 
 import ingredientSchema from './schemas/ingredient.schema.js';
 

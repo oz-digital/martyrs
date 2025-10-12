@@ -31,7 +31,7 @@ export default defineConfig({
       entry: [
         resolve(__dirname, './src/modules/auth/auth.server.js'),
         resolve(__dirname, './src/modules/community/community.server.js'),
-        resolve(__dirname, './src/modules/globals/globals.server.js'),
+        resolve(__dirname, './src/modules/core/core.server.js'),
         resolve(__dirname, './src/modules/organizations/organizations.server.js'),
         resolve(__dirname, './src/modules/products/products.server.js'),
         resolve(__dirname, './src/modules/inventory/inventory.server.js'),

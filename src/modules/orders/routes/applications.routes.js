@@ -1,6 +1,6 @@
-import CRUD from '@martyrs/src/modules/globals/controllers/classes/crud/crud.js';
-import ABAC from '@martyrs/src/modules/globals/controllers/classes/abac/abac.js';
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
+import CRUD from '@martyrs/src/modules/core/controllers/classes/crud/crud.js';
+import ABAC from '@martyrs/src/modules/core/controllers/classes/abac/abac.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
 import axios from 'axios';
 
 import verifierFactory from '../middlewares/applications.verifier.js';

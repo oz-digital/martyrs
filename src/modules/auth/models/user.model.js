@@ -1,6 +1,6 @@
-import applyCredentialsSchema from '@martyrs/src/modules/globals/models/schemas/credentials.schema.js';
-import applyProfileSchema from '@martyrs/src/modules/globals/models/schemas/profile.schema.js';
-import applySocialsSchema from '@martyrs/src/modules/globals/models/schemas/socials.schema.js';
+import applyCredentialsSchema from '@martyrs/src/modules/core/models/schemas/credentials.schema.js';
+import applyProfileSchema from '@martyrs/src/modules/core/models/schemas/profile.schema.js';
+import applySocialsSchema from '@martyrs/src/modules/core/models/schemas/socials.schema.js';
 export default db => {
   const UserSchema = new db.mongoose.Schema(
     {

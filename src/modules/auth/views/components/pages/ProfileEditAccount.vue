@@ -6,8 +6,8 @@
       <h3 class="mn-b-small">Settings</h3>
       <Checkbox 
         :label="'Darkmode'"
-        :radio="globals.state.theme.darkmode"
-        @update:radio="event => globals.actions.toggleTheme()"
+        :radio="core.state.theme.darkmode"
+        @update:radio="event => core.actions.toggleTheme()"
         class="w-100 bg-light t-black pd-medium radius-small"
       />
     </div>
@@ -39,7 +39,7 @@
   
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
   import * as users from '@martyrs/src/modules/auth/views/store/users.js'
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
   
   const router = useRouter()
   

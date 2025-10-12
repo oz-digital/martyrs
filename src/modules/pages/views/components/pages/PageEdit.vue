@@ -35,7 +35,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 const { 
   normalizeUrlParam, 

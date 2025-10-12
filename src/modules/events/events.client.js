@@ -1,11 +1,14 @@
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+
 // Store
 import * as storeEvents from './store/events.js';
 
 // Router
-import { createEventRoutes } from './router/events.js';
+import { getRoutes } from './router/events.router.js';
 
 // Views
 import CardEvent from './components/blocks/CardEvent.vue';
+import CardEventShort from './components/blocks/CardEventShort.vue';
 import EventsLayout from './components/layouts/layoutEvents.vue';
 import EditEvent from './components/pages/EditEvent.vue';
 import Event from './components/pages/Event.vue';
@@ -16,12 +19,10 @@ import List from './components/sections/List.vue';
 
 // Пример функции инициализации для модуля событий
 function initializeEvents(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  const routesEvents = createEventRoutes('', options);
-
-  router.addRoute(route, routesEvents);
-  router.addRoute('Backoffice Root', createEventRoutes('Backoffice', options));
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('events', storeEvents);
 }
@@ -33,11 +34,12 @@ const ModuleEvents = {
       storeEvents,
     },
     router: {
-      createEventRoutes,
+      getRoutes,
     },
     components: {
       // Blocks
       CardEvent,
+      CardEventShort,
       // Sections
       Feed,
       List,
@@ -55,7 +57,8 @@ const ModuleEvents = {
 export {
   // Blocks
   CardEvent,
-  createEventRoutes,
+  CardEventShort,
+  getRoutes,
   EditEvent,
   Event,
   EventsLayout,

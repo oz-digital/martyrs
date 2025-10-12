@@ -39,7 +39,7 @@ import { useRoute } from 'vue-router';
 import { Preferences } from '@capacitor/preferences';
 
 import Comment from './Comment.vue';
-import $axios from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
+import $axios from '@martyrs/src/modules/core/views/utils/axios-instance.js';
 
 const props = defineProps([
   'target', 

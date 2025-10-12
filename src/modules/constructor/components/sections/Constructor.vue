@@ -122,6 +122,10 @@ const props = defineProps({
   },
   notitle: {
     type: Boolean
+  },
+  autoFocus: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -147,7 +151,7 @@ post.value = { content: props.content };
 
 onMounted(() => {
   if (post.value && post.value.content.length === 0) {
-    handleAddBlock('Textarea', '', 0, null, 'h2', 'Enter title');
+    handleAddBlock('Textarea', '', 0, null, 'h2', 'Enter title', uuidv4(), props.autoFocus);
   }
 })
 
@@ -163,7 +167,7 @@ const handleDragEnd = (startIndex, endIndex) => {
   console.log('Drag ended. Start index:', startIndex, 'End index:', endIndex);
 };
 
-function handleAddBlock(type = 'Textarea', content = '', index, data, classBlock = '', placeholder = '', id = uuidv4()) {
+function handleAddBlock(type = 'Textarea', content = '', index, data, classBlock = '', placeholder = '', id = uuidv4(), setFocus = true) {
   let blockNew = {
     id: id,
     type: type,
@@ -172,15 +176,15 @@ function handleAddBlock(type = 'Textarea', content = '', index, data, classBlock
     placeholder: placeholder,
     content: content,
     blocks: [],
-    setFocus: true,
+    setFocus: setFocus,
   };
-  
+
   if (index !== undefined) {
     post.value.content.splice(index + 1, 0, blockNew);
   } else {
     post.value.content.push(blockNew);
   }
-  
+
   showControls.value = null
   emits('update', post.value.content);
 }

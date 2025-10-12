@@ -1,9 +1,9 @@
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
 import fs from 'fs';
 import path from 'path';
 export default (function (app, db, publicPath) {
-  const { getInstance } = globalsabac;
+  const { getInstance } = coreabac;
   const logger = new Logger(db);
   const abac = getInstance(db);
   // Stream track audio

@@ -242,12 +242,12 @@ import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 import IconArrowUp from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 import IconArrowDown from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 
-import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
+import BlockMultiselect from '@martyrs/src/modules/core/views/components/blocks/BlockMultiselect.vue';
 
 // Import stores
 import * as playlistsStore from '../../store/playlists';
 import * as tracksStore from '../../store/tracks';
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 // Props
@@ -346,7 +346,7 @@ const fetchPlaylist = async () => {
     const fetchedPlaylist = await playlistsStore.actions.fetchPlaylistByUrl(props.url);
     
     if (!fetchedPlaylist) {
-      globals.actions.setError({
+      core.actions.setError({
         message: 'Playlist not found'
       });
       return;
@@ -366,7 +366,7 @@ const fetchPlaylist = async () => {
     
   } catch (error) {
     console.error('Error fetching playlist:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to load playlist details'
     });
   }
@@ -442,7 +442,7 @@ const submitForm = async () => {
     
   } catch (error) {
     console.error('Error saving playlist:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to save playlist'
     });
   }
@@ -450,7 +450,7 @@ const submitForm = async () => {
 
 const handleUploadError = (error) => {
   console.error('Upload error:', error);
-  globals.actions.setError({
+  core.actions.setError({
     message: 'Error uploading image'
   });
 };

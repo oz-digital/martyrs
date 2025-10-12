@@ -1,4 +1,4 @@
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
 import path from 'path';
 import puppeteer from 'puppeteer';
 import * as QRCode from 'qrcode';
@@ -16,57 +16,7 @@ function formatTime(dateString) {
   const options = { hour: '2-digit', minute: '2-digit', hour12: false };
   return date.toLocaleTimeString('en-US', options);
 }
-// const createAndSendTicketWithRetry = async (paymentIntentId, ticketData, retries = 3, delay = 1000) => {
-//   try {
-//     const ticket = await saveAndSendTicket(ticketData);
-//     console.log(`Ticket created and sent successfully: ${ticket._id}`);
-//     await Payment.updateOne({ paymentIntentId }, { $set: { ticketId: ticket._id, status: 'success' } });
-//     return ticket;
-//   } catch (err) {
-//     if (retries > 0) {
-//       console.log(`Error creating and sending ticket: ${err.message}. Retrying in ${delay}ms...`);
-//       await new Promise(resolve => setTimeout(resolve, delay));
-//       return createAndSendTicketWithRetry(paymentIntentId, ticketData, retries - 1, delay * 2);
-//     } else {
-//       console.log(`Error creating and sending ticket: ${err.message}. No more retries.`);
-//       await Payment.updateOne({ paymentIntentId }, { $set: { status: 'failed', error: err.message } });
-//       throw err;
-//     }
-//   }
-// };
-// const createTicketJob = new Bull('createTicket', {
-//   attempts: 5, // Количество попыток
-//   backoff: {
-//     type: 'exponential',
-//     delay: 1000, // Начальная задержка между попытками (в миллисекундах)
-//   },
-// });
-// createTicketJob.process(async (job) => {
-//   const { payment } = job.data;
-//   try {
-//     const ticketData = {
-//       // Заполнить данные билета на основе информации из платежа
-//     };
-//     // Создать билет
-//     const ticket = await createTicket(ticketData);
-//     // Отправить билет
-//     await sendTicket(ticket);
-//     // Обновить статус платежа на 'success'
-//     await updatePaymentStatus(payment.id, 'success');
-//   } catch (err) {
-//     console.error(err);
-//     // Обновить статус платежа на 'failed'
-//     await updatePaymentStatus(payment.id, 'failed');
-//     throw err; // Вызвать ошибку для повторной попытки
-//   }
-// });
-// createTicketJob.on('failed', async (job, err) => {
-//   const { payment } = job.data;
-//   // Обновить статус платежа на 'failed'
-//   await updatePaymentStatus(payment.id, 'failed');
-//   // Отправить уведомление администратору о неудачном создании билета
-//   await notifyAdminFailedTicketCreation(payment);
-// });
+
 const controllerFactory = (db, publicPath) => {
   console.log('controllerFactory publicPath:', publicPath);
   const Ticket = db.ticket;
@@ -85,24 +35,33 @@ const controllerFactory = (db, publicPath) => {
     }
     for (let i = 0; i < quantity; i++) {
       console.log(`Processing ticket ${i + 1} of ${quantity}`);
-      const ticket = new Ticket(ticketData);
-      const data = await ticket.save();
-      ticketIds.push(data._id.toString()); // Сохраняем ID каждого билета для QR кода
-      const qrData = data._id.toString();
+      const ticket = new Ticket({
+        ...ticketData,
+        status: 'unused',
+        paymentMethod: ticketData.paymentMethod || 'manual'
+      });
+
+      // Генерируем QR код и устанавливаем данные ДО первого save
       let qrCode;
       try {
-        qrCode = await QRCode.toDataURL(qrData, {
+        qrCode = await QRCode.toDataURL(ticket._id.toString(), {
           errorCorrectionLevel: 'H',
           type: 'image/png',
         });
       } catch (error) {
-        console.error('Error in saveAndSendTicket:', error);
+        console.error('Error generating QR code:', error);
       }
+
       console.log('qr code is', qrCode);
-      data.status = 'unused';
-      data.qrcode = qrCode;
-      data.client_refactor.name = ticketData.name;
-      data.client_refactor.email = ticketData.email;
+      ticket.qrcode = qrCode;
+      ticket.client_refactor = {
+        name: ticketData.name,
+        email: ticketData.email
+      };
+
+      // ПЕРВЫЙ save - билет сохраняется со всеми данными включая status
+      const data = await ticket.save();
+      ticketIds.push(data._id.toString());
       const renderedHtml = renderTicketTemplate({
         clientName: ticketData.name || 'No name',
         qrCode: qrCode,
@@ -143,10 +102,12 @@ const controllerFactory = (db, publicPath) => {
         });
         console.log('PDF created successfully:', filePath);
         await browser.close();
+        // Обновляем только поле image после успешного создания PDF
         data.image = `/tickets/${fileName}`;
-        await data.save(); // Обновление билета в базе данных
+        await data.save();
       } catch (error) {
-        console.error('Error in saveAndSendTicket:', error);
+        console.error('Error creating PDF:', error);
+        // Даже если PDF не создался, билет уже в базе со status: 'unused'
       }
     }
     // Отправка одного емейла с прикрепленными PDF файлами всех билетов
@@ -283,12 +244,97 @@ const controllerFactory = (db, publicPath) => {
       res.status(500).send({ errorCode: 'SERVER_ERROR' });
     }
   };
+  const getStats = async (req, res) => {
+    const { eventId } = req.params;
+    try {
+      const allTickets = await Ticket.find({ target: eventId });
+      const sold = allTickets.filter(t => t.paymentMethod === 'stripe' && t.status !== 'deactivated');
+      const free = allTickets.filter(t => !t.paymentMethod || t.paymentMethod === 'manual');
+      const refunded = allTickets.filter(t => t.status === 'deactivated');
+      res.json({
+        total: allTickets.length,
+        sold: sold.length,
+        free: free.length,
+        refunded: refunded.length,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ errorCode: 'SERVER_ERROR' });
+    }
+  };
+  const getAttendance = async (req, res) => {
+    const { eventId } = req.params;
+    try {
+      const event = await Event.findById(eventId);
+      if (!event) {
+        return res.status(404).send({ errorCode: 'EVENT_NOT_FOUND' });
+      }
+      const tickets = await Ticket.find({ target: eventId });
+      const total = tickets.length;
+      const expected = tickets.filter(t => t.status === 'unused').length;
+      const arrived = tickets.filter(t => t.status === 'used').length;
+      const eventStart = new Date(event.date.start);
+      const timeline = [];
+      for (let i = 0; i < 24; i++) {
+        const time = new Date(eventStart.getTime() + i * 5 * 60000);
+        const nextTime = new Date(time.getTime() + 5 * 60000);
+        const count = tickets.filter(t => {
+          if (t.status !== 'used' || !t.updatedAt) return false;
+          const checkInTime = new Date(t.updatedAt);
+          return checkInTime >= time && checkInTime < nextTime;
+        }).length;
+        timeline.push({
+          time: time.toTimeString().slice(0, 5),
+          count,
+        });
+      }
+      res.json({ total, expected, arrived, timeline });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ errorCode: 'SERVER_ERROR' });
+    }
+  };
+  const resendTicketEmail = async (req, res) => {
+    const { ticketId } = req.params;
+    try {
+      const ticket = await Ticket.findById(ticketId).populate('target');
+      if (!ticket) {
+        return res.status(404).send({ errorCode: 'TICKET_NOT_FOUND' });
+      }
+      const event = ticket.target;
+      if (!event) {
+        return res.status(404).send({ errorCode: 'EVENT_NOT_FOUND' });
+      }
+      const filePath = path.join(publicPath, 'tickets', `ticket-${ticket._id.toString()}.pdf`);
+      const renderedHtmlEmail = renderEmailTemplate({
+        clientName: ticket.client_refactor?.name || 'No name',
+        eventLocation: event.location || process.env.APP_NAME,
+        eventName: event.name,
+        eventDate: formatDate(event.date.start),
+        eventTime: formatTime(event.date.start),
+        randomness: Date.now(),
+      });
+      try {
+        await sendEmail(ticket.client_refactor?.email, `Your Ticket for ${event.name}`, renderedHtmlEmail, [filePath]);
+        res.json({ success: true });
+      } catch (err) {
+        console.error('Email sending failed:', err);
+        res.status(500).send({ errorCode: 'EMAIL_SEND_FAILED' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ errorCode: 'SERVER_ERROR' });
+    }
+  };
   return {
     read,
     create,
     update,
     delete: deleteTicket,
     saveAndSendTicket,
+    getStats,
+    getAttendance,
+    resendTicketEmail,
   };
 };
 export default controllerFactory;

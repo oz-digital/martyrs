@@ -1,5 +1,5 @@
 import queryProcessorReactions from '@martyrs/src/modules/community/controllers/utils/queryProcessorReactions.js';
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 import queryProcessorOrganizations from '@martyrs/src/modules/organizations/controllers/utils/queryProcessor.js';
 import queryProcessor from './utils/queryProcessor.js';
 const controllerFactory = db => {
@@ -11,8 +11,8 @@ const controllerFactory = db => {
     let stages = [];
     stages = [
       // Basic
-      ...queryProcessorGlobals.getBasicOptions(req.query),
-      ...queryProcessorGlobals.getTagsOptions(req.query.tags),
+      ...queryProcessorCore.getBasicOptions(req.query),
+      ...queryProcessorCore.getTagsOptions(req.query.tags),
       ...queryProcessor.getPeriodConditions(req.query.period),
       ...(await queryProcessor.getCategoryConditions(req.query.category)),
       // Following
@@ -22,15 +22,15 @@ const controllerFactory = db => {
       queryProcessorReactions.getCommentsLookupStage(),
       queryProcessorReactions.getReactionsLookupStage(),
       queryProcessorReactions.getReactionsCommentsFields(req.query.user),
-      queryProcessorGlobals.getCreatorUserLookupStage(),
-      queryProcessorGlobals.getCreatorOrganizationLookupStage(),
+      queryProcessorCore.getCreatorUserLookupStage(),
+      queryProcessorCore.getCreatorOrganizationLookupStage(),
       // For owner
-      queryProcessorGlobals.getOwnerUserLookupStage(),
-      queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-      queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
+      queryProcessorCore.getOwnerUserLookupStage(),
+      queryProcessorCore.getOwnerOrganizationLookupStage(),
+      queryProcessorCore.getAddFieldsCreatorOwnerStage(),
       // Sorting and Pagination
-      ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-      ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+      ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+      ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
       // For creator
       // { $sample: { size: Number(req.query.limit) } },
     ];

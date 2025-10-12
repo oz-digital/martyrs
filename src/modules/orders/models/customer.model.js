@@ -1,6 +1,6 @@
-import applyCredentialsSchema from '@martyrs/src/modules/globals/models/schemas/credentials.schema.js';
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
-import applyProfileSchema from '@martyrs/src/modules/globals/models/schemas/profile.schema.js';
+import applyCredentialsSchema from '@martyrs/src/modules/core/models/schemas/credentials.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
+import applyProfileSchema from '@martyrs/src/modules/core/models/schemas/profile.schema.js';
 export default db => {
   const CustomerSchema = new db.mongoose.Schema(
     {

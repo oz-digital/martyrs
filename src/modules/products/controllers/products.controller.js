@@ -1,6 +1,6 @@
 import ChatGPT from '@martyrs/src/modules/integrations/openai/openai.globals.js';
 
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 import queryProcessorProducts from '@martyrs/src/modules/products/controllers/queries/products.queries.js';
 
 import productLookupConfigs from '@martyrs/src/modules/products/controllers/configs/products.lookup.config.js';
@@ -59,7 +59,7 @@ const controllerFactory = db => {
   // Read products
   const Read = async (req, res) => {
     try {
-      const requestedLookups = queryProcessorGlobals.getRequestedLookups(req.query);
+      const requestedLookups = queryProcessorCore.getRequestedLookups(req.query);
       
       if (req.query.dateStart || req.query.dateEnd) {
           console.log('Availability filter params:', {
@@ -70,30 +70,30 @@ const controllerFactory = db => {
           });
       }
       const stages = [
-        ...queryProcessorGlobals.getBasicOptions(req.query),
-        ...queryProcessorGlobals.getSearchOptions(req.query.search, {
+        ...queryProcessorCore.getBasicOptions(req.query),
+        ...queryProcessorCore.getSearchOptions(req.query.search, {
           fields: ['name', 'description']
         }),
         ...queryProcessorProducts.getCategoriesFilterStage(req.query.categories),
         ...queryProcessorProducts.getDeliveryFilterStage(req.query.delivery),
         ...queryProcessorProducts.getAttributeFiltersStage(req.query.filters),
         
-        ...queryProcessorGlobals.getLookupStages(requestedLookups, productLookupConfigs),
+        ...queryProcessorCore.getLookupStages(requestedLookups, productLookupConfigs),
 
         ...queryProcessorProducts.getVariantPriceFilterStage(req.query.priceMin, req.query.priceMax),
         ...queryProcessorProducts.getAvailabilityFilterStage(req.query.dateStart, req.query.dateEnd),
         
-        queryProcessorGlobals.getCreatorUserLookupStage(),
-        queryProcessorGlobals.getCreatorOrganizationLookupStage(),
-        queryProcessorGlobals.getOwnerUserLookupStage(),
-        queryProcessorGlobals.getOwnerOrganizationLookupStage(),
-        queryProcessorGlobals.getAddFieldsCreatorOwnerStage(),
+        queryProcessorCore.getCreatorUserLookupStage(),
+        queryProcessorCore.getCreatorOrganizationLookupStage(),
+        queryProcessorCore.getOwnerUserLookupStage(),
+        queryProcessorCore.getOwnerOrganizationLookupStage(),
+        queryProcessorCore.getAddFieldsCreatorOwnerStage(),
         
-        ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-        ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+        ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+        ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
         
         // Удаление временных полей
-        queryProcessorGlobals.removeTempPropeties(),
+        queryProcessorCore.removeTempPropeties(),
         
         // Дополнительные очистки для lookup-ов
         ...(requestedLookups.includes('inventory') ? [{ $project: { availability: 0 } }] : [])

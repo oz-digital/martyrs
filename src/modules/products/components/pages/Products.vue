@@ -264,8 +264,8 @@
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
   import FilterProducts from '@martyrs/src/modules/products/components/sections/FilterProducts.vue'
-  import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
-  import Filters  from '@martyrs/src/modules/globals/views/components/sections/Filters.vue'
+  import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue'
+  import Filters  from '@martyrs/src/modules/core/views/components/sections/Filters.vue'
   import Spoiler from "@martyrs/src/components/Spoiler/Spoiler.vue"
   import Field from "@martyrs/src/components/Field/Field.vue"
   import Calendar from "@martyrs/src/components/Calendar/Calendar.vue"
@@ -281,10 +281,10 @@
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
   const emits = defineEmits(['page-loading', 'page-loaded']);
   const route = useRoute()
@@ -447,7 +447,7 @@
   };
 
   if (route.params?._id) {
-    globals.state.navigation_bar.actions = [{
+    core.state.navigation_bar.actions = [{
       component: IconPlus,
       props: {
         fill: "rgb(var(--main))" 
@@ -464,7 +464,7 @@
   });
 
   onUnmounted(() => {
-    globals.state.navigation_bar.actions = [];
+    core.state.navigation_bar.actions = [];
   });
 
 </script>

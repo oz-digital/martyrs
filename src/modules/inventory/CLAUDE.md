@@ -148,7 +148,7 @@ inventory/
 
 ### Ключевые зависимости:
 
-- **Глобальные модули**: `@martyrs/src/modules/globals/*` (cache, logger, validator, abac)
+- **Глобальные модули**: `@martyrs/src/modules/core/*` (cache, logger, validator, abac)
 - **Аутентификация**: `@martyrs/src/modules/auth/controllers/middlewares/authJwt.js`
 - **Vue компоненты**: Vue 3 Composition API + реактивное состояние
 - **MongoDB Change Streams**: Автоматический пересчёт при изменении ингредиентов
@@ -240,19 +240,19 @@ abac.registerResourcePolicy('stockAdjustment', async context => {
 - **Опциональная аутентификация** для публичных endpoints (`availability`)
 
 ### Валидация данных:
-- **Joi-схемы** через `globals.validator.js`
+- **Joi-схемы** через `core.validator.js`
 - **Строгая типизация** параметров и тела запросов
 - **Санитизация** входных данных
 
 ### Авторизация:
-- **ABAC система** через `globals.abac.js`
+- **ABAC система** через `core.abac.js`
 - **Контекстная авторизация** (resource + action)
 - **Роли и права доступа** настраиваются через политики
 
 ### Защита API:
 - **CORS** настройки через `origins`
 - **Rate limiting** на уровне Express
-- **Логирование** всех операций через `globals.logger.js`
+- **Логирование** всех операций через `core.logger.js`
 
 ### Транзакции:
 - **MongoDB сессии** для атомарных операций

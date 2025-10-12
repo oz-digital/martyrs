@@ -16,7 +16,7 @@
 - `modules/organizations/models/schemas/accesses.schema.js` - схема доступов
 - `modules/organizations/policies/organizations.policies.js` - политики ABAC
 - `modules/organizations/controllers/utils/queryProcessorOrganizations.js` - обработка запросов
-- `modules/globals/controllers/classes/abac/` - система контроля доступа
+- `modules/core/controllers/classes/abac/` - система контроля доступа
 
 ### Основной поток
 Создание проекта в организации → назначение department (опционально) → приглашение участников через invites → добавление репозиториев → создание задач → выполнение задач → открытие MR с привязкой к задаче → ревью и утверждение → закрытие задачи и приёмка → выплата через wallet модуль.
@@ -144,7 +144,7 @@ task.passed: Boolean // флаг приёмки
 **Использование notifications модуля:**
 - Подключение к `modules/notifications/` для email/push уведомлений
 - События проекта регистрируются через Observer pattern
-- Логирование через `globals.logger` с категорией 'project'
+- Логирование через `core.logger` с категорией 'project'
 
 **WebSocket события:**
 ```javascript

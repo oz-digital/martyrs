@@ -20,7 +20,7 @@
 	    categories: route.query.categories,
 	    prices: route.query.prices,
 	    delivery: route.query.delivery,
-	    location: globals.state.position?.location,
+	    location: core.state.position?.location,
 	    lookup: ['products','spots'],
 	    contain: ['products'],
     }"
@@ -48,7 +48,7 @@
 	import Feed from '@martyrs/src/components/Feed/Feed.vue'
 	
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
-	import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
 
 	import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
 
@@ -60,7 +60,7 @@
 		// Добавление Google Analytics event на открытие маркетплейса
 		if (typeof gtag === 'function') {
 			gtag('event', 'view_marketplace', {
-				location: globals.state.position?.location || 'unknown',
+				location: core.state.position?.location || 'unknown',
 				page_path: window.location.pathname,
 				marketplace_id: route.params.id || 'main',
 			});

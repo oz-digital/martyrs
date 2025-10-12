@@ -31,8 +31,8 @@
 			<div class="w-100  h-100 pos-relative">
 				<!-- Image Wrappers  -->
 				<img loading="lazy" 
-					v-if="product.images[0]" 
-					:src="(FILE_SERVER_URL || '') + product.images[0].split('/').slice(0, -1).join('/') + '/thumbnail_' + product.images[0].split('/').pop()"
+					v-if="product.images?.[0]" 
+					:src="(FILE_SERVER_URL || '') + (product.images?.[0] || '').split('/').slice(0, -1).join('/') + '/thumbnail_' + (product.images?.[0] || '').split('/').pop()"
 					class="pos-absolute object-fit-cover radius-small h-max-100 h-100  w-100"
 				>
 
@@ -48,11 +48,11 @@
 		<!-- Product Info Start -->
 		<div  class="pd-small cols-1 t-left">
 			<!-- Detail -->
-			<p 
-				v-if="product.attributes.length > 0"  
+			<p
+				v-if="product.attributes?.length > 0"
 				class="t-semi t-transp p-small mn-b-thin"
 			>
-				{{product.attributes[0].value}}
+				{{product.attributes[0]?.value}}
 			</p>
 			<!-- Name -->
 			<span style=" hyphens: auto;" class="word-break t-truncate p-regular mn-b-micro w-100 w-max-100 ">

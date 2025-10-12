@@ -1,4 +1,4 @@
-import CRUD from '@martyrs/src/modules/globals/controllers/classes/globals.crud.js';
+import CRUD from '@martyrs/src/modules/core/controllers/classes/core.crud.js';
 import FactoryOrder from './controllers/orders.controller.js';
 import ModelApplication from './models/application.model.js';
 import ModelCustomer from './models/customer.model.js';

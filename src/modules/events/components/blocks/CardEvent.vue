@@ -1,41 +1,34 @@
 <template>
-  <article 
-	  :class="{
-	  	'flex-nowrap flex-v-center flex': type === 'short',
-	  	'flex flex-column': type !== 'short',
-	  }"
+  <article
 	  class="pos-relative"
   >
-  
-    <CardHeader 
-	    :class="{
-	    	'mn-b-small pd-medium': type !== 'short',
-	    	'flex-child-order-last flex-child mn-l-small': type === 'short',
-	    }"
+
+    <CardHeader
+	    class="mn-b-small pd-medium"
 	    :entity="event"
 	    :entityType="'event'"
 	    :user="user"
-	    :owner="event.owner" 
+	    :owner="event.owner"
     	:creator="event.creator"
     	:members="event.numberOfTickets"
     	:membersPhotos="event.participantsPhotos"
-    	:type="type"
+    	:type="'normal'"
     	:dateFormatted="daysUntilEvent"
+    	:actions="actions"
     />
 
- 		<div 
- 			v-if="type !== 'short'" 
+ 		<div
  			class="o-hidden flex-child-default pos-relative bg-black-transp-5 mn-b-small w-100"
  		>
-	    <img v-if="event.cover" loading="lazy" 
-	    	:src="(FILE_SERVER_URL || '') + event.cover" 
-	    	alt="Event image" 
+	    <img v-if="event.cover" loading="lazy"
+	    	:src="(FILE_SERVER_URL || '') + event.cover"
+	    	alt="Event image"
 	    	class="pos-relative z-index-1 d-block mn-auto w-max-100 object-fit-contain h-20r"
 	    />
 
-	    <img v-if="event.cover"  loading="lazy" 
-	    	:src="(FILE_SERVER_URL || '') + event.cover" 
-	    	alt="Event Background" 
+	    <img v-if="event.cover"  loading="lazy"
+	    	:src="(FILE_SERVER_URL || '') + event.cover"
+	    	alt="Event Background"
 	    	class="z-index-0 pos-absolute w-100 h-100 pos-t-0 pos-r-0"
 	    	style="
 	    		transform: scale(1.5);
@@ -49,106 +42,57 @@
 			/>
 	  </div>
 
-    <section 
-    	class="pos-relative w-100"
-    	:class="{
-    		'pd-t-zero h-100 flex flex-column pd-medium': type !== 'short',
-    		'flex-nowrap flex flex-v-center': type === 'short'
-    	}"
+    <section
+    	class="pd-t-small  h-100 pd-medium pos-relative w-100"
     >
+      
+			<h4
+      	class="mn-b-regular t-trim"
+      >
+    		{{ event.name }}
+    	</h4>
 
-	    <IconEdit
-				v-if="user === event.creator.target._id"
-				@click.stop="$router.push({
-					name: 'Edit Event', 
-					params: {
-						url: event.url
-					}
-				})" 
-				class="z-index-2 pos-absolute pos-t-regular pos-r-regular i-medium t-transp"
-			/>
 
-    	<div
-    		:class="{
-    			'mn-b-small': type !== 'short',
-    			'order-2 mn-l-thin': type === 'short'
-    		}"
-    		class="flex-v-center flex-nowrap flex"
-    	>
-				 	<span 
-			    	v-if="type === 'short'" 
-			    	class="t-semi t-truncate uppercase"
-			    >
-	        	{{ event.name }}
-			    </span>
-			</div>
-
-      <div v-if="type !== 'short'" class="cursor-pointer mn-b-thin flex-nowrap flex w-100">
-
-				<h3 
-	      	v-if="type !== 'short'" 
-	      	class="t-trim-1"
-	      >
-	    		{{ event.name }}
-	    	</h3>
-
-				<div v-if="event.status === 'draft'" class="pd-micro t-white uppercase t-semi p-small flex-center flex pd-r-small pd-l-small mn-l-thin w-min bg-second radius-extra">
-					{{event.status}}
-				</div>
-				
-			</div>
-
-    	<span 
-    		v-if="type !== 'short'" 
-    		class="h-100 mn-b-regular p-regular t-trim-3"
+    	<p
+    		class="mn-b-medium p-regular t-trim-3"
     	>
     		{{ event.description }}
-    	</span>
+    	</p>
 
       <slot></slot>
-      
-      <div 
+<!-- 
+      <div v-if="event.status === 'draft'" class="pd-micro t-white uppercase t-semi p-small flex-center flex pd-r-small pd-l-small mn-l-thin w-min bg-second radius-extra">
+				{{event.status}}
+			</div> -->
+
+      <div
       	class="flex-wrap mn-micro-negative flex-child-default gap-thin t-zero justify-start align-center t-trim-2"
-      	:class="{
-	    		'order-1': type === 'short'
-    		}"
       >
        	<span
        		v-if="event.date?.start"
           :key="index"
-          class="d-inline-flex p-medium t-medium mn-nano pd-thin radius-small bg-white"
-          :class="{
-		    		'p-regular': type === 'short'
-	    		}"
+          class="d-inline-flex mn-nano pd-thin radius-small p-regular t-medium bg-white"
         >
-          {{ formattedDate }}
-          <template
-		    		v-if="type !== 'short'"
-			    >
-		        | {{ formattedTimeRange }}
-			    </template>
+          {{ formattedDate }} | {{ formattedTimeRange }}
         </span>
 
-
         <span
-        	v-if="type !== 'short'"
           v-for="(chip, index) in event.tags"
           :key="index"
-          class="d-inline-flex mn-nano pd-thin radius-small p-medium t-medium bg-main"
+          class="d-inline-flex mn-nano pd-thin radius-small p-regular t-medium bg-main"
         >
           {{ chip }}
         </span>
       </div>
-			<!-- <CardFooter
-				v-if="type !== 'short'"  
-				class="" 
-				:entity="event"
-				:entityType="'event'" 
-				:user="user"
-			/> -->
+		<!-- <CardFooter
+			class=""
+			:entity="event"
+			:entityType="'event'"
+			:user="user"
+		/> -->
 
     </section>
-    
+
     <!-- <FooterBlogpost class="pd-t-zero pd-medium" :event="event" :owner="owner"/> -->
   </article>
 </template>
@@ -161,15 +105,15 @@
 
 	import IconEvents from '@martyrs/src/modules/icons/entities/IconEvents.vue';
 
-	import CardHeader  from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue'
-	import CardFooter  from '@martyrs/src/modules/globals/views/components/blocks/CardFooter.vue'
+	import CardHeader  from '@martyrs/src/modules/core/views/components/blocks/CardHeader.vue'
+	import CardFooter  from '@martyrs/src/modules/core/views/components/blocks/CardFooter.vue'
 	import { ref, computed } from 'vue'
 	import { useRouter } from 'vue-router'
 
 	const date_now = ref(new Date())
 
 	const router = useRouter()
-	const props = defineProps(['event', 'user', 'short', 'type'])
+	const props = defineProps(['event', 'user', 'actions'])
 
 	const firstImage = computed(() => {
 		return props.event.content.find(block => block.type.name === 'ImageUpload');
@@ -183,10 +127,10 @@
   const daysUntilEvent = computed(() => {
     const now = new Date();
     const nowUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-  
+
     const start = new Date(props.event.date.start);
     const startUTC = Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), start.getUTCHours(), start.getUTCMinutes(), start.getUTCSeconds());
-  
+
     const diffInTime = startUTC - nowUTC;
 
     if (diffInTime < 0) {

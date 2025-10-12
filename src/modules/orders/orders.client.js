@@ -5,7 +5,7 @@ import * as storeTestimonials from './store/testimonials.js';
 import storeCustomers from './store/customers.store.js';
 import storeApplications from './store/applications.js';
 // Router
-import addRoutes from '@martyrs/src/modules/globals/views/router/addRoutes.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
 import routerOrders from './router/orders.router.js';
 import routerCustomers from './router/customers.router.js';
 import routerApplications from './router/applications.router.js';
@@ -32,7 +32,7 @@ import Succes from './components/sections/Succes.vue';
 // Importing partials components
 import ShopCart from './components/partials/ShopCart.vue';
 
-import { i18nManager } from '@martyrs/src/modules/globals/views/classes/globals.i18n.js';
+import { i18nManager } from '@martyrs/src/modules/core/views/classes/core.i18n.js';
 import locales from './locales/index.js';
 
 // Пример функции инициализации для модуля заказов

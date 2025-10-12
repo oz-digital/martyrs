@@ -83,11 +83,11 @@
           :totalPrice="cartTotalPrice"
           :deliveryRate="deliveryCost"
           :currency="returnCurrency()"
-          :showFees="globals.state.options?.orders.showFees"
-          :feesRate="globals.state.options?.orders.feesRate || 0"
-          :showVat="globals.state.options?.orders.showVat"
-          :vatRate="globals.state.options?.orders.vatRate || 0"
-          :showDeliveryFee="globals.state.options?.orders.showDeliveryFee"
+          :showFees="core.state.options?.orders.showFees"
+          :feesRate="core.state.options?.orders.feesRate || 0"
+          :showVat="core.state.options?.orders.showVat"
+          :vatRate="core.state.options?.orders.vatRate || 0"
+          :showDeliveryFee="core.state.options?.orders.showDeliveryFee"
         />
 			</div>
 			<!-- Send order -->
@@ -148,10 +148,10 @@ import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPay
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute,useRouter } from 'vue-router'
-import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 // Store
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js';
 import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
@@ -177,7 +177,7 @@ const cartTotalPrice = shopcart.getters.cartTotalPrice
 const deliveryCost = computed(() => {
   const type = orders.state.current.delivery.type
   const distance = orderOrganization.value[0]?.distance || 0
-  const config = globals.state.options?.orders?.delivery_formula || {}
+  const config = core.state.options?.orders?.delivery_formula || {}
 
   return orders.getters.getDeliveryPrice(type, distance, config)
 })
@@ -238,7 +238,7 @@ function checkIsOpenNow(worktime) {
 }
 
 
-if (!globals.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id) { 
+if (!core.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id) { 
 	router.push({name: 'Sign In'})	
 }
 
@@ -260,7 +260,7 @@ onMounted(async()=> {
 	
 	orderOrganization.value = await organizations.actions.read({
 	  _id: shopcart.state.organization,
-	  location: globals.state.position?.location,
+	  location: core.state.position?.location,
 	  lookup: ['spots']
 	})
 	
@@ -290,7 +290,7 @@ onMounted(async()=> {
         item_brand: orderOrganization.value.profile?.name || ''
       })),
       organization: orderOrganization.value.profile?.name || '',
-      location: globals.state.position?.location || 'unknown'
+      location: core.state.position?.location || 'unknown'
     });
   }
 })
@@ -400,7 +400,7 @@ async function handleCreate() {
 	        item_category: item.product?.category || ''
 	      })),
 	      organization: orderOrganization.value?.profile?.name,
-	      location: globals.state.position?.location || 'unknown',
+	      location: core.state.position?.location || 'unknown',
 	      referral_code: referralCode || null,
 	      user_id: auth.state.user._id || 'anonymous'
 	    });

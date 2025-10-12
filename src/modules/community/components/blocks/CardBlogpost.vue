@@ -100,7 +100,7 @@
 
 
 <script setup="props">
-	import CardHeader  from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue'
+	import CardHeader  from '@martyrs/src/modules/core/views/components/blocks/CardHeader.vue'
 	import FooterBlogpost  from '@martyrs/src/modules/community/components/blocks/FooterBlogpost.vue'	
 
 	import Image  from '@martyrs/src/modules/constructor/components/elements/Image.vue';

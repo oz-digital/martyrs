@@ -21,7 +21,7 @@ export default defineConfig({
       entry: [
         resolve(__dirname, './src/modules/auth/auth.client.js'),
         resolve(__dirname, './src/modules/community/community.client.js'),
-        resolve(__dirname, './src/modules/globals/globals.client.js'),
+        resolve(__dirname, './src/modules/core/core.client.js'),
         resolve(__dirname, './src/modules/organizations/organizations.client.js'),
         resolve(__dirname, './src/modules/events/events.client.js'),
         resolve(__dirname, './src/modules/products/products.client.js'),

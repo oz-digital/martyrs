@@ -1,6 +1,6 @@
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
-import Observer from '@martyrs/src/modules/globals/controllers/classes/globals.observer.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
+import Observer from '@martyrs/src/modules/core/controllers/classes/core.observer.js';
 
 // Update quantity in stockAvailability
 export async function updateStockQuantity(db, product, variant, storage, quantity, owner, creator, session) {

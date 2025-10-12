@@ -1,5 +1,5 @@
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 import addMembersQuantity from '@martyrs/src/modules/organizations/controllers/utils/addMembersQuantity.js';
 import addUserStatusFields from '@martyrs/src/modules/organizations/controllers/utils/addUserStatusFields.js';
 import jwt from 'jsonwebtoken';
@@ -35,15 +35,15 @@ const controllerFactory = db => {
         ...getLookupStages(requestedLookups, lookupConfigs),
         ...getPostableConditions(req.query.postable),
         ...getContainConditions(req.query.contain),
-        ...queryProcessorGlobals.getSearchOptions(req.query.search, {
+        ...queryProcessorCore.getSearchOptions(req.query.search, {
           fields: requestedLookups.includes('products') ? ['profile.name', 'products.name'] : ['profile.name'],
         }),
         ...(requestedLookups.includes('products') && req.query.prices ? getPriceConditions(req.query.prices) : []),
         ...(requestedLookups.includes('spots') ? (await getLocationStages(req.query)).stages : []),
         ...(requestedLookups.includes('memberships') ? [addUserStatusFields(req.query.user), addMembersQuantity(req.query.user)] : []),
         ...(matchConditions.length > 0 ? [{ $match: { $and: matchConditions } }] : []),
-        ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-        ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+        ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+        ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
       ].filter(Boolean);
       console.log(JSON.stringify(stages, null, 2));
       const organizations = await Organization.aggregate(stages);

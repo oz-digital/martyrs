@@ -176,11 +176,11 @@ export function convertSvgToVueComponent(svgContent, iconName) {
   let cleanSvg = svgContent.replace(/<\?xml[^>]*\?>/g, '');
   cleanSvg = cleanSvg.replace(/<!DOCTYPE[^>]*>/g, '');
   cleanSvg = cleanSvg.trim();
-  
+
   // Replace fill attributes with :fill prop binding
   cleanSvg = cleanSvg.replace(/fill="[^"]*"/g, ':fill="fill"');
   cleanSvg = cleanSvg.replace(/stroke="[^"]*"/g, ':stroke="fill"');
-  
+
   // Add fill to SVG elements that don't have fill or stroke attributes
   const svgElements = ['path', 'rect', 'circle', 'ellipse', 'polygon', 'polyline', 'line', 'g'];
   svgElements.forEach(element => {
@@ -195,13 +195,13 @@ export function convertSvgToVueComponent(svgContent, iconName) {
       return `<${element} :fill="fill"${attributes || ''}${selfClosing || ''}>`;
     });
   });
-  
+
   // Ensure proper formatting with indentation
   cleanSvg = cleanSvg.replace(/<svg/g, '\n<svg');
   cleanSvg = cleanSvg.replace(/<\/svg>/g, '\n</svg>');
   cleanSvg = cleanSvg.replace(/<(path|rect|circle|ellipse|polygon|polyline|line|g)/g, '\n\t<$1');
   cleanSvg = cleanSvg.replace(/>\s*\n\s*</g, '>\n<');
-  
+
   const vueComponent = `<template>${cleanSvg}
 </template>
 
@@ -213,7 +213,7 @@ export function convertSvgToVueComponent(svgContent, iconName) {
 \t  }
 \t})
 </script>`;
-  
+
   return vueComponent;
 }
 

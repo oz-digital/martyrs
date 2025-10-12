@@ -61,7 +61,7 @@ import IconYoutube from '@martyrs/src/modules/icons/socials/youtube.vue'
 import IconLinkedin from '@martyrs/src/modules/icons/socials/linkedin.vue'
 import IconWhatsapp from '@martyrs/src/modules/icons/socials/whatsapp.vue'
 
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js'
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
 import applications from '@martyrs/src/modules/orders/store/applications.js'
 
 const props = defineProps({
@@ -148,12 +148,12 @@ function showSuccessPopup() {
 async function sendApplication() {
   // Валидация email перед отправкой
   if (!email.value || !email.value.trim()) {
-    globals.setError({ message: t('validation.email.required') || 'Email is required' })
+    core.setError({ message: t('validation.email.required') || 'Email is required' })
     return Promise.reject(new Error('Email is required'))
   }
 
   if (!validateEmail(email.value.trim())) {
-    globals.setError({ message: t('validation.email.invalid') || 'Invalid email format' })
+    core.setError({ message: t('validation.email.invalid') || 'Invalid email format' })
     return Promise.reject(new Error('Invalid email format'))
   }
 
@@ -189,7 +189,7 @@ async function sendApplication() {
     return Promise.resolve(result);
   } catch (error) {
     console.log(error)
-    globals.setError(error)
+    core.setError(error)
     return Promise.reject(error);
   }
 }

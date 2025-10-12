@@ -112,14 +112,14 @@ import { computed, onMounted, ref, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 // Import store
-import { useStore } from '@martyrs/src/modules/globals/views/classes/store.js'
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 // Import validation
 import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
 
 // Get store
 const store = useStore()
 const auth = store.auth
-const globals = store.globals
+const core = store.core
 
 // Init validation
 const phoneValidation = ref(null)
@@ -138,7 +138,7 @@ const availableTabs = computed(() => {
         { name: t('auth.signIn.phone'), value: 'phone' },
         { name: t('auth.signIn.email'), value: 'email' }
     ];
-    const excludeMethods = globals.state?.options?.auth?.authMethodsExclude || [];
+    const excludeMethods = core.state?.options?.auth?.authMethodsExclude || [];
     return tabs.filter(tab => !excludeMethods.includes(tab.value));
 });
 

@@ -7,12 +7,12 @@
         Categories
       </h2>
 
-      <router-link 
+      <router-link
         :to="{
-          name: 'Category Add', 
-          params: { 
+          name: route.meta.context === 'backoffice' ? 'BackofficeCategoryAdd' : 'Organization_CategoryAdd',
+          params: {
             _id: $route.params._id
-          } 
+          }
         }"
         class="uppercase t-medium pd-small radius-medium bg-white nav-link"
       >
@@ -68,10 +68,10 @@
   import { onMounted, onUnmounted, computed, ref,reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
 
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'; 
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js'; 
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'; 
 
   const route = useRoute();
   const router = useRouter();
@@ -103,17 +103,20 @@
     }]
   })
 
-  globals.state.navigation_bar.actions = [{
+  core.state.navigation_bar.actions = [{
     component: IconPlus,
     props: {
-      fill: "rgb(var(--main))" 
+      fill: "rgb(var(--main))"
     },
     condition: () => auth.state.user && auth.state.user._id,
-    action: () => route.params._id ? router.push({ name: 'Category Add', params: { _id: route.params._id} }) : router.push({ name: 'Category Add' })
+    action: () => {
+      const routeName = route.meta.context === 'backoffice' ? 'BackofficeCategoryAdd' : 'Organization_CategoryAdd';
+      route.params._id ? router.push({ name: routeName, params: { _id: route.params._id} }) : router.push({ name: routeName });
+    }
   }],
 
   onUnmounted(() => {
-    globals.state.navigation_bar.actions = [];
+    core.state.navigation_bar.actions = [];
   });
 
   onMounted(async () => {

@@ -18,7 +18,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const { replaceClasses } = useGlobalMixins();
 const emit = defineEmits(['update:selected', 'tab-click']);

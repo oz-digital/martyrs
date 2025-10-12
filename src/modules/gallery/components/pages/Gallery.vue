@@ -62,13 +62,13 @@
 <script setup>
 	import { ref, onMounted, reactive, computed } from 'vue'
 
-	import Title from '@martyrs/src/modules/globals/views/components/sections/Title.vue';
+	import Title from '@martyrs/src/modules/core/views/components/sections/Title.vue';
 
 	import Feed from '@martyrs/src/components/Feed/Feed.vue'
 	import Popup from '@martyrs/src/components/Popup/Popup.vue'
 	import PhotoViewer from '@martyrs/src/components/PhotoViewer/PhotoViewer.vue'
 
-	import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+	import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
 
 	import gallery from '@martyrs/src/modules/gallery/store/gallery.js';
 

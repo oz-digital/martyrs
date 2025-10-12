@@ -16,15 +16,15 @@
         :products="Products"
         :showPrice="false"
         @add="(item) => {
-          globals.actions.add(ingredients, item);
+          core.actions.add(ingredients, item);
           closeIngredientPopup();
         }"
         @update="(item) => {
-          globals.actions.update(ingredients, item, index);
+          core.actions.update(ingredients, item, index);
           closeIngredientPopup();
         }"
         @delete="(item) => {
-          globals.actions.delete(ingredients, item, index);
+          core.actions.delete(ingredients, item, index);
           closeIngredientPopup();
         }"
       />
@@ -75,7 +75,7 @@
             let p = { ...product };
             p.quantity = 1;
             p.type = 'pcs'
-            globals.actions.add(ingredients, p);
+            core.actions.add(ingredients, p);
             closeIngredientPopup();
           }"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin"
@@ -95,7 +95,7 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 // Импорт модулей и глобальных хранилищ
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 

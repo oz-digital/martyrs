@@ -1,8 +1,8 @@
 import jwtFactory from '@martyrs/src/modules/auth/controllers/middlewares/authJwt.js';
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
 import controllerFactory from '../controllers/categories.controller.js';
 import verifierFactory from '../middlewares/categories.verifier.js';
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 export default (function (app, db) {
   const jwt = jwtFactory(db);
   const verifier = verifierFactory(db);

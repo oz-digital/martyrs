@@ -1,7 +1,7 @@
-import common from '@martyrs/src/modules/globals/models/schemas/common.schema.js';
-import engagement from '@martyrs/src/modules/globals/models/schemas/engagement.schema.js';
-import metadata from '@martyrs/src/modules/globals/models/schemas/metadata.schema.js';
-import ownership from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+import common from '@martyrs/src/modules/core/models/schemas/common.schema.js';
+import engagement from '@martyrs/src/modules/core/models/schemas/engagement.schema.js';
+import metadata from '@martyrs/src/modules/core/models/schemas/metadata.schema.js';
+import ownership from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
 
 export default db => {
   const CategorySchema = new db.mongoose.Schema(

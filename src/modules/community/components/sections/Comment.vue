@@ -71,7 +71,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import Comment from './Comment.vue';
-import CardHeader from '@martyrs/src/modules/globals/views/components/blocks/CardHeader.vue'
+import CardHeader from '@martyrs/src/modules/core/views/components/blocks/CardHeader.vue'
 
 const props = defineProps({
   comment: {

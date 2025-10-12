@@ -66,7 +66,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 // Import store
-import { useStore } from '@martyrs/src/modules/globals/views/classes/store.js'
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 // Import validation
 import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
 
@@ -74,7 +74,7 @@ import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/i
 const store = useStore()
 const auth = store.auth || { state: {}, actions: {} }
 const twofa = store.twofa || { state: {}, actions: {}, sendCode: () => {} }
-const globals = store.globals || { state: {}, actions: {} }
+const core = store.core || { state: {}, actions: {} }
 // Localization
 const { t } = useI18n({
 	useScope: 'global', 
@@ -91,7 +91,7 @@ const availableTabs = computed(() => {
         { name: t('auth.resetPassword.phone'), value: 'phone' },
         { name: t('auth.resetPassword.email'), value: 'email' }
     ];
-    const excludeMethods = globals.state?.options?.auth?.authMethodsExclude || [];
+    const excludeMethods = core.state?.options?.auth?.authMethodsExclude || [];
     return tabs.filter(tab => !excludeMethods.includes(tab.value));
 });
 

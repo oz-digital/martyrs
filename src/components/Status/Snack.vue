@@ -3,6 +3,7 @@
     <div 
       class="flex-nowrap flex-v-center flex radius-small pd-small t-white"
       :class="snackClass"
+        @click="$emit('close')" 
     >
       <component 
         :is="iconComponent" 
@@ -10,12 +11,12 @@
         class="t-transp i-medium mn-r-thin z-index-5"
       />
       <p class="w-100">
-        {{ te(`globals.snacks.${message}`) ? t(`globals.snacks.${message}`) : message }}
+        {{ te(`core.snacks.${message}`) ? t(`core.snacks.${message}`) : message }}
       </p>
-      <IconCross 
+      <!-- <IconCross 
         @click="$emit('close')" 
         class="cursor-pointer hover-scale-1 i-medium z-index-5"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -45,10 +46,10 @@ const props = defineProps({
 defineEmits(['close'])
 
 const snackClass = computed(() => ({
-  'bg-error': props.type === 'error',
-  'bg-success': props.type === 'success', 
-  'bg-warning': props.type === 'alert',
-  'bg-primary': props.type === 'notification'
+  'bg-red': props.type === 'error',
+  'bg-green': props.type === 'success', 
+  'bg-fourth': props.type === 'alert',
+  'bg-second': props.type === 'notification'
 }))
 
 const iconComponent = computed(() => {

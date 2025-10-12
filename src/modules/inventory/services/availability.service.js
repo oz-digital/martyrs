@@ -1,6 +1,6 @@
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
-import queryProcessor from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
+import queryProcessor from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 
 const availabilityServiceFactory = db => {
   const cache = new Cache({ ttlSeconds: 300 });

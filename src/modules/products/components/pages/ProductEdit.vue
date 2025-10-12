@@ -294,7 +294,7 @@ import Button from "@martyrs/src/components/Button/Button.vue";
 import Tree from "@martyrs/src/components/Tree/Tree.vue";
 import EditImages from '@martyrs/src/components/EditImages/EditImages.vue';
 
-import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
+import BlockMultiselect from '@martyrs/src/modules/core/views/components/blocks/BlockMultiselect.vue';
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
@@ -305,12 +305,12 @@ import EditCategories from '@martyrs/src/modules/products/components/sections/Ed
 import EditRecommended from '@martyrs/src/modules/products/components/sections/EditRecommended.vue';
 
 // Accessing router and store
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 import * as categories from '@martyrs/src/modules/products/store/categories.js';
 
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js'
+import { setError } from '@martyrs/src/modules/core/views/store/core.store.js'
 
 const route = useRoute()
 const router = useRouter()

@@ -211,14 +211,14 @@
   import CardPosition from '@martyrs/src/modules/products/components/blocks/CardPosition.vue';
   import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'
 
-  import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
+  import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue'
 
   import FormSelectCustomer from '@martyrs/src/modules/orders/components/forms/FormSelectCustomer.vue'
   import FormDelivery from '@martyrs/src/modules/orders/components/sections/FormDelivery.vue'
   import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPayment.vue'
 
   // Import your store
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as orders from '@martyrs/src/modules/orders/store/orders.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
@@ -227,7 +227,7 @@
 
   import customers from '@martyrs/src/modules/orders/store/customers.store';
   
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 	
   // Accessing router
   const route = useRoute()
@@ -327,7 +327,7 @@
         org_id: route.params._id
       };
       
-      globals.actions.add(orders.state.current.positions, position);
+      core.actions.add(orders.state.current.positions, position);
       closeVariantsPopup();
     } catch (error) {
       console.error('Error adding variant to order:', error);

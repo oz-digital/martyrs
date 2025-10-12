@@ -24,14 +24,14 @@
   import { useRoute,useRouter } from 'vue-router'
 
   import Block from '@martyrs/src/components/Block/Block.vue';
-  import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+  import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
 
   import CardPage from '../blocks/CardPage.vue'
 
   import * as pages from '../../store/pages.js'
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 
-  import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+  import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
   const { 
     normalizeUrlParam, 

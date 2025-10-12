@@ -50,14 +50,14 @@ export async function _renderApp(params) {
   // }
   
   const { renderApp } = await appPromise;
-  // renderApp - функция из globals.app.js
+  // renderApp - функция из core.app.js
   
   // ПЕРЕДАЕМ ТЕ ЖЕ params В renderApp:
   return renderApp(params);
 }
 ```
 
-### 4. GLOBALS.APP.JS - renderApp получает params
+### 4. core.APP.JS - renderApp получает params
 ```javascript
 async function renderApp({ url, cookies, languages, ssrContext }) {
   // ДЕСТРУКТУРИЗАЦИЯ params:
@@ -115,8 +115,8 @@ export async function render({ url, cookies, ssrContext, createApp }) {
 
 ### 6. РЕЗУЛЬТАТ ИДЕТ ОБРАТНО
 ```javascript
-// vue-app-renderer.js возвращает → globals.app.js
-// globals.app.js возвращает → client.js  
+// vue-app-renderer.js возвращает → core.app.js
+// core.app.js возвращает → client.js  
 // client.js возвращает → ssr.prod.js
 // ssr.prod.js получает:
 {
@@ -144,7 +144,7 @@ res.send(`
 После загрузки страницы браузер выполняет тот же `client.js`, но уже в браузере:
 
 ```javascript
-// globals.app.js - блок FOR SSR / CLIENT ENTRY
+// core.app.js - блок FOR SSR / CLIENT ENTRY
 if (typeof window !== 'undefined' && !process.env.MOBILE_APP) {
   createApp().then(({ app, router, store }) => {
     router.isReady().then(() => {
@@ -170,10 +170,10 @@ if (typeof window !== 'undefined' && !process.env.MOBILE_APP) {
 
 ### КУДА ПЕРЕДАЕТСЯ params?
 Передается по цепочке:
-- `ssr.prod.js` → `client.js _renderApp()` → `globals.app.js renderApp()` → `vue-app-renderer.js render()`
+- `ssr.prod.js` → `client.js _renderApp()` → `core.app.js renderApp()` → `vue-app-renderer.js render()`
 
 ### vue-app-renderer ИСПОЛЬЗУЕТСЯ?
-ДА! Он импортируется в `globals.app.js` строка 16:
+ДА! Он импортируется в `core.app.js` строка 16:
 ```javascript
 const appRenderer = await getAppRenderer();
 // getAppRenderer() = import('../utils/vue-app-renderer.js')
@@ -289,13 +289,13 @@ const appPromise = createUniversalApp({
 export async function _renderApp(params) {
   // params = { url, cookies, languages, ssrContext }
   const { renderApp } = await appPromise;
-  return renderApp(params); // вызываем renderApp из globals.app.js
+  return renderApp(params); // вызываем renderApp из core.app.js
 }
 ```
 
-### 4. GLOBALS.APP.JS: фабрика приложения
+### 4. core.APP.JS: фабрика приложения
 
-**Файл:** `/app/martyrs/src/modules/globals/views/classes/globals.app.js`
+**Файл:** `/app/martyrs/src/modules/core/views/classes/core.app.js`
 
 ```javascript
 export function createUniversalApp({ getConfig, getRouter, getLocales, getStore, hooks }) {
@@ -339,7 +339,7 @@ export function createUniversalApp({ getConfig, getRouter, getLocales, getStore,
 
 ### 5. VUE-APP-RENDERER.JS: SSR рендеринг
 
-**Файл:** `/app/martyrs/src/modules/globals/views/utils/vue-app-renderer.js`
+**Файл:** `/app/martyrs/src/modules/core/views/utils/vue-app-renderer.js`
 
 ```javascript
 export async function render({ url, cookies, ssrContext, createApp }) {
@@ -388,7 +388,7 @@ export async function render({ url, cookies, ssrContext, createApp }) {
 3. **client.js** экспортирует `_renderApp`, которая вызывает:
    - `renderApp(params)` из `createUniversalApp`
 
-4. **globals.app.js** в `renderApp`:
+4. **core.app.js** в `renderApp`:
    - Вызывает `getConfig()` → получает конфиг
    - Вызывает `getStore()` → получает store
    - Вызывает `getRouter()` → создает роутер

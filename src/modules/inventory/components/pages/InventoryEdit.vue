@@ -188,7 +188,7 @@
 
      <!--  :actions="[{
           component: IconEdit,
-          handler: () => globals.actions.add(leftovers.state.current.positions, position),
+          handler: () => core.actions.add(leftovers.state.current.positions, position),
           class: 'bg-light'
         },{
           component: IconDelete,
@@ -250,9 +250,9 @@
 
   import { computed, onMounted, ref, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
  
-  import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
@@ -333,7 +333,7 @@
       }
     };
     // Add position to inventory state
-    globals.actions.add(inventory.state.current.positions, position);
+    core.actions.add(inventory.state.current.positions, position);
     closeVariantsPopup();
   }
 

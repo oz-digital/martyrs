@@ -1,4 +1,4 @@
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 import { Types } from 'mongoose';
 const ObjectId = { Types }.Types.ObjectId;
 const controllerFactory = db => {
@@ -71,8 +71,8 @@ const controllerFactory = db => {
           }
         },
         // Sorting and Pagination
-        ...queryProcessorGlobals.getSortingOptions(req.query.sortParam, req.query.sortOrder),
-        ...queryProcessorGlobals.getPaginationOptions(req.query.skip, req.query.limit),
+        ...queryProcessorCore.getSortingOptions(req.query.sortParam, req.query.sortOrder),
+        ...queryProcessorCore.getPaginationOptions(req.query.skip, req.query.limit),
       ]);
       if (!memberships) {
         return res.status(404).send({ errorCode: 'MEMBERSHIPS_NOT_FOUND' });

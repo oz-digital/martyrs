@@ -13,7 +13,7 @@ import IconHome from '@martyrs/src/modules/icons/entities/IconHome.vue';
 import IconAddress from '@martyrs/src/modules/icons/entities/IconAddress.vue';
 
 // Import global mixins for access control
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const { hasAccess, isModuleInstalled } = useGlobalMixins();
 
@@ -26,39 +26,30 @@ export const navigationItems = [
       {
         title: 'Profile',
         iconComponent: IconHome,
-        route: (auth, route) => ({
-          name: 'Organization',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}`,
         visible: () => true // Public access
       },
       {
         title: 'Members',
         iconComponent: IconGroups,
-        route: (auth, route) => ({
-          name: 'Organization Members',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/members`,
         visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'departments', 
-          'read', 
-          auth.accesses, 
+          route.params._id,
+          'departments',
+          'read',
+          auth.accesses,
           auth.access.roles
         )
       },
       {
         title: 'Settings',
         iconComponent: IconSettings,
-        route: (auth, route) => ({
-          name: 'Organization Edit',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/edit`,
         visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'members', 
-          'read', 
-          auth.accesses, 
+          route.params._id,
+          'members',
+          'read',
+          auth.accesses,
           auth.access.roles
         )
       },
@@ -71,46 +62,31 @@ export const navigationItems = [
       {
         title: 'Products',
         iconComponent: IconProducts,
-        route: (auth, route) => ({
-          name: 'Organization_Products',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/products`,
         visible: () => isModuleInstalled('products')
       },
       {
         title: 'Events',
         iconComponent: IconEvents,
-        route: (auth, route) => ({
-          name: 'Organization_Events',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/events`,
         visible: () => isModuleInstalled('events')
       },
       {
         title: 'Posts',
         iconComponent: IconCommunity,
-        route: (auth, route) => ({
-          name: 'Organization_Posts',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/posts`,
         visible: () => isModuleInstalled('blogposts')
       },
       {
         title: 'Spots',
         iconComponent: IconAddress,
-        route: (auth, route) => ({
-          name: 'Organization_Spots',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/spots`,
         visible: () => isModuleInstalled('spots')
       },
       {
         title: 'Gallery',
         iconComponent: IconGallery,
-        route: (auth, route) => ({
-          name: 'Backoffice Gallery',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/gallery`,
         visible: () => isModuleInstalled('gallery')
       },
     ]
@@ -128,45 +104,36 @@ export const navigationItems = [
       {
         title: 'Categories',
         iconComponent: IconPrice,
-        route: (auth, route) => ({
-          name: 'Categories',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/categories`,
         visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'products', 
-          'read', 
-          auth.accesses, 
+          route.params._id,
+          'products',
+          'read',
+          auth.accesses,
           auth.access.roles
         )
       },
       {
         title: 'Inventory',
         iconComponent: IconLeftovers,
-        route: (auth, route) => ({
-          name: 'OrganizationInventoryList',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/inventory`,
         visible: (auth, route) => hasAccess(
-          route.params._id, 
-          'inventory', 
-          'read', 
-          auth.accesses, 
+          route.params._id,
+          'inventory',
+          'read',
+          auth.accesses,
           auth.access.roles
         )
       },
       {
         title: 'Rents',
         iconComponent: IconEvents,
-        route: (auth, route) => ({
-          name: 'Organization_Rents',
-          params: { _id: route.params._id }
-        }),
+        route: (auth, route) => `/organizations/${route.params._id}/rents`,
         visible: (auth, route) => isModuleInstalled('events') && hasAccess(
-          route.params._id, 
-          'orders', 
-          'read', 
-          auth.accesses, 
+          route.params._id,
+          'orders',
+          'read',
+          auth.accesses,
           auth.access.roles
         )
       },
@@ -185,26 +152,17 @@ export const navigationItems = [
       {
         title: 'Orders',
         iconComponent: IconOrders,
-        route: (auth, route) => ({
-          name: 'OrganizationOrdersList',
-          params: { _id: route.params._id }
-        })
+        route: (auth, route) => `/organizations/${route.params._id}/orders`
       },
       {
         title: 'Customers',
         iconComponent: IconCommunity,
-        route: (auth, route) => ({
-          name: 'OrganizationCustomers',
-          params: { _id: route.params._id }
-        })
+        route: (auth, route) => `/organizations/${route.params._id}/customers`
       },
       {
         title: 'Applications',
         iconComponent: IconOrders,
-        route: (auth, route) => ({
-          name: 'OrganizationApplications',
-          params: { _id: route.params._id }
-        })
+        route: (auth, route) => `/organizations/${route.params._id}/applications`
       },
     ]
   },

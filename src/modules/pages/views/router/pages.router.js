@@ -1,4 +1,4 @@
-import layoutEmpty from '@martyrs/src/modules/globals/views/components/layouts/Empty.vue';
+import layoutEmpty from '@martyrs/src/modules/core/views/components/layouts/Empty.vue';
 
 const pages = {
   path: '/pages',

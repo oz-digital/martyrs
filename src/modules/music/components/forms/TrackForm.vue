@@ -355,14 +355,14 @@ import UploadImage from '@martyrs/src/components/UploadImage/UploadImage.vue';
 import Upload from '@martyrs/src/components/Upload/Upload.vue';
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 
-import BlockMultiselect from '@martyrs/src/modules/globals/views/components/blocks/BlockMultiselect.vue';
+import BlockMultiselect from '@martyrs/src/modules/core/views/components/blocks/BlockMultiselect.vue';
 
 // Import stores
 import * as tracksStore from '../../store/tracks';
 import * as artistsStore from '../../store/artists';
 import * as albumsStore from '../../store/albums';
 import * as genresStore from '../../store/genres';
-import * as globals from '@martyrs/src/modules/globals/views/store/globals.js';
+import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 // Store states and actions
@@ -455,7 +455,7 @@ const fetchTrack = async () => {
     const fetchedTrack = await tracksStore.actions.fetchTrackByUrl(props.url);
     
     if (!fetchedTrack) {
-      globals.actions.setError({
+      core.actions.setError({
         message: 'Track not found'
       });
       return;
@@ -481,7 +481,7 @@ const fetchTrack = async () => {
     
   } catch (error) {
     console.error('Error fetching track:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to load track details'
     });
   }
@@ -572,14 +572,14 @@ const submitForm = async () => {
     
   } catch (error) {
     console.error('Error saving track:', error);
-    globals.actions.setError({
+    core.actions.setError({
       message: 'Failed to save track'
     });
   }
 };
 const handleUploadError = (error) => {
   console.error('Upload error:', error);
-  globals.actions.setError({
+  core.actions.setError({
     message: 'Error uploading file'
   });
 };

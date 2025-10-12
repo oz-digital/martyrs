@@ -84,8 +84,8 @@ import Button from '@martyrs/src/components/Button/Button.vue'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
 import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
-import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
-import Card from '@martyrs/src/modules/globals/views/components/blocks/Card.vue'
+import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue'
+import Card from '@martyrs/src/modules/core/views/components/blocks/Card.vue'
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue'
 import CardCustomer from '@martyrs/src/modules/orders/components/blocks/CardCustomer.vue'
 import FormCustomerDetails from '@martyrs/src/modules/orders/components/forms/FormCustomerDetails.vue'
@@ -93,7 +93,7 @@ import FormCustomerDetails from '@martyrs/src/modules/orders/components/forms/Fo
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import customers from '@martyrs/src/modules/orders/store/customers.store';
 import customerInitState from "@martyrs/src/modules/orders/store/models/customer.js"
-import { useGlobalMixins } from '@martyrs/src/modules/globals/views/mixins/mixins.js';
+import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
 const { formatDate } = useGlobalMixins();
 

@@ -1,4 +1,4 @@
-import Webhook from '@martyrs/src/modules/globals/controllers/classes/globals.webhook.js';
+import Webhook from '@martyrs/src/modules/core/controllers/classes/core.webhook.js';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY ?? '', {

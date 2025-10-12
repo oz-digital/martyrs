@@ -104,7 +104,7 @@
   import Block from '@martyrs/src/components/Block/Block.vue';
   import Popup from '@martyrs/src/components/Popup/Popup.vue';
   import customers from '@martyrs/src/modules/orders/store/customers.store.js';
-  import SectionPageTitle from '@martyrs/src/modules/globals/views/components/sections/SectionPageTitle.vue'
+  import SectionPageTitle from '@martyrs/src/modules/core/views/components/sections/SectionPageTitle.vue'
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
   import CardCustomer from '@martyrs/src/modules/orders/components/blocks/CardCustomer.vue'
   import FormCustomerDetails from '@martyrs/src/modules/orders/components/forms/FormCustomerDetails.vue'

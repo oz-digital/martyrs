@@ -4,14 +4,15 @@ import * as storeVotes from './views/store/votes.js';
 import * as storeVotings from './views/store/votings.js';
 
 // Router
-import { createGovernanceRoutes } from './views/router/goverance.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './governance.router.js';
 
 // Example initialization function for the Governance module
 function initializeGovernance(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-  const routesGovernance = createGovernanceRoutes('', options);
-
-  router.addRoute(route, routesGovernance);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('initiatives', storeInitiatives);
   store.addStore('tasks', storeTasks);
@@ -29,33 +30,8 @@ const ModuleGovernance = {
       storeVotes,
     },
     router: {
-      createGovernanceRoutes,
+      getRoutes,
     },
-    // components: {
-    //   // Pages
-    //   Initiatives,
-    //   Initiative,
-    //   InitiativeCreate,
-    //   Tasks,
-    //   Task,
-    //   TaskCreate,
-    //   Votings,
-    //   Voting,
-    //   VotingCreate,
-    //   // Blocks
-    //   CardInitiativeItem,
-    //   CardTaskItem,
-    //   CardVotingItem,
-    //   // Sections
-    //   FormInitiativeDetails,
-    //   FormTaskDetails,
-    //   FormVotingDetails,
-    //   VoteForm,
-    //   // Partials
-    //   RewardDisplay,
-    //   VotingResult,
-    //   VoteDisplay,
-    // }
   },
 };
 

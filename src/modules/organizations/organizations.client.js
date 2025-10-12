@@ -5,7 +5,8 @@ import membershipsStore from './store/memberships.store.js';
 import * as storeOrganizations from './store/organizations.js';
 
 // Router
-import routerOrganization from './router/organizations.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './organizations.router.js';
 
 // Component re-exports (enables tree shaking)
 // Pages
@@ -41,9 +42,10 @@ export { default as ButtonToggleMembership } from './components/elements/ButtonT
 
 // Пример функции инициализации для модуля организаций
 function initializeOrganization(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  router.addRoute(route, routerOrganization);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 
   store.addStore('organizations', storeOrganizations);
 }
@@ -53,7 +55,7 @@ export {
   departmentsStore,
   invitesStore,
   membershipsStore,
-  routerOrganization,
+  getRoutes,
   storeOrganizations,
   initializeOrganization as initialize,
 };
@@ -68,7 +70,7 @@ const ModuleOrganization = {
       storeOrganizations,
     },
     router: {
-      routerOrganization,
+      getRoutes,
     },
   },
 };

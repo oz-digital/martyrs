@@ -5,15 +5,15 @@
         v-if="spot.address"
         class="aspect-1x1 h-100"
       >
-        <Map 
-          :apiKey="GOOGLE_MAPS_API_KEY" 
+        <Map
+          :apiKey="GOOGLE_MAPS_API_KEY"
           :location="{
-            lat: spot.location.coordinates[1],
-            lng: spot.location.coordinates[0]
-          }" 
+            lat: spot.location?.coordinates?.[1] || 0,
+            lng: spot.location?.coordinates?.[0] || 0
+          }"
           :locale="$i18n.locale"
           class="radius-small o-hidden"
-       
+
         />
       </div>
 
@@ -22,15 +22,16 @@
         <router-link
           v-if="editAccess"
           :to="{
-          name: 'Spot Edit',
+          name: getRouteName('Edit Spot'),
           params: {
             _id: props.organization?._id || props.organization,
             spot: spot._id
           }
         }"
+          @click.stop
           class="
             z-index-2
-            cursor-pointer 
+            cursor-pointer
             pos-absolute pos-t-thin pos-r-thin
             radius-extra pd-thin bg-second
             i-medium
@@ -87,6 +88,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import IconEdit from '@martyrs/src/modules/icons/navigation/IconEdit.vue';
 
@@ -95,6 +97,9 @@ import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.v
 
 import Chips  from '@martyrs/src/components/Chips/Chips.vue';
 import Map      from '@martyrs/src/components/Map/Map.vue';
+
+const route = useRoute();
+const getRouteName = (baseName) => `${route.meta?.context || ''}${baseName}`
 
 const props = defineProps({
   spot: Object,

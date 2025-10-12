@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <Button @click="startScan" class="bg-main button-small radius-extra button">
-      Check Tickets
-    </Button>
-    
+  <Button @click="startScan" class="button">
+    Check Tickets
+
     <teleport to="body" v-if="isScanning">
       <div v-if="isScanning" class="barcode-scanner-modal">
+        <video ref="videoElement" class="barcode-scanner-video"></video>
         <div class="square"></div>
         <div class="zoom-ratio-wrapper" v-if="minZoomRatio !== undefined && maxZoomRatio !== undefined">
           <input type="range" :min="minZoomRatio" :max="maxZoomRatio" @input="setZoomRatio" />
@@ -16,7 +15,7 @@
         </Button>
       </div>
     </teleport>
-  </div>
+  </Button>
 </template>
 
 <script setup>
@@ -32,14 +31,20 @@ const isTorchAvailable = ref(false)
 const minZoomRatio = ref(undefined)
 const maxZoomRatio = ref(undefined)
 const isProcessing = ref(false)
+const videoElement = ref(null)
 
 onMounted(async () => {
   const { supported } = await BarcodeScanner.isSupported()
   if (!supported) {
     error.value = 'Barcode scanning is not supported on this device'
   }
-  const { available } = await BarcodeScanner.isTorchAvailable()
-  isTorchAvailable.value = available
+  try {
+    const { available } = await BarcodeScanner.isTorchAvailable()
+    isTorchAvailable.value = available
+  } catch (e) {
+    // isTorchAvailable не поддерживается на веб-платформе
+    isTorchAvailable.value = false
+  }
 })
 
 onUnmounted(async () => {
@@ -65,11 +70,22 @@ async function startScan() {
         await processBarcode(result.barcode)
       }
     })
-    await BarcodeScanner.startScan()
-    const { zoomRatio: min } = await BarcodeScanner.getMinZoomRatio()
-    const { zoomRatio: max } = await BarcodeScanner.getMaxZoomRatio()
-    minZoomRatio.value = min
-    maxZoomRatio.value = max
+
+    // Для веб-платформы нужен videoElement
+    const startOptions = videoElement.value ? { videoElement: videoElement.value } : {}
+    await BarcodeScanner.startScan(startOptions)
+
+    // Zoom методы не поддерживаются на веб-платформе
+    try {
+      const { zoomRatio: min } = await BarcodeScanner.getMinZoomRatio()
+      const { zoomRatio: max } = await BarcodeScanner.getMaxZoomRatio()
+      minZoomRatio.value = min
+      maxZoomRatio.value = max
+    } catch (e) {
+      // Zoom не поддерживается на веб-платформе
+      minZoomRatio.value = undefined
+      maxZoomRatio.value = undefined
+    }
   } catch (e) {
     error.value = e.message
     alert(`Error: ${error.value}`)
@@ -143,21 +159,37 @@ async function toggleTorch() {
   align-items: center;
 }
 
+.barcode-scanner-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
 .square {
   width: 200px;
   height: 200px;
   border: 2px solid white;
   border-radius: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .zoom-ratio-wrapper {
   width: 80%;
   margin-top: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .stop-scan-button,
 .torch-button {
   margin-top: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Existing styles */

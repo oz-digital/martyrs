@@ -11,9 +11,9 @@
     		Events
     	</h2>
     	
-    	<button 
+    	<button
     		v-if="auth.state.user._id === route.params.user || route.params._id"
-    		@click="router.push({name: 'Create Event'})" 
+    		@click="router.push({name: getRouteName('Create Event')})"
     		class="radius-100 i-big hover-scale-1 cursor-pointer t-white bg-second"
     	>
     		+
@@ -95,29 +95,21 @@
 					    formatter: (value) => new Date(value).toLocaleDateString()
 					  }]" 
 					/> -->
-	       <CardEvent 
-	        @click="$router.push({name: 'Event', params: {url: event.url}})" 
-	        v-for="(event,index) in items" 
-	        :key="event._id" 
-	        :event="event" 
-	        :user="auth.state.user._id" 
+	       <CardEvent
+	        @click="router.push({name: getRouteName('Event'), params: {url: event.url}})"
+	        v-for="(event,index) in items"
+	        :key="event._id"
+	        :event="event"
+	        :user="auth.state.user._id"
 	        :type="'normal'"
-	        class="bg-light radius-big"
-	      >
-
-			     <div 
-			      v-if="route.params._id || route.params.user && hasAccess(route.params._id, 'events', 'read', auth.state.accesses, auth.state.access.roles)"
-			      class="mn-b-semi w-100 bg-second button t-white uppercase"
-			      @click.stop="router.push({
-			        name: 'Edit Event Tickets',
-			        params: {
-			          url: event.url
-			        }
-			      })"
-			    >
-			      Manage Tickets
-			    </div>
-	      </CardEvent>
+	        :actions="auth.state.user._id === event.creator.target._id || hasAccess(event.owner?.target?._id, 'events', 'edit', auth.state.accesses, auth.state.access.roles)
+	          ? [
+	              { label: 'Edit Event', to: { name: getRouteName('Edit Event'), params: { url: event.url } } },
+	              { label: 'Manage Tickets', to: { name: getRouteName('Edit Event Tickets'), params: { url: event.url } } }
+	            ]
+	          : []"
+	        class="bg-light radius-medium"
+	      />
 	    </Feed>
 	  </section>
 
@@ -141,7 +133,7 @@
 </template>
 
 <script setup>
-	import { watch, ref } from 'vue'
+	import { watch, ref, computed } from 'vue'
 	import { useRoute, useRouter } from 'vue-router'
 	// Components
 	import Tab  		from '@martyrs/src/components/Tab/Tab.vue'
@@ -152,10 +144,25 @@ import Table from '@martyrs/src/components/Table/Table.vue'
   import CardEvent from '@martyrs/src/modules/events/components/blocks/CardEvent.vue';
 
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-	import * as events from '@martyrs/src/modules/events/store/events.js'; 
+	import * as events from '@martyrs/src/modules/events/store/events.js';
+
+	import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
+
 	// Accessing router
 	const route = useRoute()
 	const router = useRouter()
+
+	const { hasAccess } = useGlobalMixins()
+
+	// Определение контекста и префикса роутов
+	const routePrefix = computed(() => {
+		const context = route.meta?.context
+		if (context === 'backoffice') return 'Backoffice'
+		if (context === 'organization') return 'Organization_'
+		return ''
+	})
+
+	const getRouteName = (baseName) => `${routePrefix.value}${baseName}`
 	// State
 	let tab = route.query.tab ? route.query.tab : 'owner';
 

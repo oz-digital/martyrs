@@ -1,6 +1,6 @@
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
 
-const { getInstance } = globalsabac;
+const { getInstance } = coreabac;
 
 export default function(db) {
   const abac = getInstance(db);

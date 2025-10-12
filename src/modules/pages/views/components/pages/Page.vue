@@ -90,7 +90,7 @@
   import * as pages from '../../store/pages';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 
-  import { useGlobalMixins } from "@martyrs/src/modules/globals/views/mixins/mixins.js"
+  import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
   const isMenuOpen = ref(false)
 

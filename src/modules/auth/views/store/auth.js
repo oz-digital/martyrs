@@ -1,13 +1,13 @@
 // Dependencies
-import $axios, { setAuthToken } from '@martyrs/src/modules/globals/views/utils/axios-instance.js';
+import $axios, { setAuthToken } from '@martyrs/src/modules/core/views/utils/axios-instance.js';
 import Cookies from 'js-cookie';
 // Capacitor
 import { Preferences } from '@capacitor/preferences';
 // Vue modules
 import { reactive, watch } from 'vue';
 // Globals
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import { session, setError } from '@martyrs/src/modules/core/views/store/core.store.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 // State
 import * as twofa from './twofa.js';
 
@@ -45,6 +45,9 @@ const actions = {
         const userAccesses = response.data;
         state.accesses = userAccesses;
 
+        // Update Session with full user data
+        session.set({ ...userCookie, accesses: userAccesses });
+
         // Обновление состояния приложения с информацией о пользователе и его правах доступа
         Object.assign(state.user, { _id, email, phone, avatar });
         Object.assign(state.access, { token: accessToken, roles, status: !!accessToken });
@@ -57,6 +60,7 @@ const actions = {
       } else {
         console.log('no cookies');
         setAuthToken(null);
+        session.clear();
         this.resetState();
       }
     } catch (error) {
@@ -64,6 +68,7 @@ const actions = {
       // Make sure we remove the cookie when there's an error
       await removeCookie('user');
       setAuthToken(null);
+      session.clear();
       this.resetState();
       setError(error);
     }
@@ -86,6 +91,7 @@ const actions = {
       token: null,
       status: false,
     };
+    session.clear();
   },
 
   async login(user, type) {
@@ -107,6 +113,8 @@ const actions = {
         roles: response.data.roles,
       });
 
+      session.set(response.data);
+
       await this.initialize();
 
       return response.data;
@@ -119,6 +127,8 @@ const actions = {
         status: false,
         roles: null,
       });
+
+      session.clear();
 
       console.log(error);
       setError(error);
@@ -165,6 +175,8 @@ const actions = {
         roles: response.data.roles,
       });
 
+      session.set(response.data);
+
       await this.initialize();
 
       return response.data;
@@ -180,8 +192,9 @@ const actions = {
   async logout() {
     await removeCookie('user');
     setAuthToken(null);
+    session.clear();
     this.resetState();
-    
+
     // Отключаем WebSocket при выходе
     console.log('[AUTH] Disconnecting WebSocket on logout');
     globalWebSocket.disconnect();
@@ -241,6 +254,8 @@ const actions = {
         token: response.data.accessToken,
         status: true,
       });
+
+      session.set(response.data);
 
       return response.data;
     } catch (error) {

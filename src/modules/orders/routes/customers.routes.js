@@ -1,5 +1,5 @@
-import CRUD from '@martyrs/src/modules/globals/controllers/classes/crud/crud.js';
-import ABAC from '@martyrs/src/modules/globals/controllers/classes/abac/abac.js';
+import CRUD from '@martyrs/src/modules/core/controllers/classes/crud/crud.js';
+import ABAC from '@martyrs/src/modules/core/controllers/classes/abac/abac.js';
 
 import verifierFactory from '../middlewares/customers.verifier.js';
 

@@ -1,11 +1,11 @@
 import { toRefs, watch } from 'vue';
 // Router import
-import routerNotifications from './router/notifications.router.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './notifications.router.js';
 // Store
 import * as storeNotifications from './store/notifications.store.js';
-// Auth store import
 // Global WebSocket import
-import globalWebSocket from '@martyrs/src/modules/globals/views/classes/globals.websocket.js';
+import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
 // Capacitor Preferences
 import { Preferences } from '@capacitor/preferences';
 // Layouts
@@ -145,7 +145,7 @@ class CapacitorPushHandler {
       }
 
       // For anonymous users, add anonymousId
-      if (!this.store.auth.state.user?._id) {
+      if (!this.store.core.state.session.userId) {
         let anonymousId = null;
         try {
           const result = await Preferences.get({ key: 'notifications_anonymous_id' });
@@ -271,7 +271,7 @@ class NotificationManager {
     };
 
     // For anonymous users, get or generate anonymousId
-    if (!store.auth.state.user?._id) {
+    if (!store.core.state.session.userId) {
       let anonymousId = null;
       try {
         const result = await Preferences.get({ key: 'notifications_anonymous_id' });
@@ -322,7 +322,7 @@ class NotificationManager {
   async initialize() {
     if (this.initialized || this.isServer) return;
 
-    const userId = this.store.auth.state.user?._id;
+    const userId = this.store.core.state.session.userId;
     
     // Connect WebSocket only for authenticated users
     if (userId) {
@@ -383,7 +383,7 @@ const SSRUtils = {
    */
   async prefetchNotifications(store, context) {
     try {
-      const userId = store.auth.state.user?._id;
+      const userId = store.core.state.session.userId;
       if (userId) {
         // Fetch notifications without WebSocket or push setup
         await store.notifications.actions.getNotifications(userId);
@@ -403,8 +403,11 @@ const SSRUtils = {
  */
 function initializeNotifications(app, store, router, options = {}) {
   // Add routes and store
-  const route = options.route || 'User Profile Root';
-  router.addRoute(route, routerNotifications);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
+
   store.addStore('notifications', storeNotifications);
 
   // Initialize global WebSocket if needed
@@ -431,23 +434,21 @@ function initializeNotifications(app, store, router, options = {}) {
     // Initialize immediately (supports both authenticated and anonymous users)
     notificationManager.initialize();
 
-    // Watch for user login/logout using auth store
-    if (!store.auth) {
-      console.error('[Notifications] Auth store not found! Cannot set up watcher.');
-      return;
-    }
-    
+    // Watch for user login/logout using store.core.state.session
     watch(
-      () => store.auth.state.access.status,
-      async (isAuthenticated) => {
-        if (isAuthenticated) {
+      () => store.core.state.session.token,
+      async (token, oldToken) => {
+        const isAuthenticated = !!token;
+        const wasAuthenticated = !!oldToken;
+
+        if (isAuthenticated && !wasAuthenticated) {
           // Re-register device for authenticated user
           console.log('[Notifications] User logged in, re-registering device...');
           await store.notifications.actions.reregisterDeviceAfterLogin();
           // Reinitialize notifications for authenticated user
           notificationManager.disconnect();
           await notificationManager.initialize();
-        } else {
+        } else if (!isAuthenticated && wasAuthenticated) {
           // Keep notifications active for anonymous users, just reset user-specific data
           console.log('[Notifications] User logged out, resetting notifications...');
           store.notifications.mutations.resetNotifications();
@@ -480,7 +481,7 @@ const ModuleNotifications = {
       storeNotifications,
     },
     router: {
-      routerNotifications,
+      getRoutes,
     },
     components: {
       // Elements

@@ -1,4 +1,4 @@
-import { setError } from '@martyrs/src/modules/globals/views/store/globals.js';
+import { setError } from '@martyrs/src/modules/core/views/store/core.store.js';
 import axios from 'axios';
 import { reactive, watch } from 'vue';
 

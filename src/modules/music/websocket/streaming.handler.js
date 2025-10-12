@@ -1,4 +1,4 @@
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
 export default (function (db) {
   const logger = new Logger(db);
   return {

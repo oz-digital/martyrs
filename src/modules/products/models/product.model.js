@@ -1,6 +1,6 @@
-import applyCommonSchema from '@martyrs/src/modules/globals/models/schemas/common.schema.js';
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
-import applyEngagementSchema from '@martyrs/src/modules/globals/models/schemas/engagement.schema.js';
+import applyCommonSchema from '@martyrs/src/modules/core/models/schemas/common.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
+import applyEngagementSchema from '@martyrs/src/modules/core/models/schemas/engagement.schema.js';
 
 import discountschema from './schemas/discount.schema.js';
 

@@ -13,7 +13,7 @@ const isESM = format === 'esm';
 const moduleEntries = {
   'modules/auth/auth.client': './src/modules/auth/auth.client.js',
   'modules/community/community.client': './src/modules/community/community.client.js',
-  'modules/globals/globals.client': './src/modules/globals/globals.client.js',
+  'modules/globals/core.client': './src/modules/core/core.client.js',
   'modules/organizations/organizations.client': './src/modules/organizations/organizations.client.js',
   'modules/events/events.client': './src/modules/events/events.client.js',
   'modules/products/products.client': './src/modules/products/products.client.js',

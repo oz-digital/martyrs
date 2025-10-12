@@ -84,7 +84,7 @@
 				</router-view>
 			</div>
 
-			<div style="flex: 1 1 auto" class="desktop-only pos-sticky pos-t-thin scroll-hide  h-100  w-40 h-100 pos-relative ">
+			<div style="flex: 1 1 auto" class="desktop-only pos-sticky pos-b-thin scroll-hide  h-100  w-40 h-100 pos-relative ">
 				<div class="radius-medium bg-light mn-b-thin pd-small">
 					<div class="gap-thin flex-nowrap flex">
 						<p class="t-medium mn-b-small">Latest Comments</p>
@@ -109,11 +109,9 @@
 					<div class="gap-thin flex-v-center flex-nowrap flex  mn-b-small">
 						<p class="text-box-trim-end t-medium">Popular Communities</p>
 						
-						<router-link 
+						<router-link
 							v-if="auth.state.user._id"
-							:to="{
-								name: 'Create Organization'
-							}"
+							to="/organizations/create"
 							class="t-medium cursor-pointer hover-scale-1 radius-extra flex-center flex i-medium bg-main"
 						>
 							+

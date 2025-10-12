@@ -15,14 +15,13 @@
         description="No events available. Please check back later."
         class="pd-medium h-100 bg-light radius-small"
       />
-      <CardEvent 
+      <CardEventShort
         v-else
-        @click="$router.push({name: 'Event', params: {url: event.url}})" 
-        v-for="(event,index) in eventsList" 
-        :key="event._id" 
-        :event="event" 
-        :owner="user" 
-        :type="'short'"
+        @click="$router.push({name: 'Event', params: {url: event.url}})"
+        v-for="(event,index) in eventsList"
+        :key="event._id"
+        :event="event"
+        :user="user"
         class="pd-small mobile:pd-thin"
         :class="{
           'br-b br-solid br-black-transp-10': index !== eventsList.length - 1
@@ -40,7 +39,7 @@
   import Loader from '@martyrs/src/components/Loader/Loader.vue';
   import EmptyState from '@martyrs/src/components/EmptyState/EmptyState.vue';
 
-  import CardEvent from '@martyrs/src/modules/events/components/blocks/CardEvent.vue';
+  import CardEventShort from '@martyrs/src/modules/events/components/blocks/CardEventShort.vue';
 
   import SkeletonEvent from '@martyrs/src/modules/icons/skeletons/SkeletonEvent.vue'
   import SkeletonEventShort from '@martyrs/src/modules/icons/skeletons/SkeletonEventShort.vue'

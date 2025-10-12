@@ -110,7 +110,7 @@
   import Button   from '@martyrs/src/components/Button/Button.vue'
   import Feed from '@martyrs/src/components/Feed/Feed.vue'
 
-  import BlockSearch from '@martyrs/src/modules/globals/views/components/blocks/BlockSearch.vue'
+  import BlockSearch from '@martyrs/src/modules/core/views/components/blocks/BlockSearch.vue'
 
   import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser.vue'
 

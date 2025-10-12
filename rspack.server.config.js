@@ -12,7 +12,7 @@ export const devtool = false;
 export const entry = {
   'modules/auth/auth.server': './src/modules/auth/auth.server.js',
   'modules/community/community.server': './src/modules/community/community.server.js',
-  'modules/globals/globals.server': './src/modules/globals/globals.server.js',
+  'modules/globals/core.server': './src/modules/core/core.server.js',
   'modules/organizations/organizations.server': './src/modules/organizations/organizations.server.js',
   'modules/products/products.server': './src/modules/products/products.server.js',
   'modules/inventory/inventory.server': './src/modules/inventory/inventory.server.js',

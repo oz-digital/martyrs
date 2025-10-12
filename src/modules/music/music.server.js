@@ -1,6 +1,6 @@
-import globalsabac from '@martyrs/src/modules/globals/controllers/classes/globals.abac.js';
-import Cache from '@martyrs/src/modules/globals/controllers/classes/globals.cache.js';
-import Logger from '@martyrs/src/modules/globals/controllers/classes/globals.logger.js';
+import coreabac from '@martyrs/src/modules/core/controllers/classes/core.abac.js';
+import Cache from '@martyrs/src/modules/core/controllers/classes/core.cache.js';
+import Logger from '@martyrs/src/modules/core/controllers/classes/core.logger.js';
 
 // NEW CRUD Routes
 import setupTracksRoutes from './routes/tracks.routes.js';
@@ -59,7 +59,7 @@ function initializeMusic({ app, db, wss, origins, publicPath }) {
     searchRoutes(app, db, origins, publicPath);
   }
   // Initialize ABAC policies for music module
-  const { getInstance } = globalsabac;
+  const { getInstance } = coreabac;
   const abac = getInstance(db);
   musicPolicies(abac);
   // Set up WebSocket handlers if wss is provided

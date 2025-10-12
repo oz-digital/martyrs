@@ -1,5 +1,5 @@
-import applyCredentialsSchema from '@martyrs/src/modules/globals/models/schemas/credentials.schema.js';
-import applyOwnershipSchema from '@martyrs/src/modules/globals/models/schemas/ownership.schema.js';
+import applyCredentialsSchema from '@martyrs/src/modules/core/models/schemas/credentials.schema.js';
+import applyOwnershipSchema from '@martyrs/src/modules/core/models/schemas/ownership.schema.js';
 export default db => {
   const InviteSchema = new db.mongoose.Schema(
     {

@@ -1,5 +1,6 @@
 // Router
-import routerBackoffice from './router/backoffice.js';
+import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
+import { getRoutes } from './backoffice.router.js';
 
 // Views
 // Layouts
@@ -20,20 +21,17 @@ import Sidebar from './components/partials/Sidebar.vue';
 
 // Пример функции инициализации для модуля бэкофиса
 function initializeBackoffice(app, store, router, options = {}) {
-  const route = options.route || 'Home';
-
-  // const routesBackoffice = createBackofficeRoutes();
-  // const routesAdmin = createAdminRoutes();
-
-  router.addRoute(route, routerBackoffice);
-  // router.addRoute(`${route}.admin`, routerBackoffice);
+  const routes = getRoutes(options);
+  routes.forEach(({ parentName, config }) => {
+    addRoutes(router, { ...config, parentName });
+  });
 }
 
 const ModuleBackoffice = {
   initialize: initializeBackoffice,
   views: {
     router: {
-      routerBackoffice,
+      getRoutes,
     },
     components: {
       // Layouts

@@ -1,4 +1,4 @@
-import queryProcessorGlobals from '@martyrs/src/modules/globals/controllers/utils/queryProcessor.js';
+import queryProcessorCore from '@martyrs/src/modules/core/controllers/utils/queryProcessor.js';
 const commentControllerFactory = db => {
   const Comment = db.comment;
   const Membership = db.membership;
@@ -52,7 +52,7 @@ const commentControllerFactory = db => {
             as: 'childUsers',
           },
         },
-        ...queryProcessorGlobals.getSortingOptions(sortParam, sortOrder),
+        ...queryProcessorCore.getSortingOptions(sortParam, sortOrder),
         {
           $project: {
             _id: 1,

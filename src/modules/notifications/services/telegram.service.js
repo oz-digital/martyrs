@@ -1,4 +1,4 @@
-import mailing from '@martyrs/src/modules/globals/controllers/utils/mailing.js';
+import mailing from '@martyrs/src/modules/core/controllers/utils/mailing.js';
 // services/telegram.service.js
 const { sendChatMessageTelegram } = mailing;
 const TelegramService = {

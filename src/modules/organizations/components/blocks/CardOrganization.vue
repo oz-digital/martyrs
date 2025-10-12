@@ -39,7 +39,7 @@
           <Chips 
             v-if="showTags && organization.profile.tags?.length > 0" 
             :chips="organization.profile.tags.slice(0,3)"
-            class="pos-relative t-trimmed p-regular"
+            class="pos-relative t-trimmed"
           >
            <div v-if="showFollowers" class="t-truncate pos-relative p-regular mn-r-nano d-inline-block w-max pd-b-micro pd-t-micro pd-r-thin pd-l-thin radius-small t-medium bg-white">
             <p class="t-truncate">{{organization.numberOfSubscribers}} followers</p>
@@ -168,3 +168,10 @@
 
   const router = useRouter();
 </script>
+
+<style>
+
+.t-trimmed {
+  font-size: 0;
+}
+</style>
