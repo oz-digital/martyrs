@@ -54,7 +54,7 @@
       </div>
 
       <!-- Timeline Graph -->
-      <div v-if="attendance.timeline && attendance.timeline.length" class="flex-nowrap flex flex-justify-around gap-micro o-y-hidden o-x-scroll mn-t-big">
+      <div v-if="attendance.timeline && attendance.timeline.length" class="flex-nowrap flex flex-justify-around gap-micro scroll-hide o-y-hidden o-x-scroll mn-t-big">
         <div
           v-for="slot in attendance.timeline"
           :key="slot.time"
@@ -195,7 +195,7 @@
           <section class="bg-black flex-column flex gap-thin pd-thin radius-small">
             <button
               @click="sendTicketEmail(ticket._id)"
-              class="w-100 bg-black br-solid br-1px br-white-transp-20 t-white button-small button"
+              class="w-100 t-nowrap bg-black br-solid br-1px br-white-transp-20 t-white button-small button"
             >
               Send Email
             </button>

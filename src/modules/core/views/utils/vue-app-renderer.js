@@ -126,7 +126,15 @@ export async function render({ url, cookies,  ssrContext, createApp}) {
 
   if (user) {
     if (store.auth && store.auth.actions) {
-      await store.auth.actions.initialize(user);
+      try {
+        await store.auth.actions.initialize(user);
+      } catch (error) {
+        console.error('[SSR] Auth initialization failed, continuing without auth:', error);
+        // Сбрасываем состояние если инициализация упала
+        if (store.auth.actions.resetState) {
+          store.auth.actions.resetState();
+        }
+      }
     } else {
       console.warn('[SSR] Auth module not loaded, cannot initialize user');
     }
