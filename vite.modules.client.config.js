@@ -49,7 +49,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ['vue', , 'vue-router', 'vue-i18n', 'web3', 'axios', 'isomorphic-dompurify'],
+      external: ['vue', 'vue-router', 'vue-i18n', 'web3', 'axios', 'isomorphic-dompurify', 'async_hooks'],
       output: {
         exports: 'named',
         globals: {
