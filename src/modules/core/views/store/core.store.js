@@ -7,10 +7,12 @@ import SessionManager from '../classes/session.manager.js';
 // AsyncLocalStorage для изоляции SSR store per-request (только Node.js)
 let asyncLocalStorage = null;
 
-if (typeof window === 'undefined') {
-  // Top-level await для динамического импорта на сервере
-  const { AsyncLocalStorage } = await import('async_hooks');
-  asyncLocalStorage = new AsyncLocalStorage();
+async function getAsyncLocalStorage() {
+  if (!asyncLocalStorage && typeof window === 'undefined') {
+    const { AsyncLocalStorage } = await import('async_hooks');
+    asyncLocalStorage = new AsyncLocalStorage();
+  }
+  return asyncLocalStorage;
 }
 
 // ============================================================================
@@ -359,22 +361,24 @@ export function createStore() {
 let clientStore = null;
 
 // AsyncLocalStorage для SSR (изоляция per-request)
-export function setSSRStore(store) {
+export async function setSSRStore(store) {
   if (typeof window === 'undefined') {
-    asyncLocalStorage.enterWith(store);
+    const als = await getAsyncLocalStorage();
+    als?.enterWith(store);
   }
 }
 
-export function clearSSRStore() {
+export async function clearSSRStore() {
   if (typeof window === 'undefined') {
-    asyncLocalStorage.enterWith(null);
+    const als = await getAsyncLocalStorage();
+    als?.enterWith(null);
   }
 }
 
 export function useStore() {
   if (typeof window === 'undefined') {
-    // SSR: используем store из AsyncLocalStorage
-    const store = asyncLocalStorage.getStore();
+    // SSR: используем store из AsyncLocalStorage (может быть null если не инициализирован)
+    const store = asyncLocalStorage?.getStore();
     if (store) {
       return store;
     }

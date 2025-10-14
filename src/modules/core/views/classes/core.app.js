@@ -265,18 +265,7 @@ export function createUniversalApp({
       // Set SSR store for useStore calls
       if (typeof window === 'undefined') {
         const { setSSRStore } = await import('../store/core.store.js');
-        setSSRStore(store);
-      }
-      
-
-      if (typeof window === 'undefined') {
-        moduleManager.initialized.clear();
-        moduleManager.modules.clear();
-        moduleManager.loadingPromises.clear();
-
-        // Очистить SSR store для следующего запроса
-        const { clearSSRStore } = await import('../store/core.store.js');
-        clearSSRStore();
+        await setSSRStore(store);
       }
       
       const context = {
@@ -332,6 +321,16 @@ export function createUniversalApp({
       performance.measure('loading-21', 'loading-20-start', 'loading-21-end');
       const measure21 = performance.getEntriesByName('loading-21')[0];
       console.log(`[LOADING 21] SSR render completed in ${measure21?.duration?.toFixed(2)}ms`);
+
+      // Clean up for next SSR request
+      if (typeof window === 'undefined') {
+        moduleManager.initialized.clear();
+        moduleManager.modules.clear();
+        moduleManager.loadingPromises.clear();
+
+        const { clearSSRStore } = await import('../store/core.store.js');
+        await clearSSRStore();
+      }
 
       return result;
     }
