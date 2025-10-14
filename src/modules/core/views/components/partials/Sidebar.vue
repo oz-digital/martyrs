@@ -65,8 +65,10 @@ const handleMouseLeave = () => {
 router.beforeEach((to, from) => {
   // На mobile не трогаем state через навигацию
   if (isPhone() || isTablet()) {
+    emits('closeSidebar')
     return
   }
+
 
   // Desktop логика
   // Если уходим с профиля И НЕ идем на профиль - закрыть
