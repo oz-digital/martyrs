@@ -4,7 +4,7 @@ import scrollBehavior from './views/router/scrollBehavior.js';
 
 import * as mixins from './views/mixins/mixins.js';
 import * as storeCore from './views/store/core.store.js';
-import { useSession } from './views/store/core.store.js';
+import { useSession, useStore } from './views/store/core.store.js';
 import * as appRenderer from './views/utils/vue-app-renderer.js';
 import './views/utils/polyfills.js'; // Auto-apply polyfills
 
@@ -133,6 +133,7 @@ export {
   i18nManager,
   storeCore,
   useSession,
+  useStore,
   wsManager,
 };
 
