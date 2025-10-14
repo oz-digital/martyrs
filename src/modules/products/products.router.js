@@ -137,7 +137,6 @@ export function getRoutes(options = {}) {
         },
         {
           path: ':product',
-          name: 'Organization_Product',
           meta: {
             title: {
               en: 'Product',

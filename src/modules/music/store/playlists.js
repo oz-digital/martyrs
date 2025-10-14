@@ -1,9 +1,9 @@
 // store/playlists.js
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 import { reactive } from 'vue';
 
 // Create store instance
-const playlistStore = new Store(`${process.env.API_URL}/api/playlists`);
+const playlistStore = new StoreManager(`${process.env.API_URL}/api/playlists`);
 
 // State
 export const state = reactive({

@@ -50,13 +50,7 @@ const canAddToCart = computed(() => {
 
 const handleProductClick = (product) => {
   if (product?._id && product?.owner?.target) {
-    router.push({
-      name: 'Organization_Product', 
-      params: { 
-        _id: product.owner.target, 
-        product: product._id 
-      } 
-    })
+    router.push(`/organizations/${product.owner.target}/products/${product._id}`)
   }
 }
 

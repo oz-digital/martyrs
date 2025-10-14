@@ -16,15 +16,15 @@
         :products="Products"
         :showPrice="false"
         @add="(item) => {
-          core.actions.add(ingredients, item);
+          store.core.actions.add(ingredients, item);
           closeIngredientPopup();
         }"
         @update="(item) => {
-          core.actions.update(ingredients, item, index);
+          store.core.actions.update(ingredients, item, index);
           closeIngredientPopup();
         }"
         @delete="(item) => {
-          core.actions.delete(ingredients, item, index);
+          store.core.actions.delete(ingredients, item, index);
           closeIngredientPopup();
         }"
       />
@@ -71,11 +71,11 @@
           :dates="product.date"
           :listing="product.listing"
           :price="product.price"
-          @click="() => { 
+          @click="() => {
             let p = { ...product };
             p.quantity = 1;
             p.type = 'pcs'
-            core.actions.add(ingredients, p);
+            store.core.actions.add(ingredients, p);
             closeIngredientPopup();
           }"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin"
@@ -95,7 +95,7 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 // Импорт модулей и глобальных хранилищ
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 
@@ -106,6 +106,7 @@ import CardOrderItem from '@martyrs/src/modules/orders/components/blocks/CardOrd
 // Получение route и router
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
 
 // Используем defineModel для работы с v-model в родительском компоненте
 const ingredients = defineModel('ingredients');

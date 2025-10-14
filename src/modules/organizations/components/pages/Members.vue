@@ -220,7 +220,9 @@ import CardUser from '@martyrs/src/modules/auth/views/components/blocks/CardUser
 import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 
 const route = useRoute();
 const router = useRouter();

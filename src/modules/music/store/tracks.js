@@ -1,9 +1,9 @@
 // store/tracks.js
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 import { reactive } from 'vue';
 
 // Create store instance
-const trackStore = new Store(`${process.env.API_URL}/api/tracks`);
+const trackStore = new StoreManager(`${process.env.API_URL}/api/tracks`);
 
 // State
 export const state = reactive({

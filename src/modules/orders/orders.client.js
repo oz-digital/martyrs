@@ -32,7 +32,7 @@ import Succes from './components/sections/Succes.vue';
 // Importing partials components
 import ShopCart from './components/partials/ShopCart.vue';
 
-import { i18nManager } from '@martyrs/src/modules/core/views/classes/core.i18n.js';
+import { i18nManager } from '@martyrs/src/modules/core/views/classes/i18n.manager.js';
 import locales from './locales/index.js';
 
 // Пример функции инициализации для модуля заказов

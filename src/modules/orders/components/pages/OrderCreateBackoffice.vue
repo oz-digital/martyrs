@@ -218,7 +218,7 @@
   import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPayment.vue'
 
   // Import your store
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as orders from '@martyrs/src/modules/orders/store/orders.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
@@ -226,8 +226,10 @@
   import variants from '@martyrs/src/modules/products/store/variants.store.js';
 
   import customers from '@martyrs/src/modules/orders/store/customers.store';
-  
+
   import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
+
+  const store = useStore()
 	
   // Accessing router
   const route = useRoute()
@@ -326,8 +328,8 @@
         variant: variant._id,
         org_id: route.params._id
       };
-      
-      core.actions.add(orders.state.current.positions, position);
+
+      store.core.actions.add(orders.state.current.positions, position);
       closeVariantsPopup();
     } catch (error) {
       console.error('Error adding variant to order:', error);

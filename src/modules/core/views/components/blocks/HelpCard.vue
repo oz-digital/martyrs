@@ -13,8 +13,10 @@
 </template>
 
 <script setup>
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import { computed } from 'vue';
+
+const store = useStore()
 
 defineProps({
   theme: {
@@ -23,7 +25,7 @@ defineProps({
   }
 });
 
-const supportUrl = computed(() => core.state.config?.app?.support?.url);
+const supportUrl = computed(() => store.core.state.config?.app?.support?.url);
 </script>
 
 <style scoped>

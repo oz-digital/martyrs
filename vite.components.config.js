@@ -14,7 +14,7 @@ export default defineConfig({
     cssCodeSplit: false,
     lib: {
       entry: './src/main.js',
-      formats: ['es', 'cjs'],
+      formats: ['es'],
       name: 'martyrs',
       fileName: format => `martyrs.${format}.js`,
     },

@@ -164,8 +164,9 @@
 	import Checkbox from "@martyrs/src/components/Checkbox/Checkbox.vue"
 	import IconChevronBottom from '@martyrs/src/modules/icons/navigation/IconChevronBottom.vue'
 
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
+	const core = useStore()
 
 
 	import * as marketplace from '../../store/marketplace';

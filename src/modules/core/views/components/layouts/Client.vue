@@ -13,7 +13,7 @@
   	}"
 	>
 		<transition name="moveFromTop" appear>
-			<Loader v-if="!page || core.state.loading" class="pos-fixed"/>
+			<Loader v-if="!page || store.core.state.loading" class="pos-fixed"/>
 		</transition>
 
 	  <transition 
@@ -51,7 +51,7 @@
 		    :is="route.meta.header_navigation"
 		    :horizontal="true"
 				:navigationItems="route.meta.header_navigation_items"
-				:stateSidebar="core.state.isOpenSidebar" 
+				:stateSidebar="store.core.state.isOpenSidebar"
 				:theme="headerTheme"
 		  />
   	</component>
@@ -62,15 +62,15 @@
         :is="route.meta.navigationbar"
         :logotype="route.meta.logotype"
         :navigationItems="route.meta.sidebar_navigation_items"
-	      :stateSidebar="core.state.isOpenSidebar" 
+	      :stateSidebar="store.core.state.isOpenSidebar"
       />
 		</transition>
 
-	  <Popup 
-	  	@close-popup="closeLocationPopup" 
-	  	:isPopupOpen="core.state.isOpenLocationPopup"
+	  <Popup
+	  	@close-popup="closeLocationPopup"
+	  	:isPopupOpen="store.core.state.isOpenLocationPopup"
 	  	class="bg-white pd-semi w-m-33r radius-big"
-	  >	
+	  >
 	  	<LocationSelection />
 	  </Popup>
 
@@ -91,11 +91,11 @@
 	    <component
 	      v-if="route.meta?.sidebar"
 	      :is="route.meta.sidebar"
-	      :stateSidebar="core.state.isOpenSidebar"
+	      :stateSidebar="store.core.state.isOpenSidebar"
 	      :widthHidden='route.meta?.sidebar_width_hidden'
 	      :width="route.meta?.sidebar_width"
 	      :theme="headerTheme"
-	      @closeSidebar="() => core.state.isOpenSidebar = false"
+	      @closeSidebar="() => store.core.state.isOpenSidebar = false"
 	    >
 	    	<!-- Header slot -->
 	    	<template #header>
@@ -113,7 +113,7 @@
 		        :is="route.meta.sidebar_navigation"
 		        :key="route.meta.sidebar_navigation"
 		        :navigationItems="route.meta.sidebar_navigation_items"
-			      :stateSidebar="core.state.isOpenSidebar"
+			      :stateSidebar="store.core.state.isOpenSidebar"
 						:theme="headerTheme"
 		      />
 	      </transition>
@@ -130,18 +130,18 @@
 		  <!-- rows-1-min0_max1 z-index-1 pos-relative w-100 h-100 -->
 		  <div class="rows-1-min0_max1 z-index-1 pos-relative w-100 h-100">
 		  	<div id="scrollview" ref="scrollview" @scroll="handleScroll" class="o-y-scroll o-x-hidden h-100">
-	  			<Status 
-	  				v-if="core.state.error.show"
-						:data="core.state.error"
-						@close="core.state.error.show = false"
-						class="z-index-7" 
+	  			<Status
+	  				v-if="store.core.state.error.show"
+						:data="store.core.state.error"
+						@close="store.core.state.error.show = false"
+						class="z-index-7"
 					/>
 					<Snack
-	  				v-if="core.state.snack.show"
-						:type="core.state.snack.type"
-						:message="core.state.snack.message"
-						:show="core.state.snack.show"
-						@close="core.state.snack.show = false"
+	  				v-if="store.core.state.snack.show"
+						:type="store.core.state.snack.type"
+						:message="store.core.state.snack.message"
+						:show="store.core.state.snack.show"
+						@close="store.core.state.snack.show = false"
 						class="z-index-7"
 					/>
 					<div class="h-min-100 pos-relative w-100">
@@ -177,15 +177,16 @@
 						</Suspense>
 				  </div>
 
-				 	<component 
+				 	<component
 			      v-if="route.meta.player"
 			      class="z-index-2"
 			    	:is="route.meta.player"
 			    />
+			    
 			  	<transition @before-enter="scrollTop" name="scaleTransition" mode="out-in" appear>
 		        <component
-							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !core.state.loading"
-				      ref="footer" 
+							v-if="!MOBILE_APP && route.meta.footer && !route.meta.hideFooter && page && !store.core.state.loading"
+				      ref="footer"
 				      :is="route.meta.footer"
 				      :theme="route.meta.footer_theme || 'light'"
 				      :logotype="route.meta.logotype"
@@ -220,7 +221,8 @@
 	// Router
 	import { useRoute } from 'vue-router';
 	// Store
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+	import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 	// Partials
 	import Status from '@martyrs/src/components/Status/Status.vue';
 	import Snack from '@martyrs/src/components/Status/Snack.vue';
@@ -248,6 +250,8 @@
     }
   })
 
+	const store = useStore()
+
 	/////////////////////////////
   // LOADING
   /////////////////////////////
@@ -261,32 +265,38 @@
   
   // Обработчики событий загрузки
   function handlePageLoading() {
-    core.state.loading = true;
+    store.core.state.loading = true;
   }
-  
+
   function handlePageLoaded() {
-    core.state.loading = false;
+    store.core.state.loading = false;
   }
-  
+
   // Обработка события разрешения Suspense (когда async setup компонента завершается)
   function onSuspenseResolved() {
-    // Если страница не отправляет событие page-loaded, этот обработчик 
+    // Если страница не отправляет событие page-loaded, этот обработчик
     // может служить запасным вариантом для отключения лоадера
     // Можно оставить закомментированным, если все страницы будут явно вызывать handlePageLoaded
-    core.state.loading = false;
+    store.core.state.loading = false;
   }
 	/////////////////////////////
 	// CREATED
 	/////////////////////////////
 	const route = useRoute()
 	// const router = useRouter()
+
+	// Инициализация sidebar для SSR + первая загрузка
+	if (route.meta?.sidebarOpenOnEnter === true) {
+		store.core.state.isOpenSidebar = true
+	}
+
 	// Ref Code
 	const referalCode = ref(route.query.referalCode);
 	/////////////////////////////
 	// Methods
 	/////////////////////////////
 	function closeLocationPopup() {
-	  core.state.isOpenLocationPopup = false;
+	  store.core.state.isOpenLocationPopup = false;
 	}
 	function scrollTop(){
 		if (scrollview.value) scrollview.value.scrollTop = 0;
@@ -323,8 +333,15 @@
     FirstUse.value = value;
   }
 
+	const { isPhone, isTablet } = useGlobalMixins();
+
 	onMounted(async () => {
 	  await getFirstUse()
+
+		// Закрываем sidebar на mobile (CSS уже скрыл визуально)
+		if ((isPhone() || isTablet()) && store.core.state.isOpenSidebar) {
+			store.core.state.isOpenSidebar = false
+		}
 
 		// Регистрация единого Service Worker (PWA + push notifications)
 		if ('serviceWorker' in navigator && !window.__MOBILE_APP__) {
@@ -336,15 +353,15 @@
 	     	});
 	   });
 	 	}
-		
+
 		const savedPosition = localStorage.getItem('position');
 
 	  if (savedPosition) {
-	    core.state.position = JSON.parse(savedPosition);
+	    store.core.state.position = JSON.parse(savedPosition);
 	  } else if (route.meta.location) {
-  		core.state.isOpenLocationPopup = true;
+  		store.core.state.isOpenLocationPopup = true;
 	  } else {
-	  	core.state.isOpenLocationPopup = false;
+	  	store.core.state.isOpenLocationPopup = false;
 	  }
 
 		if (referalCode.value) {

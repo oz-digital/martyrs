@@ -1,9 +1,9 @@
 // store/albums.js
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 import { reactive } from 'vue';
 
 // Create store instance
-const albumStore = new Store(`${process.env.API_URL}/api/albums`);
+const albumStore = new StoreManager(`${process.env.API_URL}/api/albums`);
 
 // State
 export const state = reactive({

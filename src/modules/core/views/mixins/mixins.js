@@ -1,4 +1,4 @@
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import { inject } from 'vue';
 
 // useGlobalMixins.js
@@ -56,7 +56,8 @@ export function useGlobalMixins() {
   };
 
   const returnCurrency = () => {
-    const currency = core.state.options.currency || '$';
+    const store = useStore();
+    const currency = store.core.state.options?.currency || '$';
     return currency;
   };
 

@@ -24,7 +24,7 @@ export default defineConfig({
     ssr: {
       noExternal: true,
       target: 'node',
-      format: 'cjs',
+      format: 'es',
     },
     emptyOutDir: false,
     lib: {
@@ -48,7 +48,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/music/music.server.js'),
         resolve(__dirname, './src/modules/notifications/notifications.server.js'),
       ],
-      formats: ['cjs', 'es'],
+      formats: ['es'],
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'js' : 'cjs';
         return `${entryName}.${extension}`;

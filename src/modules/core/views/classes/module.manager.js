@@ -1,7 +1,7 @@
-// module-registry.js - централизованный регистр модулей
+// module.manager.js - централизованный регистр модулей
 import { ref, readonly } from 'vue';
 
-export class ModuleRegistry {
+export class ModuleManager {
   constructor() {
     this.modules = new Map();
     this.loaders = new Map();
@@ -55,17 +55,38 @@ export class ModuleRegistry {
 
   // Внутренний метод для загрузки модуля
   async _loadModule(name, context, config) {
+    // [LOADING 29] Starting module loading with dependencies
+    performance.mark(`loading-29-${name}-start`);
+    console.log(`[LOADING 29] Starting to load module "${name}" with dependencies...`);
+
     const loadStart = Date.now();
 
-    // Загружаем зависимости
+    // [LOADING 30] Loading module dependencies
     if (config.dependencies.length > 0) {
+      performance.mark(`loading-30-${name}-deps-start`);
+      console.log(`[LOADING 30] Loading ${config.dependencies.length} dependencies for module "${name}"...`);
+
       await Promise.all(
         config.dependencies.map(dep => this.load(dep, context))
       );
+
+      performance.mark(`loading-30-${name}-deps-end`);
+      performance.measure(`loading-30-${name}-deps`, `loading-30-${name}-deps-start`, `loading-30-${name}-deps-end`);
+      const measure30 = performance.getEntriesByName(`loading-30-${name}-deps`)[0];
+      console.log(`[LOADING 30] Dependencies for "${name}" loaded in ${measure30?.duration?.toFixed(2)}ms`);
     }
+
+    // [LOADING 31] Loading the module itself
+    performance.mark(`loading-31-${name}-start`);
+    console.log(`[LOADING 31] Loading module "${name}" via loader...`);
 
     // Загружаем сам модуль
     const module = await config.loader();
+
+    performance.mark(`loading-31-${name}-end`);
+    performance.measure(`loading-31-${name}`, `loading-31-${name}-start`, `loading-31-${name}-end`);
+    const measure31 = performance.getEntriesByName(`loading-31-${name}`)[0];
+    console.log(`[LOADING 31] Module "${name}" loaded in ${measure31?.duration?.toFixed(2)}ms`);
     
     const mod = module.default || module;
     
@@ -76,6 +97,12 @@ export class ModuleRegistry {
       await this.initialize(name, context);
     }
 
+    // [LOADING 29] Module loading completed
+    performance.mark(`loading-29-${name}-end`);
+    performance.measure(`loading-29-${name}`, `loading-29-${name}-start`, `loading-29-${name}-end`);
+    const measure29 = performance.getEntriesByName(`loading-29-${name}`)[0];
+    console.log(`[LOADING 29] Module "${name}" fully loaded and initialized in ${measure29?.duration?.toFixed(2)}ms`);
+
     return mod;
   }
 
@@ -85,6 +112,10 @@ export class ModuleRegistry {
     if (!module || this.initialized.has(name)) {
       return;
     }
+
+    // [LOADING 32] Module initialization
+    performance.mark(`loading-32-${name}-start`);
+    console.log(`[LOADING 32] Initializing module "${name}"...`);
 
     // Инициализируем зависимости
     const moduleConfig = this.loaders.get(name);
@@ -100,8 +131,13 @@ export class ModuleRegistry {
     if (initFunc) {
       await initFunc(app, store, router, config);
     }
-    
+
     this.initialized.set(name, true);
+
+    performance.mark(`loading-32-${name}-end`);
+    performance.measure(`loading-32-${name}`, `loading-32-${name}-start`, `loading-32-${name}-end`);
+    const measure32 = performance.getEntriesByName(`loading-32-${name}`)[0];
+    console.log(`[LOADING 32] Module "${name}" initialized in ${measure32?.duration?.toFixed(2)}ms`);
   }
 
   // Вспомогательная функция для матчинга Vue Router паттернов
@@ -117,6 +153,10 @@ export class ModuleRegistry {
 
   // Получить модули для маршрута
   getModulesForRoute(path) {
+    // [LOADING 34] Finding modules for route
+    performance.mark(`loading-34-route-start`);
+    console.log(`[LOADING 34] Finding modules for route: ${path}...`);
+
     const modules = [];
 
     // Нормализуем путь - убираем trailing slash если это не корень
@@ -151,10 +191,17 @@ export class ModuleRegistry {
     }
 
     // Сортируем по приоритету
-    return modules.sort((a, b) => {
+    const sortedModules = modules.sort((a, b) => {
       const priorities = { critical: 0, high: 1, normal: 2, low: 3 };
       return (priorities[a.priority] || 2) - (priorities[b.priority] || 2);
     });
+
+    performance.mark(`loading-34-route-end`);
+    performance.measure(`loading-34-route`, `loading-34-route-start`, `loading-34-route-end`);
+    const measure34 = performance.getEntriesByName(`loading-34-route`)[0];
+    console.log(`[LOADING 34] Found ${modules.length} modules for route in ${measure34?.duration?.toFixed(2)}ms`);
+
+    return sortedModules;
   }
   
   // Получить критические модули для маршрута (для SSR)
@@ -201,10 +248,20 @@ export class ModuleRegistry {
       return (priorities[a.priority] || 2) - (priorities[b.priority] || 2);
     });
 
-    // Загружаем критические синхронно
+    // [LOADING 33] Preload critical modules
     const critical = toPreload.filter(m => m.critical);
-    for (const module of critical) {
-      await this.load(module.name, context);
+    if (critical.length > 0) {
+      performance.mark('loading-33-start');
+      console.log(`[LOADING 33] Preloading ${critical.length} critical modules...`);
+
+      for (const module of critical) {
+        await this.load(module.name, context);
+      }
+
+      performance.mark('loading-33-end');
+      performance.measure('loading-33', 'loading-33-start', 'loading-33-end');
+      const measure33 = performance.getEntriesByName('loading-33')[0];
+      console.log(`[LOADING 33] Critical modules preloaded in ${measure33?.duration?.toFixed(2)}ms`);
     }
 
     // Остальные в фоне
@@ -222,12 +279,12 @@ export class ModuleRegistry {
 
 }
 
-// Создаем глобальный регистр
-export const moduleRegistry = new ModuleRegistry();
+// Создаем глобальный менеджер
+export const moduleManager = new ModuleManager();
 
 // Утилита для использования в компонентах
 export async function useModule(name) {
-  return moduleRegistry.load(name);
+  return moduleManager.load(name);
 }
 
 // Composable для Vue
@@ -238,9 +295,9 @@ export function useModuleLoader() {
   const loadModule = async (name) => {
     loading.value = true;
     error.value = null;
-    
+
     try {
-      const module = await moduleRegistry.load(name);
+      const module = await moduleManager.load(name);
       return module;
     } catch (e) {
       error.value = e;

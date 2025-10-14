@@ -19,7 +19,7 @@
             component: IconDelete,
             class: 'bg-red',
             handler: () => {
-              core.actions.delete(recommended, product, index);
+              store.core.actions.delete(recommended, product, index);
             }
           }
         ]"
@@ -60,7 +60,7 @@
           :image="product.images?.[0] ? (FILE_SERVER_URL || '') + product.images[0] : ''"
           :name="product.name"
           :showThumbnail="true"
-          @click="core.actions.add(recommended, product); closeRecommendedPopup();"
+          @click="store.core.actions.add(recommended, product); closeRecommendedPopup();"
           class="bg-white pd-thin radius-medium w-100 mn-b-thin cursor-pointer hover-scale-1"
         />
       </Feed>
@@ -79,7 +79,7 @@ import Popup from '@martyrs/src/components/Popup/Popup.vue';
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
 
 // Импорт модулей и глобальных хранилищ
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 
@@ -90,6 +90,7 @@ import IconDelete from '@martyrs/src/modules/icons/navigation/IconDelete.vue';
 // Получение route и router
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
 const { returnCurrency } = useGlobalMixins();
 
 // Используем defineModel для работы с v-model в родительском компоненте

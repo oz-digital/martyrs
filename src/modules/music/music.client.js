@@ -44,7 +44,7 @@ import SearchForm from './components/forms/SearchForm.vue';
 import TrackForm from './components/forms/TrackForm.vue';
 
 // WebSocket integration for streaming
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 
 /**
  * Initialize Music module on client-side
@@ -71,7 +71,7 @@ function initializeMusic(app, store, router, config, options = {}) {
 
   // Set up WebSocket subscription for music streaming
   if (options.enableStreaming !== false && app.config.globalProperties.WSS_URL) {
-    globalWebSocket.initialize({
+    wsManager.initialize({
       wsUrl: process.env.WSS_URL,
       maxReconnectAttempts: 10,
       reconnectDelay: 2000,
@@ -79,10 +79,10 @@ function initializeMusic(app, store, router, config, options = {}) {
 
     // Subscribe to music streaming module when authenticated
     if (options.userId) {
-      globalWebSocket
+      wsManager
         .connect(options.userId)
         .then(() => {
-          globalWebSocket.subscribeModule('music-streaming');
+          wsManager.subscribeModule('music-streaming');
         })
         .catch(err => {
           console.error('Failed to connect to WebSocket for music streaming:', err);

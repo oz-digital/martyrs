@@ -1,12 +1,24 @@
+// [LOADING 35] Organizations module import started
+performance.mark('loading-35-start');
+console.log('[LOADING 35] Organizations module import started...');
+
 // Functional imports (needed for initialize function)
 import departmentsStore from './store/departments.store.js';
 import invitesStore from './store/invites.store.js';
 import membershipsStore from './store/memberships.store.js';
 import * as storeOrganizations from './store/organizations.js';
 
+performance.mark('loading-35-stores-end');
+const storesTime = performance.measure('loading-35-stores', 'loading-35-start', 'loading-35-stores-end');
+console.log(`[LOADING 35] Store imports completed in ${storesTime.duration.toFixed(2)}ms`);
+
 // Router
 import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
 import { getRoutes } from './organizations.router.js';
+
+performance.mark('loading-35-router-end');
+const routerTime = performance.measure('loading-35-router', 'loading-35-stores-end', 'loading-35-router-end');
+console.log(`[LOADING 35] Router imports completed in ${routerTime.duration.toFixed(2)}ms`);
 
 // Component re-exports (enables tree shaking)
 // Pages
@@ -74,5 +86,11 @@ const ModuleOrganization = {
     },
   },
 };
+
+// [LOADING 35] Organizations module import completed
+performance.mark('loading-35-end');
+performance.measure('loading-35-total', 'loading-35-start', 'loading-35-end');
+const totalTime = performance.getEntriesByName('loading-35-total')[0];
+console.log(`[LOADING 35] Organizations module fully imported in ${totalTime?.duration?.toFixed(2)}ms`);
 
 export default ModuleOrganization;

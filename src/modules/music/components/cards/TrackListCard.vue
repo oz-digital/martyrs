@@ -128,7 +128,7 @@ const playTrack = (track, force = false) => {
 };
 
 const pauseTrack = () => {
-  playerActions.pause();
+  playerActions.togglePlay();
 };
 
 const getArtistName = (track) => {

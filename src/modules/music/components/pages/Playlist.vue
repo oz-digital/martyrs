@@ -359,7 +359,9 @@ import { state as playlistsState, actions as playlistsActions } from '../../stor
 import { state as tracksState, actions as tracksActions } from '../../store/tracks.js';
 import { actions as playerActions } from '../../store/player.js';
 import { state as authState } from '@martyrs/src/modules/auth/views/store/auth.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -553,7 +555,7 @@ const confirmDelete = async () => {
     router.push({ name: 'music-library' });
   } catch (error) {
     console.error('Error deleting playlist:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to delete playlist'
     });
   }
@@ -566,7 +568,7 @@ const removeTrack = async (trackId) => {
     await fetchPlaylistData();
   } catch (error) {
     console.error('Error removing track:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to remove track'
     });
   }

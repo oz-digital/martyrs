@@ -42,7 +42,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/notifications/notifications.client.js'),
         // resolve(__dirname, './src/modules/wallet/wallet.client.js'),
       ],
-      formats: ['cjs', 'es'],
+      formats: ['es'],
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'js' : 'cjs';
         return `${entryName}.${extension}`;

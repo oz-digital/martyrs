@@ -26,7 +26,7 @@
 				/>
 
 				<span v-else class="t-semi lh-semi h5 d-block" >
-					{{ formateText(core.state.navigation_bar.name || route.meta?.title?.[locale.toLowerCase()] || route.name) }}
+					{{ formateText(store.core.state.navigation_bar.name || route.meta?.title?.[locale.toLowerCase()] || route.name) }}
 				</span>
 			</div>
 		</transition>
@@ -79,9 +79,11 @@
 
 	import Button 				from '@martyrs/src/components/Button/Button.vue'
 
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 	import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
+
+	const store = useStore()
 
 		// Props
 	const props = defineProps({
@@ -99,7 +101,7 @@
 
 	const { t, mergeLocaleMessage, locale } = useI18n();
 
-	const actions = computed(() => core.state.navigation_bar.actions || route.meta?.actions || [])
+	const actions = computed(() => store.core.state.navigation_bar.actions || route.meta?.actions || [])
 
 	function handleBackNavigation() {
 	    if (route.query?.afterAuth)  { 

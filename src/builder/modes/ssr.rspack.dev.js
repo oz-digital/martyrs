@@ -12,10 +12,20 @@ import { createBeastiesProcessor } from '../ssr/beasties-processor.js';
 
 export default function createSsrDevServer(projectRoot, configs, createServer) {
   const { client, api, ssr } = configs;
-  const clientCompiler = rspack(client); 
+
+  // [LOADING 1] Starting compilers initialization
+  performance.mark('loading-1-start');
+  console.log('[LOADING 1] Initializing Rspack compilers...');
+
+  const clientCompiler = rspack(client);
   const ssrCompiler = rspack(ssr);
   const serverCompiler = rspack(api);
   const beastiesProcessor = createBeastiesProcessor(projectRoot);
+
+  performance.mark('loading-1-end');
+  performance.measure('loading-1', 'loading-1-start', 'loading-1-end');
+  const measure1 = performance.getEntriesByName('loading-1')[0];
+  console.log(`[LOADING 1] Compilers initialized in ${measure1?.duration?.toFixed(2)}ms`);
 
   const createDevRenderer = (onUpdate) => {
     const createHotReloadingServerRenderer = () => {
@@ -25,6 +35,10 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
       ssr.plugins.push(progressPlugin);
       
       let renderApp = null;
+
+      // [LOADING 2] Starting SSR compilation watch
+      performance.mark('loading-2-start');
+      console.log('[LOADING 2] Starting SSR compilation watch...');
 
       ssrCompiler.watch(
         {
@@ -71,6 +85,12 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
           // IMPORTANT: Add timestamp to force reimport after recompilation
           const module = await import(`${mainModulePath}?t=${Date.now()}`);
           renderApp = module._renderApp;
+
+          // [LOADING 3] SSR module successfully compiled
+          performance.mark('loading-3-end');
+          performance.measure('loading-3', 'loading-2-start', 'loading-3-end');
+          const measure3 = performance.getEntriesByName('loading-3')[0];
+          console.log(`[LOADING 3] SSR module compiled in ${measure3?.duration?.toFixed(2)}ms`);
         }
       );
       
@@ -87,12 +107,21 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
     const renderHtml = createHtmlRenderer(onUpdate);
 
     return async (stuff, { stats, outputFileSystem }) => {
+      // [LOADING 4] Starting renderApp
+      performance.mark('loading-4-start');
+      console.log('[LOADING 4] Starting renderApp process...');
+
       const ssrContext = {};
-      
+
       const { html, meta, state, statusCode, usedModules, loadedModules } = await renderApp({
         ...stuff,
         ssrContext
       });
+
+      performance.mark('loading-4-end');
+      performance.measure('loading-4', 'loading-4-start', 'loading-4-end');
+      const measure4 = performance.getEntriesByName('loading-4')[0];
+      console.log(`[LOADING 4] renderApp completed in ${measure4?.duration?.toFixed(2)}ms`);
 
       // Используем loadedModules если они есть, иначе usedModules
       const modulesToLoad = loadedModules || usedModules || [];
@@ -122,6 +151,10 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
       const initialState = JSON.stringify(state);
       const loadedModulesJson = JSON.stringify(loadedModules || []);
 
+      // [LOADING 5] Starting HTML rendering and Beasties processing
+      performance.mark('loading-5-start');
+      console.log('[LOADING 5] Starting HTML rendering and Beasties processing...');
+
       let completeHtml = await renderHtml({
         appHtml: html,
         meta,
@@ -130,12 +163,17 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
         initialState,
         loadedModulesJson,
       });
-      
+
       // Обрабатываем HTML через Beasties для извлечения критического CSS
       completeHtml = await beastiesProcessor.processHtml(completeHtml, {
         url: stuff.url
       });
-      
+
+      performance.mark('loading-5-end');
+      performance.measure('loading-5', 'loading-5-start', 'loading-5-end');
+      const measure5 = performance.getEntriesByName('loading-5')[0];
+      console.log(`[LOADING 5] HTML rendering and Beasties completed in ${measure5?.duration?.toFixed(2)}ms`);
+
       return { html: completeHtml, statusCode };
     };
   };
@@ -153,18 +191,27 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
     
     
     try {
+      // [LOADING 6] Loading server module
+      performance.mark('loading-6-start');
+      console.log('[LOADING 6] Loading server module...');
+
       // Получаем путь к скомпилированному файлу
       const { outputPath } = stats.toJson();
       const entryName = Object.keys(stats.toJson().entrypoints)[0];
       const assetName = stats.toJson().entrypoints[entryName].assets[0].name;
-      
+
       // Импортируем с уникальным параметром для сброса кэша
       serverModule = await import(`file://${path.resolve(outputPath, assetName)}?t=${Date.now()}`);
-      
+
       if (typeof serverModule.createServer !== 'function') {
         throw new Error("Экспорт createServer не найден");
       }
-      
+
+      performance.mark('loading-6-end');
+      performance.measure('loading-6', 'loading-6-start', 'loading-6-end');
+      const measure6 = performance.getEntriesByName('loading-6')[0];
+      console.log(`[LOADING 6] Server module loaded in ${measure6?.duration?.toFixed(2)}ms`);
+
       await startServer();
     } catch (error) {
       console.error("Ошибка при загрузке серверного модуля:", error);
@@ -247,7 +294,16 @@ export default function createSsrDevServer(projectRoot, configs, createServer) {
     serverInstance = server;
 
     try {
+      // [LOADING 7] Starting server
+      performance.mark('loading-7-start');
+      console.log('[LOADING 7] Starting server on port ' + port + '...');
+
       await server.listen(port);
+
+      performance.mark('loading-7-end');
+      performance.measure('loading-7', 'loading-7-start', 'loading-7-end');
+      const measure7 = performance.getEntriesByName('loading-7')[0];
+      console.log(`[LOADING 7] Server started successfully in ${measure7?.duration?.toFixed(2)}ms`);
     } catch (err) {
       console.error(err);
       process.exit(1);

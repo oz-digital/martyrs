@@ -1,9 +1,9 @@
 // store/genres.js
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 import { reactive } from 'vue';
 
 // Create store instance
-const genreStore = new Store(`${process.env.API_URL}/api/genres`);
+const genreStore = new StoreManager(`${process.env.API_URL}/api/genres`);
 
 // State
 export const state = reactive({

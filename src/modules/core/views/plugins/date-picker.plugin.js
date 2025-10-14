@@ -1,6 +1,6 @@
 // date-selector.plugin.js
 import { reactive, markRaw, defineComponent, h, render, defineAsyncComponent } from 'vue'
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 
 // Dynamic import for better tree shaking and lazy loading
 const PopupDateSelector = defineAsyncComponent(() => 
@@ -20,11 +20,12 @@ const state = reactive({
 })
 
 function getDefaultOptions() {
+  const store = useStore();
   return {
-    showFees: core.state.options?.orders?.showFees || false,
-    feesRate: core.state.options?.orders?.feesRate || 0.15,
-    showVat: core.state.options?.orders?.showVat || false,
-    vatRate: core.state.options?.orders?.vatRate || 0
+    showFees: store.core.state.options?.orders?.showFees || false,
+    feesRate: store.core.state.options?.orders?.feesRate || 0.15,
+    showVat: store.core.state.options?.orders?.showVat || false,
+    vatRate: store.core.state.options?.orders?.vatRate || 0
   }
 }
 

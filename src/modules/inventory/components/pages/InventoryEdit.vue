@@ -251,9 +251,10 @@
   import { computed, onMounted, ref, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
- 
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
+  const core = useStore();
   import * as inventory from '@martyrs/src/modules/inventory/store/inventory.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
   import * as spots from '@martyrs/src/modules/spots/store/spots.js';

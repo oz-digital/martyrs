@@ -197,9 +197,9 @@
             />
           </div>
           <div class="cols-4 z-index-1 pos-relative w-100 rows-1 gap-thin">
-            <router-link  
-              v-for="product in items" 
-              :to="route.params._id ? { name: 'Organization_Product', params: { _id: route.params._id, product: product._id  } } : { name: 'Product', params: { product: product._id  } }"
+            <router-link
+              v-for="product in items"
+              :to="route.params._id ? `/organizations/${route.params._id}/products/${product._id}` : `/products/${product._id}`"
               class="pos-relative h-100 w-100"
             >
               <CardProduct
@@ -281,7 +281,7 @@
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as products from '@martyrs/src/modules/products/store/products.js';
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
   import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
@@ -289,6 +289,7 @@
   const emits = defineEmits(['page-loading', 'page-loaded']);
   const route = useRoute()
   const router = useRouter()
+  const store = useStore()
   const { generateFilters, formatDate, hasAccess, returnCurrency } = useGlobalMixins()
 
   // Категории и фильтры
@@ -447,10 +448,10 @@
   };
 
   if (route.params?._id) {
-    core.state.navigation_bar.actions = [{
+    store.core.state.navigation_bar.actions = [{
       component: IconPlus,
       props: {
-        fill: "rgb(var(--main))" 
+        fill: "rgb(var(--main))"
       },
       condition: () => auth.state.user && auth.state.user._id,
       action: () => route.params._id ? router.push({ name: 'Organization_ProductAdd', params: { _id: route.params._id} }) : router.push({ name: 'ProductAdd' })
@@ -464,7 +465,7 @@
   });
 
   onUnmounted(() => {
-    core.state.navigation_bar.actions = [];
+    store.core.state.navigation_bar.actions = [];
   });
 
 </script>

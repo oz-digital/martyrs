@@ -1,3 +1,7 @@
+// [LOADING 37] Notifications module import started
+performance.mark('loading-37-start');
+console.log('[LOADING 37] Notifications module import started...');
+
 import { toRefs, watch } from 'vue';
 // Router import
 import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
@@ -5,7 +9,7 @@ import { getRoutes } from './notifications.router.js';
 // Store
 import * as storeNotifications from './store/notifications.store.js';
 // Global WebSocket import
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 // Capacitor Preferences
 import { Preferences } from '@capacitor/preferences';
 // Layouts
@@ -18,6 +22,10 @@ import Notifications from './components/pages/Notifications.vue';
 // Components
 import NotificationItem from './components/blocks/NotificationItem.vue';
 import NotificationBadge from './components/elements/NotificationBadge.vue';
+
+performance.mark('loading-37-imports-end');
+const importsTime = performance.measure('loading-37-imports', 'loading-37-start', 'loading-37-imports-end');
+console.log(`[LOADING 37] All imports completed in ${importsTime.duration.toFixed(2)}ms`);
 
 /**
  * Capacitor Push Notification handler
@@ -327,19 +335,19 @@ class NotificationManager {
     // Connect WebSocket only for authenticated users
     if (userId) {
       console.log('Connecting to websockets via notifications');
-      globalWebSocket.initialize({
+      wsManager.initialize({
         wsUrl: process.env.WSS_URL,
         maxReconnectAttempts: 10,
         reconnectDelay: 2000,
       });
 
-      await globalWebSocket.connect(userId);
+      await wsManager.connect(userId);
 
-      globalWebSocket.removeModuleListeners('notification');
+      wsManager.removeModuleListeners('notification');
 
-      await globalWebSocket.subscribeModule('notification');
+      await wsManager.subscribeModule('notification');
 
-      globalWebSocket.addEventListener(
+      wsManager.addEventListener(
         'notification',
         data => {
           this.store.notifications.actions.addLocalNotification(data.data);
@@ -366,7 +374,7 @@ class NotificationManager {
   disconnect() {
     if (this.isServer) return;
 
-    globalWebSocket.removeModuleListeners('notification');
+    wsManager.removeModuleListeners('notification');
     this.pushHandler.removeListeners();
     this.initialized = false;
   }
@@ -412,7 +420,7 @@ function initializeNotifications(app, store, router, options = {}) {
 
   // Initialize global WebSocket if needed
   if (options.wsUrl) {
-    globalWebSocket.initialize({ wsUrl: process.env.WSS_URL });
+    wsManager.initialize({ wsUrl: process.env.WSS_URL });
   }
 
   // Create notification manager
@@ -515,5 +523,11 @@ export {
   // SSR Utilities
   SSRUtils,
 };
+
+// [LOADING 37] Notifications module import completed
+performance.mark('loading-37-end');
+performance.measure('loading-37-total', 'loading-37-start', 'loading-37-end');
+const totalTime = performance.getEntriesByName('loading-37-total')[0];
+console.log(`[LOADING 37] Notifications module fully imported in ${totalTime?.duration?.toFixed(2)}ms`);
 
 export default ModuleNotifications;

@@ -8,13 +8,13 @@
 	      	<h2 class="bg-black-transp-25 t-white pd-small w-100 bg-blur-big mn-l-auto mn-r-auto t-center">
 	      		<span class="">Weed in </span>
 
-	      		<span @click="a => { core.state.isOpenLocationPopup = true }" v-if="localPosition.city || localPosition.state || localPosition.country" class="t-semi t-main">
+	      		<span @click="a => { store.core.state.isOpenLocationPopup = true }" v-if="localPosition.city || localPosition.state || localPosition.country" class="t-semi t-main">
       				<span v-if="localPosition.city">{{localPosition.city}}, </span>
       				<span v-if="localPosition.state">{{localPosition.state}}, </span>
       				<span v-if="localPosition.country">{{localPosition.country}}</span>
 	      		</span>
 
-	      		<span v-else @click="a => { core.state.isOpenLocationPopup = true }"  class="t-semi t-main">
+	      		<span v-else @click="a => { store.core.state.isOpenLocationPopup = true }"  class="t-semi t-main">
 								The World
 	      		</span>
 	      	</h2>
@@ -56,7 +56,9 @@
 	import Breadcrumbs from '@martyrs/src/components/Breadcrumbs/Breadcrumbs.vue'
  	import Dropdown from "@martyrs/src/components/Dropdown/Dropdown.vue";
 
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 	import * as categories from '@martyrs/src/modules/products/store/categories.js';
 	import * as marketplace from '@martyrs/src/modules/marketplace/views/store/marketplace.js';
 
@@ -137,7 +139,7 @@
 	    .replace(/[^a-z0-9-]/g, ''); // Удаление всех символов, которые не являются буквами, цифрами или дефисами
 	}
 
-	watch(() => core.state.position, (newPosition) => {
+	watch(() => store.core.state.position, (newPosition) => {
 	  // get the current route
 	  const currentRoute = { ...router.currentRoute.value };
 	  

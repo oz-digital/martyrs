@@ -18,7 +18,7 @@
 
 <script setup>
 import { computed, inject, ref, onMounted, onUnmounted } from 'vue';
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 
 // Get notification manager from store
 const store = inject('store');
@@ -26,7 +26,7 @@ const store = inject('store');
 const notificationManager = computed(() => store.notificationManager || null);
 
 // Реактивное состояние WebSocket
-const wsConnected = ref(globalWebSocket.isConnected);
+const wsConnected = ref(wsManager.isConnected);
 
 // ID слушателей для очистки
 const openListenerId = ref(null);
@@ -34,25 +34,25 @@ const closeListenerId = ref(null);
 
 onMounted(() => {
   // Подписываемся на события WebSocket
-  openListenerId.value = globalWebSocket.addEventListener('open', () => {
+  openListenerId.value = wsManager.addEventListener('open', () => {
     wsConnected.value = true;
   });
   
-  closeListenerId.value = globalWebSocket.addEventListener('close', () => {
+  closeListenerId.value = wsManager.addEventListener('close', () => {
     wsConnected.value = false;
   });
   
   // Устанавливаем начальное состояние
-  wsConnected.value = globalWebSocket.isConnected;
+  wsConnected.value = wsManager.isConnected;
 });
 
 onUnmounted(() => {
   // Очищаем слушатели
   if (openListenerId.value) {
-    globalWebSocket.removeEventListener('open', openListenerId.value);
+    wsManager.removeEventListener('open', openListenerId.value);
   }
   if (closeListenerId.value) {
-    globalWebSocket.removeEventListener('close', closeListenerId.value);
+    wsManager.removeEventListener('close', closeListenerId.value);
   }
 });
 

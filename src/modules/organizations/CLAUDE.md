@@ -218,11 +218,11 @@ Request related data using query parameters:
 All stores use the Store class from `@martyrs/src/modules/core/views/classes/core.store.js`:
 
 ```javascript
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 
-const membershipsStore = new Store('/api/memberships');
-const departmentsStore = new Store('/api/departments');
-const invitesStore = new Store('/api/invites');
+const membershipsStore = new StoreManager('/api/memberships');
+const departmentsStore = new StoreManager('/api/departments');
+const invitesStore = new StoreManager('/api/invites');
 ```
 
 #### membershipsStore.handleMembershipUpdate

@@ -242,7 +242,9 @@ import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 // Import store
 import * as artistsStore from '../../store/artists';
 import * as genresStore from '../../store/genres';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 // Props
@@ -331,7 +333,7 @@ const fetchArtist = async () => {
     const fetchedArtist = await artistsStore.actions.fetchArtistByUrl(props.url);
     
     if (!fetchedArtist) {
-      core.actions.setError({
+      store.core.actions.setError({
         message: 'Artist not found'
       });
       return;
@@ -360,7 +362,7 @@ const fetchArtist = async () => {
     
   } catch (error) {
     console.error('Error fetching artist:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to load artist details'
     });
   }
@@ -433,7 +435,7 @@ const submitForm = async () => {
     
   } catch (error) {
     console.error('Error saving artist:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to save artist'
     });
   }
@@ -441,7 +443,7 @@ const submitForm = async () => {
 
 const handleUploadError = (error) => {
   console.error('Upload error:', error);
-  core.actions.setError({
+  store.core.actions.setError({
     message: 'Error uploading image'
   });
 };

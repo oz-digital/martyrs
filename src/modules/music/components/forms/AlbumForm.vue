@@ -246,7 +246,9 @@ import BlockMultiselect from '@martyrs/src/modules/core/views/components/blocks/
 import * as albumsStore from '../../store/albums';
 import * as artistsStore from '../../store/artists';
 import * as genresStore from '../../store/genres';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 
 // Props
@@ -336,7 +338,7 @@ const fetchAlbum = async () => {
     const fetchedAlbum = await albumsStore.actions.fetchAlbumByUrl(props.url);
     
     if (!fetchedAlbum) {
-      core.actions.setError({
+      store.core.actions.setError({
         message: 'Album not found'
       });
       return;
@@ -359,7 +361,7 @@ const fetchAlbum = async () => {
     
   } catch (error) {
     console.error('Error fetching album:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to load album details'
     });
   }
@@ -439,7 +441,7 @@ const submitForm = async () => {
     
   } catch (error) {
     console.error('Error saving album:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to save album'
     });
   }
@@ -447,7 +449,7 @@ const submitForm = async () => {
 
 const handleUploadError = (error) => {
   console.error('Upload error:', error);
-  core.actions.setError({
+  store.core.actions.setError({
     message: 'Error uploading image'
   });
 };

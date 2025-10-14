@@ -95,8 +95,8 @@
 
     <div v-if="showProducts && organization.products?.length > 0" class="w-100 o-scroll scroll-hide radius-medium">
       <div class="w-max flex-nowrap flex gap-thin">
-        <CardOrderItem  
-          @click.stop="$router.push({name: 'Organization_Product', params: {_id: organization._id, product: product._id}})" 
+        <CardOrderItem
+          @click.stop="$router.push(`/organizations/${organization._id}/products/${product._id}`)"
           v-for="product in organization.products.slice(0,5)" 
           :key="product._id" 
           :editable="false" 

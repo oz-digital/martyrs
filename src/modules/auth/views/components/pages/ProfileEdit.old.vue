@@ -133,9 +133,11 @@
   // Import state
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
   import * as users from '@martyrs/src/modules/auth/views/store/users.js'
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
   // Import validation
   import * as inputsValidation from '@martyrs/src/modules/auth/views/validations/inputs.validation'
+  const store = useStore()
+  const core = store.core
   const passswordValidation = ref(null)
   // Accessing router
   const route = useRoute()

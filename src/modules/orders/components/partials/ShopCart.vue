@@ -41,13 +41,13 @@
     <!-- ---------------------------------------------------------------- -->
     <div  class="h-30 transition-ease-in-out pd-b-medium pd-t-medium pd-big transition-cubic bg-light t-black">
       <div v-if="shopcart.state.positions.length > 0" class="mn-b-small total-price">
-       <PriceTotal 
+       <PriceTotal
           :totalPrice="cartTotalPrice"
           :currency="returnCurrency()"
-          :showFees="core.state.options?.orders.showFees"
-          :feesRate="core.state.options?.orders.feesRate"
-          :showVat="core.state.options?.orders.showVat"
-          :vatRate="core.state.options?.orders.vatRate"
+          :showFees="store.core.state.options?.orders.showFees"
+          :feesRate="store.core.state.options?.orders.feesRate"
+          :showVat="store.core.state.options?.orders.showVat"
+          :vatRate="store.core.state.options?.orders.vatRate"
         />
       </div>
       <button v-if="shopcart.state.positions.length > 0" @click="openOrder()" class="bg-main t-black w-100 button">{{ t('fastorder') }}</button>
@@ -87,13 +87,14 @@
 
   import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue';
 
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js';
   import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
   /////////////////////////////
   // CREATED
   /////////////////////////////
+  const store = useStore()
   const route = useRoute()
   const router = useRouter()
   const { returnCurrency } = useGlobalMixins()
@@ -139,7 +140,7 @@
   function openOrder() {
     // store.dispatch("shopcart/toggleShopCart");
     // store.dispatch("shopcart/setSearch");
-    !core.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id ?  router.push({name: 'Sign In', query: { returnUrl: '/orders/form'}}) :   router.push({name: 'CreateOrder'}) 
+    !store.core.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id ?  router.push({name: 'Sign In', query: { returnUrl: '/orders/form'}}) :   router.push({name: 'CreateOrder'})
     shopcart.actions.toggleShopcart();
   }
 </script>

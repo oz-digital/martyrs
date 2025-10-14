@@ -3,10 +3,12 @@
 
 	import { useRouter,useRoute } from 'vue-router'
 	import { useI18n } from 'vue-i18n'
-	
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 	import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js'
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
+
+	const store = useStore()
 	
 	// Globasls Component
 
@@ -46,7 +48,7 @@
 	// const search = computed(() => store.products.state.search)
 
 	function openLocationPopup() {
-	  core.state.isOpenLocationPopup = true;
+	  store.core.state.isOpenLocationPopup = true;
 	}
 	/////////////////////////////
 	// MOUNTED
@@ -79,12 +81,12 @@
 	>
 	<div class="flex-nowrap flex-v-center flex-justify-start flex gap-micro ">
 		<!-- MENU -->
-		<button  
+		<button
 			aria-label="menu"
-			@click="() => core.state.isOpenSidebar = !core.state.isOpenSidebar" 
+			@click="() => store.core.state.isOpenSidebar = !store.core.state.isOpenSidebar"
 			class="cursor-pointer mobile-only menu-btn"
 			:class="{
-				'menu-btn_active': core.state.isOpenSidebar
+				'menu-btn_active': store.core.state.isOpenSidebar
 			}"
 		>
 	    <span
@@ -133,7 +135,7 @@
     	<svg class="i-small" :fill="'inherit'" xmlns="http://www.w3.org/2000/svg" width="50" height="67" viewBox="0 0 50 67" fill="none">
 			  <path d="M25 0C11.207 0 0 11.207 0 25C0 38.793 20.832 66.668 25 66.668C29.168 66.668 50 38.793 50 25C50 11.207 38.793 0 25 0ZM25 33.332C20.418 33.332 16.668 29.582 16.668 25C16.668 20.418 20.418 16.668 25 16.668C29.582 16.668 33.332 20.418 33.332 25C33.332 29.582 29.582 33.332 25 33.332Z" :fill="'inherit'"/>
 			</svg>
-    	 {{core.state.position?.country ? core.state.position.country : 'World'}}
+    	 {{store.core.state.position?.country ? store.core.state.position.country : 'World'}}
     </button>
   </div>
 

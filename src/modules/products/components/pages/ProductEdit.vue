@@ -305,7 +305,7 @@ import EditCategories from '@martyrs/src/modules/products/components/sections/Ed
 import EditRecommended from '@martyrs/src/modules/products/components/sections/EditRecommended.vue';
 
 // Accessing router and store
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as products from '@martyrs/src/modules/products/store/products.js';
 import * as categories from '@martyrs/src/modules/products/store/categories.js';
@@ -314,6 +314,7 @@ import { setError } from '@martyrs/src/modules/core/views/store/core.store.js'
 
 const route = useRoute()
 const router = useRouter()
+const store = useStore()
 const emits = defineEmits(['page-loading', 'page-loaded']);
 
 let isPageLoaded = ref(false)

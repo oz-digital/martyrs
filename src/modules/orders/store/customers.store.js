@@ -1,5 +1,5 @@
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 
-const customers = new Store(`${process.env.API_URL}/api/customers`);
+const customers = new StoreManager(`${process.env.API_URL}/api/customers`);
 
 export default customers;

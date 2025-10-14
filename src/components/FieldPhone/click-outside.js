@@ -13,7 +13,9 @@ export default {
       // Проверка, что клик был сделан за пределами элемента и не на самом элементе
       if (!(el === event.target || el.contains(event.target))) {
         // Вызов переданной функции, если условие выполняется
-        binding.value(event);
+        if (typeof binding.value === 'function') {
+          binding.value(event);
+        }
       }
     };
 

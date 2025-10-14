@@ -30,7 +30,8 @@ import axios from 'axios';
 import Loader from '@martyrs/src/components/Loader/Loader.vue';
 import PlaceholderImage from '@martyrs/src/modules/icons/placeholders/PlaceholderImage.vue'
 import IconUpload from '@martyrs/src/modules/icons/navigation/IconUpload.vue'
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+const core = useStore();
 
 const images = ref([]);
 const loading = ref(false);

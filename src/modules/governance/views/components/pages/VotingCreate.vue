@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { votingsActions } from '../../store/votings';
+import { votesActions } from '../../store/votings';
 import FormVotingDetails from '../sections/FormVotingDetails.vue';
 
 const newVoting = ref({
@@ -11,7 +11,7 @@ const newVoting = ref({
 });
 
 const createVoting = async () => {
-  await votingsActions.createVoting(newVoting.value);
+  await votesActions.createVoting(newVoting.value);
   // Redirect or show success message
 };
 </script>

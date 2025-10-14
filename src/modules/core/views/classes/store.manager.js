@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { setError } from '@martyrs/src/modules/core/views/store/core.store.js';
 import { buildURL } from '../utils/query-serializer.js';
 
-class Store {
+class StoreManager {
   constructor(apiUrl) {
     this.state = reactive({
       items: [],
@@ -175,4 +175,4 @@ class Store {
   }
 }
 
-export default Store;
+export default StoreManager;

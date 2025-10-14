@@ -1,11 +1,13 @@
 // auth.meta.js
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 import IconPlus from '@martyrs/src/modules/icons/navigation/IconPlus.vue';
 import { navigationItems } from '@martyrs/src/modules/auth/views/configs/navigation.user.config.js';
 import ProfileCard from '@martyrs/src/modules/auth/views/components/blocks/ProfileCard.vue';
 import HelpCard from '@martyrs/src/modules/core/views/components/blocks/HelpCard.vue';
+
+const { isPhone, isTablet } = useGlobalMixins();
 
 export function getRoutes(options = {}) {
   const route = options.route || 'Home';
@@ -133,16 +135,6 @@ export function getRoutes(options = {}) {
         {
           path: ':_id',
           name: 'User Profile Root',
-          beforeEnter: [
-            (to, from) => {
-              const { isPhone, isTablet } = useGlobalMixins();
-              if (!isPhone() && !isTablet()) {
-                core.state.isOpenSidebar = true;  // Desktop: open
-              } else {
-                core.state.isOpenSidebar = false; // Mobile: closed
-              }
-            }
-          ],
           meta: {
             title: {
               en: 'Profile',
@@ -152,6 +144,8 @@ export function getRoutes(options = {}) {
             sidebar_navigation_items: navigationItems,
             sidebar_header_component: ProfileCard,
             sidebar_footer_component: HelpCard,
+            sidebarOpenOnEnter: true,
+            sidebarCloseOnLeave: true
           },
           children: [
             {

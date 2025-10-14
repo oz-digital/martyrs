@@ -1,173 +1,50 @@
 // Vue modules
 import { Preferences } from '@capacitor/preferences';
 import { isReactive, reactive } from 'vue';
-import Session from '../classes/session.js';
+
+import SessionManager from '../classes/session.manager.js';
+
+// AsyncLocalStorage для изоляции SSR store per-request (только Node.js)
+let asyncLocalStorage = null;
+
+if (typeof window === 'undefined') {
+  // Top-level await для динамического импорта на сервере
+  const { AsyncLocalStorage } = await import('async_hooks');
+  asyncLocalStorage = new AsyncLocalStorage();
+}
 
 // ============================================================================
-// CORE MODULE STATE
+// HELPER FUNCTIONS
 // ============================================================================
 
-// State
-const state = reactive({
-  loading: false,
+function invertColors(variableNames, originalColors, isDarkMode) {
+  variableNames.forEach(variableName => {
+    const baseColor = originalColors[variableName];
+    const colorArray = baseColor.split(',').map(Number);
 
-  isOpenLocationPopup: false,
-  isOpenSidebar: false,
+    let invertedColor;
 
-  position: null,
-  search: null,
-
-  theme: {
-    darkmode: false,
-  },
-
-  navigation_bar: {
-    name: null,
-    actions: null,
-  },
-
-  error: {
-    status: '',
-    headers: '',
-    data: '',
-    show: false,
-    name: '',
-    message: '',
-  },
-  snack: {
-    show: false,
-    type: 'notification',
-    message: '',
-    duration: 3000
-  },
-
-  // Session state - данные сессии хранятся здесь
-  session: {
-    token: null,
-    userId: null,
-    roles: null,
-    accesses: []
-  },
-});
-
-// Session class instance - управляет state.session
-const session = new Session(state.session);
-
-// Actions
-const actions = {
-  setLoading(status) {
-    state.loading = status;
-  },
-
-  // Black/White Theme
-  async setTheme(isDarkMode) {
-    // Cache root element
-    if (!state.theme.rootElement) {
-      state.theme.rootElement = document.documentElement;
-    }
-    const root = state.theme.rootElement;
-
-    state.theme.darkmode = isDarkMode;
-
-    await Preferences.set({
-      key: 'darkmode',
-      value: JSON.stringify(state.theme.darkmode),
-    });
-
-    if (isDarkMode) {
-      root.classList.add('dark-theme');
+    if (variableName === '--white') {
+      invertedColor = colorArray.map(value => 255 - value / 1.075);
+    } else if (variableName === '--black') {
+      invertedColor = colorArray.map(value => 255 - value);
+    } else if (variableName === '--grey') {
+      invertedColor = colorArray.map(value => 255 - value * 2);
     } else {
-      root.classList.remove('dark-theme');
+      invertedColor = colorArray.map(value => 255 - value / 1.075);
     }
-
-    const variableNames = ['--white', '--light', '--grey', '--dark', '--black'];
-
-    // Проверяем, сохранены ли оригинальные цвета
-    if (!state.theme.originalColors) {
-      // Сохраняем оригинальные цвета один раз
-      state.theme.originalColors = {};
-      const computedStyle = getComputedStyle(root);
-      variableNames.forEach(variableName => {
-        state.theme.originalColors[variableName] = computedStyle.getPropertyValue(variableName).trim();
-      });
-    }
-
-    if (isDarkMode) {
-      invertColors(variableNames, state.theme.originalColors);
-    } else {
-      // Восстанавливаем оригинальные цвета батчем
-      variableNames.forEach(variableName => {
-        root.style.setProperty(variableName, state.theme.originalColors[variableName]);
-      });
-    }
-  },
-
-  toggleTheme() {
-    this.setTheme(!state.theme.darkmode);
-  },
-
-  add(array, item) {
-    const existingItemIndex = array.findIndex(i => i._id === item._id);
-
-    if (existingItemIndex === -1) {
-      array.push(item);
-    } else {
-      array[existingItemIndex] = item;
-    }
-  },
-
-  update(array, item) {
-    const existingItemIndex = array.findIndex(i => i._id === item._id);
-    if (existingItemIndex === -1) {
-      // If the item doesn't exist, push it to the array
-      array.push(item);
-    } else {
-      // Update the item in the array without creating a new array
-      Object.assign(array[existingItemIndex], item);
-    }
-  },
-
-  delete(array, item) {
-    const existingItemIndex = array.findIndex(c => c._id === item._id);
-
-    if (existingItemIndex !== -1) {
-      array.splice(existingItemIndex, 1);
-    }
-  },
-
-  increment(array, item) {
-    console.log(array);
-    console.log(item);
-    const arrayItem = array.find(i => i._id === item._id);
-
-    if (arrayItem) {
-      arrayItem.quantity++;
-    }
-  },
-
-  decrement(array, item) {
-    const arrayItem = array.find(i => i._id === item._id);
-
-    const arrayItemIndex = array.indexOf(arrayItem);
-
-    if (arrayItemIndex > -1) {
-      arrayItem.quantity--;
-
-      if (arrayItem.quantity < 1) array.splice(arrayItemIndex, 1);
-    }
-  },
-
-  reset(array) {
-    array = [];
-  },
-};
+    // Устанавливаем новые значения переменных CSS
+    document.documentElement.style.setProperty(variableName, isDarkMode ? invertedColor.join(', ') : baseColor);
+  });
+}
 
 // ============================================================================
-// GLOBAL FUNCTIONS
+// GLOBAL FUNCTIONS (используют useStore() для доступа к state)
 // ============================================================================
 
 // Mutations
-function setError(error) {
+export function setError(error) {
+  const state = useStore().core.state;
   state.error.show = true;
   let errorData;
 
@@ -210,7 +87,9 @@ function setError(error) {
   }
 }
 
-function setSnack(data) {
+export function setSnack(data) {
+  const state = useStore().core.state;
+
   // Handle different input formats
   let type = 'notification'
   let message = ''
@@ -248,28 +127,6 @@ function setSnack(data) {
   } else {
     setTimeout(() => {state.snack.show = false }, duration)
   }
-
-}
-
-function invertColors(variableNames, originalColors) {
-  variableNames.forEach(variableName => {
-    const baseColor = originalColors[variableName];
-    const colorArray = baseColor.split(',').map(Number);
-
-    let invertedColor;
-
-    if (variableName === '--white') {
-      invertedColor = colorArray.map(value => 255 - value / 1.075);
-    } else if (variableName === '--black') {
-      invertedColor = colorArray.map(value => 255 - value);
-    } else if (variableName === '--grey') {
-      invertedColor = colorArray.map(value => 255 - value * 2);
-    } else {
-      invertedColor = colorArray.map(value => 255 - value / 1.075);
-    }
-    // Устанавливаем новые значения переменных CSS
-    document.documentElement.style.setProperty(variableName, state.theme.darkmode ? invertedColor.join(', ') : baseColor);
-  });
 }
 
 // ============================================================================
@@ -278,11 +135,166 @@ function invertColors(variableNames, originalColors) {
 
 // Фабрика для создания store
 export function createStore() {
+  // State создается для каждого store instance (изоляция SSR)
+  const state = reactive({
+    loading: false,
+
+    isOpenLocationPopup: false,
+    isOpenSidebar: false,
+
+    position: null,
+    search: null,
+
+    theme: {
+      darkmode: false,
+    },
+
+    navigation_bar: {
+      name: null,
+      actions: null,
+    },
+
+    error: {
+      status: '',
+      headers: '',
+      data: '',
+      show: false,
+      name: '',
+      message: '',
+    },
+    snack: {
+      show: false,
+      type: 'notification',
+      message: '',
+      duration: 3000
+    },
+
+    // Session state - данные сессии хранятся здесь
+    session: {
+      token: null,
+      userId: null,
+      roles: null,
+      accesses: []
+    },
+  });
+
+  // Actions с closure на локальный state
+  const actions = {
+    setLoading(status) {
+      state.loading = status;
+    },
+
+    // Black/White Theme
+    async setTheme(isDarkMode) {
+      // Cache root element
+      if (!state.theme.rootElement) {
+        state.theme.rootElement = document.documentElement;
+      }
+      const root = state.theme.rootElement;
+
+      state.theme.darkmode = isDarkMode;
+
+      await Preferences.set({
+        key: 'darkmode',
+        value: JSON.stringify(state.theme.darkmode),
+      });
+
+      if (isDarkMode) {
+        root.classList.add('dark-theme');
+      } else {
+        root.classList.remove('dark-theme');
+      }
+
+      const variableNames = ['--white', '--light', '--grey', '--dark', '--black'];
+
+      // Проверяем, сохранены ли оригинальные цвета
+      if (!state.theme.originalColors) {
+        // Сохраняем оригинальные цвета один раз
+        state.theme.originalColors = {};
+        const computedStyle = getComputedStyle(root);
+        variableNames.forEach(variableName => {
+          state.theme.originalColors[variableName] = computedStyle.getPropertyValue(variableName).trim();
+        });
+      }
+
+      if (isDarkMode) {
+        invertColors(variableNames, state.theme.originalColors, isDarkMode);
+      } else {
+        // Восстанавливаем оригинальные цвета батчем
+        variableNames.forEach(variableName => {
+          root.style.setProperty(variableName, state.theme.originalColors[variableName]);
+        });
+      }
+    },
+
+    toggleTheme() {
+      this.setTheme(!state.theme.darkmode);
+    },
+
+    add(array, item) {
+      const existingItemIndex = array.findIndex(i => i._id === item._id);
+
+      if (existingItemIndex === -1) {
+        array.push(item);
+      } else {
+        array[existingItemIndex] = item;
+      }
+    },
+
+    update(array, item) {
+      const existingItemIndex = array.findIndex(i => i._id === item._id);
+      if (existingItemIndex === -1) {
+        // If the item doesn't exist, push it to the array
+        array.push(item);
+      } else {
+        // Update the item in the array without creating a new array
+        Object.assign(array[existingItemIndex], item);
+      }
+    },
+
+    delete(array, item) {
+      const existingItemIndex = array.findIndex(c => c._id === item._id);
+
+      if (existingItemIndex !== -1) {
+        array.splice(existingItemIndex, 1);
+      }
+    },
+
+    increment(array, item) {
+      console.log(array);
+      console.log(item);
+      const arrayItem = array.find(i => i._id === item._id);
+
+      if (arrayItem) {
+        arrayItem.quantity++;
+      }
+    },
+
+    decrement(array, item) {
+      const arrayItem = array.find(i => i._id === item._id);
+
+      const arrayItemIndex = array.indexOf(arrayItem);
+
+      if (arrayItemIndex > -1) {
+        arrayItem.quantity--;
+
+        if (arrayItem.quantity < 1) array.splice(arrayItemIndex, 1);
+      }
+    },
+
+    reset(array) {
+      array = [];
+    },
+  };
+
+  // SessionManager создается внутри createStore для правильной изоляции в SSR
+  const sessionManager = new SessionManager(state.session);
+
   const store = reactive({
     modules: [],
 
     // Core module registered by default
-    core: { state, actions },
+    core: { state, actions, session: sessionManager },
 
     addStore(name, storage) {
       this[name] = storage;
@@ -346,21 +358,28 @@ export function createStore() {
 // Синглтон для клиента
 let clientStore = null;
 
-// Store для SSR должен создаваться в createApp и передаваться сюда
-let ssrStore = null;
-
+// AsyncLocalStorage для SSR (изоляция per-request)
 export function setSSRStore(store) {
-  ssrStore = store;
+  if (typeof window === 'undefined') {
+    asyncLocalStorage.enterWith(store);
+  }
+}
+
+export function clearSSRStore() {
+  if (typeof window === 'undefined') {
+    asyncLocalStorage.enterWith(null);
+  }
 }
 
 export function useStore() {
   if (typeof window === 'undefined') {
-    // SSR: используем переданный store
-    if (ssrStore) {
-      return ssrStore;
+    // SSR: используем store из AsyncLocalStorage
+    const store = asyncLocalStorage.getStore();
+    if (store) {
+      return store;
     }
     // Fallback для обратной совместимости
-    console.warn('[WARN] SSR store not set, creating new store instance');
+    console.warn('[WARN] SSR store not in AsyncLocalStorage, creating new store instance');
     return createStore();
   }
   // Client: синглтон
@@ -371,8 +390,21 @@ export function useStore() {
 }
 
 // ============================================================================
+// SESSION ACCESSOR
+// ============================================================================
+
+/**
+ * Получить текущий экземпляр SessionManager
+ * Использовать вместо прямого импорта session для правильной работы с SSR
+ */
+export function useSession() {
+  const store = useStore();
+  return store.core.session;
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
-export { actions, session, setError, setSnack, state };
+// Не экспортируем singleton state/actions - теперь используется useStore()
 export default useStore();

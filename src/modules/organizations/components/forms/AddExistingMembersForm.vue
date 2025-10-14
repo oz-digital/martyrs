@@ -83,7 +83,9 @@ import IconCheck from '@martyrs/src/modules/icons/navigation/IconCheck.vue';
 
 import * as users from '@martyrs/src/modules/auth/views/store/users.js';
 import membershipsStore from '@martyrs/src/modules/organizations/store/memberships.store.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 
 const props = defineProps({
   organizationId: {
@@ -128,7 +130,7 @@ function getUserCardClass(user) {
 // Toggle user selection
 function toggleUserSelection(user) {
   if (isUserInOrganization(user)) {
-    core.actions.setError({ message: 'This user is already a member of the organization' });
+    store.core.actions.setError({ message: 'This user is already a member of the organization' });
     return;
   }
 
@@ -179,12 +181,12 @@ async function addSelectedUsers() {
     emit('users-added', results);
     selectedUsers.value = [];
     
-    core.actions.setSuccess({ 
+    store.core.actions.setSuccess({ 
       message: `Successfully added ${results.length} user(s) to the organization` 
     });
   } catch (error) {
     console.error('Error adding users:', error);
-    core.actions.setError(error);
+    store.core.actions.setError(error);
     throw error;
   }
 }

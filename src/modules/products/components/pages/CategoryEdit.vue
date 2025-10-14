@@ -177,12 +177,13 @@
   import IconCheckmark from '@martyrs/src/modules/icons/navigation/IconCheckmark.vue'
 
   // Import the new store structure
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
-  import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'; 
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+  import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
 
   const route = useRoute()
   const router = useRouter()
+  const store = useStore()
 
   const emits = defineEmits(['page-loading', 'page-loaded']);
 
@@ -205,17 +206,17 @@
   const routePath = computed(() => route.name)
 
   // Navigation Bar
-  core.state.navigation_bar.actions = [{
+  store.core.state.navigation_bar.actions = [{
     component: IconCheckmark,
     props: {
-      fill: "rgb(var(--main))" 
+      fill: "rgb(var(--main))"
     },
     condition: () => auth.state.user && auth.state.user._id,
     action: () => onSubmit()
   }],
 
  onUnmounted(() => {
-    core.state.navigation_bar.actions = [];
+    store.core.state.navigation_bar.actions = [];
   });
 
 

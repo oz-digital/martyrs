@@ -83,11 +83,11 @@
           :totalPrice="cartTotalPrice"
           :deliveryRate="deliveryCost"
           :currency="returnCurrency()"
-          :showFees="core.state.options?.orders.showFees"
-          :feesRate="core.state.options?.orders.feesRate || 0"
-          :showVat="core.state.options?.orders.showVat"
-          :vatRate="core.state.options?.orders.vatRate || 0"
-          :showDeliveryFee="core.state.options?.orders.showDeliveryFee"
+          :showFees="store.core.state.options?.orders.showFees"
+          :feesRate="store.core.state.options?.orders.feesRate || 0"
+          :showVat="store.core.state.options?.orders.showVat"
+          :vatRate="store.core.state.options?.orders.vatRate || 0"
+          :showDeliveryFee="store.core.state.options?.orders.showDeliveryFee"
         />
 			</div>
 			<!-- Send order -->
@@ -151,13 +151,14 @@ import { useRoute,useRouter } from 'vue-router'
 import { useGlobalMixins } from "@martyrs/src/modules/core/views/mixins/mixins.js"
 
 // Store
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
 import * as shopcart from '@martyrs/src/modules/orders/store/shopcart.js';
 import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
 import * as orders from '@martyrs/src/modules/orders/store/orders.js';
 import * as users from '@martyrs/src/modules/auth/views/store/users.js';
 
+const store = useStore()
 const emits = defineEmits(['page-loading', 'page-loaded']);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +178,7 @@ const cartTotalPrice = shopcart.getters.cartTotalPrice
 const deliveryCost = computed(() => {
   const type = orders.state.current.delivery.type
   const distance = orderOrganization.value[0]?.distance || 0
-  const config = core.state.options?.orders?.delivery_formula || {}
+  const config = store.core.state.options?.orders?.delivery_formula || {}
 
   return orders.getters.getDeliveryPrice(type, distance, config)
 })
@@ -238,8 +239,8 @@ function checkIsOpenNow(worktime) {
 }
 
 
-if (!core.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id) { 
-	router.push({name: 'Sign In'})	
+if (!store.core.state.options.orders.allowUnauthenticatedOrders && !auth.state.user._id) {
+	router.push({name: 'Sign In'})
 }
 
 
@@ -260,7 +261,7 @@ onMounted(async()=> {
 	
 	orderOrganization.value = await organizations.actions.read({
 	  _id: shopcart.state.organization,
-	  location: core.state.position?.location,
+	  location: store.core.state.position?.location,
 	  lookup: ['spots']
 	})
 	
@@ -290,7 +291,7 @@ onMounted(async()=> {
         item_brand: orderOrganization.value.profile?.name || ''
       })),
       organization: orderOrganization.value.profile?.name || '',
-      location: core.state.position?.location || 'unknown'
+      location: store.core.state.position?.location || 'unknown'
     });
   }
 })
@@ -400,7 +401,7 @@ async function handleCreate() {
 	        item_category: item.product?.category || ''
 	      })),
 	      organization: orderOrganization.value?.profile?.name,
-	      location: core.state.position?.location || 'unknown',
+	      location: store.core.state.position?.location || 'unknown',
 	      referral_code: referralCode || null,
 	      user_id: auth.state.user._id || 'anonymous'
 	    });

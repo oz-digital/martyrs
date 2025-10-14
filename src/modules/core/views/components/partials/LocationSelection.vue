@@ -78,7 +78,9 @@ import LocationMarker from "@martyrs/src/components/LocationMarker/LocationMarke
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
+
+const store = useStore()
 
 // Accessing router and store
 const route = useRoute()
@@ -93,14 +95,14 @@ const position = ref({
 })
 
 function savePosition() {
-	core.state.position = { ...position.value };
-	core.state.isOpenLocationPopup = false
+	store.core.state.position = { ...position.value };
+	store.core.state.isOpenLocationPopup = false
 
-	localStorage.setItem('position', JSON.stringify(core.state.position));
+	localStorage.setItem('position', JSON.stringify(store.core.state.position));
 }
 
 onMounted(() => {
-	position.value = { ...core.state.position }
+	position.value = { ...store.core.state.position }
 })
 
 // Localization

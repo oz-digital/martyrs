@@ -68,13 +68,14 @@
   import { onMounted, onUnmounted, computed, ref,reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
 
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
-  import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'; 
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+  import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
   import * as categories from '@martyrs/src/modules/products/store/categories.js';
-  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'; 
+  import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
 
   const route = useRoute();
   const router = useRouter();
+  const store = useStore();
   const { hasAccess } = useGlobalMixins();
 
   import Button from "@martyrs/src/components/Button/Button.vue";
@@ -103,7 +104,7 @@
     }]
   })
 
-  core.state.navigation_bar.actions = [{
+  store.core.state.navigation_bar.actions = [{
     component: IconPlus,
     props: {
       fill: "rgb(var(--main))"
@@ -116,7 +117,7 @@
   }],
 
   onUnmounted(() => {
-    core.state.navigation_bar.actions = [];
+    store.core.state.navigation_bar.actions = [];
   });
 
   onMounted(async () => {

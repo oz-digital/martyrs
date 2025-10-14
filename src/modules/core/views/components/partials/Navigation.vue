@@ -4,9 +4,10 @@ import { useRouter, useRoute } from 'vue-router'
 
 import IconChevronBottom from '@martyrs/src/modules/icons/navigation/IconChevronBottom.vue'
 
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 
+const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -143,7 +144,7 @@ const processRoute = (routeFn) => {
                   v-if="subItem.iconComponent"
                   :is="subItem.iconComponent"
                   class="i-medium"
-                  :fill="core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
+                  :fill="store.core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
                 />
                 <span v-else class="">{{ subItem.icon }}</span>
                 <span class="w-100">{{ subItem.title }}</span>
@@ -166,7 +167,7 @@ const processRoute = (routeFn) => {
               v-if="item.iconComponent"
               :is="item.iconComponent"
               class="i-medium flex-child-default"
-              :fill="core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
+              :fill="store.core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
             />
             <span
               v-if="!item.iconComponent "
@@ -219,7 +220,7 @@ const processRoute = (routeFn) => {
                   v-if="subItem.iconComponent"
                   :is="subItem.iconComponent"
                   class="i-medium"
-                 :fill="core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
+                 :fill="store.core.state.theme.darkmode || theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)'"
                 />
                 <span v-else class="">{{ subItem.icon }}</span>
                 <span class="w-100">{{ subItem.title }}</span>

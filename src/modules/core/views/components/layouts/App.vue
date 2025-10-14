@@ -21,8 +21,10 @@
   import { useI18n } from 'vue-i18n'
   import { useRoute } from 'vue-router'
 
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
+
+  const store = useStore()
 
   const props = defineProps({
     env: {
@@ -107,12 +109,12 @@
   useHead(metadata)
 
   onBeforeMount(async()=>{
-    if (process.env.MOBILE_APP === 'ios') Keyboard.setAccessoryBarVisible({ isVisible: false }) 
+    if (process.env.MOBILE_APP === 'ios') Keyboard.setAccessoryBarVisible({ isVisible: false })
 
     const { value } = await Preferences.get({ key: 'darkmode' });
 
     const isDarkMode = value ? JSON.parse(value) : false;
-    
-    core.actions.setTheme(isDarkMode);
+
+    store.core.actions.setTheme(isDarkMode);
   })
 </script>

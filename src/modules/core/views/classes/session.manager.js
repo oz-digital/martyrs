@@ -1,4 +1,4 @@
-class Session {
+class SessionManager {
   constructor(sessionState) {
     this.sessionState = sessionState;
     this.listeners = [];
@@ -54,4 +54,4 @@ class Session {
   }
 }
 
-export default Session;
+export default SessionManager;

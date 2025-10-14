@@ -36,11 +36,13 @@
   import ProfileEditCredentials from '@martyrs/src/modules/auth/views/components/sections/ProfileEditCredentials.vue'
   
   import { useRouter } from 'vue-router'
-  
+
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
   import * as users from '@martyrs/src/modules/auth/views/store/users.js'
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
-  
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
+
+  const store = useStore()
+  const core = store.core
   const router = useRouter()
   
   defineProps({

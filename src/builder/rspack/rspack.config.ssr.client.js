@@ -10,10 +10,14 @@ import baseConfig from './rspack.config.base.js';
 
 export default (projectRoot) => {
   const isProd = process.env.NODE_ENV === "production";
+
+  console.log('[rspack.config.ssr.client] isProd:', isProd, 'NODE_ENV:', process.env.NODE_ENV);
+  console.log('[rspack.config.ssr.client] lazyCompilation will be set to: false');
+
   const config = {
     target: 'web',
     mode: !isProd ? "development" : "production",
-    devtool: !isProd ? "inline-source-map" : "source-map",
+    devtool: !isProd ? "eval-cheap-module-source-map" : "source-map",
     entry: {
       main: path.resolve(projectRoot, "src/client.js"),
     },
@@ -27,7 +31,16 @@ export default (projectRoot) => {
       publicPath: "/",
       clean: true
     },
-    
+
+    externals: {
+      // Node.js modules - не bundлить для клиента
+      'async_hooks': 'commonjs2 async_hooks'
+    },
+
+    experiments: {
+      lazyCompilation: false, // Отключаем lazy compilation для dev - все chunks компилируются при старте
+    },
+
     plugins: [
       // ...(!isProd ? [new rspack.HotModuleReplacementPlugin()] : []),
       new StatsWriterPlugin({
@@ -144,10 +157,10 @@ export default (projectRoot) => {
       runtimeChunk: false,
       splitChunks: {
         chunks: "all",
-        minSize: 10000,
+        minSize: 50000,
         minChunks: 1,
-        maxAsyncRequests: 30,
-        maxInitialRequests: 5,
+        maxAsyncRequests: 10,
+        maxInitialRequests: 6,
         cacheGroups: {
           // Vendor libraries (except Vue)
           vendor: {

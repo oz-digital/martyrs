@@ -1,4 +1,4 @@
-class GlobalWebSocket {
+class WebSocketManager {
   constructor() {
     this.socket = null;
     this.isConnected = false;
@@ -365,5 +365,6 @@ class GlobalWebSocket {
   }
 }
 
-const globalWebSocket = new GlobalWebSocket();
-export default globalWebSocket;
+const wsManager = new WebSocketManager();
+export { wsManager };
+export default wsManager;

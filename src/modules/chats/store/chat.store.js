@@ -1,4 +1,4 @@
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 import { reactive, readonly } from 'vue';
 
 const state = reactive({
@@ -35,13 +35,13 @@ const methods = {
       console.log('[Chat Store] Subscribing to chat module...');
       
       // Очистка старых листенеров ДО подписки, чтобы избежать дублирования
-      globalWebSocket.removeModuleListeners('chat');
+      wsManager.removeModuleListeners('chat');
       
-      await globalWebSocket.subscribeModule('chat'); // 👈 Подписка на модуль чата
+      await wsManager.subscribeModule('chat'); // 👈 Подписка на модуль чата
       console.log('[Chat Store] Subscribed to chat module');
 
       // Добавляем обработчик входящих сообщений
-      globalWebSocket.addEventListener(
+      wsManager.addEventListener(
         'message',
         data => {
           console.log('[Chat Store] Received message:', data);
@@ -59,7 +59,7 @@ const methods = {
       );
       
       // Обработчик подтверждения прочтения
-      globalWebSocket.addEventListener(
+      wsManager.addEventListener(
         'readReceipt',
         data => {
           console.log('[CHAT STORE] Received readReceipt:', data);
@@ -104,7 +104,7 @@ const methods = {
     // Отправляем joinChat через WebSocket
     const joinMessage = { type: 'joinChat', module: 'chat', chatId };
     console.log('[Chat Store] Sending joinChat:', joinMessage);
-    await globalWebSocket.send(joinMessage);
+    await wsManager.send(joinMessage);
 
     // Загружаем историю сообщений
     try {
@@ -146,7 +146,7 @@ const methods = {
     }
     
     console.log('[Chat Store] Sending message:', messageData);
-    const sendResult = await globalWebSocket.send(messageData);
+    const sendResult = await wsManager.send(messageData);
     console.log('[Chat Store] Send result:', sendResult);
   },
 
@@ -176,7 +176,7 @@ const methods = {
       }
     });
     
-    await globalWebSocket.send({
+    await wsManager.send({
       type: 'markAsRead',
       module: 'chat',
       messageIds: messageIds,
@@ -196,8 +196,8 @@ const methods = {
    * Отключение от чата (очистка листенеров)
    */
   disconnectChat() {
-    globalWebSocket.removeModuleListeners('chat');
-    // globalWebSocket.disconnect(); // включить, если нужно полностью разорвать соединение
+    wsManager.removeModuleListeners('chat');
+    // wsManager.disconnect(); // включить, если нужно полностью разорвать соединение
   },
 };
 

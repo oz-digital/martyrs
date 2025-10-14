@@ -11,29 +11,46 @@ export function createUniversalApp({
 }) {
   // Lazy imports to avoid circular dependencies
   const getLayoutApp = () => import('../components/layouts/App.vue').then(m => m.default);
-  const getModuleRegistry = () => import('./module-registry.js').then(m => m.moduleRegistry);
-  const getWebsockets = () => import('./core.websocket.js').then(m => m.default);
+  const getModuleRegistry = () => import('./module.manager.js').then(m => m.moduleManager);
+  const getWebsockets = () => import('./ws.manager.js').then(m => m.default);
   const getAppRenderer = () => import('../utils/vue-app-renderer.js');
   
   // Асинхронная инициализация для избежания циклических зависимостей
   async function initializeApp() {
+    // [LOADING 14] Starting initializeApp
+    performance.mark('loading-14-start');
+    console.log('[LOADING 14] Starting application initialization...');
+
     // Создаем конфигурацию
     const config = await getConfig();
     const hooks = getHooks;
-    
-    const [layoutApp, moduleRegistry, globalWebSocket, appRenderer] = await Promise.all([
+
+    // [LOADING 15] Loading core dependencies
+    performance.mark('loading-15-start');
+    console.log('[LOADING 15] Loading core dependencies via Promise.all...');
+
+    const [layoutApp, moduleManager, wsManager, appRenderer] = await Promise.all([
       getLayoutApp(),
       getModuleRegistry(),
       getWebsockets(),
       getAppRenderer()
     ]);
+
+    performance.mark('loading-15-end');
+    performance.measure('loading-15', 'loading-15-start', 'loading-15-end');
+    const measure15 = performance.getEntriesByName('loading-15')[0];
+    console.log(`[LOADING 15] Core dependencies loaded in ${measure15?.duration?.toFixed(2)}ms`);
     
-    // Core module is always loaded - no need to register in moduleRegistry
-    
+    // Core module is always loaded - no need to register in moduleManager
+
+    // [LOADING 16] Registering modules in registry
+    performance.mark('loading-16-start');
+    console.log('[LOADING 16] Registering modules in registry...');
+
     // Регистрация модулей из config
     Object.entries(config.modules).forEach(([name, module]) => {
       if (module.loader) {
-        moduleRegistry.register(name, {
+        moduleManager.register(name, {
           loader: module.loader,
           routes: module.routes || [],
           priority: module.priority || 'normal',
@@ -43,6 +60,11 @@ export function createUniversalApp({
         });
       }
     });
+
+    performance.mark('loading-16-end');
+    performance.measure('loading-16', 'loading-16-start', 'loading-16-end');
+    const measure16 = performance.getEntriesByName('loading-16')[0];
+    console.log(`[LOADING 16] Modules registered in ${measure16?.duration?.toFixed(2)}ms`);
     
     // Основная функция создания приложения
     function createApp() {
@@ -97,75 +119,42 @@ export function createUniversalApp({
       
       // Router guard для загрузки модулей ДО навигации (только на клиенте)
       if (typeof window !== 'undefined') {
-        // const originalPush = router.push.bind(router);
-        // const originalReplace = router.replace.bind(router);
-
-        // async function paintNow() {
-        //   await nextTick();                           // flush реактивки в DOM
-        //   await new Promise(requestAnimationFrame);   // кадр layout/style
-        //   await new Promise(requestAnimationFrame);   // кадр отрисовки
-        //   // иногда в WebView помогает ещё макротаск
-        //   await new Promise(r => setTimeout(r, 0));
-        // }
-
-        // router.push = async (...args) => {
-        //   // Включаем лоадер
-        //   store.core.state.loading = true;
-          
-        //   // Даем браузеру отрисовать лоадер
-        //   await paintNow();
-          
-        //   // Запускаем навигацию асинхронно, чтобы не блокировать UI
-        //   setTimeout(() => {
-        //     originalPush(...args);
-        //   }, 0);
-          
-        //   // Возвращаем промис для совместимости
-        //   return Promise.resolve();
-        // };
-
-        // router.replace = async (...args) => {
-        //   // Включаем лоадер
-        //   store.core.state.loading = true;
-          
-        //   // Даем браузеру отрисовать лоадер
-        //   await paintNow();
-          
-        //   // Запускаем навигацию асинхронно
-        //   setTimeout(() => {
-        //     originalReplace(...args);
-        //   }, 0);
-          
-        //   return Promise.resolve();
-        // };
-
         router.beforeEach(async (to, from) => {
           // Получаем оригинальный путь ДО fallback редиректа на 404
           // Это критически важно для SSR гидратации вложенных роутов!
           const target = to.redirectedFrom || to;
           
           // Используем оригинальный путь для определения нужных модулей
-          const requiredModules = moduleRegistry.getModulesForRoute(target.path);
+          const requiredModules = moduleManager.getModulesForRoute(target.path);
           
           // Проверяем, какие модули еще не загружены
-          const modulesToLoad = requiredModules.filter(m => !moduleRegistry.initialized.has(m.name));
+          const modulesToLoad = requiredModules.filter(m => !moduleManager.initialized.has(m.name));
           
           if (modulesToLoad.length > 0) {
             // Логируем если это редирект с 404 (для отладки)
             if (to.redirectedFrom) {
               console.log('[Router] Loading modules for redirected path:', target.path, 'modules:', modulesToLoad.map(m => m.name));
             }
-            
+
+            // [LOADING 18] Loading modules for route
+            performance.mark('loading-18-start');
+            console.log(`[LOADING 18] Loading ${modulesToLoad.length} modules for route...`);
+
             // Загружаем и инициализируем модули
             for (const module of modulesToLoad) {
               try {
-                await moduleRegistry.load(module.name, context);
-                await moduleRegistry.initialize(module.name, context);
+                await moduleManager.load(module.name, context);
+                await moduleManager.initialize(module.name, context);
               } catch (error) {
                 console.error(`Failed to load module ${module.name}:`, error);
               }
             }
-            
+
+            performance.mark('loading-18-end');
+            performance.measure('loading-18', 'loading-18-start', 'loading-18-end');
+            const measure18 = performance.getEntriesByName('loading-18')[0];
+            console.log(`[LOADING 18] Modules loaded for route in ${measure18?.duration?.toFixed(2)}ms`);
+
             // После загрузки модулей и регистрации их роутов,
             // возвращаем объект с оригинальным путем и replace: true
             // Это заставит роутер заново резолвить маршрут с новыми роутами
@@ -195,9 +184,18 @@ export function createUniversalApp({
         if (hooks.beforeInitialize) {
           await hooks.beforeInitialize(context);
         }
+        // [LOADING 17] Initializing Core module
+        performance.mark('loading-17-start');
+        console.log('[LOADING 17] Initializing Core module...');
+
         // Core module must ALWAYS be initialized
         const ModuleCore = await import('../../core.client.js');
         await ModuleCore.default.initialize(app, store, router, config);
+
+        performance.mark('loading-17-end');
+        performance.measure('loading-17', 'loading-17-start', 'loading-17-end');
+        const measure17 = performance.getEntriesByName('loading-17')[0];
+        console.log(`[LOADING 17] Core module initialized in ${measure17?.duration?.toFixed(2)}ms`);
 
         // 2. WebSocket (отложим после гидратации, только если включен)
         const useWebsocket = config.globals?.websocket !== false; // по умолчанию false
@@ -205,7 +203,7 @@ export function createUniversalApp({
         if (useWebsocket && typeof window !== 'undefined') {
           // Откладываем инициализацию WebSocket после гидратации
           requestIdleCallback(() => {
-            globalWebSocket.initialize({
+            wsManager.initialize({
               wsUrl: process.env.WSS_URL || undefined,
               maxReconnectAttempts: 5,
               reconnectDelay: 3000,
@@ -217,7 +215,7 @@ export function createUniversalApp({
         // 3. Предзагрузка важных модулей в фоне
         if (typeof window !== 'undefined') {
           requestIdleCallback(() => {
-            moduleRegistry.preloadModules(context);
+            moduleManager.preloadModules(context);
           });
         }
         
@@ -233,14 +231,20 @@ export function createUniversalApp({
         if (hooks.afterInitialize) {
           await hooks.afterInitialize(context);
         }
-        
+
+        // [LOADING 19] Application initialization completed
+        performance.mark('loading-19-end');
+        performance.measure('loading-19', 'loading-14-start', 'loading-19-end');
+        const measure19 = performance.getEntriesByName('loading-19')[0];
+        console.log(`[LOADING 19] Application initialization completed in ${measure19?.duration?.toFixed(2)}ms`);
+
         return {
           app,
           router,
           store,
           i18n,
           meta,
-          moduleRegistry,
+          moduleManager,
           config,
         };
       };
@@ -256,7 +260,7 @@ export function createUniversalApp({
     
     // FOR SSR / SERVER ENTRY
     async function renderApp({ url, cookies, languages, ssrContext }) {
-      const { app, router, store, i18n, meta, moduleRegistry } = await createApp();
+      const { app, router, store, i18n, meta, moduleManager } = await createApp();
       
       // Set SSR store for useStore calls
       if (typeof window === 'undefined') {
@@ -264,19 +268,16 @@ export function createUniversalApp({
         setSSRStore(store);
       }
       
-      
+
       if (typeof window === 'undefined') {
-        moduleRegistry.initialized.clear();
-        moduleRegistry.modules.clear();
-        moduleRegistry.loadingPromises.clear();
+        moduleManager.initialized.clear();
+        moduleManager.modules.clear();
+        moduleManager.loadingPromises.clear();
+
+        // Очистить SSR store для следующего запроса
+        const { clearSSRStore } = await import('../store/core.store.js');
+        clearSSRStore();
       }
-      //   // На сервере загружаем auth для SSR рендеринга (vue-app-renderer требует его)
-      //   const context = { app, store, router, config };
-      //   await moduleRegistry.load('globals', context);
-      //   await moduleRegistry.initialize('globals', context);
-      //   await moduleRegistry.load('auth', context);
-      //   await moduleRegistry.initialize('auth', context);
-      // }
       
       const context = {
         app,
@@ -286,22 +287,27 @@ export function createUniversalApp({
         ssr: true,
       };
 
-      // Core module must ALWAYS be initialized on SSR
-      const ModuleCore = await import('../../core.client.js');
-      await ModuleCore.default.initialize(app, store, router, config);
+      // [LOADING 20] SSR renderApp starting and loading modules
+      performance.mark('loading-20-start');
+      console.log('[LOADING 20] SSR renderApp starting and loading modules...');
 
       // Для SSR загружаем модули для текущего маршрута
-      const requiredModules = moduleRegistry.getModulesForRoute(url);
-      
+      const requiredModules = moduleManager.getModulesForRoute(url);
+
       // Собираем имена модулей которые нужны для текущего роута
       const currentRouteModules = [];
-      
+
       // Загружаем необходимые модули для SSR
       for (const module of requiredModules) {
-        await moduleRegistry.load(module.name, context);
-        await moduleRegistry.initialize(module.name, context);
+        await moduleManager.load(module.name, context);
+        await moduleManager.initialize(module.name, context);
         currentRouteModules.push(module.name);
       }
+
+      performance.mark('loading-20-end');
+      performance.measure('loading-20', 'loading-20-start', 'loading-20-end');
+      const measure20 = performance.getEntriesByName('loading-20')[0];
+      console.log(`[LOADING 20] SSR modules loaded in ${measure20?.duration?.toFixed(2)}ms`);
       
       // После загрузки модулей и регистрации роутов, выполняем навигацию
       await router.push(url);
@@ -320,7 +326,13 @@ export function createUniversalApp({
       
       // Передаем только модули текущего роута (без критических)
       result.loadedModules = currentRouteModules;
-      
+
+      // [LOADING 21] SSR render completed
+      performance.mark('loading-21-end');
+      performance.measure('loading-21', 'loading-20-start', 'loading-21-end');
+      const measure21 = performance.getEntriesByName('loading-21')[0];
+      console.log(`[LOADING 21] SSR render completed in ${measure21?.duration?.toFixed(2)}ms`);
+
       return result;
     }
     
@@ -332,10 +344,10 @@ export function createUniversalApp({
     // FOR SSR / CLIENT ENTRY
     if (typeof window !== 'undefined' && !process.env.MOBILE_APP) {
       // Используем renderAndMountApp для правильной гидратации со state
-      appRenderer.renderAndMountApp({ createApp, hooks }).then(({ app, router, store, moduleRegistry }) => {
+      appRenderer.renderAndMountApp({ createApp, hooks }).then(({ app, router, store, moduleManager }) => {
         // Хук ПОСЛЕ гидратации
         if (hooks.afterHydration) {
-          hooks.afterHydration({ app, router, store, moduleRegistry });
+          hooks.afterHydration({ app, router, store, moduleManager });
         }
         
         // Модули уже загружены в renderAndMountApp, просто ставим маркер

@@ -1,5 +1,5 @@
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 
-const invitesStore = new Store('/api/invites');
+const invitesStore = new StoreManager('/api/invites');
 
 export default invitesStore;

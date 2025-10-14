@@ -1,5 +1,5 @@
 // store/player.js
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 import { reactive } from 'vue';
 
 // State
@@ -98,11 +98,11 @@ export const actions = {
 
     // Log play via WebSocket if connected
     console.log('Player: Attempting to log play event for track:', track._id);
-    console.log('Player: WebSocket connected?', globalWebSocket.isSocketConnected());
+    console.log('Player: WebSocket connected?', wsManager.isSocketConnected());
     
-    if (globalWebSocket.isSocketConnected()) {
+    if (wsManager.isSocketConnected()) {
       console.log('Player: Sending startPlaying event via WebSocket');
-      globalWebSocket.send({
+      wsManager.send({
         module: 'music-streaming',
         action: 'startPlaying',
         data: {
@@ -319,15 +319,15 @@ export const actions = {
   joinListeningParty(partyId) {
     state.listeningPartyId = partyId;
 
-    if (globalWebSocket.isSocketConnected()) {
-      globalWebSocket.send({
+    if (wsManager.isSocketConnected()) {
+      wsManager.send({
         module: 'music-streaming',
         action: 'joinListeningParty',
         data: { partyId },
       });
 
       // Set up event listener for party playback sync
-      globalWebSocket.addEventListener('partyPlaybackSync', this.handlePartySync.bind(this), {
+      wsManager.addEventListener('partyPlaybackSync', this.handlePartySync.bind(this), {
         module: 'music-streaming',
       });
     }
@@ -337,17 +337,17 @@ export const actions = {
     state.listeningPartyId = null;
 
     // Remove event listener for party sync
-    if (globalWebSocket.isSocketConnected()) {
-      globalWebSocket.removeEventListener('partyPlaybackSync');
+    if (wsManager.isSocketConnected()) {
+      wsManager.removeEventListener('partyPlaybackSync');
     }
   },
 
   syncPartyPlayback() {
-    if (!state.listeningPartyId || !state.currentTrack || !globalWebSocket.isSocketConnected()) {
+    if (!state.listeningPartyId || !state.currentTrack || !wsManager.isSocketConnected()) {
       return;
     }
 
-    globalWebSocket.send({
+    wsManager.send({
       module: 'music-streaming',
       action: 'syncPartyPlayback',
       data: {

@@ -16,8 +16,8 @@
       item
     }"
   >
-      <router-link  
-        :to="{ name: 'Organization_Product', params: { _id: item.owner.target._id || item.owner.target, product: item._id } }"
+      <router-link
+        :to="`/organizations/${item.owner.target._id || item.owner.target}/products/${item._id}`"
         class="h-100 pos-relative block"
       >
         <CardProduct  

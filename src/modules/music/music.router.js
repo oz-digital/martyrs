@@ -1,3 +1,6 @@
+import PlayerMusic from  './components/layouts/MusicBottomPlayer.vue'
+
+
 function createArtistRoutes() {
   return [
     {
@@ -173,7 +176,7 @@ export function getRoutes(options = {}) {
     config: {
       basePath: options.basePath || 'music',
       meta: {
-        player: options.playerComponent || (() => import(/* webpackChunkName: 'music-bottom-player' */ './components/layouts/MusicBottomPlayer.vue')),
+        player: PlayerMusic,
       },
       routes: buildMusicRoutes(options),
     },

@@ -1,7 +1,7 @@
 <template>
   <div
     class="dropdown pos-relative"
-    v-click-outside="trigger === 'click' ? clickedOutside : undefined"
+    v-click-outside="clickedOutside"
     @click.stop="trigger === 'click' ? (isOpen = !isOpen) : null"
     @mouseenter="trigger === 'hover' ? (isOpen = true) : null"
     @mouseleave="trigger === 'hover' ? (isOpen = false) : null"
@@ -51,7 +51,9 @@ const isOpen = ref(false);
 const isComponentLabel = computed(() => typeof props.label === 'object');
 
 function clickedOutside () {
-  isOpen.value = false
+  if (props.trigger === 'click') {
+    isOpen.value = false
+  }
 }
 </script>
 

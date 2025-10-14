@@ -4,7 +4,8 @@ import scrollBehavior from './views/router/scrollBehavior.js';
 
 import * as mixins from './views/mixins/mixins.js';
 import * as storeCore from './views/store/core.store.js';
-import { session } from './views/store/core.store.js';
+import store from './views/store/core.store.js';
+import { useSession } from './views/store/core.store.js';
 import * as appRenderer from './views/utils/vue-app-renderer.js';
 import './views/utils/polyfills.js'; // Auto-apply polyfills
 
@@ -13,10 +14,14 @@ import popupAuthPlugin from './views/plugins/popup.auth.plugin.js';
 import datePickerPlugin from './views/plugins/date-picker.plugin.js';
 import storeDebuggerPlugin from './views/plugins/store-debugger/store-debugger.plugin.js';
 
-import store from './views/store/core.store.js';
-import websockets from './views/classes/core.websocket.js';
-import { i18nManager }  from '@martyrs/src/modules/core/views/classes/core.i18n.js';
-import { moduleRegistry } from './views/classes/module-registry.js';
+
+import { wsManager } from './views/classes/ws.manager.js';
+import { i18nManager }  from '@martyrs/src/modules/core/views/classes/i18n.manager.js';
+import { moduleManager } from './views/classes/module.manager.js';
+
+// Будущие менеджеры:
+// import { notificationManager } from './views/classes/notification.manager.js';
+// import { alertManager } from './views/classes/alert.manager.js';
 
 import en from './locales/en.js';
 import ru from './locales/ru.js';
@@ -71,8 +76,8 @@ function initializeCore(app, store, router, config, options = {}) {
   });
 
   if (config) {
-    if (config.modules) storeCore.state.options = config.modules;
-    storeCore.state.config = config;
+    if (config.modules) store.core.state.options = config.modules;
+    store.core.state.config = config;
   }
 
   // Core module is already registered by default in createStore()
@@ -124,13 +129,13 @@ export {
   appRenderer,
   getBrowserLocale,
   mixins,
-  moduleRegistry,
+  moduleManager,
   scrollBehavior,
   store,
   i18nManager,
   storeCore,
-  session,
-  websockets,
+  useSession,
+  wsManager,
 };
 
 // Export client factory

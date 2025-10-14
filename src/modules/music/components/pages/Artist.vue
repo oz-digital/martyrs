@@ -312,7 +312,9 @@ import TrackListCard from '../cards/TrackListCard.vue';
 import * as artistsStore from '../../store/artists';
 // import * as genreStore from '../../store/genres'; // Assuming you have a genre store
 import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
+
+const store = useStore();
 
 // Import mixins
 import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
@@ -375,7 +377,7 @@ const fetchArtist = async () => {
     await artistsStore.actions.fetchArtistByUrl(url);
   } catch (error) {
     console.error('Error fetching artist:', error);
-    core.actions.setError({
+    store.core.actions.setError({
       message: 'Failed to load artist'
     });
   }

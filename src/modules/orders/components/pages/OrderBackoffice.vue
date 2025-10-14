@@ -9,7 +9,7 @@
 			</div>
 
 	  	<div class="flex-nowrap flex gap-thin pos-relative ">
-		    <div v-for="(status, index) in core.state.options.orders.statuses" :key="index" class="w-20">
+		    <div v-for="(status, index) in store.core.state.options.orders.statuses" :key="index" class="w-20">
 		      <div
 		      	class="bg-white br-anim br-glow radius-extra h-1r w-100"
 		        :class="
@@ -96,13 +96,13 @@
   			/>
       </ul>
       
-      <PriceTotal 
+      <PriceTotal
         :totalPrice="cartTotalPrice"
         :currency="returnCurrency()"
-        :showFees="core.state.options?.orders?.showFees"
-        :feesRate="core.state.options?.orders?.feesRate || 0"
-        :showVat="core.state.options?.orders?.showVat"
-        :vatRate="core.state.options?.orders?.vatRate || 0"
+        :showFees="store.core.state.options?.orders?.showFees"
+        :feesRate="store.core.state.options?.orders?.feesRate || 0"
+        :showVat="store.core.state.options?.orders?.showVat"
+        :vatRate="store.core.state.options?.orders?.vatRate || 0"
       />
 
     	<Button :submit="setNextStatus"  class="t-white w-100 bg-second">
@@ -264,15 +264,15 @@
 	  			/>
 	      </ul>
 	      
-	      <PriceTotal 
+	      <PriceTotal
           :totalPrice="cartTotalPrice"
           :deliveryRate="deliveryCost"
           :currency="returnCurrency()"
-          :showFees="core.state.options?.orders?.showFees"
-          :feesRate="core.state.options?.orders?.feesRate || 0"
-          :showVat="core.state.options?.orders?.showVat"
-          :vatRate="core.state.options?.orders?.vatRate || 0"
-				  :showDeliveryFee="core.state.options?.orders.showDeliveryFee"
+          :showFees="store.core.state.options?.orders?.showFees"
+          :feesRate="store.core.state.options?.orders?.feesRate || 0"
+          :showVat="store.core.state.options?.orders?.showVat"
+          :vatRate="store.core.state.options?.orders?.vatRate || 0"
+				  :showDeliveryFee="store.core.state.options?.orders.showDeliveryFee"
 
         />
      	</div>
@@ -304,7 +304,7 @@
 	import PriceTotal from '@martyrs/src/modules/orders/components/elements/PriceTotal.vue';
 	import FormPayment from '@martyrs/src/modules/orders/components/sections/FormPayment.vue'
 
-	import * as globals 	from '@martyrs/src/modules/core/views/store/core.store.js'
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
 	import * as auth from '@martyrs/src/modules/auth/views/store/auth.js'
 	import * as orders 	from '@martyrs/src/modules/orders/store/orders.js'
 	import * as products 	from '@martyrs/src/modules/products/store/products.js'
@@ -312,6 +312,8 @@
 
 	import { useI18n } from 'vue-i18n';
 	import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
+
+	const store = useStore()
 	
 	const { locale } = useI18n();
 	const { returnCurrency } = useGlobalMixins();
@@ -323,7 +325,7 @@
 	const productsOrganization = ref(null)
 	const orderOrganization = ref(null)
 
-	const statuses = core.state.options.orders.statuses
+	const statuses = store.core.state.options.orders.statuses
 	const statusLabels = ['Created', 'Confirmed', 'Preparing', 'In use', 'Finished'];
 
   if (route.meta.context === 'user' && 
@@ -371,7 +373,7 @@
 
 	  orderOrganization.value = await organizations.actions.read({
 	    _id: order.value?.owner.target._id,
-	    location: core.state.position?.location,
+	    location: store.core.state.position?.location,
 	    lookup: ['spots']
 	  });
 
@@ -381,7 +383,7 @@
 const deliveryCost = computed(() => {
   const type = orders.state.current.delivery.type
   const distance = orderOrganization.value[0]?.distance || 0
-  const config = core.state.options?.orders?.delivery_formula || {}
+  const config = store.core.state.options?.orders?.delivery_formula || {}
 
   return orders.getters.getDeliveryPrice(type, distance, config)
 })
@@ -417,16 +419,16 @@ const deliveryCost = computed(() => {
 
 
 	function getNextStatus(currentStatus) {
-	  const currentIndex = core.state.options.orders.statuses.findIndex(status => status.value === currentStatus);
+	  const currentIndex = store.core.state.options.orders.statuses.findIndex(status => status.value === currentStatus);
 
 	  if (currentIndex !== -1 && currentIndex + 1 < statuses.length) {
-	    return core.state.options.orders.statuses[currentIndex + 1];
+	    return store.core.state.options.orders.statuses[currentIndex + 1];
 	  }
 	  return null; // If next status doesn't exist
 	}
 
 	const isActiveStatus = (index) => {
-	  return core.state.options.orders.statuses.slice(index).some(status => status.value === order.value.status);
+	  return store.core.state.options.orders.statuses.slice(index).some(status => status.value === order.value.status);
 	};
 
   async function changePaymentStatus() {

@@ -24,8 +24,10 @@ import Button from '@martyrs/src/components/Button/Button.vue'
 
 import { state, actions } from '@martyrs/src/modules/organizations/store/organizations.js'
 
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import * as marketplace from '@martyrs/src/modules/marketplace/views/store/marketplace.js';
+
+const store = useStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -82,19 +84,19 @@ async function getCountry() {
 
 
 onMounted(async () => {
-  let lat = parseFloat(route.query.lat || core.state.position?.location?.lat);
-  let lng = parseFloat(route.query.lng || core.state.position?.location?.lng);
+  let lat = parseFloat(route.query.lat || store.core.state.position?.location?.lat);
+  let lng = parseFloat(route.query.lng || store.core.state.position?.location?.lng);
 
   let zoomLevel;
 
   // Определите уровень зума в зависимости от доступной информации
-  if (route.params.location || core.state.position?.location) {
+  if (route.params.location || store.core.state.position?.location) {
     zoomLevel = 15;
-  } else if (route.params.country || core.state.position?.country) {
+  } else if (route.params.country || store.core.state.position?.country) {
     zoomLevel = 9;
-  } else if (route.params.state || core.state.position?.state) {
+  } else if (route.params.state || store.core.state.position?.state) {
     zoomLevel = 6;
-  } else if (route.params.city || core.state.position?.city) {
+  } else if (route.params.city || store.core.state.position?.city) {
     zoomLevel = 14;
   } else {
     zoomLevel = 2;

@@ -1,6 +1,6 @@
-import Store from '@martyrs/src/modules/core/views/classes/core.store.js';
+import StoreManager from '@martyrs/src/modules/core/views/classes/store.manager.js';
 
-const membershipsStore = new Store('/api/memberships');
+const membershipsStore = new StoreManager('/api/memberships');
 
 // Add handleMembershipUpdate method
 membershipsStore.handleMembershipUpdate = function(user, membership, status, target, statusName, statusNumber) {

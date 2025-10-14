@@ -77,10 +77,11 @@
 
   // Accessing router and store
   import * as auth from '@martyrs/src/modules/auth/views/store/auth.js';
-  import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+  import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
   import * as blog from '@martyrs/src/modules/community/store/blogposts.js';
   import * as organizations from '@martyrs/src/modules/organizations/store/organizations.js';
   import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js';
+  const core = useStore();
 
   const route = useRoute()
   const router = useRouter()

@@ -73,14 +73,16 @@ import { watch, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import Feed from '@martyrs/src/components/Feed/Feed.vue';
-import CardSpot from '@martyrs/src/modules/spots/components/blocks/CardSpot.vue';  
+import CardSpot from '@martyrs/src/modules/spots/components/blocks/CardSpot.vue';
 import * as spotsModule from '@martyrs/src/modules/spots/store/spots.js';
-import * as core from '@martyrs/src/modules/core/views/store/core.store.js';
+import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js';
 import Block from '@martyrs/src/components/Block/Block.vue';
 import Address from '@martyrs/src/components/Address/Address.vue';
 import LocationMarker from '@martyrs/src/components/LocationMarker/LocationMarker.vue';
 import Radio from '@martyrs/src/components/Radio/Radio.vue';
 import Field from '@martyrs/src/components/Field/Field.vue';
+
+const store = useStore()
 
 const props = defineProps({
   order: Object,
@@ -96,11 +98,11 @@ watch(() => props.order.delivery.type, (newType) => {
   }
 });
 
-// Устанавливаем начальные данные из globals при монтировании
+// Устанавливаем начальные данные из store при монтировании
 onMounted(() => {
-  if (core.state.position) {
-    props.order.delivery.address = core.state.position.address;
-    props.order.delivery.location = core.state.position.location;
+  if (store.core.state.position) {
+    props.order.delivery.address = store.core.state.position.address;
+    props.order.delivery.location = store.core.state.position.location;
   }
 });
 

@@ -26,12 +26,12 @@ export default defineConfig({
     ssr: {
       noExternal: true,
       target: 'node',
-      format: 'cjs',
+      format: 'es',
     },
     emptyOutDir: false,
     lib: {
       entry: [resolve(__dirname, './src/builder/builder.js')],
-      formats: ['cjs', 'es'],
+      formats: ['es'],
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'js' : 'cjs';
         return `${entryName}.${extension}`;

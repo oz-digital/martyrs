@@ -48,7 +48,8 @@
 	import Feed from '@martyrs/src/components/Feed/Feed.vue'
 	
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
-	import * as core from '@martyrs/src/modules/core/views/store/core.store.js'
+	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
+	const core = useStore()
 
 	import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
 

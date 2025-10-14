@@ -6,8 +6,8 @@ import { Preferences } from '@capacitor/preferences';
 // Vue modules
 import { reactive, watch } from 'vue';
 // Globals
-import { session, setError } from '@martyrs/src/modules/core/views/store/core.store.js';
-import globalWebSocket from '@martyrs/src/modules/core/views/classes/core.websocket.js';
+import { useSession, setError } from '@martyrs/src/modules/core/views/store/core.store.js';
+import wsManager from '@martyrs/src/modules/core/views/classes/ws.manager.js';
 // State
 import * as twofa from './twofa.js';
 
@@ -30,6 +30,9 @@ const state = reactive({
   accesses: [],
 });
 
+// Session manager
+const session = useSession();
+
 const actions = {
   async initialize(cookie) {
     try {
@@ -43,19 +46,19 @@ const actions = {
         // Проверка токена через серверный маршрут
         const response = await $axios.get('/api/organizations/check-accesses');
         const userAccesses = response.data;
+
+        // ТОЛЬКО ПОСЛЕ УСПЕШНОЙ ПРОВЕРКИ устанавливаем состояние
         state.accesses = userAccesses;
+        Object.assign(state.user, { _id, email, phone, avatar });
+        Object.assign(state.access, { token: accessToken, roles, status: !!accessToken });
 
         // Update Session with full user data
         session.set({ ...userCookie, accesses: userAccesses });
 
-        // Обновление состояния приложения с информацией о пользователе и его правах доступа
-        Object.assign(state.user, { _id, email, phone, avatar });
-        Object.assign(state.access, { token: accessToken, roles, status: !!accessToken });
-        
         // Переподключаем WebSocket если пользователь аутентифицирован
         if (_id && accessToken) {
           console.log('[AUTH] Reconnecting WebSocket for authenticated user:', _id);
-          await globalWebSocket.reconnectWithAuth(_id);
+          await wsManager.reconnectWithAuth(_id);
         }
       } else {
         console.log('no cookies');
@@ -197,7 +200,7 @@ const actions = {
 
     // Отключаем WebSocket при выходе
     console.log('[AUTH] Disconnecting WebSocket on logout');
-    globalWebSocket.disconnect();
+    wsManager.disconnect();
   },
 
   async resetPassword(user, type) {
@@ -269,7 +272,7 @@ const actions = {
 
 // Cookies
 const optionsDefault = {
-  development: { secure: false, expires: 7, sameSite: 'Lax' },
+  development: { path: '/', domain: process.env.DOMAIN_URL, secure: false, expires: 7, sameSite: 'Lax' },
   production: {
     expires: 7,
     path: '/',
@@ -289,7 +292,7 @@ async function getCookie(name) {
   }
 }
 
-async function setCookie(name, data, env = process.env.DOMAIN_URL) {
+async function setCookie(name, data, mode = process.env.NODE_ENV) {
   if (process.env.MOBILE_APP) {
     // Если приложение запущено в Capacitor
     await Preferences.set({
@@ -298,18 +301,24 @@ async function setCookie(name, data, env = process.env.DOMAIN_URL) {
     });
   } else {
     // Для веб-версии
-    Cookies.set(name, JSON.stringify(data), optionsDefault[env]);
+    const options = optionsDefault[mode];
+    console.log('[AUTH COOKIE DEBUG] setCookie', { name, mode, options, domain: process.env.DOMAIN_URL });
+    Cookies.set(name, JSON.stringify(data), options);
   }
 }
 
-async function removeCookie(name, env = process.env.NODE_ENV) {
+async function removeCookie(name, mode = process.env.NODE_ENV) {
   if (process.env.MOBILE_APP) {
     // Если приложение запущено в Capacitor
     await Preferences.remove({ key: name });
   } else {
     // Для веб-версии
-    const options = env === 'production' ? { domain: process.env.DOMAIN_URL, path: '/' } : {};
+    const options = optionsDefault[mode];
+    const allCookiesBefore = typeof document !== 'undefined' ? document.cookie : 'SSR - no document';
+    console.log('[AUTH COOKIE DEBUG] removeCookie BEFORE', { name, mode, options, domain: process.env.DOMAIN_URL, allCookies: allCookiesBefore });
     Cookies.remove(name, options);
+    const allCookiesAfter = typeof document !== 'undefined' ? document.cookie : 'SSR - no document';
+    console.log('[AUTH COOKIE DEBUG] removeCookie AFTER', { allCookies: allCookiesAfter });
   }
 }
 
