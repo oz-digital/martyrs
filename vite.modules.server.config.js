@@ -41,7 +41,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/gallery/gallery.server.js'),
         resolve(__dirname, './src/modules/reports/reports.server.js'),
         resolve(__dirname, './src/modules/orders/orders.server.js'),
-        // resolve(__dirname, './src/modules/wallet/wallet.server.js'),
+        resolve(__dirname, './src/modules/wallet/wallet.server.js'),
         resolve(__dirname, './src/modules/spots/spots.server.js'),
         resolve(__dirname, './src/modules/pages/pages.server.js'),
         resolve(__dirname, './src/modules/rents/rents.server.js'),
