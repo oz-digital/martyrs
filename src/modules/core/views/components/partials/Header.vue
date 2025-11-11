@@ -116,7 +116,7 @@
     	class="
     		cursor-pointer
     		bg-transp 
-    		pd-l-micro pd-r-micro
+    		pd-micro
     		radius-extra 
     		uppercase 
     		t-semi

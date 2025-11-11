@@ -1,12 +1,12 @@
 <template>
-  <div class="flex t-nowrap  gap-thin">
+  <div class="flex o-x-scroll scroll-hide t-nowrap  gap-thin">
     <!-- All Filters Button -->
     <button
       @click="showAllFilters = true"
       class="pd-small radius-medium bg-light flex-v-center flex gap-micro cursor-pointer"
       :class="{ 'bg-main': activeFiltersCount > 0 }"
     >
-      <IconFilter class="i-medium" />
+      <IconFilter class="i-regular" />
       <span class="h-1r"></span>
       <span v-if="activeFiltersCount">{{ activeFiltersCount }}</span>
     </button>
@@ -19,7 +19,7 @@
       class="pd-small radius-medium bg-light cursor-pointer flex-v-center flex gap-micro"
       :class="{ 'selected bg-main': isFilterActive(filter) }"
     >
-      <IconCalendar v-if="filter.type === 'date'" class="mn-r-micro i-medium" />
+      <IconCalendar v-if="filter.type === 'date'" class="mn-r-micro i-regular" />
       <span class="t-nowrap">{{ filter.type === 'date' && getFilterValue(filter) ? formatFilterValue(filter) : filter.title }}</span>
       <span v-if="getFilterValue(filter) && filter.type !== 'date'" class="mn-l-micro">
         {{ formatFilterValue(filter) }}
@@ -29,95 +29,19 @@
     <!-- All Filters Popup -->
     <Popup
       :isPopupOpen="showAllFilters"
-      @close-popup="showAllFilters = false"
+      @close-popup="closeAllFilters"
       :align="isPhone() ? 'bottom center' : 'center center'"
       class="w-min-20r bg-white radius-medium mobile:radius-zero mobile:radius-tr-medium mobile:radius-tl-medium mobile:w-100 pd-medium"
     >
-      <div class="flex-v-center flex-nowrap flex mn-b-medium">
-        <h3 class="flex-child-full">Filters</h3>
-      </div>
-
-      <div class="filters-content">
-        <div 
-          v-for="filter in filters" 
-          :key="filter.value"
-          class="mn-b-medium"
-        >
-          <h4 class="mn-b-small">{{ filter.title }}</h4>
-          
-          <!-- Checkbox Filter -->
-          <div v-if="filter.type === 'checkbox'">
-            <Checkbox
-              v-for="option in filter.options"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value"
-              v-model:radio="tempSelected[filter.value]"
-              mode="checkbox"
-              class="mn-b-micro"
-            />
-          </div>
-
-          <!-- Radio Filter -->
-          <div v-else-if="filter.type === 'radio'">
-            <div
-              v-for="option in filter.options"
-              :key="option.value"
-              @click="tempSelected[filter.value] = option.value"
-              class="pd-small radius-small cursor-pointer mn-b-micro"
-              :class="{ 
-                'bg-main': tempSelected[filter.value] === option.value,
-                'bg-light': tempSelected[filter.value] !== option.value
-              }"
-            >
-              {{ option.label }}
-            </div>
-          </div>
-
-          <!-- Range Filter -->
-          <div v-else-if="filter.type === 'range'" class="flex gap-thin">
-            <Field
-              v-model:field="tempSelected[filter.value].min"
-              :placeholder="filter.minPlaceholder || 'Min'"
-              type="number"
-              :label="returnCurrency()"
-              class="w-50 bg-light pd-small radius-small"
-            />
-            <Field
-              v-model:field="tempSelected[filter.value].max"
-              :placeholder="filter.maxPlaceholder || 'Max'"
-              type="number"
-              :label="returnCurrency()"
-              class="w-50 bg-light pd-small  radius-small"
-            />
-          </div>
-
-          <!-- Date Filter -->
-          <div v-else-if="filter.type === 'date'">
-            <Calendar
-              v-model:date="tempSelected[filter.value]"
-              :allowRange="true"
-              :disablePastDates="true"
-              class="bg-light radius-small"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-thin mn-t-medium">
-        <button 
-          @click="applyAllFilters" 
-          class="button bg-main flex-child-full"
-        >
-          Apply
-        </button>
-        <button 
-          @click="resetFilters" 
-          class="button bg-light"
-        >
-          Reset Filters
-        </button>
-      </div>
+      <FiltersGroup
+        :filters="filters"
+        v-model:selected="tempSelected"
+        :immediate="false"
+        :showHeader="true"
+        :showApplyButton="true"
+        :showResetButton="true"
+        @update:selected="applyAllFilters"
+      />
     </Popup>
 
     <!-- Individual Filter Popups -->
@@ -125,58 +49,27 @@
       v-for="filter in filters"
       :key="`popup-${filter.value}`"
       :isPopupOpen="individualPopups[filter.value]"
-      @close-popup="individualPopups[filter.value] = false"
+      @close-popup="cancelFilter(filter.value)"
       :align="isPhone() ? 'bottom center' : 'center center'"
       class="bg-white radius-medium mobile:radius-zero mobile:radius-tr-medium mobile:radius-tl-medium mobile:w-100 pd-medium"
     >
       <h4 class="mn-b-medium">{{ filter.title }}</h4>
-      
-      <!-- Checkbox Filter -->
-      <div v-if="filter.type === 'checkbox'">
-        <Checkbox
-          v-for="option in filter.options"
-          :key="option.value"
-          :label="option.label"
-          :value="option.value"
-          v-model:radio="tempSelected[filter.value]"
-          mode="checkbox"
-          class="mn-b-micro"
-        />
-      </div>
 
-      <!-- Radio Filter -->
-      <div v-else-if="filter.type === 'radio'">
-        <div
-          v-for="option in filter.options"
-          :key="option.value"
-          @click="tempSelected[filter.value] = option.value"
-          class="pd-small radius-small cursor-pointer mn-b-micro"
-          :class="{ 
-            'bg-main': tempSelected[filter.value] === option.value,
-            'bg-light': tempSelected[filter.value] !== option.value
-          }"
-        >
-          {{ option.label }}
-        </div>
-      </div>
+      <!-- Checkbox Filter -->
+      <FilterCheckbox
+        v-if="filter.type === 'checkbox'"
+        v-model="tempSelected[filter.value]"
+        :options="filter.options"
+      />
 
       <!-- Range Filter -->
-      <div v-else-if="filter.type === 'range'" class="flex gap-thin">
-        <Field
-          v-model:field="tempSelected[filter.value].min"
-          :placeholder="filter.minPlaceholder || 'Min'"
-          type="number"
-          :label="returnCurrency()"
-          class="w-50 bg-light pd-small radius-small"
-        />
-        <Field
-          v-model:field="tempSelected[filter.value].max"
-          :placeholder="filter.maxPlaceholder || 'Max'"
-          type="number"
-          :label="returnCurrency()"
-          class="w-50 bg-light pd-small radius-small"
-        />
-      </div>
+      <FilterRange
+        v-else-if="filter.type === 'range'"
+        v-model="tempSelected[filter.value]"
+        :minPlaceholder="filter.minPlaceholder || 'Min'"
+        :maxPlaceholder="filter.maxPlaceholder || 'Max'"
+        :label="filter.label"
+      />
 
       <!-- Date Filter -->
       <div v-else-if="filter.type === 'date'">
@@ -190,21 +83,26 @@
         </div>
       </div>
 
+      <!-- Radio/Options Filter -->
+      <FilterOptions
+        v-else-if="filter.type === 'radio'"
+        v-model="tempSelected[filter.value]"
+        :options="filter.options"
+      />
+
       <div class="flex gap-thin mn-t-medium">
-         <button 
-          @click="cancelFilter(filter.value)" 
+        <button
+          @click="cancelFilter(filter.value)"
           class="bg-light button flex-child-full"
         >
           Cancel
         </button>
-         <button 
-          @click="applyFilter(filter.value)" 
+        <button
+          @click="applyFilter(filter.value)"
           class="bg-main w-100 button flex-child-full"
         >
           Apply
         </button>
-       
-       
       </div>
     </Popup>
   </div>
@@ -214,9 +112,12 @@
 import { ref, computed, reactive, watch } from 'vue'
 import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
-import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue'
-import Field from '@martyrs/src/components/Field/Field.vue'
 import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
+import FiltersGroup from './filters/FiltersGroup.vue'
+import FilterCheckbox from './filters/FilterCheckbox.vue'
+import FilterRange from './filters/FilterRange.vue'
+import FilterDateRange from './filters/FilterDateRange.vue'
+import FilterOptions from './filters/FilterOptions.vue'
 import IconFilter from '@martyrs/src/modules/icons/navigation/IconFilter.vue'
 import IconCross from '@martyrs/src/modules/icons/navigation/IconCross.vue'
 import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue'
@@ -367,8 +268,8 @@ const cancelFilter = (filterValue) => {
   individualPopups[filterValue] = false
 }
 
-const applyAllFilters = () => {
-  Object.entries(tempSelected).forEach(([key, value]) => {
+const applyAllFilters = (newValues) => {
+  Object.entries(newValues).forEach(([key, value]) => {
     if (selected.value[key] !== value) {
       selected.value[key] = value
       emit('select', { filter: key, value })
@@ -377,23 +278,8 @@ const applyAllFilters = () => {
   showAllFilters.value = false
 }
 
-const resetFilters = () => {
-  filters.value.forEach(filter => {
-    if (filter.type === 'checkbox') {
-      tempSelected[filter.value] = []
-      selected.value[filter.value] = []
-    } else if (filter.type === 'range') {
-      tempSelected[filter.value] = { min: '', max: '' }
-      selected.value[filter.value] = { min: '', max: '' }
-    } else if (filter.type === 'date') {
-      tempSelected[filter.value] = null
-      selected.value[filter.value] = null
-    } else {
-      tempSelected[filter.value] = null
-      selected.value[filter.value] = null
-    }
-    emit('select', { filter: filter.value, value: null })
-  })
+const closeAllFilters = () => {
+  showAllFilters.value = false
 }
 </script>
 

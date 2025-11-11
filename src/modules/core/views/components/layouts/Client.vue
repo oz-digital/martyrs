@@ -354,15 +354,11 @@
 	   });
 	 	}
 
-		const savedPosition = localStorage.getItem('position');
-
-	  if (savedPosition) {
-	    store.core.state.position = JSON.parse(savedPosition);
-	  } else if (route.meta.location) {
-  		store.core.state.isOpenLocationPopup = true;
-	  } else {
-	  	store.core.state.isOpenLocationPopup = false;
-	  }
+		if (!store.core.state.position && route.meta.location) {
+      store.core.state.isOpenLocationPopup = true;
+    } else {
+      store.core.state.isOpenLocationPopup = false;
+    }
 
 		if (referalCode.value) {
 		  localStorage.setItem('referalCode', referalCode.value);
@@ -373,11 +369,11 @@
 
 	const componentKey = computed(() => {
 	  // Собираем только значимые параметры (ID сущностей)
-	  const significantParams = ['_id', 'product', 'organization', 'categoryPath']
+	  const significantParams = ['_id', 'product', 'organization', 'categoryPath', 'country', 'state', 'city']
 	    .map(param => route.params[param])
 	    .filter(Boolean)
 	    .join('-');
-	  
+
 	  return significantParams || route.name;
 	});
 </script>

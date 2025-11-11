@@ -1,35 +1,50 @@
 import layoutMarketplace from '../components/layouts/Marketplace.vue';
 
-const marketplace = {
-  path: 'marketplace',
-  component: layoutMarketplace,
-  name: 'Marketplace',
-  meta: {
-    title: {
-      en: 'Marketplace',
-      ru: 'Маркетплейс',
+const marketplace = [
+  {
+    path: 'marketplace',
+    name: 'Marketplace',
+    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
+    meta: {
+      title: {
+        en: 'Marketplace',
+        ru: 'Маркетплейс',
+      },
     },
   },
-  children: [
-    {
-      path: ':country?',
-      component: () => import(/* webpackChunkName: 'Deliveries' */ '../components/pages/Catalog.vue'),
-      children: [
-        {
-          path: ':state?',
-          name: 'State',
-          component: () => import(/* webpackChunkName: 'Deliveries' */ '../components/pages/Catalog.vue'),
-          children: [
-            {
-              path: ':city?',
-              name: 'City',
-              component: () => import(/* webpackChunkName: 'Deliveries' */ '../components/pages/Catalog.vue'),
-            },
-          ],
-        },
-      ],
+  {
+    path: 'marketplace/:country',
+    name: 'MarketplaceCountry',
+    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
+    meta: {
+      title: {
+        en: 'Marketplace',
+        ru: 'Маркетплейс',
+      },
     },
-  ],
-};
+  },
+  {
+    path: 'marketplace/:country/:state',
+    name: 'MarketplaceState',
+    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
+    meta: {
+      title: {
+        en: 'Marketplace',
+        ru: 'Маркетплейс',
+      },
+    },
+  },
+  {
+    path: 'marketplace/:country/:state/:city',
+    name: 'MarketplaceCity',
+    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
+    meta: {
+      title: {
+        en: 'Marketplace',
+        ru: 'Маркетплейс',
+      },
+    },
+  },
+];
 
 export default marketplace;

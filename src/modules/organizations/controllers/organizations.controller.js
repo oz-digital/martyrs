@@ -38,7 +38,7 @@ const controllerFactory = db => {
         ...queryProcessorCore.getSearchOptions(req.query.search, {
           fields: requestedLookups.includes('products') ? ['profile.name', 'products.name'] : ['profile.name'],
         }),
-        ...(requestedLookups.includes('products') && req.query.prices ? getPriceConditions(req.query.prices) : []),
+        ...(requestedLookups.includes('products') && (req.query.prices || req.query.priceMin || req.query.priceMax) ? getPriceConditions(req.query.prices, req.query.priceMin, req.query.priceMax) : []),
         ...(requestedLookups.includes('spots') ? (await getLocationStages(req.query)).stages : []),
         ...(requestedLookups.includes('memberships') ? [addUserStatusFields(req.query.user), addMembersQuantity(req.query.user)] : []),
         ...(matchConditions.length > 0 ? [{ $match: { $and: matchConditions } }] : []),

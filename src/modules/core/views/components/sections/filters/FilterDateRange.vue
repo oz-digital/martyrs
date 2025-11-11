@@ -1,8 +1,9 @@
 <!-- FilterDateRange.vue -->
 <template>
   <div class="filter-date-range">
-    <!-- Quick options -->
-    <div 
+    <!-- Quick options (only if provided) -->
+    <div
+      v-if="dateOptions.length > 0"
       v-for="option in dateOptions"
       :key="option.value"
       @click="selectOption(option.value)"
@@ -11,19 +12,21 @@
     >
       {{ option.label }}
     </div>
-    
-    <!-- Custom dates -->
-    <div 
-      @click="() => { tempDates = model.value ? {...model.value} : null; showCalendar = true }"
-      :class="{ 'bg-light': selectedOption === 'custom' }"
-      class="pd-small radius-small cursor-pointer hover-bg-light transition-all mn-b-micro"
+
+    <!-- Custom dates with icon (like in Products) -->
+    <div
+      @click="() => { showCalendar = true }"
+      :class="{ 'bg-light': model }"
+      class="pd-small field-wrapper radius-small bg-light cursor-pointer hover-bg-light transition-all flex-v-center flex gap-thin"
     >
-      {{ dateRangeLabel }}
+      <IconCalendar class="i-medium" />
+      <span>{{ dateRangeLabel }}</span>
     </div>
 
     <!-- Calendar Popup -->
     <Popup
-      v-model:show="showCalendar"
+      :isPopupOpen="showCalendar"
+      @close-popup="showCalendar = false"
       class="pd-medium bg-white radius-medium"
       style="min-width: 350px;"
     >
@@ -58,6 +61,7 @@
 import { ref, computed, watch } from 'vue'
 import Calendar from '@martyrs/src/components/Calendar/Calendar.vue'
 import Popup from '@martyrs/src/components/Popup/Popup.vue'
+import IconCalendar from '@martyrs/src/modules/icons/entities/IconCalendar.vue'
 import { useGlobalMixins } from '@martyrs/src/modules/core/views/mixins/mixins.js'
 
 const { formatDate } = useGlobalMixins()
@@ -65,11 +69,7 @@ const { formatDate } = useGlobalMixins()
 const props = defineProps({
   dateOptions: {
     type: Array,
-    default: () => [
-      { label: 'Available today', value: 'today' },
-      { label: 'This week', value: 'week' },
-      { label: 'This month', value: 'month' }
-    ]
+    default: () => []
   }
 })
 

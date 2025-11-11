@@ -137,7 +137,7 @@ async function Submit() {
     </Transition>
     
     <!-- Counter -->
-    <div v-if="counter" class="button-counter flex flex-center">
+    <div v-if="counter" class="button-counter font-second flex flex-center">
       <span>{{ counter }}</span>
     </div>
   </button>

@@ -97,20 +97,20 @@
       <div class="w-max flex-nowrap flex gap-thin">
         <CardOrderItem
           @click.stop="$router.push(`/organizations/${organization._id}/products/${product._id}`)"
-          v-for="product in organization.products.slice(0,5)" 
-          :key="product._id" 
-          :editable="false" 
+          v-for="product in organization.products.slice(0,5)"
+          :key="product._id"
+          :editable="false"
           :productId="product._id"
-          :variantId="product.variant"
+          :variantId="product.variants?.[0]?._id"
           :images="product.images"
           :name="product.name"
-          :quantity="product.quantity || 1"
-          :unit="product.unit"
+          :quantity="product.variants?.[0]?.quantity || 1"
+          :unit="product.variants?.[0]?.unit"
           :dates="product.date"
           :listing="product.listing"
-          :price="product.price"
+          :price="product.variants?.[0]?.price"
           class="pd-thin w-15r radius-medium bg-white"
-         
+
         />
         <button class="pd-thin w-15r radius-medium bg-main button">
           View menu

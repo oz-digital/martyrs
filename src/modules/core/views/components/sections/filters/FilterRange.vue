@@ -1,75 +1,98 @@
-<!-- FilterRange.vue -->
+<!-- filters/FilterPrice.vue -->
 <template>
-  <div class="filter-range">
-    <div class="flex gap-thin mn-b-small">
+  <div class="filter-price">
+    <div class="flex flex-v-center gap-thin">
       <Field
-        v-model="localValue.min"
+        type="number"
+        v-model:field="localValue.min"
         :placeholder="minPlaceholder"
-        type="number"
-        class="w-50 bg-light pd-small radius-small"
-        @keypress.enter="applyRange"
+        :label="label"
+        class="flex-1 bg-light pd-regular radius-small"
+        @blur="updateValue"
       />
+      <span class="t-small">—</span>
       <Field
-        v-model="localValue.max"
-        :placeholder="maxPlaceholder"
         type="number"
-        class="w-50 bg-light pd-small radius-small"
-        @keypress.enter="applyRange"
+        v-model:field="localValue.max"
+        :placeholder="maxPlaceholder"
+        :label="label"
+        class="flex-1 bg-light pd-regular radius-small"
+        @blur="updateValue"
       />
     </div>
-    <button 
-      @click="applyRange"
-      class="button bg-main t-white w-100 pd-small radius-small"
-    >
-      Apply
-    </button>
+    
+    <div v-if="config?.presets" class="mt-thin">
+      <button
+        v-for="preset in config.presets"
+        :key="preset.label"
+        @click="applyPreset(preset)"
+        class="btn btn-small mr-thin mb-thin"
+        :class="isPresetActive(preset) ? 'btn-primary' : 'btn-secondary'"
+      >
+        {{ preset.label }}
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
-import Field from '@martyrs/src/components/Field/Field.vue'
+import Field from '@martyrs/src/components/Field/Field.vue';
 
 const props = defineProps({
+  config: {
+    type: Object,
+    default: () => ({})
+  },
   minPlaceholder: {
     type: String,
-    default: 'From'
+    default: 'Min'
   },
   maxPlaceholder: {
     type: String,
-    default: 'To'
+    default: 'Max'
+  },
+  label: {
+    type: String,
+    default: undefined
   }
 })
 
 const model = defineModel({
   type: Object,
-  default: () => ({ min: '', max: '' })
+  default: () => ({ min: null, max: null })
 })
 
 const emit = defineEmits(['update:modelValue', 'apply'])
 
 const localValue = ref({ 
-  min: model.value?.min || '', 
-  max: model.value?.max || '' 
+  min: model.value?.min || null, 
+  max: model.value?.max || null 
 })
 
-const applyRange = () => {
+watch(model, (val) => {
+  if (val) {
+    localValue.value = { 
+      min: val.min || null, 
+      max: val.max || null 
+    }
+  }
+}, { deep: true })
+
+const updateValue = () => {
   model.value = { ...localValue.value }
   emit('apply')
 }
 
-watch(() => model.value, (newVal) => {
-  if (newVal) {
-    localValue.value = { 
-      min: newVal.min || '', 
-      max: newVal.max || '' 
-    }
+const applyPreset = (preset) => {
+  localValue.value = { 
+    min: preset.min || null, 
+    max: preset.max || null 
   }
-}, { deep: true })
-</script>
-
-<style scoped>
-.filter-range {
-  width: 100%;
+  updateValue()
 }
-</style>
+
+const isPresetActive = (preset) => {
+  return localValue.value.min === preset.min && localValue.value.max === preset.max
+}
+</script>

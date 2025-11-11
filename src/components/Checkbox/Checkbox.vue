@@ -40,7 +40,7 @@
   }
 </script>
 <template>
-  <label class="flex-v-center flex-nowrap flex">
+  <label class="flex-v-center cursor-pointer flex-nowrap flex">
     <div v-if="label" class="mn-r-auto t-transp mn-r-small">
       <span>{{label}}</span>
     </div>

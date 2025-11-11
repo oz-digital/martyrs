@@ -1,20 +1,22 @@
 <!-- FilterCheckbox.vue -->
 <template>
   <div class="filter-checkbox">
-    <div
+    <Checkbox
       v-for="(option, index) in normalizedOptions"
       :key="option.value"
-      @click="toggleOption(option.value)"
-      :class="{ 'bg-light': isSelected(option.value) }"
-      class="pd-small radius-small cursor-pointer hover-bg-light transition-all mn-b-micro"
-    >
-      {{ option.label }}
-    </div>
+      v-model:radio="model"
+      :label="option.label"
+      :value="option.value"
+      mode="checkbox"
+      class="br-solid br-1px br-light pd-small radius-small mn-b-micro"
+      @update:radio="emit('apply')"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
+import Checkbox from '@martyrs/src/components/Checkbox/Checkbox.vue'
 
 const props = defineProps({
   options: {
@@ -28,14 +30,12 @@ const model = defineModel({
   default: () => []
 })
 
-const emit = defineEmits(['update:modelValue', 'apply'])
-
-const localValue = ref([...(model.value || [])])
+const emit = defineEmits(['apply'])
 
 // Normalize options to always have label and value
 const normalizedOptions = computed(() => {
   if (!props.options || !Array.isArray(props.options)) return []
-  
+
   return props.options.map((option, index) => {
     if (typeof option === 'string') {
       return { label: option, value: option }
@@ -49,25 +49,6 @@ const normalizedOptions = computed(() => {
     return { label: String(option), value: `option-${index}` }
   })
 })
-
-const isSelected = (value) => {
-  return localValue.value.includes(value)
-}
-
-const toggleOption = (value) => {
-  const idx = localValue.value.indexOf(value)
-  if (idx > -1) {
-    localValue.value.splice(idx, 1)
-  } else {
-    localValue.value.push(value)
-  }
-  model.value = [...localValue.value]
-  emit('apply')
-}
-
-watch(() => model.value, (newVal) => {
-  localValue.value = [...(newVal || [])]
-}, { deep: true })
 </script>
 
 <style scoped>

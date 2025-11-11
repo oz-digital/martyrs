@@ -11,7 +11,7 @@
       },
     }"
     :store="{
-      read: (options) => organization.actions.read(options)
+      read: (options) => marketplaceStore.readCatalog(options)
     }"
     :options="{
       country: route.params.country,
@@ -20,7 +20,7 @@
 	    categories: route.query.categories,
 	    prices: route.query.prices,
 	    delivery: route.query.delivery,
-	    location: core.state.position?.location,
+	    location: store.core.state.position?.location,
 	    lookup: ['products','spots'],
 	    contain: ['products'],
     }"
@@ -49,19 +49,20 @@
 	
 	import * as organization from '@martyrs/src/modules/organizations/store/organizations.js'
 	import { useStore } from '@martyrs/src/modules/core/views/store/core.store.js'
-	const core = useStore()
+	const store = useStore()
 
 	import CardOrganization from '@martyrs/src/modules/organizations/components/blocks/CardOrganization.vue'
 
 	import * as marketplace from '../../store/marketplace';
-	
+	import marketplaceStore from '../../store/marketplace';
+
 	const route = useRoute()
 
 	onMounted(() => {
 		// Добавление Google Analytics event на открытие маркетплейса
 		if (typeof gtag === 'function') {
 			gtag('event', 'view_marketplace', {
-				location: core.state.position?.location || 'unknown',
+				location: store.core.state.position?.location || 'unknown',
 				page_path: window.location.pathname,
 				marketplace_id: route.params.id || 'main',
 			});

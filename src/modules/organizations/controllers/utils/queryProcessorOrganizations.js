@@ -127,7 +127,14 @@ const getDistanceStages = location => [
     },
   },
 ];
-const getPriceConditions = prices => {
+const getPriceConditions = (prices, priceMin, priceMax) => {
+  // Если есть priceMin/priceMax, конвертируем в формат "min-max"
+  if ((priceMin && priceMin.trim() !== '') || (priceMax && priceMax.trim() !== '')) {
+    const min = (priceMin && priceMin.trim() !== '') ? priceMin : '0';
+    const max = (priceMax && priceMax.trim() !== '') ? priceMax : '999999';
+    prices = `${min}-${max}`;
+  }
+
   if (!prices) return [];
   const priceRanges = prices.split(',');
   const priceConditions = priceRanges.map(priceRange => {

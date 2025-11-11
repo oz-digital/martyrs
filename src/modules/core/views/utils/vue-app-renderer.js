@@ -79,6 +79,8 @@ export function renderAndMountApp({ createApp, hooks = {} }) {
     }
 
 
+
+
     if (initialState) {
       console.log('[AUTH COOKIE DEBUG] Browser initialState.auth:', initialState.auth);
       console.log('[AUTH COOKIE DEBUG] Has token?', !!initialState?.auth?.access?.token);
@@ -89,6 +91,7 @@ export function renderAndMountApp({ createApp, hooks = {} }) {
 
       if (initialState?.auth?.access?.token) {
         console.log('[AUTH COOKIE DEBUG] Setting auth token from initialState');
+
         setAuthToken(initialState.auth.access.token);
       } else if (initialState?.auth && !initialState.auth.access?.status) {
         // Если SSR сбросил auth (из-за ошибки), удаляем куку в браузере
@@ -104,6 +107,12 @@ export function renderAndMountApp({ createApp, hooks = {} }) {
         // await store.auth.removeCookie('user');
         await store.auth.actions.logout();
       }
+    }
+
+    const savedPosition = localStorage.getItem('position');
+
+    if (savedPosition) {
+      store.core.state.position = JSON.parse(savedPosition);
     }
 
     // app.config.globalProperties.$i18n.locale = router.currentRoute.value.params.locale
@@ -170,6 +179,9 @@ export async function render({ url, cookies,  ssrContext, createApp}) {
       user = null;
     }
   }
+
+  
+
 
   if (user) {
     // [LOADING 27] SSR auth initialization
