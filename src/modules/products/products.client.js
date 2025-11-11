@@ -103,6 +103,9 @@ export {
   Products,
   // Sections
   SectionProduct,
+  // Store
+  storeProducts,
+  storeCategories,
 };
 
 export default ModuleProducts;
