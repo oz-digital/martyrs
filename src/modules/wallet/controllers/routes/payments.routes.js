@@ -39,6 +39,7 @@ export default (function (app, db, origins, publicPath) {
         seat: ticketType.name,
         quantity: quantity,
         price: ticketType.price,
+        paymentMethod: 'stripe',
       };
       await controllerTickets.saveAndSendTicket(ticketData);
     } catch (error) {

@@ -90,7 +90,8 @@ export default (projectRoot) => {
                 sourceMap: true,
                 url: {
                   filter: (url, resourcePath) => {
-                    if (url.indexOf("/fonts/")==0) {
+                    // Не обрабатывать изображения из public
+                    if (url.indexOf("/static/")==0) {
                       return false;
                     }
                     return true;
