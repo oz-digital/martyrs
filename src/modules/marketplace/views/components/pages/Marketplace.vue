@@ -23,7 +23,7 @@
       <div class="o-y-scroll br-r br-solid br-light pd-medium z-index-2 desktop-only h-100 pos-relative">
         <div class="w-100 o-y-scroll h-100">
           <!-- Location Filter -->
-          <div class="mn-b-medium">
+          <div v-if="!route.params.country && !route.params.state && !route.params.city" class="mn-b-medium">
             <h4 class="mn-b-small">Location</h4>
             <Field
               v-model="searchLocation"
@@ -46,7 +46,7 @@
           <!-- Filters Group -->
           <FiltersGroup
             :filters="marketplace.state.filter.options"
-            v-model:selected="selectedFilters"
+            v-model:selected="marketplace.state.filter.selected"
             :immediate="true"
             :showHeader="false"
             :showApplyButton="false"
@@ -76,10 +76,10 @@
             location: localLocation?.location,
             lookup: ['products','spots'],
             contain: ['products'],
-            priceMin: selectedFilters.price?.min,
-            priceMax: selectedFilters.price?.max,
-            delivery: selectedFilters.delivery?.length > 0 ? selectedFilters.delivery.join(',') : undefined,
-            payment: selectedFilters.payment?.length > 0 ? selectedFilters.payment.join(',') : undefined
+            priceMin: marketplace.state.filter.selected.price?.min,
+            priceMax: marketplace.state.filter.selected.price?.max,
+            delivery: marketplace.state.filter.selected.delivery?.length > 0 ? marketplace.state.filter.selected.delivery.join(',') : undefined,
+            payment: marketplace.state.filter.selected.payment?.length > 0 ? marketplace.state.filter.selected.payment.join(',') : undefined
           }"
           v-slot="{
             items
@@ -89,7 +89,7 @@
           <div class="mn-b-thin mobile-only">
             <Filters
               v-model:filters="marketplace.state.filter.options"
-              v-model:selected="selectedFilters"
+              v-model:selected="marketplace.state.filter.selected"
               class=""
             />
           </div>
@@ -145,15 +145,6 @@
   const localLocation = ref(null);
   // Location filter
   const searchLocation = ref('');
-
-  const selectedFilters = ref({
-    price: { min: null, max: null },
-    delivery: [],
-    payment: [],
-    availabilityDate: null,
-    rating: null
-  })
-
 
   if (route.params) {
     // Загружаем новые значения из параметров маршрута в состояние

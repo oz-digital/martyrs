@@ -1,6 +1,6 @@
 <template>
   <section id="howtobuy">
-    <h2 class="w-100 w-max-50r mn-b-small" v-html="t('title')"/>
+    <h2 class="w-100 w-max-50r mn-l-auto mn-r-auto mn-b-small" v-html="t('title')"/>
    
     <div class="cols-3 mobile:cols-1 gap-thin">
       <div 

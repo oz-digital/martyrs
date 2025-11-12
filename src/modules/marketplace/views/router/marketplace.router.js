@@ -1,50 +1,42 @@
-import layoutMarketplace from '../components/layouts/Marketplace.vue';
+function buildMarketplaceTree(options = {}) {
+  const marketplaceComponent = options.marketplaceComponent || (() => import(
+    /* webpackChunkName: 'marketplace-page' */
+    '../components/pages/Marketplace.vue'
+  ));
 
-const marketplace = [
-  {
-    path: 'marketplace',
-    name: 'Marketplace',
-    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
-    meta: {
-      title: {
-        en: 'Marketplace',
-        ru: 'Маркетплейс',
-      },
-    },
-  },
-  {
-    path: 'marketplace/:country',
-    name: 'MarketplaceCountry',
-    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
-    meta: {
-      title: {
-        en: 'Marketplace',
-        ru: 'Маркетплейс',
-      },
-    },
-  },
-  {
-    path: 'marketplace/:country/:state',
-    name: 'MarketplaceState',
-    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
-    meta: {
-      title: {
-        en: 'Marketplace',
-        ru: 'Маркетплейс',
-      },
-    },
-  },
-  {
-    path: 'marketplace/:country/:state/:city',
-    name: 'MarketplaceCity',
-    component: () => import(/* webpackChunkName: 'layoutMarketplace' */ '../components/layouts/Marketplace.vue'),
-    meta: {
-      title: {
-        en: 'Marketplace',
-        ru: 'Маркетплейс',
-      },
-    },
-  },
-];
+  const buildName = (suffix) => {
+    const prefix = options.routeNamePrefix || '';
+    return suffix ? `${prefix}${suffix}` : prefix || undefined;
+  };
 
-export default marketplace;
+  return [
+    {
+      path: ':country?/:state?/:city?',
+      name: buildName('Marketplace') || 'Marketplace',
+      component: marketplaceComponent,
+      meta: {
+        title: {
+          en: 'Marketplace',
+          ru: 'Маркетплейс',
+        },
+      },
+    },
+  ];
+}
+
+export function getRoutes(options = {}) {
+  const route = options.route || 'Home';
+  const routes = [];
+
+  routes.push({
+    parentName: route,
+    config: {
+      basePath: options.basePath || 'marketplace',
+      routes: buildMarketplaceTree(options),
+    },
+  });
+
+  return routes;
+}
+
+export default { getRoutes };

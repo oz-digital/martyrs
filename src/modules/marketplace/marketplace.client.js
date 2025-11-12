@@ -1,18 +1,15 @@
 // Router
 import addRoutes from '@martyrs/src/modules/core/views/router/addRoutes.js';
-import { getRoutes } from './marketplace.router.js';
+import { getRoutes } from './views/router/marketplace.router.js';
 
 //Store
 import * as storeMarketplace from './views/store/marketplace.js';
 
-// Layouts
-import Marketplace from './views/components/layouts/Marketplace.vue';
+// Pages
+import Marketplace from './views/components/pages/Marketplace.vue';
 
 // Sections
 import SectionMenu from './views/components/sections/SectionMenu.vue';
-
-// Pages
-import Catalog from './views/components/pages/Catalog.vue';
 
 // Пример функции инициализации для модуля маркетплейса
 function initializeMarketplace(app, store, router, options = {}) {
@@ -39,8 +36,6 @@ const ModuleMarketplace = {
       // Sections
       SectionMenu,
       // Pages
-      Catalog,
-      // Layouts
       Marketplace,
     },
   },
@@ -49,8 +44,6 @@ const ModuleMarketplace = {
 export {
   // Elements
   // Pages
-  Catalog,
-  // Layouts
   Marketplace,
   // Blocks
   // Sections

@@ -33,6 +33,7 @@ export default defineConfig({
         resolve(__dirname, './src/modules/community/community.server.js'),
         resolve(__dirname, './src/modules/core/core.server.js'),
         resolve(__dirname, './src/modules/organizations/organizations.server.js'),
+        resolve(__dirname, './src/modules/marketplace/marketplace.server.js'),
         resolve(__dirname, './src/modules/products/products.server.js'),
         resolve(__dirname, './src/modules/inventory/inventory.server.js'),
         resolve(__dirname, './src/modules/events/events.server.js'),

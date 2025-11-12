@@ -166,11 +166,10 @@ const resetFilters = () => {
     } else {
       workingValues[filter.value] = null
     }
-  })
 
-  if (props.immediate) {
-    applyFilters()
-  }
+    // Удаляем ключ из selected
+    delete selected.value[filter.value]
+  })
 }
 </script>
 
